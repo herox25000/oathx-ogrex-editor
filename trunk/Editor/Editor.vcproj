@@ -221,6 +221,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\Splash.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -284,6 +288,10 @@
 			</File>
 			<File
 				RelativePath=".\Resource.h"
+				>
+			</File>
+			<File
+				RelativePath=".\Splash.h"
 				>
 			</File>
 			<File

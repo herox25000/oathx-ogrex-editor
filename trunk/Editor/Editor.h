@@ -25,7 +25,8 @@ public:
 	virtual void		PreLoadState();
 	virtual void		LoadCustomState();
 	virtual void		SaveCustomState();
-
+	
+	virtual void		ShowSplash();
 	afx_msg void		OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 	

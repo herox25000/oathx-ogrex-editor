@@ -8,6 +8,7 @@
 #include "MainFrm.h"
 #include "EditorDoc.h"
 #include "EditorView.h"
+#include "Splash.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -33,12 +34,15 @@ CEditorApp theApp;
 //////////////////////////////////////////////////////////////////////////
 BOOL		CEditorApp::InitInstance()
 {
+
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
+	
+	ShowSplash();
 
 	if (!AfxSocketInit())
 	{
@@ -152,4 +156,15 @@ void		CEditorApp::SaveCustomState()
 int			CEditorApp::ExitInstance()
 {
 	return CWinAppEx::ExitInstance();
+}
+
+//////////////////////////////////////////////////////////////////////////
+void		CEditorApp::ShowSplash()
+{
+	CSplashWnd* pCsw = new CSplashWnd("data\\fx.jpg");
+	pCsw->ShowSplash();
+	Sleep(2000);
+	pCsw->CloseSplash();
+	delete pCsw;
+	pCsw = NULL;
 }
