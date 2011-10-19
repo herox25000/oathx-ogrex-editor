@@ -24,10 +24,9 @@ BOOL		Serialize::Create(CString sPath, CString sName)
 	}
 
 	m_pDocument = new TiXmlDocument();
-	ASSERT(m_pDocument != NULL);
-
-	TiXmlDeclaration* pDecl = new TiXmlDeclaration("1.0", "UTF-8", "");
-	m_pDocument->LinkEndChild(pDecl);
+	m_pDocument->LinkEndChild(
+		new TiXmlDeclaration("1.0", "UTF-8", "")
+		);
 
 	TiXmlElement* root = new TiXmlElement("ogre");
 	m_pDocument->LinkEndChild(root);

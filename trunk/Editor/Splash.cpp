@@ -12,7 +12,6 @@
 #include <atlbase.h>
 #include <afxwin.h>
 #include <afxpriv2.h>
-
 #include "stdafx.h"  // e. g. stdafx.h
 #include "Splash.h"  // e.g. splash.h
 
@@ -67,7 +66,6 @@ END_MESSAGE_MAP()
 //
 BOOL CSplashWnd::ShowSplash()
 {
-	
 	if(fileIsValid)
 	{
 		if (!Create(AfxGetMainWnd()))
@@ -114,7 +112,6 @@ BOOL CSplashWnd::PreTranslateAppMessage(MSG* pMsg)
 //
 BOOL CSplashWnd::Create(CWnd* pParentWnd /*= NULL*/)
 {
-
 	return CreateEx(0,
 		AfxRegisterWndClass(0, AfxGetApp()->LoadStandardCursor(IDC_ARROW)),
 		NULL, WS_POPUP | WS_VISIBLE, 0, 0, width, height, pParentWnd->GetSafeHwnd(), NULL);
