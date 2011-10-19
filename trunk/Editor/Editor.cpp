@@ -34,7 +34,6 @@ CEditorApp theApp;
 //////////////////////////////////////////////////////////////////////////
 BOOL		CEditorApp::InitInstance()
 {
-
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
@@ -161,7 +160,7 @@ int			CEditorApp::ExitInstance()
 //////////////////////////////////////////////////////////////////////////
 void		CEditorApp::ShowSplash()
 {
-	CSplashWnd* pCsw = new CSplashWnd("data\\fx.jpg");
+	CSplashWnd* pCsw = new CSplashWnd("default\\fx.jpg");
 	pCsw->ShowSplash();
 	Sleep(2000);
 	pCsw->CloseSplash();

@@ -3,7 +3,7 @@
 #include "FileView.h"
 #include "Resource.h"
 #include "Editor.h"
-#include "SolutionXML.h"
+#include "Serialize.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -176,7 +176,7 @@ void		CFileView::OnEditClear()
 	{
 		CString text = m_wFileView.GetItemText(hItem);
 		
-		TiXmlDocument* pDoc = SolutionXML::GetSingleton().GetDocument();
+		TiXmlDocument* pDoc = Serialize::GetSingleton().GetDocument();
 		if (pDoc != NULL)
 		{
 			TiXmlElement* root = pDoc->RootElement();
@@ -193,7 +193,7 @@ void		CFileView::OnEditClear()
 					CString sLog = "1> 删除地形项目 " + sName;
 					BDLogMessage(sLog);
 
-					if (SolutionXML::GetSingleton().Save())
+					if (Serialize::GetSingleton().Save())
 						UpdateSolution();
 					
 					break;
@@ -262,7 +262,7 @@ BOOL		CFileView::CreateSolution(CString sPath, CString sName)
 {
 	HTREEITEM hRoot = m_wFileView.InsertItem("解决方案", 10, 10);
 
-	CString sLog = "1> 创建解决方案 " + SolutionXML::GetSingleton().GetPathName();		
+	CString sLog = "1> 创建解决方案 " + Serialize::GetSingleton().GetPathName();		
 	BDLogMessage(sLog);
 
 	m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
@@ -274,7 +274,7 @@ BOOL		CFileView::CreateSolution(CString sPath, CString sName)
 //////////////////////////////////////////////////////////////////////////
 BOOL		CFileView::OpenSolution(CString sPathName)
 {
-	BOOL bResult = SolutionXML::GetSingleton().Open(sPathName);
+	BOOL bResult = Serialize::GetSingleton().Open(sPathName);
 	if (bResult)
 	{
 		HTREEITEM hRoot = m_wFileView.InsertItem(
@@ -299,7 +299,7 @@ void		CFileView::UpdateSolution()
 {
 	m_wFileView.DeleteAllItems();
 
-	TiXmlDocument* pDoc = SolutionXML::GetSingleton().GetDocument();
+	TiXmlDocument* pDoc = Serialize::GetSingleton().GetDocument();
 	if (pDoc == NULL)
 		return;
 

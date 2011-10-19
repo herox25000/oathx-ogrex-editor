@@ -2,12 +2,12 @@
 
 #include "tinyxml.h"
 
-class SolutionXML
+class Serialize
 {
 public:
-	static	SolutionXML&	GetSingleton()
+	static	Serialize&		GetSingleton()
 	{
-		static SolutionXML instance;
+		static Serialize instance;
 		return instance;
 	}
 
@@ -17,9 +17,10 @@ public:
 	BOOL					Open(CString sPathName);
 	BOOL					Save();
 	CString					GetPathName() {return m_sPathName;}
+
 protected:
-	SolutionXML(void);
-	virtual ~SolutionXML(void);
+	Serialize(void);
+	virtual ~Serialize(void);
 
 protected:
 	TiXmlDocument*			m_pDocument;

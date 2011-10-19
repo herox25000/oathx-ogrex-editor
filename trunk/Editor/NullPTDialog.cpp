@@ -5,7 +5,7 @@
 #include "Editor.h"
 #include "NullPTDialog.h"
 #include "FolderDialog.h"
-#include "SolutionXML.h"
+#include "Serialize.h"
 #include "MainFrm.h"
 
 IMPLEMENT_DYNAMIC(CNullPTDialog, CDialog)
@@ -63,7 +63,7 @@ void		CNullPTDialog::OnBnClickedOk()
 	CString sPath;
 	GetDlgItemText(IDC_EDIT_PATH, sPath);
 
-	BOOL bResult = SolutionXML::GetSingleton().Create(sPath,sName);
+	BOOL bResult = Serialize::GetSingleton().Create(sPath,sName);
 	if (bResult)
 	{
 		CMainFrame* pMain = (CMainFrame*)(AfxGetMainWnd());

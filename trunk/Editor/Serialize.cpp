@@ -1,21 +1,21 @@
 #include "StdAfx.h"
-#include "SolutionXML.h"
+#include "Serialize.h"
 
 //////////////////////////////////////////////////////////////////////////
-SolutionXML::SolutionXML(void)
+Serialize::Serialize(void)
 :m_pDocument(NULL)
 {
 }
 
 //////////////////////////////////////////////////////////////////////////
-SolutionXML::~SolutionXML(void)
+Serialize::~Serialize(void)
 {
 	delete m_pDocument;
 	m_pDocument = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////
-BOOL		SolutionXML::Create(CString sPath, CString sName)
+BOOL		Serialize::Create(CString sPath, CString sName)
 {
 	if (m_pDocument != NULL)
 	{
@@ -41,7 +41,7 @@ BOOL		SolutionXML::Create(CString sPath, CString sName)
 }
 
 //////////////////////////////////////////////////////////////////////////
-BOOL		SolutionXML::Open(CString sPathName)
+BOOL		Serialize::Open(CString sPathName)
 {
 	if (m_pDocument != NULL)
 	{
@@ -60,7 +60,7 @@ BOOL		SolutionXML::Open(CString sPathName)
 }
 
 //////////////////////////////////////////////////////////////////////////
-BOOL		SolutionXML::Save()
+BOOL		Serialize::Save()
 {
 	return m_pDocument->SaveFile(m_sPathName);
 }

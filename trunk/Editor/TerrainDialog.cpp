@@ -2,7 +2,7 @@
 #include "Editor.h"
 #include "TerrainDialog.h"
 #include "MainFrm.h"
-#include "SolutionXML.h"
+#include "Serialize.h"
 
 IMPLEMENT_DYNAMIC(CTerrainDialog, CDialogEx)
 
@@ -58,7 +58,7 @@ void		CTerrainDialog::OnBnClickedOk()
 	int nSel = m_wTrBox.GetCurSel();
 	m_wTrBox.GetLBText(nSel, sTemp);
 	
-	TiXmlDocument* pDoc = SolutionXML::GetSingleton().GetDocument();
+	TiXmlDocument* pDoc = Serialize::GetSingleton().GetDocument();
 	if (pDoc != NULL)
 	{
 		TiXmlElement* root = pDoc->RootElement();
@@ -74,7 +74,7 @@ void		CTerrainDialog::OnBnClickedOk()
 
 			root->LinkEndChild(terr);
 
-			BOOL bResult = SolutionXML::GetSingleton().Save();
+			BOOL bResult = Serialize::GetSingleton().Save();
 			if (bResult)
 			{
 				CMainFrame* pFrame = (CMainFrame*)(AfxGetMainWnd());
