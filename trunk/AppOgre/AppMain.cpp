@@ -13,7 +13,7 @@ namespace Ogre
 	//
 	//////////////////////////////////////////////////////////////////////////
 	AppMain::AppMain(void)
-		:m_pRoot(NULL),m_pWnd(NULL)
+		:m_pRoot(NULL),m_pWnd(NULL),m_pSceneMgr(NULL),m_pCamera(NULL)
 	{
 		m_pRoot = new Root();
 	}
@@ -65,6 +65,15 @@ namespace Ogre
 				false,
 				&miscParams
 				);
+
+			m_pSceneMgr = m_pRoot->createSceneManager(ST_GENERIC, "ExampleSMInstance");
+			m_pCamera = m_pSceneMgr->createCamera("PlayerCam");
+
+			// Position it at 500 in Z direction
+			m_pCamera->setPosition(Vector3(0,0,500));
+			// Look back along -Z
+			m_pCamera->lookAt(Vector3(0,0,-300));
+			m_pCamera->setNearClipDistance(5);
 
 			update();
 

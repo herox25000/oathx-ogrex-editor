@@ -22,6 +22,8 @@ namespace Ogre
 		Root*						m_pRoot;
 		RenderWindow*				m_pWnd;
 		HWND						m_hWnd;
+		SceneManager*				m_pSceneMgr;
+		Camera*						m_pCamera;
 	};
 }
 
