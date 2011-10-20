@@ -1,34 +1,25 @@
-
-// EditorView.h : CEditorView 类的接口
-//
-
-
 #pragma once
 
-
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
 class CEditorView : public CView
 {
-protected: // 仅从序列化创建
+protected:
 	CEditorView();
 	DECLARE_DYNCREATE(CEditorView)
 
-// 属性
+	BOOL			m_bFirst;
 public:
-	CEditorDoc* GetDocument() const;
-
-// 操作
+	CEditorDoc*		GetDocument() const;
 public:
-
-// 重写
-public:
-	virtual void OnDraw(CDC* pDC);  // 重写以绘制该视图
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	virtual void	OnDraw(CDC* pDC);
+	virtual BOOL	PreCreateWindow(CREATESTRUCT& cs);
 protected:
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual BOOL	OnPreparePrinting(CPrintInfo* pInfo);
+	virtual void	OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void	OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
-// 实现
 public:
 	virtual ~CEditorView();
 #ifdef _DEBUG
@@ -37,13 +28,14 @@ public:
 #endif
 
 protected:
-
-// 生成的消息映射函数
-protected:
-	afx_msg void OnFilePrintPreview();
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void	OnFilePrintPreview();
+	afx_msg void	OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void	OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void	OnTimer(UINT_PTR nIDEvent);
+	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void	OnDestroy();
 };
 
 #ifndef _DEBUG  // EditorView.cpp 中的调试版本

@@ -25,6 +25,7 @@ END_MESSAGE_MAP()
 //
 //////////////////////////////////////////////////////////////////////////
 CEditorApp::CEditorApp()
+:m_pAppMain(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -154,6 +155,9 @@ void		CEditorApp::SaveCustomState()
 //////////////////////////////////////////////////////////////////////////
 int			CEditorApp::ExitInstance()
 {
+	if (m_pAppMain != NULL)
+		delete m_pAppMain;
+
 	return CWinAppEx::ExitInstance();
 }
 
@@ -162,7 +166,10 @@ void		CEditorApp::ShowSplash()
 {
 	CSplashWnd* pCsw = new CSplashWnd("default\\fx.jpg");
 	pCsw->ShowSplash();
-	Sleep(2000);
+	
+	m_pAppMain = new Ogre::AppMain();
+	ASSERT(m_pAppMain != NULL);
+
 	pCsw->CloseSplash();
 	delete pCsw;
 	pCsw = NULL;

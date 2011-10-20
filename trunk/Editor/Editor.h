@@ -7,6 +7,7 @@
 #endif
 
 #include "resource.h"       // Ö÷·ûºÅ
+#include "AppMain.h"
 
 //////////////////////////////////////////////////////////////////////////
 //
@@ -19,6 +20,7 @@ public:
 public:
 	UINT				m_nAppLook;
 	BOOL				m_bHiColorIcons;
+	Ogre::AppMain*		m_pAppMain;
 public:
 	virtual BOOL		InitInstance();
 	virtual int			ExitInstance();

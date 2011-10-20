@@ -21,7 +21,7 @@
 			OutputDirectory="..\Ogre\Ogre1.6.5\Samples\Common\bin\Debug"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			CharacterSet="2"
 			>
 			<Tool
@@ -45,8 +45,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\TinyXML"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
+				AdditionalIncludeDirectories="..\AppOgre;..\TinyXML;..\Ogre\Ogre1.6.5\OgreMain\include"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="TinyXML_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreMain_d.lib TinyXML_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\Ogre\Ogre1.6.5\lib"
@@ -103,7 +103,7 @@
 			OutputDirectory="..\Ogre\Ogre1.6.5\Samples\Common\bin\Release"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfMFC="2"
+			UseOfMFC="0"
 			CharacterSet="2"
 			WholeProgramOptimization="1"
 			>
@@ -129,8 +129,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\TinyXML"
-				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
+				AdditionalIncludeDirectories="..\Ogre\Ogre1.6.5\OgreMain\include;..\AppOgre;..\TinyXML"
+				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXDLL"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -152,7 +152,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="TinyXML.lib"
+				AdditionalDependencies="mfc90.lib OgreMain.lib TinyXML.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\Ogre\Ogre1.6.5\lib"
 				GenerateDebugInformation="true"
@@ -470,6 +470,22 @@
 			</File>
 			<File
 				RelativePath=".\Serialize.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="AppOgre"
+			>
+			<File
+				RelativePath="..\AppOgre\AppExport.h"
+				>
+			</File>
+			<File
+				RelativePath="..\AppOgre\AppMain.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\AppOgre\AppMain.h"
 				>
 			</File>
 		</Filter>
