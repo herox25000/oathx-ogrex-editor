@@ -59,7 +59,7 @@ void		CEditorView::OnDraw(CDC* /*pDC*/)
 		CRect rcView;
 		GetClientRect(rcView);
 
-		Ogre::AppMain::getSingleton().createMainAppResource(0,m_hWnd, rcView.Width(), rcView.Height());
+		Ogre::AppMain::getSingleton().createMainApp(0, m_hWnd, rcView.Width(), rcView.Height());
 		Ogre::AppMain::getSingleton().update();
 		
 		m_bFirst = FALSE;
