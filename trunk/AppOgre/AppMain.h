@@ -15,9 +15,17 @@ namespace Ogre
 		AppMain(void);
 		virtual ~AppMain(void);
 		
-		virtual	bool				createMainAppResource(bool bAutoWnd=true, HWND hWnd=NULL, int w=0, int h=0);
+		virtual	void				createMainApp(bool bAutoWnd=true, HWND hWnd=NULL, int w=0, int h=0);
 		virtual	void				update();
 		
+	protected:
+		virtual	void				setupResource();
+		virtual	void				setupRenderSystem(const String& sName);
+		virtual void				setupRenderWindow(HWND hWnd, int w, int h);
+		virtual	void				setupSceneManager();
+		virtual	void				setupCamera();
+		virtual	void				setupViewport();
+		virtual	void				setupAllResourceGroups();
 	protected:
 		Root*						m_pRoot;
 		RenderWindow*				m_pWnd;
