@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Editor", "Editor\Editor.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "TinyXML", "TinyXML\TinyXML.vcproj", "{2F970B31-D663-4D2C-99CE-C87D21EBAA84}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ogre_app", "ogre_app\ogre_app.vcproj", "{346A4E64-DB34-42DB-BE24-D389B02DEBE2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -29,6 +31,14 @@ Global
 		{2F970B31-D663-4D2C-99CE-C87D21EBAA84}.Release|Win32.Build.0 = Release|Win32
 		{2F970B31-D663-4D2C-99CE-C87D21EBAA84}.ReleaseStaticLib|Win32.ActiveCfg = Release|Win32
 		{2F970B31-D663-4D2C-99CE-C87D21EBAA84}.ReleaseStaticLib|Win32.Build.0 = Release|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.Debug|Win32.Build.0 = Debug|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.DebugStaticLib|Win32.ActiveCfg = Debug|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.DebugStaticLib|Win32.Build.0 = Debug|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.Release|Win32.ActiveCfg = Release|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.Release|Win32.Build.0 = Release|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.ReleaseStaticLib|Win32.ActiveCfg = Release|Win32
+		{346A4E64-DB34-42DB-BE24-D389B02DEBE2}.ReleaseStaticLib|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
