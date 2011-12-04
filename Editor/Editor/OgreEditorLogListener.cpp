@@ -38,6 +38,6 @@ void OgreEditorLogListener::messageLogged( const Ogre::String& message,
 		
 		msg += message;
 
-		pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddString(msg.c_str());
+		pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddLogMessage(msg.c_str());
 	}
 }

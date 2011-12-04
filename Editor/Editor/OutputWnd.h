@@ -6,6 +6,7 @@ public:
 	COutputList();
 	virtual ~COutputList();
 
+	void				AddLogMessage(LPCTSTR message);
 protected:
 	afx_msg void		OnContextMenu(CWnd* pWnd, CPoint point);
 	afx_msg void		OnEditCopy();
