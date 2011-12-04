@@ -1,6 +1,4 @@
-
 #include "stdafx.h"
-
 #include "OutputWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
@@ -111,6 +109,14 @@ BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
 	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
+
+void		COutputList::AddLogMessage(LPCTSTR message)
+{
+	AddString(message);
+
+	int nLine = GetHorizontalExtent();
+	SetHorizontalExtent(nLine + 1);
+}
 
 void		COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {

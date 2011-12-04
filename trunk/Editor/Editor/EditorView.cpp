@@ -166,6 +166,11 @@ void		CEditorView::OnDraw(CDC* /*pDC*/)
 
 	if (!m_bFirst)
 	{
+		CRect rcView;
+		GetClientRect(&rcView);
+
+		GetDC()->FillRect(&rcView, (CBrush*)(::GetStockObject(BLACK_BRUSH)));
+
 		InitOgreEngine();
 		m_bFirst = TRUE;
 	}
