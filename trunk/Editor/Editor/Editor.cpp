@@ -7,10 +7,6 @@
 #include "EditorDoc.h"
 #include "EditorView.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
 BEGIN_MESSAGE_MAP(CEditorApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT, &CEditorApp::OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
@@ -19,6 +15,7 @@ BEGIN_MESSAGE_MAP(CEditorApp, CWinAppEx)
 END_MESSAGE_MAP()
 
 CEditorApp::CEditorApp()
+:m_pRoot(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -79,6 +76,11 @@ BOOL		CEditorApp::InitInstance()
 
 int			CEditorApp::ExitInstance()
 {
+	if (m_pRoot != NULL)
+		delete m_pRoot;
+
+	m_pRoot = NULL;
+
 	return CWinAppEx::ExitInstance();
 }
 
@@ -139,7 +141,15 @@ void		CEditorApp::ShowSplash()
 {
 	CSplashWnd* pCsw = new CSplashWnd("media/Splash.bmp");
 	pCsw->ShowSplash();
-	Sleep(3000);
+	
+#ifdef _DEBUG
+	m_pRoot = new Ogre::Root("plugins_d.cfg");
+	ASSERT(m_pRoot != NULL);
+#else
+	m_pRoot = new Ogre::Root("plugins.cfg");
+	ASSERT(m_pRoot != NULL);
+#endif
+
 	pCsw->CloseSplash();
 	delete pCsw;
 	pCsw = NULL;
