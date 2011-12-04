@@ -217,6 +217,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreEditorLogListener.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OutputWnd.cpp"
 				>
 			</File>
@@ -284,6 +288,10 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEditorLogListener.h"
 				>
 			</File>
 			<File
