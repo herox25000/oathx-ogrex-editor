@@ -5,6 +5,7 @@
 #endif
 
 #include "resource.h"
+#include "Ogre.h"
 
 class CEditorApp : public CWinAppEx
 {
@@ -13,7 +14,9 @@ public:
 
 	UINT				m_nAppLook;
 	BOOL				m_bHiColorIcons;
-
+	
+	// Ogre ¸ù¶ÔÏó
+	Ogre::Root*			m_pRoot;
 public:
 	virtual BOOL		InitInstance();
 	virtual int			ExitInstance();
@@ -24,6 +27,7 @@ public:
 
 	virtual void		ShowSplash();
 	afx_msg void		OnAppAbout();
+
 	DECLARE_MESSAGE_MAP()	
 };
 

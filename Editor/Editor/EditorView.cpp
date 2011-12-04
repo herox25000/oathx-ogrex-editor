@@ -1,8 +1,11 @@
 #include "stdafx.h"
 #include "Editor.h"
-
 #include "EditorDoc.h"
 #include "EditorView.h"
+
+#ifndef OGRE_RENDER_TIMER
+#define OGRE_RENDER_TIMER 0
+#endif
 
 IMPLEMENT_DYNCREATE(CEditorView, CView)
 
@@ -22,37 +25,21 @@ END_MESSAGE_MAP()
 using namespace Ogre;
 
 CEditorView::CEditorView() :
-	m_pRoot(NULL), 
-	m_pCamera(NULL), 
-	m_pSceneManager(NULL), 
-	m_pWindow(NULL), 
-	m_bFirst(FALSE),
-	m_pViewport(NULL),
-	m_pEditorLogListener(NULL)
+m_pRoot(NULL), 
+m_pCamera(NULL), 
+m_pSceneManager(NULL), 
+m_pWindow(NULL), 
+m_bFirst(FALSE),
+m_pViewport(NULL),
+m_pEditorLogListener(NULL)
 {
-#ifdef _DEBUG
-	m_pRoot = new Ogre::Root("plugins_d.cfg");
+	m_pRoot = Ogre::Root::getSingletonPtr();
 	ASSERT(m_pRoot != NULL);
-#else
-	m_pRoot = new Ogre::Root("plugins.cfg");
-	ASSERT(m_pRoot != NULL);
-#endif
-
-	m_pEditorLogListener = new OgreEditorLogListener();
-	Ogre::LogManager::getSingleton().getDefaultLog()->addListener(m_pEditorLogListener);
 }
 
 CEditorView::~CEditorView()
-{
-	Ogre::LogManager::getSingleton().getDefaultLog()->removeListener(m_pEditorLogListener);
-	if (m_pEditorLogListener != NULL)
-		delete m_pEditorLogListener;
-	
-	if (m_pRoot != NULL)
-		delete m_pRoot;
+{	
 
-	m_pRoot = NULL;
-	m_pEditorLogListener = NULL;
 }
 
 BOOL		CEditorView::InitOgreEngine()
@@ -225,21 +212,33 @@ CEditorDoc* CEditorView::GetDocument() const
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CEditorDoc)));
 	return (CEditorDoc*)m_pDocument;
 }
-#endif //_DEBUG
+#endif
 
 int			CEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	SetTimer(0, 10, NULL);
+	m_pEditorLogListener = new OgreEditorLogListener();
+	Ogre::LogManager::getSingleton().getDefaultLog()->addListener(m_pEditorLogListener);
+
+	SetTimer(OGRE_RENDER_TIMER, 10, NULL);
+
 	return 0;
 }
 
 void		CEditorView::OnDestroy()
 {
 	CView::OnDestroy();
-	KillTimer(0);
+
+	Ogre::LogManager::getSingleton().getDefaultLog()->removeListener(m_pEditorLogListener);
+	if (m_pEditorLogListener != NULL)
+		delete m_pEditorLogListener;
+	
+	m_pEditorLogListener = NULL;
+	
+	// delete ogre render timer
+	KillTimer(OGRE_RENDER_TIMER);
 }
 
 
