@@ -21,8 +21,14 @@ END_MESSAGE_MAP()
 
 using namespace Ogre;
 
-CEditorView::CEditorView()
-:m_pRoot(NULL), m_pCamera(NULL), m_pSceneManager(NULL), m_pWindow(NULL), m_bFirst(FALSE),m_pViewport(NULL)
+CEditorView::CEditorView() :
+	m_pRoot(NULL), 
+	m_pCamera(NULL), 
+	m_pSceneManager(NULL), 
+	m_pWindow(NULL), 
+	m_bFirst(FALSE),
+	m_pViewport(NULL),
+	m_pEditorLogListener(NULL)
 {
 #ifdef _DEBUG
 	m_pRoot = new Ogre::Root("plugins_d.cfg");
@@ -31,14 +37,22 @@ CEditorView::CEditorView()
 	m_pRoot = new Ogre::Root("plugins.cfg");
 	ASSERT(m_pRoot != NULL);
 #endif
+
+	m_pEditorLogListener = new OgreEditorLogListener();
+	Ogre::LogManager::getSingleton().getDefaultLog()->addListener(m_pEditorLogListener);
 }
 
 CEditorView::~CEditorView()
 {
+	Ogre::LogManager::getSingleton().getDefaultLog()->removeListener(m_pEditorLogListener);
+	if (m_pEditorLogListener != NULL)
+		delete m_pEditorLogListener;
+	
 	if (m_pRoot != NULL)
 		delete m_pRoot;
 
 	m_pRoot = NULL;
+	m_pEditorLogListener = NULL;
 }
 
 BOOL		CEditorView::InitOgreEngine()
