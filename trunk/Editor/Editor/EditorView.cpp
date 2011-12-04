@@ -12,12 +12,17 @@ BEGIN_MESSAGE_MAP(CEditorView, CView)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CEditorView::OnFilePrintPreview)
 	ON_WM_CREATE()
 	ON_WM_TIMER()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_DESTROY()
+	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
 
 CEditorView::CEditorView()
-:m_pRoot(NULL), m_pCamera(NULL), m_pSceneManager(NULL), m_pWindow(NULL), m_bFirst(FALSE)
+:m_pRoot(NULL), m_pCamera(NULL), m_pSceneManager(NULL), m_pWindow(NULL), m_bFirst(FALSE),m_pViewport(NULL)
 {
 #ifdef _DEBUG
 	m_pRoot = new Ogre::Root("plugins_d.cfg");
@@ -122,13 +127,13 @@ BOOL		CEditorView::InitOgreEngine()
 		m_pCamera->setNearClipDistance(5);
 
 		// ÉèÖÃÊÓ¿Ú
-		Viewport* vp = m_pWindow->addViewport(m_pCamera);
-		if (vp != NULL && m_pCamera != NULL)
+		m_pViewport = m_pWindow->addViewport(m_pCamera);
+		if (m_pViewport != NULL && m_pCamera != NULL)
 		{
-			vp->setBackgroundColour(Ogre::ColourValue(0,0,0));
+			m_pViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
 
 			m_pCamera->setAspectRatio(
-				Ogre::Real(vp->getActualWidth()) / Ogre::Real(vp->getActualHeight())
+				Ogre::Real(m_pViewport->getActualWidth()) / Ogre::Real(m_pViewport->getActualHeight())
 				);
 		}
 
@@ -143,9 +148,7 @@ BOOL		CEditorView::InitOgreEngine()
 
 void		CEditorView::Update()
 {
-	m_pRoot->_fireFrameStarted();
-	m_pWindow->update();
-	m_pRoot->_fireFrameEnded();
+	m_pRoot->renderOneFrame();
 }
 
 BOOL		CEditorView::PreCreateWindow(CREATESTRUCT& cs)
@@ -187,12 +190,6 @@ void		CEditorView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 	
 }
 
-void		CEditorView::OnRButtonUp(UINT nFlags, CPoint point)
-{
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
-
 void		CEditorView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
@@ -225,9 +222,51 @@ int			CEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
+void		CEditorView::OnDestroy()
+{
+	CView::OnDestroy();
+	KillTimer(0);
+}
+
+
 void		CEditorView::OnTimer(UINT_PTR nIDEvent)
 {
 	Update();
 
 	CView::OnTimer(nIDEvent);
+}
+
+void		CEditorView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	CView::OnLButtonDown(nFlags, point);
+}
+
+void		CEditorView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	CView::OnLButtonUp(nFlags, point);
+}
+
+void		CEditorView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	CView::OnRButtonDown(nFlags, point);
+}
+
+void		CEditorView::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	ClientToScreen(&point);
+	OnContextMenu(this, point);
+}
+
+void		CEditorView::OnSize(UINT nType, int cx, int cy)
+{
+	CView::OnSize(nType, cx, cy);
+
+	if (m_pWindow != NULL && m_pViewport != NULL)
+	{
+		CRect rcView;
+		GetClientRect(&rcView);
+	
+		m_pWindow->windowMovedOrResized();
+		m_pCamera->setAspectRatio(Real(m_pViewport->getActualWidth()) / Real(m_pViewport->getActualHeight()));
+	}
 }
