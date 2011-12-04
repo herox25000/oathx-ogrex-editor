@@ -85,3 +85,11 @@ Editor.manifest
 有关这两个主题的详细信息，请参阅 MSDN 文档中有关重新发布 Visual C++ 应用程序的部分。
 
 /////////////////////////////////////////////////////////////////////////////
+
+ogre
+
+1. 关于内存泄露问题解决办法
+	
+	i)		in the General tab, switch "Use MFC in a shared DLL" to "Use Standard Windows Libraries" 
+	ii)		in the C/C++/Preprocessor tab, add _AFXDLL to the preprocessor definitions 
+	iii)	in the Linker/Input tab, add mfc80d.lib anywhere before OgreMain_d.lib
