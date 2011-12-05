@@ -47,59 +47,6 @@ BOOL		CEditorView::InitOgreEngine()
 	CRect rcView;
 	GetClientRect(&rcView);
 
-#ifdef _DEBUG
-	Ogre::ConfigFile cf;
-	cf.load("resources_d.cfg");
-#else
-	Ogre::ConfigFile cf;
-	cf.load("resources.cfg");
-#endif
-
-	Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
-	Ogre::String secName, typeName, archName;
-	while (seci.hasMoreElements())
-	{
-		secName = seci.peekNextKey();
-		Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-		Ogre::ConfigFile::SettingsMultiMap::iterator i;
-
-		for (i = settings->begin(); i != settings->end(); ++i)
-		{
-			typeName = i->first;
-			archName = i->second;
-			Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-				archName, typeName, secName);
-		}
-	}
-
-	/*
-	 *	创建渲染系统
-	 */
-	Ogre::RenderSystemList::const_iterator pRend = m_pRoot->getAvailableRenderers().begin();
-	while(pRend != m_pRoot->getAvailableRenderers().end())
-	{
-		Ogre::String rName = (*pRend)->getName();
-		if (rName == "OpenGL Rendering Subsystem")
-			break;
-
-		pRend++;
-	}
-	Ogre::RenderSystem *rsys = *pRend;
-
-	rsys->setConfigOption("Colour Depth", "32" );
-	rsys->setConfigOption( "Full Screen", "No" );
-	rsys->setConfigOption( "VSync", "No" );
-	rsys->setConfigOption( "Video Mode", "800 x 600" );
-	rsys->setConfigOption( "Display Frequency", "60" );
-
-	m_pRoot->setRenderSystem( rsys );
-
-	/*
-	 *	创建渲染窗口
-	 */
-	m_pRoot->initialise(false);
-
 	Ogre::NameValuePairList miscParams;
 	miscParams["externalWindowHandle"] = Ogre::StringConverter::toString((long)m_hWnd);
 	m_pWindow = m_pRoot->createRenderWindow("OgreRenderWindow", 
@@ -113,7 +60,6 @@ BOOL		CEditorView::InitOgreEngine()
 	/*
 	* 创建场景管理器
 	*/
-	
 	m_pSceneManager = m_pRoot->createSceneManager(Ogre::ST_GENERIC, "editorSceneInstance");
 	if (m_pSceneManager != NULL)
 	{
@@ -166,11 +112,6 @@ void		CEditorView::OnDraw(CDC* /*pDC*/)
 
 	if (!m_bFirst)
 	{
-		CRect rcView;
-		GetClientRect(&rcView);
-
-		GetDC()->FillRect(&rcView, (CBrush*)(::GetStockObject(BLACK_BRUSH)));
-
 		InitOgreEngine();
 		m_bFirst = TRUE;
 	}

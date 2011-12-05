@@ -37,7 +37,7 @@ int			COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1; 
 	}
 
-	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS;
 
 	if (!m_wndOutputBuild.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
 		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
@@ -102,19 +102,13 @@ COutputList::~COutputList()
 {
 }
 
-BEGIN_MESSAGE_MAP(COutputList, CListBox)
+BEGIN_MESSAGE_MAP(COutputList, CColorListBox)
 	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
 	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
-
-void		COutputList::AddLogMessage(LPCTSTR message)
-{
-	int iReturn = AddString(message);
-	CListBox::SetTopIndex(iReturn);
-}
 
 void		COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {

@@ -5,6 +5,7 @@
 using namespace Ogre;
 
 OgreEditorLogListener::OgreEditorLogListener(void)
+:m_nLine(0)
 {
 }
 
@@ -21,23 +22,30 @@ void OgreEditorLogListener::messageLogged( const Ogre::String& message,
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame != NULL)
 	{
-		Ogre::String msg("");
+		Ogre::String msg;
+		
+		m_nLine ++;
 
+		char szTmp[32];
+		sprintf(szTmp, "%d> ", m_nLine);
+		msg += szTmp;
+
+		COLORREF dwTextColour = 0;
 		switch (lml)
 		{
 		case Ogre::LML_TRIVIAL:
-			msg += "LML_TRIVIAL::";
+			dwTextColour = RGB(192, 192, 192);
 			break;
 		case Ogre::LML_NORMAL:
-			msg += "LML_NORMAL::";
+			dwTextColour = RGB(0, 0, 0);
 			break;
 		case Ogre::LML_CRITICAL:
-			msg += "LML_CRITICAL::";
+			dwTextColour = RGB(255,0, 0);
 			break;
 		}
 		
 		msg += message;
 
-		pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddLogMessage(msg.c_str());
+		pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddString(msg.c_str(), dwTextColour);
 	}
 }
