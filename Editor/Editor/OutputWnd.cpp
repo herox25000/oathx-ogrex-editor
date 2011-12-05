@@ -112,10 +112,8 @@ END_MESSAGE_MAP()
 
 void		COutputList::AddLogMessage(LPCTSTR message)
 {
-	AddString(message);
-
-	int nLine = GetHorizontalExtent();
-	SetHorizontalExtent(nLine + 1);
+	int iReturn = AddString(message);
+	CListBox::SetTopIndex(iReturn);
 }
 
 void		COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
