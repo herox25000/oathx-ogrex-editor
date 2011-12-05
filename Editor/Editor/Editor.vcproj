@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ColorListBox.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Editor.cpp"
 				>
 			</File>
@@ -265,6 +269,10 @@
 			>
 			<File
 				RelativePath=".\ClassView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ColorListBox.h"
 				>
 			</File>
 			<File
