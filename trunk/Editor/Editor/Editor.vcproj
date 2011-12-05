@@ -296,6 +296,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\GraphDC.h"
+				>
+			</File>
+			<File
 				RelativePath=".\MainFrm.h"
 				>
 			</File>
