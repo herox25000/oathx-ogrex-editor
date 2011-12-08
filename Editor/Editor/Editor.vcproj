@@ -217,15 +217,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FolderDialog.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\MainFrm.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreEditorLogListener.cpp"
 				>
 			</File>
 			<File
@@ -295,19 +287,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\FolderDialog.h"
-				>
-			</File>
-			<File
 				RelativePath=".\GraphDC.h"
 				>
 			</File>
 			<File
 				RelativePath=".\MainFrm.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreEditorLogListener.h"
 				>
 			</File>
 			<File
@@ -453,11 +437,79 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="log"
+			>
+			<File
+				RelativePath=".\OgreEditorLogListener.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEditorLogListener.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="xml"
+			>
+			<File
+				RelativePath=".\tinyxml\tinystr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinystr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlparser.cpp"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="dialog"
+			>
+			<File
+				RelativePath=".\FolderDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\FolderDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\ProjectDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\ProjectDialog.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="doc"
+			>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="Editor.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
