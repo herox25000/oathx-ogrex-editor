@@ -15,6 +15,18 @@ protected:
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
 
+protected:
+	CMFCMenuBar			m_wndMenuBar;
+	CMFCToolBar			m_wndToolBar;
+	CMFCStatusBar		m_wndStatusBar;
+	CMFCToolBarImages	m_UserImages;
+	CFileView			m_wndFileView;
+	CClassView			m_wndClassView;
+	COutputWnd			m_wndOutput;
+	CPropertiesWnd		m_wndProperties;
+
+	CProjectDialog		m_dlgProject;
+
 public:
 	virtual BOOL		PreCreateWindow(CREATESTRUCT& cs);
 	virtual BOOL		LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
@@ -27,18 +39,6 @@ public:
 #endif
 
 	COutputWnd*			GetOutputWnd() {return &m_wndOutput;}
-
-protected:
-	CMFCMenuBar			m_wndMenuBar;
-	CMFCToolBar			m_wndToolBar;
-	CMFCStatusBar		m_wndStatusBar;
-	CMFCToolBarImages	m_UserImages;
-	CFileView			m_wndFileView;
-	CClassView			m_wndClassView;
-	COutputWnd			m_wndOutput;
-	CPropertiesWnd		m_wndProperties;
-	
-	CProjectDialog		m_dlgProject;
 
 protected:
 	BOOL				CreateDockingWindows();

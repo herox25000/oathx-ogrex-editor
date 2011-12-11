@@ -28,9 +28,6 @@ protected:
 	CImageList m_ClassViewImages;
 	UINT m_nCurrSort;
 
-	void FillClassView();
-
-// ÖØÐ´
 public:
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 

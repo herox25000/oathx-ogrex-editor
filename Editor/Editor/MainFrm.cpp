@@ -161,7 +161,9 @@ BOOL		CMainFrame::PreCreateWindow(CREATESTRUCT& cs)
 {
 	if( !CFrameWndEx::PreCreateWindow(cs) )
 		return FALSE;
-
+	
+	m_strTitle = "oathx-ogrex-editor";
+	
 	return TRUE;
 }
 

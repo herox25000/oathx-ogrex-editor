@@ -9,6 +9,15 @@ protected:
 	CEditorView();
 	DECLARE_DYNCREATE(CEditorView)
 
+protected:
+	Ogre::Root*				m_pRoot;
+	Ogre::RenderWindow*		m_pWindow;
+	Ogre::SceneManager*		m_pSceneManager;
+	Ogre::Camera*			m_pCamera;
+	Ogre::Viewport*			m_pViewport;
+	BOOL					m_bFirst;
+	OgreEditorLogListener*	m_pEditorLogListener;
+
 public:
 	CEditorDoc*				GetDocument() const;
 
@@ -31,19 +40,11 @@ public:
 #endif
 
 protected:
-	Ogre::Root*				m_pRoot;
-	Ogre::RenderWindow*		m_pWindow;
-	Ogre::SceneManager*		m_pSceneManager;
-	Ogre::Camera*			m_pCamera;
-	Ogre::Viewport*			m_pViewport;
-	BOOL					m_bFirst;
-	OgreEditorLogListener*	m_pEditorLogListener;
-
-protected:
 	afx_msg void			OnFilePrintPreview();
 	afx_msg void			OnRButtonUp(UINT nFlags, CPoint point);
 	afx_msg void			OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+
 public:
 	afx_msg int				OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void			OnTimer(UINT_PTR nIDEvent);
