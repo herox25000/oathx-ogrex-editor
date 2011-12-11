@@ -28,24 +28,19 @@ void OgreEditorLogListener::messageLogged( const Ogre::String& message,
 
 		char szTmp[32];
 		sprintf(szTmp, "%d> ", m_nLine);
-		msg += szTmp;
+		msg = msg + szTmp + message;
 
-		COLORREF dwTextColour = 0;
 		switch (lml)
 		{
 		case Ogre::LML_TRIVIAL:
-			dwTextColour = RGB(192, 192, 192);
+			pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddString(msg.c_str(), RGB(192, 192, 192));
 			break;
 		case Ogre::LML_NORMAL:
-			dwTextColour = RGB(0, 0, 0);
+			pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddString(msg.c_str(), RGB(0, 0, 0));
 			break;
 		case Ogre::LML_CRITICAL:
-			dwTextColour = RGB(255,0, 0);
+			pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddString(msg.c_str(), RGB(255, 0, 0));
 			break;
 		}
-		
-		msg += message;
-
-		pMainFrame->GetOutputWnd()->GetBuildLogListWindow()->AddString(msg.c_str(), dwTextColour);
 	}
 }

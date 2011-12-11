@@ -2,6 +2,7 @@
 #include "Editor.h"
 #include "EditorDoc.h"
 #include "EditorView.h"
+#include "GraphDC.h"
 
 #ifndef OGRE_RENDER_TIMER
 #define OGRE_RENDER_TIMER 0
@@ -103,13 +104,13 @@ BOOL		CEditorView::PreCreateWindow(CREATESTRUCT& cs)
 	return CView::PreCreateWindow(cs);
 }
 
-void		CEditorView::OnDraw(CDC* /*pDC*/)
+void		CEditorView::OnDraw(CDC* pDC)
 {
 	CEditorDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
+	
 	if (!m_bFirst)
 	{
 		InitOgreEngine();
