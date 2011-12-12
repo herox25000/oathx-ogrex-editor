@@ -61,10 +61,10 @@ BOOL		CEditorView::InitOgreEngine()
 	/*
 	* 创建场景管理器
 	*/
-	m_pSceneManager = m_pRoot->createSceneManager(Ogre::ST_GENERIC, "editorSceneInstance");
+	m_pSceneManager = m_pRoot->createSceneManager(Ogre::ST_GENERIC, MAIN_SCENE_MANAGER);
 	if (m_pSceneManager != NULL)
 	{
-		m_pCamera = m_pSceneManager->createCamera("editor");
+		m_pCamera = m_pSceneManager->createCamera(MAIN_SCENE_CAMERA);
 		// 设置初始位置
 		m_pCamera->setPosition(
 			Ogre::Vector3(0,0,500)

@@ -37,13 +37,8 @@
 
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 
-
-
-
-
-
-
-
+#define MAIN_SCENE_MANAGER	"editorSceneInstance"
+#define MAIN_SCENE_CAMERA	"editor"
 
 #ifdef _UNICODE
 #if defined _M_IX86
