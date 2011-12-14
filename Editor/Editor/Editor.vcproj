@@ -497,18 +497,6 @@
 				>
 			</File>
 		</Filter>
-		<Filter
-			Name="editor"
-			>
-			<File
-				RelativePath=".\editor\src\OgreAxisGizmo.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\editor\include\OgreAxisGizmo.h"
-				>
-			</File>
-		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>
