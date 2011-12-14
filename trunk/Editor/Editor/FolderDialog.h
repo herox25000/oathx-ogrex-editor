@@ -3,31 +3,43 @@
 
 #if _MSC_VER >= 1000
 #pragma once
-#endif // _MSC_VER >= 1000
-// MyFD.h : header file
-//
+#endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CFolderDialog dialog
-
+/**
+* \ingroup : Editor
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+*
+* \VERSION : 1.0
+*
+* \@date   : 2011-12-14
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
 class CFolderDialog : public CFileDialog
 {
 	DECLARE_DYNAMIC(CFolderDialog)
 
 public:
-	static WNDPROC m_wndProc;
-	virtual void OnInitDone( );
-	CString* m_pPath;
+	/**
+	 *
+	 * \param pPath 
+	 * \return 
+	 */
 	CFolderDialog(CString* pPath);
 
+public:
+	static WNDPROC		m_wndProc;
+	virtual void		OnInitDone( );
+	CString*			m_pPath;
+
 protected:
-	//{{AFX_MSG(CFolderDialog)
-		// NOTE - the ClassWizard will add and remove member functions here.
-	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()
 };
 
-//{{AFX_INSERT_LOCATION}}
-// Microsoft Developer Studio will insert additional declarations immediately before the previous line.
-
-#endif // !defined(AFX_MYFD_H__F9CB9441_F91B_11D1_8610_0040055C08D9__INCLUDED_)
+#endif
