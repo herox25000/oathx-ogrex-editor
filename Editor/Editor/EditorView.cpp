@@ -3,6 +3,7 @@
 #include "EditorDoc.h"
 #include "EditorView.h"
 #include "GraphDC.h"
+#include "OgreExplorerManager.h"
 
 #ifndef OGRE_RENDER_TIMER
 #define OGRE_RENDER_TIMER 0
