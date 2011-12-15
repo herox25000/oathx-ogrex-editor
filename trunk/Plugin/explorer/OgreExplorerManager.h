@@ -2,6 +2,7 @@
 #define EXPLORER_MANAGER_H
 
 #include "OgreSingleton.h"
+#include "OgreExplorer.h"
 
 namespace Ogre
 {
@@ -21,7 +22,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class ExplorerManager : public Singleton<ExplorerManager>
+	class _OgreExplorerExport ExplorerManager : public Singleton<ExplorerManager>
 	{
 	public:
 		/**

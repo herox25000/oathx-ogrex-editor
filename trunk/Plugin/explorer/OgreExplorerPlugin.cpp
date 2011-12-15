@@ -1,4 +1,8 @@
 #include "OgreExplorerPlugin.h"
+#include "OgreExplorerPrerequisites.h"
+#include "OgreRoot.h"
+
+#ifndef OGRE_STATIC_LIB
 
 namespace Ogre
 {
@@ -6,6 +10,7 @@ namespace Ogre
 
 	//////////////////////////////////////////////////////////////////////////
 	ExplorerPlugin::ExplorerPlugin(void)
+		:m_pExplorerManager(NULL)
 	{
 	}
 
@@ -23,7 +28,8 @@ namespace Ogre
 	//////////////////////////////////////////////////////////////////////////
 	void			ExplorerPlugin::install()
 	{
-
+		m_pExplorerManager = new ExplorerManager();
+		ExplorerManager::getSingleton().create("a","s");
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -41,6 +47,28 @@ namespace Ogre
 	//////////////////////////////////////////////////////////////////////////
 	void			ExplorerPlugin::uninstall()
 	{
+		if (m_pExplorerManager != NULL)
+		{
+			delete m_pExplorerManager;
+			m_pExplorerManager = NULL;
+		}
+	}
 
+	ExplorerPlugin* plugin;
+
+	//-----------------------------------------------------------------------
+	extern "C" void _OgreExplorerExport dllStartPlugin(void) throw()
+	{
+		plugin = OGRE_NEW ExplorerPlugin();
+		Root::getSingleton().installPlugin(plugin);
+	}
+
+	//-----------------------------------------------------------------------
+	extern "C" void _OgreExplorerExport dllStopPlugin(void)
+	{
+		Root::getSingleton().uninstallPlugin(plugin);
+		OGRE_DELETE plugin;
 	}
 }
+
+#endif

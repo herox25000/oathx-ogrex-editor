@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;EXPLORER_EXPORTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGRE_EXPLORERPLUGIN_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -202,6 +202,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreExplorerPlugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreExplorerPrerequisites.h"
 				>
 			</File>
 		</Filter>
