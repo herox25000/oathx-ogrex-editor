@@ -35,6 +35,7 @@ namespace Ogre
 		 * \return 
 		 */
 		static	ExplorerManager*	getSingletonPtr();
+
 	public:
 		/**
 		 *
