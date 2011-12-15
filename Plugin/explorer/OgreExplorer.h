@@ -2,6 +2,7 @@
 #define EXPLORER_H
 
 #include "OgreString.h"
+#include "OgreExplorerPrerequisites.h"
 
 namespace Ogre
 {
@@ -21,7 +22,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Explorer
+	class _OgreExplorerExport Explorer
 	{
 	public:
 		/** ¹¹Ôìº¯Êý

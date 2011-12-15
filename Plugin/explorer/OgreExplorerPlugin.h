@@ -2,6 +2,7 @@
 #define EXPLORER_PLUGIN_H
 
 #include "OgrePlugin.h"
+#include "OgreExplorerManager.h"
 
 namespace Ogre
 {
@@ -21,7 +22,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class ExplorerPlugin : public Plugin
+	class _OgreExplorerExport ExplorerPlugin : public Plugin
 	{
 	public:
 		/**
@@ -42,27 +43,29 @@ namespace Ogre
 		 *
 		 * \return 
 		 */
-		const String&	getName() const;
+		const String&		getName() const;
 
 		/**
 		 *
 		 */
-		void			install();
+		void				install();
 
 		/**
 		 *
 		 */
-		void			initialise();
+		void				initialise();
 
 		/**
 		 *
 		 */
-		void			shutdown();
+		void				shutdown();
 
 		/**
 		 *
 		 */
-		void			uninstall();
+		void				uninstall();
+	private:
+		ExplorerManager*	m_pExplorerManager;
 	};
 }
 
