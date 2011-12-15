@@ -1,7 +1,7 @@
 #ifndef EXPLORER_MANAGER_H
 #define EXPLORER_MANAGER_H
 
-#include <OgreSingleton.h>
+#include "OgreSingleton.h"
 
 namespace Ogre
 {
@@ -50,6 +50,29 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~ExplorerManager(void);
+
+		/** 创建新项目
+		 *
+		 * \param sName				项目名称
+		 * \param sPath				项目所在路径
+		 * \return 
+		 */
+		virtual bool				create(const String& sName, const String& sPath);
+
+		/**	加载项目
+		 *
+		 * \param sName				项目名称
+		 * \return 
+		 */
+		virtual bool				load(const String& sName);
+
+		/**	卸载项目
+		 *
+		 */
+		virtual void				unload(const String& sName);
+
+	protected:
+		String						m_sName;
 	};
 }
 

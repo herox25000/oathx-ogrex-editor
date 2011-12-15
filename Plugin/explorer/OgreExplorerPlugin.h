@@ -1,7 +1,7 @@
 #ifndef EXPLORER_PLUGIN_H
 #define EXPLORER_PLUGIN_H
 
-#include <OgrePlugin.h>
+#include "OgrePlugin.h"
 
 namespace Ogre
 {
