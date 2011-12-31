@@ -9,6 +9,7 @@ namespace Ogre
 		assert(msSingleton != NULL);  return (*msSingleton);
 	}
 
+	//////////////////////////////////////////////////////////////////////////
 	WorldSpace*		WorldSpace::getSingletonPtr()
 	{
 		return msSingleton;
@@ -81,7 +82,8 @@ namespace Ogre
 
 		return true;
 	}
-
+	
+	//////////////////////////////////////////////////////////////////////////
 	void			WorldSpace::destroyWorldSpace()
 	{
 		if (m_pRoot != NULL)
