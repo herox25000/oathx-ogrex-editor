@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Ogre.h"
+#include "OgreLog.h"
 
 /**
 * \ingroup : Editor

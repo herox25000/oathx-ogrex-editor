@@ -14,6 +14,9 @@ BEGIN_MESSAGE_MAP(CEditorApp, CWinAppEx)
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
 CEditorApp::CEditorApp()
 :m_pRoot(NULL)
 {
@@ -22,6 +25,7 @@ CEditorApp::CEditorApp()
 
 CEditorApp theApp;
 
+//////////////////////////////////////////////////////////////////////////
 BOOL		CEditorApp::InitInstance()
 {
 	INITCOMMONCONTROLSEX InitCtrls;
@@ -38,15 +42,15 @@ BOOL		CEditorApp::InitInstance()
 		AfxMessageBox(IDP_OLE_INIT_FAILED);
 		return FALSE;
 	}
+
 	AfxEnableControlContainer();
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	LoadStdProfileSettings(4);
 
 	InitContextMenuManager();
-
 	InitKeyboardManager();
-
 	InitTooltipManager();
+
 	CMFCToolTipInfo ttParams;
 	ttParams.m_bVislManagerTheme = TRUE;
 	theApp.GetTooltipManager()->SetTooltipParams(AFX_TOOLTIP_TYPE_ALL,
@@ -74,6 +78,7 @@ BOOL		CEditorApp::InitInstance()
 	return TRUE;
 }
 
+//////////////////////////////////////////////////////////////////////////
 int			CEditorApp::ExitInstance()
 {
 	if (m_pRoot != NULL)
@@ -84,7 +89,7 @@ int			CEditorApp::ExitInstance()
 	return CWinAppEx::ExitInstance();
 }
 
-
+//////////////////////////////////////////////////////////////////////////
 class CAboutDlg : public CDialog
 {
 public:
@@ -99,10 +104,12 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
+//////////////////////////////////////////////////////////////////////////
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 {
 }
 
+//////////////////////////////////////////////////////////////////////////
 void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
@@ -111,12 +118,14 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
+//////////////////////////////////////////////////////////////////////////
 void		CEditorApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
 
+//////////////////////////////////////////////////////////////////////////
 void		CEditorApp::PreLoadState()
 {
 	BOOL bNameValid;
@@ -129,14 +138,17 @@ void		CEditorApp::PreLoadState()
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
 }
 
+//////////////////////////////////////////////////////////////////////////
 void		CEditorApp::LoadCustomState()
 {
 }
 
+//////////////////////////////////////////////////////////////////////////
 void		CEditorApp::SaveCustomState()
 {
 }
 
+//////////////////////////////////////////////////////////////////////////
 void		CEditorApp::ShowSplash()
 {
 	CSplashWnd* pCsw = new CSplashWnd("media/Splash.bmp");
@@ -190,7 +202,7 @@ void		CEditorApp::ShowSplash()
 	}
 	Ogre::RenderSystem *rsys = *pRend;
 
-	rsys->setConfigOption("Colour Depth", "32" );
+	rsys->setConfigOption( "Colour Depth", "32" );
 	rsys->setConfigOption( "Full Screen", "No" );
 	rsys->setConfigOption( "VSync", "No" );
 	rsys->setConfigOption( "Video Mode", "800 x 600" );
