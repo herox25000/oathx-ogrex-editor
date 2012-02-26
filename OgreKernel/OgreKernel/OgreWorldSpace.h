@@ -56,8 +56,8 @@ namespace Ogre
 		 *
 		 * \param sPluginPath				插件配置文件路径
 		 * \param sResourceConfigFilePath	资源配置文件路径
-		 * \param bAutoCreateWindow				是否自动创建窗口
-		 * \param sTitle						窗口标题
+		 * \param bAutoCreateWindow			是否自动创建窗口
+		 * \param sTitle					窗口标题
 		 * \return 
 		 */
 		virtual bool				createWorldSpace(const String& sPluginPath, const String& sResourceConfigFilePath, bool bAutoCreateWindow, const String& sTitle);
