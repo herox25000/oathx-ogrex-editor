@@ -70,7 +70,7 @@ namespace Ogre
 		}
 		Ogre::RenderSystem *rsys = *pRend;
 
-		rsys->setConfigOption("Colour Depth", "32" );
+		rsys->setConfigOption( "Colour Depth", "32" );
 		rsys->setConfigOption( "Full Screen", "No" );
 		rsys->setConfigOption( "VSync", "No" );
 		rsys->setConfigOption( "Video Mode", "800 x 600" );
