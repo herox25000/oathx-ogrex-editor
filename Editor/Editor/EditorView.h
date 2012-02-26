@@ -15,7 +15,6 @@ protected:
 	Ogre::SceneManager*		m_pSceneManager;
 	Ogre::Camera*			m_pCamera;
 	Ogre::Viewport*			m_pViewport;
-	BOOL					m_bFirst;
 	OgreEditorLogListener*	m_pEditorLogListener;
 
 public:
@@ -24,7 +23,8 @@ public:
 public:
 	virtual void			OnDraw(CDC* pDC);
 	virtual BOOL			PreCreateWindow(CREATESTRUCT& cs);
-	virtual BOOL			InitOgreEngine();
+
+	virtual BOOL			Setup();
 	virtual void			Update();
 
 protected:
