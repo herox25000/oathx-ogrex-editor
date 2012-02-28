@@ -1,0 +1,19 @@
+VS 2008 MFC 中动态添加菜单
+
+1. 对CMainFrame类的OnShowPopupMenu()进行重载
+2. 在Resource.h里面添加#define IDS_EDIT_MYITEM_1 32773
+3. 
+	
+BOOL CMainFrame::OnShowPopupMenu(CMFCPopupMenu* pMenuPopup) 
+{ 
+	// TODO: Add your specialized code here and/or call the base class
+
+	int iIndex = -1; 
+	if (!CMFCToolBar::IsCustomizeMode()&&(iIndex=pMenuPopup->GetMenuBar()->CommandToIndex(ID_EDIT_PASTE))>=0) 
+	{ 
+		pMenuPopup->InsertSeparator(iIndex+1); 
+		pMenuPopup->InsertItem(CMFCToolBarMenuButton(32773,NULL,-1,_T("&MyItem 1")),iIndex+2); 
+	}   //使用CommandToIndex()来获得菜单项的索引，然后根据索引来确定子菜单项的添加位置 
+
+	return CFrameWndEx::OnShowPopupMenu(pMenuPopup); 
+}
