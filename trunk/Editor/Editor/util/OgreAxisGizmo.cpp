@@ -9,6 +9,11 @@ namespace Ogre
 	{
 		assert( msSingleton );  return ( *msSingleton );
 	}
+	
+	AxisGizmo*	AxisGizmo::getSingletonPtr()
+	{
+		return msSingleton;
+	}
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -26,14 +31,17 @@ namespace Ogre
 	}
 
 	//////////////////////////////////////////////////////////////////////////
-	void	AxisGizmo::showAxisGizmoMeshFormMesh(const Ogre::String& sName)
+	void	AxisGizmo::showAxisGizmo(bool bVisible)
 	{
-		Ogre::Entity* pEntity = m_pSceneManager->createEntity("AxisEntity", sName);
+		Ogre::Entity* pEntity = m_pSceneManager->createEntity("AxisAxisgizmo", 
+			"ogrehead.mesh");
+		if (pEntity != NULL)
+		{
+			m_pAxisGizmo = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
+			m_pAxisGizmo->attachObject(pEntity);
+			m_pAxisGizmo->scale(5,5,5);
 
-		m_pAxisGizmo = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
-		m_pAxisGizmo->attachObject(pEntity);
-		m_pAxisGizmo->scale(1,1,1);
-
-		pEntity->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
+			pEntity->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );	
+		}
 	}
 }

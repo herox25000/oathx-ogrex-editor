@@ -1,42 +1,27 @@
-// ColorListBox.cpp : 实现文件
-//
-
 #include "stdafx.h"
 #include "ColorListBox.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-// CColorListBox
-
 IMPLEMENT_DYNAMIC(CColorListBox, CListBox)
 
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
 CColorListBox::CColorListBox()
 {
 #ifndef _WIN32_WCE
 	EnableActiveAccessibility();
 #endif
-
 }
 
+//////////////////////////////////////////////////////////////////////////
 CColorListBox::~CColorListBox()
 {
 }
 
-
 BEGIN_MESSAGE_MAP(CColorListBox, CListBox)
 END_MESSAGE_MAP()
 
-
-
-// CColorListBox 消息处理程序
-
-
-
-void CColorListBox::DrawItem(LPDRAWITEMSTRUCT lpDIS) 
-//
+//////////////////////////////////////////////////////////////////////////
 // Return Value:	None.
 //
 // Parameters	:	lpDIS - A long pointer to a DRAWITEMSTRUCT structure 
@@ -45,6 +30,7 @@ void CColorListBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 // Remarks		:	Called by the framework when a visual aspect of 
 //						an owner-draw list box changes. 
 //
+void	CColorListBox::DrawItem(LPDRAWITEMSTRUCT lpDIS) 
 {
 	if ((int)lpDIS->itemID < 0)
 		return; 
@@ -124,10 +110,7 @@ void CColorListBox::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	pDC->SetBkMode(nBkMode);
 }	// DrawItem
 
-//-------------------------------------------------------------------
-//
-void CColorListBox::MeasureItem(LPMEASUREITEMSTRUCT lpMIS)
-//
+//////////////////////////////////////////////////////////////////////////
 // Return Value:	None.
 //
 // Parameters	:	lpMIS - A long pointer to a 
@@ -136,15 +119,15 @@ void CColorListBox::MeasureItem(LPMEASUREITEMSTRUCT lpMIS)
 // Remarks		:	Called by the framework when a list box with 
 //						an owner-draw style is created. 
 //
+
+void	CColorListBox::MeasureItem(LPMEASUREITEMSTRUCT lpMIS)
 {
 	// ### Is the default list box item height the same as
 	// the menu check height???
 	lpMIS->itemHeight = ::GetSystemMetrics(SM_CYMENUCHECK);
 }	// MeasureItem
 
-//-------------------------------------------------------------------
-//
-int CColorListBox::AddString(LPCTSTR lpszItem)
+//////////////////////////////////////////////////////////////////////////
 //
 // Return Value:	The zero-based index to the string in the list box. 
 //						The return value is LB_ERR if an error occurs; the 
@@ -158,13 +141,12 @@ int CColorListBox::AddString(LPCTSTR lpszItem)
 //						box. Provided because CListBox::AddString is NOT
 //						a virtual function.
 //
+int		CColorListBox::AddString(LPCTSTR lpszItem)
 {
 	return ((CListBox*)this)->AddString(lpszItem);
 }	// AddString
 
 //-------------------------------------------------------------------
-//
-int CColorListBox::AddString(LPCTSTR lpszItem, COLORREF rgb)
 //
 // Return Value:	The zero-based index to the string in the list box. 
 //						The return value is LB_ERR if an error occurs; the 
@@ -178,6 +160,7 @@ int CColorListBox::AddString(LPCTSTR lpszItem, COLORREF rgb)
 // Remarks		:	Call this member function to add a string to a list 
 //						box with a custom color.
 //
+int		CColorListBox::AddString(LPCTSTR lpszItem, COLORREF rgb)
 {
 	int nItem = AddString(lpszItem);
 	if (nItem >= 0)
@@ -190,8 +173,6 @@ int CColorListBox::AddString(LPCTSTR lpszItem, COLORREF rgb)
 }	// AddString
 
 //-------------------------------------------------------------------
-//
-int CColorListBox::InsertString(int nIndex, LPCTSTR lpszItem)
 //
 // Return Value:	The zero-based index of the position at which the 
 //						string was inserted. The return value is LB_ERR if 
@@ -207,13 +188,12 @@ int CColorListBox::InsertString(int nIndex, LPCTSTR lpszItem)
 // Remarks		:	Inserts a string into the list box.	Provided because 
 //						CListBox::InsertString is NOT a virtual function.
 //
+int		CColorListBox::InsertString(int nIndex, LPCTSTR lpszItem)
 {
 	return ((CListBox*)this)->InsertString(nIndex, lpszItem);
 }	// InsertString
 
 //-------------------------------------------------------------------
-//
-int CColorListBox::InsertString(int nIndex, LPCTSTR lpszItem, COLORREF rgb)
 //
 // Return Value:	The zero-based index of the position at which the 
 //						string was inserted. The return value is LB_ERR if 
@@ -229,16 +209,15 @@ int CColorListBox::InsertString(int nIndex, LPCTSTR lpszItem, COLORREF rgb)
 //
 // Remarks		:	Inserts a colored string into the list box.
 //
+int		CColorListBox::InsertString(int nIndex, LPCTSTR lpszItem, COLORREF rgb)
 {
 	int nItem = ((CListBox*)this)->InsertString(nIndex,lpszItem);
 	if (nItem >= 0)
 		SetItemData(nItem, rgb);
 	return nItem;
-}	// InsertString
+}
 
 //-------------------------------------------------------------------
-//
-void CColorListBox::SetItemColor(int nIndex, COLORREF rgb)
 //
 // Return Value:	None.
 //
@@ -248,7 +227,8 @@ void CColorListBox::SetItemColor(int nIndex, COLORREF rgb)
 // Remarks		:	Sets the 32-bit value associated with the specified
 //						item in the list box.
 //
+void	CColorListBox::SetItemColor(int nIndex, COLORREF rgb)
 {
 	SetItemData(nIndex, rgb);	
 	RedrawWindow();
-}	// SetItemColor
+}

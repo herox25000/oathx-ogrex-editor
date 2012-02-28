@@ -3,6 +3,8 @@
 #include "EditorDoc.h"
 #include "EditorView.h"
 #include "GraphDC.h"
+#include "OgreDebugDrawer.h"
+#include "OgreAxisGizmo.h"
 
 #ifndef OGRE_RENDER_TIMER
 #define OGRE_RENDER_TIMER 0
@@ -121,19 +123,27 @@ BOOL		CEditorView::Setup()
 
 		// 设置视口
 		m_pViewport = m_pWindow->addViewport(m_pCamera);
-		if (m_pViewport != NULL && m_pCamera != NULL)
+		if (m_pViewport != NULL)
 		{
 			m_pViewport->setBackgroundColour(Ogre::ColourValue(0,0,0));
 
 			m_pCamera->setAspectRatio(
 				Ogre::Real(m_pViewport->getActualWidth()) / Ogre::Real(m_pViewport->getActualHeight())
-				);
+				);	
 		}
+
+		Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
+
+		Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
+		// 创建中心
+		new Ogre::AxisGizmo(m_pSceneManager);
+		AxisGizmo::getSingleton().showAxisGizmo(true);
+
+		// 创建调试绘制
+		new Ogre::DebugDrawer(m_pSceneManager, 0.5);
 	}
 
-	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
-	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-	
 	return TRUE;
 }
 
@@ -184,6 +194,9 @@ void		CEditorView::OnDestroy()
 		delete m_pEditorLogListener;
 		m_pEditorLogListener = NULL;
 	}
+
+	delete AxisGizmo::getSingletonPtr();
+	delete DebugDrawer::getSingletonPtr();
 	
 	KillTimer(OGRE_RENDER_TIMER);
 }

@@ -3,14 +3,13 @@
 #include "Editor.h"
 #include "MainFrm.h"
 #include "Splash.h"
-
 #include "EditorDoc.h"
 #include "EditorView.h"
 
 BEGIN_MESSAGE_MAP(CEditorApp, CWinAppEx)
-	ON_COMMAND(ID_APP_ABOUT, &CEditorApp::OnAppAbout)
-	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
+	ON_COMMAND(ID_APP_ABOUT,		&CEditorApp::OnAppAbout)
+	ON_COMMAND(ID_FILE_NEW,			&CWinAppEx::OnFileNew)
+	ON_COMMAND(ID_FILE_OPEN,		&CWinAppEx::OnFileOpen)
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
@@ -46,7 +45,6 @@ BOOL		CEditorApp::InitInstance()
 	AfxEnableControlContainer();
 	SetRegistryKey(_T("应用程序向导生成的本地应用程序"));
 	LoadStdProfileSettings(4);
-
 	InitContextMenuManager();
 	InitKeyboardManager();
 	InitTooltipManager();
@@ -76,6 +74,12 @@ BOOL		CEditorApp::InitInstance()
 	m_pMainWnd->UpdateWindow();
 
 	return TRUE;
+}
+
+//////////////////////////////////////////////////////////////////////////
+void		CEditorApp::InitOneTime()
+{
+
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -128,14 +132,18 @@ void		CEditorApp::OnAppAbout()
 //////////////////////////////////////////////////////////////////////////
 void		CEditorApp::PreLoadState()
 {
-	BOOL bNameValid;
 	CString strName;
-	bNameValid = strName.LoadString(IDS_EDIT_MENU);
+	BOOL bNameValid = strName.LoadString(IDS_EDIT_MENU);
 	ASSERT(bNameValid);
-	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EDIT);
+	GetContextMenuManager()->AddMenu(strName, 
+		IDR_POPUP_EDIT);
+	
 	bNameValid = strName.LoadString(IDS_EXPLORER);
 	ASSERT(bNameValid);
-	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
+	
+	GetContextMenuManager()->AddMenu(strName,
+		IDR_POPUP_EXPLORER
+		);
 }
 
 //////////////////////////////////////////////////////////////////////////

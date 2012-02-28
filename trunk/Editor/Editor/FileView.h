@@ -1,23 +1,27 @@
-
 #pragma once
 
 #include "ViewTree.h"
 
+//////////////////////////////////////////////////////////////////////////
+//
+//////////////////////////////////////////////////////////////////////////
 class CFileViewToolBar : public CMFCToolBar
 {
 private:
-	virtual void OnUpdateCmdUI(CFrameWnd* pTarget,
+
+	virtual void		OnUpdateCmdUI(CFrameWnd* pTarget,
 		BOOL bDisableIfNoHndler)
 	{
 		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*) GetOwner(), bDisableIfNoHndler);
 	}
 
-	virtual BOOL AllowShowOnList() const 
+	virtual BOOL		AllowShowOnList() const 
 	{
 		return FALSE; 
 	}
 };
 
+//////////////////////////////////////////////////////////////////////////
 class CFileView : public CDockablePane
 {
 public:
@@ -29,9 +33,9 @@ public:
 	void				OnChangeVisualStyle();
 
 protected:
-	CViewTree			m_wndFileView;
-	CImageList			m_FileViewImages;
-	CFileViewToolBar	m_wndToolBar;
+	CViewTree			m_wFileView;
+	CImageList			m_vImage;
+	CFileViewToolBar	m_wToolBar;
 
 protected:
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
