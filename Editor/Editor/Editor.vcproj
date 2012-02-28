@@ -193,10 +193,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\ClassView.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ColorListBox.cpp"
 				>
 			</File>
@@ -218,6 +214,10 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\MeshView.cpp"
 				>
 			</File>
 			<File
@@ -263,10 +263,6 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\ClassView.h"
-				>
-			</File>
-			<File
 				RelativePath=".\ColorListBox.h"
 				>
 			</File>
@@ -292,6 +288,10 @@
 			</File>
 			<File
 				RelativePath=".\MainFrm.h"
+				>
+			</File>
+			<File
+				RelativePath=".\MeshView.h"
 				>
 			</File>
 			<File
@@ -506,6 +506,14 @@
 			</File>
 			<File
 				RelativePath=".\util\OgreAxisGizmo.h"
+				>
+			</File>
+			<File
+				RelativePath=".\util\OgreDebugDrawer.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\util\OgreDebugDrawer.h"
 				>
 			</File>
 		</Filter>

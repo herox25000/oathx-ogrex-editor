@@ -3,6 +3,7 @@
 #include "ogre.h"
 #include "OgreEditorLogListener.h"
 
+
 class CEditorView : public CView
 {
 protected:
@@ -15,8 +16,8 @@ protected:
 	Ogre::SceneManager*		m_pSceneManager;
 	Ogre::Camera*			m_pCamera;
 	Ogre::Viewport*			m_pViewport;
-	OgreEditorLogListener*	m_pEditorLogListener;
 
+	OgreEditorLogListener*	m_pEditorLogListener;
 public:
 	CEditorDoc*				GetDocument() const;
 

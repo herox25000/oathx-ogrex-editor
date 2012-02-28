@@ -7,9 +7,6 @@
 #include "resource.h"
 #include "Ogre.h"
 
-//////////////////////////////////////////////////////////////////////////
-//
-//////////////////////////////////////////////////////////////////////////
 class CEditorApp : public CWinAppEx
 {
 public:
@@ -17,12 +14,13 @@ public:
 
 	UINT				m_nAppLook;
 	BOOL				m_bHiColorIcons;
-	
-	// Ogre ¸ù¶ÔÏó
 	Ogre::Root*			m_pRoot;
+
 public:
 	virtual BOOL		InitInstance();
 	virtual int			ExitInstance();
+
+	virtual	void		InitOneTime();
 
 	virtual void		PreLoadState();
 	virtual void		LoadCustomState();
