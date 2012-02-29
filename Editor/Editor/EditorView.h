@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ogre.h"
-#include "OgreEditorLogListener.h"
+#include "EditorLogListener.h"
 
 
 class CEditorView : public CView
@@ -17,7 +17,7 @@ protected:
 	Ogre::Camera*			m_pCamera;
 	Ogre::Viewport*			m_pViewport;
 
-	OgreEditorLogListener*	m_pEditorLogListener;
+	EditorLogListener*		m_pEditorLogListener;
 public:
 	CEditorDoc*				GetDocument() const;
 
