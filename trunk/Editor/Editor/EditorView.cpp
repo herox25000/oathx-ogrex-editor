@@ -13,9 +13,9 @@
 IMPLEMENT_DYNCREATE(CEditorView, CView)
 
 BEGIN_MESSAGE_MAP(CEditorView, CView)
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CEditorView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT,			&CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT,	&CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW,	&CEditorView::OnFilePrintPreview)
 	ON_WM_CREATE()
 	ON_WM_TIMER()
 	ON_WM_LBUTTONDOWN()
@@ -174,7 +174,7 @@ int			CEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	
-	m_pEditorLogListener = new OgreEditorLogListener();
+	m_pEditorLogListener = new m_pEditorLogListener();
 	Ogre::LogManager::getSingleton().getDefaultLog()->addListener(m_pEditorLogListener);
 
 	Setup();
