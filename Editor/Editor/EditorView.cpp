@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(CEditorView, CView)
 	ON_WM_SIZE()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
@@ -118,10 +119,10 @@ BOOL		CEditorView::Setup()
 		m_pCamera = m_pSceneManager->createCamera(MAIN_SCENE_CAMERA);
 		// ÉèÖÃ³õÊ¼Î»ÖÃ
 		m_pCamera->setPosition(
-			Ogre::Vector3(0,0,500)
+			Ogre::Vector3(0,50,500)
 			);
 		m_pCamera->lookAt(
-			Ogre::Vector3(0,0,-300)
+			Ogre::Vector3(0,100,-300)
 			);
 		m_pCamera->setNearClipDistance(5);
 
@@ -242,8 +243,8 @@ void		CEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		CPoint cPt	= point - m_cLastPt;
 		m_cLastPt	= point;
 		
-		m_pCamera->yaw(Ogre::Degree(-cPt.x * 0.15f));
-		m_pCamera->pitch(Ogre::Degree(-cPt.y * 0.15f));
+		m_pCamera->yaw(Ogre::Degree(cPt.x * 0.15f));
+		m_pCamera->pitch(Ogre::Degree(cPt.y * 0.15f));
 	}
 
 	CView::OnMouseMove(nFlags, point);
@@ -251,6 +252,8 @@ void		CEditorView::OnMouseMove(UINT nFlags, CPoint point)
 
 BOOL		CEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
+	m_pCamera->moveRelative(Vector3(0,0,zDelta));
+
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
@@ -267,6 +270,36 @@ void		CEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 	ClientToScreen(&point);
 	OnContextMenu(this, point);
 }
+
+void CEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	switch(nChar)
+	{
+	case 'W':
+		{
+			m_pCamera->moveRelative(Vector3(0, 0, 5));
+		}
+		break;
+	case 'S':
+		{
+			m_pCamera->moveRelative(Vector3(0, 0, -5));
+		}
+		break;
+	case 'A':
+		{
+			m_pCamera->moveRelative(Vector3(5, 0, 0));
+		}
+		break;
+	case 'D':
+		{
+			m_pCamera->moveRelative(Vector3(-5, 0, 0));
+		}
+		break;
+
+	}
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 void		CEditorView::OnSize(UINT nType, int cx, int cy)
