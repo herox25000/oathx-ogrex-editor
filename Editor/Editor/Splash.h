@@ -25,7 +25,6 @@
 //
 class CPicture {
 public:
-	BOOL Render(CDC* pDC,CRect rc,LPCRECT prcMFBounds=NULL) const;
    CPicture();
    ~CPicture();
 
@@ -54,7 +53,8 @@ public:
       ASSERT(SUCCEEDED(m_hr));
    }
 
-   void Free() {
+	BOOL Render(CDC* pDC,CRect rc,LPCRECT prcMFBounds=NULL) const;
+	void Free() {
       if (m_spIPicture) {
          m_spIPicture.Release();
       }

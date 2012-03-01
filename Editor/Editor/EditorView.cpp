@@ -23,6 +23,8 @@ BEGIN_MESSAGE_MAP(CEditorView, CView)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_DESTROY()
 	ON_WM_SIZE()
+	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
@@ -35,6 +37,8 @@ m_pRoot(NULL), m_pCamera(NULL), m_pSceneManager(NULL), m_pWindow(NULL), m_pViewp
 {
 	m_pRoot = Ogre::Root::getSingletonPtr();
 	ASSERT(m_pRoot != NULL);
+
+	m_bMouseDown	= FALSE;
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -174,7 +178,7 @@ int			CEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 	
-	m_pEditorLogListener = new m_pEditorLogListener();
+	m_pEditorLogListener = new EditorLogListener();
 	Ogre::LogManager::getSingleton().getDefaultLog()->addListener(m_pEditorLogListener);
 
 	Setup();
@@ -217,14 +221,39 @@ void		CEditorView::OnTimer(UINT_PTR nIDEvent)
 //////////////////////////////////////////////////////////////////////////
 void		CEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	m_bMouseDown	= TRUE;
+	m_cLastPt		= point;
+
 	CView::OnLButtonDown(nFlags, point);
 }
 
 //////////////////////////////////////////////////////////////////////////
 void		CEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	m_bMouseDown	= FALSE;
+
 	CView::OnLButtonUp(nFlags, point);
 }
+
+void		CEditorView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if (m_bMouseDown)
+	{
+		CPoint cPt	= point - m_cLastPt;
+		m_cLastPt	= point;
+		
+		m_pCamera->yaw(Ogre::Degree(-cPt.x * 0.15f));
+		m_pCamera->pitch(Ogre::Degree(-cPt.y * 0.15f));
+	}
+
+	CView::OnMouseMove(nFlags, point);
+}
+
+BOOL		CEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+
 
 //////////////////////////////////////////////////////////////////////////
 void		CEditorView::OnRButtonDown(UINT nFlags, CPoint point)
