@@ -18,6 +18,9 @@ protected:
 	Ogre::Viewport*			m_pViewport;
 
 	EditorLogListener*		m_pEditorLogListener;
+
+	BOOL					m_bMouseDown;
+	CPoint					m_cLastPt;
 public:
 	CEditorDoc*				GetDocument() const;
 
@@ -54,6 +57,8 @@ public:
 	afx_msg void			OnRButtonDown(UINT nFlags, CPoint point);
 	afx_msg void			OnDestroy();
 	afx_msg void			OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg BOOL OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
 };
 
 #ifndef _DEBUG
