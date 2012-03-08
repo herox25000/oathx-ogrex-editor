@@ -25,15 +25,16 @@ void		CProjectDialog::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CProjectDialog, CDialog)
-	ON_BN_CLICKED(IDOK, &CProjectDialog::OnBnClickedOk)
-	ON_BN_CLICKED(IDCANCEL, &CProjectDialog::OnBnClickedCancel)
-	ON_BN_CLICKED(IDC_BUTTON1, &CProjectDialog::OnBnClickedSelectItemDire)
+	ON_BN_CLICKED(IDOK,			&CProjectDialog::OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL,		&CProjectDialog::OnBnClickedCancel)
+	ON_BN_CLICKED(IDC_BUTTON1,	&CProjectDialog::OnBnClickedSelectItemDire)
 END_MESSAGE_MAP()
 
 BOOL		CProjectDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
+	OnAppLook(theApp.m_nAppLook);
 	int nItem = m_SceneTypeBox.AddString("OctreeSceneManager");
 	m_SceneTypeBox.SetCurSel(nItem);
 
