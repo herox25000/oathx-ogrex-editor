@@ -1,39 +1,55 @@
-
-// XavierDoc.h : CXavierDoc 类的接口
-//
-
-
 #pragma once
 
-
+/**
+* \ingroup : Xavier
+*
+* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2012-03-08
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
 class CXavierDoc : public CDocument
 {
-protected: // 仅从序列化创建
+protected:
 	CXavierDoc();
 	DECLARE_DYNCREATE(CXavierDoc)
 
-// 属性
 public:
+	/**
+	 *
+	 * \return 
+	 */
+	virtual BOOL		OnNewDocument();
 
-// 操作
-public:
+	/**
+	 *
+	 * \param ar 
+	 */
+	virtual void		Serialize(CArchive& ar);
 
-// 重写
-public:
-	virtual BOOL OnNewDocument();
-	virtual void Serialize(CArchive& ar);
-
-// 实现
 public:
 	virtual ~CXavierDoc();
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	/**
+	 *
+	 */
+	virtual void		AssertValid() const;
+
+	/**
+	 *
+	 * \param dc 
+	 */
+	virtual void		Dump(CDumpContext& dc) const;
 #endif
 
-protected:
-
-// 生成的消息映射函数
 protected:
 	DECLARE_MESSAGE_MAP()
 };

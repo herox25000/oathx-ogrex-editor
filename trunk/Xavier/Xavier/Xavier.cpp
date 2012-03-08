@@ -1,51 +1,33 @@
-
-// Xavier.cpp : 定义应用程序的类行为。
-//
-
 #include "stdafx.h"
 #include "afxwinappex.h"
 #include "Xavier.h"
 #include "MainFrm.h"
-
 #include "XavierDoc.h"
 #include "XavierView.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#endif
-
-
-// CXavierApp
-
 BEGIN_MESSAGE_MAP(CXavierApp, CWinAppEx)
-	ON_COMMAND(ID_APP_ABOUT, &CXavierApp::OnAppAbout)
-	// 基于文件的标准文档命令
-	ON_COMMAND(ID_FILE_NEW, &CWinAppEx::OnFileNew)
-	ON_COMMAND(ID_FILE_OPEN, &CWinAppEx::OnFileOpen)
-	// 标准打印设置命令
+	ON_COMMAND(ID_APP_ABOUT,		&CXavierApp::OnAppAbout)
+	ON_COMMAND(ID_FILE_NEW,			&CWinAppEx::OnFileNew)
+	ON_COMMAND(ID_FILE_OPEN,		&CWinAppEx::OnFileOpen)
 	ON_COMMAND(ID_FILE_PRINT_SETUP, &CWinAppEx::OnFilePrintSetup)
 END_MESSAGE_MAP()
 
-
-// CXavierApp 构造
-
+/**
+ *
+ * \return 
+ */
 CXavierApp::CXavierApp()
 {
-
 	m_bHiColorIcons = TRUE;
-
-	// TODO: 在此处添加构造代码，
-	// 将所有重要的初始化放置在 InitInstance 中
 }
-
-// 唯一的一个 CXavierApp 对象
 
 CXavierApp theApp;
 
-
-// CXavierApp 初始化
-
-BOOL CXavierApp::InitInstance()
+/**
+ *
+ * \return 
+ */
+BOOL	CXavierApp::InitInstance()
 {
 	// 如果一个运行在 Windows XP 上的应用程序清单指定要
 	// 使用 ComCtl32.dll 版本 6 或更高版本来启用可视化方式，
@@ -98,12 +80,9 @@ BOOL CXavierApp::InitInstance()
 		return FALSE;
 	AddDocTemplate(pDocTemplate);
 
-
-
 	// 分析标准外壳命令、DDE、打开文件操作的命令行
 	CCommandLineInfo cmdInfo;
 	ParseCommandLine(cmdInfo);
-
 
 	// 调度在命令行中指定的命令。如果
 	// 用 /RegServer、/Register、/Unregserver 或 /Unregister 启动应用程序，则返回 FALSE。
@@ -119,30 +98,57 @@ BOOL CXavierApp::InitInstance()
 }
 
 
-
-// 用于应用程序“关于”菜单项的 CAboutDlg 对话框
-
+/**
+* \ingroup : Xavier
+*
+* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2012-03-08
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
 class CAboutDlg : public CDialog
 {
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	CAboutDlg();
 
-// 对话框数据
 	enum { IDD = IDD_ABOUTBOX };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+	/**
+	 *
+	 * \param pDX 
+	 */
+	virtual void DoDataExchange(CDataExchange* pDX);
 
-// 实现
 protected:
 	DECLARE_MESSAGE_MAP()
 };
 
+/**
+ *
+ * \return 
+ */
 CAboutDlg::CAboutDlg() : CDialog(CAboutDlg::IDD)
 {
 }
 
-void CAboutDlg::DoDataExchange(CDataExchange* pDX)
+/**
+ *
+ * \param pDX 
+ */
+void	CAboutDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
 }
@@ -150,16 +156,19 @@ void CAboutDlg::DoDataExchange(CDataExchange* pDX)
 BEGIN_MESSAGE_MAP(CAboutDlg, CDialog)
 END_MESSAGE_MAP()
 
-// 用于运行对话框的应用程序命令
-void CXavierApp::OnAppAbout()
+/**
+ *
+ */
+void	CXavierApp::OnAppAbout()
 {
 	CAboutDlg aboutDlg;
 	aboutDlg.DoModal();
 }
 
-// CXavierApp 自定义加载/保存方法
-
-void CXavierApp::PreLoadState()
+/**
+ *
+ */
+void	CXavierApp::PreLoadState()
 {
 	BOOL bNameValid;
 	CString strName;
@@ -171,15 +180,19 @@ void CXavierApp::PreLoadState()
 	GetContextMenuManager()->AddMenu(strName, IDR_POPUP_EXPLORER);
 }
 
-void CXavierApp::LoadCustomState()
+/**
+ *
+ */
+void	CXavierApp::LoadCustomState()
 {
 }
 
-void CXavierApp::SaveCustomState()
+/**
+ *
+ */
+void	CXavierApp::SaveCustomState()
 {
 }
-
-// CXavierApp 消息处理程序
 
 
 

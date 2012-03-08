@@ -45,6 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories=".\control"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -407,6 +408,38 @@
 			</File>
 			<File
 				RelativePath=".\res\XavierDoc.ico"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="control"
+			>
+			<File
+				RelativePath=".\control\ColorListBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\control\ColorListBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\control\FolderDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\control\FolderDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\control\GraphDC.h"
+				>
+			</File>
+			<File
+				RelativePath=".\control\Splash.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\control\Splash.h"
 				>
 			</File>
 		</Filter>

@@ -63,14 +63,14 @@ public:
 #endif
 
 protected: 
-	CMFCMenuBar				m_wndMenuBar;
-	CMFCToolBar				m_wndToolBar;
-	CMFCStatusBar			m_wndStatusBar;
+	CMFCMenuBar				m_wMenuBar;
+	CMFCToolBar				m_wToolBar;
+	CMFCStatusBar			m_wStatusBar;
 	CMFCToolBarImages		m_UserImages;
-	CFileView				m_wndFileView;
-	CMeshView				m_wndClassView;
-	COutputWnd				m_wndOutput;
-	CPropertiesWnd			m_wndProperties;
+	CFileView				m_wFileView;
+	CMeshView				m_wMeshView;
+	COutputWnd				m_wOutput;
+	CPropertiesWnd			m_wProperties;
 
 protected:
 	/**

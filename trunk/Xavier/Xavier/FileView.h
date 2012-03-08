@@ -77,9 +77,9 @@ public:
 
 protected:
 
-	CViewTree				m_wndFileView;
+	CViewTree				m_wFileView;
 	CImageList				m_FileViewImages;
-	CFileViewToolBar		m_wndToolBar;
+	CFileViewToolBar		m_wToolBar;
 
 public:
 	/**

@@ -1,6 +1,3 @@
-
-// Xavier.h : Xavier 应用程序的主头文件
-//
 #pragma once
 
 #ifndef __AFXWIN_H__
@@ -9,30 +6,59 @@
 
 #include "resource.h"       // 主符号
 
-
-// CXavierApp:
-// 有关此类的实现，请参阅 Xavier.cpp
-//
-
+/**
+* \ingroup : Xavier
+*
+* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2012-03-08
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
 class CXavierApp : public CWinAppEx
 {
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	CXavierApp();
 
-
-// 重写
+	UINT			m_nAppLook;
+	BOOL			m_bHiColorIcons;
 public:
-	virtual BOOL InitInstance();
+	/**
+	 *
+	 * \return 
+	 */
+	virtual BOOL	InitInstance();
 
-// 实现
-	UINT  m_nAppLook;
-	BOOL  m_bHiColorIcons;
+	/**
+	 *
+	 */
+	virtual void	PreLoadState();
 
-	virtual void PreLoadState();
-	virtual void LoadCustomState();
-	virtual void SaveCustomState();
+	/**
+	 *
+	 */
+	virtual void	LoadCustomState();
 
-	afx_msg void OnAppAbout();
+	/**
+	 *
+	 */
+	virtual void	SaveCustomState();
+
+	/**
+	 *
+	 */
+	afx_msg void	OnAppAbout();
 	DECLARE_MESSAGE_MAP()
 };
 
