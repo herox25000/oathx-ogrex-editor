@@ -58,7 +58,15 @@ public:
 	virtual ~CMainFrame();
 
 #ifdef _DEBUG
+	/**
+	 *
+	 */
 	virtual void AssertValid() const;
+
+	/**
+	 *
+	 * \param dc 
+	 */
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 

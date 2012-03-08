@@ -1,51 +1,98 @@
-/////////////////////////////////////////////////////////////////////////////
-//Written by Liu Zhengxi
-//May 5,2003
-//Compiles with Visual C++ 6.0 for Windows 98 and probably Windows 2000 
-// too.
-/////////////////////////////////////////////////////////////////////////////
-#ifndef _SPLASH
-#define _SPLASH
+#pragma once
+
 #include <atlbase.h>
 #include <afxpriv2.h>
 
-// Splash.h : header file
-//
-
-/////////////////////////////////////////////////////////////////////////////
-//   Splash Screen class
-#pragma once
-
-///////////////////////////////////////////////////////////////////////////
-// Picture object-encapsulates IPicture
-//Written by Paul DiLascia.
-//used to display picture
-//
-// declare CPicture class
-//
-class CPicture {
+/**
+* \ingroup : Xavier
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+*
+* \VERSION : 1.0
+*
+* \@date   : 2012-03-08
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
+class CPicture 
+{
 public:
+   /**
+    *
+    * \return 
+    */
    CPicture();
+
+   /**
+    *
+    * \return 
+    */
    ~CPicture();
 
    // Load from various resources
-   BOOL Load(UINT nIDRes);
-   BOOL Load(LPCTSTR pszPathName);
-   BOOL Load(CFile& file);
-   BOOL Load(CArchive& ar);
-   BOOL Load(IStream* pstm);
+   /**
+    *
+    * \param nIDRes 
+    * \return 
+    */
+   BOOL			Load(UINT nIDRes);
+
+   /**
+    *
+    * \param pszPathName 
+    * \return 
+    */
+   BOOL			Load(LPCTSTR pszPathName);
+
+   /**
+    *
+    * \param file 
+    * \return 
+    */
+   BOOL			Load(CFile& file);
+
+   /**
+    *
+    * \param ar 
+    * \return 
+    */
+   BOOL			Load(CArchive& ar);
+
+   /**
+    *
+    * \param pstm 
+    * \return 
+    */
+   BOOL			Load(IStream* pstm);
 
    // render to device context
-   
+   /**
+    *
+    * \param pDC 
+    * \return 
+    */
+   CSize		GetImageSize(CDC* pDC=NULL) const;
 
-   CSize GetImageSize(CDC* pDC=NULL) const;
-
+   /**
+    *
+    * \return 
+    */
    operator IPicture*() {
       return m_spIPicture;
    }
 
-   void GetHIMETRICSize(OLE_XSIZE_HIMETRIC& cx, OLE_YSIZE_HIMETRIC& cy) 
-      const {
+   /**
+    *
+    * \param cx 
+    * \param cy 
+    */
+   void			GetHIMETRICSize(OLE_XSIZE_HIMETRIC& cx, OLE_YSIZE_HIMETRIC& cy) const 
+   {
       cx = cy = 0;
       const_cast<CPicture*>(this)->m_hr = m_spIPicture->get_Width(&cx);
       ASSERT(SUCCEEDED(m_hr));
@@ -53,9 +100,22 @@ public:
       ASSERT(SUCCEEDED(m_hr));
    }
 
-	BOOL Render(CDC* pDC,CRect rc,LPCRECT prcMFBounds=NULL) const;
-	void Free() {
-      if (m_spIPicture) {
+	/**
+	 *
+	 * \param pDC 
+	 * \param rc 
+	 * \param prcMFBounds 
+	 * \return 
+	 */
+	BOOL		Render(CDC* pDC,CRect rc,LPCRECT prcMFBounds=NULL) const;
+
+	/**
+	 *
+	 */
+	void		Free() 
+	{
+      if (m_spIPicture) 
+	  {
          m_spIPicture.Release();
       }
    }
@@ -65,49 +125,89 @@ protected:
    HRESULT m_hr;                        // last error code
 };
 
-
-///////////////////////////////////////////////////////////////////
-//
-//declare CSplashWnd
-//
+/**
+* \ingroup : Xavier
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+*
+* \VERSION : 1.0
+*
+* \@date   : 2012-03-08
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
 class CSplashWnd : public CWnd
 {
-// Construction
 public:
 	CSplashWnd(LPCTSTR lpszFileName);
 
-// Operations
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	BOOL ShowSplash();
+
+	/**
+	 *
+	 * \param pMsg 
+	 * \return 
+	 */
 	BOOL PreTranslateAppMessage(MSG* pMsg);   
+
+	/**
+	 *
+	 * \param lpStr 
+	 */
 	void ShowText(LPCTSTR lpStr);
+
+	/**
+	 *
+	 */
 	void CloseSplash();
 
-// Overrides
-	// ClassWizard generated virtual function overrides
-	//{{AFX_VIRTUAL(CSplashWnd)
-	//}}AFX_VIRTUAL
-
-// Implementation
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	~CSplashWnd();
+
+	/**
+	 *
+	 */
 	virtual void PostNcDestroy();
 
 private:
-	BOOL Create(CWnd* pParentWnd = NULL);
+	/**
+	 *
+	 * \param pParentWnd 
+	 * \return 
+	 */
+	BOOL				Create(CWnd* pParentWnd = NULL);
 
-// Generated message map functions
 private:
-	//{{AFX_MSG(CSplashWnd)
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnPaint();
-	//}}AFX_MSG
+	/**
+	 *
+	 * \param lpCreateStruct 
+	 * \return 
+	 */
+	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+	/**
+	 *
+	 */
+	afx_msg void		OnPaint();
 	DECLARE_MESSAGE_MAP()
 private:
-	int height;//the height of the displayed picture
-	int width;//the width of the displayed picture
-	CPicture pic;//used to operate the picture
-   BOOL fileIsValid;
+	int					height;//the height of the displayed picture
+	int					width;//the width of the displayed picture
+	CPicture			pic;//used to operate the picture
+	BOOL				fileIsValid;
 };
 
-#endif

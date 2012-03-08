@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xavier", "Xavier\Xavier.vcproj", "{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XavierKernel", "XavierKernel\XavierKernel.vcproj", "{F493F3F3-6597-4488-BE9A-363DDA573ED1}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Kernel", "Kernel\Kernel.vcproj", "{55EBA72A-3E06-4C73-9060-DF39427E48A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,10 +15,10 @@ Global
 		{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}.Debug|Win32.Build.0 = Debug|Win32
 		{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}.Release|Win32.ActiveCfg = Release|Win32
 		{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}.Release|Win32.Build.0 = Release|Win32
-		{F493F3F3-6597-4488-BE9A-363DDA573ED1}.Debug|Win32.ActiveCfg = Debug|Win32
-		{F493F3F3-6597-4488-BE9A-363DDA573ED1}.Debug|Win32.Build.0 = Debug|Win32
-		{F493F3F3-6597-4488-BE9A-363DDA573ED1}.Release|Win32.ActiveCfg = Release|Win32
-		{F493F3F3-6597-4488-BE9A-363DDA573ED1}.Release|Win32.Build.0 = Release|Win32
+		{55EBA72A-3E06-4C73-9060-DF39427E48A0}.Debug|Win32.ActiveCfg = Debug|Win32
+		{55EBA72A-3E06-4C73-9060-DF39427E48A0}.Debug|Win32.Build.0 = Debug|Win32
+		{55EBA72A-3E06-4C73-9060-DF39427E48A0}.Release|Win32.ActiveCfg = Release|Win32
+		{55EBA72A-3E06-4C73-9060-DF39427E48A0}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
