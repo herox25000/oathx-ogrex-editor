@@ -1,21 +1,45 @@
-
 #pragma once
 
-/////////////////////////////////////////////////////////////////////////////
-// CViewTree 窗口
-
+/**
+* \ingroup : Xavier
+*
+* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2012-03-08
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
 class CViewTree : public CTreeCtrl
 {
-// 构造
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	CViewTree();
 
-// 重写
 protected:
-	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
+	/**
+	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \param pResult 
+	 * \return 
+	 */
+	virtual BOOL		OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
-// 实现
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	virtual ~CViewTree();
 
 protected:

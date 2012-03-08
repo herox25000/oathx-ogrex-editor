@@ -3,19 +3,18 @@
 #include "Resource.h"
 #include "MainFrm.h"
 
-#ifdef _DEBUG
-#define new DEBUG_NEW
-#undef THIS_FILE
-static char THIS_FILE[] = __FILE__;
-#endif
-
-/////////////////////////////////////////////////////////////////////////////
-// COutputBar
-
+/**
+ *
+ * \return 
+ */
 COutputWnd::COutputWnd()
 {
 }
 
+/**
+ *
+ * \return 
+ */
 COutputWnd::~COutputWnd()
 {
 }
@@ -25,7 +24,12 @@ BEGIN_MESSAGE_MAP(COutputWnd, CDockablePane)
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
 
-int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
+/**
+ *
+ * \param lpCreateStruct 
+ * \return 
+ */
+int		COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -39,12 +43,11 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 1))
 	{
 		TRACE0("未能创建输出选项卡窗口\n");
-		return -1;      // 未能创建
+		return -1; 
 	}
 
 	// 创建输出窗格:
 	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-
 	if (!m_wndOutputBuild.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
 		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
 		!m_wndOutputFind.Create(dwStyle, rectDummy, &m_wndTabs, 4))
@@ -74,15 +77,23 @@ int COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void COutputWnd::OnSize(UINT nType, int cx, int cy)
+/**
+ *
+ * \param nType 
+ * \param cx 
+ * \param cy 
+ */
+void	COutputWnd::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
-
-	// 选项卡控件应覆盖整个工作区:
 	m_wndTabs.SetWindowPos (NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
+/**
+ *
+ * \param wndListBox 
+ */
+void	COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 {
 	CClientDC dc(this);
 	CFont* pOldFont = dc.SelectObject(&m_Font);
@@ -101,27 +112,36 @@ void COutputWnd::AdjustHorzScroll(CListBox& wndListBox)
 	dc.SelectObject(pOldFont);
 }
 
-/////////////////////////////////////////////////////////////////////////////
-// COutputList1
-
+/**
+ *
+ * \return 
+ */
 COutputList::COutputList()
 {
 }
 
+/**
+ *
+ * \return 
+ */
 COutputList::~COutputList()
 {
 }
 
 BEGIN_MESSAGE_MAP(COutputList, CListBox)
 	ON_WM_CONTEXTMENU()
-	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
-	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
-	ON_COMMAND(ID_VIEW_OUTPUTWND, OnViewOutput)
+	ON_COMMAND(ID_EDIT_COPY,		OnEditCopy)
+	ON_COMMAND(ID_EDIT_CLEAR,		OnEditClear)
+	ON_COMMAND(ID_VIEW_OUTPUTWND,	OnViewOutput)
 	ON_WM_WINDOWPOSCHANGING()
 END_MESSAGE_MAP()
-/////////////////////////////////////////////////////////////////////////////
-// COutputList 消息处理程序
 
+
+/**
+ *
+ * \param pWnd 
+ * \param point 
+ */
 void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 {
 	CMenu menu;
@@ -143,17 +163,26 @@ void COutputList::OnContextMenu(CWnd* /*pWnd*/, CPoint point)
 	SetFocus();
 }
 
-void COutputList::OnEditCopy()
+/**
+ *
+ */
+void	COutputList::OnEditCopy()
 {
 	MessageBox(_T("复制输出"));
 }
 
-void COutputList::OnEditClear()
+/**
+ *
+ */
+void	COutputList::OnEditClear()
 {
 	MessageBox(_T("清除输出"));
 }
 
-void COutputList::OnViewOutput()
+/**
+ *
+ */
+void	COutputList::OnViewOutput()
 {
 	CDockablePane* pParentBar = DYNAMIC_DOWNCAST(CDockablePane, GetOwner());
 	CMDIFrameWndEx* pMainFrame = DYNAMIC_DOWNCAST(CMDIFrameWndEx, GetTopLevelFrame());
@@ -163,7 +192,6 @@ void COutputList::OnViewOutput()
 		pMainFrame->SetFocus();
 		pMainFrame->ShowPane(pParentBar, FALSE, FALSE, FALSE);
 		pMainFrame->RecalcLayout();
-
 	}
 }
 

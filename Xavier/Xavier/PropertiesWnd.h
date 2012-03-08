@@ -76,15 +76,15 @@ public:
 	 */
 	void	SetVSDotNetLook(BOOL bSet)
 	{
-		m_wndPropList.SetVSDotNetLook(bSet);
-		m_wndPropList.SetGroupNameFullWidth(bSet);
+		m_wPropList.SetVSDotNetLook(bSet);
+		m_wPropList.SetGroupNameFullWidth(bSet);
 	}
 
 protected:
 	CFont						m_fntPropList;
-	CComboBox					m_wndObjectCombo;
-	CPropertiesToolBar			m_wndToolBar;
-	CMFCPropertyGridCtrl		m_wndPropList;
+	CComboBox					m_wObjectCombo;
+	CPropertiesToolBar			m_wToolBar;
+	CMFCPropertyGridCtrl		m_wPropList;
 
 public:
 	/**

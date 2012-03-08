@@ -4,19 +4,19 @@
 #include "MainFrm.h"
 #include "Xavier.h"
 
-#ifdef _DEBUG
-#undef THIS_FILE
-static char THIS_FILE[]=__FILE__;
-#define new DEBUG_NEW
-#endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CResourceViewBar
-
+/**
+ *
+ * \return 
+ */
 CPropertiesWnd::CPropertiesWnd()
 {
 }
 
+/**
+ *
+ * \return 
+ */
 CPropertiesWnd::~CPropertiesWnd()
 {
 }
@@ -24,22 +24,22 @@ CPropertiesWnd::~CPropertiesWnd()
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	ON_COMMAND(ID_EXPAND_ALL, OnExpandAllProperties)
-	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL, OnUpdateExpandAllProperties)
-	ON_COMMAND(ID_SORTPROPERTIES, OnSortProperties)
+	ON_COMMAND(ID_EXPAND_ALL,				OnExpandAllProperties)
+	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL,		OnUpdateExpandAllProperties)
+	ON_COMMAND(ID_SORTPROPERTIES,			OnSortProperties)
 	ON_UPDATE_COMMAND_UI(ID_SORTPROPERTIES, OnUpdateSortProperties)
-	ON_COMMAND(ID_PROPERTIES1, OnProperties1)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1, OnUpdateProperties1)
-	ON_COMMAND(ID_PROPERTIES2, OnProperties2)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2, OnUpdateProperties2)
+	ON_COMMAND(ID_PROPERTIES1,				OnProperties1)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1,	OnUpdateProperties1)
+	ON_COMMAND(ID_PROPERTIES2,				OnProperties2)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2,	OnUpdateProperties2)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
 END_MESSAGE_MAP()
 
-/////////////////////////////////////////////////////////////////////////////
-// CResourceViewBar 消息处理程序
-
-void CPropertiesWnd::AdjustLayout()
+/**
+ *
+ */
+void	CPropertiesWnd::AdjustLayout()
 {
 	if (GetSafeHwnd() == NULL)
 	{
@@ -49,17 +49,32 @@ void CPropertiesWnd::AdjustLayout()
 	CRect rectClient,rectCombo;
 	GetClientRect(rectClient);
 
-	m_wndObjectCombo.GetWindowRect(&rectCombo);
+	m_wObjectCombo.GetWindowRect(&rectCombo);
 
 	int cyCmb = rectCombo.Size().cy;
-	int cyTlb = m_wndToolBar.CalcFixedLayout(FALSE, TRUE).cy;
+	int cyTlb = m_wToolBar.CalcFixedLayout(FALSE, TRUE).cy;
 
-	m_wndObjectCombo.SetWindowPos(NULL, rectClient.left, rectClient.top, rectClient.Width(), 200, SWP_NOACTIVATE | SWP_NOZORDER);
-	m_wndToolBar.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb, rectClient.Width(), cyTlb, SWP_NOACTIVATE | SWP_NOZORDER);
-	m_wndPropList.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb + cyTlb, rectClient.Width(), rectClient.Height() -(cyCmb+cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wObjectCombo.SetWindowPos(NULL, 
+		rectClient.left, rectClient.top, rectClient.Width(), 200, SWP_NOACTIVATE | SWP_NOZORDER);
+
+	m_wToolBar.SetWindowPos(NULL, 
+							rectClient.left,
+							rectClient.top + cyCmb, 
+							rectClient.Width(),
+							cyTlb, 
+							SWP_NOACTIVATE | SWP_NOZORDER);
+
+	m_wPropList.SetWindowPos(NULL, rectClient.left, 
+		rectClient.top + cyCmb + cyTlb, rectClient.Width(), rectClient.Height() -(cyCmb+cyTlb), 
+		SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
+/**
+ *
+ * \param lpCreateStruct 
+ * \return 
+ */
+int		CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -67,97 +82,131 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
-	// 创建组合:
 	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | CBS_DROPDOWNLIST | WS_BORDER | CBS_SORT | WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
-
-	if (!m_wndObjectCombo.Create(dwViewStyle, rectDummy, this, 1))
+	if (!m_wObjectCombo.Create(dwViewStyle, rectDummy, this, 1))
 	{
 		TRACE0("未能创建属性组合 \n");
-		return -1;      // 未能创建
+		return -1;
 	}
 
-	m_wndObjectCombo.AddString(_T("应用程序"));
-	m_wndObjectCombo.AddString(_T("属性窗口"));
-	m_wndObjectCombo.SetFont(CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT)));
-	m_wndObjectCombo.SetCurSel(0);
+	m_wObjectCombo.AddString(_T("应用程序"));
+	m_wObjectCombo.AddString(_T("属性窗口"));
+	m_wObjectCombo.SetFont(CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT)));
+	m_wObjectCombo.SetCurSel(0);
 
-	if (!m_wndPropList.Create(WS_VISIBLE | WS_CHILD, rectDummy, this, 2))
+	if (!m_wPropList.Create(WS_VISIBLE | WS_CHILD, rectDummy, this, 2))
 	{
 		TRACE0("未能创建属性网格\n");
-		return -1;      // 未能创建
+		return -1;
 	}
 
 	InitPropList();
 
-	m_wndToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_PROPERTIES);
-	m_wndToolBar.LoadToolBar(IDR_PROPERTIES, 0, 0, TRUE /* 已锁定*/);
-	m_wndToolBar.CleanUpLockedImages();
-	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_PROPERTIES_HC : IDR_PROPERTIES, 0, 0, TRUE /* 锁定*/);
+	m_wToolBar.Create(this, AFX_DEFAULT_TOOLBAR_STYLE, IDR_PROPERTIES);
+	m_wToolBar.LoadToolBar(IDR_PROPERTIES, 0, 0, TRUE);
+	m_wToolBar.CleanUpLockedImages();
+	m_wToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_PROPERTIES_HC : IDR_PROPERTIES, 0, 0, TRUE);
 
-	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
-	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
-	m_wndToolBar.SetOwner(this);
-
-	// 所有命令将通过此控件路由，而不是通过主框架路由:
-	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
+	m_wToolBar.SetPaneStyle(m_wToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
+	m_wToolBar.SetPaneStyle(m_wToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
+	m_wToolBar.SetOwner(this);
+	m_wToolBar.SetRouteCommandsViaFrame(FALSE);
 
 	AdjustLayout();
+
 	return 0;
 }
 
-void CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
+/**
+ *
+ * \param nType 
+ * \param cx 
+ * \param cy 
+ */
+void	CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
 }
 
-void CPropertiesWnd::OnExpandAllProperties()
+/**
+ *
+ */
+void	CPropertiesWnd::OnExpandAllProperties()
 {
-	m_wndPropList.ExpandAll();
+	m_wPropList.ExpandAll();
 }
 
-void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* pCmdUI)
+/**
+ *
+ * \param pCmdUI 
+ */
+void	CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* pCmdUI)
 {
 }
 
-void CPropertiesWnd::OnSortProperties()
+/**
+ *
+ */
+void	CPropertiesWnd::OnSortProperties()
 {
-	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
+	m_wPropList.SetAlphabeticMode(!m_wPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
+/**
+ *
+ * \param pCmdUI 
+ */
+void	CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
 {
-	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
+	pCmdUI->SetCheck(m_wPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnProperties1()
+/**
+ *
+ */
+void	CPropertiesWnd::OnProperties1()
 {
-	// TODO: 在此处添加命令处理程序代码
+
 }
 
-void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/)
+/**
+ *
+ * \param pCmdUI
+ */
+void	CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/)
 {
-	// TODO: 在此处添加命令更新 UI 处理程序代码
+
 }
 
-void CPropertiesWnd::OnProperties2()
+/**
+ *
+ */
+void	CPropertiesWnd::OnProperties2()
 {
-	// TODO: 在此处添加命令处理程序代码
+
 }
 
-void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/)
+/**
+ *
+ * \param pCmdUI
+ */
+void	CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/)
 {
-	// TODO: 在此处添加命令更新 UI 处理程序代码
+
 }
 
-void CPropertiesWnd::InitPropList()
+/**
+ *
+ */
+void	CPropertiesWnd::InitPropList()
 {
 	SetPropListFont();
 
-	m_wndPropList.EnableHeaderCtrl(FALSE);
-	m_wndPropList.EnableDescriptionArea();
-	m_wndPropList.SetVSDotNetLook();
-	m_wndPropList.MarkModifiedProperties();
+	m_wPropList.EnableHeaderCtrl(FALSE);
+	m_wPropList.EnableDescriptionArea();
+	m_wPropList.SetVSDotNetLook();
+	m_wPropList.MarkModifiedProperties();
 
 	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("外观"));
 
@@ -173,7 +222,7 @@ void CPropertiesWnd::InitPropList()
 	pGroup1->AddSubItem(pProp);
 	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("标题"), (_variant_t) _T("关于"), _T("指定窗口标题栏中显示的文本")));
 
-	m_wndPropList.AddProperty(pGroup1);
+	m_wPropList.AddProperty(pGroup1);
 
 	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("窗口大小"), 0, TRUE);
 
@@ -185,7 +234,7 @@ void CPropertiesWnd::InitPropList()
 	pProp->EnableSpinControl(TRUE, 50, 200);
 	pSize->AddSubItem(pProp);
 
-	m_wndPropList.AddProperty(pSize);
+	m_wPropList.AddProperty(pSize);
 
 	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("字体"));
 
@@ -198,7 +247,7 @@ void CPropertiesWnd::InitPropList()
 	pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("字体"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("指定窗口的默认字体")));
 	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("使用系统字体"), (_variant_t) true, _T("指定窗口使用“MS Shell Dlg”字体")));
 
-	m_wndPropList.AddProperty(pGroup2);
+	m_wPropList.AddProperty(pGroup2);
 
 	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("杂项"));
 	pProp = new CMFCPropertyGridProperty(_T("(名称)"), _T("应用程序"));
@@ -215,7 +264,7 @@ void CPropertiesWnd::InitPropList()
 
 	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("文件夹"), _T("c:\\")));
 
-	m_wndPropList.AddProperty(pGroup3);
+	m_wPropList.AddProperty(pGroup3);
 
 	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("层次结构"));
 
@@ -230,22 +279,34 @@ void CPropertiesWnd::InitPropList()
 	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 3"), (_variant_t) _T("值 3"), _T("此为说明")));
 
 	pGroup4->Expand(FALSE);
-	m_wndPropList.AddProperty(pGroup4);
+	m_wPropList.AddProperty(pGroup4);
 }
 
-void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
+/**
+ *
+ * \param pOldWnd 
+ */
+void	CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
 {
 	CDockablePane::OnSetFocus(pOldWnd);
-	m_wndPropList.SetFocus();
+	m_wPropList.SetFocus();
 }
 
-void CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
+/**
+ *
+ * \param uFlags 
+ * \param lpszSection 
+ */
+void	CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CDockablePane::OnSettingChange(uFlags, lpszSection);
 	SetPropListFont();
 }
 
-void CPropertiesWnd::SetPropListFont()
+/**
+ *
+ */
+void	CPropertiesWnd::SetPropListFont()
 {
 	::DeleteObject(m_fntPropList.Detach());
 
@@ -263,5 +324,5 @@ void CPropertiesWnd::SetPropListFont()
 
 	m_fntPropList.CreateFontIndirect(&lf);
 
-	m_wndPropList.SetFont(&m_fntPropList);
+	m_wPropList.SetFont(&m_fntPropList);
 }

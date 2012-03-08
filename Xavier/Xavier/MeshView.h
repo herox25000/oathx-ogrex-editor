@@ -1,4 +1,3 @@
-
 #pragma once
 
 #include "ViewTree.h"
@@ -83,9 +82,9 @@ public:
 	void					OnChangeVisualStyle();
 
 protected:
-	CMeshToolBar			m_wndToolBar;
-	CViewTree				m_wndClassView;
-	CImageList				m_ClassViewImages;
+	CMeshToolBar			m_wToolBar;
+	CViewTree				m_wMeshView;
+	CImageList				m_ViewImages;
 	UINT					m_nCurrSort;
 
 public:

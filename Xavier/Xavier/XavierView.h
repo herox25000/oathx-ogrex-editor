@@ -1,33 +1,112 @@
 #pragma once
 
+/**
+* \ingroup : Xavier
+*
+* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2012-03-08
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+*/
 class CXavierView : public CView
 {
 protected:
+	/**
+	 *
+	 * \return 
+	 */
 	CXavierView();
 	DECLARE_DYNCREATE(CXavierView)
 
 public:
-	CXavierDoc* GetDocument() const;
+	/**
+	 *
+	 * \return 
+	 */
+	CXavierDoc*				GetDocument() const;
 
 public:
-	virtual void OnDraw(CDC* pDC);
-	virtual BOOL PreCreateWindow(CREATESTRUCT& cs);
+	/**
+	 *
+	 * \param pDC 
+	 */
+	virtual void			OnDraw(CDC* pDC);
+
+	/**
+	 *
+	 * \param cs 
+	 * \return 
+	 */
+	virtual BOOL			PreCreateWindow(CREATESTRUCT& cs);
 protected:
-	virtual BOOL OnPreparePrinting(CPrintInfo* pInfo);
-	virtual void OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
-	virtual void OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	/**
+	 *
+	 * \param pInfo 
+	 * \return 
+	 */
+	virtual BOOL			OnPreparePrinting(CPrintInfo* pInfo);
+
+	/**
+	 *
+	 * \param pDC 
+	 * \param pInfo 
+	 */
+	virtual void			OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+
+	/**
+	 *
+	 * \param pDC 
+	 * \param pInfo 
+	 */
+	virtual void			OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	virtual ~CXavierView();
+
 #ifdef _DEBUG
-	virtual void AssertValid() const;
-	virtual void Dump(CDumpContext& dc) const;
+	/**
+	 *
+	 */
+	virtual void			AssertValid() const;
+
+	/**
+	 *
+	 * \param dc 
+	 */
+	virtual void			Dump(CDumpContext& dc) const;
 #endif
 
 protected:
-	afx_msg void OnFilePrintPreview();
-	afx_msg void OnRButtonUp(UINT nFlags, CPoint point);
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
+	/**
+	 *
+	 */
+	afx_msg void			OnFilePrintPreview();
+
+	/**
+	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void			OnRButtonUp(UINT nFlags, CPoint point);
+
+	/**
+	 *
+	 * \param pWnd 
+	 * \param point 
+	 */
+	afx_msg void			OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 };
 
