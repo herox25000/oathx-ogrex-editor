@@ -35,8 +35,19 @@ public:
 	 */
 	virtual void		Serialize(CArchive& ar);
 
+	/**
+	 *
+	 * \param lpszTitle 
+	 */
+	virtual void		SetTitle(LPCTSTR lpszTitle);
+
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	virtual ~CXavierDoc();
+
 #ifdef _DEBUG
 	/**
 	 *

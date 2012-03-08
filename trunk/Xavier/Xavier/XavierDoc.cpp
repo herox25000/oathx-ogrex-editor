@@ -8,11 +8,19 @@ BEGIN_MESSAGE_MAP(CXavierDoc, CDocument)
 END_MESSAGE_MAP()
 
 
+/**
+ *
+ * \return 
+ */
 CXavierDoc::CXavierDoc()
 {
 
 }
 
+/**
+ *
+ * \return 
+ */
 CXavierDoc::~CXavierDoc()
 {
 }
@@ -29,7 +37,6 @@ BOOL	CXavierDoc::OnNewDocument()
 	return TRUE;
 }
 
-
 /**
  *
  * \param ar 
@@ -44,6 +51,11 @@ void	CXavierDoc::Serialize(CArchive& ar)
 	{
 		// TODO: 在此添加加载代码
 	}
+}
+
+void	CXavierDoc::SetTitle(LPCTSTR lpszTitle)
+{
+	CDocument::SetTitle("Ogre");
 }
 
 #ifdef _DEBUG
