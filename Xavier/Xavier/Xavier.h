@@ -4,6 +4,7 @@
 	#error "在包含此文件之前包含“stdafx.h”以生成 PCH 文件"
 #endif
 
+#include "IKernelDevice.h"
 #include "resource.h"       // 主符号
 
 /**
@@ -31,35 +32,48 @@ public:
 	 */
 	CXavierApp();
 
-	UINT			m_nAppLook;
-	BOOL			m_bHiColorIcons;
+	UINT					m_nAppLook;
+	BOOL					m_bHiColorIcons;
+	kernel::IKernelDevice*	m_pKernelDevice;
 public:
 	/**
 	 *
 	 * \return 
 	 */
-	virtual BOOL	InitInstance();
+	virtual BOOL			InitInstance();
+
+	/**
+	 *
+	 * \return 
+	 */
+	virtual int				ExitInstance();
 
 	/**
 	 *
 	 */
-	virtual void	PreLoadState();
+	virtual void			PreLoadState();
 
 	/**
 	 *
 	 */
-	virtual void	LoadCustomState();
+	virtual void			LoadCustomState();
 
 	/**
 	 *
 	 */
-	virtual void	SaveCustomState();
+	virtual void			SaveCustomState();
 
 	/**
 	 *
 	 */
-	afx_msg void	OnAppAbout();
+	virtual void			ShowSplashDialog();
+
+	/**
+	 *
+	 */
+	afx_msg void			OnAppAbout();
 	DECLARE_MESSAGE_MAP()
+	
 };
 
 extern CXavierApp theApp;

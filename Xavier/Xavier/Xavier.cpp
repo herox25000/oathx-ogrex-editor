@@ -5,6 +5,7 @@
 #include "XavierDoc.h"
 #include "XavierView.h"
 
+
 BEGIN_MESSAGE_MAP(CXavierApp, CWinAppEx)
 	ON_COMMAND(ID_APP_ABOUT,		&CXavierApp::OnAppAbout)
 	ON_COMMAND(ID_FILE_NEW,			&CWinAppEx::OnFileNew)
@@ -16,7 +17,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
-CXavierApp::CXavierApp()
+ CXavierApp::CXavierApp() : m_pKernelDevice(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -40,6 +41,8 @@ BOOL	CXavierApp::InitInstance()
 	InitCommonControlsEx(&InitCtrls);
 
 	CWinAppEx::InitInstance();
+
+	ShowSplashDialog();
 
 	// 初始化 OLE 库
 	if (!AfxOleInit())
@@ -96,6 +99,23 @@ BOOL	CXavierApp::InitInstance()
 	//  在 SDI 应用程序中，这应在 ProcessShellCommand 之后发生
 	return TRUE;
 }
+
+
+/**
+ *
+ * \return 
+ */
+int		CXavierApp::ExitInstance()
+{
+	if (m_pKernelDevice != NULL)
+	{
+		m_pKernelDevice->drop();
+		m_pKernelDevice = NULL;
+	}
+
+	return CWinAppEx::ExitInstance();
+}
+
 
 
 /**
@@ -194,5 +214,18 @@ void	CXavierApp::SaveCustomState()
 {
 }
 
+/**
+ *
+ */
+void	CXavierApp::ShowSplashDialog()
+{
+	CSplashWnd* pCsw = new CSplashWnd("media/Splash.bmp");
+	pCsw->ShowSplash();
+	
+	// 窗口内核
+	m_pKernelDevice = createKernelDevice("cfg/kernel.cfg");
 
-
+	pCsw->CloseSplash();
+	delete pCsw;
+	pCsw = NULL;
+}
