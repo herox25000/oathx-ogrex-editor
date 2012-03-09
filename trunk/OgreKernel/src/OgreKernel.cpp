@@ -1,4 +1,5 @@
 #include "OgreKernel.h"
+#include "OgreWorldSpace.h"
 
 namespace Ogre
 {
@@ -17,9 +18,9 @@ namespace Ogre
 	//
 	//////////////////////////////////////////////////////////////////////////
 	OgreKernel::OgreKernel(void)
-		:m_pRoot(NULL)
+		:m_pRoot(NULL), m_pRenderWindow(NULL), m_pWorldSpace(NULL)
 	{
-
+		m_pWorldSpace = new WorldSpace();
 	}
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -76,13 +77,24 @@ namespace Ogre
 		rsys->setConfigOption( "Display Frequency", "60" );
 		
 		m_pRoot->setRenderSystem( rsys );
-
+		
 		return true;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	void		OgreKernel::renderOneFrame()
+	{
+		m_pRoot->renderOneFrame();
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	void		OgreKernel::destroyKernel()
 	{
+		// 销毁世界
+		m_pWorldSpace->destroyWorldSpace();
+		delete m_pWorldSpace;
+
+		// 删除OGRE根本对象
 		if (m_pRoot != NULL)
 			delete m_pRoot;
 
@@ -95,6 +107,8 @@ namespace Ogre
 	{
 		if (hWnd != NULL)
 		{
+			m_pRenderWindow	= m_pRoot->initialise(false, sName);
+
 			/*
 				设置外部窗口创建参数
 			*/
@@ -104,16 +118,45 @@ namespace Ogre
 			/*
 				创建外部渲染窗口
 			*/
-			if ((m_pRenderWindow = m_pRoot->createRenderWindow(sName, 
-				w,h,bFullScreen,&miscPm)) != NULL)
-			{
-				return true;
-			}
+			m_pRenderWindow = m_pRoot->createRenderWindow(sName, 
+				w,h,bFullScreen,&miscPm);
+	
+		}
+
+		// 若都创建失败，则默认创建
+		if (m_pRenderWindow == NULL)
+		{
+			m_pRenderWindow	= m_pRoot->initialise(true, sName);
 		}
 		
-		// 若都创建失败，则默认创建
-		m_pRenderWindow	= m_pRoot->initialise(true, sName);
+		// 创建世界空间
+		m_pWorldSpace->createWorldSpace(Vector3(0,50,500), Vector3(0,100, -300), 1, 10);
 
 		return true;
+	}
+	
+	//////////////////////////////////////////////////////////////////////////
+	RenderWindow*	OgreKernel::getRenderWindow() const
+	{
+		return m_pRenderWindow;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	void			OgreKernel::windowMovedOrResized()
+	{
+		// 窗口移动或者改变大小
+		m_pRenderWindow->windowMovedOrResized();
+		
+		/*
+			重设
+		*/
+		Viewport* pView = m_pWorldSpace->getViewport();
+		if (pView != NULL)
+		{
+			m_pWorldSpace->getCamera()->setAspectRatio(
+				Real(pView->getActualWidth()) / Real(pView->getActualHeight())
+				);
+		}
+		
 	}
 }

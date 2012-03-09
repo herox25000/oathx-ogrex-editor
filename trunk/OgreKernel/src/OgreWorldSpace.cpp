@@ -1,5 +1,5 @@
 #include "OgreWorldSpace.h"
-#include "Ogre.h"
+#include "OgreKernel.h"
 
 namespace Ogre
 {
@@ -19,8 +19,9 @@ namespace Ogre
 	//
 	//////////////////////////////////////////////////////////////////////////
 	WorldSpace::WorldSpace(void)
-		:m_pRoot(NULL)
+		:m_pScene(NULL), m_pCamera(NULL), m_pView(NULL)
 	{
+		
 	}
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -30,66 +31,59 @@ namespace Ogre
 	}
 	
 	//////////////////////////////////////////////////////////////////////////
-	bool			WorldSpace::createWorldSpace(const String& sPluginPath, const String& sResourceConfigFilePath, bool bAutoCreateWindow, const String& sTitle)
+	bool			WorldSpace::createWorldSpace(const Vector3& vPos, const Vector3& vLookAt, float fFarClipDistance, float NearClipDistance)
 	{
-		m_pRoot = new Root(sPluginPath);
-		assert(m_pRoot != NULL);
-
-		Ogre::ConfigFile cf;
-		cf.load(sResourceConfigFilePath);
-
-		Ogre::ConfigFile::SectionIterator seci = cf.getSectionIterator();
-
-		Ogre::String secName, typeName, archName;
-		while (seci.hasMoreElements())
+		/*
+			创建场景管理器
+		*/
+		m_pScene = Root::getSingletonPtr()->createSceneManager(Ogre::ST_GENERIC);
+		if (m_pScene != NULL)
 		{
-			secName = seci.peekNextKey();
-			Ogre::ConfigFile::SettingsMultiMap *settings = seci.getNext();
-			Ogre::ConfigFile::SettingsMultiMap::iterator i;
-
-			for (i = settings->begin(); i != settings->end(); ++i)
+			createCamera(vPos, vLookAt, fFarClipDistance, NearClipDistance);
+			
+			// 创建视图
+			m_pView = OgreKernel::getSingletonPtr()->getRenderWindow()->addViewport(m_pCamera);
+			if ( m_pView != NULL )
 			{
-				typeName = i->first;
-				archName = i->second;
-				Ogre::ResourceGroupManager::getSingleton().addResourceLocation(
-					archName, typeName, secName);
+				// 设置背景颜色
+				m_pView->setBackgroundColour(ColourValue(0,0,0,0));
+
+				m_pCamera->setAspectRatio(
+						Ogre::Real(m_pView->getActualWidth()) / Ogre::Real(m_pView->getActualHeight())
+						);
 			}
 		}
-
-		/*
-		 *	创建渲染系统
-		 */
-		Ogre::RenderSystemList::const_iterator pRend = m_pRoot->getAvailableRenderers().begin();
-		while(pRend != m_pRoot->getAvailableRenderers().end())
-		{
-			Ogre::String rName = (*pRend)->getName();
-			if (rName == "OpenGL Rendering Subsystem")
-				break;
-
-			pRend++;
-		}
-		Ogre::RenderSystem *rsys = *pRend;
-
-		rsys->setConfigOption( "Colour Depth", "32" );
-		rsys->setConfigOption( "Full Screen", "No" );
-		rsys->setConfigOption( "VSync", "No" );
-		rsys->setConfigOption( "Video Mode", "800 x 600" );
-		rsys->setConfigOption( "Display Frequency", "60" );
 		
-		m_pRoot->setRenderSystem( rsys );
-
-		m_pRoot->initialise(bAutoCreateWindow, sTitle);
-
 		return true;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////
 	void			WorldSpace::destroyWorldSpace()
 	{
-		if (m_pRoot != NULL)
-			delete m_pRoot;
 
-		m_pRoot = NULL;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	void			WorldSpace::createCamera(const Vector3& vPos, const Vector3& vLookAt,
+		float fFarClipDistance, float NearClipDistance)
+	{
+		m_pCamera = m_pScene->createCamera("WorldSpaceCamera");
+		m_pCamera->setPosition(vPos);
+		m_pCamera->lookAt(vLookAt);
+		m_pCamera->setFarClipDistance(fFarClipDistance);
+		m_pCamera->setNearClipDistance(fFarClipDistance);
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	Camera*			WorldSpace::getCamera() const
+	{
+		return m_pCamera;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	Viewport*		WorldSpace::getViewport() const
+	{
+		return m_pView;
 	}
 }
 
