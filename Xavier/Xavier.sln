@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xavier", "Xavier\Xavier.vcproj", "{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{65BB5586-4304-4529-9878-BE76E651CA28} = {65BB5586-4304-4529-9878-BE76E651CA28}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreKernel", "..\OgreKernel\OgreKernel\OgreKernel.vcproj", "{65BB5586-4304-4529-9878-BE76E651CA28}"
 EndProject
