@@ -22,7 +22,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class _OgreKenrnelExport WorldSpace : public Singleton<WorldSpace>
+	class Ogre_Export_API WorldSpace : public Singleton<WorldSpace>
 	{
 	public:
 		/**	获取单件
