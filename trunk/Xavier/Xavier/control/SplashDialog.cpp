@@ -13,7 +13,7 @@
 #include <afxwin.h>
 #include <afxpriv2.h>
 #include "stdafx.h"  // e. g. stdafx.h
-#include "Splash.h"  // e.g. splash.h
+#include "SplashDialog.h"  // e.g. splash.h
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -22,13 +22,13 @@ static char BASED_CODE THIS_FILE[] = __FILE__;
 #endif
 
 /////////////////////////////////////////////////////////////////////////////
-//   CSplashWnd class
+//   CSplashDialog class
 
 ////////////////////////////////////////////////////////////////////////////
 //constructor
 //Load image from the given file
 //
-CSplashWnd::CSplashWnd(LPCTSTR lpszFileName)
+CSplashDialog::CSplashDialog(LPCTSTR lpszFileName)
 {
 	fileIsValid = pic.Load(lpszFileName);
 	if(fileIsValid)
@@ -44,15 +44,15 @@ CSplashWnd::CSplashWnd(LPCTSTR lpszFileName)
 //nothing to do
 //deconstructor
 //
-CSplashWnd::~CSplashWnd()
+CSplashDialog::~CSplashDialog()
 {
 }
 
 ////////////////////////////////////////////////////////////////////////////////
 //message map
 //
-BEGIN_MESSAGE_MAP(CSplashWnd, CWnd)
-	//{{AFX_MSG_MAP(CSplashWnd)
+BEGIN_MESSAGE_MAP(CSplashDialog, CWnd)
+	//{{AFX_MSG_MAP(CSplashDialog)
 	ON_WM_CREATE()
 	ON_WM_PAINT()
 	ON_WM_TIMER()
@@ -64,7 +64,7 @@ END_MESSAGE_MAP()
 //ShowSplash
 //to display the given image on screen
 //
-BOOL CSplashWnd::ShowSplash()
+BOOL CSplashDialog::ShowSplash()
 {
 	if(fileIsValid)
 	{
@@ -86,7 +86,7 @@ BOOL CSplashWnd::ShowSplash()
 ////////////////////////////////////////////////////////////////////////////////
 //PreTranslateAppMessage
 //
-BOOL CSplashWnd::PreTranslateAppMessage(MSG* pMsg)
+BOOL CSplashDialog::PreTranslateAppMessage(MSG* pMsg)
 {
 	// If we get a keyboard or mouse message, hide the splash screen.
 	if (pMsg->message == WM_KEYDOWN ||
@@ -110,7 +110,7 @@ BOOL CSplashWnd::PreTranslateAppMessage(MSG* pMsg)
 //Create
 //make a popup splash window
 //
-BOOL CSplashWnd::Create(CWnd* pParentWnd /*= NULL*/)
+BOOL CSplashDialog::Create(CWnd* pParentWnd /*= NULL*/)
 {
 	return CreateEx(0,
 		AfxRegisterWndClass(0, AfxGetApp()->LoadStandardCursor(IDC_ARROW)),
@@ -122,7 +122,7 @@ BOOL CSplashWnd::Create(CWnd* pParentWnd /*= NULL*/)
 //CloseSplash
 //Quit the splash window
 //
-void CSplashWnd::CloseSplash()
+void CSplashDialog::CloseSplash()
 {
 	// Destroy the window, and update the mainframe.
 	DestroyWindow();
@@ -132,7 +132,7 @@ void CSplashWnd::CloseSplash()
 ////////////////////////////////////////////////////////////////////////////////
 //do nothing
 //
-void CSplashWnd::PostNcDestroy()
+void CSplashDialog::PostNcDestroy()
 {
 
 }
@@ -141,7 +141,7 @@ void CSplashWnd::PostNcDestroy()
 //OnCreate
 //put the splash window on center
 //
-int CSplashWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int CSplashDialog::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CWnd::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -156,7 +156,7 @@ int CSplashWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 //OnPaint
 //Display the given image
 //
-void CSplashWnd::OnPaint()
+void CSplashDialog::OnPaint()
 {
 	if(fileIsValid)
 	{
@@ -172,7 +172,7 @@ void CSplashWnd::OnPaint()
 //sometimes if we show what we are doing (I display the information on the center of //the picture ), the customer will be more patient
 //
 //
-void CSplashWnd::ShowText(LPCTSTR lpStr)
+void CSplashDialog::ShowText(LPCTSTR lpStr)
 {
 	if(fileIsValid)
 	{

@@ -4,8 +4,8 @@
 	#error "在包含此文件之前包含“stdafx.h”以生成 PCH 文件"
 #endif
 
-#include "IKernelDevice.h"
 #include "resource.h"       // 主符号
+#include "OgreKernel.h"
 
 /**
 * \ingroup : Xavier
@@ -34,7 +34,7 @@ public:
 
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
-	kernel::IKernelDevice*	m_pKernelDevice;
+	Ogre::OgreKernel*		m_pKernelDevice;
 public:
 	/**
 	 *

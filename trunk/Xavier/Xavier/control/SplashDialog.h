@@ -141,10 +141,10 @@ protected:
 * \bug     : 
 *
 */
-class CSplashWnd : public CWnd
+class CSplashDialog : public CWnd
 {
 public:
-	CSplashWnd(LPCTSTR lpszFileName);
+	CSplashDialog(LPCTSTR lpszFileName);
 
 public:
 	/**
@@ -176,7 +176,7 @@ public:
 	 *
 	 * \return 
 	 */
-	~CSplashWnd();
+	~CSplashDialog();
 
 	/**
 	 *
