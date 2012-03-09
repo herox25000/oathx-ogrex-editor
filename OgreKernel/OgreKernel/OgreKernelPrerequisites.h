@@ -4,6 +4,25 @@
 #include "OgrePrerequisites.h"
 
 #if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+	//////////////////////////////////////////////////////////////////////////
+	//！定义DLL导出
+	#ifdef __cplusplus
+	extern "C" { 
+	#endif
+
+	#define OgreKernel_Export
+	#	ifdef  OgreKernel_Export
+	#		define Ogre_Export_API _declspec(dllexport)
+	#	else
+	#		define Ogre_Export_API _declspec(dllimport)
+	#endif
+
+	#ifdef __cplusplus
+	}
+	#endif
+#endif
+/*
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
 #	if defined( OGRE_STATIC_LIB )
 #   	define _OgreKenrnelExport
 #   else
@@ -22,5 +41,7 @@
 #else
 #	define _OgreKenrnelExport
 #endif
+
+*/
 
 #endif

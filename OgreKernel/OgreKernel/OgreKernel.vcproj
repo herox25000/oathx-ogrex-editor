@@ -41,8 +41,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGRE_KENRNEL_EXPORTS"
+				AdditionalIncludeDirectories="../include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -176,7 +176,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OgreWorldSpace.cpp"
+				RelativePath="..\src\OgreKernel.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\OgreWorldSpace.cpp"
 				>
 			</File>
 		</Filter>
@@ -186,11 +190,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OgreKernelPrerequisites.h"
+				RelativePath="..\include\OgreKernel.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreWorldSpace.h"
+				RelativePath="..\include\OgreKernelPrerequisites.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\OgreWorldSpace.h"
 				>
 			</File>
 		</Filter>
