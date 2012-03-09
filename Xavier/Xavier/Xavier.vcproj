@@ -21,8 +21,8 @@
 			OutputDirectory="..\..\..\..\Ogre\bin\debug"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="1"
-			UseOfMFC="2"
-			CharacterSet="2"
+			UseOfMFC="0"
+			CharacterSet="0"
 			>
 			<Tool
 				Name="VCPreBuildEventTool"
@@ -45,8 +45,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\Kernel;.\control"
-				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
+				AdditionalIncludeDirectories="..\..\OgreKernel\include;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="Kernel_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreKernel_d.lib OgreMain_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\Ogre\lib\debug"
@@ -438,11 +438,11 @@
 				>
 			</File>
 			<File
-				RelativePath=".\control\Splash.cpp"
+				RelativePath=".\control\SplashDialog.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\control\Splash.h"
+				RelativePath=".\control\SplashDialog.h"
 				>
 			</File>
 		</Filter>

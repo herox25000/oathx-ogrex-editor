@@ -3,6 +3,7 @@
 #include "Xavier.h"
 #include "MainFrm.h"
 #include "XavierDoc.h"
+#include "SplashDialog.h"
 #include "XavierView.h"
 
 
@@ -109,7 +110,9 @@ int		CXavierApp::ExitInstance()
 {
 	if (m_pKernelDevice != NULL)
 	{
-		m_pKernelDevice->drop();
+		m_pKernelDevice->destroyKernel();
+
+		delete m_pKernelDevice;
 		m_pKernelDevice = NULL;
 	}
 
@@ -219,11 +222,16 @@ void	CXavierApp::SaveCustomState()
  */
 void	CXavierApp::ShowSplashDialog()
 {
-	CSplashWnd* pCsw = new CSplashWnd("media/Splash.bmp");
+	CSplashDialog* pCsw = new CSplashDialog("media/Splash.bmp");
 	pCsw->ShowSplash();
 	
 	// ´°¿ÚÄÚºË
-	m_pKernelDevice = createKernelDevice("cfg/kernel.cfg");
+	m_pKernelDevice = new Ogre::OgreKernel();
+#ifdef _DEBUG
+	m_pKernelDevice->createKernel("plugins_d.cfg", "resources_d.cfg");
+#else
+	m_pKernelDevice->createKernel("plugins.cfg", "resources.cfg");
+#endif
 
 	pCsw->CloseSplash();
 	delete pCsw;
