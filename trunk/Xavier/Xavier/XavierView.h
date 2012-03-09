@@ -91,6 +91,27 @@ public:
 protected:
 	/**
 	 *
+	 * \param lpCreateStruct 
+	 * \return 
+	 */
+	afx_msg int				OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+	/**
+	 *
+	 * \param nType 
+	 * \param cx 
+	 * \param cy 
+	 */
+	afx_msg void			OnSize(UINT nType, int cx, int cy);
+
+	/**
+	 *
+	 * \param nIDEvent 
+	 */
+	afx_msg void			OnTimer(UINT_PTR nIDEvent);
+
+	/**
+	 *
 	 */
 	afx_msg void			OnFilePrintPreview();
 
@@ -108,6 +129,10 @@ protected:
 	 */
 	afx_msg void			OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+	
+public:
+	
+	afx_msg void OnDestroy();
 };
 
 #ifndef _DEBUG

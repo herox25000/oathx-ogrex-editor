@@ -1,93 +1,189 @@
-
-// XavierView.cpp : CXavierView 类的实现
-//
-
 #include "stdafx.h"
 #include "Xavier.h"
-
 #include "XavierDoc.h"
 #include "XavierView.h"
+#include "OgreKernel.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
-
-// CXavierView
-
 IMPLEMENT_DYNCREATE(CXavierView, CView)
 
 BEGIN_MESSAGE_MAP(CXavierView, CView)
-	// 标准打印命令
-	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
-	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CXavierView::OnFilePrintPreview)
+	ON_COMMAND(ID_FILE_PRINT,				&CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_DIRECT,		&CView::OnFilePrint)
+	ON_COMMAND(ID_FILE_PRINT_PREVIEW,		&CXavierView::OnFilePrintPreview)
+	ON_WM_CREATE()
+	ON_WM_SIZE()
+	ON_WM_TIMER()
+	ON_WM_DESTROY()
 END_MESSAGE_MAP()
 
-// CXavierView 构造/析构
+using namespace Ogre;
 
+/**
+ *
+ * \return 
+ */
 CXavierView::CXavierView()
 {
-	// TODO: 在此处添加构造代码
 
 }
 
+/**
+ *
+ * \return 
+ */
 CXavierView::~CXavierView()
 {
 }
 
-BOOL CXavierView::PreCreateWindow(CREATESTRUCT& cs)
+/**
+ *
+ * \param cs 
+ * \return 
+ */
+BOOL	CXavierView::PreCreateWindow(CREATESTRUCT& cs)
 {
-	// TODO: 在此处通过修改
-	//  CREATESTRUCT cs 来修改窗口类或样式
-
 	return CView::PreCreateWindow(cs);
 }
 
-// CXavierView 绘制
 
-void CXavierView::OnDraw(CDC* /*pDC*/)
+/**
+ *
+ * \param lpCreateStruct 
+ * \return 
+ */
+int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+{
+	if (CView::OnCreate(lpCreateStruct) == -1)
+		return -1;
+
+	// 创建渲染窗口
+	OgreKernel::getSingletonPtr()->createRenderWindow(m_hWnd, 800, 600, false, "xavier");
+	// 设置渲染时钟
+	SetTimer(IDT_RENDERTIME, 10, NULL);
+
+	return 0;
+}
+
+/**
+ *
+ */
+void	CXavierView::OnDestroy()
+{
+	CView::OnDestroy();
+
+	// 销毁渲染时钟
+	KillTimer(IDT_RENDERTIME);
+}
+
+
+/**
+ *
+ * \param nType 
+ * \param cx 
+ * \param cy 
+ */
+void	CXavierView::OnSize(UINT nType, int cx, int cy)
+{
+	CView::OnSize(nType, cx, cy);
+
+	CRect rcView;
+	GetClientRect(&rcView);
+
+	/*
+		重置渲染窗口
+	*/
+	OgreKernel::getSingletonPtr()->windowMovedOrResized();
+}
+
+/**
+ *
+ * \param nIDEvent 
+ */
+void	CXavierView::OnTimer(UINT_PTR nIDEvent)
+{
+	switch(nIDEvent)
+	{
+	case IDT_RENDERTIME:
+		OgreKernel::getSingletonPtr()->renderOneFrame();
+		break;
+	}
+
+	CView::OnTimer(nIDEvent);
+}
+
+
+/**
+ *
+ * \param pDC
+ */
+void	CXavierView::OnDraw(CDC* /*pDC*/)
 {
 	CXavierDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
 
-	// TODO: 在此处为本机数据添加绘制代码
 }
 
-
-// CXavierView 打印
-
-
-void CXavierView::OnFilePrintPreview()
+/**
+ *
+ */
+void	CXavierView::OnFilePrintPreview()
 {
 	AFXPrintPreview(this);
 }
 
-BOOL CXavierView::OnPreparePrinting(CPrintInfo* pInfo)
+/**
+ *
+ * \param pInfo 
+ * \return 
+ */
+BOOL	CXavierView::OnPreparePrinting(CPrintInfo* pInfo)
 {
 	// 默认准备
 	return DoPreparePrinting(pInfo);
 }
 
-void CXavierView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+/**
+ *
+ * \param pDC
+ * \param pInfo 
+ */
+void	CXavierView::OnBeginPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: 添加额外的打印前进行的初始化过程
 }
 
-void CXavierView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
+/**
+ *
+ * \param pDC
+ * \param pInfo 
+ */
+void	CXavierView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 {
-	// TODO: 添加打印后进行的清理过程
+
 }
 
-void CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
+/**
+ *
+ * \param nFlags 
+ * \param point 
+ */
+void	CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
 {
 	ClientToScreen(&point);
 	OnContextMenu(this, point);
 }
 
-void CXavierView::OnContextMenu(CWnd* pWnd, CPoint point)
+/**
+ *
+ * \param pWnd 
+ * \param point 
+ */
+void	CXavierView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EDIT, point.x, point.y, this, TRUE);
 }
@@ -96,17 +192,28 @@ void CXavierView::OnContextMenu(CWnd* pWnd, CPoint point)
 // CXavierView 诊断
 
 #ifdef _DEBUG
-void CXavierView::AssertValid() const
+/**
+ *
+ */
+void	CXavierView::AssertValid() const
 {
 	CView::AssertValid();
 }
 
+/**
+ *
+ * \param dc 
+ */
 void CXavierView::Dump(CDumpContext& dc) const
 {
 	CView::Dump(dc);
 }
 
-CXavierDoc* CXavierView::GetDocument() const // 非调试版本是内联的
+/**
+ *
+ * \return 
+ */
+CXavierDoc* CXavierView::GetDocument() const
 {
 	ASSERT(m_pDocument->IsKindOf(RUNTIME_CLASS(CXavierDoc)));
 	return (CXavierDoc*)m_pDocument;
@@ -114,4 +221,4 @@ CXavierDoc* CXavierView::GetDocument() const // 非调试版本是内联的
 #endif //_DEBUG
 
 
-// CXavierView 消息处理程序
+
