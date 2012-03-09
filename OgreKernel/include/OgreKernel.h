@@ -2,11 +2,13 @@
 #define _____OgreKernel_H
 
 #include "OgreKernelPrerequisites.h"
-//#include "OgreSingleton.h"
 #include "Ogre.h"
 
 namespace Ogre
 {
+	// 世界空间
+	class WorldSpace;
+
 	/**
 	* \ingroup : OgreKernel
 	*
@@ -59,6 +61,16 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual bool				createKernel(const String& sPluginPath, const String& sResourceConfigFilePath);
+
+		/** 渲染
+		 *
+		 */
+		virtual void				renderOneFrame();
+
+		/** 销毁内核
+		 *
+		 */
+		virtual void				destroyKernel();
 		
 		/** 创建渲染窗口
 		 *
@@ -72,13 +84,20 @@ namespace Ogre
 		virtual bool				createRenderWindow(HWND hWnd, int w, int h, 
 			bool bFullScreen, const String& sName);
 
-		/** 销毁内核
+		/** 获取渲染窗口
+		 *
+		 * \return 
+		 */
+		virtual RenderWindow*		getRenderWindow() const;
+
+		/** 渲染窗口改变
 		 *
 		 */
-		virtual void				destroyKernel();
+		virtual void				windowMovedOrResized();
 	protected:
 		Ogre::Root*					m_pRoot;
 		Ogre::RenderWindow*			m_pRenderWindow;
+		WorldSpace*					m_pWorldSpace;
 	};
 }
 

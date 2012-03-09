@@ -17,7 +17,7 @@ namespace Ogre
 	*
 	* \Author  : lp
 	*
-	* \Desc    : 世界空间类
+	* \Desc    : 世界空间类,该类将在内核对象创建时构造和内核对象一起被销毁
 	*
 	* \bug     : 
 	*
@@ -52,22 +52,51 @@ namespace Ogre
 		 */
 		virtual ~WorldSpace(void);
 		
-		/**	创建世界
+		/** 创建世界空间
 		 *
-		 * \param sPluginPath				插件配置文件路径
-		 * \param sResourceConfigFilePath	资源配置文件路径
-		 * \param bAutoCreateWindow			是否自动创建窗口
-		 * \param sTitle					窗口标题
+		 * \param vPos				摄像机位置
+		 * \param vLookAt			观察点
+		 * \param fFarClipDistance	最近点
+		 * \param NearClipDistance	最远点
 		 * \return 
 		 */
-		virtual bool				createWorldSpace(const String& sPluginPath, const String& sResourceConfigFilePath, bool bAutoCreateWindow, const String& sTitle);
+		virtual bool				createWorldSpace(const Vector3& vPos, const Vector3& vLookAt, float fFarClipDistance, float NearClipDistance);
 
 		/** 销毁世界
 		 *
 		 */
 		virtual void				destroyWorldSpace();
+		
+		/** 获取摄像机
+		 *
+		 * \return 
+		 */
+		virtual	Camera*				getCamera() const;
+
+		/** 取得视图
+		 *
+		 * \return 
+		 */
+		virtual Viewport*			getViewport() const;
+
 	protected:
-		Root*						m_pRoot;
+		/** 创建世界空间
+		 *
+		 * \param vPos				摄像机位置
+		 * \param vLookAt			观察点
+		 * \param fFarClipDistance	最近点
+		 * \param NearClipDistance	最远点
+		 * \return 
+		 */
+		virtual void				createCamera(const Vector3& vPos, const Vector3& vLookAt, 
+			float fFarClipDistance, float NearClipDistance);
+
+	protected:
+		RenderWindow*				m_pRenderWindow;
+		SceneManager*				m_pScene;
+		Camera*						m_pCamera;
+		Viewport*					m_pView;
+		
 	};
 }
 
