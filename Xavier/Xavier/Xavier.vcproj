@@ -242,6 +242,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XavierFrameListener.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierView.cpp"
 				>
 			</File>
@@ -293,6 +297,10 @@
 			</File>
 			<File
 				RelativePath=".\XavierDoc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierFrameListener.h"
 				>
 			</File>
 			<File
