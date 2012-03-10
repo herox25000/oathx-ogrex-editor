@@ -176,7 +176,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath="..\src\OgreDebugDrawer.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\OgreKernel.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\OgreProperty.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\OgreSdkCamera.cpp"
 				>
 			</File>
 			<File
@@ -190,11 +202,23 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath="..\include\OgreDebugDrawer.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\OgreKernel.h"
 				>
 			</File>
 			<File
 				RelativePath="..\include\OgreKernelPrerequisites.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\OgreProperty.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\OgreSdkCamera.h"
 				>
 			</File>
 			<File
