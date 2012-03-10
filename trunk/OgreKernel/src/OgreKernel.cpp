@@ -157,6 +157,11 @@ namespace Ogre
 				Real(pView->getActualWidth()) / Real(pView->getActualHeight())
 				);
 		}
-		
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	Root*			OgreKernel::getRoot() const
+	{
+		return m_pRoot;
 	}
 }

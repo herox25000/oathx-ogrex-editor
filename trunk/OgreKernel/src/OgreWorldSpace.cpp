@@ -19,7 +19,7 @@ namespace Ogre
 	//
 	//////////////////////////////////////////////////////////////////////////
 	WorldSpace::WorldSpace(void)
-		:m_pScene(NULL), m_pCamera(NULL), m_pView(NULL)
+		:m_pScene(NULL), m_pCamera(NULL), m_pView(NULL), m_pDebugDrawer(NULL), m_pSdkCmaera(NULL)
 	{
 		
 	}
@@ -52,6 +52,14 @@ namespace Ogre
 						Ogre::Real(m_pView->getActualWidth()) / Ogre::Real(m_pView->getActualHeight())
 						);
 			}
+
+			m_pScene->setAmbientLight(Ogre::ColourValue(0.5, 0.5, 0.5));
+
+			TextureManager::getSingleton().setDefaultNumMipmaps(5);
+			ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
+			// 创建调试绘制器
+			m_pDebugDrawer = new DebugDrawer(m_pScene, 0.5f);
 		}
 		
 		return true;
@@ -60,18 +68,30 @@ namespace Ogre
 	//////////////////////////////////////////////////////////////////////////
 	void			WorldSpace::destroyWorldSpace()
 	{
+		if (m_pDebugDrawer != NULL)
+		{
+			delete m_pDebugDrawer;
+			m_pDebugDrawer = NULL;
+		}
 
+		if (m_pSdkCmaera)
+			delete m_pSdkCmaera;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	void			WorldSpace::createCamera(const Vector3& vPos, const Vector3& vLookAt,
 		float fFarClipDistance, float NearClipDistance)
 	{
+		// 创建主摄像机
 		m_pCamera = m_pScene->createCamera("WorldSpaceCamera");
 		m_pCamera->setPosition(vPos);
 		m_pCamera->lookAt(vLookAt);
 		m_pCamera->setFarClipDistance(fFarClipDistance);
-		m_pCamera->setNearClipDistance(fFarClipDistance);
+		m_pCamera->setNearClipDistance(NearClipDistance);
+		
+		// 创建摄像机控制器
+		m_pSdkCmaera = new SdkCamera();
+		m_pSdkCmaera->setCamera(m_pCamera);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -84,6 +104,12 @@ namespace Ogre
 	Viewport*		WorldSpace::getViewport() const
 	{
 		return m_pView;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	SceneManager*	WorldSpace::getSceneManager() const
+	{
+		return m_pScene;
 	}
 }
 
