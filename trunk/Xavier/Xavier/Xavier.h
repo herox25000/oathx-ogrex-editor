@@ -5,7 +5,6 @@
 #endif
 
 #include "resource.h"       // Ö÷·ûºÅ
-#include "OgreKernel.h"
 
 /**
 * \ingroup : Xavier
@@ -34,7 +33,6 @@ public:
 
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
-	Ogre::OgreKernel*		m_pKernelDevice;
 public:
 	/**
 	 *

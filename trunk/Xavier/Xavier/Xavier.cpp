@@ -18,7 +18,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
- CXavierApp::CXavierApp() : m_pKernelDevice(NULL)
+ CXavierApp::CXavierApp()
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -108,14 +108,6 @@ BOOL	CXavierApp::InitInstance()
  */
 int		CXavierApp::ExitInstance()
 {
-	if (m_pKernelDevice != NULL)
-	{
-		m_pKernelDevice->destroyKernel();
-
-		delete m_pKernelDevice;
-		m_pKernelDevice = NULL;
-	}
-
 	return CWinAppEx::ExitInstance();
 }
 
@@ -225,14 +217,6 @@ void	CXavierApp::ShowSplashDialog()
 	CSplashDialog* pCsw = new CSplashDialog("media/Splash.bmp");
 	pCsw->ShowSplash();
 	
-	// ´°¿ÚÄÚºË
-	m_pKernelDevice = new Ogre::OgreKernel();
-#ifdef _DEBUG
-	m_pKernelDevice->createKernel("plugins_d.cfg", "resources_d.cfg");
-#else
-	m_pKernelDevice->createKernel("plugins.cfg", "resources.cfg");
-#endif
-
 	pCsw->CloseSplash();
 	delete pCsw;
 	pCsw = NULL;

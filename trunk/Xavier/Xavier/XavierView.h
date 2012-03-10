@@ -1,7 +1,5 @@
 #pragma once
 
-#include "XavierFrameListener.h"
-
 /**
 * \ingroup : Xavier
 *
@@ -28,7 +26,6 @@ protected:
 	CXavierView();
 	DECLARE_DYNCREATE(CXavierView)
 	
-	Ogre::XavierFrameListener*	m_pFrameListener;
 public:
 	/**
 	 *
