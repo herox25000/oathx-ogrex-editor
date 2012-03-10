@@ -1,5 +1,7 @@
 #pragma once
 
+#include "XavierFrameListener.h"
+
 /**
 * \ingroup : Xavier
 *
@@ -25,48 +27,49 @@ protected:
 	 */
 	CXavierView();
 	DECLARE_DYNCREATE(CXavierView)
-
+	
+	Ogre::XavierFrameListener*	m_pFrameListener;
 public:
 	/**
 	 *
 	 * \return 
 	 */
-	CXavierDoc*				GetDocument() const;
+	CXavierDoc*					GetDocument() const;
 
 public:
 	/**
 	 *
 	 * \param pDC 
 	 */
-	virtual void			OnDraw(CDC* pDC);
+	virtual void				OnDraw(CDC* pDC);
 
 	/**
 	 *
 	 * \param cs 
 	 * \return 
 	 */
-	virtual BOOL			PreCreateWindow(CREATESTRUCT& cs);
+	virtual BOOL				PreCreateWindow(CREATESTRUCT& cs);
 protected:
 	/**
 	 *
 	 * \param pInfo 
 	 * \return 
 	 */
-	virtual BOOL			OnPreparePrinting(CPrintInfo* pInfo);
+	virtual BOOL				OnPreparePrinting(CPrintInfo* pInfo);
 
 	/**
 	 *
 	 * \param pDC 
 	 * \param pInfo 
 	 */
-	virtual void			OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void				OnBeginPrinting(CDC* pDC, CPrintInfo* pInfo);
 
 	/**
 	 *
 	 * \param pDC 
 	 * \param pInfo 
 	 */
-	virtual void			OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
+	virtual void				OnEndPrinting(CDC* pDC, CPrintInfo* pInfo);
 
 public:
 	/**
@@ -79,13 +82,13 @@ public:
 	/**
 	 *
 	 */
-	virtual void			AssertValid() const;
+	virtual void				AssertValid() const;
 
 	/**
 	 *
 	 * \param dc 
 	 */
-	virtual void			Dump(CDumpContext& dc) const;
+	virtual void				Dump(CDumpContext& dc) const;
 #endif
 
 protected:
@@ -94,7 +97,12 @@ protected:
 	 * \param lpCreateStruct 
 	 * \return 
 	 */
-	afx_msg int				OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg int					OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+	/**
+	 *
+	 */
+	afx_msg void				OnDestroy();
 
 	/**
 	 *
@@ -102,37 +110,34 @@ protected:
 	 * \param cx 
 	 * \param cy 
 	 */
-	afx_msg void			OnSize(UINT nType, int cx, int cy);
+	afx_msg void				OnSize(UINT nType, int cx, int cy);
 
 	/**
 	 *
 	 * \param nIDEvent 
 	 */
-	afx_msg void			OnTimer(UINT_PTR nIDEvent);
+	afx_msg void				OnTimer(UINT_PTR nIDEvent);
 
 	/**
 	 *
 	 */
-	afx_msg void			OnFilePrintPreview();
+	afx_msg void				OnFilePrintPreview();
 
 	/**
 	 *
 	 * \param nFlags 
 	 * \param point 
 	 */
-	afx_msg void			OnRButtonUp(UINT nFlags, CPoint point);
+	afx_msg void				OnRButtonUp(UINT nFlags, CPoint point);
 
 	/**
 	 *
 	 * \param pWnd 
 	 * \param point 
 	 */
-	afx_msg void			OnContextMenu(CWnd* pWnd, CPoint point);
+	afx_msg void				OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
-	
-public:
-	
-	afx_msg void OnDestroy();
+
 };
 
 #ifndef _DEBUG

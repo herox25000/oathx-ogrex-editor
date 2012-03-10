@@ -3,6 +3,7 @@
 #include "XavierDoc.h"
 #include "XavierView.h"
 #include "OgreKernel.h"
+#include "XavierFrameListener.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,7 +27,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView()
+CXavierView::CXavierView() : m_pFrameListener(NULL)
 {
 
 }
@@ -62,6 +63,15 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// ´´½¨äÖÈ¾´°¿Ú
 	OgreKernel::getSingletonPtr()->createRenderWindow(m_hWnd, 800, 600, false, "xavier");
+	
+	// ´´½¨äÖÈ¾¼àÌıÆ÷
+	m_pFrameListener = new XavierFrameListener();
+	if (m_pFrameListener != NULL)
+	{
+		Root* pRoot = OgreKernel::getSingletonPtr()->getRoot();
+		pRoot->addFrameListener(m_pFrameListener);
+	}
+
 	// ÉèÖÃäÖÈ¾Ê±ÖÓ
 	SetTimer(IDT_RENDERTIME, 10, NULL);
 
@@ -74,6 +84,13 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void	CXavierView::OnDestroy()
 {
 	CView::OnDestroy();
+	
+	// É¾³ıäÖÈ¾¼àÌıÆ÷
+	if (m_pFrameListener != NULL)
+	{
+		OgreKernel::getSingletonPtr()->getRoot()->removeFrameListener(m_pFrameListener);
+		delete m_pFrameListener;
+	}
 
 	// Ïú»ÙäÖÈ¾Ê±ÖÓ
 	KillTimer(IDT_RENDERTIME);
