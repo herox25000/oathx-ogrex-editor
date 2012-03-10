@@ -34,7 +34,6 @@ BOOL		CProjectDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	OnAppLook(theApp.m_nAppLook);
 	int nItem = m_SceneTypeBox.AddString("OctreeSceneManager");
 	m_SceneTypeBox.SetCurSel(nItem);
 

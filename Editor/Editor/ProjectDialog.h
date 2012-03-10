@@ -69,11 +69,6 @@ public:
 	 */
 	afx_msg void	OnBnClickedSelectItemDire();
 
-	/**
-	 *
-	 */
-	afx_msg	void	OnAppLook(UINT id);
-
 protected:
 	CComboBox		m_SceneTypeBox;
 	
