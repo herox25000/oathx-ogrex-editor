@@ -37,9 +37,10 @@ namespace Ogre
 			"ogrehead.mesh");
 		if (pEntity != NULL)
 		{
-			m_pAxisGizmo = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
+			m_pAxisGizmo = m_pSceneManager->createSceneNode();
 			m_pAxisGizmo->attachObject(pEntity);
 			m_pAxisGizmo->scale(5,5,5);
+			m_pAxisGizmo->setPosition(0,0,0);
 
 			pEntity->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );	
 		}
