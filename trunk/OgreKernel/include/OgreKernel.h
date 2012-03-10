@@ -94,6 +94,12 @@ namespace Ogre
 		 *
 		 */
 		virtual void				windowMovedOrResized();
+
+		/** 获取OGRE根本对象
+		 *
+		 * \return 
+		 */
+		virtual Root*				getRoot() const;
 	protected:
 		Ogre::Root*					m_pRoot;
 		Ogre::RenderWindow*			m_pRenderWindow;

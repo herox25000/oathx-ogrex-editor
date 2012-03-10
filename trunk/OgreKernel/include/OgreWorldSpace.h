@@ -2,7 +2,8 @@
 #define _____WorldSpace
 
 #include "OgreKernelPrerequisites.h"
-#include <OgreSingleton.h>
+#include "OgreDebugDrawer.h"
+#include "OgreSdkCamera.h"
 
 namespace Ogre
 {
@@ -79,6 +80,12 @@ namespace Ogre
 		 */
 		virtual Viewport*			getViewport() const;
 
+		/** 获取场景管理器
+		 *
+		 * \return 
+		 */
+		virtual SceneManager*		getSceneManager() const;
+
 	protected:
 		/** 创建世界空间
 		 *
@@ -96,7 +103,8 @@ namespace Ogre
 		SceneManager*				m_pScene;
 		Camera*						m_pCamera;
 		Viewport*					m_pView;
-		
+		DebugDrawer*				m_pDebugDrawer;
+		SdkCamera*					m_pSdkCmaera;		
 	};
 }
 

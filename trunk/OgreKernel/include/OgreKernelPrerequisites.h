@@ -42,6 +42,10 @@
 #	define Ogre_Export_API
 #endif
 
+namespace Ogre
+{
+	typedef unsigned int		uint32; 
+}
 
 
 #endif
