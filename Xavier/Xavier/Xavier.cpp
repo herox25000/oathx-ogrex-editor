@@ -18,7 +18,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
- CXavierApp::CXavierApp()
+ CXavierApp::CXavierApp() : m_pSystem(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -108,6 +108,14 @@ BOOL	CXavierApp::InitInstance()
  */
 int		CXavierApp::ExitInstance()
 {
+	if (m_pSystem != NULL)
+	{
+		m_pSystem->destroySystem();
+		
+		delete m_pSystem;
+		m_pSystem = NULL;
+	}
+	
 	return CWinAppEx::ExitInstance();
 }
 
@@ -217,6 +225,14 @@ void	CXavierApp::ShowSplashDialog()
 	CSplashDialog* pCsw = new CSplashDialog("media/Splash.bmp");
 	pCsw->ShowSplash();
 	
+	// 创建编辑系统
+	m_pSystem = new Ogre::EditSystem();
+#ifndef _DEBUG
+	m_pSystem->createSystem("plugins.cfg", "resources.cfg");
+#else
+	m_pSystem->createSystem("plugins_d.cfg", "resources_d.cfg");
+#endif
+
 	pCsw->CloseSplash();
 	delete pCsw;
 	pCsw = NULL;
