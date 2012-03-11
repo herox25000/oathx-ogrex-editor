@@ -101,14 +101,37 @@ BOOL	CWizardDialog::OnInitDialog()
  */
 void	CWizardDialog::OnBnClickedOk()
 {
-	BaseEditorFactory* pFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
-	if (pFactory != NULL)
+	BaseEditorFactory* pSceneFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
+	if (pSceneFactory != NULL)
 	{
 		SSceneManagerCreateParam cm;
-		cm.sName	= EDIT_SCENEMANAGER;
-		cm.typeMask	= GetSceneTypeMask(m_typeMask);
+		cm.sName				= NAME_SCENEMANAGER;
+		cm.typeMask				= GetSceneTypeMask(m_typeMask);
 
-		EditSystem::getSingletonPtr()->addEditor(pFactory->create(&cm));
+		EditSystem::getSingletonPtr()->addEditor(pSceneFactory->create(&cm));
+	}
+
+	BaseEditorFactory* pCameraFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_CAMERA);
+	if (pCameraFactory != NULL)
+	{
+		SCameraCreateParam cm;
+		cm.vPos					= Vector3(0,50,500);
+		cm.vLookAt				= Vector3(0,100,-300);
+		cm.fNearClipDistance	= 5;
+		cm.fFarClipDistance		= 10;
+		cm.fYaw					= 0;
+		cm.fPitch				= 0;
+
+		EditSystem::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
+	}
+
+	BaseEditorFactory* pViewFactory	= EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_VIEWPORT);
+	if (pViewFactory != NULL)
+	{
+		SViewPortCreateParam cm;
+		cm.background			= ColourValue(0,0,0,0);
+
+		EditSystem::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
 	}
 
 	OnOK();

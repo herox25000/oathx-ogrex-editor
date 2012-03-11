@@ -105,6 +105,14 @@ void	CXavierView::OnSize(UINT nType, int cx, int cy)
 
 	CRect rcView;
 	GetClientRect(&rcView);
+
+	ViewPortEditor* pViewEditor = static_cast<ViewPortEditor*>(
+		EditSystem::getSingletonPtr()->getEditor(EDIT_VIEWPORT)
+		);
+	if (pViewEditor != NULL)
+	{
+		pViewEditor->windowMovedOrResized();
+	}
 }
 
 /**
