@@ -133,6 +133,10 @@ namespace Ogre
 				m_Factory.insert(StrEditorFactory::value_type(pFactory->getTypeName(), pFactory));
 				return true;
 			}
+			else
+			{
+				TKLogEvent("±à¼­¹¤³§:" + pFactory->getTypeName() + " ÒÑ´æÔÚ", LML_TRIVIAL);
+			}
 		}
 
 		return 0;
@@ -166,6 +170,9 @@ namespace Ogre
 			StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
 			if ( it == m_Editor.end() )
 			{
+#ifdef _OUTPUT_LOG
+				TKLogEvent("Ìí¼Ó±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
+#endif
 				m_Editor.insert(StrEditor::value_type(pEditor->getTypeName(), pEditor));
 				return true;
 			}
@@ -199,6 +206,9 @@ namespace Ogre
 		StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
 		if ( it != m_Editor.end() )
 		{
+#ifdef _OUTPUT_LOG
+			TKLogEvent("É¾³ý±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
+#endif
 			delete it->second; it = m_Editor.erase(it);
 		}
 	}
