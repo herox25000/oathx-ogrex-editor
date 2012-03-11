@@ -42,6 +42,16 @@ CMainFrame::~CMainFrame()
 {
 }
 
+/** Êä³öLogÏûÏ¢
+ *
+ * \param lpszMessage 
+ * \param clr 
+ */
+void	CMainFrame::OutputLogMessage(const LPCTSTR& lpszMessage, COLORREF clr)
+{
+	m_wOutput.OutputDebugMessage(lpszMessage, clr);
+}
+
 /**
  *
  * \param lpCreateStruct 

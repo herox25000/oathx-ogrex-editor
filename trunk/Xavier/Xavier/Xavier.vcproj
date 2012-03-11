@@ -246,6 +246,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XavierLog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierView.cpp"
 				>
 			</File>
@@ -301,6 +305,10 @@
 			</File>
 			<File
 				RelativePath=".\XavierDoc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierLog.h"
 				>
 			</File>
 			<File
