@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\..\OgreKernel\include;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="..\OgreEditSystem;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

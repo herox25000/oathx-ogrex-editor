@@ -2,7 +2,6 @@
 #include "Xavier.h"
 #include "XavierDoc.h"
 #include "XavierView.h"
-#include "OgreKernel.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

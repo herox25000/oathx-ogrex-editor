@@ -27,7 +27,6 @@ namespace Ogre
 	typedef unsigned int		uint32; 
 }
 
-#include <Ogre.h>
 #include <map>
 #include <vector>
 #include <list>

@@ -2,6 +2,9 @@
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xavier", "Xavier\Xavier.vcproj", "{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A36630B6-C94A-4133-A8A3-7C20677B02D4} = {A36630B6-C94A-4133-A8A3-7C20677B02D4}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreEditSystem", "OgreEditSystem\OgreEditSystem.vcproj", "{A36630B6-C94A-4133-A8A3-7C20677B02D4}"
 EndProject
