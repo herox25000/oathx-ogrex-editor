@@ -37,6 +37,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~RenderWindowEditor(void);
+
+		/** ªÒ»°‰÷»æ¥∞ø⁄
+		 *
+		 * \return 
+		 */
+		virtual RenderWindow*		getRenderWindow() const;
 		
 	protected:
 		RenderWindow*				m_pWindow;	//* ogre render window pointer */

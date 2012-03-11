@@ -180,6 +180,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreCameraEditor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreEditSystem.cpp"
 				>
 			</File>
@@ -191,6 +195,10 @@
 				RelativePath=".\OgreSceneManagerEditor.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\OgreViewPortEditor.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -199,6 +207,10 @@
 			>
 			<File
 				RelativePath=".\OgreBaseEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreCameraEditor.h"
 				>
 			</File>
 			<File
@@ -219,6 +231,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreSceneManagerEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreViewPortEditor.h"
 				>
 			</File>
 		</Filter>

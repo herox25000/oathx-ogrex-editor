@@ -5,6 +5,8 @@
 #include "OgreBaseEditor.h"
 #include "OgreRenderWindowEditor.h"
 #include "OgreSceneManagerEditor.h"
+#include "OgreCameraEditor.h"
+#include "OgreViewPortEditor.h"
 #include "OgreEditSystem.h"
 
 #endif

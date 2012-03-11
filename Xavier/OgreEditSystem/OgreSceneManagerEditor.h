@@ -38,6 +38,11 @@ namespace Ogre
 		 */
 		virtual ~SceneManagerEditor(void);
 
+		/** 获取场景管理器
+		 *
+		 * \return 
+		 */
+		virtual SceneManager*		getSceneManager() const;
 	protected:
 		// OGRE 场景管理器
 		SceneManager*				m_pSceneManager;

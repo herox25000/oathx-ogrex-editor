@@ -30,12 +30,13 @@ namespace Ogre
 	class RenderWindowEditorFactory;
 	class SceneManagerEditor;
 	class RenderWindowEditorFactory;
+	class CameraEditor;
+	class CameraEditorFactory;
+	class ViewPortEditor;
+	class ViewPortEditorFactory;
 }
 
 #include <Ogre.h>
-#include <map>
-#include <vector>
-#include <list>
 
 #ifndef KER_HANDLE_WINDOW
 #define	KER_HANDLE_WINDOW		"externalWindowHandle" 
@@ -46,10 +47,19 @@ namespace Ogre
 #define XAVIER_WINDOW_NAME		"XavierWindow"
 #endif
 
+#define NAME_CAMERA				"XavierCamera"
+#define NAME_SCENEMANAGER		"XavierSceneManager"
+
 #define EDIT_RENDERWINDOW		"RenderWindowEditor"
 #define FACTORY_RENDERWINDOW	"RenderWindowEditorFactory"
 
 #define EDIT_SCENEMANAGER		"SceneManagerEditor"
 #define FACTORY_SCENEMANAGER	"SceneManagerEditorFactory"
+
+#define EDIT_CAMERA				"CameraEditor"
+#define FACTORY_CAMERA			"CameraEditorFactory"
+
+#define EDIT_VIEWPORT			"ViewPortEditor"
+#define FACTORY_VIEWPORT		"ViewPortEditorFactory"
 
 #endif
