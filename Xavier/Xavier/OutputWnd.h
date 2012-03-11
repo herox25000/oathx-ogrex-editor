@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ColorListBox.h"
 
 /**
 * \ingroup : Xavier
@@ -17,7 +18,7 @@
 * \bug     : 
 *
 */
-class COutputList : public CListBox
+class COutputList : public CColorListBox
 {
 public:
 	/**
@@ -86,10 +87,10 @@ public:
 
 protected:
 	CFont					m_Font;
-	CMFCTabCtrl				m_wndTabs;
-	COutputList				m_wndOutputBuild;
-	COutputList				m_wndOutputDebug;
-	COutputList				m_wndOutputFind;
+	CMFCTabCtrl				m_wTabs;
+	COutputList				m_wBuild;
+	COutputList				m_wDebug;
+	COutputList				m_wFind;
 
 protected:
 	/**
@@ -97,14 +98,21 @@ protected:
 	 * \param wndListBox 
 	 */
 	void AdjustHorzScroll(CListBox& wndListBox);
-
+	
 public:
 	/**
 	 *
 	 * \return 
 	 */
 	virtual ~COutputWnd();
-
+	
+	/** Êä³öLOGÏûÏ¢
+	 *
+	 * \param message 
+	 * \param clr 
+	 * \return 
+	 */
+	virtual void			OutputDebugMessage(const LPCTSTR& lpszMessage, COLORREF clr);
 protected:
 	/**
 	 *

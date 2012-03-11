@@ -26,6 +26,17 @@ END_MESSAGE_MAP()
 
 /**
  *
+ * \param lpszMessage 
+ * \param clr 
+ * \return 
+ */
+void	COutputWnd::OutputDebugMessage(const LPCTSTR& lpszMessage, COLORREF clr)
+{
+	m_wDebug.AddString(lpszMessage, clr);
+}
+
+/**
+ *
  * \param lpCreateStruct 
  * \return 
  */
@@ -39,40 +50,38 @@ int		COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
-	// 创建选项卡窗口:
-	if (!m_wndTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 1))
+	if (!m_wTabs.Create(CMFCTabCtrl::STYLE_FLAT, rectDummy, this, 1))
 	{
-		TRACE0("未能创建输出选项卡窗口\n");
 		return -1; 
 	}
 
-	// 创建输出窗格:
 	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
-	if (!m_wndOutputBuild.Create(dwStyle, rectDummy, &m_wndTabs, 2) ||
-		!m_wndOutputDebug.Create(dwStyle, rectDummy, &m_wndTabs, 3) ||
-		!m_wndOutputFind.Create(dwStyle, rectDummy, &m_wndTabs, 4))
+	if (!m_wBuild.Create(dwStyle, rectDummy, &m_wTabs, 2) ||
+		!m_wDebug.Create(dwStyle, rectDummy, &m_wTabs, 3) ||
+		!m_wFind.Create(dwStyle, rectDummy, &m_wTabs, 4))
 	{
-		TRACE0("未能创建输出窗口\n");
-		return -1;      // 未能创建
+		return -1; 
 	}
 
-	m_wndOutputBuild.SetFont(&m_Font);
-	m_wndOutputDebug.SetFont(&m_Font);
-	m_wndOutputFind.SetFont(&m_Font);
+	m_wBuild.SetFont(&m_Font);
+	m_wDebug.SetFont(&m_Font);
+	m_wFind.SetFont(&m_Font);
 
 	CString strTabName;
 	BOOL bNameValid;
 
 	// 将列表窗口附加到选项卡:
-	bNameValid = strTabName.LoadString(IDS_BUILD_TAB);
-	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputBuild, strTabName, (UINT)0);
 	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputDebug, strTabName, (UINT)1);
+	m_wTabs.AddTab(&m_wDebug, strTabName, (UINT)1);
+
+	bNameValid = strTabName.LoadString(IDS_BUILD_TAB);
+	ASSERT(bNameValid);
+	m_wTabs.AddTab(&m_wBuild, strTabName, (UINT)0);
+
 	bNameValid = strTabName.LoadString(IDS_FIND_TAB);
 	ASSERT(bNameValid);
-	m_wndTabs.AddTab(&m_wndOutputFind, strTabName, (UINT)2);
+	m_wTabs.AddTab(&m_wFind, strTabName, (UINT)2);
 
 	return 0;
 }
@@ -86,7 +95,7 @@ int		COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 void	COutputWnd::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
-	m_wndTabs.SetWindowPos (NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
+	m_wTabs.SetWindowPos (NULL, -1, -1, cx, cy, SWP_NOMOVE | SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 /**

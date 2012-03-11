@@ -51,6 +51,13 @@ public:
 	virtual BOOL LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE,
 		CWnd* pParentWnd = NULL, CCreateContext* pContext = NULL);
 
+	/** Êä³öLOG
+	 *
+	 * \param message 
+	 * \param clr 
+	 * \return 
+	 */
+	virtual void OutputLogMessage(const LPCTSTR& lpszMessage, COLORREF clr);
 public:
 	/**
 	 *

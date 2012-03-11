@@ -18,7 +18,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
- CXavierApp::CXavierApp() : m_pSystem(NULL)
+ CXavierApp::CXavierApp() : m_pSystem(NULL), m_pXavierLog(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -108,6 +108,10 @@ BOOL	CXavierApp::InitInstance()
  */
 int		CXavierApp::ExitInstance()
 {
+	Ogre::LogManager::getSingletonPtr()->getDefaultLog()->removeListener(m_pXavierLog);
+	if (m_pXavierLog != NULL)
+		delete m_pXavierLog;
+
 	if (m_pSystem != NULL)
 	{
 		m_pSystem->destroySystem();
@@ -233,6 +237,9 @@ void	CXavierApp::ShowSplashDialog()
 	m_pSystem->createSystem("plugins_d.cfg", "resources_d.cfg");
 #endif
 
+	m_pXavierLog = new XavierLog();
+	Ogre::LogManager::getSingletonPtr()->getDefaultLog()->addListener(m_pXavierLog);
+	
 	pCsw->CloseSplash();
 	delete pCsw;
 	pCsw = NULL;

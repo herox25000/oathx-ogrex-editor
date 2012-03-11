@@ -6,7 +6,7 @@
 
 #include "resource.h"       // Ö÷·ûºÅ
 #include "OgreEditor.h"
-
+#include "XavierLog.h"
 
 /**
 * \ingroup : Xavier
@@ -36,6 +36,7 @@ public:
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
 	Ogre::EditSystem*		m_pSystem;
+	XavierLog*				m_pXavierLog;
 public:
 	/**
 	 *
