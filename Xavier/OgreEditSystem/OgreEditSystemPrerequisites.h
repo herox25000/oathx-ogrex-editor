@@ -24,11 +24,32 @@
 
 namespace Ogre
 {
-	typedef unsigned int		uint32; 
+	class BaseEditor;
+	class BaseEditorFactory;
+	class RenderWindowEditor;
+	class RenderWindowEditorFactory;
+	class SceneManagerEditor;
+	class RenderWindowEditorFactory;
 }
 
+#include <Ogre.h>
 #include <map>
 #include <vector>
 #include <list>
+
+#ifndef KER_HANDLE_WINDOW
+#define	KER_HANDLE_WINDOW		"externalWindowHandle" 
+#endif
+
+// Ö÷äÖÈ¾´°¿ÚÃû
+#ifndef XAVIER_WINDOW_NAME
+#define XAVIER_WINDOW_NAME		"XavierWindow"
+#endif
+
+#define EDIT_RENDERWINDOW		"RenderWindowEditor"
+#define FACTORY_RENDERWINDOW	"RenderWindowEditorFactory"
+
+#define EDIT_SCENEMANAGER		"SceneManagerEditor"
+#define FACTORY_SCENEMANAGER	"SceneManagerEditorFactory"
 
 #endif

@@ -1,6 +1,7 @@
 #include "OgreEditSystemPrerequisites.h"
 #include "OgreEditSystem.h"
-#include "Ogre.h"
+#include "OgreRenderWindowEditor.h"
+#include "OgreSceneManagerEditor.h"
 
 namespace Ogre
 {
@@ -21,6 +22,7 @@ namespace Ogre
 	EditSystem::EditSystem(void)
 		:m_pRoot(NULL)
 	{
+		
 	}
 
 	/**	
@@ -94,10 +96,107 @@ namespace Ogre
 #endif
 		m_pRoot->setRenderSystem( rsys );
 		
-		// don't create a default render window
+		// 不创建窗口
 		m_pRoot->initialise(false);
 
+		// 注册基本编辑工具
+		registerEditorFactory(new RenderWindowEditorFactory());
+		registerEditorFactory(new SceneManagerEditorFactory());
+
 		return true;
+	}
+
+	/**
+	 *
+	 */
+	void		EditSystem::update()
+	{
+		m_pRoot->renderOneFrame();
+	}
+
+	/**
+	 *
+	 * \param pFactory 
+	 * \return 
+	 */
+	bool		EditSystem::registerEditorFactory(BaseEditorFactory* pFactory)
+	{
+		if (pFactory != NULL)
+		{
+			StrEditorFactory::iterator it = m_Factory.find(pFactory->getTypeName());
+			if ( it == m_Factory.end() )
+			{
+				m_Factory.insert(StrEditorFactory::value_type(pFactory->getTypeName(), pFactory));
+				return true;
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param typeName 
+	 * \return 
+	 */
+	BaseEditorFactory*	EditSystem::getEditorFactory(const String& typeName)
+	{
+		StrEditorFactory::iterator it = m_Factory.find(typeName);
+		if ( it != m_Factory.end() )
+		{
+			return it->second;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \param pEditor 
+	 * \return 
+	 */
+	bool		EditSystem::addEditor(BaseEditor* pEditor)
+	{
+		if (pEditor != NULL)
+		{
+			StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
+			if ( it == m_Editor.end() )
+			{
+				m_Editor.insert(StrEditor::value_type(pEditor->getTypeName(), pEditor));
+				return true;
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param typeName 
+	 * \return 
+	 */
+	BaseEditor*	EditSystem::getEditor(const String& typeName)
+	{
+		StrEditor::iterator it = m_Editor.find(typeName);
+		if ( it != m_Editor.end() )
+		{
+			return it->second;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \param pEditor 
+	 */
+	void		EditSystem::delEditor(BaseEditor* pEditor)
+	{
+		StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
+		if ( it != m_Editor.end() )
+		{
+			delete it->second; it = m_Editor.erase(it);
+		}
 	}
 
 	/** destroy ogre edit system
@@ -105,6 +204,18 @@ namespace Ogre
 	 */
 	void		EditSystem::destroySystem()
 	{
+		StrEditor::iterator itEitor = m_Editor.begin();
+		while( itEitor != m_Editor.end() )
+		{
+			delete itEitor->second; itEitor = m_Editor.erase(itEitor);
+		}
+
+		StrEditorFactory::iterator itFactory = m_Factory.begin();
+		while( itFactory != m_Factory.end() )
+		{	
+			delete itFactory->second; itFactory = m_Factory.erase(itFactory);
+		}
+
 		if (m_pRoot != NULL)
 			delete m_pRoot;
 

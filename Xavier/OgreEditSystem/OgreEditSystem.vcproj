@@ -180,11 +180,15 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OgreBaseEditorFactroy.cpp"
+				RelativePath=".\OgreEditSystem.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreEditSystem.cpp"
+				RelativePath=".\OgreRenderWindowEditor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSceneManagerEditor.cpp"
 				>
 			</File>
 		</Filter>
@@ -198,7 +202,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OgreBaseEditorFactroy.h"
+				RelativePath=".\OgreEditor.h"
 				>
 			</File>
 			<File
@@ -207,6 +211,14 @@
 			</File>
 			<File
 				RelativePath=".\OgreEditSystemPrerequisites.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreRenderWindowEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSceneManagerEditor.h"
 				>
 			</File>
 		</Filter>
