@@ -14,6 +14,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA,			&CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnUpdateApplicationLook)
+	ON_COMMAND(ID_FILE_NEW, &CMainFrame::OnFileNew)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -155,6 +156,10 @@ int		CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail(ID_SORTING_GROUPBYTYPE);
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
+
+	// 创建向导对话框
+	if (!m_dWizard.Create(IDD_DIALOG_NEW))
+		return -1;
 
 	return 0;
 }
@@ -430,3 +435,19 @@ BOOL	CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
+
+/**
+ *
+ */
+void	CMainFrame::OnFileNew()
+{
+	CRect rc;
+	GetClientRect(&rc);
+
+	CRect rcWizard;
+	m_dWizard.GetClientRect(&rcWizard);
+
+	m_dWizard.SetWindowPos(&wndTop, rc.Width() / 2 - rcWizard.Width() / 2,
+		rc.Height() / 2 - rcWizard.Height() / 2, 0, 0, SWP_NOSIZE);
+	m_dWizard.ShowWindow(SW_SHOW);
+}

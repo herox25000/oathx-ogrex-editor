@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mfc90d.lib OgreKernel_d.lib OgreMain_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreMain_d.lib OgreEditSystem_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\Ogre\lib\debug"
@@ -234,15 +234,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WizardDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\Xavier.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\XavierDoc.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\XavierFrameListener.cpp"
 				>
 			</File>
 			<File
@@ -292,15 +292,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WizardDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\Xavier.h"
 				>
 			</File>
 			<File
 				RelativePath=".\XavierDoc.h"
-				>
-			</File>
-			<File
-				RelativePath=".\XavierFrameListener.h"
 				>
 			</File>
 			<File
@@ -460,5 +460,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="Xavier.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

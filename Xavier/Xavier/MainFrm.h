@@ -4,6 +4,7 @@
 #include "MeshView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
+#include "WizardDialog.h"
 
 /**
 * \ingroup : Xavier
@@ -79,6 +80,7 @@ protected:
 	CMeshView				m_wMeshView;
 	COutputWnd				m_wOutput;
 	CPropertiesWnd			m_wProperties;
+	CWizardDialog			m_dWizard;
 
 protected:
 	/**
@@ -87,6 +89,11 @@ protected:
 	 * \return 
 	 */
 	afx_msg int				OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+	/**
+	 *
+	 */
+	afx_msg void			OnFileNew();
 
 	/**
 	 *
@@ -125,6 +132,8 @@ protected:
 	 * \param bHiColorIcons 
 	 */
 	void	SetDockingWindowIcons(BOOL bHiColorIcons);
+public:
+	
 };
 
 
