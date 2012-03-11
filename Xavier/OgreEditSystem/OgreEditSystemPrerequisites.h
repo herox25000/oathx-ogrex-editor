@@ -38,6 +38,12 @@ namespace Ogre
 
 #include <Ogre.h>
 
+#define _OUTPUT_LOG
+
+#ifndef TKLogEvent
+#define TKLogEvent	Ogre::LogManager::getSingletonPtr()->getDefaultLog()->logMessage
+#endif
+
 #ifndef KER_HANDLE_WINDOW
 #define	KER_HANDLE_WINDOW		"externalWindowHandle" 
 #endif
