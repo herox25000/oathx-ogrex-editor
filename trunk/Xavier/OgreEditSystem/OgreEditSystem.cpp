@@ -2,6 +2,8 @@
 #include "OgreEditSystem.h"
 #include "OgreRenderWindowEditor.h"
 #include "OgreSceneManagerEditor.h"
+#include "OgreCameraEditor.h"
+#include "OgreViewPortEditor.h"
 
 namespace Ogre
 {
@@ -73,7 +75,7 @@ namespace Ogre
 		while(pRend != m_pRoot->getAvailableRenderers().end())
 		{
 			Ogre::String rName = (*pRend)->getName();
-#ifndef _WIN32
+#ifdef _WIN32
 			if (rName == "OpenGL Rendering Subsystem")
 				break;
 #else
@@ -84,7 +86,7 @@ namespace Ogre
 		}
 		Ogre::RenderSystem *rsys = *pRend;
 
-#ifndef _WIN32
+#ifdef _WIN32
 		rsys->setConfigOption( "Colour Depth", "32" );
 		rsys->setConfigOption( "Full Screen", "No" );
 		rsys->setConfigOption( "VSync", "No" );
@@ -102,6 +104,8 @@ namespace Ogre
 		// 注册基本编辑工具
 		registerEditorFactory(new RenderWindowEditorFactory());
 		registerEditorFactory(new SceneManagerEditorFactory());
+		registerEditorFactory(new CameraEditorFactory());
+		registerEditorFactory(new ViewPortEditorFactory());
 
 		return true;
 	}
