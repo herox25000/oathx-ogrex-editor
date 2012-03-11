@@ -68,9 +68,8 @@ int		COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wFind.SetFont(&m_Font);
 
 	CString strTabName;
-	BOOL bNameValid;
 
-	// 将列表窗口附加到选项卡:
+	BOOL bNameValid;
 	bNameValid = strTabName.LoadString(IDS_DEBUG_TAB);
 	ASSERT(bNameValid);
 	m_wTabs.AddTab(&m_wDebug, strTabName, (UINT)1);
