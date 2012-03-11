@@ -1,6 +1,7 @@
 #pragma once
 
 #include "resource.h"
+#include "afxwin.h"
 
 /**
 * \ingroup : Xavier
@@ -39,28 +40,38 @@ public:
 	enum { IDD = IDD_DIALOG_NEW };
 
 protected:
+	CString				m_typeMask;
+
+protected:
 	/**
 	 *
 	 * \param pDX 
 	 */
-	virtual void	DoDataExchange(CDataExchange* pDX);
+	virtual void		DoDataExchange(CDataExchange* pDX);
 
 	/**
 	 *
 	 * \return 
 	 */
-	virtual BOOL	OnInitDialog();
+	virtual BOOL		OnInitDialog();
 
 	DECLARE_MESSAGE_MAP()
 public:
 	/**
 	 *
 	 */
-	afx_msg void	OnBnClickedOk();
+	afx_msg void		OnBnClickedOk();
 
 	/**
 	 *
 	 */
-	afx_msg void	OnBnClickedCancel();
+	afx_msg void		OnBnClickedCancel();
 	
+	/**
+	 *
+	 */
+	afx_msg void		OnCbnSelchangeComboScenemanager();
+
+protected:
+	CComboBox			m_cbSceneTypeMask;
 };

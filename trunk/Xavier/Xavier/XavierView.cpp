@@ -2,6 +2,10 @@
 #include "Xavier.h"
 #include "XavierDoc.h"
 #include "XavierView.h"
+#include "OgreEditSystemPrerequisites.h"
+#include "OgreBaseEditor.h"
+#include "OgreRenderWindowEditor.h"
+#include "OgreEditSystem.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -59,6 +63,18 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
+	BaseEditorFactory* pFactory = EditSystem::getSingleton().getEditorFactory(FACTORY_RENDERWINDOW);
+	if (pFactory != NULL)
+	{
+		SRenderWindowCreateParams pm;
+		pm.hWnd			= m_hWnd;
+		pm.nHeight		= 600;
+		pm.nWidth		= 800;
+		pm.bFullScreen	= false;
+
+		EditSystem::getSingleton().addEditor(pFactory->create(&pm));
+	}
+
 	// ÉèÖÃäÖÈ¾Ê±ÖÓ
 	SetTimer(IDT_RENDERTIME, 10, NULL);
 
@@ -100,6 +116,7 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	switch(nIDEvent)
 	{
 	case IDT_RENDERTIME:
+		EditSystem::getSingletonPtr()->update();
 		break;
 	}
 

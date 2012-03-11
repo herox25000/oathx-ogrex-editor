@@ -5,8 +5,8 @@
 #endif
 
 #include "resource.h"       // Ö÷·ûºÅ
-#include "OgreEditSystemPrerequisites.h"
-#include "OgreEditSystem.h"
+#include "OgreEditor.h"
+
 
 /**
 * \ingroup : Xavier
