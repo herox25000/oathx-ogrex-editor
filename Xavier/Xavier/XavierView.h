@@ -33,6 +33,12 @@ public:
 	 */
 	CXavierDoc*					GetDocument() const;
 
+	/** ≥ı ºªØ‰÷»æ¥∞ø⁄
+	 *
+	 * \return 
+	 */
+	BOOL						Initialize();
+
 public:
 	/**
 	 *
