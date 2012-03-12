@@ -115,6 +115,7 @@ void	CXavierView::OnSize(UINT nType, int cx, int cy)
 	}
 }
 
+
 /**
  *
  * \param nIDEvent 
