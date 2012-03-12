@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories=".\event;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGREEDITSYSTEM_EXPORTS;OGREEDITSYSTEM_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -188,10 +188,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OgreProperty.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\OgreRenderWindowEditor.cpp"
 				>
 			</File>
@@ -230,10 +226,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OgreProperty.h"
-				>
-			</File>
-			<File
 				RelativePath=".\OgreRenderWindowEditor.h"
 				>
 			</File>
@@ -251,6 +243,98 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}"
 			>
+		</Filter>
+		<Filter
+			Name="base"
+			>
+			<File
+				RelativePath=".\OgreBoundSlot.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreBoundSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEvent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEvent.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventArgs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventArgs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventSet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventSet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFreeFunctionSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorCopySlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorPointerSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorReferenceBinder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorReferenceSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreGlobalEventSet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreGlobalEventSet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreMemberFunctionSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreProperty.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreProperty.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreRefCounted.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSlotFunctorBase.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSubscriberSlot.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSubscriberSlot.h"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>

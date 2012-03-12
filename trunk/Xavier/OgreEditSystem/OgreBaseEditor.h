@@ -1,6 +1,8 @@
 #ifndef _____OgreBaseEditor_H
 #define _____OgreBaseEditor_H
 
+#include "OgreEventSet.h"
+
 namespace Ogre
 {
 	/**
@@ -19,7 +21,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_EditSystem_Export_API BaseEditor
+	class Ogre_EditSystem_Export_API BaseEditor : public EventSet
 	{
 	public:
 		/** ¹¹Ôìº¯Êý
