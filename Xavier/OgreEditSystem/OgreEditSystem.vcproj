@@ -336,6 +336,10 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="xml"
+			>
+		</Filter>
 	</Files>
 	<Globals>
 	</Globals>

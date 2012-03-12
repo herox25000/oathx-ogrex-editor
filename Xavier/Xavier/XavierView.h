@@ -38,7 +38,7 @@ public:
 	 * \return 
 	 */
 	BOOL						Initialize();
-
+	
 public:
 	/**
 	 *

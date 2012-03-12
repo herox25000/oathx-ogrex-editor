@@ -2,6 +2,7 @@
 #define _____OgreBaseEditor_H
 
 #include "OgreEventSet.h"
+#include "OgreProperty.h"
 
 namespace Ogre
 {
@@ -21,7 +22,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_EditSystem_Export_API BaseEditor : public EventSet
+	class Ogre_EditSystem_Export_API BaseEditor : public EventSet, public PropertySet
 	{
 	public:
 		/** ¹¹Ôìº¯Êý
