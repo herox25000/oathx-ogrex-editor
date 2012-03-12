@@ -188,6 +188,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreProperty.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreRenderWindowEditor.cpp"
 				>
 			</File>
@@ -223,6 +227,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreEditSystemPrerequisites.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreProperty.h"
 				>
 			</File>
 			<File
