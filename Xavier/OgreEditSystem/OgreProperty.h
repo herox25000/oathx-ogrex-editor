@@ -7,132 +7,81 @@
 
 namespace Ogre
 {
-	//////////////////////////////////////////////////////////////////////////
-	// XML ÎÄ¼þÊôÐÔ
-	//////////////////////////////////////////////////////////////////////////
+	struct PropertyItem
+	{
+		String		Decribe;
+		String		Name;
+		Any			Value;
+	};
+
+	/**
+	* \ingroup : OgreEditSystem
+	*
+	* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+	*
+	* \VERSION : 1.0
+	*
+	* \date    : 2012-03-12
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
+	*/
 	class Ogre_EditSystem_Export_API Property
 	{
 	public:
 		/**
-		*
-		* \return 
-		*/
-		Property();
-		
+		 *
+		 * \param sName 
+		 * \param val 
+		 * \param describe 
+		 * \return 
+		 */
+		Property(const String& sName, const String& describe);
+
 		/**
-		*
-		* \return 
-		*/		
+		 *
+		 * \return 
+		 */
 		virtual ~Property();
 
-	public:
-		/**
-		*
-		* \return 
-		*/
-		virtual	float				getValueDouble(const String& sName);
-		
 		/**
 		 *
 		 * \param sName 
-		 * \param fVal 
 		 */
-		virtual	void				setValueDouble(const String& sName, float fVal);
-
-		/**
-		*
-		* \return 
-		*/
-		virtual int					getValueIntger(const String& sName);
+		virtual	void				setName(const String& sName);
 
 		/**
 		 *
-		 * \param sName 
-		 * \param nVal 
-		 */
-		virtual	void				setValueIntger(const String& sName, int nVal);
-		
-		/**
-		*
-		* \return 
-		*/		
-		virtual Vector2				getValueCPoint(const String& sName);
-
-		/**
-		 *
-		 * \param sName 
-		 * \param vPt 
-		 */
-		virtual	void				setValueCPoint(const String& sName, Vector2 vPt);
-
-		/**
-		 *
-		 * \param sName 
 		 * \return 
 		 */
-		virtual	Vector3				getValueVector(const String& sName);
+		virtual	String				getName() const;
 
 		/**
 		 *
-		 * \param sName 
-		 * \param vPos 
+		 * \param describe 
 		 */
-		virtual	void				setValueVector(const String& sName, Vector3 vPos);
-
+		virtual	void				setDescribe(const String& describe);
+		
 		/**
 		 *
-		 * \param sName 
 		 * \return 
 		 */
-		virtual ColourValue			getValueColour(const String& sName);
+		virtual	String				getDescribe() const;
 		
 		/**
 		 *
-		 * \param sName 
-		 * \param clrVal 
+		 * \param name 
+		 * \param Value 
+		 * \param describe 
 		 */
-		virtual	void				setValueColour(const String& sName, ColourValue clrVal);
-		/**
-		*
-		* \return 
-		*/		
-		virtual Size				getValueCCSize(const String& sName);
-		
-		/**
-		 *
-		 * \param sName 
-		 * \param szVal 
-		 */
-		virtual	void				setValueCCSize(const String& sName, Size szVal);
-
-		/**
-		*
-		* \return 
-		*/	
-		virtual	String				getValueString(const String& sName);
-		
-		/**
-		 *
-		 * \param sName 
-		 * \param sVal 
-		 */
-		virtual	void				setValueString(const String& sName, String sVal);
-
-		/**
-		*
-		* \return 
-		*/
-		virtual void				addProperty(Property* pParent, const String& sName, const String& val);
-
-		/**
-		 *
-		 * \param sName 
-		 */
-		virtual	void				delProperty(const String& sName);
-
+		virtual	void				addProperty(const String& name, Any Value, const String& describe);
 	protected:
-		HashMap<String, String>		mSSValue;
-		Property*					mParent;
+		String						m_decribe;
+		String						m_sName;
 	};
 }
 

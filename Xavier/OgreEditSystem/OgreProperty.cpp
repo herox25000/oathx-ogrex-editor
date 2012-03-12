@@ -3,72 +3,39 @@
 
 namespace Ogre
 {
-	//////////////////////////////////////////////////////////////////////////
-	// class Property
-	//////////////////////////////////////////////////////////////////////////
-	Property::Property()
+	Property::Property(const String& sName, const String& describe)
+		:m_decribe(describe), m_sName(sName)
 	{
 
 	}
 
-	//////////////////////////////////////////////////////////////////////////
 	Property::~Property()
 	{
-		mSSValue.clear();
+
 	}
 
-	//////////////////////////////////////////////////////////////////////////
-	float			Property::getValueDouble(const String& sName)
+	void		Property::setName(const String& sName)
 	{
-		float val = 0;
-		sscanf(mSSValue[sName].c_str(), " %g", &val);
-
-		return val;
+		m_sName = sName;
 	}
 
-	//////////////////////////////////////////////////////////////////////////
-	int				Property::getValueIntger(const String& sName)
+	String		Property::getName() const
 	{
-		int val = 0;
-		sscanf(mSSValue[sName].c_str(), " %d", &val);
-
-		return val;
+		return m_sName;
 	}
 
-	//////////////////////////////////////////////////////////////////////////
-	Vector2			Property::getValueCPoint(const String& sName)
+	void		Property::setDescribe(const String& describe)
 	{
-		Vector2 cPt;
-		sscanf(mSSValue[sName].c_str(), " %g,%g", &cPt.x, &cPt.y);
-
-		return cPt;
+		m_decribe = describe;
 	}
 
-	//////////////////////////////////////////////////////////////////////////
-	Size			Property::getValueCCSize(const String& sName)
+	String		Property::getDescribe() const
 	{
-		Size cSz;
-		sscanf(mSSValue[sName].c_str(), " %g,%g", &cSz.width, &cSz.height);
-
-		return cSz;
+		return m_decribe;
 	}
 
-	//////////////////////////////////////////////////////////////////////////
-	String			Property::getValueString(const String& sName)
+	void		Property::addProperty(const String& name, Any Value, const String& describe)
 	{
-		return mSSValue[sName];
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-	void			Property::addProperty(Property* pParent, const String& sName, const String& val)
-	{
-		if (pParent != NULL)
-		{
-			pParent->addProperty(NULL, sName, val);
-		}
-		else
-		{
-			mSSValue[sName] = val;
-		}
+		
 	}
 }
