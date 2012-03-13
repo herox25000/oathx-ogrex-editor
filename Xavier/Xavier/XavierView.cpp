@@ -21,6 +21,7 @@ BEGIN_MESSAGE_MAP(CXavierView, CView)
 	ON_WM_SIZE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
@@ -29,7 +30,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView()
+CXavierView::CXavierView() : m_bWelcome(FALSE)
 {
 
 }
@@ -144,6 +145,28 @@ void	CXavierView::OnDraw(CDC* /*pDC*/)
 	if (!pDoc)
 		return;
 
+}
+
+/**
+ *
+ * \param pDC 
+ * \return 
+ */
+BOOL	CXavierView::OnEraseBkgnd(CDC* pDC)
+{
+	//if (!m_bWelcome)
+	{
+		m_bWelcome = TRUE;
+
+		CRect rc;
+		GetClientRect(&rc);
+
+		CGraphDC dc(pDC);
+		dc->FillRect(&rc, &CBrush(RGB(0,0,0)));
+		dc->DrawText("welcom xavier ogre editor", &rc, DT_CENTER|DT_VCENTER);
+	}
+
+	return CView::OnEraseBkgnd(pDC);
 }
 
 /**
