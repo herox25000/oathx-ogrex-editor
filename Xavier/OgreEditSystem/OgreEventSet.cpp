@@ -30,7 +30,10 @@ void EventSet::addEvent(const String& name)
 {
 	if (isEventPresent(name))
 	{
-		//CEGUI_THROW(AlreadyExistsException("An event named '" + name + "' already exists in the EventSet."));
+		LogManager::getSingleton().logMessage(LML_TRIVIAL, 
+			"Already Exists Event : " + name);
+		return;
+		//OGRE_EXCEPT(AlreadyExistsException("An event named '" + name + "' already exists in the EventSet."));
 	}
 
 	d_events[name] = new Event(name);
@@ -115,6 +118,7 @@ bool EventSet::isEventPresent(const String& name)
 Event::Connection EventSet::subscribeEvent(const String& name, Event::Subscriber subscriber)
 {
     // do subscription & return connection
+	LogManager::getSingleton().logMessage(LML_NORMAL, "subscribe Event : " + name);
     return getEventObject(name, true)->subscribe(subscriber);
 }
 
@@ -124,6 +128,7 @@ Event::Connection EventSet::subscribeEvent(const String& name, Event::Subscriber
 *************************************************************************/
 Event::Connection EventSet::subscribeEvent(const String& name, Event::Group group, Event::Subscriber subscriber)
 {
+	LogManager::getSingleton().logMessage(LML_NORMAL, "subscribe Event : " + name);
     // do subscription with group & return connection
     return getEventObject(name, true)->subscribe(group, subscriber);
 }

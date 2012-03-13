@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\event;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories=".\tinyxml;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGREEDITSYSTEM_EXPORTS;OGREEDITSYSTEM_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -335,10 +335,42 @@
 				RelativePath=".\OgreSubscriberSlot.h"
 				>
 			</File>
+			<File
+				RelativePath=".\OgreXMLSerialize.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreXMLSerialize.h"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="xml"
 			>
+			<File
+				RelativePath=".\tinyxml\tinystr.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinystr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlerror.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlparser.cpp"
+				>
+			</File>
 		</Filter>
 	</Files>
 	<Globals>
