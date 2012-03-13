@@ -126,7 +126,7 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	switch(nIDEvent)
 	{
 	case IDT_RENDERTIME:
-		EditSystem::getSingletonPtr()->update();
+		//EditSystem::getSingletonPtr()->update();
 		break;
 	}
 
@@ -138,13 +138,12 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
  *
  * \param pDC
  */
-void	CXavierView::OnDraw(CDC* /*pDC*/)
+void	CXavierView::OnDraw(CDC* pDC)
 {
 	CXavierDoc* pDoc = GetDocument();
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
-
 }
 
 /**
@@ -154,18 +153,6 @@ void	CXavierView::OnDraw(CDC* /*pDC*/)
  */
 BOOL	CXavierView::OnEraseBkgnd(CDC* pDC)
 {
-	//if (!m_bWelcome)
-	{
-		m_bWelcome = TRUE;
-
-		CRect rc;
-		GetClientRect(&rc);
-
-		CGraphDC dc(pDC);
-		dc->FillRect(&rc, &CBrush(RGB(0,0,0)));
-		dc->DrawText("welcom xavier ogre editor", &rc, DT_CENTER|DT_VCENTER);
-	}
-
 	return CView::OnEraseBkgnd(pDC);
 }
 

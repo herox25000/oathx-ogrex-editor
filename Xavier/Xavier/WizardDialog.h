@@ -72,6 +72,15 @@ public:
 	 */
 	afx_msg void		OnCbnSelchangeComboScenemanager();
 
+	/**
+	 *
+	 */
+	afx_msg void		OnBnClickedButtonFinddir();
+
 protected:
+	CString				m_csName;
+	CString				m_csPath;
+
 	CComboBox			m_cbSceneTypeMask;
+	
 };

@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "Xavier.h"
 #include "WizardDialog.h"
+#include "FolderDialog.h"
 #include "OgreEditor.h"
 
 
@@ -42,6 +43,7 @@ BEGIN_MESSAGE_MAP(CWizardDialog, CDialog)
 	ON_BN_CLICKED(IDOK,							&CWizardDialog::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL,						&CWizardDialog::OnBnClickedCancel)
 	ON_CBN_SELCHANGE(IDC_COMBO_SCENEMANAGER,	&CWizardDialog::OnCbnSelchangeComboScenemanager)
+	ON_BN_CLICKED(IDC_BUTTON_FINDDIR, &CWizardDialog::OnBnClickedButtonFinddir)
 END_MESSAGE_MAP()
 
 /**
@@ -101,37 +103,45 @@ BOOL	CWizardDialog::OnInitDialog()
  */
 void	CWizardDialog::OnBnClickedOk()
 {
-	BaseEditorFactory* pSceneFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
-	if (pSceneFactory != NULL)
+	GetDlgItemText(IDC_EDIT_PROJECT_NAME, m_csName);
+	if (m_csName.IsEmpty())
 	{
-		SSceneManagerCreateParam cm;
-		cm.sName				= NAME_SCENEMANAGER;
-		cm.typeMask				= GetSceneTypeMask(m_typeMask);
-
-		EditSystem::getSingletonPtr()->addEditor(pSceneFactory->create(&cm));
+		AfxMessageBox(IDS_STR_PROJECT_CREATE_ERR);
 	}
-
-	BaseEditorFactory* pCameraFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_CAMERA);
-	if (pCameraFactory != NULL)
+	else
 	{
-		SCameraCreateParam cm;
-		cm.vPos					= Vector3(0,50,500);
-		cm.vLookAt				= Vector3(0,100,-300);
-		cm.fNearClipDistance	= 5;
-		cm.fFarClipDistance		= 10;
-		cm.fYaw					= 0;
-		cm.fPitch				= 0;
+		BaseEditorFactory* pSceneFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
+		if (pSceneFactory != NULL)
+		{
+			SSceneManagerCreateParam cm;
+			cm.sName				= NAME_SCENEMANAGER;
+			cm.typeMask				= GetSceneTypeMask(m_typeMask);
 
-		EditSystem::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
-	}
+			EditSystem::getSingletonPtr()->addEditor(pSceneFactory->create(&cm));
+		}
 
-	BaseEditorFactory* pViewFactory	= EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_VIEWPORT);
-	if (pViewFactory != NULL)
-	{
-		SViewPortCreateParam cm;
-		cm.background			= ColourValue(0,0,0,0);
+		BaseEditorFactory* pCameraFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_CAMERA);
+		if (pCameraFactory != NULL)
+		{
+			SCameraCreateParam cm;
+			cm.vPos					= Vector3(0,50,500);
+			cm.vLookAt				= Vector3(0,100,-300);
+			cm.fNearClipDistance	= 5;
+			cm.fFarClipDistance		= 10;
+			cm.fYaw					= 0;
+			cm.fPitch				= 0;
 
-		EditSystem::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
+			EditSystem::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
+		}
+
+		BaseEditorFactory* pViewFactory	= EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_VIEWPORT);
+		if (pViewFactory != NULL)
+		{
+			SViewPortCreateParam cm;
+			cm.background			= ColourValue(0,0,0,0);
+
+			EditSystem::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
+		}
 	}
 
 	OnOK();
@@ -153,4 +163,24 @@ void	CWizardDialog::OnCbnSelchangeComboScenemanager()
 {
 	m_cbSceneTypeMask.GetLBText(m_cbSceneTypeMask.GetCurSel(),
 		m_typeMask);
+}
+
+/**
+ *
+ */
+void	CWizardDialog::OnBnClickedButtonFinddir()
+{
+	CString sName("*");
+
+	//CFolderDialog dlgSelect(&sName);
+	//if (dlgSelect.DoModal() == IDOK)
+	//{
+	//	CString sPath = dlgSelect.GetFolderPath();
+	//	SetDlgItemText(IDC_EDIT_PROJECT_DIR, sPath);
+	//}
+	CFileDialog dl(TRUE, NULL, "*");
+	dl.DoModal();
+
+	CString sPath = dl.GetFolderPath();
+	int x = 0;
 }
