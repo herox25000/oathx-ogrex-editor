@@ -80,7 +80,12 @@ public:
 	 * \return 
 	 */
 	virtual ~CXavierView();
-
+	
+	/**
+	 *
+	 * \return 
+	 */
+	//virtual	BOOL				DrawWelcome();
 #ifdef _DEBUG
 	/**
 	 *
@@ -123,6 +128,13 @@ protected:
 
 	/**
 	 *
+	 * \param pDC 
+	 * \return 
+	 */
+	afx_msg BOOL				OnEraseBkgnd(CDC* pDC);
+
+	/**
+	 *
 	 */
 	afx_msg void				OnFilePrintPreview();
 
@@ -141,6 +153,8 @@ protected:
 	afx_msg void				OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	BOOL						m_bWelcome;
 };
 
 #ifndef _DEBUG
