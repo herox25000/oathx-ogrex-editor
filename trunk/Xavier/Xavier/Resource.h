@@ -4,6 +4,7 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
+#define IDS_STR_PROJECT_CREATE_ERR      101
 #define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
@@ -85,8 +86,10 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_DIALOG1                     310
 #define IDD_DIALOG_NEW                  310
-#define IDC_COMBO1                      1001
 #define IDC_COMBO_SCENEMANAGER          1001
+#define IDC_EDIT_PROJECT_NAME           1002
+#define IDC_EDIT_PROJECT_DIR            1003
+#define IDC_BUTTON_FINDDIR              1004
 
 // Next default values for new objects
 // 
@@ -94,7 +97,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        311
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1002
+#define _APS_NEXT_CONTROL_VALUE         1005
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

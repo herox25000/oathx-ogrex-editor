@@ -72,6 +72,9 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 调整布局
 	AdjustLayout();
 
+	//HTREEITEM hRoot = m_wFileView.InsertItem(_T("FakeApp 文件"), 0, 0);
+	//m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+
 	return 0;
 }
 
