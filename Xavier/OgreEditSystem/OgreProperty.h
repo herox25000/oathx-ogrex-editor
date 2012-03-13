@@ -1,19 +1,15 @@
 #ifndef _____OgreProperty_H
 #define _____OgreProperty_H
 
+#include "OgreEventArgs.h"
+#include "OgreEventSet.h"
+
 #ifndef cmpXML
 #define cmpXML(a, b) !strcmp(a, b)
 #endif
 
 namespace Ogre
 {
-	struct PropertyItem
-	{
-		String		Decribe;
-		String		Name;
-		Any			Value;
-	};
-
 	/**
 	* \ingroup : OgreEditSystem
 	*
@@ -92,6 +88,49 @@ namespace Ogre
 	/**
 	* \ingroup : OgreEditSystem
 	*
+	* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+	*
+	* \VERSION : 1.0
+	*
+	* \date    : 2012-03-13
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 属性事件
+	*
+	* \bug     : 
+	*
+	*/
+	class Ogre_EditSystem_Export_API PropertyEventArgs : public EventArgs
+	{
+	public:
+		/**
+		 *
+		 * \param pProperty 
+		 * \return 
+		 */
+		PropertyEventArgs(Property* pProperty)
+			:pProperty(pProperty)
+		{
+
+		}
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual ~PropertyEventArgs()
+		{
+
+		}
+		
+		// 属性
+		Property*					pProperty;
+	};
+
+	/**
+	* \ingroup : OgreEditSystem
+	*
 	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
 	*
 	* \VERSION : 1.0
@@ -105,9 +144,18 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_EditSystem_Export_API PropertySet
+	class Ogre_EditSystem_Export_API PropertySet : public EventSet
 	{
 		typedef HashMap<String, Property*> HashProperty;
+
+	public:
+		// Namespace for global events
+		static const String				EventNamespace;
+		// add property
+		static const String				EventAddProperty;
+		// change value
+		static const String				EventValueChanged;
+		
 	public:
 		/**
 		 *
