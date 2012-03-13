@@ -79,6 +79,11 @@ namespace Ogre
 		return m_anyValue;
 	}
 
+	// event name
+	const String	PropertySet::EventNamespace		=	"PropertySet";
+	const String	PropertySet::EventAddProperty	=	"AddProperty";
+	const String	PropertySet::EventValueChanged	=	"ValueChanged";
+
 	/**
 	 *
 	 * \param sName 
@@ -111,6 +116,10 @@ namespace Ogre
 		if ( it == m_HashProperty.end() )
 		{
 			m_HashProperty[name] = new Property(name, Value, describe);
+			
+			PropertyEventArgs args(m_HashProperty[name]);
+
+			fireEvent(EventAddProperty, args, EventNamespace);
 		}
 	}
 
@@ -167,6 +176,10 @@ namespace Ogre
 		if (pProperty != NULL)
 		{
 			pProperty->setValue(anyValue);
+
+			PropertyEventArgs args(pProperty);
+
+			fireEvent(EventValueChanged, args, EventNamespace);
 		}
 	}
 
