@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OgreEditSystem;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="..\OgreEditSystem\tinyxml;..\OgreEditSystem;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -461,6 +461,78 @@
 				RelativePath=".\control\SplashDialog.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="serialize"
+			>
+			<File
+				RelativePath=".\XavDocSerialize.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XavDocSerialize.h"
+				>
+			</File>
+			<Filter
+				Name="xml"
+				>
+				<File
+					RelativePath="..\OgreEditSystem\tinyxml\tinystr.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\OgreEditSystem\tinyxml\tinystr.h"
+					>
+				</File>
+				<File
+					RelativePath="..\OgreEditSystem\tinyxml\tinyxml.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\OgreEditSystem\tinyxml\tinyxml.h"
+					>
+				</File>
+				<File
+					RelativePath="..\OgreEditSystem\tinyxml\tinyxmlerror.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\OgreEditSystem\tinyxml\tinyxmlparser.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							UsePrecompiledHeader="0"
+						/>
+					</FileConfiguration>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

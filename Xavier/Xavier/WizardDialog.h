@@ -39,6 +39,17 @@ public:
 
 	enum { IDD = IDD_DIALOG_NEW };
 
+		/**
+	 *
+	 * \return 
+	 */
+	virtual CString		GetPath() const {return m_csPath;}
+
+	/**
+	 *
+	 * \return 
+	 */
+	virtual CString		GetName() const {return m_csName;}
 protected:
 	CString				m_typeMask;
 

@@ -126,7 +126,7 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	switch(nIDEvent)
 	{
 	case IDT_RENDERTIME:
-		//EditSystem::getSingletonPtr()->update();
+		EditSystem::getSingletonPtr()->update();
 		break;
 	}
 

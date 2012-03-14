@@ -3,6 +3,10 @@
 #include "FileView.h"
 #include "Resource.h"
 #include "Xavier.h"
+#include "XavDocSerialize.h"
+#include "OgreEditor.h"
+
+using namespace Ogre;
 
 CFileView::CFileView()
 {
@@ -23,6 +27,7 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_COMMAND(ID_EDIT_CUT,			OnEditCut)
 	ON_COMMAND(ID_EDIT_COPY,		OnEditCopy)
 	ON_COMMAND(ID_EDIT_CLEAR,		OnEditClear)
+	ON_MESSAGE(MSG_USER_CREATE,		OnDocSerialize)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
@@ -72,9 +77,38 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 调整布局
 	AdjustLayout();
 
-	//HTREEITEM hRoot = m_wFileView.InsertItem(_T("FakeApp 文件"), 0, 0);
-	//m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+	return 0;
+}
 
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT	CFileView::OnDocSerialize(WPARAM wParam, LPARAM lParam)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	if (pMainFrame != NULL)
+	{
+		BOOL bResult = XavDocSerialize::GetSingleton().Create(pMainFrame->GetPath(), 
+			pMainFrame->GetName());
+		ASSERT(bResult == TRUE);
+
+		HTREEITEM hRoot = m_wFileView.InsertItem(pMainFrame->GetName().GetBuffer(), 0, 0);
+		m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+
+		int nSize = EditSystem::getSingletonPtr()->getEditorCount();
+		for (int i=0; i<nSize; i++)
+		{
+			BaseEditor* pEditor = EditSystem::getSingletonPtr()->getEditor(i);
+			if (pEditor != NULL)
+			{
+				m_wFileView.InsertItem(pEditor->getTypeName().c_str(), hRoot, 0);
+			}
+		}
+	}
+	
 	return 0;
 }
 

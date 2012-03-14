@@ -58,6 +58,7 @@ public:
 	 * \return 
 	 */
 	virtual void OutputLogMessage(const LPCTSTR& lpszMessage, COLORREF clr);
+
 public:
 	/**
 	 *
@@ -65,6 +66,22 @@ public:
 	 */
 	virtual ~CMainFrame();
 
+	/**
+	 *
+	 * \return 
+	 */
+	CString			GetPath() const {return m_dWizard.GetPath();}
+
+	/**
+	 *
+	 * \return 
+	 */
+	CString			GetName() const {return m_dWizard.GetName();}
+	/**
+	 *
+	 * \return 
+	 */
+	CFileView*		GetFileView() {return &m_wFileView;}			
 #ifdef _DEBUG
 	/**
 	 *

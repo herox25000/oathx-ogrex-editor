@@ -98,6 +98,14 @@ protected:
 
 	/**
 	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
+	afx_msg LRESULT			OnDocSerialize(WPARAM wParam, LPARAM lParam);
+
+	/**
+	 *
 	 * \param nType 
 	 * \param cx 
 	 * \param cy 
