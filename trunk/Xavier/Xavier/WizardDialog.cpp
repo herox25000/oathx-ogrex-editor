@@ -170,17 +170,8 @@ void	CWizardDialog::OnCbnSelchangeComboScenemanager()
  */
 void	CWizardDialog::OnBnClickedButtonFinddir()
 {
-	CString sName("*");
-
-	//CFolderDialog dlgSelect(&sName);
-	//if (dlgSelect.DoModal() == IDOK)
-	//{
-	//	CString sPath = dlgSelect.GetFolderPath();
-	//	SetDlgItemText(IDC_EDIT_PROJECT_DIR, sPath);
-	//}
-	CFileDialog dl(TRUE, NULL, "*");
-	dl.DoModal();
-
-	CString sPath = dl.GetFolderPath();
-	int x = 0;
+	if (CFolderDialog::GetFolder(m_csPath))
+	{
+		SetDlgItemText(IDC_EDIT_PROJECT_DIR, m_csPath);
+	}
 }

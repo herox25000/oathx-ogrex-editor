@@ -26,6 +26,15 @@ class CFolderDialog : public CFileDialog
 	DECLARE_DYNAMIC(CFolderDialog)
 
 public:
+		/**
+	 *
+	 * \param folderpath 
+	 * \param szCaption 
+	 * \param hOwner 
+	 * \return 
+	 */
+	static bool GetFolder(CString& folderpath, const char* szCaption = NULL, HWND hOwner = NULL);
+public:
 	/**
 	 *
 	 * \param pPath 
