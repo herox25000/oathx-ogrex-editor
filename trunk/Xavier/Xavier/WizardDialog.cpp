@@ -2,6 +2,7 @@
 #include "Xavier.h"
 #include "WizardDialog.h"
 #include "FolderDialog.h"
+#include "MainFrm.h"
 #include "OgreEditor.h"
 
 
@@ -141,6 +142,12 @@ void	CWizardDialog::OnBnClickedOk()
 			cm.background			= ColourValue(0,0,0,0);
 
 			EditSystem::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
+		}
+
+		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+		if (pMainFrame != NULL)
+		{
+			::SendMessage(pMainFrame->GetFileView()->m_hWnd, MSG_USER_CREATE, NULL, NULL);
 		}
 	}
 

@@ -2,6 +2,8 @@
 // Microsoft Visual C++ generated include file.
 // Used by Xavier.rc
 //
+#define MSG_USER_CREATE					WM_USER + 1
+
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
 #define IDS_STR_PROJECT_CREATE_ERR      101

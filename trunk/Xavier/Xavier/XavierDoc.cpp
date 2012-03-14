@@ -53,6 +53,10 @@ void	CXavierDoc::Serialize(CArchive& ar)
 	}
 }
 
+/**
+ *
+ * \param lpszTitle 
+ */
 void	CXavierDoc::SetTitle(LPCTSTR lpszTitle)
 {
 	CDocument::SetTitle("Ogre");
