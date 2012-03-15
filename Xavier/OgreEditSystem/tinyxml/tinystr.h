@@ -45,6 +45,17 @@ distribution.
 #endif
 
 
+
+#if OGRE_PLATFORM == OGRE_PLATFORM_WIN32
+	#ifdef OGREEDITSYSTEM_EXPORT
+		#define OgreSystem_Export __declspec (dllexport)
+	#else
+		#define OgreSystem_Export __declspec (dllimport)
+	#endif
+#else
+		#define OgreSystem_Export
+#endif
+
 /*
    TiXmlString is an emulation of a subset of the std::string template.
    Its purpose is to allow compiling TinyXML on compilers with no or poor STL support.
@@ -52,7 +63,7 @@ distribution.
    The buffer allocation is made by a simplistic power of 2 like mechanism : if we increase
    a string and there's no more room, we allocate a buffer twice as big as we need.
 */
-class TiXmlString
+class OgreSystem_Export TiXmlString
 {
   public :
 	// The size type used
@@ -281,7 +292,7 @@ TiXmlString operator + (const char* a, const TiXmlString & b);
    TiXmlOutStream is an emulation of std::ostream. It is based on TiXmlString.
    Only the operators that we need for TinyXML have been developped.
 */
-class TiXmlOutStream : public TiXmlString
+class OgreSystem_Export TiXmlOutStream : public TiXmlString
 {
 public :
 
