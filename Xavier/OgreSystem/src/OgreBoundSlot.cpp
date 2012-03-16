@@ -2,7 +2,6 @@
 #include "OgreBoundSlot.h"
 #include "OgreEvent.h"
 
-// Start of Ogre namespace section
 namespace Ogre
 {
 	/**
@@ -13,9 +12,9 @@ namespace Ogre
 	 * \return 
 	 */
 	BoundSlot::BoundSlot(Group group, const SubscriberSlot& subscriber, Event& event) :
-		d_group(group),
-		d_subscriber(new SubscriberSlot(subscriber)),
-		d_event(&event)
+		m_group(group),
+		m_subscriber(new SubscriberSlot(subscriber)),
+		m_event(&event)
 	{}
 
 
@@ -25,9 +24,9 @@ namespace Ogre
 	 * \return 
 	 */
 	BoundSlot::BoundSlot(const BoundSlot& other) :
-		d_group(other.d_group),
-		d_subscriber(other.d_subscriber),
-		d_event(other.d_event)
+		m_group(other.m_group),
+		m_subscriber(other.m_subscriber),
+		m_event(other.m_event)
 	{
 	}
 
@@ -39,7 +38,7 @@ namespace Ogre
 	BoundSlot::~BoundSlot()
 	{
 		disconnect();
-		delete d_subscriber;
+		delete m_subscriber;
 	}
 
 
@@ -48,11 +47,11 @@ namespace Ogre
 	 * \param other 
 	 * \return 
 	 */
-	BoundSlot& BoundSlot::operator=(const BoundSlot& other)
+	BoundSlot&	BoundSlot::operator=(const BoundSlot& other)
 	{
-		d_group      = other.d_group;
-		d_subscriber = other.d_subscriber;
-		d_event      = other.d_event;
+		m_group      = other.m_group;
+		m_subscriber = other.m_subscriber;
+		m_event      = other.m_event;
 
 		return *this;
 	}
@@ -63,9 +62,9 @@ namespace Ogre
 	 * \param other 
 	 * \return 
 	 */
-	bool BoundSlot::operator==(const BoundSlot& other) const
+	bool		BoundSlot::operator==(const BoundSlot& other) const
 	{
-		return d_subscriber == other.d_subscriber;
+		return m_subscriber == other.m_subscriber;
 	}
 
 
@@ -74,7 +73,7 @@ namespace Ogre
 	 * \param other 
 	 * \return 
 	 */
-	bool BoundSlot::operator!=(const BoundSlot& other) const
+	bool		BoundSlot::operator!=(const BoundSlot& other) const
 	{
 		return !(*this == other);
 	}
@@ -84,27 +83,27 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	bool BoundSlot::connected() const
+	bool		BoundSlot::connected() const
 	{
-		return (d_subscriber != 0) && d_subscriber->connected();
+		return (m_subscriber != 0) && m_subscriber->connected();
 	}
 
 
 	/**
 	 *
 	 */
-	void BoundSlot::disconnect()
+	void		BoundSlot::disconnect()
 	{
 		// cleanup the bound subscriber functor
 		if (connected())
-			d_subscriber->cleanup();
+			m_subscriber->cleanup();
 
 		// remove the owning Event's reference to us
-		if (d_event)
+		if (m_event)
 		{
 			// get the event to erase the subscriber functor.
-			d_event->unsubscribe(*this);
-			d_event = 0;
+			m_event->unsubscribe(*this);
+			m_event = 0;
 		}
 
 	}

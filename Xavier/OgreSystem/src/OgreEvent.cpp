@@ -44,8 +44,8 @@ Event::~Event()
 
     for (; iter != end_iter; ++iter)
     {
-        iter->second->d_event = 0;
-        iter->second->d_subscriber->cleanup();
+        iter->second->m_event = 0;
+        iter->second->m_subscriber->cleanup();
     }
 
     d_slots.clear();
@@ -73,7 +73,7 @@ void Event::operator()(EventArgs& args)
 
     // execute all subscribers, updating the 'handled' state as we go
     for (; iter != end_iter; ++iter)
-        if ((*iter->second->d_subscriber)(args))
+        if ((*iter->second->m_subscriber)(args))
             ++args.handled;
 }
 

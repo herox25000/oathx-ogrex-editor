@@ -1,16 +1,25 @@
 #ifndef _____OgreRefCounted_h_
 #define _____OgreRefCounted_h_
 
-// Start of Ogre namespace section
 namespace Ogre
 {
-	/*!
-	\brief
-		Simple, generic, reference counted pointer class.  This is primarily here
-		for use by the Events system to track when to delete slot bindings.
+	/**
+	* \ingroup : OgreSystem
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+	*
+	* \VERSION : 1.0
+	*
+	* \@date   : 2012-03-16
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
 	*/
-	template<typename T>
-	class RefCounted
+	template<typename T> class RefCounted
 	{
 	public:
 		/*!
@@ -18,8 +27,8 @@ namespace Ogre
 			Default constructor.
 		*/
 		RefCounted() :
-			d_object(0),
-			d_count(0)
+			m_object(0),
+			m_count(0)
 		{
 		}
 
@@ -28,8 +37,8 @@ namespace Ogre
 			Contruct a RefCounted object that wraps the pointer \a ob.
 		*/
 		RefCounted(T* ob) :
-			d_object(ob),
-			d_count((ob != 0) ? new unsigned int(1) : 0)
+			m_object(ob),
+			m_count((ob != 0) ? new unsigned int(1) : 0)
 		{
 		}
 
@@ -38,10 +47,10 @@ namespace Ogre
 			Copy constructor
 		*/
 		RefCounted(const RefCounted<T>& other) :
-			d_object(other.d_object),
-			d_count(other.d_count)
+			m_object(other.m_object),
+			m_count(other.m_count)
 		{
-			if (d_count)
+			if (m_count)
 				addRef();
 		}
 
@@ -52,7 +61,7 @@ namespace Ogre
 		*/
 		~RefCounted()
 		{
-			if (d_object)
+			if (m_object)
 				release();
 		}
 
@@ -66,13 +75,13 @@ namespace Ogre
 		{
 			if (*this != other)
 			{
-				if (d_object)
+				if (m_object)
 					release();
 
-				d_object = other.d_object;
-				d_count = d_object ? other.d_count : 0;
+				m_object = other.m_object;
+				m_count = m_object ? other.m_count : 0;
 
-				if (d_count)
+				if (m_count)
 					addRef();
 			}
 
@@ -86,7 +95,7 @@ namespace Ogre
 		*/
 		bool operator==(const RefCounted<T>& other) const
 		{
-			return d_object == other.d_object;
+			return m_object == other.m_object;
 		}
 
 		/*!
@@ -96,7 +105,7 @@ namespace Ogre
 		*/
 		bool operator!=(const RefCounted<T>& other) const
 		{
-			return d_object != other.d_object;
+			return m_object != other.m_object;
 		}
 
 		/*!
@@ -106,12 +115,12 @@ namespace Ogre
 		*/
 		const T& operator*() const
 		{
-			return *d_object;
+			return *m_object;
 		}
 
 		T& operator*()
 		{
-			return *d_object;
+			return *m_object;
 		}
 
 		/*!
@@ -120,12 +129,12 @@ namespace Ogre
 		*/
 		const T* operator->() const
 		{
-			return d_object;
+			return m_object;
 		}
 
 		T* operator->()
 		{
-			return d_object;
+			return m_object;
 		}
 
 		/*!
@@ -134,7 +143,7 @@ namespace Ogre
 		*/
 		bool isValid() const
 		{
-			return d_object != 0;
+			return m_object != 0;
 		}
 
 	private:
@@ -144,7 +153,7 @@ namespace Ogre
 		*/
 		void addRef()
 		{
-			++*d_count;
+			++*m_count;
 		}
 
 		/*!
@@ -154,19 +163,18 @@ namespace Ogre
 		*/
 		void release()
 		{
-			if (!--*d_count)
+			if (!--*m_count)
 			{
-				delete d_object;
-				delete d_count;
-				d_object = 0;
-				d_count = 0;
+				delete m_object;
+				delete m_count;
+				m_object = 0;
+				m_count = 0;
 			}
 		}
 
-		T* d_object;            //! pointer to the object.
-		unsigned int* d_count;  //! pointer to the shared counter object.
+		T*				m_object; //! pointer to the object.
+		unsigned int*	m_count;  //! pointer to the shared counter object.
 	};
+}
 
-} // End of  Ogre namespace section
-
-#endif  // end of guard _CEGUIRefCounted_h_
+#endif

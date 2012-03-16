@@ -11,7 +11,7 @@ namespace Ogre
 	 * \return 
 	 */
 	EventSet::EventSet() :
-		d_muted(false)
+		m_muted(false)
 	{
 	}
 
@@ -39,7 +39,7 @@ namespace Ogre
 			//OGRE_EXCEPT(AlreadyExistsException("An event named '" + name + "' already exists in the EventSet."));
 		}
 
-		d_events[name] = new Event(name);
+		m_events[name] = new Event(name);
 	}
 
 	/**
@@ -48,12 +48,12 @@ namespace Ogre
 	 */
 	void EventSet::removeEvent(const String& name)
 	{
-		EventMap::iterator pos = d_events.find(name);
+		EventMap::iterator pos = m_events.find(name);
 
-		if (pos != d_events.end())
+		if (pos != m_events.end())
 		{
 			delete pos->second;
-			d_events.erase(pos);
+			m_events.erase(pos);
 		}
 
 	}
@@ -64,15 +64,15 @@ namespace Ogre
 	 */
 	void EventSet::removeAllEvents(void)
 	{
-		EventMap::iterator pos = d_events.begin();
-		EventMap::iterator end = d_events.end()	;
+		EventMap::iterator pos = m_events.begin();
+		EventMap::iterator end = m_events.end()	;
 
 		for (; pos != end; ++pos)
 		{
 			delete pos->second;
 		}
 
-		d_events.clear();
+		m_events.clear();
 	}
 
 	/**
@@ -82,7 +82,7 @@ namespace Ogre
 	 */
 	bool EventSet::isEventPresent(const String& name)
 	{
-		return (d_events.find(name) != d_events.end());
+		return (m_events.find(name) != m_events.end());
 	}
 
 	/**
@@ -133,7 +133,7 @@ namespace Ogre
 	 */
 	bool EventSet::isMuted(void) const
 	{
-		return d_muted;
+		return m_muted;
 	}
 
 	/**
@@ -142,7 +142,7 @@ namespace Ogre
 	 */
 	void EventSet::setMutedState(bool setting)
 	{
-		d_muted = setting;
+		m_muted = setting;
 	}
 
 
@@ -154,15 +154,15 @@ namespace Ogre
 	 */
 	Event* EventSet::getEventObject(const String& name, bool autoAdd)
 	{
-		EventMap::iterator pos = d_events.find(name);
+		EventMap::iterator pos = m_events.find(name);
 
 		// if event did not exist, add it and then find it.
-		if (pos == d_events.end())
+		if (pos == m_events.end())
 		{
 			if (autoAdd)
 			{
 				addEvent(name);
-				return d_events.find(name)->second;
+				return m_events.find(name)->second;
 			}
 			else
 			{
@@ -184,7 +184,7 @@ namespace Ogre
 		Event* ev = getEventObject(name);
 
 		// fire the event if present and set is not muted
-		if ((ev != 0) && !d_muted)
+		if ((ev != 0) && !m_muted)
 			(*ev)(args);
 	}
 } // End of  Ogre namespace section

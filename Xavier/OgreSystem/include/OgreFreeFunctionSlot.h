@@ -3,33 +3,50 @@
 
 #include "OgreSlotFunctorBase.h"
 
-// Start of Ogre namespace section
 namespace Ogre
 {
-	/*!
-	\brief
-		Slot functor class that calls back via a free function pointer.
+	/**
+	* \ingroup : OgreSystem
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+	*
+	* \VERSION : 1.0
+	*
+	* \@date   : 2012-03-16
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
 	*/
 	class FreeFunctionSlot : public SlotFunctorBase
 	{
 	public:
-		//! Slot function type.
 		typedef bool (SlotFunction)(const EventArgs&);
 
+		/**
+		 *
+		 * \param func 
+		 * \return 
+		 */
 		FreeFunctionSlot(SlotFunction* func) :
-			d_function(func)
+			m_count(func)
 		{}
 
+		/**
+		 *
+		 * \return 
+		 */
 		virtual bool operator()(const EventArgs& args)
 		{
-			return d_function(args);
+			return m_count(args);
 		}
 
 	private:
-		SlotFunction* d_function;
+		SlotFunction* m_count;
 	};
+}
 
-
-} // End of  Ogre namespace section
-
-#endif  // end of guard _CEGUIFreeFunctionSlot_h_
+#endif

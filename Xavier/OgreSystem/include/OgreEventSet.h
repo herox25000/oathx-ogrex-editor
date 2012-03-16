@@ -258,9 +258,9 @@ namespace Ogre
 		EventSet& operator=(EventSet&) {return *this;}
 
 		typedef std::map<String, Event*>	EventMap;
-		EventMap	d_events;
+		EventMap	m_events;
 
-		bool	d_muted;	//!< true if events for this EventSet have been muted.
+		bool		m_muted;	//!< true if events for this EventSet have been muted.
 	};
 
 } // End of  Ogre namespace section

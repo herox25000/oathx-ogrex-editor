@@ -3,36 +3,54 @@
 
 #include "OgreSlotFunctorBase.h"
 
-// Start of Ogre namespace section
 namespace Ogre
 {
-	/*!
-	\brief
-		Slot template class that creates a functor that calls back via a class
-		member function.
+	/**
+	* \ingroup : OgreSystem
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+	*
+	* \VERSION : 1.0
+	*
+	* \@date   : 2012-03-16
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
 	*/
-	template<typename T>
-	class MemberFunctionSlot : public SlotFunctorBase
+	template<typename T> class MemberFunctionSlot : public SlotFunctorBase
 	{
 	public:
-		//! Member function slot type.
 		typedef bool(T::*MemberFunctionType)(const EventArgs&);
 
+		/**
+		 *
+		 * \param func 
+		 * \param obj 
+		 * \return 
+		 */
 		MemberFunctionSlot(MemberFunctionType func, T* obj) :
-			d_function(func),
-			d_object(obj)
+			m_count(func),
+			m_object(obj)
 		{}
 
+		/**
+		 *
+		 * \return 
+		 */
 		virtual bool operator()(const EventArgs& args)
 		{
-			return (d_object->*d_function)(args);
+			return (m_object->*m_count)(args);
 		}
 
 	private:
-		MemberFunctionType d_function;
-		T* d_object;
+		MemberFunctionType	m_count;
+		T*					m_object;
 	};
 
-} // End of  Ogre namespace section
+}
 
-#endif  // end of guard _CEGUIMemberFunctionSlot_h_
+#endif
