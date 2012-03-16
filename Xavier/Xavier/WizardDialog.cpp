@@ -147,7 +147,7 @@ void	CWizardDialog::OnBnClickedOk()
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
 		{
-			::SendMessage(pMainFrame->GetFileView()->m_hWnd, MSG_USER_CREATE, NULL, NULL);
+			
 		}
 	}
 

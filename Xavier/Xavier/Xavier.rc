@@ -223,6 +223,10 @@ BEGIN
             END
         END
     END
+    POPUP "工具(T)"
+    BEGIN
+        MENUITEM "<User defined tools>",        ID_TOOLS_ENTRY
+    END
     POPUP "帮助(&H)"
     BEGIN
         MENUITEM "关于 Xavier(&A)...",            ID_APP_ABOUT
@@ -284,6 +288,16 @@ BEGIN
     MENUITEM "Office 2007 (黑色样式)(&L)",      ID_VIEW_APPLOOK_OFF_2007_BLACK
     MENUITEM "Office 2007 (银色样式)(&S)",      ID_VIEW_APPLOOK_OFF_2007_SILVER
     MENUITEM "Office 2007 (水绿色样式)(&A)",     ID_VIEW_APPLOOK_OFF_2007_AQUA
+END
+
+IDR_MENU_ARGS MENU 
+BEGIN
+    MENUITEM "_DUMMY_",                     ID_
+END
+
+IDR_MENU_DIRS MENU 
+BEGIN
+    MENUITEM "dirs",                        65535
 END
 
 
@@ -420,6 +434,12 @@ STRINGTABLE
 BEGIN
     IDP_OLE_INIT_FAILED     "OLE 初始化失败。请确保 OLE 库是正确的版本。"
     IDS_STR_PROJECT_CREATE_ERR "错误！未设置项目名称"
+    ID_TOOLS_ENTRY          "<User defined tools>\n<User defined tools>"
+    ID_USER_TOOL1           "<User1>"
+    ID_USER_TOOL2           "2"
+    ID_USER_TOOL3           "3"
+    ID_USER_TOOL4           "4"
+    ID_USER_TOOL5           "<User5>"
 END
 
 STRINGTABLE 
@@ -556,6 +576,11 @@ STRINGTABLE
 BEGIN
     IDS_EXPLORER            "资源管理器"
     IDS_EDIT_MENU           "编辑"
+    ID_USER_TOOL6           "<User6>"
+    ID_USER_TOOL7           "<User7>"
+    ID_USER_TOOL8           "ID_USER_TOOL5"
+    ID_USER_TOOL9           "ID_USER_TOOL5"
+    ID_USER_TOOL10          "ID_USER_TOOL5"
 END
 
 STRINGTABLE 
