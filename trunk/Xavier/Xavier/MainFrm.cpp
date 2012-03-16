@@ -442,6 +442,18 @@ BOOL	CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 		}
 	}
 
+	CUserToolsManager* pUserToolsManager = theApp.GetUserToolsManager();
+	if (pUserToolsManager != NULL && pUserToolsManager->GetUserTools().IsEmpty())
+	{
+		CUserTool* pTool1 = pUserToolsManager->CreateNewTool();
+		pTool1->m_strLabel = _T("&Notepad");
+		pTool1->SetCommand(_T("notepad.exe"));
+
+		CUserTool* pTool3 = pUserToolsManager->CreateNewTool();
+		pTool3->m_strLabel = _T("&Windows Explorer");
+		pTool3->SetCommand(_T("explorer.exe"));
+	}
+
 	return TRUE;
 }
 

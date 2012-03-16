@@ -47,7 +47,6 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
 	if (!m_wFileView.Create(dwViewStyle, rectDummy, this, 4))
 	{
-		TRACE0("未能创建文件视图\n");
 		return -1;
 	}
 
@@ -68,7 +67,8 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	OnChangeVisualStyle();
 
 	m_wToolBar.SetPaneStyle(m_wToolBar.GetPaneStyle() | CBRS_TOOLTIPS | CBRS_FLYBY);
-	m_wToolBar.SetPaneStyle(m_wToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
+	m_wToolBar.SetPaneStyle(m_wToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC |CBRS_BORDER_TOP | 
+		CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
 	m_wToolBar.SetOwner(this);
 	m_wToolBar.SetRouteCommandsViaFrame(FALSE);
 
@@ -152,7 +152,6 @@ void	CFileView::AdjustLayout()
 void	CFileView::OnProperties()
 {
 	AfxMessageBox(_T("属性...."));
-
 }
 
 /**
