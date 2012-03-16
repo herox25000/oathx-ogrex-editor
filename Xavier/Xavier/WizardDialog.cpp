@@ -107,6 +107,10 @@ void	CWizardDialog::OnBnClickedOk()
 	GetDlgItemText(IDC_EDIT_PROJECT_NAME, m_csName);
 	if (m_csName.IsEmpty())
 	{
+		CString err;
+		err.LoadString(IDS_STR_PROJECT_CREATE_ERR);
+
+		TKLogEvent(err.GetBuffer(), LML_CRITICAL);
 		AfxMessageBox(IDS_STR_PROJECT_CREATE_ERR);
 	}
 	else
