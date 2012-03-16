@@ -35,7 +35,7 @@ public:
 
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
-	Ogre::EditSystem*		m_pSystem;
+	Ogre::AppEdit*			m_pAppEdit;
 	XavierLog*				m_pXavierLog;
 public:
 	/**

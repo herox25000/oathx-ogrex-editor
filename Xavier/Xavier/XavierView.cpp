@@ -2,10 +2,7 @@
 #include "Xavier.h"
 #include "XavierDoc.h"
 #include "XavierView.h"
-#include "OgreEditSystemPrerequisites.h"
-#include "OgreBaseEditor.h"
-#include "OgreRenderWindowEditor.h"
-#include "OgreEditSystem.h"
+#include "OgreEditor.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -30,7 +27,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView() : m_bWelcome(FALSE)
+CXavierView::CXavierView()
 {
 
 }
@@ -64,7 +61,7 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	BaseEditorFactory* pFactory = EditSystem::getSingleton().getEditorFactory(FACTORY_RENDERWINDOW);
+	BaseEditorFactory* pFactory = AppEdit::getSingleton().getEditorFactory(FACTORY_RENDERWINDOW);
 	if (pFactory != NULL)
 	{
 		SRenderWindowCreateParams pm;
@@ -73,7 +70,7 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		pm.nWidth		= 800;
 		pm.bFullScreen	= false;
 
-		EditSystem::getSingleton().addEditor(pFactory->create(&pm));
+		AppEdit::getSingleton().addEditor(pFactory->create(&pm));
 	}
 
 	// …Ë÷√‰÷»æ ±÷”
@@ -108,7 +105,7 @@ void	CXavierView::OnSize(UINT nType, int cx, int cy)
 	GetClientRect(&rcView);
 
 	ViewPortEditor* pViewEditor = static_cast<ViewPortEditor*>(
-		EditSystem::getSingletonPtr()->getEditor(EDIT_VIEWPORT)
+		AppEdit::getSingletonPtr()->getEditor(EDIT_VIEWPORT)
 		);
 	if (pViewEditor != NULL)
 	{
@@ -126,7 +123,7 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	switch(nIDEvent)
 	{
 	case IDT_RENDERTIME:
-		EditSystem::getSingletonPtr()->update();
+		AppEdit::getSingletonPtr()->update();
 		break;
 	}
 

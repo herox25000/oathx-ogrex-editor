@@ -80,12 +80,7 @@ public:
 	 * \return 
 	 */
 	virtual ~CXavierView();
-	
-	/**
-	 *
-	 * \return 
-	 */
-	//virtual	BOOL				DrawWelcome();
+
 #ifdef _DEBUG
 	/**
 	 *
@@ -152,9 +147,6 @@ protected:
 	 */
 	afx_msg void				OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
-
-public:
-	BOOL						m_bWelcome;
 };
 
 #ifndef _DEBUG

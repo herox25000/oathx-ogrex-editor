@@ -111,17 +111,17 @@ void	CWizardDialog::OnBnClickedOk()
 	}
 	else
 	{
-		BaseEditorFactory* pSceneFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
+		BaseEditorFactory* pSceneFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
 		if (pSceneFactory != NULL)
 		{
 			SSceneManagerCreateParam cm;
 			cm.sName				= NAME_SCENEMANAGER;
 			cm.typeMask				= GetSceneTypeMask(m_typeMask);
 
-			EditSystem::getSingletonPtr()->addEditor(pSceneFactory->create(&cm));
+			AppEdit::getSingletonPtr()->addEditor(pSceneFactory->create(&cm));
 		}
 
-		BaseEditorFactory* pCameraFactory = EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_CAMERA);
+		BaseEditorFactory* pCameraFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_CAMERA);
 		if (pCameraFactory != NULL)
 		{
 			SCameraCreateParam cm;
@@ -132,16 +132,16 @@ void	CWizardDialog::OnBnClickedOk()
 			cm.fYaw					= 0;
 			cm.fPitch				= 0;
 
-			EditSystem::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
+			AppEdit::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
 		}
 
-		BaseEditorFactory* pViewFactory	= EditSystem::getSingletonPtr()->getEditorFactory(FACTORY_VIEWPORT);
+		BaseEditorFactory* pViewFactory	= AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_VIEWPORT);
 		if (pViewFactory != NULL)
 		{
 			SViewPortCreateParam cm;
 			cm.background			= ColourValue(0,0,0,0);
 
-			EditSystem::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
+			AppEdit::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
 		}
 
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
