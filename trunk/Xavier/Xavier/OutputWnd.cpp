@@ -55,7 +55,7 @@ int		COutputWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1; 
 	}
 
-	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL;
+	const DWORD dwStyle = LBS_NOINTEGRALHEIGHT | WS_CHILD | WS_VISIBLE | WS_HSCROLL | WS_VSCROLL | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS;
 	if (!m_wBuild.Create(dwStyle, rectDummy, &m_wTabs, 2) ||
 		!m_wDebug.Create(dwStyle, rectDummy, &m_wTabs, 3) ||
 		!m_wFind.Create(dwStyle, rectDummy, &m_wTabs, 4))
