@@ -29,51 +29,48 @@ namespace Ogre
 	class OgreSystem_Export_API SubscriberSlot
 	{
 	public:
-		/*!
-		\brief
-			Default constructor.  Creates a SubscriberSlot with no bound slot.
-		*/
+	
+		/**
+		 *
+		 * \return 
+		 */
 		SubscriberSlot();
 
-		/*!
-		\brief
-			Creates a SubscriberSlot that is bound to a free function.
-		*/
+		/**
+		 *
+		 * \param func 
+		 * \return 
+		 */
 		SubscriberSlot(FreeFunctionSlot::SlotFunction* func);
 
-		/*!
-		\brief
-			Destructor.  Note this is non-virtual, which should be telling you not
-			to sub-class!
-		*/
+		/**
+		 *
+		 * \return 
+		 */
 		~SubscriberSlot();
 
-		/*!
-		\brief
-			Invokes the slot functor that is bound to this Subscriber.  Returns
-			whatever the slot returns, unless there is not slot bound when false is
-			always returned.
-		*/
-		bool operator()(const EventArgs& args) const
+		/**
+		 *
+		 * \return 
+		 */
+		bool	operator()(const EventArgs& args) const
 		{
-			return (*d_functor_impl)(args);
+			return (*m_functor_impl)(args);
 		}
 
-		/*!
-		\brief
-			Returns whether the SubscriberSlot is internally connected (bound).
-		*/
-		bool connected() const
+		/**
+		 *
+		 * \return 
+		 */
+		bool	connected() const
 		{
-			return d_functor_impl != 0;
+			return m_functor_impl != 0;
 		}
 
-		/*!
-		\brief
-			Disconnects the slot internally and performs any required cleanup
-			operations.
-		*/
-		void cleanup();
+		/**
+		 *
+		 */
+		void	cleanup();
 
 		// templatised constructors
 		/*!
@@ -82,7 +79,7 @@ namespace Ogre
 		*/
 		template<typename T>
 		SubscriberSlot(bool (T::*function)(const EventArgs&), T* obj) :
-			d_functor_impl(new MemberFunctionSlot<T>(function, obj))
+			m_functor_impl(new MemberFunctionSlot<T>(function, obj))
 		{}
 
 		/*!
@@ -91,7 +88,7 @@ namespace Ogre
 		*/
 		template<typename T>
 		SubscriberSlot(const FunctorReferenceBinder<T>& binder) :
-			d_functor_impl(new FunctorReferenceSlot<T>(binder.d_functor))
+			m_functor_impl(new FunctorReferenceSlot<T>(binder.d_functor))
 		{}
 
 		/*!
@@ -100,7 +97,7 @@ namespace Ogre
 		*/
 		template<typename T>
 		SubscriberSlot(const T& functor) :
-			d_functor_impl(new FunctorCopySlot<T>(functor))
+			m_functor_impl(new FunctorCopySlot<T>(functor))
 		{}
 
 		/*!
@@ -109,14 +106,14 @@ namespace Ogre
 		*/
 		template<typename T>
 		SubscriberSlot(T* functor) :
-			d_functor_impl(new FunctorPointerSlot<T>(functor))
+			m_functor_impl(new FunctorPointerSlot<T>(functor))
 		{}
 
 	private:
 		//! Points to the internal functor object to which we are bound
-		SlotFunctorBase* d_functor_impl;
+		SlotFunctorBase* m_functor_impl;
 	};
 
-} // End of  Ogre namespace section
+}
 
-#endif  // end of guard _CEGUISubscriberSlot_h_
+#endif

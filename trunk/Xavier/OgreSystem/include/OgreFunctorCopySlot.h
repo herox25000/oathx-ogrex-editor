@@ -3,31 +3,48 @@
 
 #include "OgreSlotFunctorBase.h"
 
-// Start of Ogre namespace section
 namespace Ogre
 {
-	/*!
-	\brief
-		Slot template class that creates a functor that calls back via a copy of a
-		functor object.
+	/**
+	* \ingroup : OgreSystem
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+	*
+	* \VERSION : 1.0
+	*
+	* \@date   : 2012-03-16
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
 	*/
-	template<typename T>
-	class FunctorCopySlot : public SlotFunctorBase
+	template<typename T> class FunctorCopySlot : public SlotFunctorBase
 	{
 	public:
+		/**
+		 *
+		 * \param functor 
+		 * \return 
+		 */
 		FunctorCopySlot(const T& functor) :
-			d_functor(functor)
+			m_functor(functor)
 		{}
 
+		/**
+		 *
+		 * \return 
+		 */
 		virtual bool operator()(const EventArgs& args)
 		{
-			return d_functor(args);
+			return m_functor(args);
 		}
 
 	private:
-		T d_functor;
+		T			m_functor;
 	};
+}
 
-} // End of  Ogre namespace section
-
-#endif  // end of guard _CEGUIFunctorCopySlot_h_
+#endif
