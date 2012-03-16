@@ -18,7 +18,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
- CXavierApp::CXavierApp() : m_pSystem(NULL), m_pXavierLog(NULL)
+ CXavierApp::CXavierApp() : m_pAppEdit(NULL), m_pXavierLog(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -112,12 +112,12 @@ int		CXavierApp::ExitInstance()
 	if (m_pXavierLog != NULL)
 		delete m_pXavierLog;
 
-	if (m_pSystem != NULL)
+	if (m_pAppEdit != NULL)
 	{
-		m_pSystem->destroySystem();
+		m_pAppEdit->destroySystem();
 		
-		delete m_pSystem;
-		m_pSystem = NULL;
+		delete m_pAppEdit;
+		m_pAppEdit = NULL;
 	}
 	
 	return CWinAppEx::ExitInstance();
@@ -230,11 +230,11 @@ void	CXavierApp::ShowSplashDialog()
 	pCsw->ShowSplash();
 	
 	// 创建编辑系统
-	m_pSystem = new Ogre::EditSystem();
+	m_pAppEdit = new Ogre::AppEdit();
 #ifndef _DEBUG
-	m_pSystem->createSystem("plugins.cfg", "resources.cfg");
+	m_pAppEdit->createSystem("plugins.cfg", "resources.cfg");
 #else
-	m_pSystem->createSystem("plugins_d.cfg", "resources_d.cfg");
+	m_pAppEdit->createSystem("plugins_d.cfg", "resources_d.cfg");
 #endif
 
 	m_pXavierLog = new XavierLog();
