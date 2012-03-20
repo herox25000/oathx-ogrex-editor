@@ -115,6 +115,10 @@ void	CWizardDialog::OnBnClickedOk()
 	}
 	else
 	{
+		AppEdit::getSingletonPtr()->delEditor(EDIT_VIEWPORT);
+		AppEdit::getSingletonPtr()->delEditor(EDIT_CAMERA);
+		AppEdit::getSingletonPtr()->delEditor(EDIT_SCENEMANAGER);
+
 		BaseEditorFactory* pSceneFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
 		if (pSceneFactory != NULL)
 		{

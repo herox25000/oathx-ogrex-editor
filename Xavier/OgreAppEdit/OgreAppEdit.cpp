@@ -207,14 +207,26 @@ namespace Ogre
 	 */
 	void		AppEdit::delEditor(BaseEditor* pEditor)
 	{
-		StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
-		if ( it != m_Editor.end() )
+		if (pEditor != NULL)
 		{
+			StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
+			if ( it != m_Editor.end() )
+			{
 #ifdef _OUTPUT_LOG
-			TKLogEvent("É¾³ý±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
+				TKLogEvent("É¾³ý±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
 #endif
-			delete it->second; it = m_Editor.erase(it);
+				delete it->second; it = m_Editor.erase(it);
+			}
 		}
+	}
+
+	/**
+	 *
+	 * \param typeName 
+	 */
+	void		AppEdit::delEditor(const String& typeName)
+	{
+		delEditor(getEditor(typeName));
 	}
 
 	/** destroy ogre edit system

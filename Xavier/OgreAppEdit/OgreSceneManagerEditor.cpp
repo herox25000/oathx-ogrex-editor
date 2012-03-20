@@ -25,6 +25,7 @@ namespace Ogre
 	 */
 	SceneManagerEditor::~SceneManagerEditor(void)
 	{
+		Root::getSingletonPtr()->destroySceneManager(m_pSceneManager);
 	}
 
 	/**
