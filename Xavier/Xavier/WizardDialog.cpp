@@ -143,7 +143,7 @@ void	CWizardDialog::OnBnClickedOk()
 		if (pViewFactory != NULL)
 		{
 			SViewPortCreateParam cm;
-			cm.background			= ColourValue(0,0,0,0);
+			cm.background			= ColourValue(0,1,0,0);
 
 			AppEdit::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
 		}
