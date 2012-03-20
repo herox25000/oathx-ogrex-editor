@@ -4,6 +4,7 @@
 #include "OgreSceneManagerEditor.h"
 #include "OgreCameraEditor.h"
 #include "OgreViewPortEditor.h"
+#include "OgreGlobalEventSet.h"
 
 namespace Ogre
 {
@@ -106,6 +107,9 @@ namespace Ogre
 		registerEditorFactory(new SceneManagerEditorFactory());
 		registerEditorFactory(new CameraEditorFactory());
 		registerEditorFactory(new ViewPortEditorFactory());
+		
+		//
+		new GlobalEventSet();
 
 		return true;
 	}
@@ -229,6 +233,8 @@ namespace Ogre
 		{	
 			delete itFactory->second; itFactory = m_Factory.erase(itFactory);
 		}
+
+		delete GlobalEventSet::getSingletonPtr();
 
 		if (m_pRoot != NULL)
 			delete m_pRoot;
