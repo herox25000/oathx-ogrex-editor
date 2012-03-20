@@ -102,7 +102,11 @@ namespace Ogre
 	 */
 	PropertySet::~PropertySet()
 	{
-
+		HashProperty::iterator it = m_HashProperty.begin();
+		while( it != m_HashProperty.end() )
+		{
+			delete it->second; it = m_HashProperty.erase(it);
+		}
 	}
 
 	/**
