@@ -104,6 +104,12 @@ namespace Ogre
 		 */
 		virtual void				delEditor(BaseEditor* pEditor);
 
+		/** 注销编辑对象
+		 *
+		 * \param typeName 
+		 */
+		virtual void				delEditor(const String& typeName);
+
 		/** 销毁编辑系统
 		 *
 		 */

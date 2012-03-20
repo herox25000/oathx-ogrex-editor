@@ -45,6 +45,7 @@ namespace Ogre
 	 */
 	ViewPortEditor::~ViewPortEditor(void)
 	{
+		m_pWindow->removeViewport(m_pViewPort->getZOrder());
 	}
 
 	/**

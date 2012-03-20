@@ -48,6 +48,9 @@ namespace Ogre
 	 */
 	CameraEditor::~CameraEditor(void)
 	{
+		SceneManager* pSceneManager = m_pCamera->getSceneManager();
+		if (pSceneManager)
+			pSceneManager->destroyCamera(m_pCamera);
 	}
 	
 	/**
