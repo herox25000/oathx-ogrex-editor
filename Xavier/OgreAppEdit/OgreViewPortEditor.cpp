@@ -33,6 +33,9 @@ namespace Ogre
 		}
 
 		setTypeName(EDIT_VIEWPORT);
+		
+		// add property
+		addProperty("background", Any(ColourValue(0,0,0,0)), "视口背景颜色");
 	}
 
 	/** 析构函数
