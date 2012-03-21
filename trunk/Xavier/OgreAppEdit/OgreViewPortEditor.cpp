@@ -35,7 +35,12 @@ namespace Ogre
 		setTypeName(EDIT_VIEWPORT);
 		
 		// add property
-		addProperty("background", Any(ColourValue(0,0,0,0)), "视口背景颜色");
+		addProperty("background", Any(background),
+			"视口背景颜色");
+		addProperty("Width", Any(AppEdit::getSingletonPtr()->getRenderWindow()->getWidth()),
+			"视口宽度");
+		addProperty("Height",Any(AppEdit::getSingletonPtr()->getRenderWindow()->getHeight()),
+			"视口高度");
 	}
 
 	/** 析构函数
@@ -66,6 +71,8 @@ namespace Ogre
 		if (m_pCamera != NULL && pRenderWindow != NULL)
 		{
 			pRenderWindow->windowMovedOrResized();
+			
+			//fireEvent("");
 
 			m_pCamera->setAspectRatio(
 				Ogre::Real(m_pViewPort->getActualWidth()) / Ogre::Real(m_pViewPort->getActualHeight())
