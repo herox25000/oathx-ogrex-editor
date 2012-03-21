@@ -7,6 +7,8 @@
 #include "OgreSceneManagerEditor.h"
 #include "OgreCameraEditor.h"
 #include "OgreViewPortEditor.h"
+#include "OgreXMLSerialize.h"
+#include "OgreXMLSerializeEditor.h"
 #include "OgreAppEdit.h"
 
 #endif

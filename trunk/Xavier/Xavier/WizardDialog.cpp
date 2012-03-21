@@ -44,7 +44,7 @@ BEGIN_MESSAGE_MAP(CWizardDialog, CDialog)
 	ON_BN_CLICKED(IDOK,							&CWizardDialog::OnBnClickedOk)
 	ON_BN_CLICKED(IDCANCEL,						&CWizardDialog::OnBnClickedCancel)
 	ON_CBN_SELCHANGE(IDC_COMBO_SCENEMANAGER,	&CWizardDialog::OnCbnSelchangeComboScenemanager)
-	ON_BN_CLICKED(IDC_BUTTON_FINDDIR, &CWizardDialog::OnBnClickedButtonFinddir)
+	ON_BN_CLICKED(IDC_BUTTON_FINDDIR,			&CWizardDialog::OnBnClickedButtonFinddir)
 END_MESSAGE_MAP()
 
 /**
@@ -77,19 +77,6 @@ BOOL	CWizardDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
-	/** Classification of a scene to allow a decision of what type of
-	SceenManager to provide back to the application.
-	
-	enum SceneType
-	{
-		ST_GENERIC = 1,
-		ST_EXTERIOR_CLOSE = 2,
-		ST_EXTERIOR_FAR = 4,
-		ST_EXTERIOR_REAL_FAR = 8,
-		ST_INTERIOR = 16
-	};
-	*/
-
 	m_cbSceneTypeMask.AddString("ST_GENERIC");
 	m_cbSceneTypeMask.AddString("ST_EXTERIOR_CLOSE");
 	m_cbSceneTypeMask.AddString("ST_EXTERIOR_FAR");
@@ -104,8 +91,9 @@ BOOL	CWizardDialog::OnInitDialog()
  */
 void	CWizardDialog::OnBnClickedOk()
 {
-	GetDlgItemText(IDC_EDIT_PROJECT_NAME, m_csName);
-	if (m_csName.IsEmpty())
+	GetDlgItemText(IDC_EDIT_PROJECT_NAME,	m_csName);
+	GetDlgItemText(IDC_EDIT_PROJECT_DIR,	m_csPath);
+	if (m_csName.IsEmpty() || m_csPath.IsEmpty())
 	{
 		CString err;
 		err.LoadString(IDS_STR_PROJECT_CREATE_ERR);
@@ -118,13 +106,17 @@ void	CWizardDialog::OnBnClickedOk()
 		// 清空原有的编辑工具
 		AppEdit::getSingletonPtr()->clearEditor();
 
+		// 窗口编辑器
 		BaseEditorFactory* pWindowFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_RENDERWINDOW);
 		if (pWindowFactory != NULL)
 		{
 			SRenderWindowCreateParams pm;
+			pm.typeName				= EDIT_RENDERWINDOW;
+
 			AppEdit::getSingleton().addEditor(pWindowFactory->create(&pm));
 		}
-
+		
+		// 场景编辑器
 		BaseEditorFactory* pSceneFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
 		if (pSceneFactory != NULL)
 		{
@@ -134,11 +126,13 @@ void	CWizardDialog::OnBnClickedOk()
 
 			AppEdit::getSingletonPtr()->addEditor(pSceneFactory->create(&cm));
 		}
-
+		
+		// 摄像机编辑器
 		BaseEditorFactory* pCameraFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_CAMERA);
 		if (pCameraFactory != NULL)
 		{
 			SCameraCreateParam cm;
+			cm.typeName				= EDIT_CAMERA;
 			cm.vPos					= Vector3(0,50,500);
 			cm.vLookAt				= Vector3(0,100,-300);
 			cm.fNearClipDistance	= 5;
@@ -148,7 +142,8 @@ void	CWizardDialog::OnBnClickedOk()
 
 			AppEdit::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
 		}
-
+		
+		// 视口编辑器
 		BaseEditorFactory* pViewFactory	= AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_VIEWPORT);
 		if (pViewFactory != NULL)
 		{
@@ -158,11 +153,21 @@ void	CWizardDialog::OnBnClickedOk()
 			AppEdit::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
 		}
 		
-		// 通知视图窗口，项目已创建
+		// 文档编辑器
+		BaseEditorFactory* pXMLSerFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_XMLSERIALIZE);
+		if (pXMLSerFactory != NULL)
+		{
+			SXMLSerializeCreateParam cm;
+			cm.typeName				= EDIT_XMLSERIALIZE;
+
+			AppEdit::getSingletonPtr()->addEditor(pXMLSerFactory->create(&cm));
+		}
+		
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
 		{
-			::SendMessage(pMainFrame->GetActiveView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
+			// 通知文件窗口
+			::SendMessage(pMainFrame->GetFileView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
 		}
 	}
 

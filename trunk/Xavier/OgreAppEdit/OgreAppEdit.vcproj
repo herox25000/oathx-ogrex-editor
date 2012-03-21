@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="../OgreSystem/tinyxml;../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGREAPPEDIT_EXPORTS;OGREAPPEDIT_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -199,6 +199,10 @@
 				RelativePath=".\OgreViewPortEditor.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\OgreXMLSerializeEditor.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -235,6 +239,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreViewPortEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreXMLSerializeEditor.h"
 				>
 			</File>
 		</Filter>

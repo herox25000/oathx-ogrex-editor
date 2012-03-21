@@ -24,10 +24,10 @@ namespace Ogre
 	class OgreAppEdit_Export_API AppEdit : public Singleton<AppEdit>
 	{
 		// ±à¼­¹¤³§ÈÝÆ÷
-		typedef HashMap<String, BaseEditorFactory*> StrEditorFactory;
+		typedef std::map<String, BaseEditorFactory*>	StringEditorFactory;
 		
 		// ±à¼­Æ÷ÈÝÆ÷
-		typedef HashMap<String, BaseEditor*>		StrEditor;
+		typedef std::vector<BaseEditor*>				VEditor;
 	public:
 		/** »ñÈ¡±à¼­ÏµÍ³
 		 *
@@ -125,6 +125,19 @@ namespace Ogre
 		 */
 		virtual void				delEditor(const String& typeName);
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual int					getEditorCount();
+
+		/**
+		 *
+		 * \param index 
+		 * \return 
+		 */
+		virtual BaseEditor*			getEditor(int index);
+
 		/** Çå¿Õ±à¼­Æ÷
 		 *
 		 */
@@ -137,9 +150,9 @@ namespace Ogre
 		
 	protected:
 		Root*						m_pRoot;			// ogre root object
-		StrEditorFactory			m_Factory;			// ±à¼­¹¤³§
-		StrEditor					m_Editor;
-		RenderWindow*				m_pRenderWindow;
+		StringEditorFactory			m_Factory;			// ±à¼­¹¤³§
+		VEditor						m_vEditor;
+		RenderWindow*				m_pRenderWindow; 
 	};
 }
 

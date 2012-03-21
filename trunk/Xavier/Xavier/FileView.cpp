@@ -3,7 +3,9 @@
 #include "FileView.h"
 #include "Resource.h"
 #include "Xavier.h"
+#include "MainFrm.h"
 #include "OgreEditor.h"
+
 
 using namespace Ogre;
 
@@ -26,6 +28,7 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_COMMAND(ID_EDIT_CUT,			OnEditCut)
 	ON_COMMAND(ID_EDIT_COPY,		OnEditCopy)
 	ON_COMMAND(ID_EDIT_CLEAR,		OnEditClear)
+	ON_MESSAGE(WM_CREATE_FNISHED,	&CFileView::OnCreateFnished)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
@@ -76,6 +79,82 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	AdjustLayout();
 
 	return 0;
+}
+
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
+{
+	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	if (pMainFrame != NULL)
+	{
+		CString sPath = pMainFrame->GetPath();
+		CString sName = pMainFrame->GetName();
+		
+		// 创建文档
+		XMLSerializeEditor* pEditor = static_cast<XMLSerializeEditor*>(
+			AppEdit::getSingletonPtr()->getEditor(EDIT_XMLSERIALIZE)
+			);
+		if (pEditor != NULL)
+		{
+			/*
+			* 注册创建事件
+			*/
+			pEditor->subscribeEvent(XMLSerializeEditor::EventXMLSerializeCreated, 
+				Event::Subscriber(&CFileView::OnXMLSerializeCreated, this));
+			
+			// 创建文档
+			pEditor->createXMLSerialize(sPath.GetBuffer(), sName.GetBuffer());
+		}
+	}
+
+	return 0;
+}
+
+/**
+ *
+ * \param args 
+ * \return 
+ */
+bool	CFileView::OnXMLSerializeCreated(const Ogre::EventArgs& args)
+{
+	const XMLSerializeCreateEventArgs& evt = static_cast<const XMLSerializeCreateEventArgs&>(args);
+	if (evt.pSerialize != NULL)
+	{
+		/*
+		*	插入文件视图跟项目
+		*/
+		HTREEITEM hRoot = m_wFileView.InsertItem(_T(evt.pSerialize->getName().c_str()), 0, 0);
+		m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+		
+		// 获取编辑实例
+		AppEdit* pTheApp = AppEdit::getSingletonPtr();
+
+		/*
+		* 遍历所有创建的编辑工具
+		*/
+		for (int i=0; i<pTheApp->getEditorCount(); i++)
+		{
+			BaseEditor* pEditor = pTheApp->getEditor(i);
+			if (pEditor != NULL)
+				m_wFileView.InsertItem(_T(pEditor->getTypeName().c_str()), 0, 0, hRoot);
+		}
+
+		m_wFileView.Expand(hRoot, TVE_EXPAND);
+	}
+	
+	// 发送创建完成消息到渲染窗口
+	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	if (pMainFrame != NULL)
+	{
+		::SendMessage(pMainFrame->GetActiveView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
+	}
+	
+	return true;
 }
 
 /** VIEW 窗口尺寸改变

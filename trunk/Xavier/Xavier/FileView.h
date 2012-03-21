@@ -2,6 +2,13 @@
 
 #include "ViewTree.h"
 
+//////////////////////////////////////////////////////////////////////////
+namespace Ogre
+{
+	class EventArgs;
+}
+//////////////////////////////////////////////////////////////////////////
+
 /**
 * \ingroup : Xavier
 *
@@ -88,6 +95,12 @@ public:
 	 */
 	virtual ~CFileView();
 
+	/**
+	 *
+	 * \param args 
+	 */
+	afx_msg bool			OnXMLSerializeCreated(const Ogre::EventArgs& args);
+
 protected:
 	/**
 	 *
@@ -103,6 +116,14 @@ protected:
 	 * \param cy 
 	 */
 	afx_msg void			OnSize(UINT nType, int cx, int cy);
+
+	/**
+	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
+	afx_msg LRESULT			OnCreateFnished(WPARAM wParam, LPARAM lParam);
 
 	/**
 	 *
