@@ -312,6 +312,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XavierMsg.h"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierView.h"
 				>
 			</File>
