@@ -22,7 +22,7 @@ namespace Ogre
 	*
 	*/
 	class OgreAppEdit_Export_API ViewPortEditor : public BaseEditor
-	{
+	{		
 	public:
 		/**	¹¹Ôìº¯Êý
 		 *

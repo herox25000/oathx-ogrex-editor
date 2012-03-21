@@ -27,7 +27,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView()
+CXavierView::CXavierView() : m_bWelcome(FALSE)
 {
 
 }

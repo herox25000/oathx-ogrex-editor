@@ -26,6 +26,9 @@ protected:
 	CXavierView();
 	DECLARE_DYNCREATE(CXavierView)
 	
+protected:
+	BOOL						m_bWelcome;
+
 public:
 	/**
 	 *
