@@ -29,7 +29,7 @@ namespace Ogre
 		 * \param void 
 		 * \return 
 		 */
-		RenderWindowEditor(HWND hWnd, int w, int h, bool bFullScreen);
+		RenderWindowEditor(RenderWindow* pRenderWindow);
 
 		/**
 		 *
@@ -51,11 +51,6 @@ namespace Ogre
 	// 渲染窗口创建过程终必须的参数
 	struct SRenderWindowCreateParams : public SBaseCreateParam
 	{
-		bool						bFullScreen;		// 是否全屏
-		HWND						hWnd;				// 窗口句柄
-		int							nWidth;				// 窗口宽
-		int							nHeight;			// 窗口搞
-		
 	};
 
 	/**

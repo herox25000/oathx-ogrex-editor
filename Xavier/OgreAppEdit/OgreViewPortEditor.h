@@ -31,7 +31,7 @@ namespace Ogre
 		 * \param background	背景颜色
 		 * \return 
 		 */
-		ViewPortEditor(RenderWindow* pWindow, Camera* pCamera, const ColourValue& background);
+		ViewPortEditor(Camera* pCamera, const ColourValue& background);
 
 		/** 析构函数
 		 *
@@ -53,7 +53,6 @@ namespace Ogre
 	protected:
 		// 视口
 		Viewport*						m_pViewPort;
-		RenderWindow*					m_pWindow;
 		Camera*							m_pCamera;
 	};
 

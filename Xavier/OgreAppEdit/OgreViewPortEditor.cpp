@@ -12,13 +12,13 @@ namespace Ogre
 	 * \param background 
 	 * \return 
 	 */
-	ViewPortEditor::ViewPortEditor(RenderWindow* pWindow, Camera* pCamera, const ColourValue& background)
-		:m_pViewPort(NULL), m_pWindow(pWindow), m_pCamera(pCamera)
+	ViewPortEditor::ViewPortEditor(Camera* pCamera, const ColourValue& background)
+		:m_pViewPort(NULL), m_pCamera(pCamera)
 	{
 		/*
 		* 添加视口
 		*/
-		m_pViewPort = pWindow->addViewport(pCamera);
+		m_pViewPort = AppEdit::getSingletonPtr()->getRenderWindow()->addViewport(pCamera);
 		if (m_pViewPort != NULL)
 		{
 			/*
@@ -26,7 +26,7 @@ namespace Ogre
 			*/
 			m_pViewPort->setBackgroundColour(background);
 
-			pWindow->windowMovedOrResized();
+			AppEdit::getSingletonPtr()->getRenderWindow()->windowMovedOrResized();
 			pCamera->setAspectRatio(
 				Ogre::Real(m_pViewPort->getActualWidth()) / Ogre::Real(m_pViewPort->getActualHeight())
 				);	
@@ -45,7 +45,7 @@ namespace Ogre
 	 */
 	ViewPortEditor::~ViewPortEditor(void)
 	{
-		m_pWindow->removeViewport(m_pViewPort->getZOrder());
+		AppEdit::getSingletonPtr()->getRenderWindow()->removeViewport(m_pViewPort->getZOrder());
 	}
 
 	/**
@@ -62,9 +62,10 @@ namespace Ogre
 	 */
 	void			ViewPortEditor::windowMovedOrResized()
 	{
-		if (m_pWindow != NULL && m_pCamera != NULL)
+		RenderWindow* pRenderWindow = AppEdit::getSingletonPtr()->getRenderWindow();
+		if (m_pCamera != NULL && pRenderWindow != NULL)
 		{
-			m_pWindow->windowMovedOrResized();
+			pRenderWindow->windowMovedOrResized();
 
 			m_pCamera->setAspectRatio(
 				Ogre::Real(m_pViewPort->getActualWidth()) / Ogre::Real(m_pViewPort->getActualHeight())
@@ -90,26 +91,20 @@ namespace Ogre
 		if (pm != NULL)
 		{
 			SViewPortCreateParam* cm = (SViewPortCreateParam*)(pm);
+			
+			// 获取渲染窗口
+			RenderWindow* pRenderWindow = AppEdit::getSingletonPtr()->getRenderWindow();
 
 			/*
-			* 获取渲染工厂
+			* 获取场景管理器
 			*/
-			RenderWindowEditor* pRWEditor = dynamic_cast<RenderWindowEditor*>(
-				AppEdit::getSingletonPtr()->getEditor(EDIT_RENDERWINDOW)
-				);
-			if (pRWEditor != NULL)
-			{
-				/*
-				* 获取场景管理器
-				*/
-				SceneManager* pMgr = Root::getSingletonPtr()->getSceneManager(NAME_SCENEMANAGER);
-				assert(pMgr != NULL);
-				
-				BaseEditor* editor = new ViewPortEditor(pRWEditor->getRenderWindow(),
-					pMgr->getCamera(NAME_CAMERA), cm->background);
+			SceneManager* pMgr = Root::getSingletonPtr()->getSceneManager(NAME_SCENEMANAGER);
+			assert(pMgr != NULL);
+			
+			BaseEditor* editor = new ViewPortEditor(pMgr->getCamera(NAME_CAMERA), 
+				cm->background);
 
-				return editor;
-			}
+			return editor;
 		}
 
 		return NULL;

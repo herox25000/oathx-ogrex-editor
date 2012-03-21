@@ -115,9 +115,15 @@ void	CWizardDialog::OnBnClickedOk()
 	}
 	else
 	{
-		AppEdit::getSingletonPtr()->delEditor(EDIT_VIEWPORT);
-		AppEdit::getSingletonPtr()->delEditor(EDIT_CAMERA);
-		AppEdit::getSingletonPtr()->delEditor(EDIT_SCENEMANAGER);
+		// 清空原有的编辑工具
+		AppEdit::getSingletonPtr()->clearEditor();
+
+		BaseEditorFactory* pWindowFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_RENDERWINDOW);
+		if (pWindowFactory != NULL)
+		{
+			SRenderWindowCreateParams pm;
+			AppEdit::getSingleton().addEditor(pWindowFactory->create(&pm));
+		}
 
 		BaseEditorFactory* pSceneFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
 		if (pSceneFactory != NULL)

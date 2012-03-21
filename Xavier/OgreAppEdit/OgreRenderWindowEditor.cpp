@@ -1,5 +1,6 @@
 #include "OgreAppEditPrerequisites.h"
 #include "OgreRenderWindowEditor.h"
+#include "OgreAppEdit.h"
 
 namespace Ogre
 {
@@ -7,18 +8,9 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	RenderWindowEditor::RenderWindowEditor(HWND hWnd, int w, int h, bool bFullScreen)
-		: m_pWindow(NULL)
+	RenderWindowEditor::RenderWindowEditor(RenderWindow* pRenderWindow)
+		: m_pWindow(pRenderWindow)
 	{
-		NameValuePairList pm;
-		pm[KER_HANDLE_WINDOW] = StringConverter::toString((size_t)(hWnd));
-		m_pWindow	= Root::getSingletonPtr()->createRenderWindow(XAVIER_WINDOW_NAME, w,
-			h, bFullScreen, &pm);
-		assert(m_pWindow != NULL);
-
-		TextureManager::getSingleton().setDefaultNumMipmaps(5);
-		ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-
 		setTypeName(EDIT_RENDERWINDOW);
 	}
 
@@ -70,14 +62,13 @@ namespace Ogre
 				获取渲染参数
 			*/
 			SRenderWindowCreateParams* rwcm = (SRenderWindowCreateParams*)(pm);
-
+			
 			/*
 				创建渲染窗口编辑器
 			*/
-			BaseEditor* editor = new RenderWindowEditor(rwcm->hWnd,
-				rwcm->nWidth, 
-				rwcm->nHeight, 
-				rwcm->bFullScreen);
+			BaseEditor* editor = new RenderWindowEditor(
+				AppEdit::getSingletonPtr()->getRenderWindow()
+				);
 
 			return editor;
 		}

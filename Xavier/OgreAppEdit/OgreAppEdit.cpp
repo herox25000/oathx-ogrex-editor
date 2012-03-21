@@ -23,7 +23,7 @@ namespace Ogre
 	//
 	//////////////////////////////////////////////////////////////////////////
 	AppEdit::AppEdit(void)
-		:m_pRoot(NULL)
+		:m_pRoot(NULL), m_pRenderWindow(NULL)
 	{
 		
 	}
@@ -112,6 +112,34 @@ namespace Ogre
 		new GlobalEventSet();
 
 		return true;
+	}
+
+	/**
+	 *
+	 * \param hWnd 
+	 * \param w 
+	 * \param h 
+	 * \param bFullScree 
+	 */
+	void		AppEdit::createRenderWindow(HWND hWnd, int w, int h, bool bFullScreen)
+	{
+		NameValuePairList pm;
+		pm[KER_HANDLE_WINDOW] = StringConverter::toString((size_t)(hWnd));
+		m_pRenderWindow	= Root::getSingletonPtr()->createRenderWindow(XAVIER_WINDOW_NAME, w,
+			h, bFullScreen, &pm);
+		assert(m_pRenderWindow != NULL);
+
+		TextureManager::getSingleton().setDefaultNumMipmaps(5);
+		ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	RenderWindow*	AppEdit::getRenderWindow() const
+	{
+		return m_pRenderWindow;
 	}
 
 	/**
@@ -229,16 +257,27 @@ namespace Ogre
 		delEditor(getEditor(typeName));
 	}
 
+	/**
+	 *
+	 */
+	void		AppEdit::clearEditor()
+	{
+		StrEditor::iterator itEitor = m_Editor.begin();
+		while( itEitor != m_Editor.end() )
+		{
+#ifdef _OUTPUT_LOG
+			TKLogEvent("É¾³ý±à¼­Æ÷:" + itEitor->second->getTypeName() + " OK", LML_NORMAL);
+#endif
+			delete itEitor->second; itEitor = m_Editor.erase(itEitor);
+		}
+	}
+
 	/** destroy ogre edit system
 	 *
 	 */
 	void		AppEdit::destroySystem()
 	{
-		StrEditor::iterator itEitor = m_Editor.begin();
-		while( itEitor != m_Editor.end() )
-		{
-			delete itEitor->second; itEitor = m_Editor.erase(itEitor);
-		}
+		clearEditor();
 
 		StrEditorFactory::iterator itFactory = m_Factory.begin();
 		while( itFactory != m_Factory.end() )

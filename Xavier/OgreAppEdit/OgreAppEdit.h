@@ -64,6 +64,21 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	bool				createSystem(const String& pluginFileName, const String& resourceFileName);
+		
+		/**
+		 *
+		 * \param hWnd 
+		 * \param w 
+		 * \param h 
+		 * \param bFullScree 
+		 */
+		virtual void				createRenderWindow(HWND hWnd, int w, int h, bool bFullScreen);
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual RenderWindow*		getRenderWindow() const;
 
 		/** 系统更新
 		 *
@@ -110,15 +125,21 @@ namespace Ogre
 		 */
 		virtual void				delEditor(const String& typeName);
 
+		/** 清空编辑器
+		 *
+		 */
+		virtual void				clearEditor();
+
 		/** 销毁编辑系统
 		 *
 		 */
 		virtual void				destroySystem();
 		
 	protected:
-		Root*						m_pRoot;	// ogre root object
-		StrEditorFactory			m_Factory;	// 编辑工厂
+		Root*						m_pRoot;			// ogre root object
+		StrEditorFactory			m_Factory;			// 编辑工厂
 		StrEditor					m_Editor;
+		RenderWindow*				m_pRenderWindow;
 	};
 }
 
