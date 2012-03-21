@@ -60,21 +60,12 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
-
-	BaseEditorFactory* pFactory = AppEdit::getSingleton().getEditorFactory(FACTORY_RENDERWINDOW);
-	if (pFactory != NULL)
-	{
-		SRenderWindowCreateParams pm;
-		pm.hWnd			= m_hWnd;
-		pm.nHeight		= 600;
-		pm.nWidth		= 800;
-		pm.bFullScreen	= false;
-
-		AppEdit::getSingleton().addEditor(pFactory->create(&pm));
-	}
+	
+	// 创建渲染窗口
+	AppEdit::getSingletonPtr()->createRenderWindow(m_hWnd, 800, 600, false);
 
 	// 设置渲染时钟
-	SetTimer(IDT_RENDERTIME, 10, NULL);
+	SetTimer(IDT_RENDERTIME, 100, NULL);
 
 	return 0;
 }
@@ -123,7 +114,10 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	switch(nIDEvent)
 	{
 	case IDT_RENDERTIME:
-		AppEdit::getSingletonPtr()->update();
+		{			
+			AppEdit::getSingletonPtr()->update();
+			Sleep(1);
+		}
 		break;
 	}
 
