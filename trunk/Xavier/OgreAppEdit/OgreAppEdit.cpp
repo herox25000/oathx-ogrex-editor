@@ -167,7 +167,7 @@ namespace Ogre
 			}
 			else
 			{
-				TKLogEvent("±à¼­¹¤³§:" + pFactory->getTypeName() + " ÒÑ´æÔÚ", LML_TRIVIAL);
+				TKLogEvent("ÒÑ¼ÓÔØ ±à¼­¹¤³§:" + pFactory->getTypeName() + " ÒÑ´æÔÚ", LML_TRIVIAL);
 			}
 		}
 
@@ -203,7 +203,7 @@ namespace Ogre
 			if ( it == m_Editor.end() )
 			{
 #ifdef _OUTPUT_LOG
-				TKLogEvent("Ìí¼Ó±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
+				TKLogEvent("ÒÑ¼ÓÔØ ±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
 #endif
 				m_Editor.insert(StrEditor::value_type(pEditor->getTypeName(), pEditor));
 				return true;
@@ -241,7 +241,7 @@ namespace Ogre
 			if ( it != m_Editor.end() )
 			{
 #ifdef _OUTPUT_LOG
-				TKLogEvent("É¾³ý±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
+				TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
 #endif
 				delete it->second; it = m_Editor.erase(it);
 			}
@@ -266,7 +266,7 @@ namespace Ogre
 		while( itEitor != m_Editor.end() )
 		{
 #ifdef _OUTPUT_LOG
-			TKLogEvent("É¾³ý±à¼­Æ÷:" + itEitor->second->getTypeName() + " OK", LML_NORMAL);
+			TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷:" + itEitor->second->getTypeName() + " OK", LML_NORMAL);
 #endif
 			delete itEitor->second; itEitor = m_Editor.erase(itEitor);
 		}

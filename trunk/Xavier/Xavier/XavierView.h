@@ -1,5 +1,10 @@
 #pragma once
 
+enum{
+	ST_VIEW_WELCOME,
+	ST_VIEW_UPDATE
+};
+
 /**
 * \ingroup : Xavier
 *
@@ -28,7 +33,7 @@ protected:
 	
 protected:
 	BOOL						m_bWelcome;
-
+	DWORD						m_dwState;
 public:
 	/**
 	 *
@@ -109,6 +114,14 @@ protected:
 	 *
 	 */
 	afx_msg void				OnDestroy();
+
+	/**
+	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
+	afx_msg LRESULT				OnCreateFnished(WPARAM wParam, LPARAM lParam);
 
 	/**
 	 *

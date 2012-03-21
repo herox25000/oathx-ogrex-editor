@@ -14,6 +14,7 @@ BEGIN_MESSAGE_MAP(CXavierView, CView)
 	ON_COMMAND(ID_FILE_PRINT,				&CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT,		&CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW,		&CXavierView::OnFilePrintPreview)
+	ON_MESSAGE(WM_CREATE_FNISHED,			&CXavierView::OnCreateFnished)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_TIMER()
@@ -27,7 +28,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView() : m_bWelcome(FALSE)
+CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME)
 {
 
 }
@@ -81,6 +82,19 @@ void	CXavierView::OnDestroy()
 	KillTimer(IDT_RENDERTIME);
 }
 
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
+{
+	// Æô¶¯¸üÐÂ
+	m_dwState = ST_VIEW_UPDATE;
+
+	return 0;
+}
 
 /**
  *
@@ -114,9 +128,9 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	switch(nIDEvent)
 	{
 	case IDT_RENDERTIME:
-		{			
-			AppEdit::getSingletonPtr()->update();
-			Sleep(1);
+		{	
+			if (m_dwState == ST_VIEW_UPDATE)
+				AppEdit::getSingletonPtr()->update();
 		}
 		break;
 	}
@@ -135,6 +149,18 @@ void	CXavierView::OnDraw(CDC* pDC)
 	ASSERT_VALID(pDoc);
 	if (!pDoc)
 		return;
+
+	if (m_dwState == ST_VIEW_WELCOME)
+	{
+		CRect rcView;
+		GetClientRect(&rcView);
+
+		CGraphDC dc(GetDC());
+		dc.FillRect(&rcView, &CBrush(RGB(0,0,0)));
+		dc.SetTextColor(RGB(255,0,0));
+		dc.SetBkMode(TRANSPARENT);
+		dc.DrawText("Welcome Xavier Game Editor", strlen("Welcome Xavier Game Editor"), &rcView, DT_SINGLELINE|DT_CENTER|DT_VCENTER);
+	}
 }
 
 /**
