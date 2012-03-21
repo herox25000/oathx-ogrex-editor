@@ -1,10 +1,11 @@
 #include "OgreAppEditPrerequisites.h"
 #include "OgreAppEdit.h"
+#include "OgreGlobalEventSet.h"
 #include "OgreRenderWindowEditor.h"
 #include "OgreSceneManagerEditor.h"
 #include "OgreCameraEditor.h"
 #include "OgreViewPortEditor.h"
-#include "OgreGlobalEventSet.h"
+#include "OgreXMLSerializeEditor.h"
 
 namespace Ogre
 {
@@ -25,7 +26,7 @@ namespace Ogre
 	AppEdit::AppEdit(void)
 		:m_pRoot(NULL), m_pRenderWindow(NULL)
 	{
-		
+	
 	}
 
 	/**	
@@ -35,6 +36,7 @@ namespace Ogre
 	 */
 	AppEdit::~AppEdit(void)
 	{
+		
 	}
 
 	/** create ogre editor system
@@ -107,6 +109,7 @@ namespace Ogre
 		registerEditorFactory(new SceneManagerEditorFactory());
 		registerEditorFactory(new CameraEditorFactory());
 		registerEditorFactory(new ViewPortEditorFactory());
+		registerEditorFactory(new XMLSerializeEditorFactory());
 		
 		//
 		new GlobalEventSet();
@@ -159,10 +162,10 @@ namespace Ogre
 	{
 		if (pFactory != NULL)
 		{
-			StrEditorFactory::iterator it = m_Factory.find(pFactory->getTypeName());
+			StringEditorFactory::iterator it = m_Factory.find(pFactory->getTypeName());
 			if ( it == m_Factory.end() )
 			{
-				m_Factory.insert(StrEditorFactory::value_type(pFactory->getTypeName(), pFactory));
+				m_Factory.insert(StringEditorFactory::value_type(pFactory->getTypeName(), pFactory));
 				return true;
 			}
 			else
@@ -181,7 +184,7 @@ namespace Ogre
 	 */
 	BaseEditorFactory*	AppEdit::getEditorFactory(const String& typeName)
 	{
-		StrEditorFactory::iterator it = m_Factory.find(typeName);
+		StringEditorFactory::iterator it = m_Factory.find(typeName);
 		if ( it != m_Factory.end() )
 		{
 			return it->second;
@@ -199,15 +202,24 @@ namespace Ogre
 	{
 		if (pEditor != NULL)
 		{
-			StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
-			if ( it == m_Editor.end() )
+			for (VEditor::iterator it=m_vEditor.begin(); 
+				it!=m_vEditor.end(); it++)
 			{
+				if ((*it)->getTypeName() == pEditor->getTypeName())
+				{
 #ifdef _OUTPUT_LOG
-				TKLogEvent("ÒÑ¼ÓÔØ ±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
+					TKLogEvent("ÖØ¸´¼ÓÔØ ±à¼­Æ÷ " + pEditor->getTypeName(), LML_TRIVIAL);
 #endif
-				m_Editor.insert(StrEditor::value_type(pEditor->getTypeName(), pEditor));
-				return true;
+					return 0;
+				}
 			}
+
+#ifdef _OUTPUT_LOG
+			TKLogEvent("ÒÑ¼ÓÔØ ±à¼­Æ÷ " + pEditor->getTypeName(), LML_NORMAL);
+#endif
+			m_vEditor.push_back(pEditor);
+			
+			return true;
 		}
 
 		return 0;
@@ -220,10 +232,10 @@ namespace Ogre
 	 */
 	BaseEditor*	AppEdit::getEditor(const String& typeName)
 	{
-		StrEditor::iterator it = m_Editor.find(typeName);
-		if ( it != m_Editor.end() )
+		for (size_t i=0; i<m_vEditor.size(); i++)
 		{
-			return it->second;
+			if (m_vEditor[i]->getTypeName() == typeName)
+				return m_vEditor[i];
 		}
 
 		return NULL;
@@ -237,15 +249,39 @@ namespace Ogre
 	{
 		if (pEditor != NULL)
 		{
-			StrEditor::iterator it = m_Editor.find(pEditor->getTypeName());
-			if ( it != m_Editor.end() )
+			for (VEditor::iterator it=m_vEditor.begin(); 
+				it!=m_vEditor.end(); it++)
 			{
+				if ((*it)->getTypeName() == pEditor->getTypeName())
+				{
 #ifdef _OUTPUT_LOG
-				TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷:" + pEditor->getTypeName() + " OK", LML_NORMAL);
+					TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷ " + pEditor->getTypeName(), LML_NORMAL);
 #endif
-				delete it->second; it = m_Editor.erase(it);
+					delete (*it); it = m_vEditor.erase(it); 
+					
+					break;
+				}
 			}
 		}
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	int			AppEdit::getEditorCount()
+	{
+		return m_vEditor.size();
+	}
+
+	/**
+	 *
+	 * \param index 
+	 * \return 
+	 */
+	BaseEditor*	AppEdit::getEditor(int index)
+	{
+		return m_vEditor[index];
 	}
 
 	/**
@@ -258,17 +294,22 @@ namespace Ogre
 	}
 
 	/**
-	 *
+	 * ·´ÏòÉ¾³ý
 	 */
 	void		AppEdit::clearEditor()
 	{
-		StrEditor::iterator itEitor = m_Editor.begin();
-		while( itEitor != m_Editor.end() )
+		int iSize = m_vEditor.size() - 1;
+		if (iSize >= 0)
 		{
+			for (int i=iSize; i>=0; i--)
+			{
 #ifdef _OUTPUT_LOG
-			TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷:" + itEitor->second->getTypeName() + " OK", LML_NORMAL);
+				TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷ " + m_vEditor[i]->getTypeName(), LML_NORMAL);
 #endif
-			delete itEitor->second; itEitor = m_Editor.erase(itEitor);
+				delete m_vEditor[i];
+			}
+
+			m_vEditor.clear();
 		}
 	}
 
@@ -279,7 +320,7 @@ namespace Ogre
 	{
 		clearEditor();
 
-		StrEditorFactory::iterator itFactory = m_Factory.begin();
+		StringEditorFactory::iterator itFactory = m_Factory.begin();
 		while( itFactory != m_Factory.end() )
 		{	
 			delete itFactory->second; itFactory = m_Factory.erase(itFactory);

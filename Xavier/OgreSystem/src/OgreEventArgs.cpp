@@ -1,9 +1,24 @@
 #include "OgreSystemPrerequisites.h"
 #include "OgreEventArgs.h"
 
-// Start of Ogre namespace section
 namespace Ogre
 {
+	/**
+	 *
+	 * \param void 
+	 * \return 
+	 */
+	EventArgs::EventArgs(void) : handled(0)
+	{
 
+	}
+	
+	/**
+	 *
+	 * \return 
+	 */
+	EventArgs::~EventArgs()
+	{
 
-} // End of  Ogre namespace section
+	}
+}

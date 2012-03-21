@@ -35,6 +35,8 @@ namespace Ogre
 	class CameraEditorFactory;
 	class ViewPortEditor;
 	class ViewPortEditorFactory;
+	class XMLSerializeEditor;
+	class XMLSerializeEditorFactory;
 }
 
 #include <Ogre.h>
@@ -68,5 +70,8 @@ namespace Ogre
 
 #define EDIT_VIEWPORT			"ViewPortEditor"
 #define FACTORY_VIEWPORT		"ViewPortEditorFactory"
+
+#define EDIT_XMLSERIALIZE		"XMLSerializeEditor"
+#define FACTORY_XMLSERIALIZE	"XMLSerializeEditorFactory"
 
 #endif

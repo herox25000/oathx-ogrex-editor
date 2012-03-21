@@ -90,9 +90,10 @@ void	CXavierView::OnDestroy()
  */
 LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 {
+	TKLogEvent("已正常启动渲染...", LML_NORMAL);
 	// 启动更新
 	m_dwState = ST_VIEW_UPDATE;
-	
+
 	// to do:
 
 	return 0;
