@@ -92,6 +92,8 @@ LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 {
 	// Æô¶¯¸üÐÂ
 	m_dwState = ST_VIEW_UPDATE;
+	
+	// to do:
 
 	return 0;
 }

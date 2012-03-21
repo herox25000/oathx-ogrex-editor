@@ -157,7 +157,8 @@ void	CWizardDialog::OnBnClickedOk()
 
 			AppEdit::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
 		}
-
+		
+		// 通知视图窗口，项目已创建
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
 		{
