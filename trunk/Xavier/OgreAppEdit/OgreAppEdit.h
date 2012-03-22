@@ -27,7 +27,7 @@ namespace Ogre
 		typedef std::map<String, BaseEditorFactory*>	StringEditorFactory;
 		
 		// ±à¼­Æ÷ÈÝÆ÷
-		typedef std::vector<BaseEditor*>				VEditor;
+		typedef std::deque<BaseEditor*>					VEditor;
 	public:
 		/** »ñÈ¡±à¼­ÏµÍ³
 		 *

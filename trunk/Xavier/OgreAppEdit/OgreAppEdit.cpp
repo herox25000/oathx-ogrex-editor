@@ -298,19 +298,31 @@ namespace Ogre
 	 */
 	void		AppEdit::clearEditor()
 	{
-		int iSize = m_vEditor.size() - 1;
-		if (iSize >= 0)
+		while(m_vEditor.size())
 		{
-			for (int i=iSize; i>=0; i--)
-			{
+			BaseEditor* pEditor = m_vEditor.back();
+			if (pEditor == NULL)
+				break;
 #ifdef _OUTPUT_LOG
-				TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷ " + m_vEditor[i]->getTypeName(), LML_NORMAL);
+			TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷ " + pEditor->getTypeName(), LML_NORMAL);
 #endif
-				delete m_vEditor[i];
-			}
-
-			m_vEditor.clear();
+			delete pEditor; m_vEditor.pop_back();		
 		}
+		
+
+//		int iSize = m_vEditor.size() - 1;
+//		if (iSize >= 0)
+//		{
+//			for (int i=iSize; i>=0; i--)
+//			{
+//#ifdef _OUTPUT_LOG
+//				TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷ " + m_vEditor[i]->getTypeName(), LML_NORMAL);
+//#endif
+//				delete m_vEditor[i];
+//			}
+//
+//			m_vEditor.clear();
+//		}
 	}
 
 	/** destroy ogre edit system
