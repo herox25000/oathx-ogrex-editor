@@ -111,6 +111,14 @@ protected:
 
 	/**
 	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
+	afx_msg LRESULT				OnSelectEditor(WPARAM wParam, LPARAM lParam);
+
+	/**
+	 *
 	 */
 	afx_msg void				OnExpandAllProperties();
 

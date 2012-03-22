@@ -44,4 +44,19 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
+
+public:
+	/**
+	 *
+	 * \param *pNMHDR 
+	 * \param *pResult 
+	 */
+	afx_msg void		OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
+
+	/**
+	 *
+	 * \param *pNMHDR 
+	 * \param *pResult 
+	 */
+	afx_msg void		OnNMClick(NMHDR *pNMHDR, LRESULT *pResult);
 };
