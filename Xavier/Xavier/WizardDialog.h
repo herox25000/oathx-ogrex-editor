@@ -39,7 +39,7 @@ public:
 
 	enum { IDD = IDD_DIALOG_NEW };
 
-		/**
+	/**
 	 *
 	 * \return 
 	 */
