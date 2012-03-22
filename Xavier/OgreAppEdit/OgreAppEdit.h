@@ -65,7 +65,7 @@ namespace Ogre
 		 */
 		virtual	bool				createSystem(const String& pluginFileName, const String& resourceFileName);
 		
-		/**
+		/** 创建渲染窗口
 		 *
 		 * \param hWnd 
 		 * \param w 
@@ -74,7 +74,7 @@ namespace Ogre
 		 */
 		virtual void				createRenderWindow(HWND hWnd, int w, int h, bool bFullScreen);
 		
-		/**
+		/** 获取渲染窗口
 		 *
 		 * \return 
 		 */
@@ -125,13 +125,13 @@ namespace Ogre
 		 */
 		virtual void				delEditor(const String& typeName);
 
-		/**
+		/** 获取编辑工具
 		 *
 		 * \return 
 		 */
 		virtual int					getEditorCount();
 
-		/**
+		/** 获取编辑器
 		 *
 		 * \param index 
 		 * \return 

@@ -308,21 +308,6 @@ namespace Ogre
 #endif
 			delete pEditor; m_vEditor.pop_back();		
 		}
-		
-
-//		int iSize = m_vEditor.size() - 1;
-//		if (iSize >= 0)
-//		{
-//			for (int i=iSize; i>=0; i--)
-//			{
-//#ifdef _OUTPUT_LOG
-//				TKLogEvent("ÒÑÐ¶ÔØ ±à¼­Æ÷ " + m_vEditor[i]->getTypeName(), LML_NORMAL);
-//#endif
-//				delete m_vEditor[i];
-//			}
-//
-//			m_vEditor.clear();
-//		}
 	}
 
 	/** destroy ogre edit system
