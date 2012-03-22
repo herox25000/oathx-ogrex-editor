@@ -81,7 +81,13 @@ public:
 	 *
 	 * \return 
 	 */
-	CFileView*		GetFileView() {return &m_wFileView;}			
+	CFileView*		GetFileView() {return &m_wFileView;}
+
+	/**
+	 *
+	 * \return 
+	 */
+	CPropertiesWnd*	GetPropertyWnd() {return &m_wProperties;}
 #ifdef _DEBUG
 	/**
 	 *

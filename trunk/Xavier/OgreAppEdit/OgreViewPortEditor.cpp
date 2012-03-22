@@ -36,11 +36,11 @@ namespace Ogre
 		
 		// add property
 		addProperty("background", Any(background),
-			"视口背景颜色");
+			"视口背景颜色", PROPERTY_COLOUR);
 		addProperty("Width", Any(AppEdit::getSingletonPtr()->getRenderWindow()->getWidth()),
-			"视口宽度");
+			"视口宽度", PROPERTY_INT);
 		addProperty("Height",Any(AppEdit::getSingletonPtr()->getRenderWindow()->getHeight()),
-			"视口高度");
+			"视口高度", PROPERTY_INT);
 	}
 
 	/** 析构函数

@@ -3,7 +3,9 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "Xavier.h"
+#include "OgreAppEdit.h"
 
+using namespace Ogre;
 
 /**
  *
@@ -24,6 +26,7 @@ CPropertiesWnd::~CPropertiesWnd()
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_MESSAGE(WM_SELECT_EDITOR,			&CPropertiesWnd::OnSelectEditor)
 	ON_COMMAND(ID_EXPAND_ALL,				OnExpandAllProperties)
 	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL,		OnUpdateExpandAllProperties)
 	ON_COMMAND(ID_SORTPROPERTIES,			OnSortProperties)
@@ -131,6 +134,60 @@ void	CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
 
 /**
  *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT	CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
+{
+	wmSelectEvent* evt = (wmSelectEvent*)(wParam);
+	if (evt != NULL)
+	{
+		BaseEditor* pSelect = AppEdit::getSingletonPtr()->getEditor(evt->Name);
+		if (pSelect != NULL)
+		{
+			SetPropListFont();
+
+			m_wPropList.RemoveAll();
+			m_wPropList.EnableHeaderCtrl(FALSE);
+			m_wPropList.EnableDescriptionArea();
+			m_wPropList.SetVSDotNetLook();
+			m_wPropList.MarkModifiedProperties();
+
+			HashProperty& py = pSelect->getHashProperty();
+			for (HashProperty::iterator it=py.begin();
+				it!=py.end(); it++)
+			{
+				switch (it->second->getType())
+				{
+				case PROPERTY_COLOUR:
+					{
+						Ogre::ColourValue backgroud;
+						backgroud = any_cast<ColourValue>(pSelect->getPropertyValue(it->second->getName()));
+						
+						CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(_T("外观"));
+
+						CMFCPropertyGridColorProperty* pBackground = new CMFCPropertyGridColorProperty(_T("窗口颜色"),
+							RGB(210, 192, 254), NULL, _T("指定默认的窗口颜色"));
+
+						pBackground->EnableOtherButton(_T("其他..."));
+						pBackground->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
+
+						pGroup->AddSubItem(pBackground);
+
+						pGroup->Expand(TRUE);
+						m_wPropList.AddProperty(pGroup);
+					}
+					break;
+				}
+			}
+		}
+	}
+	return 0;
+}
+
+/**
+ *
  */
 void	CPropertiesWnd::OnExpandAllProperties()
 {
@@ -208,78 +265,78 @@ void	CPropertiesWnd::InitPropList()
 	m_wPropList.SetVSDotNetLook();
 	m_wPropList.MarkModifiedProperties();
 
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("外观"));
+	//CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("外观"));
 
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("三维外观"), (_variant_t) false, _T("指定窗口的字体不使用粗体，并且控件将使用三维边框")));
+	//pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("三维外观"), (_variant_t) false, _T("指定窗口的字体不使用粗体，并且控件将使用三维边框")));
 
-	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("边框"), _T("Dialog Frame"), _T("其中之一: 无(None)、细(Thin)、可调整大小(Resizable)、对话框外框(Dialog Frame)"));
-	pProp->AddOption(_T("None"));
-	pProp->AddOption(_T("Thin"));
-	pProp->AddOption(_T("Resizable"));
-	pProp->AddOption(_T("Dialog Frame"));
-	pProp->AllowEdit(FALSE);
+	//CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("边框"), _T("Dialog Frame"), _T("其中之一: 无(None)、细(Thin)、可调整大小(Resizable)、对话框外框(Dialog Frame)"));
+	//pProp->AddOption(_T("None"));
+	//pProp->AddOption(_T("Thin"));
+	//pProp->AddOption(_T("Resizable"));
+	//pProp->AddOption(_T("Dialog Frame"));
+	//pProp->AllowEdit(FALSE);
 
-	pGroup1->AddSubItem(pProp);
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("标题"), (_variant_t) _T("关于"), _T("指定窗口标题栏中显示的文本")));
+	//pGroup1->AddSubItem(pProp);
+	//pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("标题"), (_variant_t) _T("关于"), _T("指定窗口标题栏中显示的文本")));
 
-	m_wPropList.AddProperty(pGroup1);
+	//m_wPropList.AddProperty(pGroup1);
 
-	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("窗口大小"), 0, TRUE);
+	//CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("窗口大小"), 0, TRUE);
 
-	pProp = new CMFCPropertyGridProperty(_T("高度"), (_variant_t) 250l, _T("指定窗口的高度"));
-	pProp->EnableSpinControl(TRUE, 50, 300);
-	pSize->AddSubItem(pProp);
+	//pProp = new CMFCPropertyGridProperty(_T("高度"), (_variant_t) 250l, _T("指定窗口的高度"));
+	//pProp->EnableSpinControl(TRUE, 50, 300);
+	//pSize->AddSubItem(pProp);
 
-	pProp = new CMFCPropertyGridProperty( _T("宽度"), (_variant_t) 150l, _T("指定窗口的宽度"));
-	pProp->EnableSpinControl(TRUE, 50, 200);
-	pSize->AddSubItem(pProp);
+	//pProp = new CMFCPropertyGridProperty( _T("宽度"), (_variant_t) 150l, _T("指定窗口的宽度"));
+	//pProp->EnableSpinControl(TRUE, 50, 200);
+	//pSize->AddSubItem(pProp);
 
-	m_wPropList.AddProperty(pSize);
+	//m_wPropList.AddProperty(pSize);
 
-	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("字体"));
+	//CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("字体"));
 
-	LOGFONT lf;
-	CFont* font = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
-	font->GetLogFont(&lf);
+	//LOGFONT lf;
+	//CFont* font = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+	//font->GetLogFont(&lf);
 
-	lstrcpy(lf.lfFaceName, _T("宋体, Arial"));
+	//lstrcpy(lf.lfFaceName, _T("宋体, Arial"));
 
-	pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("字体"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("指定窗口的默认字体")));
-	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("使用系统字体"), (_variant_t) true, _T("指定窗口使用“MS Shell Dlg”字体")));
+	//pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("字体"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("指定窗口的默认字体")));
+	//pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("使用系统字体"), (_variant_t) true, _T("指定窗口使用“MS Shell Dlg”字体")));
 
-	m_wPropList.AddProperty(pGroup2);
+	//m_wPropList.AddProperty(pGroup2);
 
-	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("杂项"));
-	pProp = new CMFCPropertyGridProperty(_T("(名称)"), _T("应用程序"));
-	pProp->Enable(FALSE);
-	pGroup3->AddSubItem(pProp);
+	//CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("杂项"));
+	//pProp = new CMFCPropertyGridProperty(_T("(名称)"), _T("应用程序"));
+	//pProp->Enable(FALSE);
+	//pGroup3->AddSubItem(pProp);
 
-	CMFCPropertyGridColorProperty* pColorProp = new CMFCPropertyGridColorProperty(_T("窗口颜色"), RGB(210, 192, 254), NULL, _T("指定默认的窗口颜色"));
-	pColorProp->EnableOtherButton(_T("其他..."));
-	pColorProp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
-	pGroup3->AddSubItem(pColorProp);
+	//CMFCPropertyGridColorProperty* pColorProp = new CMFCPropertyGridColorProperty(_T("窗口颜色"), RGB(210, 192, 254), NULL, _T("指定默认的窗口颜色"));
+	//pColorProp->EnableOtherButton(_T("其他..."));
+	//pColorProp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
+	//pGroup3->AddSubItem(pColorProp);
 
-	static TCHAR BASED_CODE szFilter[] = _T("图标文件(*.ico)|*.ico|所有文件(*.*)|*.*||");
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("图标"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("指定窗口图标")));
+	//static TCHAR BASED_CODE szFilter[] = _T("图标文件(*.ico)|*.ico|所有文件(*.*)|*.*||");
+	//pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("图标"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("指定窗口图标")));
 
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("文件夹"), _T("c:\\")));
+	//pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("文件夹"), _T("c:\\")));
 
-	m_wPropList.AddProperty(pGroup3);
+	//m_wPropList.AddProperty(pGroup3);
 
-	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("层次结构"));
+	//CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("层次结构"));
 
-	CMFCPropertyGridProperty* pGroup41 = new CMFCPropertyGridProperty(_T("第一个子级"));
-	pGroup4->AddSubItem(pGroup41);
+	//CMFCPropertyGridProperty* pGroup41 = new CMFCPropertyGridProperty(_T("第一个子级"));
+	//pGroup4->AddSubItem(pGroup41);
 
-	CMFCPropertyGridProperty* pGroup411 = new CMFCPropertyGridProperty(_T("第二个子级"));
-	pGroup41->AddSubItem(pGroup411);
+	//CMFCPropertyGridProperty* pGroup411 = new CMFCPropertyGridProperty(_T("第二个子级"));
+	//pGroup41->AddSubItem(pGroup411);
 
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 1"), (_variant_t) _T("值 1"), _T("此为说明")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 2"), (_variant_t) _T("值 2"), _T("此为说明")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 3"), (_variant_t) _T("值 3"), _T("此为说明")));
+	//pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 1"), (_variant_t) _T("值 1"), _T("此为说明")));
+	//pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 2"), (_variant_t) _T("值 2"), _T("此为说明")));
+	//pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 3"), (_variant_t) _T("值 3"), _T("此为说明")));
 
-	pGroup4->Expand(FALSE);
-	m_wPropList.AddProperty(pGroup4);
+	//pGroup4->Expand(FALSE);
+	//m_wPropList.AddProperty(pGroup4);
 }
 
 /**
