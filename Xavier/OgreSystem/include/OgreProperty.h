@@ -316,6 +316,16 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual HashProperty&		getHashProperty();
+	public:
+		template<typename T>
+		void						getPropertyValue(const String& name, T& value)
+		{
+			Property* pProperty = getProperty(name);
+			if (pProperty != NULL)
+			{
+				value = any_cast<T>(pProperty->getValue());
+			}
+		}
 	protected:
 		HashProperty				m_HashProperty;
 	};
