@@ -81,10 +81,10 @@ public:
 	}
 
 protected:
-	CFont						m_fntPropList;
-	CComboBox					m_wObjectCombo;
-	CPropertiesToolBar			m_wToolBar;
-	CMFCPropertyGridCtrl		m_wPropList;
+	CFont							m_fntPropList;
+	CComboBox						m_wObjectCombo;
+	CPropertiesToolBar				m_wToolBar;
+	CMFCPropertyGridCtrl			m_wPropList;
 
 public:
 	/**
@@ -93,13 +93,31 @@ public:
 	 */
 	virtual ~CPropertiesWnd();
 
+	/** ´´½¨ÑÕÉ«ÊìÏ¤
+	 *
+	 * \param dwColour 
+	 * \param lpszName 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreateProperty(DWORD dwColour, LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
+
+	/**
+	 *
+	 * \param szWnd 
+	 * \param lpszGroupName 
+	 * \param lpszName 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreateProperty(SIZE szWnd, LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
 protected:
 	/**
 	 *
 	 * \param lpCreateStruct 
 	 * \return 
 	 */
-	afx_msg int					OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg int						OnCreate(LPCREATESTRUCT lpCreateStruct);
 
 	/**
 	 *
@@ -107,7 +125,7 @@ protected:
 	 * \param cx 
 	 * \param cy 
 	 */
-	afx_msg void				OnSize(UINT nType, int cx, int cy);
+	afx_msg void					OnSize(UINT nType, int cx, int cy);
 
 	/**
 	 *
@@ -115,64 +133,64 @@ protected:
 	 * \param lParam 
 	 * \return 
 	 */
-	afx_msg LRESULT				OnSelectEditor(WPARAM wParam, LPARAM lParam);
+	afx_msg LRESULT					OnSelectEditor(WPARAM wParam, LPARAM lParam);
 
 	/**
 	 *
 	 */
-	afx_msg void				OnExpandAllProperties();
-
-	/**
-	 *
-	 * \param pCmdUI 
-	 */
-	afx_msg void				OnUpdateExpandAllProperties(CCmdUI* pCmdUI);
-
-	/**
-	 *
-	 */
-	afx_msg void				OnSortProperties();
+	afx_msg void					OnExpandAllProperties();
 
 	/**
 	 *
 	 * \param pCmdUI 
 	 */
-	afx_msg void				OnUpdateSortProperties(CCmdUI* pCmdUI);
+	afx_msg void					OnUpdateExpandAllProperties(CCmdUI* pCmdUI);
 
 	/**
 	 *
 	 */
-	afx_msg void				OnProperties1();
-
-	/**
-	 *
-	 * \param pCmdUI 
-	 */
-	afx_msg void				OnUpdateProperties1(CCmdUI* pCmdUI);
-
-	/**
-	 *
-	 */
-	afx_msg void				OnProperties2();
+	afx_msg void					OnSortProperties();
 
 	/**
 	 *
 	 * \param pCmdUI 
 	 */
-	afx_msg void				OnUpdateProperties2(CCmdUI* pCmdUI);
+	afx_msg void					OnUpdateSortProperties(CCmdUI* pCmdUI);
+
+	/**
+	 *
+	 */
+	afx_msg void					OnProperties1();
+
+	/**
+	 *
+	 * \param pCmdUI 
+	 */
+	afx_msg void					OnUpdateProperties1(CCmdUI* pCmdUI);
+
+	/**
+	 *
+	 */
+	afx_msg void					OnProperties2();
+
+	/**
+	 *
+	 * \param pCmdUI 
+	 */
+	afx_msg void					OnUpdateProperties2(CCmdUI* pCmdUI);
 
 	/**
 	 *
 	 * \param pOldWnd 
 	 */
-	afx_msg void				OnSetFocus(CWnd* pOldWnd);
+	afx_msg void					OnSetFocus(CWnd* pOldWnd);
 
 	/**
 	 *
 	 * \param uFlags 
 	 * \param lpszSection 
 	 */
-	afx_msg void				OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+	afx_msg void					OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 
 	DECLARE_MESSAGE_MAP()
 

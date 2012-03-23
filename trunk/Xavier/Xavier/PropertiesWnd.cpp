@@ -134,6 +134,70 @@ void	CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
 
 /**
  *
+ * \param dwColour 
+ * \param lpszName 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(DWORD dwColour, LPCTSTR lpszGroupName, 
+															   LPCTSTR lpszName, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
+	if (pGroup != NULL)
+	{
+		CMFCPropertyGridColorProperty* gp = new CMFCPropertyGridColorProperty(
+			lpszGroupName, 
+			(_variant_t)dwColour, 
+			NULL, 
+			lpszHelp
+			);
+		gp->EnableOtherButton(_T("其他..."));
+		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
+
+		pGroup->Expand();
+		pGroup->AddSubItem(gp);
+
+		return pGroup;
+	}
+
+	return NULL;
+}
+
+/**
+ *
+ * \param szWnd 
+ * \param lpszGroupName 
+ * \param lpszName 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(SIZE szWnd, LPCTSTR lpszGroupName,
+														   LPCTSTR lpszName, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(lpszGroupName, 0, TRUE);
+	if (pSize != NULL)
+	{
+		CMFCPropertyGridProperty* pProp = NULL;
+
+		pProp = new CMFCPropertyGridProperty(_T("高度"), 
+			(_variant_t) szWnd.cy, _T("指定窗口的高度"));
+		pProp->EnableSpinControl(TRUE, 50, 300);
+		pSize->AddSubItem(pProp);
+
+		pProp = new CMFCPropertyGridProperty( _T("宽度"), 
+			(_variant_t) szWnd.cx, _T("指定窗口的宽度"));
+		pProp->EnableSpinControl(TRUE, 50, 200);
+		pSize->AddSubItem(pProp);
+
+		m_wPropList.AddProperty(pSize);
+
+		return pSize;
+	}
+
+}
+
+/**
+ *
  * \param wParam 
  * \param lParam 
  * \return 
@@ -163,24 +227,19 @@ LRESULT	CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 				case PROPERTY_COLOUR:
 					{
 						Ogre::ColourValue backgroud;
-						backgroud = any_cast<ColourValue>(pSelect->getPropertyValue(it->second->getName()));
+						pSelect->getPropertyValue(it->second->getName(), backgroud);
 						
-						CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(_T("外观"));
+						m_wPropList.AddProperty(
+							CreateProperty(RGB(0,0,0), it->second->getName().c_str(), it->second->getName().c_str(), 
+							it->second->getDescribe().c_str())
+							);
 
-						CMFCPropertyGridColorProperty* pBackground = new CMFCPropertyGridColorProperty(_T("窗口颜色"),
-							RGB(210, 192, 254), NULL, _T("指定默认的窗口颜色"));
-
-						pBackground->EnableOtherButton(_T("其他..."));
-						pBackground->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
-
-						pGroup->AddSubItem(pBackground);
-
-						pGroup->Expand(TRUE);
-						m_wPropList.AddProperty(pGroup);
 					}
 					break;
 				}
 			}
+
+			m_wPropList.ExpandAll();
 		}
 	}
 	return 0;
