@@ -7,11 +7,32 @@
 
 using namespace Ogre;
 
+#ifndef SetAlpha
+#define SetAlpha(col,a)			(((col) & 0x00FFFFFF) + (DWORD(a)<<24))
+#endif
+
+#ifndef	GetAlpha
+#define GetAlpha(argb)			((BYTE)(((DWORD)(argb))>>24))
+#endif
+
+#define ARGBNORMAL(a, r, g, b)	(((DWORD)(a*255.0f)<<24)|((DWORD)(r*255.0f)<<16)|((DWORD)(g*255.0f)<<8)|((BYTE)(b*255.0f)))
+
+#define GetB(argb)				((BYTE)(argb))
+#define GetG(argb)				((BYTE)(((WORD)(argb))>>8))
+#define GetR(argb)				((BYTE)((((DWORD)(argb))>>16) & 0xff))
+
+
+#define SetB(col,r)				(((col) & 0xFF00FFFF) + (DWORD(r)<<16))
+#define SetG(col,g)				(((col) & 0xFFFF00FF) + (DWORD(g)<<8))
+#define SetR(col,b)				(((col) & 0xFFFFFF00) + DWORD(b))
+
+
+#define NormalValue(a)	(a/255.0f)
 /**
  *
  * \return 
  */
-CPropertiesWnd::CPropertiesWnd()
+CPropertiesWnd::CPropertiesWnd() : m_pSelectEditor(NULL)
 {
 }
 
@@ -28,13 +49,14 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_SIZE()
 	ON_MESSAGE(WM_SELECT_EDITOR,			&CPropertiesWnd::OnSelectEditor)
 	ON_COMMAND(ID_EXPAND_ALL,				OnExpandAllProperties)
-	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL,		OnUpdateExpandAllProperties)
+	//ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL,		OnUpdateExpandAllProperties)
 	ON_COMMAND(ID_SORTPROPERTIES,			OnSortProperties)
 	ON_UPDATE_COMMAND_UI(ID_SORTPROPERTIES, OnUpdateSortProperties)
-	ON_COMMAND(ID_PROPERTIES1,				OnProperties1)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1,	OnUpdateProperties1)
-	ON_COMMAND(ID_PROPERTIES2,				OnProperties2)
-	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2,	OnUpdateProperties2)
+	//ON_COMMAND(ID_PROPERTIES1,				OnProperties1)
+	//ON_UPDATE_COMMAND_UI(ID_PROPERTIES1,	OnUpdateProperties1)
+	//ON_COMMAND(ID_PROPERTIES2,				OnProperties2)
+	//ON_UPDATE_COMMAND_UI(ID_PROPERTIES2,	OnUpdateProperties2)
+	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
 END_MESSAGE_MAP()
@@ -171,29 +193,15 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(DWORD dwColour, LPCTSTR
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(SIZE szWnd, LPCTSTR lpszGroupName,
-														   LPCTSTR lpszName, LPCTSTR lpszHelp)
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(float fValue, LPCTSTR lpszName, LPCTSTR lpszHelp, BOOL bEnable,
+														   CMFCPropertyGridProperty* pParent)
 {
-	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(lpszGroupName, 0, TRUE);
-	if (pSize != NULL)
-	{
-		CMFCPropertyGridProperty* pProp = NULL;
+	CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(lpszName, (_variant_t)fValue, NULL, NULL);
+	pProperty->Enable(bEnable);
+	if (pParent != NULL)
+		pParent->AddSubItem(pProperty);
 
-		pProp = new CMFCPropertyGridProperty(_T("高度"), 
-			(_variant_t) szWnd.cy, _T("指定窗口的高度"));
-		pProp->EnableSpinControl(TRUE, 50, 300);
-		pSize->AddSubItem(pProp);
-
-		pProp = new CMFCPropertyGridProperty( _T("宽度"), 
-			(_variant_t) szWnd.cx, _T("指定窗口的宽度"));
-		pProp->EnableSpinControl(TRUE, 50, 200);
-		pSize->AddSubItem(pProp);
-
-		m_wPropList.AddProperty(pSize);
-
-		return pSize;
-	}
-
+	return pProperty;
 }
 
 /**
@@ -208,40 +216,108 @@ LRESULT	CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 	if (evt != NULL)
 	{
 		BaseEditor* pSelect = AppEdit::getSingletonPtr()->getEditor(evt->Name);
-		if (pSelect != NULL)
+		if (m_pSelectEditor != pSelect)
+			m_pSelectEditor = pSelect;
+	}
+
+	if (m_pSelectEditor != NULL)
+	{
+		SetPropListFont();
+
+		m_wPropList.RemoveAll();
+		m_wPropList.EnableHeaderCtrl(FALSE);
+		m_wPropList.EnableDescriptionArea();
+		m_wPropList.SetVSDotNetLook();
+		m_wPropList.MarkModifiedProperties();
+
+		HashProperty& py = m_pSelectEditor->getHashProperty();
+		for (HashProperty::iterator it=py.begin();
+			it!=py.end(); it++)
 		{
-			SetPropListFont();
-
-			m_wPropList.RemoveAll();
-			m_wPropList.EnableHeaderCtrl(FALSE);
-			m_wPropList.EnableDescriptionArea();
-			m_wPropList.SetVSDotNetLook();
-			m_wPropList.MarkModifiedProperties();
-
-			HashProperty& py = pSelect->getHashProperty();
-			for (HashProperty::iterator it=py.begin();
-				it!=py.end(); it++)
+			switch (it->second->getType())
 			{
-				switch (it->second->getType())
+			case PROPERTY_COLOUR:
 				{
-				case PROPERTY_COLOUR:
-					{
-						Ogre::ColourValue backgroud;
-						pSelect->getPropertyValue(it->second->getName(), backgroud);
-						
-						m_wPropList.AddProperty(
-							CreateProperty(RGB(0,0,0), it->second->getName().c_str(), it->second->getName().c_str(), 
-							it->second->getDescribe().c_str())
-							);
+					Ogre::ColourValue backgroud;
+					m_pSelectEditor->getPropertyValue(it->second->getName(), backgroud);
+					
+					ARGB argb = backgroud.getAsARGB();
+					m_wPropList.AddProperty(
+						CreateProperty(RGB(GetR(argb), GetG(argb), GetB(argb)), it->second->getName().c_str(), it->second->getName().c_str(), 
+						it->second->getDescribe().c_str())
+						);
 
-					}
-					break;
+					m_pSelectEditor->subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&CPropertiesWnd::OnValueChanged, this));
+
 				}
-			}
+				break;
+			case PROPERTY_VECTOR2:
+				{
+					Vector2 vSize;
+					m_pSelectEditor->getPropertyValue(it->second->getName(), vSize);
+					
+					m_wPropList.AddProperty(
+						CreateProperty(vSize.x, it->second->getName().c_str(), it->second->getDescribe().c_str(), NULL)
+						);
+					m_wPropList.AddProperty(
+						CreateProperty(vSize.y, it->second->getName().c_str(), it->second->getDescribe().c_str(), NULL)
+						);
+				}
+				break;
+			case PROPERTY_UNSIGNED_INT:
+				{
+					unsigned int nValue;
+					m_pSelectEditor->getPropertyValue(it->second->getName(), nValue);
 
-			m_wPropList.ExpandAll();
+					m_wPropList.AddProperty(
+						CreateProperty((float)nValue, it->second->getName().c_str(), it->second->getDescribe().c_str(), FALSE, NULL)
+						);
+				}
+				break;
+			}
+		}
+
+		m_wPropList.ExpandAll();
+	}
+
+	return 0;
+}
+
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
+{
+	if (m_pSelectEditor != NULL)
+	{
+		CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
+		if (pProperty != NULL)
+		{
+			TKLogEvent(pProperty->GetName());
+
+			COleVariant backgroud = pProperty->GetValue();
+			ColourValue clr;
+			clr.setAsARGB(SetAlpha(backgroud.uintVal,255));
+			m_pSelectEditor->setPropertyValue(pProperty->GetName(), clr);
 		}
 	}
+
+	return 0;
+}
+
+bool	CPropertiesWnd::OnValueChanged(const EventArgs& args)
+{
+	const PropertyEventArgs& evt = static_cast<const PropertyEventArgs&>(args);
+	if (m_pSelectEditor != NULL)
+	{
+		ViewPortEditor* pEditor = static_cast<ViewPortEditor*>(m_pSelectEditor);
+		pEditor->getViewPort()->setBackgroundColour(any_cast<ColourValue>(evt.pProperty->getValue()));
+		//m_pSelectEditor->setPropertyValue(evt.pProperty->getName(), evt.pProperty->getValue());
+	}
+
 	return 0;
 }
 
@@ -253,13 +329,6 @@ void	CPropertiesWnd::OnExpandAllProperties()
 	m_wPropList.ExpandAll();
 }
 
-/**
- *
- * \param pCmdUI 
- */
-void	CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* pCmdUI)
-{
-}
 
 /**
  *
@@ -278,39 +347,6 @@ void	CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
 	pCmdUI->SetCheck(m_wPropList.IsAlphabeticMode());
 }
 
-/**
- *
- */
-void	CPropertiesWnd::OnProperties1()
-{
-
-}
-
-/**
- *
- * \param pCmdUI
- */
-void	CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/)
-{
-
-}
-
-/**
- *
- */
-void	CPropertiesWnd::OnProperties2()
-{
-
-}
-
-/**
- *
- * \param pCmdUI
- */
-void	CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/)
-{
-
-}
 
 /**
  *

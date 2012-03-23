@@ -39,6 +39,12 @@ public:
 	}
 };
 
+namespace Ogre
+{
+	class EventArgs;
+	class BaseEditor;
+}
+
 /**
 * \ingroup : Xavier
 *
@@ -85,6 +91,7 @@ protected:
 	CComboBox						m_wObjectCombo;
 	CPropertiesToolBar				m_wToolBar;
 	CMFCPropertyGridCtrl			m_wPropList;
+	Ogre::BaseEditor*				m_pSelectEditor;
 
 public:
 	/**
@@ -110,7 +117,7 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreateProperty(SIZE szWnd, LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
+	CMFCPropertyGridProperty*		CreateProperty(float fValue, LPCTSTR lpszName, LPCTSTR lpszHelp, BOOL bEnable, CMFCPropertyGridProperty* pParent);
 protected:
 	/**
 	 *
@@ -137,47 +144,34 @@ protected:
 
 	/**
 	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
 	 */
-	afx_msg void					OnExpandAllProperties();
+	afx_msg LRESULT					OnPropertyChanged(WPARAM wParam, LPARAM lParam);
 
 	/**
 	 *
-	 * \param pCmdUI 
+	 * \param args 
+	 * \return 
 	 */
-	afx_msg void					OnUpdateExpandAllProperties(CCmdUI* pCmdUI);
+	afx_msg bool					OnValueChanged(const Ogre::EventArgs& args);
+
+	/**
+	 *
+	 */
+	afx_msg void					OnExpandAllProperties();
+
+    /**
+     *
+     * \param pCmdUI 
+     */
+    afx_msg void					OnUpdateSortProperties(CCmdUI* pCmdUI);
 
 	/**
 	 *
 	 */
 	afx_msg void					OnSortProperties();
-
-	/**
-	 *
-	 * \param pCmdUI 
-	 */
-	afx_msg void					OnUpdateSortProperties(CCmdUI* pCmdUI);
-
-	/**
-	 *
-	 */
-	afx_msg void					OnProperties1();
-
-	/**
-	 *
-	 * \param pCmdUI 
-	 */
-	afx_msg void					OnUpdateProperties1(CCmdUI* pCmdUI);
-
-	/**
-	 *
-	 */
-	afx_msg void					OnProperties2();
-
-	/**
-	 *
-	 * \param pCmdUI 
-	 */
-	afx_msg void					OnUpdateProperties2(CCmdUI* pCmdUI);
 
 	/**
 	 *

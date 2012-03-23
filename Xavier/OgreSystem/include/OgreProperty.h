@@ -316,14 +316,55 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual HashProperty&		getHashProperty();
+
 	public:
+		/**
+		 *
+		 * \param name 
+		 * \param value 
+		 */
 		template<typename T>
 		void						getPropertyValue(const String& name, T& value)
 		{
 			Property* pProperty = getProperty(name);
 			if (pProperty != NULL)
 			{
-				value = any_cast<T>(pProperty->getValue());
+				try {
+					value = any_cast<T>(pProperty->getValue());
+				}catch(Exception& e) {
+					TKLogEvent(e.getFullDescription(), LML_CRITICAL);
+				}
+			}
+			else
+			{
+				TKLogEvent("error: can't find property " + name);
+			}
+		}
+
+		/**
+		 *
+		 * \param name 
+		 * \param value 
+		 */
+		template<typename T>
+		void						setPropertyValue(const String& name, const T& value)
+		{
+			Property* pProperty = getProperty(name);
+			if (pProperty != NULL)
+			{
+				try {
+					pProperty->setValue(Any(value));
+					
+					PropertyEventArgs args(pProperty);
+					fireEvent(EventValueChanged, args, EventNamespace);
+
+				}catch(Exception& e) {
+					TKLogEvent(e.getFullDescription(), LML_CRITICAL);
+				}
+			}
+			else
+			{
+				TKLogEvent("error: can't find property " + name);
 			}
 		}
 	protected:
