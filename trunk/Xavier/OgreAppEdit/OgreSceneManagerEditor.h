@@ -43,9 +43,20 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual SceneManager*		getSceneManager() const;
+
+		/** 显示一个OgreMesh
+		 *
+		 */
+		virtual void				showHead();
+
+		/**
+		 *
+		 */
+		virtual void				hideHead();
 	protected:
 		// OGRE 场景管理器
 		SceneManager*				m_pSceneManager;
+		SceneNode*					m_pOgreHead;
 	};
 
 	// 场景管理器创建参数

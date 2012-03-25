@@ -37,6 +37,8 @@ namespace Ogre
 	class ViewPortEditorFactory;
 	class XMLSerializeEditor;
 	class XMLSerializeEditorFactory;
+	class GridEditor;
+	class GridEditorFactory;
 }
 
 #include <Ogre.h>
@@ -73,5 +75,8 @@ namespace Ogre
 
 #define EDIT_XMLSERIALIZE		"XMLSerializeEditor"
 #define FACTORY_XMLSERIALIZE	"XMLSerializeEditorFactory"
+
+#define EDIT_GRIDEDIROR			"GridEditor"
+#define FACTORY_GRID			"GridEditorFactory"
 
 #endif

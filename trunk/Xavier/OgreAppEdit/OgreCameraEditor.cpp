@@ -30,12 +30,12 @@ namespace Ogre
 			m_pCamera->lookAt(vLookAt);
 
 			// 设置近截面和远截面
-			m_pCamera->setNearClipDistance(fNearClipDistance);
-			m_pCamera->setFarClipDistance(fFarClipDistance);
+			m_pCamera->setNearClipDistance(5);
+			//m_pCamera->setFarClipDistance(100);
 			
 			// 设置角度
-			m_pCamera->yaw(Degree(fYaw));
-			m_pCamera->pitch(Degree(fPitch));
+			//m_pCamera->yaw(Degree(fYaw));
+			//m_pCamera->pitch(Degree(fPitch));
 		}
 
 		setTypeName(EDIT_CAMERA);

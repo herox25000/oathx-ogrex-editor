@@ -133,12 +133,12 @@ void	CWizardDialog::OnBnClickedOk()
 		{
 			SCameraCreateParam cm;
 			cm.typeName				= EDIT_CAMERA;
-			cm.vPos					= Vector3(0,50,500);
-			cm.vLookAt				= Vector3(0,100,-300);
+			cm.vPos					= Vector3(Ogre::Vector3::UNIT_Z * 200.0f);
+			cm.vLookAt				= Vector3(0,0,0);
 			cm.fNearClipDistance	= 5;
-			cm.fFarClipDistance		= 10;
+			cm.fFarClipDistance		= 0;
 			cm.fYaw					= 0;
-			cm.fPitch				= 0;
+			cm.fPitch				= -45;
 
 			AppEdit::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
 		}
@@ -161,6 +161,18 @@ void	CWizardDialog::OnBnClickedOk()
 			cm.typeName				= EDIT_XMLSERIALIZE;
 
 			AppEdit::getSingletonPtr()->addEditor(pXMLSerFactory->create(&cm));
+		}
+
+		// ¸ñ×Ó±à¼­Æ÷
+		BaseEditorFactory* pGirdEditor = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_GRID);
+		if (pGirdEditor != NULL)
+		{
+			SGridCreateParam cm;
+			cm.fSize				= 1;
+			cm.fWidth				= 32;
+			cm.fDepth				= 32;
+
+			AppEdit::getSingletonPtr()->addEditor(pGirdEditor->create(&cm));
 		}
 		
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());

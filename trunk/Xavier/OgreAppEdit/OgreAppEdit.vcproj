@@ -192,6 +192,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreGridEditor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreRenderWindowEditor.cpp"
 				>
 			</File>
@@ -231,6 +235,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreGridEditor.h"
 				>
 			</File>
 			<File
