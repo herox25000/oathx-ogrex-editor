@@ -182,86 +182,6 @@ namespace Ogre
 		static const String			EventValueChanged;
 		
 	public:
-		static int					getTypeForValue(const short& val) 
-		{
-			return PROPERTY_SHORT; 
-		}
-		
-		static int					getTypeForValue(const unsigned short& val)
-		{
-			return PROPERTY_UNSIGNED_SHORT; 
-		}
-		
-		static int					getTypeForValue(const int& val)
-		{
-			return PROPERTY_INT;
-		}
-		
-		static int					getTypeForValue(const unsigned int& val) 
-		{
-			return PROPERTY_UNSIGNED_INT;
-		}
-
-		static int					getTypeForValue(const long& val) 
-		{
-			return PROPERTY_LONG;
-		}
-
-		static int					getTypeForValue(const unsigned long& val)
-		{
-			return PROPERTY_UNSIGNED_LONG;
-		}
-
-		static int					getTypeForValue(const Ogre::Real& val)
-		{ 
-			return PROPERTY_REAL;
-		}
-
-		static int					getTypeForValue(const Ogre::String& val) 
-		{ 
-			return PROPERTY_STRING;
-		}
-		
-		static int					getTypeForValue(const Ogre::Vector2& val) 
-		{
-			return PROPERTY_VECTOR2; 
-		}
-		
-		static int					getTypeForValue(const Ogre::Vector3& val) 
-		{
-			return PROPERTY_VECTOR3; 
-		}
-		
-		static int					getTypeForValue(const Ogre::Vector4& val)
-		{ 
-			return PROPERTY_VECTOR4; 
-		}
-		
-		static int					getTypeForValue(const Ogre::ColourValue& val) 
-		{ 
-			return PROPERTY_COLOUR; 
-		}
-		
-		static int					getTypeForValue(const bool& val) 
-		{ 
-			return PROPERTY_BOOL; 
-		}
-
-		static int					getTypeForValue(const Ogre::Quaternion& val)
-		{
-			return PROPERTY_QUATERNION;
-		}
-
-		static int					getTypeForValue(const Ogre::Matrix3& val)
-		{ 
-			return PROPERTY_MATRIX3; 
-		}
-
-		static int					getTypeForValue(const Ogre::Matrix4& val) 
-		{ 
-			return PROPERTY_MATRIX4;
-		}
-	public:
 		/**
 		 *
 		 * \param sName 
@@ -282,7 +202,7 @@ namespace Ogre
 		 * \param Value 
 		 * \param describe 
 		 */
-		virtual	void				addProperty(const String& name, Any Value, const String& describe, int typeProperty);
+		virtual	void				addProperty(const String& name, const Any& anyValue, const String& describe, int typeProperty);
 
 		/**
 		 *
@@ -310,7 +230,6 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual Any&				getPropertyValue(const String& name);
-
 		/**
 		 *
 		 * \return 
@@ -324,13 +243,13 @@ namespace Ogre
 		 * \param value 
 		 */
 		template<typename T>
-		void						getPropertyValue(const String& name, T& value)
+		void						getPropertyValue(const String& name, T& anyValue)
 		{
 			Property* pProperty = getProperty(name);
 			if (pProperty != NULL)
 			{
 				try {
-					value = any_cast<T>(pProperty->getValue());
+					anyValue = any_cast<T>(pProperty->getValue());
 				}catch(Exception& e) {
 					TKLogEvent(e.getFullDescription(), LML_CRITICAL);
 				}
@@ -347,13 +266,13 @@ namespace Ogre
 		 * \param value 
 		 */
 		template<typename T>
-		void						setPropertyValue(const String& name, const T& value)
+		void						setPropertyValue(const String& name, const T& anyValue)
 		{
 			Property* pProperty = getProperty(name);
 			if (pProperty != NULL)
 			{
 				try {
-					pProperty->setValue(Any(value));
+					pProperty->setValue(Any(anyValue));
 					
 					PropertyEventArgs args(pProperty);
 					fireEvent(EventValueChanged, args, EventNamespace);
@@ -364,7 +283,7 @@ namespace Ogre
 			}
 			else
 			{
-				TKLogEvent("error: can't find property " + name);
+				TKLogEvent("error: can't find property " + name, LML_CRITICAL);
 			}
 		}
 	protected:

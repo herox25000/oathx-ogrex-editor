@@ -50,6 +50,13 @@ namespace Ogre
 		 *
 		 */
 		virtual void					windowMovedOrResized();
+		
+		/**
+		 *
+		 * \param args 
+		 * \return 
+		 */
+		virtual bool					onPropertyChanaged(const EventArgs& args);
 	protected:
 		// йс©з
 		Viewport*						m_pViewPort;

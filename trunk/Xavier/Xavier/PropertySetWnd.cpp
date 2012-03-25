@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "PropertiesWnd.h"
+#include "PropertySetWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
 #include "Xavier.h"
@@ -32,7 +32,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CPropertiesWnd::CPropertiesWnd() : m_pSelectEditor(NULL)
+CPropertySetWnd::CPropertySetWnd() : m_pSelectEditor(NULL)
 {
 }
 
@@ -40,22 +40,19 @@ CPropertiesWnd::CPropertiesWnd() : m_pSelectEditor(NULL)
  *
  * \return 
  */
-CPropertiesWnd::~CPropertiesWnd()
+CPropertySetWnd::~CPropertySetWnd()
 {
 }
 
-BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
+BEGIN_MESSAGE_MAP(CPropertySetWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
-	ON_MESSAGE(WM_SELECT_EDITOR,			&CPropertiesWnd::OnSelectEditor)
+	ON_MESSAGE(WM_SELECT_EDITOR,			&CPropertySetWnd::OnSelectEditor)
 	ON_COMMAND(ID_EXPAND_ALL,				OnExpandAllProperties)
-	//ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL,		OnUpdateExpandAllProperties)
 	ON_COMMAND(ID_SORTPROPERTIES,			OnSortProperties)
 	ON_UPDATE_COMMAND_UI(ID_SORTPROPERTIES, OnUpdateSortProperties)
-	//ON_COMMAND(ID_PROPERTIES1,				OnProperties1)
-	//ON_UPDATE_COMMAND_UI(ID_PROPERTIES1,	OnUpdateProperties1)
-	//ON_COMMAND(ID_PROPERTIES2,				OnProperties2)
-	//ON_UPDATE_COMMAND_UI(ID_PROPERTIES2,	OnUpdateProperties2)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1,	OnUpdateBaseProperty)
+	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2,	OnUpdateEventDefine)
 	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
@@ -64,7 +61,7 @@ END_MESSAGE_MAP()
 /**
  *
  */
-void	CPropertiesWnd::AdjustLayout()
+void	CPropertySetWnd::AdjustLayout()
 {
 	if (GetSafeHwnd() == NULL)
 	{
@@ -99,7 +96,7 @@ void	CPropertiesWnd::AdjustLayout()
  * \param lpCreateStruct 
  * \return 
  */
-int		CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int		CPropertySetWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -148,7 +145,7 @@ int		CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
  * \param cx 
  * \param cy 
  */
-void	CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
+void	CPropertySetWnd::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
@@ -161,7 +158,7 @@ void	CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(DWORD dwColour, LPCTSTR lpszGroupName, 
+CMFCPropertyGridProperty*	CPropertySetWnd::CreateProperty(DWORD dwColour, LPCTSTR lpszGroupName, 
 															   LPCTSTR lpszName, LPCTSTR lpszHelp)
 {
 	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
@@ -193,7 +190,7 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(DWORD dwColour, LPCTSTR
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(float fValue, LPCTSTR lpszName, LPCTSTR lpszHelp, BOOL bEnable,
+CMFCPropertyGridProperty*	CPropertySetWnd::CreateProperty(float fValue, LPCTSTR lpszName, LPCTSTR lpszHelp, BOOL bEnable,
 														   CMFCPropertyGridProperty* pParent)
 {
 	CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(lpszName, (_variant_t)fValue, NULL, NULL);
@@ -210,7 +207,7 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreateProperty(float fValue, LPCTSTR l
  * \param lParam 
  * \return 
  */
-LRESULT	CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
+LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 {
 	wmSelectEvent* evt = (wmSelectEvent*)(wParam);
 	if (evt != NULL)
@@ -246,9 +243,6 @@ LRESULT	CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 						CreateProperty(RGB(GetR(argb), GetG(argb), GetB(argb)), it->second->getName().c_str(), it->second->getName().c_str(), 
 						it->second->getDescribe().c_str())
 						);
-
-					m_pSelectEditor->subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&CPropertiesWnd::OnValueChanged, this));
-
 				}
 				break;
 			case PROPERTY_VECTOR2:
@@ -289,7 +283,7 @@ LRESULT	CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
  * \param lParam 
  * \return 
  */
-LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
+LRESULT	CPropertySetWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 {
 	if (m_pSelectEditor != NULL)
 	{
@@ -308,23 +302,29 @@ LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 	return 0;
 }
 
-bool	CPropertiesWnd::OnValueChanged(const EventArgs& args)
+/**
+ *
+ * \param pCmdUI 
+ */
+void	CPropertySetWnd::OnUpdateBaseProperty(CCmdUI* pCmdUI)
 {
-	const PropertyEventArgs& evt = static_cast<const PropertyEventArgs&>(args);
-	if (m_pSelectEditor != NULL)
-	{
-		ViewPortEditor* pEditor = static_cast<ViewPortEditor*>(m_pSelectEditor);
-		pEditor->getViewPort()->setBackgroundColour(any_cast<ColourValue>(evt.pProperty->getValue()));
-		//m_pSelectEditor->setPropertyValue(evt.pProperty->getName(), evt.pProperty->getValue());
-	}
 
-	return 0;
 }
 
 /**
  *
+ * \param pCmdUI 
  */
-void	CPropertiesWnd::OnExpandAllProperties()
+void	CPropertySetWnd::OnUpdateEventDefine(CCmdUI* pCmdUI)
+{
+
+}
+
+
+/**
+ *
+ */
+void	CPropertySetWnd::OnExpandAllProperties()
 {
 	m_wPropList.ExpandAll();
 }
@@ -333,7 +333,7 @@ void	CPropertiesWnd::OnExpandAllProperties()
 /**
  *
  */
-void	CPropertiesWnd::OnSortProperties()
+void	CPropertySetWnd::OnSortProperties()
 {
 	m_wPropList.SetAlphabeticMode(!m_wPropList.IsAlphabeticMode());
 }
@@ -342,7 +342,7 @@ void	CPropertiesWnd::OnSortProperties()
  *
  * \param pCmdUI 
  */
-void	CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
+void	CPropertySetWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_wPropList.IsAlphabeticMode());
 }
@@ -351,7 +351,7 @@ void	CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
 /**
  *
  */
-void	CPropertiesWnd::InitPropList()
+void	CPropertySetWnd::InitPropList()
 {
 	SetPropListFont();
 
@@ -438,7 +438,7 @@ void	CPropertiesWnd::InitPropList()
  *
  * \param pOldWnd 
  */
-void	CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
+void	CPropertySetWnd::OnSetFocus(CWnd* pOldWnd)
 {
 	CDockablePane::OnSetFocus(pOldWnd);
 	m_wPropList.SetFocus();
@@ -449,7 +449,7 @@ void	CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
  * \param uFlags 
  * \param lpszSection 
  */
-void	CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
+void	CPropertySetWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CDockablePane::OnSettingChange(uFlags, lpszSection);
 	SetPropListFont();
@@ -458,7 +458,7 @@ void	CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 /**
  *
  */
-void	CPropertiesWnd::SetPropListFont()
+void	CPropertySetWnd::SetPropListFont()
 {
 	::DeleteObject(m_fntPropList.Detach());
 

@@ -124,12 +124,12 @@ namespace Ogre
 	 * \param Value 
 	 * \param describe 
 	 */
-	void			PropertySet::addProperty(const String& name, Any Value, const String& describe, int typeProperty)
+	void			PropertySet::addProperty(const String& name, const Any& anyValue, const String& describe, int typeProperty)
 	{
 		HashProperty::iterator it = m_HashProperty.find(name);
 		if ( it == m_HashProperty.end() )
 		{
-			m_HashProperty[name] = new Property(name, Value, describe, typeProperty);
+			m_HashProperty[name] = new Property(name, anyValue, describe, typeProperty);
 			
 			PropertyEventArgs args(m_HashProperty[name]);
 
@@ -192,7 +192,6 @@ namespace Ogre
 			pProperty->setValue(anyValue);
 
 			PropertyEventArgs args(pProperty);
-
 			fireEvent(EventValueChanged, args, EventNamespace);
 		}
 	}

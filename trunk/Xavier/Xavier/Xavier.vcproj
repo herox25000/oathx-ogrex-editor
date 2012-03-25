@@ -206,7 +206,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PropertiesWnd.cpp"
+				RelativePath=".\PropertySetWnd.cpp"
 				>
 			</File>
 			<File
@@ -276,7 +276,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\PropertiesWnd.h"
+				RelativePath=".\PropertySetWnd.h"
 				>
 			</File>
 			<File
