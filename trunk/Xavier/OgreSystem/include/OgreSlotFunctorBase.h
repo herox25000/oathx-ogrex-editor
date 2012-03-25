@@ -15,7 +15,7 @@ namespace Ogre
 	*
 	* \@date   : 2012-03-16
 	*
-	* \Author  : lp
+	* \Author  : CEGUI
 	*
 	* \Desc    : 
 	*

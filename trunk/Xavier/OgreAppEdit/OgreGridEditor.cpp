@@ -11,7 +11,7 @@ namespace Ogre
 	 * \return 
 	 */
 	GridEditor::GridEditor(SceneManager* pSceneManager, Real fWidth, Real fSize, Real fDepth)
-		: m_pSceneManager(pSceneManager), m_pGridNode(NULL), m_fDepth(fDepth), m_fSize(fSize), m_fWidth(fWidth)
+		: m_pSceneManager(pSceneManager), m_fDepth(fDepth), m_fSize(fSize), m_fWidth(fWidth)
 	{
 		setTypeName(EDIT_GRIDEDIROR);
 
@@ -28,6 +28,7 @@ namespace Ogre
 	 */
 	GridEditor::~GridEditor(void)
 	{
+		
 	}
 
 	/**
@@ -46,7 +47,7 @@ namespace Ogre
 	 */
 	void		GridEditor::hide()
 	{
-
+		m_pSceneManager->destroyEntity("XavierGrid");
 	}
 
 	/**

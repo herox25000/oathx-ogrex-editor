@@ -54,8 +54,6 @@ namespace Ogre
 		Real						m_fWidth;
 		Real						m_fSize;
 		Real						m_fDepth;
-		SceneNode*					m_pGridNode;
-		SceneNode*					m_axisNode;
 	};
 
 	//////////////////////////////////////////////////////////////////////////
