@@ -264,7 +264,7 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 					m_pSelectEditor->getPropertyValue(it->second->getName(), nValue);
 
 					m_wPropList.AddProperty(
-						CreateProperty((float)nValue, it->second->getName().c_str(), it->second->getDescribe().c_str(), FALSE, NULL)
+						CreateProperty((float)nValue, it->second->getName().c_str(), it->second->getDescribe().c_str(), it->second->canWrite(), NULL)
 						);
 				}
 				break;

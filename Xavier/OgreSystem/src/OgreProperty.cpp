@@ -11,8 +11,8 @@ namespace Ogre
 	 * \param describe 
 	 * \return 
 	 */
-	Property::Property(const String& sName, const Any& anyValue, const String& describe, int typeProperty)
-		:m_decribe(describe), m_sName(sName), m_anyValue(anyValue), m_type(typeProperty)
+	Property::Property(const String& sName, const Any& anyValue, const String& describe, int typeProperty, bool bWrite)
+		:m_decribe(describe), m_sName(sName), m_anyValue(anyValue), m_type(typeProperty), m_bWrite(bWrite)
 	{
 
 	}
@@ -89,6 +89,15 @@ namespace Ogre
 		return m_anyValue;
 	}
 
+	/**
+	 *
+	 * \return 
+	 */
+	bool			Property::canWrite() const
+	{
+		return m_bWrite;
+	}
+
 	// event name
 	const String	PropertySet::EventNamespace		=	"PropertySet";
 	const String	PropertySet::EventAddProperty	=	"AddProperty";
@@ -124,12 +133,13 @@ namespace Ogre
 	 * \param Value 
 	 * \param describe 
 	 */
-	void			PropertySet::addProperty(const String& name, const Any& anyValue, const String& describe, int typeProperty)
+	void			PropertySet::addProperty(const String& name, const Any& anyValue, const String& describe, 
+		int typeProperty, bool bWrite/* =true */)
 	{
 		HashProperty::iterator it = m_HashProperty.find(name);
 		if ( it == m_HashProperty.end() )
 		{
-			m_HashProperty[name] = new Property(name, anyValue, describe, typeProperty);
+			m_HashProperty[name] = new Property(name, anyValue, describe, typeProperty, bWrite);
 			
 			PropertyEventArgs args(m_HashProperty[name]);
 

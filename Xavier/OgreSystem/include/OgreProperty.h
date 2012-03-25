@@ -53,7 +53,7 @@ namespace Ogre
 		 * \param describe 
 		 * \return 
 		 */
-		Property(const String& sName, const Any& anyValue, const String& describe, int typeProperty);
+		Property(const String& sName, const Any& anyValue, const String& describe, int typeProperty, bool bWrite=true);
 
 		/**
 		 *
@@ -102,11 +102,18 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual int					getType() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual bool				canWrite() const;
 	protected:
 		String						m_decribe;
 		String						m_sName;
 		Any							m_anyValue;
 		int							m_type;
+		bool						m_bWrite;
 	};
 
 	/**
@@ -202,7 +209,8 @@ namespace Ogre
 		 * \param Value 
 		 * \param describe 
 		 */
-		virtual	void				addProperty(const String& name, const Any& anyValue, const String& describe, int typeProperty);
+		virtual	void				addProperty(const String& name, const Any& anyValue, 
+			const String& describe, int typeProperty, bool bWrite=true);
 
 		/**
 		 *
