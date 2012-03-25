@@ -167,7 +167,7 @@ void	CXavierView::OnDraw(CDC* pDC)
 		dc.FillRect(&rcView, &CBrush(RGB(0,0,0)));
 		dc.SetTextColor(RGB(255,0,0));
 		dc.SetBkMode(TRANSPARENT);
-		dc.DrawText("Welcome Xavier Game Editor", strlen("Welcome Xavier Game Editor"), &rcView, DT_SINGLELINE|DT_CENTER|DT_VCENTER);
+		dc.DrawText("Welcome to Xavier Game Editor", strlen("Welcome to Xavier Game Editor"), &rcView, DT_SINGLELINE|DT_CENTER|DT_VCENTER);
 	}
 }
 

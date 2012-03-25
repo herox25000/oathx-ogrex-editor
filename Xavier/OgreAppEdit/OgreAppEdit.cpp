@@ -100,6 +100,7 @@ namespace Ogre
 		rsys->setConfigOption( "VSync", "No" );
 		rsys->setConfigOption( "Full Screen", "No" );
 #endif
+		rsys->setConfigOption("FSAA", "2");
 		m_pRoot->setRenderSystem( rsys );
 		
 		// 不创建窗口
