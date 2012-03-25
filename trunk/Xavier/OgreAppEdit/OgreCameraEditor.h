@@ -5,6 +5,14 @@
 
 namespace Ogre
 {
+	// 摄像机模式
+	enum
+	{
+		CS_FREELOOK,
+		CS_ORBIT,
+		CS_MANUAL
+	};
+
 	/**
 	* \ingroup : OgreEditSystem
 	*
@@ -44,14 +52,84 @@ namespace Ogre
 		 */
 		virtual ~CameraEditor(void);
 
-		/**
+		/** 获取摄像机
 		 *
 		 * \return 
 		 */
 		virtual Camera*				getCamera() const;
+		
+		/** 设置摄像机
+		 *
+		 * \param pCamera 
+		 */
+		virtual void				setCamera(Camera* pCamera);
 
+		/** 设置观察目标
+		 *
+		 * \param pTarget 
+		 */
+		virtual void				setTarget(SceneNode* pTarget);
+
+		/** 获取目标
+		 *
+		 * \return 
+		 */
+		virtual SceneNode*			getTarget() const;
+
+		/**
+		 *
+		 * \param yaw 
+		 * \param pitch 
+		 * \param dist 
+		 */
+		virtual void				setYawPitchDist(Radian yaw, Radian pitch, Real dist);
+
+		/**
+		 *
+		 * \param nMode 
+		 */
+		virtual void				setMode(int nMode);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual int					getMode() const;
+
+		/**
+		 *
+		 * \param x 
+		 * \param y 
+		 * \param z 
+		 */
+		virtual void				injectMouseMove(float x, float y);
+
+		/**
+		 *
+		 * \param z 
+		 */
+		virtual void				injectMouseWheel(float z);
+
+		/**
+		 *
+		 * \param key 
+		 */
+		virtual void				injectKeyDown(int key);
 	protected:
 		Camera*						m_pCamera;
+		SceneNode*					m_pTarget;
+		int							m_nMode;
+		bool						m_bOrbiting;
+		bool						m_bZooming;
+		Real						m_fTopSpeed;
+		Vector3						m_vVelocity;
+		bool						m_bGoingForward;
+		bool						m_bGoingBack;
+		bool						m_bGoingLeft;
+		bool						m_bGoingRight;
+		bool						m_bGoingUp;
+		bool						m_bGoingDown;
+		bool						m_bFastMove;
 	};
 
 	// 摄像机创建参数
