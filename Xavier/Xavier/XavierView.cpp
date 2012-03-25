@@ -20,6 +20,11 @@ BEGIN_MESSAGE_MAP(CXavierView, CView)
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
 	ON_WM_ERASEBKGND()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_LBUTTONUP()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_MOUSEMOVE()
+	ON_WM_MOUSEWHEEL()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
@@ -28,7 +33,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME)
+CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE)
 {
 
 }
@@ -216,17 +221,6 @@ void	CXavierView::OnEndPrinting(CDC* /*pDC*/, CPrintInfo* /*pInfo*/)
 
 /**
  *
- * \param nFlags 
- * \param point 
- */
-void	CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
-{
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
-}
-
-/**
- *
  * \param pWnd 
  * \param point 
  */
@@ -268,4 +262,87 @@ CXavierDoc* CXavierView::GetDocument() const
 #endif //_DEBUG
 
 
+/**
+ *
+ * \param nFlags 
+ * \param point 
+ */
+void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
+{
+	m_bLMouseDown = TRUE;
+	m_cLMouseDown = point;
 
+	CView::OnLButtonDown(nFlags, point);
+}
+
+/**
+ *
+ * \param nFlags 
+ * \param point 
+ */
+void	CXavierView::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	m_bLMouseDown = FALSE;
+	CView::OnLButtonUp(nFlags, point);
+}
+
+/**
+ *
+ * \param nFlags 
+ * \param point 
+ */
+void	CXavierView::OnRButtonDown(UINT nFlags, CPoint point)
+{
+	CView::OnRButtonDown(nFlags, point);
+}
+
+/**
+ *
+ * \param nFlags 
+ * \param point 
+ */
+void	CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
+{
+	ClientToScreen(&point);
+	OnContextMenu(this, point);
+}
+
+/**
+ *
+ * \param nFlags 
+ * \param point 
+ */
+void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	if (m_bLMouseDown)
+	{
+		CPoint cRel = point - m_cLMouseDown;
+		
+		CameraEditor* pEditor = static_cast<CameraEditor*>(AppEdit::getSingletonPtr()->getEditor(EDIT_CAMERA));
+		if (pEditor != NULL)
+		{
+			m_cLMouseDown = point;
+			pEditor->injectMouseMove(cRel.x, cRel.y);
+		}
+	}
+
+	CView::OnMouseMove(nFlags, point);
+}
+
+/**
+ *
+ * \param nFlags 
+ * \param zDelta 
+ * \param pt 
+ * \return 
+ */
+BOOL CXavierView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
+{
+	CameraEditor* pEditor = static_cast<CameraEditor*>(AppEdit::getSingletonPtr()->getEditor(EDIT_CAMERA));
+	if (pEditor != NULL)
+	{
+		pEditor->injectMouseWheel(zDelta);
+	}
+
+	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}

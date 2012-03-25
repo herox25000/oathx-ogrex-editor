@@ -83,6 +83,8 @@ BOOL	CWizardDialog::OnInitDialog()
 	m_cbSceneTypeMask.AddString("ST_EXTERIOR_REAL_FAR");
 	m_cbSceneTypeMask.AddString("ST_INTERIOR");
 
+	SetDlgItemText(IDC_EDIT_PROJECT_NAME, CString("aa"));
+	SetDlgItemText(IDC_EDIT_PROJECT_DIR,CString("d:\\sda"));
 	return TRUE;
 }
 
@@ -133,7 +135,7 @@ void	CWizardDialog::OnBnClickedOk()
 		{
 			SCameraCreateParam cm;
 			cm.typeName				= EDIT_CAMERA;
-			cm.vPos					= Vector3(Ogre::Vector3::UNIT_Z * 200.0f);
+			cm.vPos					= Vector3(0,0, 300);
 			cm.vLookAt				= Vector3(0,0,0);
 			cm.fNearClipDistance	= 5;
 			cm.fFarClipDistance		= 0;

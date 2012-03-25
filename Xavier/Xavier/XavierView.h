@@ -34,6 +34,9 @@ protected:
 protected:
 	BOOL						m_bWelcome;
 	DWORD						m_dwState;
+	BOOL						m_bLMouseDown;
+	CPoint						m_cLMouseDown;
+	CPoint						m_cLMouseLost;
 public:
 	/**
 	 *
@@ -139,6 +142,43 @@ protected:
 
 	/**
 	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void				OnLButtonDown(UINT nFlags, CPoint point);
+
+	/**
+	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void				OnLButtonUp(UINT nFlags, CPoint point);
+
+	/**
+	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void				OnRButtonDown(UINT nFlags, CPoint point);
+
+	/**
+	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void				OnMouseMove(UINT nFlags, CPoint point);
+
+	/**
+	 *
+	 * \param nFlags 
+	 * \param zDelta 
+	 * \param pt 
+	 * \return 
+	 */
+	afx_msg BOOL				OnMouseWheel(UINT nFlags, short zDelta, CPoint pt);
+
+	/**
+	 *
 	 * \param pDC 
 	 * \return 
 	 */
@@ -163,6 +203,7 @@ protected:
 	 */
 	afx_msg void				OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
+
 };
 
 #ifndef _DEBUG
