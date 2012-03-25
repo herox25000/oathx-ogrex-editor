@@ -5,6 +5,7 @@
 #include "OgreSceneManagerEditor.h"
 #include "OgreCameraEditor.h"
 #include "OgreViewPortEditor.h"
+#include "OgreGridEditor.h"
 #include "OgreXMLSerializeEditor.h"
 
 namespace Ogre
@@ -110,6 +111,7 @@ namespace Ogre
 		registerEditorFactory(new CameraEditorFactory());
 		registerEditorFactory(new ViewPortEditorFactory());
 		registerEditorFactory(new XMLSerializeEditorFactory());
+		registerEditorFactory(new GridEditorFactory());
 		
 		//
 		new GlobalEventSet();
