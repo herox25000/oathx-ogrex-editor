@@ -135,10 +135,12 @@ void	CWizardDialog::OnBnClickedOk()
 		{
 			SCameraCreateParam cm;
 			cm.typeName				= EDIT_CAMERA;
-			cm.vPos					= Vector3(0,0, 300);
+			cm.vPos					= Vector3(0, 5, 5);
 			cm.vLookAt				= Vector3(0,0,0);
-			cm.fNearClipDistance	= 1;
+			cm.fNearClipDistance	= 0.1;
 			cm.fFarClipDistance		= 3000;
+			cm.fYaw					= 0;
+			cm.fPitch				= 0;
 
 			AppEdit::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
 		}

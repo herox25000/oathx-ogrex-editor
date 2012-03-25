@@ -17,7 +17,8 @@ namespace Ogre
 
 		MeshManager::getSingletonPtr()->createPlane("XavierGridMesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 			Plane(Ogre::Vector3::UNIT_Y, 0), fWidth * fSize, fDepth * fSize, 1, 1, false, 1, fWidth, fDepth, Ogre::Vector3::UNIT_Z);
-		//show();
+		show();
+
 	}
 
 	/**
@@ -34,15 +35,10 @@ namespace Ogre
 	 */
 	void		GridEditor::show()
 	{
-		if (m_pGridNode != NULL || m_pSceneManager == NULL)
-			return;
-		
-		Entity* ent = m_pSceneManager->createEntity("XavierGirdEntity", "XavierGridMesh");
-		ent->setMaterialName("XavierGird/Grid");
-		ent->setCastShadows(false);
-		
-		m_pGridNode = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
-		m_pGridNode->attachObject(ent);
+		Entity* grid = m_pSceneManager->createEntity("XavierGrid", "XavierGridMesh");
+		grid->setMaterialName("Editor/Grid");
+		grid->setCastShadows(false);
+		m_pSceneManager->getRootSceneNode()->attachObject(grid);
 	}
 
 	/**
@@ -50,14 +46,7 @@ namespace Ogre
 	 */
 	void		GridEditor::hide()
 	{
-		if( m_pGridNode )
-		{
-			Ogre::Entity *entity = static_cast<Ogre::Entity*>(m_pGridNode->getAttachedObject(0));
-			m_pGridNode->getParentSceneNode()->removeAndDestroyChild( m_pGridNode->getName() );
-			m_pSceneManager->destroyEntity( entity );
 
-			m_pGridNode = NULL;
-		}
 	}
 
 	/**

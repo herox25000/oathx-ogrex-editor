@@ -17,7 +17,7 @@ namespace Ogre
 
 		m_pSceneManager->setAmbientLight( Ogre::ColourValue( 0.5f, 0.5f, 0.5f ) );
 		
-		showHead();
+		//showHead();
 		setTypeName(EDIT_SCENEMANAGER);
 	}
 
@@ -28,7 +28,7 @@ namespace Ogre
 	 */
 	SceneManagerEditor::~SceneManagerEditor(void)
 	{
-		hideHead();
+		//hideHead();
 		Root::getSingletonPtr()->destroySceneManager(m_pSceneManager);
 	}
 
@@ -50,6 +50,7 @@ namespace Ogre
 			ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME );
 		m_pOgreHead			 = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
 		m_pOgreHead->attachObject( entity );
+		m_pOgreHead->setScale(0.1,0.1,0.1);
 
 		entity->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
 	}
