@@ -35,12 +35,10 @@ namespace Ogre
 		setTypeName(EDIT_VIEWPORT);
 		
 		// add property
-		addProperty("background", Any(background),
+		addProperty("Background", Any(background),
 			"视口背景颜色", PROPERTY_COLOUR);
-		addProperty("Width", Any(AppEdit::getSingletonPtr()->getRenderWindow()->getWidth()),
-			"视口宽度", PROPERTY_UNSIGNED_INT);
-		addProperty("Height",Any(AppEdit::getSingletonPtr()->getRenderWindow()->getHeight()),
-			"视口高度", PROPERTY_UNSIGNED_INT);
+
+		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&ViewPortEditor::onPropertyChanaged, this));
 	}
 
 	/** 析构函数
@@ -72,27 +70,55 @@ namespace Ogre
 		{
 			pRenderWindow->windowMovedOrResized();
 			
-			//fireEvent("");
-
 			m_pCamera->setAspectRatio(
 				Ogre::Real(m_pViewPort->getActualWidth()) / Ogre::Real(m_pViewPort->getActualHeight())
 				);	
 		}
 	}
 
+	/**
+	 *
+	 * \param args 
+	 */
+	bool			ViewPortEditor::onPropertyChanaged(const EventArgs& args)
+	{
+		const PropertyEventArgs& evt = static_cast<const PropertyEventArgs&>(args);
+		if (evt.pProperty != NULL)
+		{
+			String name = evt.pProperty->getName();
+			if (name == "Background")
+				m_pViewPort->setBackgroundColour(any_cast<ColourValue>(evt.pProperty->getValue()));
+		}
+
+		return true;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
+	/**
+	 *
+	 * \return 
+	 */
 	ViewPortEditorFactory::ViewPortEditorFactory()
 	{
 		setTypeName(FACTORY_VIEWPORT);
 	}
 
+	/**
+	 *
+	 * \return 
+	 */
 	ViewPortEditorFactory::~ViewPortEditorFactory()
 	{
 
 	}
 
+	/**
+	 *
+	 * \param pm 
+	 * \return 
+	 */
 	BaseEditor*		ViewPortEditorFactory::create(const SBaseCreateParam* pm)
 	{
 		if (pm != NULL)

@@ -3,7 +3,7 @@
 #include "FileView.h"
 #include "MeshView.h"
 #include "OutputWnd.h"
-#include "PropertiesWnd.h"
+#include "PropertySetWnd.h"
 #include "WizardDialog.h"
 
 /**
@@ -87,7 +87,7 @@ public:
 	 *
 	 * \return 
 	 */
-	CPropertiesWnd*	GetPropertyWnd() {return &m_wProperties;}
+	CPropertySetWnd*	GetPropertyWnd() {return &m_wProperties;}
 #ifdef _DEBUG
 	/**
 	 *
@@ -109,7 +109,7 @@ protected:
 	CFileView				m_wFileView;
 	CMeshView				m_wMeshView;
 	COutputWnd				m_wOutput;
-	CPropertiesWnd			m_wProperties;
+	CPropertySetWnd			m_wProperties;
 	CWizardDialog			m_dWizard;
 
 protected:

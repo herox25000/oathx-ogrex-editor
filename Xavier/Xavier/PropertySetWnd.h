@@ -61,14 +61,14 @@ namespace Ogre
 * \bug     : 
 *
 */
-class CPropertiesWnd : public CDockablePane
+class CPropertySetWnd : public CDockablePane
 {
 public:
 	/**
 	 *
 	 * \return 
 	 */
-	CPropertiesWnd();
+	CPropertySetWnd();
 
 	/**
 	 *
@@ -86,6 +86,16 @@ public:
 		m_wPropList.SetGroupNameFullWidth(bSet);
 	}
 
+	/**
+	 *
+	 */
+	void	InitPropList();
+
+	/**
+	 *
+	 */
+	void	SetPropListFont();
+
 protected:
 	CFont							m_fntPropList;
 	CComboBox						m_wObjectCombo;
@@ -98,7 +108,7 @@ public:
 	 *
 	 * \return 
 	 */
-	virtual ~CPropertiesWnd();
+	virtual ~CPropertySetWnd();
 
 	/** ´´½¨ÑÕÉ«ÊìÏ¤
 	 *
@@ -152,10 +162,15 @@ protected:
 
 	/**
 	 *
-	 * \param args 
-	 * \return 
+	 * \param pCmdUI 
 	 */
-	afx_msg bool					OnValueChanged(const Ogre::EventArgs& args);
+	afx_msg void					OnUpdateBaseProperty(CCmdUI* pCmdUI);
+	
+	/**
+	 *
+	 * \param pCmdUI 
+	 */
+	afx_msg void					OnUpdateEventDefine(CCmdUI* pCmdUI);
 
 	/**
 	 *
@@ -187,15 +202,5 @@ protected:
 	afx_msg void					OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 
 	DECLARE_MESSAGE_MAP()
-
-	/**
-	 *
-	 */
-	void InitPropList();
-
-	/**
-	 *
-	 */
-	void SetPropListFont();
 };
 
