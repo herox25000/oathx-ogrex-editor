@@ -33,6 +33,9 @@ namespace Ogre
 			m_pCamera->setNearClipDistance(fNearClipDistance);
 			m_pCamera->setFarClipDistance(fFarClipDistance);
 		
+			m_pCamera->yaw(Degree(fYaw));
+			m_pCamera->pitch(Degree(fPitch));
+
 			setMode(CS_FREELOOK);
 		}
 
@@ -161,7 +164,9 @@ namespace Ogre
 	 */
 	void		CameraEditor::injectMouseWheel(float z)
 	{
-		m_pCamera->moveRelative(Ogre::Vector3(0, 0, z * 0.01f));
+		m_pCamera->moveRelative(Ogre::Vector3(0, 0, z * 0.02f));
+
+		TKLogEvent("camera position " + StringConverter::toString(m_pCamera->getPosition()));
 	}
 
 	/**
