@@ -1,7 +1,6 @@
 #ifndef _____OgreDebugDrawer_H
 #define _____OgreDebugDrawer_H
  
-#include "OgreKernelPrerequisites.h"
 #include "OgreSingleton.h"
 #include <map>
  
