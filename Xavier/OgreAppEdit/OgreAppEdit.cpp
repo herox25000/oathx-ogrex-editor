@@ -116,7 +116,7 @@ namespace Ogre
 		
 		//
 		new GlobalEventSet();
-
+	
 		return true;
 	}
 

@@ -1,5 +1,6 @@
 #include "OgreAppEditPrerequisites.h"
 #include "OgreSceneManagerEditor.h"
+#include "OgreDebugDrawer.h"
 
 namespace Ogre
 {
@@ -17,8 +18,9 @@ namespace Ogre
 
 		m_pSceneManager->setAmbientLight( Ogre::ColourValue( 0.5f, 0.5f, 0.5f ) );
 		
-		//showHead();
 		setTypeName(EDIT_SCENEMANAGER);
+
+		new DebugDrawer(m_pSceneManager, 0.5);
 	}
 
 	/** 析构函数
@@ -28,8 +30,11 @@ namespace Ogre
 	 */
 	SceneManagerEditor::~SceneManagerEditor(void)
 	{
-		//hideHead();
+		// 删除场景调试绘制起
+		delete DebugDrawer::getSingletonPtr();
+
 		Root::getSingletonPtr()->destroySceneManager(m_pSceneManager);
+			
 	}
 
 	/**
