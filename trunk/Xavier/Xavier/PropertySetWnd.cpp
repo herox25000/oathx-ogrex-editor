@@ -222,7 +222,10 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 	{
 		BaseEditor* pSelect = AppEdit::getSingletonPtr()->getEditor(evt->Name);
 		if (m_pSelectEditor != pSelect)
+		{
 			m_pSelectEditor = pSelect;
+			TKLogEvent("ÒÑÑ¡Ôñ±à¼­Æ÷ " + m_pSelectEditor->getTypeName());
+		}
 	}
 
 	if (m_pSelectEditor != NULL)
