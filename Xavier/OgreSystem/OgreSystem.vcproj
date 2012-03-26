@@ -184,6 +184,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\OgreDebugDrawer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\OgreEvent.cpp"
 				>
 			</File>
@@ -223,6 +227,10 @@
 			>
 			<File
 				RelativePath=".\include\OgreBoundSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreDebugDrawer.h"
 				>
 			</File>
 			<File
