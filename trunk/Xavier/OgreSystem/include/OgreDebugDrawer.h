@@ -27,7 +27,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_Export_API IcoSphere
+	class OgreSystem_Export_API IcoSphere
 	{
 	public:
 		struct TriangleIndices
@@ -199,7 +199,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_Export_API DebugDrawer : public Ogre::Singleton<DebugDrawer>
+	class OgreSystem_Export_API DebugDrawer : public Ogre::Singleton<DebugDrawer>
 	{
 	public:
 		/**
