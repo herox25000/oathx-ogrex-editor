@@ -16,30 +16,34 @@ namespace Ogre
 	CameraEditor::CameraEditor(const Vector3& vPos, const Vector3& vLookAt, Real fYaw,
 		Real fPitch, Real fNearClipDistance, Real fFarClipDistance) : m_pCamera(NULL), m_pTarget(NULL), m_nMode(CS_FREELOOK)
 	{
-		SceneManager* pSceneManager = Root::getSingletonPtr()->getSceneManager(NAME_SCENEMANAGER);
-		if (pSceneManager != NULL)
-		{
-			/*
-			* 创建摄像机
-			*/
-			m_pCamera = pSceneManager->createCamera(NAME_CAMERA);
-			
-			// 设置位置
-			m_pCamera->setPosition(vPos);
-			// 设置观察点
-			m_pCamera->lookAt(vLookAt);
-
-			// 设置近截面和远截面
-			m_pCamera->setNearClipDistance(fNearClipDistance);
-			m_pCamera->setFarClipDistance(fFarClipDistance);
-		
-			m_pCamera->yaw(Degree(fYaw));
-			m_pCamera->pitch(Degree(fPitch));
-
-			setMode(CS_FREELOOK);
-		}
-
 		setTypeName(EDIT_CAMERA);
+
+		SceneManager* pSceneManager = Root::getSingletonPtr()->getSceneManager(NAME_SCENEMANAGER);
+		assert(pSceneManager != NULL);
+
+		/*
+		* 创建摄像机
+		*/
+		m_pCamera = pSceneManager->createCamera(NAME_CAMERA);
+		
+		// 设置位置
+		m_pCamera->setPosition(vPos);
+		// 设置观察点
+		m_pCamera->lookAt(vLookAt);
+
+		// 设置近截面和远截面
+		m_pCamera->setNearClipDistance(fNearClipDistance);
+		m_pCamera->setFarClipDistance(fFarClipDistance);
+	
+		m_pCamera->yaw(Degree(fYaw));
+		m_pCamera->pitch(Degree(fPitch));
+
+		setMode(CS_FREELOOK);
+
+		addProperty("PolygonMode", Any(PM_SOLID),
+			"图像显示模式", PROPERTY_POLYGONMODE);
+
+		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&CameraEditor::onPropertyChanaged, this));
 	}
 
 	/**
@@ -54,6 +58,24 @@ namespace Ogre
 			pSceneManager->destroyCamera(m_pCamera);
 	}
 	
+	/**
+	 *
+	 * \param args 
+	 * \return 
+	 */
+	bool		CameraEditor::onPropertyChanaged(const EventArgs& args)
+	{
+		const PropertyEventArgs& evt = static_cast<const PropertyEventArgs&>(args);
+		if (evt.pProperty != NULL)
+		{
+			String name = evt.pProperty->getName();
+			if (name == "PolygonMode")
+				m_pCamera->setPolygonMode(any_cast<PolygonMode>(evt.pProperty->getValue()));
+		}
+
+		return true;
+	}
+
 	/**
 	 *
 	 * \return 

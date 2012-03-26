@@ -7,27 +7,6 @@
 
 using namespace Ogre;
 
-#ifndef SetAlpha
-#define SetAlpha(col,a)			(((col) & 0x00FFFFFF) + (DWORD(a)<<24))
-#endif
-
-#ifndef	GetAlpha
-#define GetAlpha(argb)			((BYTE)(((DWORD)(argb))>>24))
-#endif
-
-#define ARGBNORMAL(a, r, g, b)	(((DWORD)(a*255.0f)<<24)|((DWORD)(r*255.0f)<<16)|((DWORD)(g*255.0f)<<8)|((BYTE)(b*255.0f)))
-
-#define GetB(argb)				((BYTE)(argb))
-#define GetG(argb)				((BYTE)(((WORD)(argb))>>8))
-#define GetR(argb)				((BYTE)((((DWORD)(argb))>>16) & 0xff))
-
-
-#define SetB(col,r)				(((col) & 0xFF00FFFF) + (DWORD(r)<<16))
-#define SetG(col,g)				(((col) & 0xFFFF00FF) + (DWORD(g)<<8))
-#define SetR(col,b)				(((col) & 0xFFFFFF00) + DWORD(b))
-
-
-#define NormalValue(a)	(a/255.0f)
 /**
  *
  * \return 
@@ -158,23 +137,52 @@ void	CPropertySetWnd::OnSize(UINT nType, int cx, int cy)
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertySetWnd::CreateProperty(DWORD dwColour, LPCTSTR lpszGroupName, 
-															   LPCTSTR lpszName, LPCTSTR lpszHelp)
+CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(UINT dwColour, UINT dwAlpha, 
+																	   LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp)
 {
 	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
 	if (pGroup != NULL)
 	{
 		CMFCPropertyGridColorProperty* gp = new CMFCPropertyGridColorProperty(
 			lpszGroupName, 
-			(_variant_t)dwColour, 
+			dwColour, 
 			NULL, 
 			lpszHelp
 			);
 		gp->EnableOtherButton(_T("其他..."));
 		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
+		
+		CMFCPropertyGridProperty* pAlpha = new CMFCPropertyGridProperty("Alpha", (_variant_t)dwAlpha,  NULL, NULL);
 
 		pGroup->Expand();
 		pGroup->AddSubItem(gp);
+		pGroup->AddSubItem(pAlpha);
+
+		return pGroup;
+	}
+
+	return NULL;
+}
+
+/**
+ *
+ * \param nMode 
+ * \param lpszName 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertySetWnd::CreatePlygonModeProperty(int nMode, LPCTSTR lpszName, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszName);
+	if (pGroup != NULL)
+	{
+		CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T(lpszName), _T("PM_SOLID"),
+			_T("其中之一: 点(PM_POINTS)、线(PM_WIREFRAME)、面(PM_SOLID)"));
+		pProp->AddOption(_T("PM_POINTS"));
+		pProp->AddOption(_T("PM_WIREFRAME"));
+		pProp->AddOption(_T("PM_SOLID"));
+		pProp->AllowEdit(FALSE);
+		pGroup->AddSubItem(pProp);
 
 		return pGroup;
 	}
@@ -235,13 +243,22 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 			{
 			case PROPERTY_COLOUR:
 				{
-					Ogre::ColourValue backgroud;
-					m_pSelectEditor->getPropertyValue(it->second->getName(), backgroud);
+					ARGB argb;
+					m_pSelectEditor->getPropertyValue(it->second->getName(), argb);
 					
-					ARGB argb = backgroud.getAsARGB();
 					m_wPropList.AddProperty(
-						CreateProperty(RGB(GetR(argb), GetG(argb), GetB(argb)), it->second->getName().c_str(), it->second->getName().c_str(), 
-						it->second->getDescribe().c_str())
+						CreateColourValueProperty(RGB(GetR(argb), GetG(argb), GetB(argb)), GetAlpha(argb),
+						it->second->getName().c_str(), it->second->getName().c_str(), it->second->getDescribe().c_str())
+						);
+				}
+				break;
+			case PROPERTY_POLYGONMODE:
+				{
+					PolygonMode mode;
+					m_pSelectEditor->getPropertyValue(it->second->getName(), mode);
+					
+					m_wPropList.AddProperty(
+						CreatePlygonModeProperty(mode, it->second->getName().c_str(), it->second->getDescribe().c_str())
 						);
 				}
 				break;
@@ -249,23 +266,16 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 				{
 					Vector2 vSize;
 					m_pSelectEditor->getPropertyValue(it->second->getName(), vSize);
-					
-					m_wPropList.AddProperty(
-						CreateProperty(vSize.x, it->second->getName().c_str(), it->second->getDescribe().c_str(), NULL)
-						);
-					m_wPropList.AddProperty(
-						CreateProperty(vSize.y, it->second->getName().c_str(), it->second->getDescribe().c_str(), NULL)
-						);
+				}
+				break;
+			case PROPERTY_INT:
+				{
+
 				}
 				break;
 			case PROPERTY_UNSIGNED_INT:
 				{
-					unsigned int nValue;
-					m_pSelectEditor->getPropertyValue(it->second->getName(), nValue);
 
-					m_wPropList.AddProperty(
-						CreateProperty((float)nValue, it->second->getName().c_str(), it->second->getDescribe().c_str(), it->second->canWrite(), NULL)
-						);
 				}
 				break;
 			}
@@ -292,10 +302,47 @@ LRESULT	CPropertySetWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 		{
 			TKLogEvent(pProperty->GetName());
 
-			COleVariant backgroud = pProperty->GetValue();
-			ColourValue clr;
-			clr.setAsARGB(SetAlpha(backgroud.uintVal,255));
-			m_pSelectEditor->setPropertyValue(pProperty->GetName(), clr);
+			COleVariant oleValue = pProperty->GetValue();
+			switch(oleValue.vt)
+			{
+				// 变量未初始化
+			case 0: 
+				break;
+				// 无有效数据
+			case 1: 
+				break;
+				// 整数
+			case 2: 
+				break;
+				// 长整数
+			case 3:
+				{
+					m_pSelectEditor->setPropertyValue(pProperty->GetName(), oleValue.uintVal);
+				}
+				break;
+			case 8:
+				{
+					CString val(_T(oleValue.bstrVal));
+					if (val == "PM_POINTS")
+					{
+						m_pSelectEditor->setPropertyValue(pProperty->GetName(),PM_POINTS);
+						return 0;
+					}
+
+					if (val == "PM_WIREFRAME")
+					{
+						m_pSelectEditor->setPropertyValue(pProperty->GetName(),PM_WIREFRAME);
+						return 0;
+					}
+
+					if (val == "PM_SOLID")
+					{
+						m_pSelectEditor->setPropertyValue(pProperty->GetName(),PM_SOLID);
+						return 0;
+					}
+				}
+				break;
+			}
 		}
 	}
 
