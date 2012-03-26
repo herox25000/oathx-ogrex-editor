@@ -1,5 +1,6 @@
 #include "OgreAppEditPrerequisites.h"
 #include "OgreGridEditor.h"
+#include "OgreDebugDrawer.h"
 
 namespace Ogre
 {
@@ -18,7 +19,6 @@ namespace Ogre
 		MeshManager::getSingletonPtr()->createPlane("XavierGridMesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 			Plane(Ogre::Vector3::UNIT_Y, 0), fWidth * fSize, fDepth * fSize, 1, 1, false, 1, fWidth, fDepth, Ogre::Vector3::UNIT_Z);
 		show();
-
 	}
 
 	/**
@@ -28,7 +28,7 @@ namespace Ogre
 	 */
 	GridEditor::~GridEditor(void)
 	{
-		
+
 	}
 
 	/**
