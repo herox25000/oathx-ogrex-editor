@@ -117,8 +117,17 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreateProperty(DWORD dwColour, LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
+	CMFCPropertyGridProperty*		CreateColourValueProperty(UINT dwColour, UINT dwAlpha, 
+		LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
 
+	/**
+	 *
+	 * \param nMode 
+	 * \param lpszName 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreatePlygonModeProperty(int nMode, LPCTSTR lpszName, LPCTSTR lpszHelp);
 	/**
 	 *
 	 * \param szWnd 

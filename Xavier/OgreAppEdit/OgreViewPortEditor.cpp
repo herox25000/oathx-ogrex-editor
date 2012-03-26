@@ -34,8 +34,8 @@ namespace Ogre
 
 		setTypeName(EDIT_VIEWPORT);
 		
-		// add property
-		addProperty("Background", Any(background),
+		ARGB argb = background.getAsARGB();
+		addProperty("Background", Any(SetAlpha(argb, 255)),
 			"ÊÓ¿Ú±³¾°ÑÕÉ«", PROPERTY_COLOUR);
 
 		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&ViewPortEditor::onPropertyChanaged, this));
@@ -87,7 +87,12 @@ namespace Ogre
 		{
 			String name = evt.pProperty->getName();
 			if (name == "Background")
-				m_pViewPort->setBackgroundColour(any_cast<ColourValue>(evt.pProperty->getValue()));
+			{
+				ARGB nValue = any_cast<ARGB>(evt.pProperty->getValue());
+				ColourValue backgroud;
+				backgroud.setAsARGB(SetAlpha(nValue, 255));
+				m_pViewPort->setBackgroundColour(backgroud);
+			}
 		}
 
 		return true;

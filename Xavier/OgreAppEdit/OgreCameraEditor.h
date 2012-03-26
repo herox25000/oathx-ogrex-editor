@@ -115,6 +115,12 @@ namespace Ogre
 		 * \param key 
 		 */
 		virtual void				injectKeyDown(int key);
+
+		/**
+		 *
+		 * \param args 
+		 */
+		virtual bool				onPropertyChanaged(const EventArgs& args);
 	protected:
 		Camera*						m_pCamera;
 		SceneNode*					m_pTarget;
