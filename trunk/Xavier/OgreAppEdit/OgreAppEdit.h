@@ -5,6 +5,10 @@
 
 namespace Ogre
 {
+	class BaseEditor;
+	class BaseEditorFactory;
+	class EditorPlugin;
+
 	/**
 	* \ingroup : OgreEditSystem
 	*
@@ -28,6 +32,10 @@ namespace Ogre
 		
 		// ±à¼­Æ÷ÈÝÆ÷
 		typedef std::deque<BaseEditor*>					VEditor;
+		
+		// ±à¼­Æ÷²å¼þ
+		typedef std::vector<EditorPlugin*>				VEditorPlugin;
+		typedef std::vector<DynLib*>					VDynLib;
 	public:
 		/** »ñÈ¡±à¼­ÏµÍ³
 		 *
@@ -92,6 +100,12 @@ namespace Ogre
 		 */
 		virtual bool				registerEditorFactory(BaseEditorFactory* pFactory);
 
+		/**
+		 *
+		 * \param pFactory 
+		 */
+		virtual void				unregisterEditorFactory(BaseEditorFactory* pFactory);
+
 		/** »ñÈ¡±à¼­Æ÷
 		 *
 		 * \param typeName 
@@ -143,6 +157,35 @@ namespace Ogre
 		 */
 		virtual void				clearEditor();
 
+		/** ¼ÓÔØ±à¼­²å¼þ
+		 *
+		 * \param name 
+		 */
+		virtual void				loadPlugin(const String& name);
+
+		/** Ð¶ÔØ±à¼­²å¼þ
+		 *
+		 * \param name 
+		 */
+		virtual void				unloadPlugin(const String& name);
+
+		/** °²×°±à¼­²å¼þ
+		 *
+		 * \param pPlugin 
+		 */
+		virtual void				installPlugin(EditorPlugin* pPlugin);
+
+		/** É¾³ý±à¼­²å¼þ
+		 *
+		 * \param pPlugin 
+		 */
+		virtual void				uninstallPlugin(EditorPlugin* pPlugin);
+
+		/**
+		 *
+		 */
+		virtual void				clearPlugin();
+
 		/** Ïú»Ù±à¼­ÏµÍ³
 		 *
 		 */
@@ -152,7 +195,9 @@ namespace Ogre
 		Root*						m_pRoot;			// ogre root object
 		StringEditorFactory			m_Factory;			// ±à¼­¹¤³§
 		VEditor						m_vEditor;
-		RenderWindow*				m_pRenderWindow; 
+		RenderWindow*				m_pRenderWindow;
+		VEditorPlugin				m_vPlugin;
+		VDynLib						m_vDynlib;
 	};
 }
 
