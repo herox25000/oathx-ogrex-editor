@@ -178,7 +178,11 @@ void	CWizardDialog::OnBnClickedOk()
 			AppEdit::getSingletonPtr()->addEditor(pGirdEditor->create(&cm));
 		}
 
+#ifdef _DEBUG
 		Ogre::AppEdit::getSingletonPtr()->loadPlugin("OgreTerrainEditor_d.dll");
+#else
+		Ogre::AppEdit::getSingletonPtr()->loadPlugin("OgreTerrainEditor.dll");
+#endif
 		
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
