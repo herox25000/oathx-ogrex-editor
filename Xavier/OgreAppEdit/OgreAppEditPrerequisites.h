@@ -22,25 +22,6 @@
 #define sprintf_s snprintf
 #endif
 
-
-namespace Ogre
-{
-	class BaseEditor;
-	class BaseEditorFactory;
-	class RenderWindowEditor;
-	class RenderWindowEditorFactory;
-	class SceneManagerEditor;
-	class RenderWindowEditorFactory;
-	class CameraEditor;
-	class CameraEditorFactory;
-	class ViewPortEditor;
-	class ViewPortEditorFactory;
-	class XMLSerializeEditor;
-	class XMLSerializeEditorFactory;
-	class GridEditor;
-	class GridEditorFactory;
-}
-
 #include <Ogre.h>
 
 #define _OUTPUT_LOG
@@ -78,5 +59,8 @@ namespace Ogre
 
 #define EDIT_GRIDEDIROR			"GridEditor"
 #define FACTORY_GRID			"GridEditorFactory"
+
+#define EDIT_TERRAIN			"TerrainEditor"
+#define FACTORY_TERRAIN			"TerrainEditorFactory"
 
 #endif

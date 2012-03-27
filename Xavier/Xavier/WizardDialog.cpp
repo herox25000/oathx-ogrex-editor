@@ -106,6 +106,7 @@ void	CWizardDialog::OnBnClickedOk()
 	else
 	{
 		// 清空原有的编辑工具
+		AppEdit::getSingletonPtr()->clearPlugin();
 		AppEdit::getSingletonPtr()->clearEditor();
 
 		// 窗口编辑器
@@ -176,6 +177,8 @@ void	CWizardDialog::OnBnClickedOk()
 
 			AppEdit::getSingletonPtr()->addEditor(pGirdEditor->create(&cm));
 		}
+
+		Ogre::AppEdit::getSingletonPtr()->loadPlugin("OgreTerrainEditor_d.dll");
 		
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
