@@ -46,33 +46,6 @@ namespace Ogre
 		return m_pSceneManager;
 	}
 
-	/**
-	 *
-	 */
-	void			SceneManagerEditor::showHead()
-	{
-		Ogre::Entity *entity = m_pSceneManager->createEntity( "AxisEntity", "ogrehead.mesh", 
-			ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME );
-		m_pOgreHead			 = m_pSceneManager->getRootSceneNode()->createChildSceneNode();
-		m_pOgreHead->attachObject( entity );
-		m_pOgreHead->setScale(0.1,0.1,0.1);
-
-		entity->setRenderQueueGroup( Ogre::RENDER_QUEUE_SKIES_LATE );
-	}
-
-	/**
-	 *
-	 */
-	void			SceneManagerEditor::hideHead()
-	{
-		if( m_pOgreHead )
-		{
-			Ogre::Entity *entity = static_cast<Ogre::Entity*>(m_pOgreHead->getAttachedObject(0));
-			m_pOgreHead->getParentSceneNode()->removeAndDestroyChild( m_pOgreHead->getName() );
-			m_pSceneManager->destroyEntity( entity );
-		}
-	}
-
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
