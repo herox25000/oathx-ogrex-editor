@@ -12,13 +12,17 @@ namespace Ogre
 	 * \return 
 	 */
 	GridEditor::GridEditor(SceneManager* pSceneManager, Real fWidth, Real fSize, Real fDepth)
-		: m_pSceneManager(pSceneManager), m_fDepth(fDepth), m_fSize(fSize), m_fWidth(fWidth)
+		: m_pSceneManager(pSceneManager), m_fDepth(fDepth), m_fSize(fSize), m_fWidth(fWidth), m_pGrid(NULL), m_pLine(NULL)
 	{
 		setTypeName(EDIT_GRIDEDIROR);
+		createGird();
 
-		MeshManager::getSingletonPtr()->createPlane("XavierGridMesh", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-			Plane(Ogre::Vector3::UNIT_Y, 0), fWidth * fSize, fDepth * fSize, 1, 1, false, 1, fWidth, fDepth, Ogre::Vector3::UNIT_Z);
-		show();
+		addProperty("display", 
+			Any(true),
+			"辅助格线是否显示", PROPERTY_BOOL);
+		
+		// 订阅事件
+		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&GridEditor::onPropertyChanaged, this));
 	}
 
 	/**
@@ -28,26 +32,82 @@ namespace Ogre
 	 */
 	GridEditor::~GridEditor(void)
 	{
+		destroy();
+	}
+	
+	/**
+	 *
+	 */
+	void	GridEditor::createGird()
+	{
+		if (m_pGrid == NULL && m_pLine == NULL)
+		{
+			m_pGrid = m_pSceneManager->createManualObject("GridEditor/Line3D");
+			m_pGrid->begin("Editor/GridLine3D",RenderOperation::OT_LINE_LIST);
 
+			Vector3	vStart(m_fWidth / 2, 0, m_fDepth / 2);
+			Real	fStartZ = vStart.z;
+
+			while(fStartZ >= -vStart.z)
+			{
+				m_pGrid->position(-vStart.x,	0, fStartZ);
+				m_pGrid->colour(0,1,0,1);
+				m_pGrid->position(vStart.x,		0, fStartZ);
+
+				fStartZ -= m_fSize;
+			}
+
+			Real	fStartX = -vStart.x;
+			while(fStartX <= vStart.x)
+			{
+				m_pGrid->position(fStartX,		0, vStart.z);
+				m_pGrid->colour(0,1,0,1);
+				m_pGrid->position(fStartX,		0, -vStart.z);
+
+				fStartX += m_fSize;
+			}
+
+			m_pGrid->end();
+
+			m_pLine = m_pSceneManager->getRootSceneNode()->createChildSceneNode("GridEditor/Line3DNode");
+			m_pLine->attachObject(m_pGrid);
+		}
 	}
 
 	/**
 	 *
 	 */
-	void		GridEditor::show()
+	void	GridEditor::destroy()
 	{
-		Entity* grid = m_pSceneManager->createEntity("XavierGrid", "XavierGridMesh");
-		grid->setMaterialName("Editor/Grid");
-		grid->setCastShadows(false);
-		m_pSceneManager->getRootSceneNode()->attachObject(grid);
+		m_pSceneManager->destroyManualObject(m_pGrid);
+		m_pGrid = NULL;
+
+		m_pSceneManager->destroySceneNode(m_pLine->getName());
+		m_pLine = NULL;
 	}
 
 	/**
 	 *
+	 * \param args 
+	 * \return 
 	 */
-	void		GridEditor::hide()
+	bool	GridEditor::onPropertyChanaged(const EventArgs& args)
 	{
-		m_pSceneManager->destroyEntity("XavierGrid");
+		const PropertyEventArgs& evt = static_cast<const PropertyEventArgs&>(args);
+		if (evt.pProperty != NULL)
+		{
+			String name = evt.pProperty->getName();
+			if (name == "display")
+			{
+				bool bDisplay = any_cast<bool>(evt.pProperty->getValue());
+				if (bDisplay)
+					createGird();
+				else
+					destroy();
+			}
+		}
+
+		return true;
 	}
 
 	/**
