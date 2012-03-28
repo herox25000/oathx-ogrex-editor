@@ -128,6 +128,16 @@ public:
 	 * \return 
 	 */
 	CMFCPropertyGridProperty*		CreatePlygonModeProperty(int nMode, LPCTSTR lpszName, LPCTSTR lpszHelp);
+
+	/**
+	 *
+	 * \param bValue 
+	 * \param lpszName 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreateBoolProperty(bool bValue, LPCTSTR lpszName, LPCTSTR lpszHelp);
+
 	/**
 	 *
 	 * \param szWnd 
@@ -136,7 +146,8 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreateProperty(float fValue, LPCTSTR lpszName, LPCTSTR lpszHelp, BOOL bEnable, CMFCPropertyGridProperty* pParent);
+	CMFCPropertyGridProperty*		CreateProperty(float fValue, LPCTSTR lpszName, 
+		LPCTSTR lpszHelp, BOOL bEnable, CMFCPropertyGridProperty* pParent);
 protected:
 	/**
 	 *

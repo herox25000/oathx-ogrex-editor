@@ -5,6 +5,12 @@
 
 namespace Ogre
 {
+	// 格子线渲染层
+	enum{
+		GRID_LINE_BEHIND,
+		GRID_LINE_INFRONT
+	};
+
 	/**
 	* \ingroup : OgreAppEdit
 	*
@@ -40,20 +46,31 @@ namespace Ogre
 		 */
 		virtual ~GridEditor(void);
 
-		/**
+	protected:
+		/** 创建格子
 		 *
 		 */
-		virtual void				show();
+		virtual void				createGird();
 
 		/**
 		 *
 		 */
-		virtual void				hide();
+		virtual void				destroy();
+
+		/**
+		 *
+		 * \param args 
+		 * \return 
+		 */
+		virtual bool				onPropertyChanaged(const EventArgs& args);
 	protected:
 		SceneManager*				m_pSceneManager;
 		Real						m_fWidth;
 		Real						m_fSize;
 		Real						m_fDepth;
+		SceneNode*					m_pLine;
+		ManualObject*				m_pGrid;
+		
 	};
 
 	//////////////////////////////////////////////////////////////////////////

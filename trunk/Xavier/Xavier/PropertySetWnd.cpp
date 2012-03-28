@@ -177,7 +177,7 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreatePlygonModeProperty(int nMode, L
 	if (pGroup != NULL)
 	{
 		CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T(lpszName), _T("PM_SOLID"),
-			_T("其中之一: 点(PM_POINTS)、线(PM_WIREFRAME)、面(PM_SOLID)"));
+			_T(lpszHelp));
 		pProp->AddOption(_T("PM_POINTS"));
 		pProp->AddOption(_T("PM_WIREFRAME"));
 		pProp->AddOption(_T("PM_SOLID"));
@@ -207,6 +207,29 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreateProperty(float fValue, LPCTSTR 
 		pParent->AddSubItem(pProperty);
 
 	return pProperty;
+}
+
+/**
+ *
+ * \param bValue 
+ * \param lpszName 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertySetWnd::CreateBoolProperty(bool bValue, LPCTSTR lpszName, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszName);
+	if (pGroup != NULL)
+	{
+		CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T(lpszName), _T("true"),
+			_T(lpszHelp));
+		pProp->AddOption(_T("true"));
+		pProp->AddOption(_T("false"));
+		pProp->AllowEdit(FALSE);
+		pGroup->AddSubItem(pProp);
+
+		return pGroup;
+	}
 }
 
 /**
@@ -276,6 +299,16 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 
 				}
 				break;
+			case PROPERTY_BOOL:
+				{
+					bool bValue;
+					m_pSelectEditor->getPropertyValue(it->second->getName(), bValue);
+
+					m_wPropList.AddProperty(
+						CreateBoolProperty(bValue, it->second->getName().c_str(), it->second->getDescribe().c_str())
+						);
+				}
+				break;
 			case PROPERTY_UNSIGNED_INT:
 				{
 
@@ -341,6 +374,18 @@ LRESULT	CPropertySetWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 					if (val == "PM_SOLID")
 					{
 						m_pSelectEditor->setPropertyValue(pProperty->GetName(),PM_SOLID);
+						return 0;
+					}
+					
+					if (val == "true")
+					{
+						m_pSelectEditor->setPropertyValue(pProperty->GetName(),true);
+						return 0;
+					}
+
+					if (val == "false")
+					{
+						m_pSelectEditor->setPropertyValue(pProperty->GetName(),false);
 						return 0;
 					}
 				}
