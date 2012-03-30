@@ -137,7 +137,7 @@ void	CPropertySetWnd::OnSize(UINT nType, int cx, int cy)
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(UINT dwColour, UINT dwAlpha, 
+CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
 																	   LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp)
 {
 	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
@@ -152,12 +152,9 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(UINT dwColo
 		gp->EnableOtherButton(_T("其他..."));
 		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
 		
-		CMFCPropertyGridProperty* pAlpha = new CMFCPropertyGridProperty("Alpha", (_variant_t)dwAlpha,  NULL, NULL);
-
 		pGroup->Expand();
 		pGroup->AddSubItem(gp);
-		pGroup->AddSubItem(pAlpha);
-
+		
 		return pGroup;
 	}
 
@@ -230,6 +227,8 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreateBoolProperty(bool bValue, LPCTS
 
 		return pGroup;
 	}
+
+	return NULL;
 }
 
 /**
@@ -265,33 +264,35 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 		for (HashProperty::iterator it=py.begin();
 			it!=py.end(); it++)
 		{
+			String name = it->second->getName();
+			String help = it->second->getDescribe();
+
 			switch (it->second->getType())
 			{
 			case PROPERTY_COLOUR:
 				{
 					ARGB argb;
-					m_pSelectEditor->getPropertyValue(it->second->getName(), argb);
+					m_pSelectEditor->getPropertyValue(name, argb);
 					
 					m_wPropList.AddProperty(
-						CreateColourValueProperty(RGB(GetR(argb), GetG(argb), GetB(argb)), GetAlpha(argb),
-						it->second->getName().c_str(), it->second->getName().c_str(), it->second->getDescribe().c_str())
+						CreateColourValueProperty(argb, GetAlpha(argb), name.c_str(), name.c_str(), help.c_str())
 						);
 				}
 				break;
 			case PROPERTY_POLYGONMODE:
 				{
 					PolygonMode mode;
-					m_pSelectEditor->getPropertyValue(it->second->getName(), mode);
+					m_pSelectEditor->getPropertyValue(name, mode);
 					
 					m_wPropList.AddProperty(
-						CreatePlygonModeProperty(mode, it->second->getName().c_str(), it->second->getDescribe().c_str())
+						CreatePlygonModeProperty(mode, name.c_str(), help.c_str())
 						);
 				}
 				break;
 			case PROPERTY_VECTOR2:
 				{
 					Vector2 vSize;
-					m_pSelectEditor->getPropertyValue(it->second->getName(), vSize);
+					m_pSelectEditor->getPropertyValue(name, vSize);
 				}
 				break;
 			case PROPERTY_INT:
@@ -302,10 +303,10 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 			case PROPERTY_BOOL:
 				{
 					bool bValue;
-					m_pSelectEditor->getPropertyValue(it->second->getName(), bValue);
+					m_pSelectEditor->getPropertyValue(name, bValue);
 
 					m_wPropList.AddProperty(
-						CreateBoolProperty(bValue, it->second->getName().c_str(), it->second->getDescribe().c_str())
+						CreateBoolProperty(bValue, name.c_str(), help.c_str())
 						);
 				}
 				break;
@@ -336,56 +337,89 @@ LRESULT	CPropertySetWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 		CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
 		if (pProperty != NULL)
 		{
-			TKLogEvent(pProperty->GetName());
+			//TKLogEvent(pProperty->GetName());
+			String name = _T(pProperty->GetName());
 
 			COleVariant oleValue = pProperty->GetValue();
 			switch(oleValue.vt)
 			{
-				// 变量未初始化
-			case 0: 
+				// nothing
+			case VT_EMPTY: 
 				break;
-				// 无有效数据
-			case 1: 
+				// SQL style Null
+			case VT_NULL: 
 				break;
-				// 整数
-			case 2: 
+				// 2 byte signed int
+			case VT_I2: 
 				break;
-				// 长整数
-			case 3:
+				// 4 byte signed int
+			case VT_I4:
 				{
-					m_pSelectEditor->setPropertyValue(pProperty->GetName(), oleValue.uintVal);
+					// mfc bug? 老子明明传入的是一个无符号的，为什么要给老子解释为有符号的，我日
+					if (name == "Background")
+						m_pSelectEditor->setPropertyValue(name, (UINT)(oleValue.intVal));
 				}
 				break;
-			case 8:
+				// 4 byte real
+			case VT_R4:
+				break;
+				// 8 byte real
+			case VT_R8:
+				break;
+				// True=-1, False=0
+			case VT_BOOL:
+				break;
+				// signed char
+			case VT_I1:
+				break;
+				// unsigned char
+			case VT_UI1:
+				break;
+				// unsigned short
+			case VT_UI2:
+				break;
+				// unsigned long
+			case VT_UI4:
+				break;
+				// signed machine int
+			case VT_INT:
+				break;
+				// unsigned machine int
+			case VT_UINT:
 				{
-					CString val(_T(oleValue.bstrVal));
-					if (val == "PM_POINTS")
+					m_pSelectEditor->setPropertyValue(name, oleValue.uintVal);
+				}
+				break;
+			case VT_BSTR:
+				{
+					CString vtBSTR(_T(oleValue.bstrVal));
+					if (vtBSTR == "PM_POINTS")
 					{
-						m_pSelectEditor->setPropertyValue(pProperty->GetName(),PM_POINTS);
+						m_pSelectEditor->setPropertyValue(name, PM_POINTS);
 						return 0;
 					}
 
-					if (val == "PM_WIREFRAME")
+					if (vtBSTR == "PM_WIREFRAME")
 					{
-						m_pSelectEditor->setPropertyValue(pProperty->GetName(),PM_WIREFRAME);
+						m_pSelectEditor->setPropertyValue(name, PM_WIREFRAME);
 						return 0;
 					}
 
-					if (val == "PM_SOLID")
+					if (vtBSTR == "PM_SOLID")
 					{
-						m_pSelectEditor->setPropertyValue(pProperty->GetName(),PM_SOLID);
+						m_pSelectEditor->setPropertyValue(name, PM_SOLID);
 						return 0;
 					}
 					
-					if (val == "true")
+					if (vtBSTR == "true")
 					{
-						m_pSelectEditor->setPropertyValue(pProperty->GetName(),true);
+						m_pSelectEditor->setPropertyValue(name, true);
 						return 0;
 					}
 
-					if (val == "false")
+					if (vtBSTR == "false")
 					{
-						m_pSelectEditor->setPropertyValue(pProperty->GetName(),false);
+						m_pSelectEditor->setPropertyValue(name, false);
 						return 0;
 					}
 				}
