@@ -117,7 +117,7 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreateColourValueProperty(UINT dwColour, UINT dwAlpha, 
+	CMFCPropertyGridProperty*		CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
 		LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
 
 	/**
