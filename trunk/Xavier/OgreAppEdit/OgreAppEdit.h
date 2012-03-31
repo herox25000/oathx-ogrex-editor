@@ -2,11 +2,10 @@
 #define _____OgreAppEdit_H
 
 #include "OgreSingleton.h"
+#include "OgreBaseEditor.h"
 
 namespace Ogre
 {
-	class BaseEditor;
-	class BaseEditorFactory;
 	class EditorPlugin;
 
 	/**
@@ -25,14 +24,8 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class OgreAppEdit_Export_API AppEdit : public Singleton<AppEdit>
+	class OgreAppEdit_Export_API AppEdit : public BaseEditor, public Singleton<AppEdit>
 	{
-		// 编辑工厂容器
-		typedef std::map<String, BaseEditorFactory*>	StringEditorFactory;
-		
-		// 编辑器容器
-		typedef std::deque<BaseEditor*>					VEditor;
-		
 		// 编辑器插件
 		typedef std::vector<EditorPlugin*>				VEditorPlugin;
 		typedef std::vector<DynLib*>					VDynLib;
@@ -93,70 +86,6 @@ namespace Ogre
 		 */
 		virtual void				update();
 
-		/** 注册编辑器
-		 *
-		 * \param pFactory 
-		 * \return 
-		 */
-		virtual bool				registerEditorFactory(BaseEditorFactory* pFactory);
-
-		/**
-		 *
-		 * \param pFactory 
-		 */
-		virtual void				unregisterEditorFactory(BaseEditorFactory* pFactory);
-
-		/** 获取编辑器
-		 *
-		 * \param typeName 
-		 * \return 
-		 */
-		virtual BaseEditorFactory*	getEditorFactory(const String& typeName);
-
-		/** 注册编辑对象
-		 *
-		 * \param pEditor 
-		 * \return 
-		 */
-		virtual bool				addEditor(BaseEditor* pEditor);
-
-		/** 获取编辑对象
-		 *
-		 * \param typeName 
-		 * \return 
-		 */
-		virtual BaseEditor*			getEditor(const String& typeName);
-
-		/** 注销编辑对象
-		 *
-		 * \param pEditor 
-		 */
-		virtual void				delEditor(BaseEditor* pEditor);
-
-		/** 注销编辑对象
-		 *
-		 * \param typeName 
-		 */
-		virtual void				delEditor(const String& typeName);
-
-		/** 获取编辑工具
-		 *
-		 * \return 
-		 */
-		virtual int					getEditorCount();
-
-		/** 获取编辑器
-		 *
-		 * \param index 
-		 * \return 
-		 */
-		virtual BaseEditor*			getEditor(int index);
-
-		/** 清空编辑器
-		 *
-		 */
-		virtual void				clearEditor();
-
 		/** 加载编辑插件
 		 *
 		 * \param name 
@@ -193,8 +122,6 @@ namespace Ogre
 		
 	protected:
 		Root*						m_pRoot;			// ogre root object
-		StringEditorFactory			m_Factory;			// 编辑工厂
-		VEditor						m_vEditor;
 		RenderWindow*				m_pRenderWindow;
 		VEditorPlugin				m_vPlugin;
 		VDynLib						m_vDynlib;

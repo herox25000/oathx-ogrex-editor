@@ -40,7 +40,8 @@ namespace Ogre
 	 */
 	bool			TerrainEditorPlugin::install()
 	{
-		return AppEdit::getSingletonPtr()->registerEditorFactory(new TerrainEditorFactory());
+		AppEdit::getSingletonPtr()->registerEditorFactory(new TerrainEditorFactory());
+		return true;
 	}
 
 	/**

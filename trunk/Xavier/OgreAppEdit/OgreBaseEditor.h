@@ -5,6 +5,13 @@
 
 namespace Ogre
 {
+	class BaseEditor;
+	class BaseEditorFactory;
+
+	// ×Ó±à¼­Æ÷
+	typedef std::deque<BaseEditor*>			VEditor;
+	typedef std::deque<BaseEditorFactory*>	VEditorFactory;
+
 	/**
 	* \ingroup : OgreEditSystem
 	*
@@ -50,8 +57,95 @@ namespace Ogre
 		 */
 		virtual void				setTypeName(const String& typeName);
 
+		/** ¼ÓÔØ±à¼­Æ÷
+		 *
+		 * \param sPath 
+		 * \return 
+		 */
+		virtual bool				load(const String& sPath);
+
+		/** Ð¶ÔØ±à¼­Æ÷
+		 *
+		 */
+		virtual void				unload();
+
+		/** Ìí¼Ó×Ó±à¼­Æ÷
+		 *
+		 * \param pEditor 
+		 */
+		virtual void				addEditor(BaseEditor* pEditor);
+
+		/**
+		 *
+		 * \param name 
+		 * \return 
+		 */
+		virtual BaseEditor*			getEditor(const String& name);	
+
+		/**
+		 *
+		 * \param pEditor 
+		 */
+		virtual void				delEditor(BaseEditor* pEditor);
+
+		/**
+		 *
+		 */
+		virtual void				clearEditor();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual BaseEditor*			getEditor(int index);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual size_t				getEditorCount() const;
+
+		/** ×¢²á±à¼­Æ÷
+		 *
+		 * \param pFactory 
+		 * \return 
+		 */
+		virtual void				registerEditorFactory(BaseEditorFactory* pFactory);
+
+		/**
+		 *
+		 * \param pFactory 
+		 */
+		virtual void				unregisterEditorFactory(BaseEditorFactory* pFactory);
+
+		/** »ñÈ¡±à¼­Æ÷
+		 *
+		 * \param typeName 
+		 * \return 
+		 */
+		virtual BaseEditorFactory*	getEditorFactory(const String& typeName);
+
+		/** Çå¿Õ±à¼­Æ÷
+		 *
+		 */
+		virtual void				clearEditorFactory();
+
+		/** ÉèÖÃ¸¸±à¼­Æ÷
+		 *
+		 * \param pEditor 
+		 */
+		virtual void				setParent(BaseEditor* pEditor);
+
+		/** »ñÈ¡¸¸±à¼­Æ÷
+		 *
+		 * \return 
+		 */
+		virtual BaseEditor*			getParent() const;
 	protected:
 		String						m_typeName;
+		VEditor						m_vEditor;
+		VEditorFactory				m_vFactory;
+		BaseEditor*					m_pParent;
 	};
 
 	// »ù±¾´´½¨²ÎÊý

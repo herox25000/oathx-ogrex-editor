@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../OgreAppEdit;../OgreSystem/tinyxml;../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="../OgreAppEdit;../OgreSystem/tinyxml;../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\RTShaderSystem\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGRETERRAINEDITOR_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../OgreAppEdit;../OgreSystem/tinyxml;../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="../OgreAppEdit;../OgreSystem/tinyxml;../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGRETERRAINEDITOR_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -189,6 +189,10 @@
 				RelativePath=".\OgreTerrainEditorPlugin.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\OgreTerrainGroupEditor.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -205,6 +209,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreTerrainEditorPlugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreTerrainGroupEditor.h"
 				>
 			</File>
 		</Filter>
