@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="../OgreAppEdit;../OgreSystem/tinyxml;../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;"
+				AdditionalIncludeDirectories="../OgreAppEdit;../OgreSystem/tinyxml;../OgreSystem/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\RTShaderSystem\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGRETERRAINEDITOR_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
