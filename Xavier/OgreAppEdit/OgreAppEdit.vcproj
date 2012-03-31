@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib OgreSystem_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreMain_d.lib OgreSystem_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../Ogre\lib\Debug"

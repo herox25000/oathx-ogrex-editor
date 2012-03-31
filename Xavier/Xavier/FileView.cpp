@@ -137,7 +137,8 @@ bool	CFileView::OnXMLSerializeCreated(const Ogre::EventArgs& args)
 		/*
 		* 遍历所有创建的编辑工具
 		*/
-		for (int i=0; i<pTheApp->getEditorCount(); i++)
+		size_t nSize = pTheApp->getEditorCount();
+		for (int i=0; i<nSize; i++)
 		{
 			BaseEditor* pEditor = pTheApp->getEditor(i);
 			if (pEditor != NULL)
