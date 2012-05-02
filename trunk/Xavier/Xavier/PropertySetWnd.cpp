@@ -3,7 +3,6 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "Xavier.h"
-#include "OgreAppEdit.h"
 
 using namespace Ogre;
 
@@ -11,7 +10,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CPropertySetWnd::CPropertySetWnd() : m_pSelectEditor(NULL)
+CPropertySetWnd::CPropertySetWnd()
 {
 }
 
@@ -137,29 +136,29 @@ void	CPropertySetWnd::OnSize(UINT nType, int cx, int cy)
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
-																	   LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp)
-{
-	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
-	if (pGroup != NULL)
-	{
-		CMFCPropertyGridColorProperty* gp = new CMFCPropertyGridColorProperty(
-			lpszGroupName, 
-			dwColour, 
-			NULL, 
-			lpszHelp
-			);
-		gp->EnableOtherButton(_T("其他..."));
-		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
-		
-		pGroup->Expand();
-		pGroup->AddSubItem(gp);
-		
-		return pGroup;
-	}
-
-	return NULL;
-}
+//CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
+//																	   LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp)
+//{
+//	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
+//	if (pGroup != NULL)
+//	{
+//		CMFCPropertyGridColorProperty* gp = new CMFCPropertyGridColorProperty(
+//			lpszGroupName, 
+//			dwColour, 
+//			NULL, 
+//			lpszHelp
+//			);
+//		gp->EnableOtherButton(_T("其他..."));
+//		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
+//		
+//		pGroup->Expand();
+//		pGroup->AddSubItem(gp);
+//		
+//		return pGroup;
+//	}
+//
+//	return NULL;
+//}
 
 /**
  *
@@ -168,24 +167,24 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(DWORD dwCol
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertySetWnd::CreatePlygonModeProperty(int nMode, LPCTSTR lpszName, LPCTSTR lpszHelp)
-{
-	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszName);
-	if (pGroup != NULL)
-	{
-		CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T(lpszName), _T("PM_SOLID"),
-			_T(lpszHelp));
-		pProp->AddOption(_T("PM_POINTS"));
-		pProp->AddOption(_T("PM_WIREFRAME"));
-		pProp->AddOption(_T("PM_SOLID"));
-		pProp->AllowEdit(FALSE);
-		pGroup->AddSubItem(pProp);
-
-		return pGroup;
-	}
-
-	return NULL;
-}
+//CMFCPropertyGridProperty*	CPropertySetWnd::CreatePlygonModeProperty(int nMode, LPCTSTR lpszName, LPCTSTR lpszHelp)
+//{
+//	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszName);
+//	if (pGroup != NULL)
+//	{
+//		CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T(lpszName), _T("PM_SOLID"),
+//			_T(lpszHelp));
+//		pProp->AddOption(_T("PM_POINTS"));
+//		pProp->AddOption(_T("PM_WIREFRAME"));
+//		pProp->AddOption(_T("PM_SOLID"));
+//		pProp->AllowEdit(FALSE);
+//		pGroup->AddSubItem(pProp);
+//
+//		return pGroup;
+//	}
+//
+//	return NULL;
+//}
 
 /**
  *
@@ -195,16 +194,16 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreatePlygonModeProperty(int nMode, L
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertySetWnd::CreateProperty(float fValue, LPCTSTR lpszName, LPCTSTR lpszHelp, BOOL bEnable,
-														   CMFCPropertyGridProperty* pParent)
-{
-	CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(lpszName, (_variant_t)fValue, NULL, NULL);
-	pProperty->Enable(bEnable);
-	if (pParent != NULL)
-		pParent->AddSubItem(pProperty);
-
-	return pProperty;
-}
+//CMFCPropertyGridProperty*	CPropertySetWnd::CreateProperty(float fValue, LPCTSTR lpszName, LPCTSTR lpszHelp, BOOL bEnable,
+//														   CMFCPropertyGridProperty* pParent)
+//{
+//	CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(lpszName, (_variant_t)fValue, NULL, NULL);
+//	pProperty->Enable(bEnable);
+//	if (pParent != NULL)
+//		pParent->AddSubItem(pProperty);
+//
+//	return pProperty;
+//}
 
 /**
  *
@@ -213,23 +212,23 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreateProperty(float fValue, LPCTSTR 
  * \param lpszHelp 
  * \return 
  */
-CMFCPropertyGridProperty*	CPropertySetWnd::CreateBoolProperty(bool bValue, LPCTSTR lpszName, LPCTSTR lpszHelp)
-{
-	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszName);
-	if (pGroup != NULL)
-	{
-		CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T(lpszName), _T("true"),
-			_T(lpszHelp));
-		pProp->AddOption(_T("true"));
-		pProp->AddOption(_T("false"));
-		pProp->AllowEdit(FALSE);
-		pGroup->AddSubItem(pProp);
-
-		return pGroup;
-	}
-
-	return NULL;
-}
+//CMFCPropertyGridProperty*	CPropertySetWnd::CreateBoolProperty(bool bValue, LPCTSTR lpszName, LPCTSTR lpszHelp)
+//{
+//	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszName);
+//	if (pGroup != NULL)
+//	{
+//		CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T(lpszName), _T("true"),
+//			_T(lpszHelp));
+//		pProp->AddOption(_T("true"));
+//		pProp->AddOption(_T("false"));
+//		pProp->AllowEdit(FALSE);
+//		pGroup->AddSubItem(pProp);
+//
+//		return pGroup;
+//	}
+//
+//	return NULL;
+//}
 
 /**
  *
@@ -239,87 +238,87 @@ CMFCPropertyGridProperty*	CPropertySetWnd::CreateBoolProperty(bool bValue, LPCTS
  */
 LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 {
-	wmSelectEvent* evt = (wmSelectEvent*)(wParam);
-	if (evt != NULL)
-	{
-		BaseEditor* pSelect = AppEdit::getSingletonPtr()->getEditor(evt->Name);
-		if (m_pSelectEditor != pSelect)
-		{
-			m_pSelectEditor = pSelect;
-			TKLogEvent("已选择编辑器 " + m_pSelectEditor->getTypeName());
-		}
-	}
+	//wmSelectEvent* evt = (wmSelectEvent*)(wParam);
+	//if (evt != NULL)
+	//{
+	//	BaseEditor* pSelect = AppEdit::getSingletonPtr()->getEditor(evt->Name);
+	//	if (m_pSelectEditor != pSelect)
+	//	{
+	//		m_pSelectEditor = pSelect;
+	//		TKLogEvent("已选择编辑器 " + m_pSelectEditor->getTypeName());
+	//	}
+	//}
 
-	if (m_pSelectEditor != NULL)
-	{
-		SetPropListFont();
+	//if (m_pSelectEditor != NULL)
+	//{
+	//	SetPropListFont();
 
-		m_wPropList.RemoveAll();
-		m_wPropList.EnableHeaderCtrl(FALSE);
-		m_wPropList.EnableDescriptionArea();
-		m_wPropList.SetVSDotNetLook();
-		m_wPropList.MarkModifiedProperties();
+	//	m_wPropList.RemoveAll();
+	//	m_wPropList.EnableHeaderCtrl(FALSE);
+	//	m_wPropList.EnableDescriptionArea();
+	//	m_wPropList.SetVSDotNetLook();
+	//	m_wPropList.MarkModifiedProperties();
 
-		HashProperty& py = m_pSelectEditor->getHashProperty();
-		for (HashProperty::iterator it=py.begin();
-			it!=py.end(); it++)
-		{
-			String name = it->second->getName();
-			String help = it->second->getDescribe();
+	//	HashProperty& py = m_pSelectEditor->getHashProperty();
+	//	for (HashProperty::iterator it=py.begin();
+	//		it!=py.end(); it++)
+	//	{
+	//		String name = it->second->getName();
+	//		String help = it->second->getDescribe();
 
-			switch (it->second->getType())
-			{
-			case PROPERTY_COLOUR:
-				{
-					ARGB argb;
-					m_pSelectEditor->getPropertyValue(name, argb);
-					
-					m_wPropList.AddProperty(
-						CreateColourValueProperty(argb, GetAlpha(argb), name.c_str(), name.c_str(), help.c_str())
-						);
-				}
-				break;
-			case PROPERTY_POLYGONMODE:
-				{
-					PolygonMode mode;
-					m_pSelectEditor->getPropertyValue(name, mode);
-					
-					m_wPropList.AddProperty(
-						CreatePlygonModeProperty(mode, name.c_str(), help.c_str())
-						);
-				}
-				break;
-			case PROPERTY_VECTOR2:
-				{
-					Vector2 vSize;
-					m_pSelectEditor->getPropertyValue(name, vSize);
-				}
-				break;
-			case PROPERTY_INT:
-				{
+	//		switch (it->second->getType())
+	//		{
+	//		case PROPERTY_COLOUR:
+	//			{
+	//				ARGB argb;
+	//				m_pSelectEditor->getPropertyValue(name, argb);
+	//				
+	//				m_wPropList.AddProperty(
+	//					CreateColourValueProperty(argb, GetAlpha(argb), name.c_str(), name.c_str(), help.c_str())
+	//					);
+	//			}
+	//			break;
+	//		case PROPERTY_POLYGONMODE:
+	//			{
+	//				PolygonMode mode;
+	//				m_pSelectEditor->getPropertyValue(name, mode);
+	//				
+	//				m_wPropList.AddProperty(
+	//					CreatePlygonModeProperty(mode, name.c_str(), help.c_str())
+	//					);
+	//			}
+	//			break;
+	//		case PROPERTY_VECTOR2:
+	//			{
+	//				Vector2 vSize;
+	//				m_pSelectEditor->getPropertyValue(name, vSize);
+	//			}
+	//			break;
+	//		case PROPERTY_INT:
+	//			{
 
-				}
-				break;
-			case PROPERTY_BOOL:
-				{
-					bool bValue;
-					m_pSelectEditor->getPropertyValue(name, bValue);
+	//			}
+	//			break;
+	//		case PROPERTY_BOOL:
+	//			{
+	//				bool bValue;
+	//				m_pSelectEditor->getPropertyValue(name, bValue);
 
-					m_wPropList.AddProperty(
-						CreateBoolProperty(bValue, name.c_str(), help.c_str())
-						);
-				}
-				break;
-			case PROPERTY_UNSIGNED_INT:
-				{
+	//				m_wPropList.AddProperty(
+	//					CreateBoolProperty(bValue, name.c_str(), help.c_str())
+	//					);
+	//			}
+	//			break;
+	//		case PROPERTY_UNSIGNED_INT:
+	//			{
 
-				}
-				break;
-			}
-		}
+	//			}
+	//			break;
+	//		}
+	//	}
 
-		m_wPropList.ExpandAll();
-	}
+	//	m_wPropList.ExpandAll();
+	//}
 
 	return 0;
 }
@@ -332,101 +331,101 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
  */
 LRESULT	CPropertySetWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 {
-	if (m_pSelectEditor != NULL)
-	{
-		CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
-		if (pProperty != NULL)
-		{
-			//TKLogEvent(pProperty->GetName());
-			String name = _T(pProperty->GetName());
+	//if (m_pSelectEditor != NULL)
+	//{
+	//	CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
+	//	if (pProperty != NULL)
+	//	{
+	//		//TKLogEvent(pProperty->GetName());
+	//		String name = _T(pProperty->GetName());
 
-			COleVariant oleValue = pProperty->GetValue();
-			switch(oleValue.vt)
-			{
-				// nothing
-			case VT_EMPTY: 
-				break;
-				// SQL style Null
-			case VT_NULL: 
-				break;
-				// 2 byte signed int
-			case VT_I2: 
-				break;
-				// 4 byte signed int
-			case VT_I4:
-				{
-					// mfc bug? 老子明明传入的是一个无符号的，为什么要给老子解释为有符号的，我日
-					if (name == "Background")
-						m_pSelectEditor->setPropertyValue(name, (UINT)(oleValue.intVal));
-				}
-				break;
-				// 4 byte real
-			case VT_R4:
-				break;
-				// 8 byte real
-			case VT_R8:
-				break;
-				// True=-1, False=0
-			case VT_BOOL:
-				break;
-				// signed char
-			case VT_I1:
-				break;
-				// unsigned char
-			case VT_UI1:
-				break;
-				// unsigned short
-			case VT_UI2:
-				break;
-				// unsigned long
-			case VT_UI4:
-				break;
-				// signed machine int
-			case VT_INT:
-				break;
-				// unsigned machine int
-			case VT_UINT:
-				{
-					m_pSelectEditor->setPropertyValue(name, oleValue.uintVal);
-				}
-				break;
-			case VT_BSTR:
-				{
-					CString vtBSTR(_T(oleValue.bstrVal));
-					if (vtBSTR == "PM_POINTS")
-					{
-						m_pSelectEditor->setPropertyValue(name, PM_POINTS);
-						return 0;
-					}
+	//		COleVariant oleValue = pProperty->GetValue();
+	//		switch(oleValue.vt)
+	//		{
+	//			// nothing
+	//		case VT_EMPTY: 
+	//			break;
+	//			// SQL style Null
+	//		case VT_NULL: 
+	//			break;
+	//			// 2 byte signed int
+	//		case VT_I2: 
+	//			break;
+	//			// 4 byte signed int
+	//		case VT_I4:
+	//			{
+	//				// mfc bug? 老子明明传入的是一个无符号的，为什么要给老子解释为有符号的，我日
+	///*				if (name == "Background")
+	//					m_pSelectEditor->setPropertyValue(name, (UINT)(oleValue.intVal));*/
+	//			}
+	//			break;
+	//			// 4 byte real
+	//		case VT_R4:
+	//			break;
+	//			// 8 byte real
+	//		case VT_R8:
+	//			break;
+	//			// True=-1, False=0
+	//		case VT_BOOL:
+	//			break;
+	//			// signed char
+	//		case VT_I1:
+	//			break;
+	//			// unsigned char
+	//		case VT_UI1:
+	//			break;
+	//			// unsigned short
+	//		case VT_UI2:
+	//			break;
+	//			// unsigned long
+	//		case VT_UI4:
+	//			break;
+	//			// signed machine int
+	//		case VT_INT:
+	//			break;
+	//			// unsigned machine int
+	//		case VT_UINT:
+	//			{
+	//				//m_pSelectEditor->setPropertyValue(name, oleValue.uintVal);
+	//			}
+	//			break;
+	//		case VT_BSTR:
+	//			{
+	//			/*	CString vtBSTR(_T(oleValue.bstrVal));
+	//				if (vtBSTR == "PM_POINTS")
+	//				{
+	//					m_pSelectEditor->setPropertyValue(name, PM_POINTS);
+	//					return 0;
+	//				}
 
-					if (vtBSTR == "PM_WIREFRAME")
-					{
-						m_pSelectEditor->setPropertyValue(name, PM_WIREFRAME);
-						return 0;
-					}
+	//				if (vtBSTR == "PM_WIREFRAME")
+	//				{
+	//					m_pSelectEditor->setPropertyValue(name, PM_WIREFRAME);
+	//					return 0;
+	//				}
 
-					if (vtBSTR == "PM_SOLID")
-					{
-						m_pSelectEditor->setPropertyValue(name, PM_SOLID);
-						return 0;
-					}
-					
-					if (vtBSTR == "true")
-					{
-						m_pSelectEditor->setPropertyValue(name, true);
-						return 0;
-					}
+	//				if (vtBSTR == "PM_SOLID")
+	//				{
+	//					m_pSelectEditor->setPropertyValue(name, PM_SOLID);
+	//					return 0;
+	//				}
+	//				
+	//				if (vtBSTR == "true")
+	//				{
+	//					m_pSelectEditor->setPropertyValue(name, true);
+	//					return 0;
+	//				}
 
-					if (vtBSTR == "false")
-					{
-						m_pSelectEditor->setPropertyValue(name, false);
-						return 0;
-					}
-				}
-				break;
-			}
-		}
-	}
+	//				if (vtBSTR == "false")
+	//				{
+	//					m_pSelectEditor->setPropertyValue(name, false);
+	//					return 0;
+	//				}*/
+	//			}
+	//			break;
+	//		}
+	//	}
+	//}
 
 	return 0;
 }

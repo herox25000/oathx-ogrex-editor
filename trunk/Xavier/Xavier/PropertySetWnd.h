@@ -41,8 +41,7 @@ public:
 
 namespace Ogre
 {
-	class EventArgs;
-	class BaseEditor;
+
 }
 
 /**
@@ -101,7 +100,7 @@ protected:
 	CComboBox						m_wObjectCombo;
 	CPropertiesToolBar				m_wToolBar;
 	CMFCPropertyGridCtrl			m_wPropList;
-	Ogre::BaseEditor*				m_pSelectEditor;
+	//Ogre::BaseEditor*				m_pSelectEditor;
 
 public:
 	/**
@@ -117,8 +116,8 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
-		LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
+	/*CMFCPropertyGridProperty*		CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
+		LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);*/
 
 	/**
 	 *
@@ -127,7 +126,7 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreatePlygonModeProperty(int nMode, LPCTSTR lpszName, LPCTSTR lpszHelp);
+	//CMFCPropertyGridProperty*		CreatePlygonModeProperty(int nMode, LPCTSTR lpszName, LPCTSTR lpszHelp);
 
 	/**
 	 *
@@ -136,7 +135,7 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreateBoolProperty(bool bValue, LPCTSTR lpszName, LPCTSTR lpszHelp);
+	//CMFCPropertyGridProperty*		CreateBoolProperty(bool bValue, LPCTSTR lpszName, LPCTSTR lpszHelp);
 
 	/**
 	 *
@@ -146,8 +145,8 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*		CreateProperty(float fValue, LPCTSTR lpszName, 
-		LPCTSTR lpszHelp, BOOL bEnable, CMFCPropertyGridProperty* pParent);
+	//CMFCPropertyGridProperty*		CreateProperty(float fValue, LPCTSTR lpszName, 
+	//	LPCTSTR lpszHelp, BOOL bEnable, CMFCPropertyGridProperty* pParent);
 protected:
 	/**
 	 *

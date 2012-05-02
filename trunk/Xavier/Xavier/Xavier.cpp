@@ -5,6 +5,7 @@
 #include "XavierDoc.h"
 #include "SplashDialog.h"
 #include "XavierView.h"
+#include "OgreSdk.h"
 
 
 BEGIN_MESSAGE_MAP(CXavierApp, CWinAppEx)
@@ -18,7 +19,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
- CXavierApp::CXavierApp() : m_pAppEdit(NULL), m_pXavierLog(NULL)
+ CXavierApp::CXavierApp() : m_pXavierLog(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -115,14 +116,14 @@ int		CXavierApp::ExitInstance()
 	if (m_pXavierLog != NULL)
 		delete m_pXavierLog;
 
-	if (m_pAppEdit != NULL)
-	{
-		m_pAppEdit->destroySystem();
-		
-		delete m_pAppEdit;
-		m_pAppEdit = NULL;
-	}
-	
+	/*
+	* 销毁系统
+	*/
+	if (m_pAppSystem != NULL)
+		m_pAppSystem->destroy();
+
+	delete m_pAppSystem;
+
 	return CWinAppEx::ExitInstance();
 }
 
@@ -233,11 +234,11 @@ void	CXavierApp::ShowSplashDialog()
 	pCsw->ShowSplash();
 	
 	// 创建编辑系统
-	m_pAppEdit = new Ogre::AppEdit();
+	m_pAppSystem = new Ogre::System();
 #ifndef _DEBUG
-	m_pAppEdit->createSystem("plugins.cfg", "resources.cfg");
+	m_pAppSystem->create("plugins.cfg", "resources.cfg", false);
 #else
-	m_pAppEdit->createSystem("plugins_d.cfg", "resources_d.cfg");
+	m_pAppSystem->create("plugins_d.cfg", "resources_d.cfg", false);
 #endif
 
 	m_pXavierLog = new XavierLog();

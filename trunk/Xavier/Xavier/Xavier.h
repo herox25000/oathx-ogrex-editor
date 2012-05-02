@@ -5,8 +5,12 @@
 #endif
 
 #include "resource.h"       // Ö÷·ûºÅ
-#include "OgreEditor.h"
 #include "XavierLog.h"
+
+namespace Ogre
+{
+	class System;
+}
 
 /**
 * \ingroup : Xavier
@@ -35,8 +39,8 @@ public:
 
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
-	Ogre::AppEdit*			m_pAppEdit;
 	XavierLog*				m_pXavierLog;
+	Ogre::System*			m_pAppSystem;
 public:
 	/**
 	 *

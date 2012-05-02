@@ -45,7 +45,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OgreSystem\tinyxml;..\OgreSystem\include;..\OgreAppEdit;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="..\System\tinyxml;..\System\include;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXDLL"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mfc90d.lib OgreMain_d.lib OgreAppEdit_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreMain_d.lib System_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\Ogre\lib\debug"
@@ -253,6 +253,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XavierTemplate.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierView.cpp"
 				>
 			</File>
@@ -295,6 +299,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\TypeString.h"
+				>
+			</File>
+			<File
 				RelativePath=".\ViewTree.h"
 				>
 			</File>
@@ -316,6 +324,10 @@
 			</File>
 			<File
 				RelativePath=".\XavierMsg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierTemplate.h"
 				>
 			</File>
 			<File

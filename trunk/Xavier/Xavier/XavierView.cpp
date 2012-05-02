@@ -2,7 +2,7 @@
 #include "Xavier.h"
 #include "XavierDoc.h"
 #include "XavierView.h"
-#include "OgreEditor.h"
+#include "OgreSdk.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -68,7 +68,7 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	
 	// 创建渲染窗口
-	AppEdit::getSingletonPtr()->createRenderWindow(m_hWnd, 800, 600, false);
+	System::getSingleton().createApplicationWindow("Xavier Game Editor Window", m_hWnd, 800, 600, false);
 
 	// 设置渲染时钟
 	SetTimer(IDT_RENDERTIME, 100, NULL);
@@ -95,7 +95,7 @@ void	CXavierView::OnDestroy()
  */
 LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 {
-	TKLogEvent("已正常启动渲染...", LML_NORMAL);
+	//TKLogEvent("已正常启动渲染...", LML_NORMAL);
 	// 启动更新
 	m_dwState = ST_VIEW_UPDATE;
 
@@ -117,12 +117,12 @@ void	CXavierView::OnSize(UINT nType, int cx, int cy)
 	CRect rcView;
 	GetClientRect(&rcView);
 
-	ViewPortEditor* pViewEditor = static_cast<ViewPortEditor*>(
-		AppEdit::getSingletonPtr()->getEditor(EDIT_VIEWPORT)
+	ViewportServer* pSdkViewport = static_cast<ViewportServer*>(
+		System::getSingleton().getServer(SERVER_SDKVIEWPORT)
 		);
-	if (pViewEditor != NULL)
+	if (pSdkViewport != NULL)
 	{
-		pViewEditor->windowMovedOrResized();
+		pSdkViewport->windowMovedOrResized();
 	}
 }
 
@@ -138,7 +138,7 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	case IDT_RENDERTIME:
 		{	
 			if (m_dwState == ST_VIEW_UPDATE)
-				AppEdit::getSingletonPtr()->update();
+				System::getSingletonPtr()->update();
 		}
 		break;
 	}
@@ -318,11 +318,13 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 	{
 		CPoint cRel = point - m_cLMouseDown;
 		
-		CameraEditor* pEditor = static_cast<CameraEditor*>(AppEdit::getSingletonPtr()->getEditor(EDIT_CAMERA));
-		if (pEditor != NULL)
+		CameraServer* pSdkCamera = static_cast<CameraServer*>(
+			System::getSingleton().getServer(SERVER_SDKCAMERA)
+			);
+		if (pSdkCamera != NULL)
 		{
 			m_cLMouseDown = point;
-			pEditor->injectMouseMove(cRel.x, cRel.y);
+			pSdkCamera->injectMouseMove(cRel.x, cRel.y);
 		}
 	}
 
@@ -338,10 +340,12 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
  */
 BOOL CXavierView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	CameraEditor* pEditor = static_cast<CameraEditor*>(AppEdit::getSingletonPtr()->getEditor(EDIT_CAMERA));
-	if (pEditor != NULL)
+	CameraServer* pSdkCamera = static_cast<CameraServer*>(
+		System::getSingleton().getServer(SERVER_SDKCAMERA)
+		);
+	if (pSdkCamera != NULL)
 	{
-		pEditor->injectMouseWheel(zDelta);
+		pSdkCamera->injectMouseWheel(zDelta);
 	}
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
