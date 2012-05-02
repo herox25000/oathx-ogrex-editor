@@ -3,21 +3,12 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xavier", "Xavier\Xavier.vcproj", "{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}"
 	ProjectSection(ProjectDependencies) = postProject
-		{78DA5624-0953-4DAB-9744-D14C9CA0FFF0} = {78DA5624-0953-4DAB-9744-D14C9CA0FFF0}
-		{92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6} = {92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6}
+		{4D18DBAC-3292-4454-B828-3140EA9A3799} = {4D18DBAC-3292-4454-B828-3140EA9A3799}
 	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSystem", "OgreSystem\OgreSystem.vcproj", "{78DA5624-0953-4DAB-9744-D14C9CA0FFF0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "System", "System\System.vcproj", "{4D18DBAC-3292-4454-B828-3140EA9A3799}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreAppEdit", "OgreAppEdit\OgreAppEdit.vcproj", "{92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6}"
-	ProjectSection(ProjectDependencies) = postProject
-		{78DA5624-0953-4DAB-9744-D14C9CA0FFF0} = {78DA5624-0953-4DAB-9744-D14C9CA0FFF0}
-	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreTerrainEditor", "OgreTerrainEditor\OgreTerrainEditor.vcproj", "{7CA88007-F7B3-4E91-AE08-C4C41D585C3B}"
-	ProjectSection(ProjectDependencies) = postProject
-		{92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6} = {92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6}
-	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,18 +20,14 @@ Global
 		{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}.Debug|Win32.Build.0 = Debug|Win32
 		{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}.Release|Win32.ActiveCfg = Release|Win32
 		{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}.Release|Win32.Build.0 = Release|Win32
-		{78DA5624-0953-4DAB-9744-D14C9CA0FFF0}.Debug|Win32.ActiveCfg = Debug|Win32
-		{78DA5624-0953-4DAB-9744-D14C9CA0FFF0}.Debug|Win32.Build.0 = Debug|Win32
-		{78DA5624-0953-4DAB-9744-D14C9CA0FFF0}.Release|Win32.ActiveCfg = Release|Win32
-		{78DA5624-0953-4DAB-9744-D14C9CA0FFF0}.Release|Win32.Build.0 = Release|Win32
+		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Debug|Win32.Build.0 = Debug|Win32
+		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Release|Win32.ActiveCfg = Release|Win32
+		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Release|Win32.Build.0 = Release|Win32
 		{92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6}.Debug|Win32.ActiveCfg = Debug|Win32
 		{92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6}.Debug|Win32.Build.0 = Debug|Win32
 		{92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6}.Release|Win32.ActiveCfg = Release|Win32
 		{92AA3059-A7DB-46B2-9EE4-3A645D8CAAE6}.Release|Win32.Build.0 = Release|Win32
-		{7CA88007-F7B3-4E91-AE08-C4C41D585C3B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{7CA88007-F7B3-4E91-AE08-C4C41D585C3B}.Debug|Win32.Build.0 = Debug|Win32
-		{7CA88007-F7B3-4E91-AE08-C4C41D585C3B}.Release|Win32.ActiveCfg = Release|Win32
-		{7CA88007-F7B3-4E91-AE08-C4C41D585C3B}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

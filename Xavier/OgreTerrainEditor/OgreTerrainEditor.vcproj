@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib OgreSystem_d.lib OgreAppEdit_d.lib"
+				AdditionalDependencies="OgreMain_d.lib OgreSystem_d.lib OgreAppEdit_d.lib OgreTerrain_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../Ogre\lib\Debug"
@@ -137,7 +137,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib OgreSystem.lib OgreAppEdit.lib"
+				AdditionalDependencies="OgreMain.lib OgreSystem.lib OgreAppEdit.lib OgreTerrain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../../../Ogre\lib\release"
 				GenerateDebugInformation="true"
@@ -178,6 +178,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\OgreGlobalOptionEditor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreTerrainEditor.cpp"
 				>
 			</File>
@@ -199,6 +203,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\OgreGlobalOptionEditor.h"
+				>
+			</File>
 			<File
 				RelativePath=".\OgreTerrainEditor.h"
 				>

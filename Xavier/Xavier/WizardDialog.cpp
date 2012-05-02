@@ -3,7 +3,7 @@
 #include "WizardDialog.h"
 #include "FolderDialog.h"
 #include "MainFrm.h"
-#include "OgreEditor.h"
+#include "OgreSdk.h"
 
 
 IMPLEMENT_DYNAMIC(CWizardDialog, CDialog)
@@ -83,6 +83,8 @@ BOOL	CWizardDialog::OnInitDialog()
 	m_cbSceneTypeMask.AddString("ST_EXTERIOR_REAL_FAR");
 	m_cbSceneTypeMask.AddString("ST_INTERIOR");
 
+	m_cbSceneTypeMask.SetCurSel(3);
+
 	SetDlgItemText(IDC_EDIT_PROJECT_NAME, CString("aa"));
 	SetDlgItemText(IDC_EDIT_PROJECT_DIR,CString("d:\\sda"));
 	return TRUE;
@@ -105,85 +107,62 @@ void	CWizardDialog::OnBnClickedOk()
 	}
 	else
 	{
-		// Çå¿ÕÔ­ÓÐµÄ±à¼­¹¤¾ß
-		AppEdit::getSingletonPtr()->clearPlugin();
-		AppEdit::getSingletonPtr()->clearEditor();
+		System::getSingleton().clearServer();
 
-		// ´°¿Ú±à¼­Æ÷
-		BaseEditorFactory* pWindowFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_RENDERWINDOW);
-		if (pWindowFactory != NULL)
+		ServerFactory* pWorldSpaceFactory = System::getSingleton().getServerFactory(WorldSpaceServerFactory::FactoryTypeName);
+		if (pWorldSpaceFactory != NULL)
 		{
-			SRenderWindowCreateParams pm;
-			pm.typeName				= EDIT_RENDERWINDOW;
-
-			AppEdit::getSingleton().addEditor(pWindowFactory->create(&pm));
-		}
-		
-		// ³¡¾°±à¼­Æ÷
-		BaseEditorFactory* pSceneFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_SCENEMANAGER);
-		if (pSceneFactory != NULL)
-		{
-			SSceneManagerCreateParam cm;
-			cm.sName				= NAME_SCENEMANAGER;
-			cm.typeMask				= GetSceneTypeMask(m_typeMask);
-
-			AppEdit::getSingletonPtr()->addEditor(pSceneFactory->create(&cm));
-		}
-		
-		// ÉãÏñ»ú±à¼­Æ÷
-		BaseEditorFactory* pCameraFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_CAMERA);
-		if (pCameraFactory != NULL)
-		{
-			SCameraCreateParam cm;
-			cm.typeName				= EDIT_CAMERA;
-			cm.vPos					= Vector3(0, 5, 5);
-			cm.vLookAt				= Vector3(0,0,0);
-			cm.fNearClipDistance	= 0.1;
-			cm.fFarClipDistance		= 3000;
-			cm.fYaw					= 0;
-			cm.fPitch				= 0;
-
-			AppEdit::getSingletonPtr()->addEditor(pCameraFactory->create(&cm));
-		}
-		
-		// ÊÓ¿Ú±à¼­Æ÷
-		BaseEditorFactory* pViewFactory	= AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_VIEWPORT);
-		if (pViewFactory != NULL)
-		{
-			SViewPortCreateParam cm;
-			cm.background			= ColourValue(0,0,0,0);
-
-			AppEdit::getSingletonPtr()->addEditor(pViewFactory->create(&cm));
-		}
-		
-		// ÎÄµµ±à¼­Æ÷
-		BaseEditorFactory* pXMLSerFactory = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_XMLSERIALIZE);
-		if (pXMLSerFactory != NULL)
-		{
-			SXMLSerializeCreateParam cm;
-			cm.typeName				= EDIT_XMLSERIALIZE;
-
-			AppEdit::getSingletonPtr()->addEditor(pXMLSerFactory->create(&cm));
+			SWorldSpaceServerAdp adp;
+			adp.typeName			= SERVER_WORLDSPACE;
+			adp.name				= XAVIER_WORLDSPACE;
+			adp.clrAmbientLight		= ColourValue(0.5, 0.5, 0.5, 0.5);
+			adp.typeMask			= GetSceneTypeMask(m_typeMask);
+			
+			System::getSingleton().addServer(pWorldSpaceFactory->createServer(adp));
 		}
 
-		// ¸ñ×Ó±à¼­Æ÷
-		BaseEditorFactory* pGirdEditor = AppEdit::getSingletonPtr()->getEditorFactory(FACTORY_GRID);
-		if (pGirdEditor != NULL)
+		ServerFactory* pCameraFacotry = System::getSingleton().getServerFactory(CameraServerFactory::FactoryTypeName);
+		if (pCameraFacotry != NULL)
 		{
-			SGridCreateParam cm;
-			cm.fSize				= 1;
-			cm.fWidth				= 32;
-			cm.fDepth				= 32;
+			SSdkCameraServerAdp adp;
+			adp.depServerName		= SERVER_WORLDSPACE;
+			adp.typeName			= SERVER_SDKCAMERA;
+			adp.name				= XAVIER_SDKCAMERA;
+			adp.nMode				= CS_FREELOOK;
+			adp.vPos				= Vector3(0, 5, 5);
+			adp.vLookAt				= Vector3(0,0,0);
+			adp.fNearClipDistance	= 0.1f;
+			adp.fFarClipDistance	= 3000;
+			adp.fYaw				= 0;
+			adp.fPitch				= 0;
 
-			AppEdit::getSingletonPtr()->addEditor(pGirdEditor->create(&cm));
+			System::getSingleton().addServer(pCameraFacotry->createServer(adp));			
 		}
 
-#ifdef _DEBUG
-		Ogre::AppEdit::getSingletonPtr()->loadPlugin("OgreTerrainEditor_d.dll");
-#else
-		Ogre::AppEdit::getSingletonPtr()->loadPlugin("OgreTerrainEditor.dll");
-#endif
-		
+		ServerFactory* pViewportFactory = System::getSingleton().getServerFactory(ViewportServerFactory::FactoryTypeName);
+		if (pViewportFactory != NULL)
+		{
+			SViewportServerAdp adp;
+			adp.depServerName		= SERVER_SDKCAMERA;
+			adp.typeName			= SERVER_SDKVIEWPORT;
+			adp.background			= ColourValue(0,0,0,0);
+
+			System::getSingleton().addServer(pViewportFactory->createServer(adp));
+		}
+
+		ServerFactory* pBaseGridFactory = System::getSingleton().getServerFactory(BaseGridServerFactory::FactoryTypeName);
+		if (pBaseGridFactory != NULL)
+		{
+			SBaseGridServerAdp adp;
+			adp.depServerName		= SERVER_WORLDSPACE;
+			adp.typeName			= SERVER_BASEGRID;
+			adp.fSize				= 1;
+			adp.fWidth				= 32;
+			adp.fDepth				= 32;
+
+			System::getSingleton().addServer(pBaseGridFactory->createServer(adp));
+		}
+
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
 		{

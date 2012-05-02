@@ -4,7 +4,6 @@
 #include "Resource.h"
 #include "Xavier.h"
 #include "MainFrm.h"
-#include "OgreEditor.h"
 
 
 using namespace Ogre;
@@ -89,27 +88,33 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
  */
 LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 {
+	//CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	//if (pMainFrame != NULL)
+	//{
+	//	CString sPath = pMainFrame->GetPath();
+	//	CString sName = pMainFrame->GetName();
+	//	
+	//	// 创建文档
+	//	XMLSerializeEditor* pEditor = static_cast<XMLSerializeEditor*>(
+	//		AppEdit::getSingletonPtr()->getEditor(EDIT_XMLSERIALIZE)
+	//		);
+	//	if (pEditor != NULL)
+	//	{
+	//		/*
+	//		* 注册创建事件
+	//		*/
+	//		pEditor->subscribeEvent(XMLSerializeEditor::EventXMLSerializeCreated, 
+	//			Event::Subscriber(&CFileView::OnXMLSerializeCreated, this));
+	//		
+	//		// 创建文档
+	//		pEditor->createXMLSerialize(sPath.GetBuffer(), sName.GetBuffer());
+	//	}
+	//}
+
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame != NULL)
 	{
-		CString sPath = pMainFrame->GetPath();
-		CString sName = pMainFrame->GetName();
-		
-		// 创建文档
-		XMLSerializeEditor* pEditor = static_cast<XMLSerializeEditor*>(
-			AppEdit::getSingletonPtr()->getEditor(EDIT_XMLSERIALIZE)
-			);
-		if (pEditor != NULL)
-		{
-			/*
-			* 注册创建事件
-			*/
-			pEditor->subscribeEvent(XMLSerializeEditor::EventXMLSerializeCreated, 
-				Event::Subscriber(&CFileView::OnXMLSerializeCreated, this));
-			
-			// 创建文档
-			pEditor->createXMLSerialize(sPath.GetBuffer(), sName.GetBuffer());
-		}
+		::SendMessage(pMainFrame->GetActiveView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
 	}
 
 	return 0;
@@ -122,32 +127,32 @@ LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
  */
 bool	CFileView::OnXMLSerializeCreated(const Ogre::EventArgs& args)
 {
-	const XMLSerializeCreateEventArgs& evt = static_cast<const XMLSerializeCreateEventArgs&>(args);
-	if (evt.pSerialize != NULL)
-	{
-		/*
-		*	插入文件视图跟项目
-		*/
-		HTREEITEM hRoot = m_wFileView.InsertItem(_T(evt.pSerialize->getName().c_str()), 0, 0);
-		m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
-		
-		// 获取编辑实例
-		AppEdit* pTheApp = AppEdit::getSingletonPtr();
+	//const XMLSerializeCreateEventArgs& evt = static_cast<const XMLSerializeCreateEventArgs&>(args);
+	//if (evt.pSerialize != NULL)
+	//{
+	//	/*
+	//	*	插入文件视图跟项目
+	//	*/
+	//	HTREEITEM hRoot = m_wFileView.InsertItem(_T(evt.pSerialize->getName().c_str()), 0, 0);
+	//	m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+	//	
+	//	// 获取编辑实例
+	//	AppEdit* pTheApp = AppEdit::getSingletonPtr();
 
-		/*
-		* 遍历所有创建的编辑工具
-		*/
-		size_t nSize = pTheApp->getEditorCount();
-		for (int i=0; i<nSize; i++)
-		{
-			BaseEditor* pEditor = pTheApp->getEditor(i);
-			if (pEditor != NULL)
-				m_wFileView.InsertItem(_T(pEditor->getTypeName().c_str()), 0, 0, hRoot);
-		}
+	//	/*
+	//	* 遍历所有创建的编辑工具
+	//	*/
+	//	size_t nSize = pTheApp->getEditorCount();
+	//	for (int i=0; i<nSize; i++)
+	//	{
+	//		BaseEditor* pEditor = pTheApp->getEditor(i);
+	//		if (pEditor != NULL)
+	//			m_wFileView.InsertItem(_T(pEditor->getTypeName().c_str()), 0, 0, hRoot);
+	//	}
 
-		m_wFileView.Expand(hRoot, TVE_EXPAND);
-	}
-	
+	//	m_wFileView.Expand(hRoot, TVE_EXPAND);
+	//}
+	//
 	// 发送创建完成消息到渲染窗口
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame != NULL)
