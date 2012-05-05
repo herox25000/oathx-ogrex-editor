@@ -108,7 +108,7 @@ namespace Ogre
 		registerServerFactory(new ViewportServerFactory());
 		registerServerFactory(new BaseGridServerFactory());
 
-		// 
+		// ÊÂ¼þ·¢ËÍÆ÷
 		new GlobalEventSet();
 
 		return true;

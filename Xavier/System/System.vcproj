@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;.\tinyxml;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories=".\include;.\tinyxml;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SYSTEM_EXPORTS;OGRESYSTEM_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib"
+				AdditionalDependencies="OgreMain_d.lib OgreTerrain_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../Ogre\lib\Debug"
@@ -224,6 +224,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\OgreServerTerrainGroup.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\OgreServerViewport.cpp"
 				>
 			</File>
@@ -323,6 +327,10 @@
 			</File>
 			<File
 				RelativePath=".\include\OgreServerTerrain.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServerTerrainGroup.h"
 				>
 			</File>
 			<File
