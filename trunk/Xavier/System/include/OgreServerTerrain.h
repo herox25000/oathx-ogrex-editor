@@ -24,8 +24,17 @@ namespace Ogre
 	class Ogre_System_Export_API TerrainServer : public Server
 	{
 	public:
+		/**
+		 *
+		 * \param typeName 
+		 * \return 
+		 */
 		TerrainServer(const String& typeName);
 
+		/**
+		 *
+		 * \return 
+		 */
 		virtual ~TerrainServer();
 	};
 
