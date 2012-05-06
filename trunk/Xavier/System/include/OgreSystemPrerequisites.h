@@ -23,6 +23,7 @@
 
 #include <Ogre.h>
 
+
 namespace Ogre
 {
 	class FreeFunctionSlot;
@@ -43,6 +44,8 @@ namespace Ogre
 	class BaseGridServerFactory;
 	class TerrainServer;
 	class TerrainServerFactory;
+	class TerrainGroupServer;
+	class TerrainGroupServerFactory;
 	class System;
 
 }

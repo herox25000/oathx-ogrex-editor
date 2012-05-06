@@ -41,9 +41,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~TerrainGroupServer();
+
 	protected:
 		TerrainGlobalOptions*			m_pGlobalOption;
 		TerrainGroup*					m_pTerrainGroup;
+		Light*							m_pLight;
+		WorldSpaceServer*				m_pWorldSpace;
 	};
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -54,7 +57,9 @@ namespace Ogre
 		float							fInputScale;
 		float							fMinBatchSize;
 		float							fMaxBatchSize;
-		
+		float							fMaxPixelError;
+		float							fCompositeMapDistance;
+		Vector3							vOrigin;		
 	};
 
 	/**

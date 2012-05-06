@@ -7,6 +7,8 @@ namespace Ogre
 {
 	typedef std::vector<Server*>	VServer;
 	typedef HashMap<String, ServerFactory*>	HashServerFactory;
+	typedef std::vector<Plugin*>	VPlugin;
+	typedef std::vector<DynLib*>	VDynlib;
 
 	/**
 	* \ingroup : System
@@ -143,11 +145,42 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual RenderWindow*		getApplicationWindow() const;
+
+		/** 加载插件
+		 *
+		 * \param name 
+		 */
+		virtual	void				loadPlugin(const String& name);
+
+		/** 卸载插件
+		 *
+		 * \param name 
+		 */
+		virtual void				unloadPlugin(const String& name);
+
+		/** 安装插件
+		 *
+		 * \param pPlugin 
+		 */
+		virtual void				installPlugin(Plugin* pPlugin);
+
+		/** 卸载插件
+		 *
+		 * \param pPlugin 
+		 */
+		virtual void				uninstallPlugin(Plugin* pPlugin);
+
+		/** 清空插件
+		 *
+		 */
+		virtual void				clearPlugin();
 	protected:
 		Root*						m_pRoot;
 		RenderWindow*				m_pRenderWindow;
 		HashServerFactory			m_hashFactory;
 		VServer						m_vServer;
+		VPlugin						m_vPlugin;
+		VDynlib						m_vDynlib;
 	};
 }
 
