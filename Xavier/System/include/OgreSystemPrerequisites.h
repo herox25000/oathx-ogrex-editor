@@ -42,10 +42,6 @@ namespace Ogre
 	class ViewportServerFactory;
 	class BaseGridServer;
 	class BaseGridServerFactory;
-	class TerrainServer;
-	class TerrainServerFactory;
-	class TerrainGroupServer;
-	class TerrainGroupServerFactory;
 	class System;
 
 }

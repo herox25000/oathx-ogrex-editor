@@ -220,14 +220,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\OgreServerTerrain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreServerTerrainGroup.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\OgreServerViewport.cpp"
 				>
 			</File>
@@ -323,14 +315,6 @@
 			</File>
 			<File
 				RelativePath=".\include\OgreServerCamera.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreServerTerrain.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreServerTerrainGroup.h"
 				>
 			</File>
 			<File
