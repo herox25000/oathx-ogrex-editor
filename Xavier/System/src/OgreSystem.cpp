@@ -1,4 +1,7 @@
 #include "OgreSystemPrerequisites.h"
+#include "OgreDynLibManager.h"
+#include "OgrePlugin.h"
+#include "OgreDynLib.h"
 #include "OgreSystem.h"
 #include "OgreGlobalEventSet.h"
 #include "OgreServerWorldSpace.h"
@@ -18,6 +21,10 @@ namespace Ogre
 	{
 		assert(msSingleton != NULL); return msSingleton;
 	}
+
+	// 插件导出
+	typedef void (*DLLPluginStart)(void);
+	typedef void (*DLLPluginStop)(void);
 
 	/**
 	 *
@@ -318,5 +325,116 @@ namespace Ogre
 	int				System::getServerCount() const
 	{
 		return m_vServer.size();
+	}
+
+	/**
+	 *
+	 * \param name 
+	 */
+	void			System::loadPlugin(const String& name)
+	{
+		DynLib* pLib = DynLibManager::getSingleton().load(name);
+		if (pLib != NULL)
+		{
+			m_vDynlib.push_back(pLib);
+
+			DLLPluginStart call = (DLLPluginStart)pLib->getSymbol("dllStartPlugin");
+
+			if (!call)
+				OGRE_EXCEPT(Exception::ERR_ITEM_NOT_FOUND, "Cannot find symbol dllStartPlugin in library " + name,
+				"AppEdit::loadPlugin");
+
+			call();
+		}
+	}
+
+	/**
+	 *
+	 * \param name 
+	 */
+	void			System::unloadPlugin(const String& name)
+	{
+		for (VDynlib::iterator it=m_vDynlib.begin();
+			it!=m_vDynlib.end(); it++)
+		{
+			if ( (*it)->getName() == name)
+			{
+				DLLPluginStop call = (DLLPluginStop)(*it)->getSymbol("dllStopPlugin");
+				if (!call)
+					OGRE_EXCEPT(Exception::ERR_ITEM_NOT_FOUND, "Cannot find symbol dllStopPlugin in library " + name,
+					"AppEdit::unloadPlugin");
+
+				call();
+
+				DynLibManager::getSingleton().unload(*it); m_vDynlib.erase(it);
+
+				break;
+			}
+		}
+	}
+
+	/**
+	 *
+	 * \param pPlugin 
+	 */
+	void			System::installPlugin(Plugin* pPlugin)
+	{
+		if (pPlugin != NULL)
+		{
+			LogManager::getSingleton().logMessage("Installing plugin: " + pPlugin->getName());
+
+			m_vPlugin.push_back(pPlugin);
+
+			// 安装插件
+			pPlugin->install();
+			// 初始化
+			pPlugin->initialise();
+
+			LogManager::getSingleton().logMessage("Plugin successfully installed");
+		}	
+	}
+
+	/**
+	 *
+	 * \param pPlugin 
+	 */
+	void			System::uninstallPlugin(Plugin* pPlugin)
+	{
+		LogManager::getSingleton().logMessage("Uninstalling plugin: " + pPlugin->getName());
+		VPlugin::iterator it = 
+			std::find(m_vPlugin.begin(), m_vPlugin.end(), pPlugin);
+		if (it != m_vPlugin.end())
+		{
+			pPlugin->shutdown();
+			pPlugin->uninstall(); m_vPlugin.erase(it);
+		}
+
+		LogManager::getSingleton().logMessage("Plugin successfully uninstalled");
+	}
+
+	/**
+	 *
+	 */
+	void			System::clearPlugin()
+	{
+		for (VDynlib::reverse_iterator it = m_vDynlib.rbegin(); 
+			it != m_vDynlib.rend(); ++it)
+		{
+			DLLPluginStop call = (DLLPluginStop)(*it)->getSymbol("dllStopPlugin");
+
+			call();
+
+			DynLibManager::getSingleton().unload(*it);
+
+		}
+		m_vDynlib.clear();
+
+		for (VPlugin::reverse_iterator it = m_vPlugin.rbegin();
+			it != m_vPlugin.rend(); ++it)
+		{
+			(*it)->uninstall();
+		}
+
+		m_vPlugin.clear();
 	}
 }

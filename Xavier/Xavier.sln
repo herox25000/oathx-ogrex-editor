@@ -8,6 +8,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xavier", "Xavier\Xavier.vcp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "System", "System\System.vcproj", "{4D18DBAC-3292-4454-B828-3140EA9A3799}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Terrain", "Plugin_Terrain\Plugin_Terrain.vcproj", "{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +24,10 @@ Global
 		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Debug|Win32.Build.0 = Debug|Win32
 		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Release|Win32.ActiveCfg = Release|Win32
 		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Release|Win32.Build.0 = Release|Win32
+		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Debug|Win32.Build.0 = Debug|Win32
+		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Release|Win32.ActiveCfg = Release|Win32
+		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
