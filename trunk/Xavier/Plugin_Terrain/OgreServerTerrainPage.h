@@ -38,6 +38,22 @@ namespace Ogre
 		 */
 		virtual ~TerrainPageServer();
 		
+		/**
+		 *
+		 * \param flipX 
+		 * \param flipY 
+		 * \param image 
+		 */
+		virtual void			getTerrainImage(const String& name, bool flipX, bool flipY, Image& image);
+	
+		/**
+		 *
+		 * \param name 
+		 * \param x 
+		 * \param y 
+		 * \param flat 
+		 */
+		virtual void			defineTerrain(const String& name, long x, long y, bool flat);
 	protected:
 		Terrain*				m_pTerrain;
 		String					m_depGroupName;

@@ -93,7 +93,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
+			OutputDirectory="..\..\..\..\Ogre\bin\release"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
 			CharacterSet="1"
@@ -118,7 +118,8 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;PLUGIN_TERRAIN_EXPORTS"
+				AdditionalIncludeDirectories="../System/tinyxml;../System/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\RTShaderSystem\include&quot;"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;PLUGIN_TERRAIN_EXPORTS;OGRETERRAIN_EXPORT"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -136,11 +137,14 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="OgreMain.lib System.lib OgreTerrain.lib"
 				LinkIncremental="1"
+				AdditionalLibraryDirectories="../../../../Ogre\lib\release"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
+				ImportLibrary="..\..\..\..\Ogre\lib\release\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool

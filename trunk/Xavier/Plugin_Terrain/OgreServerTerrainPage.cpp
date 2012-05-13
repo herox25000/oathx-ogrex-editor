@@ -49,7 +49,9 @@ namespace Ogre
 			}
 
 			pGroup->getTerrainGroup()->defineTerrain(nPageX, nPageY, &dmp);
-			pGroup->getTerrainGroup()->loadAllTerrains(true);
+			pGroup->getTerrainGroup()->loadTerrain(nPageX, nPageY, true);
+
+			pGroup->getTerrainGroup()->freeTemporaryResources();
 		}
 	}
 
@@ -71,6 +73,59 @@ namespace Ogre
 			getPropertyValue(PY_NAME_TERRAINPAGE_Y, nPageY);
 
 			pGroup->getTerrainGroup()->removeTerrain(nPageX, nPageY);
+		}
+	}
+
+	/**
+	 *
+	 * \param name 
+	 * \param flipX 
+	 * \param flipY 
+	 * \param image 
+	 */
+	void	TerrainPageServer::getTerrainImage(const String& name, bool flipX, bool flipY, Image& image)
+	{
+		image.load(name, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+		if (flipX)
+			image.flipAroundY();
+		if (flipY)
+			image.flipAroundX();
+	}
+
+	/**
+	 *
+	 * \param name 
+	 * \param x 
+	 * \param y 
+	 * \param flat 
+	 */
+	void	TerrainPageServer::defineTerrain(const String& name, long x, long y, bool flat)
+	{
+		TerrainGroupServer* pGroup = static_cast<TerrainGroupServer*>(
+			System::getSingleton().getServer(m_depGroupName)
+			);
+		if (pGroup)
+		{
+			if (flat)
+			{
+				pGroup->getTerrainGroup()->defineTerrain(x, y, 0.0f);
+			}
+			else
+			{
+				String filename = pGroup->getTerrainGroup()->generateFilename(x, y);
+				if (ResourceGroupManager::getSingleton().resourceExists(pGroup->getTerrainGroup()->getResourceGroup(), filename))
+				{
+					pGroup->getTerrainGroup()->defineTerrain(x, y);
+				}
+				else
+				{
+					Image image;
+					getTerrainImage(name, x % 2 != 0, y % 2 != 0, image);
+
+					pGroup->getTerrainGroup()->defineTerrain(x, y,
+						&image);
+				}
+			}
 		}
 	}
 
