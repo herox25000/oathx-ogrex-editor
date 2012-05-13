@@ -4,15 +4,33 @@
 
 using namespace Ogre;
 
+/**
+ *
+ * \param void 
+ * \return 
+ */
 XavierLog::XavierLog(void)
 :m_nLine(0)
 {
 }
 
+/**
+ *
+ * \param void 
+ * \return 
+ */
 XavierLog::~XavierLog(void)
 {
 }
 
+/**
+ *
+ * \param message 
+ * \param lml 
+ * \param maskDebug 
+ * \param &logName 
+ * \param skipThisMessage 
+ */
 void XavierLog::messageLogged( const Ogre::String& message, 
 												 Ogre::LogMessageLevel lml, 
 												 bool maskDebug, 
