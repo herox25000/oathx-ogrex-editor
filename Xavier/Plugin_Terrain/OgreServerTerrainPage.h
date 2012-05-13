@@ -29,19 +29,28 @@ namespace Ogre
 		 * \param typeName 
 		 * \return 
 		 */
-		TerrainPageServer(const String& typeName);
+		TerrainPageServer(const String& typeName, const String& depGroupName,
+			const Vector3& vPos, int nPageX, int nPageY, int nMinBatchSize, int nMaxBatchSize);
 
 		/**
 		 *
 		 * \return 
 		 */
 		virtual ~TerrainPageServer();
+		
+	protected:
+		Terrain*				m_pTerrain;
+		String					m_depGroupName;
 	};
 
 	// 地形服务参数
 	struct STerrainPageServerAdp : public SSAdp
 	{
-		
+		Vector3					vPos;
+		int						nPageX;
+		int						nPageY;
+		int						nMinBatchSize;
+		int						nMaxBatchSzie;
 	};
 
 	/**

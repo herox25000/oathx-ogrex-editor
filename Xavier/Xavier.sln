@@ -4,11 +4,15 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xavier", "Xavier\Xavier.vcproj", "{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4D18DBAC-3292-4454-B828-3140EA9A3799} = {4D18DBAC-3292-4454-B828-3140EA9A3799}
+		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2} = {B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "System", "System\System.vcproj", "{4D18DBAC-3292-4454-B828-3140EA9A3799}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Terrain", "Plugin_Terrain\Plugin_Terrain.vcproj", "{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}"
+	ProjectSection(ProjectDependencies) = postProject
+		{4D18DBAC-3292-4454-B828-3140EA9A3799} = {4D18DBAC-3292-4454-B828-3140EA9A3799}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

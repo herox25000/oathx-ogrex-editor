@@ -95,6 +95,12 @@ namespace Ogre
 
 		/**
 		 *
+		 * \param typeName 
+		 */
+		virtual void				unregisterServerFactory(const String& typeName);
+
+		/**
+		 *
 		 */
 		virtual void				clearServerFactory();
 

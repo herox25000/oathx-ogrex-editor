@@ -21,5 +21,11 @@
 #define PY_NAME_LIGHTMAPDIRECTION_DESC		"set light map direction"
 #define PY_NAME_COMPOSITEMAPDIFFUSE			"CompositeMapDiffuse"
 #define PY_NAME_COMPOSITEMAPDIFFUSE_DESC	"set composite map diffuse"
+#define PY_NAME_TERRAINPAGE_POSTION			"TerrainPagePostion"
+#define PY_NAME_TERRAINPAGE_POSTION_DESC	"set terrain page position"
+#define PY_NAME_TERRAINPAGE_X				"TerrainPageX"
+#define	PY_NAME_TERRAINPAGE_X_DESC			"set terrain page X"
+#define PY_NAME_TERRAINPAGE_Y				"TerrainPageY"
+#define PY_NAME_TERRAINPAGE_Y_DESC			"set terrain page Y"
 
 #endif

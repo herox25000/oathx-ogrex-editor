@@ -7,7 +7,6 @@
 #include "OgreServerCamera.h"
 #include "OgreServerViewport.h"
 #include "OgreServerBaseGrid.h"
-#include "OgreServerTerrain.h"
 #include "OgreSystem.h"
 
 #endif

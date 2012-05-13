@@ -136,6 +136,7 @@ namespace Ogre
 	{
 		clearServerFactory();
 		clearServer();
+		clearPlugin();
 		
 		delete GlobalEventSet::getSingletonPtr();
 
@@ -224,6 +225,17 @@ namespace Ogre
 #endif
 			delete it->second; m_hashFactory.erase(it);
 		}
+	}
+
+	/**
+	 *
+	 * \param typeName 
+	 */
+	void			System::unregisterServerFactory(const String& typeName)
+	{
+		ServerFactory* pFactory = getServerFactory(typeName);
+		if (pFactory)
+			unregisterServerFactory(pFactory);
 	}
 
 	/**

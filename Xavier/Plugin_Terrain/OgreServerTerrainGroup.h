@@ -49,6 +49,12 @@ namespace Ogre
 
 		/**
 		 *
+		 * \return 
+		 */
+		virtual TerrainGroup*	getTerrainGroup() const;
+
+		/**
+		 *
 		 */
 		virtual bool			load();
 
@@ -56,7 +62,7 @@ namespace Ogre
 		 *
 		 */
 		virtual void			unload();
-
+		
 	protected:
 		TerrainGroup*			m_pTerrainGroup;;
 	};
