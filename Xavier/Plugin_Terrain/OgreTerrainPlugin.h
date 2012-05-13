@@ -21,8 +21,12 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class TerrainPlugin : public Plugin
+	class Ogre_Terrain_Export_API TerrainPlugin : public Plugin
 	{
+	public:
+		// ²å¼þÃû³Æ
+		static const String		TerrainPluginName;
+
 	public:
 		/**
 		 *
@@ -37,6 +41,35 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~TerrainPlugin(void);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual const String&	getName() const;
+
+		/**
+		 *
+		 */
+		virtual void			install();
+
+
+		/**
+		 *
+		 */
+		virtual void			initialise();
+
+
+		/**
+		 *
+		 */
+		virtual void			shutdown();
+
+
+		/**
+		 *
+		 */
+		virtual void			uninstall();
 	};
 }
 

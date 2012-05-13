@@ -1,5 +1,5 @@
-#ifndef _____OgreServerTerrain_H
-#define _____OgreServerTerrain_H
+#ifndef _____OgreServerTerrainPage_H
+#define _____OgreServerTerrainPage_H
 
 #include "OgreServer.h"
 
@@ -21,7 +21,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_System_Export_API TerrainServer : public Server
+	class Ogre_Terrain_Export_API TerrainPageServer : public Server
 	{
 	public:
 		/**
@@ -29,17 +29,17 @@ namespace Ogre
 		 * \param typeName 
 		 * \return 
 		 */
-		TerrainServer(const String& typeName);
+		TerrainPageServer(const String& typeName);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual ~TerrainServer();
+		virtual ~TerrainPageServer();
 	};
 
 	// 地形服务参数
-	struct STerrainServerAdp : public SSAdp
+	struct STerrainPageServerAdp : public SSAdp
 	{
 		
 	};
@@ -60,7 +60,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_System_Export_API TerrainServerFactory : public ServerFactory
+	class Ogre_Terrain_Export_API TerrainPageServerFactory : public ServerFactory
 	{
 	public:
 		static const String		FactoryTypeName;
@@ -69,7 +69,7 @@ namespace Ogre
 		 *
 		 * \return 
 		 */
-		TerrainServerFactory();
+		TerrainPageServerFactory();
 
 		/**
 		 *
