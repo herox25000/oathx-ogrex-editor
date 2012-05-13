@@ -26,15 +26,20 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_System_Export_API TerrainGroupServer : public Server
+	class Ogre_Terrain_Export_API TerrainGroupServer : public Server
 	{
 	public:
 		/**
 		 *
 		 * \param typeName 
+		 * \param depWorldServerName 
+		 * \param nTerrainSize 
+		 * \param fWorldSize 
+		 * \param vOrigin 
 		 * \return 
 		 */
-		TerrainGroupServer(const String& typeName, WorldSpaceServer* pWorldSpace);
+		TerrainGroupServer(const String& typeName, const String& depWorldServerName,
+			int nTerrainSize, float fWorldSize, const Vector3& vOrigin);
 
 		/**
 		 *
@@ -42,24 +47,26 @@ namespace Ogre
 		 */
 		virtual ~TerrainGroupServer();
 
+		/**
+		 *
+		 */
+		virtual bool			load();
+
+		/**
+		 *
+		 */
+		virtual void			unload();
+
 	protected:
-		TerrainGlobalOptions*			m_pGlobalOption;
-		TerrainGroup*					m_pTerrainGroup;
-		Light*							m_pLight;
-		WorldSpaceServer*				m_pWorldSpace;
+		TerrainGroup*			m_pTerrainGroup;;
 	};
 	
 	//////////////////////////////////////////////////////////////////////////
 	struct STerrainGroupServerAdp : public SSAdp
 	{
-		float							fTerrainSize;
-		float							fWorldSize;
-		float							fInputScale;
-		float							fMinBatchSize;
-		float							fMaxBatchSize;
-		float							fMaxPixelError;
-		float							fCompositeMapDistance;
-		Vector3							vOrigin;		
+		int						nTerrainSize;
+		float					fWorldSize;
+		Vector3					vOrigin;		
 	};
 
 	/**
@@ -78,7 +85,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_System_Export_API TerrainGroupServerFactory : public ServerFactory
+	class Ogre_Terrain_Export_API TerrainGroupServerFactory : public ServerFactory
 	{
 	public:
 		static const String		FactoryTypeName;

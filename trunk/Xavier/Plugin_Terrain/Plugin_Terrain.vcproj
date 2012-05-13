@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="../System/tinyxml;../System/include;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\RTShaderSystem\include&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;PLUGIN_TERRAIN_EXPORTS;OGRESYSTEM_EXPORT"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;PLUGIN_TERRAIN_EXPORTS;OGRETERRAIN_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib System_d.lib"
+				AdditionalDependencies="OgreMain_d.lib System_d.lib OgreTerrain_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../Ogre\lib\Debug"
@@ -175,11 +175,15 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OgreServerTerrain.cpp"
+				RelativePath=".\OgreServerTerrainGlobalOption.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\OgreServerTerrainGroup.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreServerTerrainPage.cpp"
 				>
 			</File>
 			<File
@@ -193,7 +197,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OgreServerTerrain.h"
+				RelativePath=".\OgreServerTerrainGlobalOption.h"
 				>
 			</File>
 			<File
@@ -201,7 +205,23 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreServerTerrainPage.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreTerrainPlugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreTerrainPluginPrerequisites.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreTerrainPropertyNameDef.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreTerrainSdk.h"
 				>
 			</File>
 		</Filter>
