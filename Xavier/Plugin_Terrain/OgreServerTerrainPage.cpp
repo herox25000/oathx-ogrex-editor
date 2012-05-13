@@ -32,15 +32,15 @@ namespace Ogre
 		if (pGroup)
 		{
 			Terrain::ImportData dmp;
-			dmp.worldSize	= pGroup->getTerrainGroup()->getTerrainWorldSize();
+			dmp.worldSize		= pGroup->getTerrainGroup()->getTerrainWorldSize();
 
 			int nValue;
 			pGroup->getPropertyValue(PY_NAME_TERRAINSIZE, nValue);
-			dmp.terrainSize	= nValue;
+			dmp.terrainSize		= nValue;
 
-			dmp.inputScale	= 1;
-			dmp.minBatchSize= nMinBatchSize;
-			dmp.minBatchSize= nMaxBatchSize;
+			dmp.inputScale		= 1;
+			dmp.minBatchSize	= nMinBatchSize;
+			dmp.minBatchSize	= nMaxBatchSize;
 
 			dmp.layerList.resize(1);
 			for (int i=0; i<dmp.layerList.size(); i++)

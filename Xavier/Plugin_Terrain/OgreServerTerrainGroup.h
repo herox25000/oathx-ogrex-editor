@@ -52,6 +52,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual TerrainGroup*	getTerrainGroup() const;
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual bool			isDerivedDataUpdateInProgress() const;
 
 		/**
 		 *
@@ -72,7 +78,7 @@ namespace Ogre
 	{
 		int						nTerrainSize;
 		float					fWorldSize;
-		Vector3					vOrigin;		
+		Vector3					vOrigin;
 	};
 
 	/**
