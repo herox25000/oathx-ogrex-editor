@@ -190,7 +190,7 @@ void	CWizardDialog::OnBnClickedOk()
 			STerrainGroupServerAdp adp;
 			adp.depServerName			= SERVER_WORLDSPACE;
 			adp.typeName				= SERVER_TERRAIN_GROUP;
-			adp.fWorldSize				= 12000;
+			adp.fWorldSize				= 1200;
 			adp.nTerrainSize			= 513;
 			adp.vOrigin					= Vector3::ZERO;
 			

@@ -26,7 +26,6 @@ namespace Ogre
 			);
 		if (m_pTerrainGroup)
 		{
-			m_pTerrainGroup->setFilenameConvention("test","terrain");
 			m_pTerrainGroup->setOrigin(vOrigin);
 		}
 	}
@@ -50,6 +49,15 @@ namespace Ogre
 	TerrainGroup*	TerrainGroupServer::getTerrainGroup() const
 	{
 		return m_pTerrainGroup;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	bool			TerrainGroupServer::isDerivedDataUpdateInProgress() const
+	{
+		return m_pTerrainGroup->isDerivedDataUpdateInProgress();
 	}
 
 	/**
