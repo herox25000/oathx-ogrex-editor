@@ -166,8 +166,11 @@ void	CWizardDialog::OnBnClickedOk()
 		}
 
 		// 加载地形插件
+#ifdef _DEBUG
 		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
-
+#else
+		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
+#endif
 		ServerFactory* pGlobalFactory = System::getSingleton().getServerFactory("Terrain/TerrainGlobalOptionServerFactory");
 		if (pGlobalFactory != NULL)
 		{
