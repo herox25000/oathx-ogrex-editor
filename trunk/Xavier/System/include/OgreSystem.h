@@ -7,6 +7,7 @@ namespace Ogre
 {
 	typedef std::vector<Server*>	VServer;
 	typedef HashMap<String, ServerFactory*>	HashServerFactory;
+	typedef MapIterator<HashServerFactory>	ServerFactoryIter;
 	typedef std::vector<Plugin*>	VPlugin;
 	typedef std::vector<DynLib*>	VDynlib;
 
@@ -101,6 +102,12 @@ namespace Ogre
 
 		/**
 		 *
+		 * \return 
+		 */
+		virtual ServerFactoryIter	getHashServerFactory();
+
+		/**
+		 *
 		 */
 		virtual void				clearServerFactory();
 
@@ -119,6 +126,13 @@ namespace Ogre
 		 */
 		virtual Server*				getServer(const String& typeName);
 
+		/**
+		 *
+		 * \param idx 
+		 * \return 
+		 */
+		virtual Server*				getServer(int idx);
+
 		/** 删除服务
 		 *
 		 * \param pServer 
@@ -135,7 +149,7 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual int					getServerCount() const;
-
+		
 	public:
 		/** 创建渲染窗口
 		 *
