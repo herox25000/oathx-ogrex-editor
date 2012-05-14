@@ -48,10 +48,13 @@ namespace Ogre
 				dmp.layerList[i].textureNames.push_back("dirt_grayrocky_diffusespecular.dds");
 			}
 
-			pGroup->getTerrainGroup()->defineTerrain(nPageX, nPageY, &dmp);
-			pGroup->getTerrainGroup()->loadTerrain(nPageX, nPageY, true);
-
-			pGroup->getTerrainGroup()->freeTemporaryResources();
+			TerrainGroup* pTerrain = pGroup->getTerrainGroup();
+			if (pTerrain)
+			{
+				pTerrain->defineTerrain(nPageX, nPageY, &dmp);
+				pTerrain->loadTerrain(nPageX, nPageY, true);
+				pTerrain->freeTemporaryResources();
+			}
 		}
 	}
 
@@ -72,7 +75,11 @@ namespace Ogre
 			int nPageY;
 			getPropertyValue(PY_NAME_TERRAINPAGE_Y, nPageY);
 
-			pGroup->getTerrainGroup()->removeTerrain(nPageX, nPageY);
+			TerrainGroup* pTerrain = pGroup->getTerrainGroup();
+			if (pTerrain)
+			{
+				pTerrain->removeTerrain(nPageX, nPageY);
+			}
 		}
 	}
 
