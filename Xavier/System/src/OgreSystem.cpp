@@ -50,7 +50,7 @@ namespace Ogre
 	 * \param resourceFileName 
 	 * \return 
 	 */
-	bool			System::create(const String& pluginFileName, const String& resourceFileName, bool bAutoCreateWindow)
+	bool				System::create(const String& pluginFileName, const String& resourceFileName, bool bAutoCreateWindow)
 	{
 		m_pRoot = new Root(pluginFileName);
 		
@@ -124,7 +124,7 @@ namespace Ogre
 	/**
 	 *
 	 */
-	void			System::update()
+	void				System::update()
 	{
 		m_pRoot->renderOneFrame();
 	}
@@ -132,7 +132,7 @@ namespace Ogre
 	/**
 	 *
 	 */
-	void			System::destroy()
+	void				System::destroy()
 	{
 		clearServerFactory();
 		clearServer();
@@ -153,7 +153,7 @@ namespace Ogre
 	 * \param h 
 	 * \param bFullScree 
 	 */
-	void			System::createApplicationWindow(const String& name, HWND hWnd, int w, int h, bool bFullScreen)
+	void				System::createApplicationWindow(const String& name, HWND hWnd, int w, int h, bool bFullScreen)
 	{
 		NameValuePairList pm;
 		pm[KEY_HANDLE_WINDOW] = StringConverter::toString((size_t)(hWnd));
@@ -176,7 +176,7 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	RenderWindow*	System::getApplicationWindow() const
+	RenderWindow*		System::getApplicationWindow() const
 	{
 		return m_pRenderWindow;
 	}
@@ -185,7 +185,7 @@ namespace Ogre
 	 *
 	 * \param pFactory 
 	 */
-	void			System::registerServerFactory(ServerFactory* pFactory)
+	void				System::registerServerFactory(ServerFactory* pFactory)
 	{
 		HashServerFactory::iterator it = m_hashFactory.find(pFactory->getTypeName());
 		if ( it == m_hashFactory.end() )
@@ -202,7 +202,7 @@ namespace Ogre
 	 * \param typeName 
 	 * \return 
 	 */
-	ServerFactory*	System::getServerFactory(const String& typeName)
+	ServerFactory*		System::getServerFactory(const String& typeName)
 	{
 		HashServerFactory::iterator it = m_hashFactory.find(typeName);
 		if ( it != m_hashFactory.end() )
@@ -215,7 +215,7 @@ namespace Ogre
 	 *
 	 * \param pFactory 
 	 */
-	void			System::unregisterServerFactory(ServerFactory* pFactory)
+	void				System::unregisterServerFactory(ServerFactory* pFactory)
 	{
 		HashServerFactory::iterator it = m_hashFactory.find(pFactory->getTypeName());
 		if ( it != m_hashFactory.end() )
@@ -231,7 +231,7 @@ namespace Ogre
 	 *
 	 * \param typeName 
 	 */
-	void			System::unregisterServerFactory(const String& typeName)
+	void				System::unregisterServerFactory(const String& typeName)
 	{
 		ServerFactory* pFactory = getServerFactory(typeName);
 		if (pFactory)
@@ -240,8 +240,17 @@ namespace Ogre
 
 	/**
 	 *
+	 * \return 
 	 */
-	void			System::clearServerFactory()
+	ServerFactoryIter	System::getHashServerFactory()
+	{
+		return ServerFactoryIter(m_hashFactory.begin(), m_hashFactory.end());
+	}
+
+	/**
+	 *
+	 */
+	void				System::clearServerFactory()
 	{
 		HashServerFactory::iterator it = m_hashFactory.begin();
 		while( it != m_hashFactory.end() )
@@ -258,7 +267,7 @@ namespace Ogre
 	 * \param pServer 
 	 * \return 
 	 */
-	bool			System::addServer(Server* pServer)
+	bool				System::addServer(Server* pServer)
 	{
 		if (pServer != NULL)
 		{
@@ -295,6 +304,19 @@ namespace Ogre
 			if ((*it)->getTypeName() == typeName)
 				return (*it);
 		}
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \param idx 
+	 * \return 
+	 */
+	Server*			System::getServer(int idx)
+	{
+		if (idx >= 0 && idx < getServerCount())
+			return m_vServer[idx];
 
 		return NULL;
 	}
