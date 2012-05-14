@@ -70,18 +70,18 @@ public:
 	 *
 	 * \return 
 	 */
-	CString			GetPath() const {return m_dWizard.GetPath();}
+	CString				GetPath() const {return m_dWizard.GetPath();}
 
 	/**
 	 *
 	 * \return 
 	 */
-	CString			GetName() const {return m_dWizard.GetName();}
+	CString				GetName() const {return m_dWizard.GetName();}
 	/**
 	 *
 	 * \return 
 	 */
-	CFileView*		GetFileView() {return &m_wFileView;}
+	CFileView*			GetFileView() {return &m_wFileView;}
 
 	/**
 	 *

@@ -5,6 +5,8 @@ enum{
 	ST_VIEW_UPDATE
 };
 
+class XavierFrameContext;
+
 /**
 * \ingroup : Xavier
 *
@@ -37,6 +39,9 @@ protected:
 	BOOL						m_bLMouseDown;
 	CPoint						m_cLMouseDown;
 	CPoint						m_cLMouseLost;
+
+protected:
+	XavierFrameContext*			m_pFrameContext;
 public:
 	/**
 	 *

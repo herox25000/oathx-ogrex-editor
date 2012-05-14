@@ -258,7 +258,7 @@ IDR_POPUP_EXPLORER MENU
 BEGIN
     POPUP "资源管理器"
     BEGIN
-        MENUITEM "打开(&O)",                      ID_OPEN
+        MENUITEM "新建",                          ID_NEWCREATE
         MENUITEM "打开方式(&W)....",                ID_OPEN_WITH
         MENUITEM SEPARATOR
         MENUITEM "编译(&C)",                      ID_DUMMY_COMPILE
@@ -358,6 +358,17 @@ BEGIN
     PUSHBUTTON      "...",IDC_BUTTON_FINDDIR,272,108,29,16
 END
 
+IDD_DIALOG_SERVER DIALOGEX 0, 0, 316, 180
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "服务对话框"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,205,159,50,14
+    PUSHBUTTON      "取消",IDCANCEL,259,159,50,14
+    GROUPBOX        "可用服务",IDC_STATIC,148,7,154,127
+    LISTBOX         IDC_LIST2,153,16,147,114,LBS_SORT | LBS_OWNERDRAWFIXED | LBS_HASSTRINGS | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_TABSTOP
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -415,6 +426,14 @@ BEGIN
     END
 
     IDD_DIALOG_NEW, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 309
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 173
+    END
+
+    IDD_DIALOG_SERVER, DIALOG
     BEGIN
         LEFTMARGIN, 7
         RIGHTMARGIN, 309

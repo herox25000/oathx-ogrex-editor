@@ -2,6 +2,7 @@
 #include "Xavier.h"
 #include "XavierDoc.h"
 #include "XavierView.h"
+#include "XavierFrameContext.h"
 #include "OgreSdk.h"
 
 #ifdef _DEBUG
@@ -33,7 +34,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE)
+CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_pFrameContext(NULL)
 {
 
 }
@@ -69,6 +70,13 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	
 	// ¥¥Ω®‰÷»æ¥∞ø⁄
 	System::getSingleton().createApplicationWindow("Xavier Game Editor Window", m_hWnd, 800, 600, false);
+	
+	// ÃÌº”‰÷»æº‡Ã˝
+	m_pFrameContext = new XavierFrameContext();
+	if (m_pFrameContext)
+	{
+		Root::getSingleton().addFrameListener(m_pFrameContext);	
+	}
 
 	// …Ë÷√‰÷»æ ±÷”
 	SetTimer(IDT_RENDERTIME, 100, NULL);
@@ -83,6 +91,12 @@ void	CXavierView::OnDestroy()
 {
 	CView::OnDestroy();
 	
+	if (m_pFrameContext)
+	{
+		Root::getSingleton().removeFrameListener(m_pFrameContext);
+		delete m_pFrameContext;
+	}
+
 	// œ˙ªŸ‰÷»æ ±÷”
 	KillTimer(IDT_RENDERTIME);
 }
