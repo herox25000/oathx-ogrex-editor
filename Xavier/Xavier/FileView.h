@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ViewTree.h"
+#include "ServerFactoryDialog.h"
 
 //////////////////////////////////////////////////////////////////////////
 namespace Ogre
@@ -86,8 +87,8 @@ protected:
 
 	CViewTree				m_wFileView;
 	CImageList				m_FileViewImages;
+	CServerFactoryDialog	m_wServerFactoryDlg;
 	CFileViewToolBar		m_wToolBar;
-
 public:
 	/**
 	 *
@@ -140,7 +141,7 @@ protected:
 	/**
 	 *
 	 */
-	afx_msg void			OnFileOpen();
+	afx_msg void			OnNewCreated();
 
 	/**
 	 *

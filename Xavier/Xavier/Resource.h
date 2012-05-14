@@ -98,23 +98,27 @@
 #define ID_USER_TOOL8                   313
 #define IDR_MENU_DIRS                   313
 #define ID_USER_TOOL9                   314
+#define IDD_DIALOG_SERVER               314
 #define ID_USER_TOOL10                  315
 #define IDC_COMBO_SCENEMANAGER          1001
 #define IDC_EDIT_PROJECT_NAME           1002
 #define IDC_EDIT_PROJECT_DIR            1003
 #define IDC_BUTTON_FINDDIR              1004
+#define IDC_LIST1                       1005
+#define IDC_LIST2                       1006
 #define ID_S_S                          32771
 #define ID_S_S32772                     32772
 #define ID_32773                        32773
 #define ID_                             32774
+#define ID_NEWCREATE                    32775
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        314
-#define _APS_NEXT_COMMAND_VALUE         32775
-#define _APS_NEXT_CONTROL_VALUE         1005
+#define _APS_NEXT_RESOURCE_VALUE        315
+#define _APS_NEXT_COMMAND_VALUE         32776
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

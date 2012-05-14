@@ -213,6 +213,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ServerFactoryDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp"
 				>
 				<FileConfiguration
@@ -246,6 +250,10 @@
 			</File>
 			<File
 				RelativePath=".\XavierDoc.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierFrameContext.cpp"
 				>
 			</File>
 			<File
@@ -291,6 +299,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\ServerFactoryDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\stdafx.h"
 				>
 			</File>
@@ -316,6 +328,10 @@
 			</File>
 			<File
 				RelativePath=".\XavierDoc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierFrameContext.h"
 				>
 			</File>
 			<File

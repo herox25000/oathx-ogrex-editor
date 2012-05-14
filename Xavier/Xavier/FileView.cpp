@@ -4,6 +4,7 @@
 #include "Resource.h"
 #include "Xavier.h"
 #include "MainFrm.h"
+#include "OgreSdk.h"
 
 
 using namespace Ogre;
@@ -21,7 +22,7 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_WM_SIZE()
 	ON_WM_CONTEXTMENU()
 	ON_COMMAND(ID_PROPERTIES,		OnProperties)
-	ON_COMMAND(ID_OPEN,				OnFileOpen)
+	ON_COMMAND(ID_NEWCREATE,		OnNewCreated)
 	ON_COMMAND(ID_OPEN_WITH,		OnFileOpenWith)
 	ON_COMMAND(ID_DUMMY_COMPILE,	OnDummyCompile)
 	ON_COMMAND(ID_EDIT_CUT,			OnEditCut)
@@ -73,6 +74,12 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
 	m_wToolBar.SetOwner(this);
 	m_wToolBar.SetRouteCommandsViaFrame(FALSE);
+	
+	/*
+	* 创建服务工厂对话框
+	*/
+	if (!m_wServerFactoryDlg.Create(IDD_DIALOG_SERVER))
+		return -1;
 
 	// 调整布局
 	AdjustLayout();
@@ -88,34 +95,39 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
  */
 LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 {
-	//CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
-	//if (pMainFrame != NULL)
-	//{
-	//	CString sPath = pMainFrame->GetPath();
-	//	CString sName = pMainFrame->GetName();
-	//	
-	//	// 创建文档
-	//	XMLSerializeEditor* pEditor = static_cast<XMLSerializeEditor*>(
-	//		AppEdit::getSingletonPtr()->getEditor(EDIT_XMLSERIALIZE)
-	//		);
-	//	if (pEditor != NULL)
-	//	{
-	//		/*
-	//		* 注册创建事件
-	//		*/
-	//		pEditor->subscribeEvent(XMLSerializeEditor::EventXMLSerializeCreated, 
-	//			Event::Subscriber(&CFileView::OnXMLSerializeCreated, this));
-	//		
-	//		// 创建文档
-	//		pEditor->createXMLSerialize(sPath.GetBuffer(), sName.GetBuffer());
-	//	}
-	//}
-
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame != NULL)
 	{
-		::SendMessage(pMainFrame->GetActiveView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
+		CString sPath = pMainFrame->GetPath();
+		CString sName = pMainFrame->GetName();
+		
+		/*
+		*	插入文件视图跟项目
+		*/
+		HTREEITEM hRoot = m_wFileView.InsertItem(_T(sName.GetBuffer()), 0, 0);
+		m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+		
+		// 获取系统实例
+		System* pSystem = System::getSingletonPtr();
+		
+		/*
+		* 遍历所有创建的编辑工具
+		*/
+		int iCount = pSystem->getServerCount();
+		for (int i=0; i<iCount; i++)
+		{
+			Server* pServer = pSystem->getServer(i);
+			if (pServer)
+				m_wFileView.InsertItem(_T(pServer->getTypeName().c_str()), 0, 0, hRoot);
+		}
+
+		m_wFileView.Expand(hRoot, TVE_EXPAND);
 	}
+
+	/*
+	* 通知主窗口初始化完毕
+	*/
+	::SendMessage(pMainFrame->GetActiveView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
 
 	return 0;
 }
@@ -127,32 +139,6 @@ LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
  */
 bool	CFileView::OnXMLSerializeCreated(const Ogre::EventArgs& args)
 {
-	//const XMLSerializeCreateEventArgs& evt = static_cast<const XMLSerializeCreateEventArgs&>(args);
-	//if (evt.pSerialize != NULL)
-	//{
-	//	/*
-	//	*	插入文件视图跟项目
-	//	*/
-	//	HTREEITEM hRoot = m_wFileView.InsertItem(_T(evt.pSerialize->getName().c_str()), 0, 0);
-	//	m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
-	//	
-	//	// 获取编辑实例
-	//	AppEdit* pTheApp = AppEdit::getSingletonPtr();
-
-	//	/*
-	//	* 遍历所有创建的编辑工具
-	//	*/
-	//	size_t nSize = pTheApp->getEditorCount();
-	//	for (int i=0; i<nSize; i++)
-	//	{
-	//		BaseEditor* pEditor = pTheApp->getEditor(i);
-	//		if (pEditor != NULL)
-	//			m_wFileView.InsertItem(_T(pEditor->getTypeName().c_str()), 0, 0, hRoot);
-	//	}
-
-	//	m_wFileView.Expand(hRoot, TVE_EXPAND);
-	//}
-	//
 	// 发送创建完成消息到渲染窗口
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame != NULL)
@@ -242,9 +228,27 @@ void	CFileView::OnProperties()
 /**
  *
  */
-void	CFileView::OnFileOpen()
+void	CFileView::OnNewCreated()
 {
-	
+	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	if (pMainFrame != NULL)
+	{
+		CRect rcMain;
+		pMainFrame->GetClientRect(&rcMain);
+
+		CRect rcDlg;
+		m_wServerFactoryDlg.GetClientRect(&rcDlg);
+
+		m_wServerFactoryDlg.SetWindowPos(&wndTop, rcMain.Width() / 2 - rcDlg.Width() / 2,
+			rcMain.Height() / 2 - rcDlg.Height() / 2, 0, 0, SWP_NOSIZE);
+		
+		/*
+		* 更新可用的工厂
+		*/
+		m_wServerFactoryDlg.UpdateFactory();
+
+		m_wServerFactoryDlg.ShowWindow(SW_SHOW);
+	}
 }
 
 /**
