@@ -45,7 +45,62 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~BaseGridServer(void);
+	
+		/**
+		 *
+		 */
+		virtual void				show();
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	bool				isVisible() const;
+
+		/**
+		 *
+		 */
+		virtual void				hide();
+
+		/**
+		 *
+		 * \param fSize 
+		 */
+		virtual	void				setSize(float fSize);
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual float				getSize() const;
+
+		/**
+		 *
+		 * \param fDepth 
+		 */
+		virtual	void				setDepth(float fDepth);
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	float				getDepth() const;
+
+		/**
+		 *
+		 * \param fWidth 
+		 */
+		virtual	void				setWidth(float fWidth);
+		
+		/**
+		 *
+		 */
+		virtual	void				getWidth() const;
+
+		/**
+		 *
+		 */
+		virtual	void				invalidate();
 	protected:
 		/** 创建格子
 		 *
@@ -70,7 +125,7 @@ namespace Ogre
 		Real						m_fDepth;
 		SceneNode*					m_pLine;
 		ManualObject*				m_pGrid;
-		
+		bool						m_bDisplay;
 	};
 
 	//////////////////////////////////////////////////////////////////////////

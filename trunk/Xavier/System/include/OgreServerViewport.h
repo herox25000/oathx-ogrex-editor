@@ -46,17 +46,23 @@ namespace Ogre
 		 */
 		virtual Viewport*				getViewPort() const;
 
+		/**
+		 *
+		 * \param clrBackground 
+		 */
+		virtual	void					setBackgroundColour(const ColourValue& clrBackground);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	ColourValue				getBackgroundColour() const;
+
 		/** 窗口移动或者改变大小
 		 *
 		 */
 		virtual void					windowMovedOrResized();
 		
-		/**
-		 *
-		 * \param args 
-		 * \return 
-		 */
-		virtual bool					onPropertyChanaged(const EventArgs& args);
 	protected:
 		// 视口
 		Viewport*						m_pViewPort;

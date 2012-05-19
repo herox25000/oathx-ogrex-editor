@@ -20,5 +20,6 @@
 #endif
 
 #include "OgreSdk.h"
+#include "OgreSerialzePropertyNameDef.h"
 
 #endif

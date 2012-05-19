@@ -1,5 +1,6 @@
 #include "OgreSerialzePluginPrerequisites.h"
 #include "OgreSerializePlugin.h"
+#include "OgreServerSerialzeXML.h"
 
 namespace Ogre
 {
@@ -37,7 +38,7 @@ namespace Ogre
 	 */
 	void			SerializePlugin::install()
 	{
-
+		System::getSingletonPtr()->registerServerFactory( new SerialzeXMLServerFactory() );
 	}
 
 	/**
@@ -53,7 +54,7 @@ namespace Ogre
 	 */
 	void			SerializePlugin::uninstall()
 	{
-
+		System::getSingletonPtr()->unregisterServerFactory(SerialzeXMLServerFactory::FactoryTypeName);
 	}
 
 	/**

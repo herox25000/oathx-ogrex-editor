@@ -45,6 +45,28 @@ namespace Ogre
 		return m_name;
 	}
 
+	/**
+	 *
+	 * \param clrAmbientLight 
+	 */
+	void			WorldSpaceServer::setAmbientLight(const ColourValue& clrAmbientLight)
+	{
+		m_pSceneManager->setAmbientLight(clrAmbientLight);
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	ColourValue		WorldSpaceServer::getAmbientLight() const
+	{
+		return m_pSceneManager->getAmbientLight();
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
 	SceneManager*	WorldSpaceServer::getSceneManager() const
 	{
 		return m_pSceneManager;

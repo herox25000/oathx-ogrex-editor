@@ -29,13 +29,9 @@ namespace Ogre
 			System::getSingleton().getApplicationWindow()->windowMovedOrResized();
 			pCamera->setAspectRatio(
 				Ogre::Real(m_pViewPort->getActualWidth()) / Ogre::Real(m_pViewPort->getActualHeight())
-				);	
+				);
 		}
 		
-		ARGB argb = background.getAsARGB();
-		addProperty(PV_BACKGROUND, Any(argb), PVT_COLOUR);
-
-		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&ViewportServer::onPropertyChanaged, this));
 	}
 
 	/** Îö¹¹º¯Êý
@@ -59,6 +55,24 @@ namespace Ogre
 
 	/**
 	 *
+	 * \param clrBackground 
+	 */
+	void			ViewportServer::setBackgroundColour(const ColourValue& clrBackground)
+	{
+		m_pViewPort->setBackgroundColour(clrBackground);
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	ColourValue		ViewportServer::getBackgroundColour() const
+	{
+		return m_pViewPort->getBackgroundColour();
+	}
+
+	/**
+	 *
 	 */
 	void			ViewportServer::windowMovedOrResized()
 	{
@@ -71,28 +85,6 @@ namespace Ogre
 				Ogre::Real(m_pViewPort->getActualWidth()) / Ogre::Real(m_pViewPort->getActualHeight())
 				);	
 		}
-	}
-
-	/**
-	 *
-	 * \param args 
-	 */
-	bool			ViewportServer::onPropertyChanaged(const EventArgs& args)
-	{
-		const PropertyEventArgs& evt = static_cast<const PropertyEventArgs&>(args);
-		if (evt.pProperty != NULL)
-		{
-			String name = evt.pProperty->getName();
-			if (name == "Background")
-			{
-				ARGB nValue = any_cast<ARGB>(evt.pProperty->getValue());
-				ColourValue backgroud;
-				backgroud.setAsARGB(SetAlpha(nValue, 255));
-				m_pViewPort->setBackgroundColour(backgroud);
-			}
-		}
-
-		return true;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
