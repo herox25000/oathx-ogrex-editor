@@ -109,7 +109,7 @@ void	CWizardDialog::OnBnClickedOk()
 	else
 	{
 		System::getSingleton().clearServer();
-		//System::getSingleton().clearPlugin();
+		System::getSingleton().clearPlugin();
 		
 		ServerFactory* pWorldSpaceFactory = System::getSingleton().getServerFactory(WorldSpaceServerFactory::FactoryTypeName);
 		if (pWorldSpaceFactory != NULL)
@@ -210,6 +210,12 @@ void	CWizardDialog::OnBnClickedOk()
 
 			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
 		}
+
+#ifdef _DEBUG
+		System::getSingleton().loadPlugin("Plugin_Serialize_d.dll");
+#else
+		System::getSingleton().loadPlugin("Plugin_Serialize.dll");
+#endif
 
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
