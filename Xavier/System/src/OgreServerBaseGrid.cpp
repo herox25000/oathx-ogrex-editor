@@ -13,14 +13,9 @@ namespace Ogre
 	 * \return 
 	 */
 	BaseGridServer::BaseGridServer(const String& typeName, WorldSpaceServer* pWorldSpace, Real fWidth, Real fSize, Real fDepth)
-		: Server(typeName), m_pWorldSpace(pWorldSpace), m_fDepth(fDepth), m_fSize(fSize), m_fWidth(fWidth), m_pGrid(NULL), m_pLine(NULL)
+		: Server(typeName), m_pWorldSpace(pWorldSpace), m_fDepth(fDepth), m_fSize(fSize), m_fWidth(fWidth), m_pGrid(NULL), m_pLine(NULL), m_bDisplay(true)
 	{
 		createGird();
-
-		addProperty(PV_DISPLAYE, Any(true), PVT_BOOL);
-		
-		// ¶©ÔÄÊÂ¼þ
-		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&BaseGridServer::onPropertyChanaged, this));
 	}
 
 	/**
@@ -31,6 +26,93 @@ namespace Ogre
 	BaseGridServer::~BaseGridServer(void)
 	{
 		destroy();
+	}
+
+	/**
+	 *
+	 * \param fSize 
+	 */
+	void	BaseGridServer::setSize(float fSize)
+	{
+		m_fSize = fSize;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	float	BaseGridServer::getSize() const
+	{
+		return m_fSize;
+	}
+
+	/**
+	 *
+	 * \param fDepth 
+	 */
+	void	BaseGridServer::setDepth(float fDepth)
+	{
+		m_fDepth = fDepth;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	float	BaseGridServer::getDepth() const
+	{
+		return m_fDepth;
+	}
+
+	/**
+	 *
+	 * \param fWidth 
+	 */
+	void	BaseGridServer::setWidth(float fWidth)
+	{
+		m_fWidth = fWidth;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	float	BaseGridServer::getWidth() const
+	{
+		return m_fWidth;
+	}
+	
+	void	BaseGridServer::invalidate()
+	{
+		if (m_bDisplay)
+		{
+			destroy(); createGird();
+		}
+	}
+
+	/**
+	 *
+	 */
+	void	BaseGridServer::show()
+	{
+		m_bDisplay = true; createGird();
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	bool	BaseGridServer::isVisible() const
+	{
+		return m_bDisplay;
+	}
+
+	/**
+	 *
+	 */
+	void	BaseGridServer::hide()
+	{
+		m_bDisplay = false; destroy();
 	}
 	
 	/**

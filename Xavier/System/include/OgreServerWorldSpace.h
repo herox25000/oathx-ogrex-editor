@@ -50,6 +50,18 @@ namespace Ogre
 
 		/**
 		 *
+		 * \param clrAmbientLight 
+		 */
+		virtual void					setAmbientLight(const ColourValue& clrAmbientLight);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	ColourValue				getAmbientLight() const;
+
+		/**
+		 *
 		 * \return 
 		 */
 		virtual SceneManager*			getSceneManager() const;
