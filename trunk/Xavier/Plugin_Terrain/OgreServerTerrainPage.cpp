@@ -13,18 +13,11 @@ namespace Ogre
 		int nPageX, int nPageY, int nMinBatchSize, int nMaxBatchSize) 
 		: Server(typeName), m_depGroupName(depGroupName), m_pTerrain(NULL)
 	{
-		addProperty(PY_NAME_TERRAINPAGE_POSTION, Any(vPos), 
-			PY_NAME_TERRAINPAGE_POSTION_DESC, PROPERTY_VECTOR3);
-		
-		addProperty(PY_NAME_TERRAINPAGE_X, Any(nPageX), 
-			PY_NAME_TERRAINPAGE_X_DESC, PROPERTY_INT);
-		addProperty(PY_NAME_TERRAINPAGE_Y, Any(nPageY), 
-			PY_NAME_TERRAINPAGE_Y_DESC, PROPERTY_INT);
-
-		addProperty(PY_NAME_MINBATCHSIZE, Any(nMinBatchSize), 
-			PY_NAME_MINBATCHSIZE_DESC, PROPERTY_INT);
-		addProperty(PY_NAME_MAXBATCHSIZE, Any(nMaxBatchSize), 
-			PY_NAME_MAXBATCHSIZE_DESC, PROPERTY_INT);
+		addProperty(PV_TERRAINPAGE_POSTION, Any(vPos),			PVT_VECTOR3);
+		addProperty(PV_TERRAINPAGE_X,		Any(nPageX),		PVT_INT);
+		addProperty(PV_TERRAINPAGE_Y,		Any(nPageY),		PVT_INT);
+		addProperty(PV_MINBATCHSIZE,		Any(nMinBatchSize), PVT_INT);
+		addProperty(PV_MAXBATCHSIZE,		Any(nMaxBatchSize), PVT_INT);
 
 		TerrainGroupServer* pGroup = static_cast<TerrainGroupServer*>(
 			System::getSingletonPtr()->getServer(m_depGroupName)
@@ -35,10 +28,10 @@ namespace Ogre
 			dmp.worldSize		= pGroup->getTerrainGroup()->getTerrainWorldSize();
 
 			int nValue;
-			pGroup->getPropertyValue(PY_NAME_TERRAINSIZE, nValue);
+			pGroup->getPropertyValue(PV_TERRAINSIZE, nValue);
 			dmp.terrainSize		= nValue;
 
-			dmp.inputScale		= 1;
+			dmp.inputScale		= 0;
 			dmp.minBatchSize	= nMinBatchSize;
 			dmp.minBatchSize	= nMaxBatchSize;
 
@@ -70,10 +63,10 @@ namespace Ogre
 		if (pGroup)
 		{
 			int nPageX;
-			getPropertyValue(PY_NAME_TERRAINPAGE_X, nPageX);
+			getPropertyValue(PV_TERRAINPAGE_X, nPageX);
 			
 			int nPageY;
-			getPropertyValue(PY_NAME_TERRAINPAGE_Y, nPageY);
+			getPropertyValue(PV_TERRAINPAGE_Y, nPageY);
 
 			TerrainGroup* pTerrain = pGroup->getTerrainGroup();
 			if (pTerrain)

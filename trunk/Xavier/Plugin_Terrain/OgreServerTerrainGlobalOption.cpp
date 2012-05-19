@@ -13,21 +13,22 @@ namespace Ogre
 	 * \return 
 	 */
 	TerrainGlobalOptionServer::TerrainGlobalOptionServer(const String& typeName, float fMaxPixelError,
-		float CompositeMapDistance, const Vector3& vLightMapDirection, const ColourValue& clrCompositeMapDiffuse) : Server(typeName), m_pGlobalOption(NULL)
+		float CompositeMapDistance, const Vector3& vLightMapDirection, const ColourValue& clrCompositeMapDiffuse) : Server(typeName), m_pGlobalOption(0)
 	{
-		addProperty(PY_NAME_MAXPIXELERROR, Any(fMaxPixelError),
-			PY_NAME_MAXPIXELERROR_DESC, PROPERTY_REAL);
-		addProperty(PY_NAME_COMPOSITEMAPDISCANE, Any(CompositeMapDistance),
-			PY_NAME_COMPOSITEMAPDISCANE_DESC, PROPERTY_REAL);
-		addProperty(PY_NAME_LIGHTMAPDIRECTION, Any(vLightMapDirection),
-			PY_NAME_LIGHTMAPDIRECTION_DESC, PROPERTY_VECTOR3);
-		addProperty(PY_NAME_COMPOSITEMAPDIFFUSE, Any(clrCompositeMapDiffuse),
-			PY_NAME_COMPOSITEMAPDIFFUSE_DESC, PROPERTY_COLOUR);
+		addProperty(PV_MAXPIXELERROR,		Any(fMaxPixelError),		PVT_REAL);
+		addProperty(PV_COMPOSITEMAPDISCANE, Any(CompositeMapDistance),	PVT_REAL);
+		addProperty(PV_LIGHTMAPDIRECTION,	Any(vLightMapDirection),	PVT_VECTOR3);
+		addProperty(PV_COMPOSITEMAPDIFFUSE, Any(clrCompositeMapDiffuse),PVT_COLOUR);
 
 		// ¹¹Ôì
 		m_pGlobalOption = new TerrainGlobalOptions();
-		// ÅäÖÃ
-		configureTerrainDefault();
+		if (m_pGlobalOption)
+		{
+			m_pGlobalOption->setCompositeMapDiffuse(clrCompositeMapDiffuse);
+			m_pGlobalOption->setMaxPixelError(fMaxPixelError);
+			m_pGlobalOption->setCompositeMapDistance(CompositeMapDistance);
+			m_pGlobalOption->setLightMapDirection(vLightMapDirection);
+		}
 	}
 
 	/**
@@ -38,43 +39,6 @@ namespace Ogre
 	{
 		if (m_pGlobalOption != NULL)
 			delete m_pGlobalOption;
-	}
-
-	/**
-	 *
-	 */
-	void	TerrainGlobalOptionServer::configureTerrainDefault()
-	{
-		float fValue;
-		getPropertyValue(PY_NAME_MAXPIXELERROR, fValue);
-		m_pGlobalOption->setMaxPixelError(fValue);
-
-		getPropertyValue(PY_NAME_COMPOSITEMAPDISCANE, fValue);
-		m_pGlobalOption->setCompositeMapDistance(fValue);
-
-		Vector3 vLightMapDirection;
-		getPropertyValue(PY_NAME_LIGHTMAPDIRECTION, vLightMapDirection);
-		m_pGlobalOption->setLightMapDirection(vLightMapDirection);
-
-		ColourValue clrCompositeMapDiffuse;
-		getPropertyValue(PY_NAME_COMPOSITEMAPDIFFUSE, clrCompositeMapDiffuse);
-		m_pGlobalOption->setCompositeMapDiffuse(clrCompositeMapDiffuse);
-	}
-
-	/**
-	 *
-	 */
-	bool	TerrainGlobalOptionServer::load()
-	{
-		return 0;
-	}
-
-	/**
-	 *
-	 */
-	void	TerrainGlobalOptionServer::unload()
-	{
-
 	}
 
 	//////////////////////////////////////////////////////////////////////////

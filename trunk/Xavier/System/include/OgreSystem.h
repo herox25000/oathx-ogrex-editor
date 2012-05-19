@@ -27,8 +27,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class Ogre_System_Export_API System 
-		: public Singleton<System>
+	class Ogre_System_Export_API System : public Singleton<System>
 	{
 	public:
 		/**

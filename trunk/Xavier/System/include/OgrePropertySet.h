@@ -49,7 +49,8 @@ namespace Ogre
 	};
 	
 	//  Ù–‘¡–±Ì
-	typedef std::map<String, Property*> HashProperty;
+	typedef HashMap<String, Property*>		HashProperty;
+	typedef MapIterator<HashProperty>		HashPropertyIter;
 
 	/**
 	* \ingroup : OgreEditSystem
@@ -98,8 +99,8 @@ namespace Ogre
 		 * \param Value 
 		 * \param describe 
 		 */
-		virtual	void				addProperty(const String& name, const Any& anyValue, 
-			const String& describe, int typeProperty, bool bWrite=true);
+		virtual	void				addProperty(const String& name, Any anyValue, 
+			 int typeProperty, bool bWrite=true, const String& describe="null");
 
 		/**
 		 *

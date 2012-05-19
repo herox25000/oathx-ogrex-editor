@@ -322,6 +322,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\OgreServerPropertyNameDef.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\OgreServerViewport.h"
 				>
 			</File>

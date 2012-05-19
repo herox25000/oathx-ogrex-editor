@@ -38,8 +38,8 @@ namespace Ogre
 	 * \param Value 
 	 * \param describe 
 	 */
-	void			PropertySet::addProperty(const String& name, const Any& anyValue, const String& describe, 
-		int typeProperty, bool bWrite/* =true */)
+	void			PropertySet::addProperty(const String& name, Any anyValue,int typeProperty,
+		bool bWrite/* =true */, const String& describe/*="null"*/)
 	{
 		HashProperty::iterator it = m_HashProperty.find(name);
 		if ( it == m_HashProperty.end() )
@@ -47,7 +47,7 @@ namespace Ogre
 			m_HashProperty[name] = new Property(name, anyValue, describe, typeProperty, bWrite);
 			
 #ifdef _OUTPUT_LOG
-			TKLogEvent("add property " + name + " describe " + describe);
+			TKLogEvent("add property [" + name + "] describe [" + describe + "]");
 #endif
 			PropertyEventArgs args(m_HashProperty[name]);
 
@@ -65,7 +65,7 @@ namespace Ogre
 		if ( it != m_HashProperty.end() )
 		{
 #ifdef _OUTPUT_LOG
-			TKLogEvent("delete property " + name + " describe " + it->second->getDescribe());
+			TKLogEvent("delete property [" + name + "] describe [" + it->second->getDescribe() + "]");
 #endif
 			delete it->second; it = m_HashProperty.erase(it);
 		}

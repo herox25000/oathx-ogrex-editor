@@ -22,6 +22,7 @@
 #endif
 
 #include <Ogre.h>
+#include "OgreServerPropertyNameDef.h"
 
 
 namespace Ogre
