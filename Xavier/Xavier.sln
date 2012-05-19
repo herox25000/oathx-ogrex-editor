@@ -14,6 +14,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Terrain", "Plugin_Te
 		{4D18DBAC-3292-4454-B828-3140EA9A3799} = {4D18DBAC-3292-4454-B828-3140EA9A3799}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Serialize", "Plugin_Serialize\Plugin_Serialize.vcproj", "{0B61DEE2-F596-41ED-9C97-1375473E9826}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -32,6 +34,10 @@ Global
 		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Debug|Win32.Build.0 = Debug|Win32
 		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Release|Win32.ActiveCfg = Release|Win32
 		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Release|Win32.Build.0 = Release|Win32
+		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Debug|Win32.ActiveCfg = Debug|Win32
+		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Debug|Win32.Build.0 = Debug|Win32
+		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Release|Win32.ActiveCfg = Release|Win32
+		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
