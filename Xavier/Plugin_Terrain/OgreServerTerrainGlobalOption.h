@@ -43,22 +43,6 @@ namespace Ogre
 		 */
 		virtual ~TerrainGlobalOptionServer();
 
-		/**
-		 *
-		 */
-		virtual	bool					load();
-
-		/**
-		 *
-		 */
-		virtual	void					unload();
-
-	protected:
-		/**
-		 *
-		 */
-		virtual void					configureTerrainDefault();
-
 	protected:
 		TerrainGlobalOptions*			m_pGlobalOption;
 	};

@@ -13,9 +13,9 @@ namespace Ogre
 		int nTerrainSize, float fWorldSize, const Vector3& vOrigin)
 		: Server(typeName), m_pTerrainGroup(NULL)
 	{
-		addProperty(PY_NAME_TERRAINSIZE,	Any(nTerrainSize),	PY_NAME_TERRAINSIZE_DESC,	PROPERTY_INT);
-		addProperty(PY_NAME_WORLDSIZE,		Any(fWorldSize),	PY_NAME_WORLDSIZE_DESC,		PROPERTY_REAL);
-		addProperty(PY_NAME_ORIGIN,			Any(vOrigin),		PY_NAME_OGIGIN_DESC,		PROPERTY_VECTOR3);
+		addProperty(PV_TERRAINSIZE, Any(nTerrainSize),PVT_INT);
+		addProperty(PV_WORLDSIZE, Any(fWorldSize), PVT_REAL);
+		addProperty(PV_ORIGIN, Any(vOrigin), PVT_VECTOR3);
 
 		// 构造地形组
 		WorldSpaceServer* pWorldServer = static_cast<WorldSpaceServer*>(

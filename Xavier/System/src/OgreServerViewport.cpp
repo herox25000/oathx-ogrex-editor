@@ -33,8 +33,7 @@ namespace Ogre
 		}
 		
 		ARGB argb = background.getAsARGB();
-		addProperty("Background", Any(argb),
-			"viewport background colour", PROPERTY_COLOUR);
+		addProperty(PV_BACKGROUND, Any(argb), PVT_COLOUR);
 
 		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&ViewportServer::onPropertyChanaged, this));
 	}

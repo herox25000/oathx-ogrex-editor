@@ -166,50 +166,50 @@ void	CWizardDialog::OnBnClickedOk()
 		}
 
 		// 加载地形插件
-//#ifdef _DEBUG
-//		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
-//#else
-//		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
-//#endif
-//		ServerFactory* pGlobalFactory = System::getSingleton().getServerFactory("Terrain/TerrainGlobalOptionServerFactory");
-//		if (pGlobalFactory != NULL)
-//		{
-//			STerrainGlobalOptionServerAdp adp;
-//			adp.typeName				= SERVER_TERRAIN_OPTION;
-//			adp.fMaxPixelError			= 8;
-//			adp.fCompositeMapDistance	= 3000;
-//			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
-//			adp.vLightMapDirection		= Vector3(0,0,0);
-//
-//			System::getSingleton().addServer(pGlobalFactory->createServer(adp));
-//		}
-//
-//		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory("Terrain/TerrainGroupServerFactory");
-//		if (pTerrainGroupFactory != NULL)
-//		{
-//			STerrainGroupServerAdp adp;
-//			adp.depServerName			= SERVER_WORLDSPACE;
-//			adp.typeName				= SERVER_TERRAIN_GROUP;
-//			adp.fWorldSize				= 1200;
-//			adp.nTerrainSize			= 513;
-//			adp.vOrigin					= Vector3::ZERO;
-//			
-//			System::getSingleton().addServer(pTerrainGroupFactory->createServer(adp));
-//		}
-//
-//		ServerFactory* pTerrainPageFactory = System::getSingleton().getServerFactory("Terrain/TerrainPageServerFactory");
-//		if (pTerrainPageFactory != NULL)
-//		{
-//			STerrainPageServerAdp adp;
-//			adp.depServerName			= SERVER_TERRAIN_GROUP;
-//			adp.typeName				= SERVER_TERRAIN_PAGE;
-//			adp.nPageX					= 0;
-//			adp.nPageY					= 0;
-//			adp.nMinBatchSize			= 33;
-//			adp.nMaxBatchSzie			= 65;
-//
-//			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
-//		}
+#ifdef _DEBUG
+		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
+#else
+		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
+#endif
+		ServerFactory* pGlobalFactory = System::getSingleton().getServerFactory("Terrain/TerrainGlobalOptionServerFactory");
+		if (pGlobalFactory != NULL)
+		{
+			STerrainGlobalOptionServerAdp adp;
+			adp.typeName				= SERVER_TERRAIN_OPTION;
+			adp.fMaxPixelError			= 8;
+			adp.fCompositeMapDistance	= 3000;
+			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
+			adp.vLightMapDirection		= Vector3(0,0,0);
+
+			System::getSingleton().addServer(pGlobalFactory->createServer(adp));
+		}
+
+		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory("Terrain/TerrainGroupServerFactory");
+		if (pTerrainGroupFactory != NULL)
+		{
+			STerrainGroupServerAdp adp;
+			adp.depServerName			= SERVER_WORLDSPACE;
+			adp.typeName				= SERVER_TERRAIN_GROUP;
+			adp.fWorldSize				= 128;
+			adp.nTerrainSize			= 513;
+			adp.vOrigin					= Vector3::ZERO;
+			
+			System::getSingleton().addServer(pTerrainGroupFactory->createServer(adp));
+		}
+
+		ServerFactory* pTerrainPageFactory = System::getSingleton().getServerFactory("Terrain/TerrainPageServerFactory");
+		if (pTerrainPageFactory != NULL)
+		{
+			STerrainPageServerAdp adp;
+			adp.depServerName			= SERVER_TERRAIN_GROUP;
+			adp.typeName				= SERVER_TERRAIN_PAGE;
+			adp.nPageX					= 0;
+			adp.nPageY					= 0;
+			adp.nMinBatchSize			= 33;
+			adp.nMaxBatchSzie			= 65;
+
+			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
+		}
 
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)

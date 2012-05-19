@@ -17,9 +17,7 @@ namespace Ogre
 	{
 		createGird();
 
-		addProperty("display", 
-			Any(true),
-			"display base grid line", PROPERTY_BOOL);
+		addProperty(PV_DISPLAYE, Any(true), PVT_BOOL);
 		
 		// ¶©ÔÄÊÂ¼þ
 		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&BaseGridServer::onPropertyChanaged, this));

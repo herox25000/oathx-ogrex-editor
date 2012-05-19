@@ -38,8 +38,7 @@ namespace Ogre
 		m_pCamera->pitch(Degree(fPitch));
 
 		// 添加模式属性
-		addProperty("PolygonMode", Any(PM_SOLID),
-			"set polygon mode", PROPERTY_POLYGONMODE);
+		addProperty(PV_POLYGONMODE, Any(PM_SOLID), PVT_POLYGONMODE);
 		
 		// 订阅内部事件
 		subscribeEvent(PropertySet::EventValueChanged, Event::Subscriber(&CameraServer::onPropertyChanaged, this));
