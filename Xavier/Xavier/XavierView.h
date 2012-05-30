@@ -1,5 +1,7 @@
 #pragma once
 
+#include "ETBrush.h"
+
 enum{
 	ST_VIEW_WELCOME,
 	ST_VIEW_UPDATE
@@ -37,8 +39,12 @@ protected:
 	BOOL						m_bWelcome;
 	DWORD						m_dwState;
 	BOOL						m_bLMouseDown;
+	BOOL						m_bRMouseDown;
 	CPoint						m_cLMouseDown;
 	CPoint						m_cLMouseLost;
+
+protected:
+	ET::Brush					m_brush;
 
 protected:
 	XavierFrameContext*			m_pFrameContext;

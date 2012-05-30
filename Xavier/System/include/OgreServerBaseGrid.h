@@ -95,7 +95,7 @@ namespace Ogre
 		/**
 		 *
 		 */
-		virtual	void				getWidth() const;
+		virtual	float				getWidth() const;
 
 		/**
 		 *

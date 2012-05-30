@@ -35,7 +35,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_pFrameContext(NULL)
+CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_bRMouseDown(FALSE), m_pFrameContext(NULL)
 {
 
 }
@@ -115,6 +115,11 @@ LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 	m_dwState = ST_VIEW_UPDATE;
 
 	// to do:
+
+	Image image;
+	image.load("brush.png", "ET");
+	image.resize(16, 16);
+	m_brush = ET::loadBrushFromImage(image);
 
 	return 0;
 }
@@ -284,9 +289,6 @@ CXavierDoc* CXavierView::GetDocument() const
  */
 void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	m_bLMouseDown = TRUE;
-	m_cLMouseDown = point;
-
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -297,7 +299,6 @@ void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
  */
 void	CXavierView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	m_bLMouseDown = FALSE;
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -308,6 +309,8 @@ void	CXavierView::OnLButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierView::OnRButtonDown(UINT nFlags, CPoint point)
 {
+	m_bRMouseDown = TRUE;
+	m_cLMouseDown = point;
 	CView::OnRButtonDown(nFlags, point);
 }
 
@@ -318,8 +321,10 @@ void	CXavierView::OnRButtonDown(UINT nFlags, CPoint point)
  */
 void	CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	ClientToScreen(&point);
-	OnContextMenu(this, point);
+	m_bRMouseDown = FALSE;
+
+	//ClientToScreen(&point);
+	//OnContextMenu(this, point);
 }
 
 /**
@@ -329,7 +334,7 @@ void	CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (m_bLMouseDown)
+	if (m_bRMouseDown)
 	{
 		CPoint cRel = point - m_cLMouseDown;
 		
@@ -360,7 +365,7 @@ BOOL CXavierView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 		);
 	if (pSdkCamera != NULL)
 	{
-		pSdkCamera->injectMouseWheel(zDelta);
+		pSdkCamera->injectMouseWheel(zDelta*5);
 	}
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);

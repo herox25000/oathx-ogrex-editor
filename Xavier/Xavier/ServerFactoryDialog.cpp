@@ -54,11 +54,11 @@ BOOL CServerFactoryDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 	
-#ifdef _DEBUG
-		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
-#else
-		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
-#endif
+//#ifdef _DEBUG
+//		System::getSingleton().loadPlugin("Plugin_ETMTerrain_d.dll");
+//#else
+//		System::getSingleton().loadPlugin("Plugin_ETMTerrain.dll");
+//#endif
 
 	return TRUE;
 }

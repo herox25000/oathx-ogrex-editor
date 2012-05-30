@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories=".\include;.\tinyxml;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;"
+				AdditionalIncludeDirectories="..\EventSet\include;.\include;.\tinyxml;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;SYSTEM_EXPORTS;OGRESYSTEM_EXPORT"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib OgreTerrain_d.lib"
+				AdditionalDependencies="OgreMain_d.lib EventSet_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="../../../../Ogre\lib\Debug"
@@ -119,7 +119,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories=".\include;.\tinyxml;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;"
+				AdditionalIncludeDirectories="..\EventSet\include;.\include;.\tinyxml;../../../../Ogre/include;&quot;../../../../ogre_src_v1-8-0RC1\OgreMain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Terrain\include&quot;;&quot;../../../../ogre_src_v1-8-0RC1\Components\Paging\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;SYSTEM_EXPORTS;OGRESYSTEM_EXPORT"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -138,7 +138,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib OgreTerrain.lib"
+				AdditionalDependencies="OgreMain.lib EventSet.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="../../../../Ogre\lib\release"
 				GenerateDebugInformation="true"
@@ -180,35 +180,7 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\OgreBoundSlot.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\OgreDebugDrawer.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreEvent.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreEventArgs.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreEventSet.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreGlobalEventSet.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreProperty.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgrePropertySet.cpp"
 				>
 			</File>
 			<File
@@ -224,15 +196,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\OgreServerTerrain.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\OgreServerViewport.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\OgreServerWorldSpace.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreSubscriberSlot.cpp"
 				>
 			</File>
 			<File
@@ -246,63 +218,7 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\include\OgreBoundSlot.h"
-				>
-			</File>
-			<File
 				RelativePath=".\include\OgreDebugDrawer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreEvent.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreEventArgs.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreEventSet.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreFreeFunctionSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreFunctorCopySlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreFunctorPointerSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreFunctorReferenceBinder.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreFunctorReferenceSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreGlobalEventSet.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreMemberFunctionSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreProperty.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgrePropertySet.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreRefCounted.h"
 				>
 			</File>
 			<File
@@ -326,19 +242,15 @@
 				>
 			</File>
 			<File
+				RelativePath=".\include\OgreServerTerrain.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\OgreServerViewport.h"
 				>
 			</File>
 			<File
 				RelativePath=".\include\OgreServerWorldSpace.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreSlotFunctorBase.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreSubscriberSlot.h"
 				>
 			</File>
 			<File

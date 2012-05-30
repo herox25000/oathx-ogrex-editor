@@ -21,18 +21,13 @@
 #define sprintf_s snprintf
 #endif
 
-#include <Ogre.h>
+#include "Ogre.h"
 #include "OgreServerPropertyNameDef.h"
+#include "OgreEventSetPrerequisites.h"
 
 
 namespace Ogre
 {
-	class FreeFunctionSlot;
-	class SubscriberSlot;
-	class Event;
-	class GlobalEventSet;
-	class Property;
-	class PropertySet;
 	class Server;
 	class ServerFactory;
 	class WorldSpaceServer;

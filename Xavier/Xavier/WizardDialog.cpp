@@ -4,7 +4,9 @@
 #include "FolderDialog.h"
 #include "MainFrm.h"
 #include "OgreSdk.h"
-#include "OgreTerrainSdk.h"
+#include "OgreETMTerrainPluginPrerequisites.h"
+#include "OgreETMServerTerrain.h"
+
 
 
 IMPLEMENT_DYNAMIC(CWizardDialog, CDialog)
@@ -164,58 +166,80 @@ void	CWizardDialog::OnBnClickedOk()
 
 			System::getSingleton().addServer(pBaseGridFactory->createServer(adp));
 		}
+//
+//		// 加载地形插件
+//#ifdef _DEBUG
+//		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
+//#else
+//		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
+//#endif
+//		ServerFactory* pGlobalFactory = System::getSingleton().getServerFactory("Terrain/TerrainGlobalOptionServerFactory");
+//		if (pGlobalFactory != NULL)
+//		{
+//			STerrainGlobalOptionServerAdp adp;
+//			adp.typeName				= SERVER_TERRAIN_OPTION;
+//			adp.fMaxPixelError			= 8;
+//			adp.fCompositeMapDistance	= 3000;
+//			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
+//			adp.vLightMapDirection		= Vector3(0,0,0);
+//
+//			System::getSingleton().addServer(pGlobalFactory->createServer(adp));
+//		}
+//
+//		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory("Terrain/TerrainGroupServerFactory");
+//		if (pTerrainGroupFactory != NULL)
+//		{
+//			STerrainGroupServerAdp adp;
+//			adp.depServerName			= SERVER_WORLDSPACE;
+//			adp.typeName				= SERVER_TERRAIN_GROUP;
+//			adp.fWorldSize				= 128;
+//			adp.nTerrainSize			= 513;
+//			adp.vOrigin					= Vector3::ZERO;
+//			
+//			System::getSingleton().addServer(pTerrainGroupFactory->createServer(adp));
+//		}
+//
+//		ServerFactory* pTerrainPageFactory = System::getSingleton().getServerFactory("Terrain/TerrainPageServerFactory");
+//		if (pTerrainPageFactory != NULL)
+//		{
+//			STerrainPageServerAdp adp;
+//			adp.depServerName			= SERVER_TERRAIN_GROUP;
+//			adp.typeName				= SERVER_TERRAIN_PAGE;
+//			adp.nPageX					= 0;
+//			adp.nPageY					= 0;
+//			adp.nMinBatchSize			= 33;
+//			adp.nMaxBatchSzie			= 65;
+//
+//			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
+//		}
 
-		// 加载地形插件
+//#ifdef _DEBUG
+//		System::getSingleton().loadPlugin("Plugin_Serialize_d.dll");
+//#else
+//		System::getSingleton().loadPlugin("Plugin_Serialize.dll");
+//#endif
+
+
 #ifdef _DEBUG
-		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
+		System::getSingleton().loadPlugin("Plugin_ETMTerrain_d.dll");
 #else
-		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
+		System::getSingleton().loadPlugin("Plugin_ETMTerrain.dll");
 #endif
-		ServerFactory* pGlobalFactory = System::getSingleton().getServerFactory("Terrain/TerrainGlobalOptionServerFactory");
-		if (pGlobalFactory != NULL)
+		ServerFactory* pTerrainFactory = System::getSingleton().getServerFactory("Plugin/ETMTerrainServerFactory");
+		if (pTerrainFactory != NULL)
 		{
-			STerrainGlobalOptionServerAdp adp;
-			adp.typeName				= SERVER_TERRAIN_OPTION;
-			adp.fMaxPixelError			= 8;
-			adp.fCompositeMapDistance	= 3000;
-			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
-			adp.vLightMapDirection		= Vector3(0,0,0);
+			SETMTerrainServerAdp adp;
+			adp.depServerName		=	SERVER_WORLDSPACE;
+			adp.typeName			=	SERVER_TERRAIN_SERVER;
+			adp.depCameraServerName	=	SERVER_SDKCAMERA;
+			adp.w					=	33;
+			adp.h					=	33;
+			adp.vMin				=	Vector3(-32, 0, -32);
+			adp.vMax				=	Vector3(32, 0, 32);
+			adp.nNumTexture			=	6;
 
-			System::getSingleton().addServer(pGlobalFactory->createServer(adp));
+			System::getSingleton().addServer(pTerrainFactory->createServer(adp));
 		}
-
-		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory("Terrain/TerrainGroupServerFactory");
-		if (pTerrainGroupFactory != NULL)
-		{
-			STerrainGroupServerAdp adp;
-			adp.depServerName			= SERVER_WORLDSPACE;
-			adp.typeName				= SERVER_TERRAIN_GROUP;
-			adp.fWorldSize				= 128;
-			adp.nTerrainSize			= 513;
-			adp.vOrigin					= Vector3::ZERO;
-			
-			System::getSingleton().addServer(pTerrainGroupFactory->createServer(adp));
-		}
-
-		ServerFactory* pTerrainPageFactory = System::getSingleton().getServerFactory("Terrain/TerrainPageServerFactory");
-		if (pTerrainPageFactory != NULL)
-		{
-			STerrainPageServerAdp adp;
-			adp.depServerName			= SERVER_TERRAIN_GROUP;
-			adp.typeName				= SERVER_TERRAIN_PAGE;
-			adp.nPageX					= 0;
-			adp.nPageY					= 0;
-			adp.nMinBatchSize			= 33;
-			adp.nMaxBatchSzie			= 65;
-
-			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
-		}
-
-#ifdef _DEBUG
-		System::getSingleton().loadPlugin("Plugin_Serialize_d.dll");
-#else
-		System::getSingleton().loadPlugin("Plugin_Serialize.dll");
-#endif
 
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
