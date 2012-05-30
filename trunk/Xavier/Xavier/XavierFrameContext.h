@@ -3,6 +3,12 @@
 
 #include "OgreFrameListener.h"
 
+enum{
+	EDIT_STATE_INVALID,
+	EDIT_STATE_DEFORM,
+	EDIT_STATE_PAINT,
+};
+
 /**
 * \ingroup : Xavier
 *
@@ -55,7 +61,17 @@ public:
 	 * \param evt 
 	 * \return 
 	 */
-	virtual bool	frameEnded(const Ogre::FrameEvent& evt); 
+	virtual bool	frameEnded(const Ogre::FrameEvent& evt);
+
+public:
+	/** ÇÐ»»±à¼­×´Ì¬
+	 *
+	 * \param nState 
+	 */
+	virtual	void	changeState(int nState);
+
+protected:
+	int				m_nState;
 };
 
 #endif

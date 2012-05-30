@@ -3,18 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Xavier", "Xavier\Xavier.vcproj", "{8C14C39B-4813-4C1F-A01B-D6DF2E949F36}"
 	ProjectSection(ProjectDependencies) = postProject
+		{2A2AAE8A-39ED-49A7-807C-71E886FF0B3E} = {2A2AAE8A-39ED-49A7-807C-71E886FF0B3E}
 		{4D18DBAC-3292-4454-B828-3140EA9A3799} = {4D18DBAC-3292-4454-B828-3140EA9A3799}
-		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2} = {B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}
+		{C93D0DD2-79E5-48D2-BEEB-41D7669962D1} = {C93D0DD2-79E5-48D2-BEEB-41D7669962D1}
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "System", "System\System.vcproj", "{4D18DBAC-3292-4454-B828-3140EA9A3799}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Terrain", "Plugin_Terrain\Plugin_Terrain.vcproj", "{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}"
-	ProjectSection(ProjectDependencies) = postProject
-		{4D18DBAC-3292-4454-B828-3140EA9A3799} = {4D18DBAC-3292-4454-B828-3140EA9A3799}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EventSet", "EventSet\EventSet.vcproj", "{2A2AAE8A-39ED-49A7-807C-71E886FF0B3E}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_Serialize", "Plugin_Serialize\Plugin_Serialize.vcproj", "{0B61DEE2-F596-41ED-9C97-1375473E9826}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Plugin_ETMTerrain", "Plugin_ETMTerrain\Plugin_ETMTerrain.vcproj", "{C93D0DD2-79E5-48D2-BEEB-41D7669962D1}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "EditableTerrainManager", "..\..\..\etm-2.3.1\EditableTerrain.vcproj", "{2E30F488-61FD-455B-BE50-9AD347C527A6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,14 +30,18 @@ Global
 		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Debug|Win32.Build.0 = Debug|Win32
 		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Release|Win32.ActiveCfg = Release|Win32
 		{4D18DBAC-3292-4454-B828-3140EA9A3799}.Release|Win32.Build.0 = Release|Win32
-		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Debug|Win32.ActiveCfg = Debug|Win32
-		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Debug|Win32.Build.0 = Debug|Win32
-		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Release|Win32.ActiveCfg = Release|Win32
-		{B44E8BAF-13C6-4450-A2BA-A025AE7E69A2}.Release|Win32.Build.0 = Release|Win32
-		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Debug|Win32.ActiveCfg = Debug|Win32
-		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Debug|Win32.Build.0 = Debug|Win32
-		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Release|Win32.ActiveCfg = Release|Win32
-		{0B61DEE2-F596-41ED-9C97-1375473E9826}.Release|Win32.Build.0 = Release|Win32
+		{2A2AAE8A-39ED-49A7-807C-71E886FF0B3E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2A2AAE8A-39ED-49A7-807C-71E886FF0B3E}.Debug|Win32.Build.0 = Debug|Win32
+		{2A2AAE8A-39ED-49A7-807C-71E886FF0B3E}.Release|Win32.ActiveCfg = Release|Win32
+		{2A2AAE8A-39ED-49A7-807C-71E886FF0B3E}.Release|Win32.Build.0 = Release|Win32
+		{C93D0DD2-79E5-48D2-BEEB-41D7669962D1}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C93D0DD2-79E5-48D2-BEEB-41D7669962D1}.Debug|Win32.Build.0 = Debug|Win32
+		{C93D0DD2-79E5-48D2-BEEB-41D7669962D1}.Release|Win32.ActiveCfg = Release|Win32
+		{C93D0DD2-79E5-48D2-BEEB-41D7669962D1}.Release|Win32.Build.0 = Release|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Debug|Win32.ActiveCfg = Debug|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Debug|Win32.Build.0 = Debug|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Release|Win32.ActiveCfg = Release|Win32
+		{2E30F488-61FD-455B-BE50-9AD347C527A6}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

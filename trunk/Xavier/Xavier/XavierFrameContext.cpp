@@ -8,7 +8,7 @@ using namespace Ogre;
  * \param void 
  * \return 
  */
-XavierFrameContext::XavierFrameContext(void)
+XavierFrameContext::XavierFrameContext(void) : m_nState(EDIT_STATE_INVALID)
 {
 }
 
@@ -49,4 +49,13 @@ bool	XavierFrameContext::frameRenderingQueued(const FrameEvent& evt)
 bool	XavierFrameContext::frameEnded(const FrameEvent& evt)
 {
 	return true;
+}
+
+/**
+ *
+ * \param nState 
+ */
+void	XavierFrameContext::changeState(int nState)
+{
+	m_nState = nState;
 }

@@ -186,8 +186,6 @@ namespace Ogre
 	void		CameraServer::injectMouseWheel(float z)
 	{
 		m_pCamera->moveRelative(Ogre::Vector3(0, 0, z * 0.02f));
-
-		TKLogEvent("camera position " + StringConverter::toString(m_pCamera->getPosition()));
 	}
 
 	/**
