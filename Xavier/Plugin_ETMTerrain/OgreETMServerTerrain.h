@@ -67,6 +67,12 @@ namespace Ogre
 		 * \param h 
 		 */
 		virtual	void					defintSplatting(int w, int h);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	ET::TerrainManager*		getTerrainManager() const;
 	protected:
 		ET::TerrainManager*				m_pTerrainManager;
 		ET::SplattingManager*			m_pSplatManager;

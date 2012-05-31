@@ -102,7 +102,7 @@ namespace Ogre
 	 * \param w 
 	 * \param h 
 	 */
-	void		ETMTerrainServer::defintSplatting(int w, int h)
+	void				ETMTerrainServer::defintSplatting(int w, int h)
 	{
 		// 创建光照纹理
 		TexturePtr texture = TextureManager::getSingleton().createManual(SPLATTING_LIGHT_TEXTURE,
@@ -114,10 +114,18 @@ namespace Ogre
 
 		texture->getBuffer(0, 0)->blitFromMemory(image.getPixelBox(0, 0));
 
-		// load the terrain material and assign it
 		m_pTerrainManager->setMaterial(
 			MaterialManager::getSingleton().getByName(SPLATTING_MATERIAL)
 			);		
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	ET::TerrainManager*	ETMTerrainServer::getTerrainManager() const
+	{
+		return m_pTerrainManager;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
