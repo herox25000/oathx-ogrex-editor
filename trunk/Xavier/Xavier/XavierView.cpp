@@ -3,7 +3,10 @@
 #include "XavierDoc.h"
 #include "XavierView.h"
 #include "XavierFrameContext.h"
+#include "XavierDecalCursor.h"
 #include "OgreSdk.h"
+#include "OgreETMTerrainPluginPrerequisites.h"
+#include "OgreETMServerTerrain.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -98,6 +101,12 @@ void	CXavierView::OnDestroy()
 		delete m_pFrameContext;
 	}
 
+	if (m_pDecalCursor)
+	{
+		delete m_pDecalCursor;
+		m_pDecalCursor = NULL;
+	}
+
 	// œ˙ªŸ‰÷»æ ±÷”
 	KillTimer(IDT_RENDERTIME);
 }
@@ -121,6 +130,19 @@ LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 	image.resize(16, 16);
 	m_brush = ET::loadBrushFromImage(image);
 
+	WorldSpaceServer* pWorldServer = static_cast<WorldSpaceServer*>(
+		System::getSingleton().getServer(SERVER_WORLDSPACE)
+		);
+	if (pWorldServer)
+	{
+		ETMTerrainServer* pTerrainServer = static_cast<ETMTerrainServer*>(
+			System::getSingleton().getServer(SERVER_TERRAIN_SERVER)
+			);
+
+		m_pDecalCursor = new XavierDecalCursor(pWorldServer, pTerrainServer);
+		m_pDecalCursor->setDecalCursor(0, 0, 1);
+	}
+	
 	return 0;
 }
 
@@ -334,17 +356,48 @@ void	CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	if (m_bRMouseDown)
+	CameraServer* pSdkCamera = static_cast<CameraServer*>(
+		System::getSingleton().getServer(SERVER_SDKCAMERA)
+		);
+	if (pSdkCamera != NULL)
 	{
-		CPoint cRel = point - m_cLMouseDown;
-		
-		CameraServer* pSdkCamera = static_cast<CameraServer*>(
-			System::getSingleton().getServer(SERVER_SDKCAMERA)
-			);
-		if (pSdkCamera != NULL)
+		if (m_bRMouseDown)
 		{
-			m_cLMouseDown = point;
+			CPoint cRel = point - m_cLMouseDown;
 			pSdkCamera->injectMouseMove(cRel.x, cRel.y);
+
+			m_cLMouseDown = point;
+		}
+		else
+		{
+
+			CRect rc;
+			GetClientRect(&rc);
+
+			ETMTerrainServer* pTerrainServer = static_cast<ETMTerrainServer*>(
+				System::getSingleton().getServer(SERVER_TERRAIN_SERVER)
+				);
+			if (pTerrainServer)
+			{
+				Camera* pCamera = pSdkCamera->getCamera();
+				if (pCamera)
+				{
+					float x = (float)point.x / (float)(rc.Width());
+					float y = (float)point.y / (float)(rc.Height());
+
+					Ray ray = pCamera->getCameraToViewportRay(x, y);
+					std::pair<bool, Vector3> result = pTerrainServer->getTerrainManager()->getTerrainInfo().rayIntersects(ray);
+					if (result.first)
+					{
+#ifdef _DEBUG
+						char szTmp[128];
+						sprintf(szTmp, "%f %f", result.second.x, result.second.z);
+						TKLogEvent(szTmp, LML_NORMAL);
+#endif
+						m_pDecalCursor->setDecalCursor(result.second.x, result.second.z, 1);
+					}
+				}
+			}
 		}
 	}
 

@@ -6,12 +6,9 @@
 
 namespace Ogre 
 { 
-	class SceneManager; 
-	class SceneNode; 
-	class Frustum; 
-	class TextureUnitState; 
-	class Pass;
+	class ManualObject;
 	class WorldSpaceServer;
+	class ETMTerrainServer;
 }
 
 /**
@@ -40,7 +37,7 @@ public:
 	 * \param vSize 
 	 * \return 
 	 */
-	XavierDecalCursor(Ogre::WorldSpaceServer* pWorldServer, const Ogre::String& name, const Ogre::Vector2& vSize);
+	XavierDecalCursor(Ogre::WorldSpaceServer* pWorldServer, Ogre::ETMTerrainServer* pTerrainServer);
 
 	/**
 	 *
@@ -54,22 +51,23 @@ public:
 	 * \param vSize 
 	 * \param name 
 	 */
-	virtual	void				createDecalCursor(const Ogre::Vector2& vSize);
+	virtual	void				createDecalCursor(float fRaidus);
 
 	/**
 	 *
 	 * \param vSize 
 	 */
-	virtual	void				setDecalSize(const Ogre::Vector2& vSize);
+	virtual	void				setDecalCursor(float x, float z, float fRaidus);
+
+	/**
+	 *
+	 * \param x 
+	 * \param z 
+	 * \return 
+	 */
+	virtual	float				getTerrainHeight(float x, float z);
 protected:
 	Ogre::WorldSpaceServer*		m_pWorldServer;
-	Ogre::Vector2				m_vSize;
-	Ogre::Vector3				m_vPos;
-	Ogre::SceneNode*			m_pProjectionNode;
-	Ogre::Frustum*				m_pFrustum;
-	Ogre::TextureUnitState*		m_pTextureUnitState;
-	Ogre::Pass*					m_pPass;
-	Ogre::MaterialPtr			m_pMaterial;
-	Ogre::String				m_name;
-	bool						m_bVaisible;
+	Ogre::ETMTerrainServer*		m_pTerrainServer;
+	Ogre::ManualObject*			m_pDecalMesh;
 };
