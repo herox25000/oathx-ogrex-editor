@@ -5,6 +5,8 @@
 
 namespace Ogre
 {
+	class TerrainGroupServer;
+
 	/**
 	* \ingroup : System
 	*
@@ -27,30 +29,55 @@ namespace Ogre
 		/**
 		 *
 		 * \param typeName 
+		 * \param pGroupServer 
+		 * \param nPageX 
+		 * \param nPageY 
+		 * \param nMinBatchSize 
+		 * \param nMaxBatchSize 
+		 * \param diffuseTexture 
+		 * \param normalheightTexture 
 		 * \return 
 		 */
-		TerrainPageServer(const String& typeName, const String& depGroupName,
-			const Vector3& vPos, int nPageX, int nPageY, int nMinBatchSize, int nMaxBatchSize);
+		TerrainPageServer(const String& typeName, TerrainGroupServer* pGroupServer,
+			int nPageX, int nPageY, int nMinBatchSize, int nMaxBatchSize, const String& diffuseTexture, const String& normalheightTexture, 
+			float fLayerWorldSize);
 
 		/**
 		 *
 		 * \return 
 		 */
 		virtual ~TerrainPageServer();
-		
+
 	protected:
+		/**
+		 *
+		 * \param pGroup 
+		 * \param nMinBatchSize 
+		 * \param nMaxBatchSize 
+		 * \param diffuseTexture 
+		 * \param normalheightTexture 
+		 * \param fLayerWorldSize 
+		 * \return 
+		 */
+		Terrain::ImportData		configureTerrainPage(TerrainGroup* pGroup, int nMinBatchSize, int nMaxBatchSize, 
+			const String& diffuseTexture, const String& normalheightTexture, float fLayerWorldSize);
+	protected:
+		TerrainGroupServer*		m_pGroupServer;
 		Terrain*				m_pTerrain;
-		String					m_depGroupName;
+		int						m_nPageX;
+		int						m_nPageY;
 	};
 
 	// 地形服务参数
 	struct STerrainPageServerAdp : public SSAdp
 	{
-		Vector3					vPos;
 		int						nPageX;
 		int						nPageY;
 		int						nMinBatchSize;
 		int						nMaxBatchSzie;
+		String					normalheightTexture;
+		String					diffuseTexture;
+		float					fLayerWorldSize;
 	};
 
 	/**

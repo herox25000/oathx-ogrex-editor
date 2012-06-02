@@ -165,22 +165,26 @@ void	CWizardDialog::OnBnClickedOk()
 			System::getSingleton().addServer(pBaseGridFactory->createServer(adp));
 		}
 
+
 		// 加载地形插件
 #ifdef _DEBUG
 		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
 #else
 		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
 #endif
-
 		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory("Terrain/TerrainGroupServerFactory");
 		if (pTerrainGroupFactory != NULL)
 		{
 			STerrainGroupServerAdp adp;
 			adp.depServerName			= SERVER_WORLDSPACE;
 			adp.typeName				= SERVER_TERRAIN_GROUP;
-			adp.fWorldSize				= 128;
+			adp.fWorldSize				= 12000.0f;
 			adp.nTerrainSize			= 513;
 			adp.vOrigin					= Vector3::ZERO;
+			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
+			adp.fCompositeMapDistance	= 3000;
+			adp.fMaxPixelError			= 8;
+			adp.vLightMapDirection		= Vector3(0,0,0);
 			
 			System::getSingleton().addServer(pTerrainGroupFactory->createServer(adp));
 		}
@@ -195,6 +199,9 @@ void	CWizardDialog::OnBnClickedOk()
 			adp.nPageY					= 0;
 			adp.nMinBatchSize			= 33;
 			adp.nMaxBatchSzie			= 65;
+			adp.diffuseTexture			= "dirt_grayrocky_diffusespecular.dds";
+			adp.normalheightTexture		= "dirt_grayrocky_normalheight.dds";
+			adp.fLayerWorldSize			= 8;
 
 			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
 		}

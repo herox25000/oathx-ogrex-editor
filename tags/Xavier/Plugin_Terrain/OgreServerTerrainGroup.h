@@ -39,7 +39,8 @@ namespace Ogre
 		 * \return 
 		 */
 		TerrainGroupServer(const String& typeName, const String& depWorldServerName,
-			int nTerrainSize, float fWorldSize, const Vector3& vOrigin);
+			int nTerrainSize, float fWorldSize, const Vector3& vOrigin, float fMaxPixelError, float fCompositeMapDistance, 
+			const Vector3& vLightMapDirection, const ColourValue& clrCompositeMapDiffuse);
 
 		/**
 		 *
@@ -47,9 +48,15 @@ namespace Ogre
 		 */
 		virtual ~TerrainGroupServer();
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual TerrainGroup*	getTerrainGroup() const;
+		
 	protected:
+		TerrainGlobalOptions*	m_pOption;
 		TerrainGroup*			m_pTerrainGroup;
-		TerrainGlobalOptions*	m_pOptions;
 	};
 	
 	//////////////////////////////////////////////////////////////////////////
@@ -58,6 +65,10 @@ namespace Ogre
 		int						nTerrainSize;
 		float					fWorldSize;
 		Vector3					vOrigin;
+		float					fMaxPixelError;
+		float					fCompositeMapDistance;
+		Vector3					vLightMapDirection;
+		ColourValue				clrCompositeMapDiffuse;
 	};
 
 	/**
