@@ -4,16 +4,35 @@
 
 namespace Ogre
 {
+	static const unsigned int	DEF_LAYER_COUNT	= 3;
+
 	/**
 	 *
 	 * \param typeName 
 	 * \return 
 	 */
-	TerrainPageServer::TerrainPageServer(const String& typeName, const String& depGroupName, const Vector3& vPos,
-		int nPageX, int nPageY, int nMinBatchSize, int nMaxBatchSize) 
-		: Server(typeName), m_depGroupName(depGroupName), m_pTerrain(NULL)
+	TerrainPageServer::TerrainPageServer(const String& typeName, TerrainGroupServer* pGroupServer,
+		int nPageX, int nPageY, int nMinBatchSize, int nMaxBatchSize, const String& diffuseTexture, const String& normalheightTexture, float fLayerWorldSize) 
+		: Server(typeName), m_pGroupServer(pGroupServer), m_pTerrain(0), m_nPageX(nPageX), m_nPageY(nPageY)
 	{
-
+		TerrainGroup* pGroup = pGroupServer->getTerrainGroup();
+		if (pGroup)
+		{
+			// 获取地形配置
+			Terrain::ImportData dp = configureTerrainPage(pGroup, nMinBatchSize,
+				nMaxBatchSize, diffuseTexture, normalheightTexture, 
+				fLayerWorldSize);
+			
+			/*
+			* 定义地形(在OGRE中调用该接口后,并未实际加载地形)
+			*/
+			pGroup->defineTerrain(nPageX, nPageY, &dp);
+			
+			// 启动异步加载地形
+			pGroup->loadTerrain(nPageX,
+				nPageY,
+				true);
+		}
 	}
 
 	/**
@@ -22,9 +41,37 @@ namespace Ogre
 	 */
 	TerrainPageServer::~TerrainPageServer()
 	{
-
+		m_pGroupServer->getTerrainGroup()->removeTerrain(m_nPageX, m_nPageY);
 	}
 
+	/**
+	 *
+	 * \param pGroup 
+	 * \param nMinBatchSize 
+	 * \param nMaxBatchSize 
+	 * \param diffuseTexture 
+	 * \param normalheightTexture 
+	 * \param fLayerWorldSize 
+	 * \return 
+	 */
+	Terrain::ImportData	TerrainPageServer::configureTerrainPage(TerrainGroup* pGroup, int nMinBatchSize, int nMaxBatchSize, 
+		const String& diffuseTexture, const String& normalheightTexture, float fLayerWorldSize)
+	{
+		Terrain::ImportData dp;
+		dp.worldSize	= pGroup->getTerrainWorldSize();
+		dp.terrainSize	= pGroup->getTerrainSize();
+
+		dp.minBatchSize	= nMinBatchSize;
+		dp.minBatchSize	= nMaxBatchSize;
+		
+		// 默认只创建第0层
+		dp.layerList.resize(DEF_LAYER_COUNT);
+		dp.layerList[0].worldSize = fLayerWorldSize;
+		dp.layerList[0].textureNames.push_back(diffuseTexture);
+		dp.layerList[0].textureNames.push_back(normalheightTexture);
+
+		return dp;
+	}
 
 	//////////////////////////////////////////////////////////////////////////
 	const String	TerrainPageServerFactory::FactoryTypeName = "Terrain/TerrainPageServerFactory";
@@ -58,13 +105,18 @@ namespace Ogre
 		// 获取参数
 		const STerrainPageServerAdp& adp = static_cast<const STerrainPageServerAdp&>(ssadp);
 		
-		// 创建地形页
-		return new TerrainPageServer(adp.typeName, 
-									adp.depServerName,
-									adp.vPos,
-									adp.nPageX, 
-									adp.nPageY, 
-									adp.nMinBatchSize, 
-									adp.nMaxBatchSzie);
+		// 获取地形组服务
+		TerrainGroupServer* pGroupServer = static_cast<TerrainGroupServer*>(
+			System::getSingleton().getServer(adp.depServerName)
+			);
+		if (pGroupServer)
+		{
+			// 创建地形页
+			return new TerrainPageServer(adp.typeName, pGroupServer,
+				adp.nPageX, adp.nPageY, adp.nMinBatchSize, adp.nMaxBatchSzie, adp.diffuseTexture, adp.normalheightTexture,
+				adp.fLayerWorldSize);
+		}
+		
+		return 0;
 	}
 }

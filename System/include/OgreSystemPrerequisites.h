@@ -73,4 +73,8 @@ namespace Ogre
 #define	KEY_HANDLE_WINDOW		"externalWindowHandle" 
 #endif
 
+#ifndef SAFE_DELETE
+#define SAFE_DELETE( p ) {if (p!=NULL) delete p; p = NULL;}
+#endif
+
 #endif
