@@ -159,11 +159,17 @@ namespace Ogre
 	 */
 	void	BaseGridServer::destroy()
 	{
-		m_pWorldSpace->getSceneManager()->destroyManualObject(m_pGrid);
-		m_pGrid = NULL;
+		if (m_pGrid)
+		{
+			m_pWorldSpace->getSceneManager()->destroyManualObject(m_pGrid);
+			m_pGrid = NULL;
+		}
 
-		m_pWorldSpace->getSceneManager()->destroySceneNode(m_pLine->getName());
-		m_pLine = NULL;
+		if (m_pLine)
+		{
+			m_pWorldSpace->getSceneManager()->destroySceneNode(m_pLine->getName());
+			m_pLine = NULL;
+		}
 	}
 
 	/**

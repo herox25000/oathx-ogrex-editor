@@ -193,6 +193,10 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\DecalView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\FileView.cpp"
 				>
 			</File>
@@ -278,6 +282,10 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
+			<File
+				RelativePath=".\DecalView.h"
+				>
+			</File>
 			<File
 				RelativePath=".\FileView.h"
 				>
@@ -504,6 +512,34 @@
 				RelativePath=".\control\SplashDialog.h"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="editor"
+			>
+			<Filter
+				Name="include"
+				>
+				<File
+					RelativePath=".\XavierEditor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierTerrainEditor.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="src"
+				>
+				<File
+					RelativePath=".\XavierEditor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierTerrainEditor.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

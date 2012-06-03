@@ -85,7 +85,7 @@ namespace Ogre
 
 		dp.layerList[2].worldSize = fLayerWorldSize;
 		dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
-		//dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
+		dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
 
 		return dp;
 	}

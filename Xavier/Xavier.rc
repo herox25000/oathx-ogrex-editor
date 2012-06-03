@@ -459,6 +459,8 @@ BEGIN
     ID_USER_TOOL3           "3"
     ID_USER_TOOL4           "4"
     ID_USER_TOOL5           "<User5>"
+    IDS_DECAL_WND           "地形贴花"
+    IDS_DECAL_IMAGE_VIEW    "地形贴花图片"
 END
 
 STRINGTABLE 

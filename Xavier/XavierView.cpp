@@ -37,7 +37,7 @@ using namespace Ogre;
  *
  * \return 
  */
-CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_bRMouseDown(FALSE), m_pFrameContext(NULL)
+CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_bRMouseDown(FALSE), m_pFrameContext(NULL),m_pDecalCursor(NULL)
 {
 
 }

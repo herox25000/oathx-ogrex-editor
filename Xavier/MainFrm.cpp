@@ -123,13 +123,15 @@ int		CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockPane(&m_wFileView);
 	CDockablePane* pTabbedBar = NULL;
 	m_wMeshView.AttachToTabWnd(&m_wFileView, DM_SHOW, TRUE, &pTabbedBar);
+
 	m_wOutput.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wOutput);
 	m_wProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wProperties);
+	m_wDecalView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wDecalView);
 
 	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
-
 
 	CMFCToolBar::EnableQuickCustomization();
 	if (CMFCToolBar::GetUserImages() == NULL)
@@ -239,6 +241,16 @@ BOOL	CMainFrame::CreateDockingWindows()
 		return FALSE;
 	}
 
+	CString strDecalWnd;
+	bNameValid = strDecalWnd.LoadString(IDS_DECAL_WND);
+	ASSERT(bNameValid);
+	if (!m_wDecalView.Create(strDecalWnd, this, CRect(0, 0, 200, 200), 
+		TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	{
+		TRACE0("未能创建“贴花视图”窗口\n");
+		return FALSE;
+	}
+
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
 
 	return TRUE;
@@ -281,6 +293,14 @@ void	CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 											::GetSystemMetrics(SM_CYSMICON), 
 											0);
 	m_wProperties.SetIcon(hPropertiesBarIcon, FALSE);
+
+	HICON hDecalViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(),
+											MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), 
+											IMAGE_ICON, 
+											::GetSystemMetrics(SM_CXSMICON), 
+											::GetSystemMetrics(SM_CYSMICON), 
+											0);
+	m_wDecalView.SetIcon(hDecalViewIcon, FALSE);
 
 }
 
@@ -445,13 +465,13 @@ BOOL	CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	CUserToolsManager* pUserToolsManager = theApp.GetUserToolsManager();
 	if (pUserToolsManager != NULL && pUserToolsManager->GetUserTools().IsEmpty())
 	{
-		CUserTool* pTool1 = pUserToolsManager->CreateNewTool();
-		pTool1->m_strLabel = _T("&Notepad");
-		pTool1->SetCommand(_T("notepad.exe"));
+		//CUserTool* pTool1 = pUserToolsManager->CreateNewTool();
+		//pTool1->m_strLabel = _T("&Notepad");
+		//pTool1->SetCommand(_T("notepad.exe"));
 
-		CUserTool* pTool3 = pUserToolsManager->CreateNewTool();
-		pTool3->m_strLabel = _T("&Windows Explorer");
-		pTool3->SetCommand(_T("explorer.exe"));
+		//CUserTool* pTool3 = pUserToolsManager->CreateNewTool();
+		//pTool3->m_strLabel = _T("&Windows Explorer");
+		//pTool3->SetCommand(_T("explorer.exe"));
 	}
 
 	return TRUE;
