@@ -9,6 +9,11 @@ enum{
 	EDIT_STATE_PAINT,
 };
 
+namespace Ogre
+{
+	class Terrain;
+}
+
 /**
 * \ingroup : Xavier
 *
@@ -70,6 +75,13 @@ public:
 	 */
 	virtual	void	changeState(int nState);
 
+	/**
+	 *
+	 * \param terrain 
+	 * \param vPos 
+	 * \param fElapsed 
+	 */
+	virtual	void	execturTerrain(Ogre::Terrain* terrain, const Ogre::Vector3& vCenter, float fElapsed);
 protected:
 	int				m_nState;
 };

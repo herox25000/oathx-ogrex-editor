@@ -1,24 +1,31 @@
 #include "StdAfx.h"
 #include "XavierDecalCursor.h"
-#include "OgreSdk.h"
-#include "OgreETMTerrainPluginPrerequisites.h"
-#include "OgreETMServerTerrain.h"
+#include "OgreTSSDK.h"
 
 using namespace Ogre;
 
-static const String		XAVIER_DECAL_CURSOR_NAME			= "XavierDecalCursorDecal";
-static const int		CURSOR_RES							= 6;
-static const String		XAVIER_DECAL_CURSOR_MATERIAL		= "Editor/TerrainMeshDecal";
+static const String		XAVIER_DECAL_CURSOR_NAME		= "XavierDecalCursorDecal";
+static const int		CURSOR_RES						= 6;
+static const String		XAVIER_DECAL_CURSOR_MATERIAL	= "Editor/TerrainMeshDecal";
+
+
+//////////////////////////////////////////////////////////////////////////
+XavierDecalCursor*	XavierDecalCursor::mInstance		= NULL;
+XavierDecalCursor&	XavierDecalCursor::getSingleton()
+{
+	ASSERT(mInstance != NULL); return (*mInstance);
+}
+//////////////////////////////////////////////////////////////////////////
 
 /**
  *
  * \param void 
  * \return 
  */
-XavierDecalCursor::XavierDecalCursor(Ogre::WorldSpaceServer* pWorldServer, Ogre::ETMTerrainServer* pTerrainServer)
-: m_pWorldServer(pWorldServer), m_pTerrainServer(pTerrainServer), m_pDecalMesh(0)
+XavierDecalCursor::XavierDecalCursor(Ogre::WorldSpaceServer* pWorldServer, Ogre::TerrainGroupServer* pTerrainServer)
+: m_pWorldServer(pWorldServer), m_pTerrainServer(pTerrainServer), m_pDecalMesh(0),m_fRadius(3.0f)
 {
-	createDecalCursor(0);
+	mInstance = this; createDecalCursor(0); 
 }
 
 /**
@@ -117,7 +124,61 @@ void	XavierDecalCursor::setDecalCursor(float x, float z, float fRaidus)
  */
 float	XavierDecalCursor::getTerrainHeight(float x, float z)
 {
-	ET::TerrainInfo tr = m_pTerrainServer->getTerrainManager()->getTerrainInfo();
-	return tr.getHeightAt(x, z);
+	Ogre::Ray ray;
+	ray.setOrigin(Ogre::Vector3(x, 5000, z));
+	ray.setDirection(Ogre::Vector3::NEGATIVE_UNIT_Y);
+
+	Vector3 vPos;
+	if (m_pTerrainServer->rayIntersectsTerrain(ray, vPos))
+	{
+		return vPos.y;
+	}
+
+	return 0;
 }
 
+
+/**
+ *
+ * \param pCamera 
+ * \param nScreenX 
+ * \param nScreenY 
+ */
+void	XavierDecalCursor::invalid(Ogre::Camera* pCamera, float fScreenX, float fScreenY)
+{
+	if (pCamera != NULL)
+	{
+		if (m_pTerrainServer->rayIntersectsTerrain(
+			pCamera->getCameraToViewportRay(fScreenX, fScreenY), m_vPos))
+		{
+			setDecalCursor(m_vPos.x, m_vPos.z, m_fRadius);						
+		}
+	}
+}
+
+/**
+ *
+ * \return 
+ */
+Ogre::Vector3&	XavierDecalCursor::getPosition()
+{
+	return m_vPos;
+}
+
+/**
+ *
+ * \param fRadius 
+ */
+void	XavierDecalCursor::setRadius(float fRadius)
+{
+	m_fRadius = fRadius;
+}
+
+/**
+ *
+ * \return 
+ */
+float	XavierDecalCursor::getRadius() const
+{
+	return m_fRadius;
+}

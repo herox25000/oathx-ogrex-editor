@@ -4,6 +4,7 @@
 
 namespace Ogre
 {
+
 	/**
 	 *
 	 * \param typeName 
@@ -71,6 +72,25 @@ namespace Ogre
 	TerrainGroup*	TerrainGroupServer::getTerrainGroup() const
 	{
 		return m_pTerrainGroup;
+	}
+
+	/**
+	 *
+	 * \param ray 
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			TerrainGroupServer::rayIntersectsTerrain(const Ray& ray, Vector3& vPos)
+	{
+		TerrainGroup::RayResult result = m_pTerrainGroup->rayIntersects(ray);
+
+		if (result.hit)
+		{
+			vPos = result.position;
+			return true;
+		}
+
+		return 0;
 	}
 
 	//////////////////////////////////////////////////////////////////////////

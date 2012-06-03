@@ -184,22 +184,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\src\OgreServerBaseGrid.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreServerCamera.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreServerViewport.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreServerWorldSpace.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\OgreSystem.cpp"
 				>
 			</File>
@@ -209,26 +193,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\include\OgreServer.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreServerBaseGrid.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreServerCamera.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreServerViewport.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreServerWorldSpace.h"
-				>
-			</File>
 			<File
 				RelativePath=".\include\OgreSSSDK.h"
 				>
@@ -275,6 +239,54 @@
 				RelativePath=".\tinyxml\tinyxmlparser.cpp"
 				>
 			</File>
+		</Filter>
+		<Filter
+			Name="server"
+			>
+			<Filter
+				Name="include"
+				>
+				<File
+					RelativePath=".\include\OgreServerBaseGrid.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\OgreServerCamera.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\OgreServerViewport.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\OgreServerWorldSpace.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="src"
+				>
+				<File
+					RelativePath=".\include\OgreServer.h"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OgreServerBaseGrid.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OgreServerCamera.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OgreServerViewport.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\src\OgreServerWorldSpace.cpp"
+					>
+				</File>
+			</Filter>
 		</Filter>
 	</Files>
 	<Globals>

@@ -13,7 +13,7 @@ namespace Ogre
 	 */
 	TerrainPageServer::TerrainPageServer(const String& typeName, TerrainGroupServer* pGroupServer,
 		int nPageX, int nPageY, int nMinBatchSize, int nMaxBatchSize, const String& diffuseTexture, const String& normalheightTexture, float fLayerWorldSize) 
-		: Server(typeName), m_pGroupServer(pGroupServer), m_pTerrain(0), m_nPageX(nPageX), m_nPageY(nPageY)
+		: Server(typeName), m_pGroupServer(pGroupServer), m_nPageX(nPageX), m_nPageY(nPageY)
 	{
 		TerrainGroup* pGroup = pGroupServer->getTerrainGroup();
 		if (pGroup)
@@ -46,6 +46,15 @@ namespace Ogre
 
 	/**
 	 *
+	 * \return 
+	 */
+	Terrain*	TerrainPageServer::getTerrain() const
+	{
+		return m_pGroupServer->getTerrainGroup()->getTerrain(m_nPageX, m_nPageY);
+	}
+
+	/**
+	 *
 	 * \param pGroup 
 	 * \param nMinBatchSize 
 	 * \param nMaxBatchSize 
@@ -69,6 +78,14 @@ namespace Ogre
 		dp.layerList[0].worldSize = fLayerWorldSize;
 		dp.layerList[0].textureNames.push_back(diffuseTexture);
 		dp.layerList[0].textureNames.push_back(normalheightTexture);
+
+		dp.layerList[1].worldSize = fLayerWorldSize;
+		dp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
+		dp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
+
+		dp.layerList[2].worldSize = fLayerWorldSize;
+		dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
+		//dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
 
 		return dp;
 	}

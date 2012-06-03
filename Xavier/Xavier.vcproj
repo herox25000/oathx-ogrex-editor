@@ -68,7 +68,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mfc90d.lib OgreMain_d.lib System_d.lib EventSet_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreMain_d.lib System_d.lib EventSet_d.lib OgreTerrain_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\..\..\..\Ogre\lib\debug"
@@ -249,6 +249,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XavierDecalCursor.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierDoc.cpp"
 				>
 			</File>
@@ -324,6 +328,10 @@
 			</File>
 			<File
 				RelativePath=".\Xavier.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierDecalCursor.h"
 				>
 			</File>
 			<File

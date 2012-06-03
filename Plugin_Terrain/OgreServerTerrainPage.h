@@ -47,7 +47,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~TerrainPageServer();
-
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Terrain*		getTerrain() const;
 	protected:
 		/**
 		 *
@@ -61,9 +66,9 @@ namespace Ogre
 		 */
 		Terrain::ImportData		configureTerrainPage(TerrainGroup* pGroup, int nMinBatchSize, int nMaxBatchSize, 
 			const String& diffuseTexture, const String& normalheightTexture, float fLayerWorldSize);
+
 	protected:
 		TerrainGroupServer*		m_pGroupServer;
-		Terrain*				m_pTerrain;
 		int						m_nPageX;
 		int						m_nPageY;
 	};

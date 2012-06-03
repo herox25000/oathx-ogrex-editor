@@ -5,6 +5,7 @@
 #include "XavierFrameContext.h"
 #include "XavierDecalCursor.h"
 #include "OgreSSSDK.h"
+#include "OgreTSSDK.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -99,6 +100,12 @@ void	CXavierView::OnDestroy()
 		delete m_pFrameContext;
 	}
 
+	if (m_pDecalCursor)
+	{
+		delete m_pDecalCursor;
+		m_pDecalCursor = NULL;
+	}
+
 	// œ˙ªŸ‰÷»æ ±÷”
 	KillTimer(IDT_RENDERTIME);
 }
@@ -116,6 +123,27 @@ LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 	m_dwState = ST_VIEW_UPDATE;
 
 	// to do:
+
+	WorldSpaceServer* pWorldServer = static_cast<WorldSpaceServer*>(
+		System::getSingleton().getServer(SERVER_WORLDSPACE)
+		);
+	if (pWorldServer)
+	{
+		TerrainGroupServer* pTerrainServer = static_cast<TerrainGroupServer*>(
+			System::getSingleton().getServer(SERVER_TERRAIN_GROUP)
+			);
+
+		m_pDecalCursor = new XavierDecalCursor(pWorldServer, pTerrainServer);
+		m_pDecalCursor->setDecalCursor(0, 0, 1);
+	}
+
+	BaseGridServer* pGridServer = static_cast<BaseGridServer*>(
+		System::getSingleton().getServer(SERVER_BASEGRID)
+		);
+	if (pGridServer)
+	{
+		pGridServer->hide();
+	}
 
 	return 0;
 }
@@ -285,6 +313,7 @@ CXavierDoc* CXavierView::GetDocument() const
  */
 void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	m_bLMouseDown = TRUE;
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -295,6 +324,7 @@ void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
  */
 void	CXavierView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	m_bLMouseDown = FALSE;
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -344,6 +374,29 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 		}
 		else
 		{
+
+			CRect rc;
+			GetClientRect(&rc);
+
+			TerrainGroupServer* pTerrainServer = static_cast<TerrainGroupServer*>(
+				System::getSingleton().getServer(SERVER_TERRAIN_GROUP)
+				);
+			if (pTerrainServer)
+			{
+				Camera* pCamera = pSdkCamera->getCamera();
+				if (pCamera)
+				{
+					float fScreenX = (float)point.x / (float)(rc.Width());
+					float fScreenY = (float)point.y / (float)(rc.Height());
+					
+					m_pDecalCursor->invalid(pCamera, fScreenX, fScreenY);
+
+					if (m_bLMouseDown)
+					{
+						m_pFrameContext->changeState(EDIT_STATE_PAINT);
+					}
+				}
+			}
 		}
 	}
 
