@@ -7,8 +7,8 @@
 namespace Ogre 
 { 
 	class ManualObject;
+	class TerrainGroupServer;
 	class WorldSpaceServer;
-	class ETMTerrainServer;
 }
 
 /**
@@ -32,12 +32,22 @@ class XavierDecalCursor
 public:
 	/**
 	 *
+	 * \return 
+	 */
+	static XavierDecalCursor&	getSingleton();
+
+
+	// µ¥¼þÖ¸Õë
+	static XavierDecalCursor*	mInstance;
+public:
+	/**
+	 *
 	 * \param pWorldServer 
 	 * \param name 
 	 * \param vSize 
 	 * \return 
 	 */
-	XavierDecalCursor(Ogre::WorldSpaceServer* pWorldServer, Ogre::ETMTerrainServer* pTerrainServer);
+	XavierDecalCursor(Ogre::WorldSpaceServer* pWorldServer, Ogre::TerrainGroupServer* pTerrainServer);
 
 	/**
 	 *
@@ -66,8 +76,36 @@ public:
 	 * \return 
 	 */
 	virtual	float				getTerrainHeight(float x, float z);
+
+	/**
+	 *
+	 * \param pCamera 
+	 * \param nScreenX 
+	 * \param nScreenY 
+	 */
+	virtual	void				invalid(Ogre::Camera* pCamera, float fScreenX, float fScreenY);
+
+	/**
+	 *
+	 * \return 
+	 */
+	virtual	Ogre::Vector3&		getPosition();
+
+	/**
+	 *
+	 * \param fRadius 
+	 */
+	virtual	void				setRadius(float fRadius);
+
+	/**
+	 *
+	 * \return 
+	 */
+	virtual	float				getRadius() const;
 protected:
 	Ogre::WorldSpaceServer*		m_pWorldServer;
-	Ogre::ETMTerrainServer*		m_pTerrainServer;
+	Ogre::TerrainGroupServer*	m_pTerrainServer;
 	Ogre::ManualObject*			m_pDecalMesh;
+	Ogre::Vector3				m_vPos;
+	float						m_fRadius;
 };

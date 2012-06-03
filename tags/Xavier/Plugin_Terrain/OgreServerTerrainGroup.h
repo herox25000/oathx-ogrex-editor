@@ -54,6 +54,11 @@ namespace Ogre
 		 */
 		virtual TerrainGroup*	getTerrainGroup() const;
 		
+		/**
+		 *
+		 * \param vPos 
+		 */
+		virtual	bool			rayIntersectsTerrain(const Ray& ray, Vector3& vPos);
 	protected:
 		TerrainGlobalOptions*	m_pOption;
 		TerrainGroup*			m_pTerrainGroup;

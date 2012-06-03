@@ -201,7 +201,7 @@ void	CWizardDialog::OnBnClickedOk()
 			adp.nMaxBatchSzie			= 65;
 			adp.diffuseTexture			= "dirt_grayrocky_diffusespecular.dds";
 			adp.normalheightTexture		= "dirt_grayrocky_normalheight.dds";
-			adp.fLayerWorldSize			= 8;
+			adp.fLayerWorldSize			= 80;
 
 			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
 		}

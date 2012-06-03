@@ -6,6 +6,7 @@ enum{
 };
 
 class XavierFrameContext;
+class XavierDecalCursor;
 
 /**
 * \ingroup : Xavier
@@ -43,6 +44,7 @@ protected:
 
 protected:
 	XavierFrameContext*			m_pFrameContext;
+	XavierDecalCursor*			m_pDecalCursor;
 public:
 	/**
 	 *
