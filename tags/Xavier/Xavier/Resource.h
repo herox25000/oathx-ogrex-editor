@@ -11,6 +11,8 @@
 #define ID_USER_TOOL3                   105
 #define ID_USER_TOOL4                   106
 #define ID_USER_TOOL5                   107
+#define IDS_DECAL_WND                   108
+#define IDS_DECAL_IMAGE_VIEW            109
 #define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
