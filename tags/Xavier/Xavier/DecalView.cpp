@@ -2,34 +2,23 @@
 #include "Xavier.h"
 #include "DecalView.h"
 
-IMPLEMENT_DYNAMIC(CDecalView, CDockablePane)
 
-/**
- *
- * \return 
- */
 CDecalView::CDecalView()
 {
-
 }
 
-/**
- *
- * \return 
- */
 CDecalView::~CDecalView()
 {
 }
-
 
 BEGIN_MESSAGE_MAP(CDecalView, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
+	ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
-
-/**
+/** View 窗口创建
  *
  * \param lpCreateStruct 
  * \return 
@@ -42,17 +31,20 @@ int		CDecalView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
 
-	// 创建视图:
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
-	if (!m_wImageView.Create(dwViewStyle, rectDummy, this, 5))
+	if (!m_wDecaView.Create(CSize(128,128), WS_CHILD|WS_VISIBLE, rectDummy, this, 4))
 	{
 		return -1;
 	}
 
+	m_wDecaView.Load("./media/texture/terrain", "*.*");
+	
+	// 调整布局
+	AdjustLayout();
+
 	return 0;
 }
 
-/**
+/** VIEW 窗口尺寸改变
  *
  * \param nType 
  * \param cx 
@@ -64,22 +56,24 @@ void	CDecalView::OnSize(UINT nType, int cx, int cy)
 	AdjustLayout();
 }
 
-/**
+
+/** 布局调整
  *
  */
 void	CDecalView::AdjustLayout()
 {
-	if (GetSafeHwnd() != NULL)
+	if (GetSafeHwnd() == NULL)
 	{
-		CRect rcView;
-		GetClientRect(rcView);
-
-		m_wImageView.SetWindowPos(NULL, rcView.left + 1, rcView.top + 1,
-			rcView.Width() - 2, rcView.Height() - 2,
-			SWP_NOACTIVATE | SWP_NOZORDER
-			);
+		return;
 	}
+
+	CRect rectClient;
+	GetClientRect(rectClient);
+
+	m_wDecaView.SetWindowPos(NULL, rectClient.left + 1, rectClient.top + 1, rectClient.Width() - 2, 
+		rectClient.Height() - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
+
 
 /**
  *
@@ -89,10 +83,20 @@ void	CDecalView::OnPaint()
 	CPaintDC dc(this);
 
 	CRect rectTree;
-	m_wImageView.GetWindowRect(rectTree);
+	m_wDecaView.GetWindowRect(rectTree);
 	ScreenToClient(rectTree);
 
 	rectTree.InflateRect(1, 1);
 	dc.Draw3dRect(rectTree, ::GetSysColor(COLOR_3DSHADOW), ::GetSysColor(COLOR_3DSHADOW));
 }
 
+/**
+ *
+ * \param pOldWnd 
+ */
+void	CDecalView::OnSetFocus(CWnd* pOldWnd)
+{
+	CDockablePane::OnSetFocus(pOldWnd);
+
+	m_wDecaView.SetFocus();
+}

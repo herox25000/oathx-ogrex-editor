@@ -459,7 +459,6 @@ BEGIN
     ID_USER_TOOL3           "3"
     ID_USER_TOOL4           "4"
     ID_USER_TOOL5           "<User5>"
-    IDS_DECAL_WND           "地形贴花"
     IDS_DECAL_IMAGE_VIEW    "地形贴花图片"
 END
 
@@ -587,7 +586,7 @@ END
 
 STRINGTABLE 
 BEGIN
-    IDS_FILE_VIEW           "文件视图"
+    IDS_FILE_VIEW           "解决方案视图"
     IDS_CLASS_VIEW          "类视图"
     IDS_OUTPUT_WND          "输出"
     IDS_PROPERTIES_WND      "属性"

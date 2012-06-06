@@ -25,6 +25,8 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
+#define	ID_VIEW_DECAVIEW	9999
+
 /**
  *
  * \return 
@@ -123,13 +125,13 @@ int		CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockPane(&m_wFileView);
 	CDockablePane* pTabbedBar = NULL;
 	m_wMeshView.AttachToTabWnd(&m_wFileView, DM_SHOW, TRUE, &pTabbedBar);
-
+	
 	m_wOutput.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wOutput);
 	m_wProperties.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wProperties);
-	m_wDecalView.EnableDocking(CBRS_ALIGN_ANY);
-	DockPane(&m_wDecalView);
+	m_wDecaView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wDecaView);
 
 	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
 
@@ -242,14 +244,15 @@ BOOL	CMainFrame::CreateDockingWindows()
 	}
 
 	CString strDecalWnd;
-	bNameValid = strDecalWnd.LoadString(IDS_DECAL_WND);
+	bNameValid = strDecalWnd.LoadString(IDS_DECAL_IMAGE_VIEW);
 	ASSERT(bNameValid);
-	if (!m_wDecalView.Create(strDecalWnd, this, CRect(0, 0, 200, 200), 
-		TRUE, ID_VIEW_FILEVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	if (!m_wDecaView.Create(strDecalWnd, this, CRect(0, 0, 200, 200), 
+		TRUE, ID_VIEW_DECAVIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
 	{
 		TRACE0("未能创建“贴花视图”窗口\n");
 		return FALSE;
 	}
+
 
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
 
@@ -300,7 +303,7 @@ void	CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 											::GetSystemMetrics(SM_CXSMICON), 
 											::GetSystemMetrics(SM_CYSMICON), 
 											0);
-	m_wDecalView.SetIcon(hDecalViewIcon, FALSE);
+	m_wDecaView.SetIcon(hDecalViewIcon, FALSE);
 
 }
 

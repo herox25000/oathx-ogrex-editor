@@ -1,15 +1,15 @@
 #pragma once
 
-#include "ViewTree.h"
+#include "ImageListBox.h"
 
 /**
 * \ingroup : Xavier
 *
-* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
+* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
 *
 * \VERSION : 1.0
 *
-* \@date   : 2012-06-03
+* \date    : 2012-03-08
 *
 * \Author  : lp
 *
@@ -20,8 +20,6 @@
 */
 class CDecalView : public CDockablePane
 {
-	DECLARE_DYNAMIC(CDecalView)
-
 public:
 	/**
 	 *
@@ -31,20 +29,21 @@ public:
 
 	/**
 	 *
-	 * \return 
 	 */
-	virtual ~CDecalView();
-	
-	CViewTree				m_wImageView;
+	void					AdjustLayout();
+
 protected:
-	DECLARE_MESSAGE_MAP()
-	
+	CImageListBox			m_wDecaView;
+
+public:
 	/**
 	 *
 	 * \return 
 	 */
-	virtual void			AdjustLayout();
-public:
+	virtual ~CDecalView();
+
+
+protected:
 	/**
 	 *
 	 * \param lpCreateStruct 
@@ -64,6 +63,12 @@ public:
 	 *
 	 */
 	afx_msg void			OnPaint();
+
+	/**
+	 *
+	 * \param pOldWnd 
+	 */
+	afx_msg void			OnSetFocus(CWnd* pOldWnd);
+
+	DECLARE_MESSAGE_MAP()
 };
-
-
