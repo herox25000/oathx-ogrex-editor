@@ -112,7 +112,7 @@ protected:
 	COutputWnd				m_wOutput;
 	CPropertySetWnd			m_wProperties;
 	CWizardDialog			m_dWizard;
-	CDecalView				m_wDecalView;
+	CDecalView				m_wDecaView;
 
 protected:
 	/**
