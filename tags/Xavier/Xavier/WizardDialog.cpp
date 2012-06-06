@@ -178,7 +178,7 @@ void	CWizardDialog::OnBnClickedOk()
 			STerrainGroupServerAdp adp;
 			adp.depServerName			= SERVER_WORLDSPACE;
 			adp.typeName				= SERVER_TERRAIN_GROUP;
-			adp.fWorldSize				= 12000.0f;
+			adp.fWorldSize				= 1200.0f;
 			adp.nTerrainSize			= 513;
 			adp.vOrigin					= Vector3::ZERO;
 			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
