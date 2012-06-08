@@ -5,8 +5,14 @@ enum{
 	ST_VIEW_UPDATE
 };
 
-class XavierFrameContext;
-class XavierDecalCursor;
+
+// 编辑工具
+namespace Ogre
+{
+	class XavierFrameContext;
+	class XavierDecalCursor;
+	class XavierEditorManager;
+}
 
 
 /**
@@ -44,8 +50,11 @@ protected:
 	CPoint						m_cLMouseLost;
 
 protected:
-	XavierFrameContext*			m_pFrameContext;
-	XavierDecalCursor*			m_pDecalCursor;
+	Ogre::XavierFrameContext*	m_pFrameContext;
+	Ogre::XavierDecalCursor*	m_pDecalCursor;
+	
+	// 编辑器管理器
+	Ogre::XavierEditorManager*	m_pEditorManager;
 public:
 	/**
 	 *

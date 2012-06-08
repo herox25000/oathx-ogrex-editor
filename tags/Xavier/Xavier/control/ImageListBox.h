@@ -53,12 +53,6 @@ public:
 
 	/**
 	 *
-	 * \return 
-	 */
-	CString			GetHotItemText();
-
-	/**
-	 *
 	 * \param szImage 
 	 * \param pBitmap 
 	 * \return 

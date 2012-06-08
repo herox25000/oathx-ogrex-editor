@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ImageListBox.h"
 
 /**
 * \ingroup : Xavier
@@ -22,6 +23,11 @@ class CTerrainToolView : public CDockablePane
 	DECLARE_DYNAMIC(CTerrainToolView)
 
 public:
+	enum {
+		ID_TERRAINTOOLVIEW	= 14, 
+		ID_TERRAIN_DECAL	= 15, 
+		ID_TERRAIN_BRUSH	= 16
+	};
 	/**
 	 *
 	 * \return 
@@ -41,7 +47,8 @@ public:
 
 protected:
 	CTabCtrl					m_TabCtrl;
-
+	CImageListBox				m_ImageDecal;
+	CImageListBox				m_ImageBrush;
 protected:
 	DECLARE_MESSAGE_MAP()
 
@@ -71,6 +78,13 @@ protected:
 	 * \param pOldWnd 
 	 */
 	afx_msg void				OnSetFocus(CWnd* pOldWnd);
+
+	/**
+	 *
+	 * \param pNMHDR 
+	 * \param pResult 
+	 */
+	afx_msg void				OnTabPageSelChanged(NMHDR* pNMHDR, LRESULT* pResult);
 };
 
 

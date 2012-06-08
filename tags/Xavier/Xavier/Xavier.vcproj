@@ -249,15 +249,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XavierDecalCursor.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\XavierDoc.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\XavierFrameContext.cpp"
 				>
 			</File>
 			<File
@@ -331,15 +323,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XavierDecalCursor.h"
-				>
-			</File>
-			<File
 				RelativePath=".\XavierDoc.h"
-				>
-			</File>
-			<File
-				RelativePath=".\XavierFrameContext.h"
 				>
 			</File>
 			<File
@@ -520,7 +504,51 @@
 				Name="include"
 				>
 				<File
+					RelativePath=".\XavierDecalCursor.h"
+					>
+				</File>
+				<File
 					RelativePath=".\XavierEditor.h"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierEditorManager.h"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierFrameContext.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="src"
+				>
+				<File
+					RelativePath=".\XavierDecalCursor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierEditor.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierEditorManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierFrameContext.cpp"
+					>
+				</File>
+			</Filter>
+		</Filter>
+		<Filter
+			Name="terrain"
+			>
+			<Filter
+				Name="editor"
+				>
+				<File
+					RelativePath=".\XavierTerrainEditor.cpp"
 					>
 				</File>
 				<File
@@ -529,29 +557,17 @@
 				</File>
 			</Filter>
 			<Filter
-				Name="src"
+				Name="view"
 				>
 				<File
-					RelativePath=".\XavierEditor.cpp"
+					RelativePath=".\TerrainToolView.cpp"
 					>
 				</File>
 				<File
-					RelativePath=".\XavierTerrainEditor.cpp"
+					RelativePath=".\TerrainToolView.h"
 					>
 				</File>
 			</Filter>
-		</Filter>
-		<Filter
-			Name="terrain"
-			>
-			<File
-				RelativePath=".\TerrainToolView.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\TerrainToolView.h"
-				>
-			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

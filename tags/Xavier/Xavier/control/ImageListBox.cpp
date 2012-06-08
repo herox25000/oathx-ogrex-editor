@@ -24,7 +24,7 @@ CImageListBox::~CImageListBox()
 
 
 BEGIN_MESSAGE_MAP(CImageListBox, CListCtrl)
-	ON_NOTIFY_REFLECT(LVN_ITEMCHANGED, &CImageListBox::OnLvnItemchanged)
+	
 END_MESSAGE_MAP()
 
 
@@ -124,28 +124,4 @@ BOOL		CImageListBox::Load(LPCTSTR lpszFilePath, LPCTSTR lpszFilter)
 CBitmap*	CImageListBox::AdjustBitmap(LPCTSTR lpszImagePathName)
 {
 	return NULL;
-}
-
-/**
- *
- * \return 
- */
-CString		CImageListBox::GetHotItemText()
-{
-	return m_cHotText;
-}
-/**
- *
- * \param *pNMHDR 
- * \param *pResult 
- */
-void		CImageListBox::OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult)
-{
-	LPNMLISTVIEW pNMLV = reinterpret_cast<LPNMLISTVIEW>(pNMHDR);
-	if (pNMLV)
-	{
-		m_cHotText = GetItemText(pNMLV->iItem, pNMLV->iSubItem);
-	}
-
-	*pResult = 0;
 }

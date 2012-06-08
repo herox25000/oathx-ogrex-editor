@@ -79,13 +79,13 @@ namespace Ogre
 		dp.layerList[0].textureNames.push_back(diffuseTexture);
 		dp.layerList[0].textureNames.push_back(normalheightTexture);
 
-		dp.layerList[1].worldSize = fLayerWorldSize;
-		dp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
-		dp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
+		//dp.layerList[1].worldSize = fLayerWorldSize;
+		//dp.layerList[1].textureNames.push_back("grass_green-01_diffusespecular.dds");
+		//dp.layerList[1].textureNames.push_back("grass_green-01_normalheight.dds");
 
-		dp.layerList[2].worldSize = fLayerWorldSize;
-		dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
-		dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
+		//dp.layerList[2].worldSize = fLayerWorldSize;
+		//dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_diffusespecular.dds");
+		//dp.layerList[2].textureNames.push_back("growth_weirdfungus-03_normalheight.dds");
 
 		return dp;
 	}
