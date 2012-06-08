@@ -129,7 +129,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\EventSet\include;&quot;..\..\..\..\etm-2.3.1\include&quot;;..\Plugin_ETMTerrain;..\System\tinyxml;..\System\include;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="..\Plugin_Terrain;..\EventSet\include;&quot;..\..\..\..\etm-2.3.1\include&quot;;..\Plugin_ETMTerrain;..\System\tinyxml;..\System\include;.\control;..\..\..\..\Ogre\include;&quot;..\..\..\..\ogre_src_v1-8-0\OgreMain\include&quot;;&quot;..\..\..\..\ogre_src_v1-8-0\Components\Terrain\include&quot;;&quot;..\..\..\..\ogre_src_v1-8-0\Components\Paging\include&quot;"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXDLL"
 				MinimalRebuild="false"
 				RuntimeLibrary="2"
@@ -152,7 +152,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mfc90.lib OgreMain.lib System.lib EventSet.lib EditableTerrainManager.lib"
+				AdditionalDependencies="mfc90.lib OgreMain.lib System.lib EventSet.lib OgreTerrain.lib"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories="..\..\..\..\Ogre\lib\release"
 				GenerateDebugInformation="true"
@@ -519,6 +519,10 @@
 					RelativePath=".\XavierFrameContext.h"
 					>
 				</File>
+				<File
+					RelativePath=".\XavierWorldSpaceEditor.h"
+					>
+				</File>
 			</Filter>
 			<Filter
 				Name="src"
@@ -537,6 +541,10 @@
 				</File>
 				<File
 					RelativePath=".\XavierFrameContext.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\XavierWorldSpaceEditor.cpp"
 					>
 				</File>
 			</Filter>

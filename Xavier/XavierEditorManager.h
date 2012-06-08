@@ -1,9 +1,12 @@
 #pragma once
 
 #include "OgreSingleton.h"
+#include "XavierEditor.h"
 
 namespace Ogre
 {
+	typedef HashMap<String, XavierEditor*>	HashXavierEditor;
+
 	/**
 	* \ingroup : Xavier
 	*
@@ -60,5 +63,8 @@ namespace Ogre
 		 *
 		 */
 		virtual	void					unload();
+
+	protected:
+		HashXavierEditor				m_HashEditor;
 	};
 }

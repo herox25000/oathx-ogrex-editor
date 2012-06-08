@@ -118,7 +118,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="..\..\..\..\Ogre\include;.\include;&quot;..\..\..\..\ogre_src_v1-8-0RC1\OgreMain\include&quot;"
+				AdditionalIncludeDirectories="..\..\..\..\Ogre\include;.\include;&quot;..\..\..\..\ogre_src_v1-8-0\OgreMain\include&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;OGRE_EVENTSET_EXPORT"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
