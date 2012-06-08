@@ -461,6 +461,8 @@ BEGIN
     ID_USER_TOOL5           "<User5>"
     IDS_TERRAIN_VIEW        "地形工具"
     IDS_DECAL_IMAGE_VIEW    "地形贴花图片"
+    IDS_TAB_DECAL           "地形贴花"
+    IDS_TAB_BRUSH           "地形刷"
 END
 
 STRINGTABLE 

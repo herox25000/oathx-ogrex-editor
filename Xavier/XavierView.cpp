@@ -7,6 +7,7 @@
 #include "XavierDecalCursor.h"
 #include "OgreSSSDK.h"
 #include "OgreTSSDK.h"
+#include "XavierEditorManager.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -40,7 +41,7 @@ using namespace Ogre;
  */
 CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_bRMouseDown(FALSE), m_pFrameContext(NULL),m_pDecalCursor(NULL)
 {
-
+	m_pEditorManager = NULL;
 }
 
 /**
@@ -49,6 +50,7 @@ CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m
  */
 CXavierView::~CXavierView()
 {
+	
 }
 
 /**
@@ -82,6 +84,10 @@ int		CXavierView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		Root::getSingleton().addFrameListener(m_pFrameContext);	
 	}
 
+	// ¥¥Ω®±‡º≠∆˜
+	m_pEditorManager = new XavierEditorManager();
+	m_pEditorManager->load("./config/editor.xml");
+
 	// …Ë÷√‰÷»æ ±÷”
 	SetTimer(IDT_RENDERTIME, 100, NULL);
 
@@ -98,14 +104,11 @@ void	CXavierView::OnDestroy()
 	if (m_pFrameContext)
 	{
 		Root::getSingleton().removeFrameListener(m_pFrameContext);
-		delete m_pFrameContext;
+		SAFE_DELETE(m_pFrameContext);
 	}
 
-	if (m_pDecalCursor)
-	{
-		delete m_pDecalCursor;
-		m_pDecalCursor = NULL;
-	}
+	SAFE_DELETE(m_pDecalCursor);
+	SAFE_DELETE(m_pEditorManager);
 
 	// œ˙ªŸ‰÷»æ ±÷”
 	KillTimer(IDT_RENDERTIME);
