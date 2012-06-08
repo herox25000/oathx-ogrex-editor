@@ -100,3 +100,12 @@ void	CDecalView::OnSetFocus(CWnd* pOldWnd)
 
 	m_wDecaView.SetFocus();
 }
+
+/**
+ *
+ * \return 
+ */
+CString	CDecalView::GetHotItemText()
+{
+	return m_wDecaView.GetHotItemText();
+}

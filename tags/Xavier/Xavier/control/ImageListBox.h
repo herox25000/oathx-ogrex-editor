@@ -53,6 +53,12 @@ public:
 
 	/**
 	 *
+	 * \return 
+	 */
+	CString			GetHotItemText();
+
+	/**
+	 *
 	 * \param szImage 
 	 * \param pBitmap 
 	 * \return 
@@ -62,8 +68,18 @@ public:
 protected:
 	CImageList		m_ImageList;
 	CSize			m_ImageSize;
+	CString			m_cHotText;
+
 protected:
 	DECLARE_MESSAGE_MAP()
+
+public:
+	/**
+	 *
+	 * \param *pNMHDR 
+	 * \param *pResult 
+	 */
+	afx_msg void	OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 

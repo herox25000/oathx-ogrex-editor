@@ -23,13 +23,25 @@ class CImageView : public CImageListBox
 	DECLARE_DYNAMIC(CImageView)
 
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	CImageView();
+
+	/**
+	 *
+	 * \return 
+	 */
 	virtual ~CImageView();
 
 protected:
 	DECLARE_MESSAGE_MAP()
 
 public:
+	/**
+	 *
+	 */
 	afx_msg void OnPaint();
 };
 

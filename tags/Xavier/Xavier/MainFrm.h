@@ -5,7 +5,7 @@
 #include "OutputWnd.h"
 #include "PropertySetWnd.h"
 #include "WizardDialog.h"
-#include "DecalView.h"
+#include "TerrainToolView.h"
 
 /**
 * \ingroup : Xavier
@@ -112,7 +112,7 @@ protected:
 	COutputWnd				m_wOutput;
 	CPropertySetWnd			m_wProperties;
 	CWizardDialog			m_dWizard;
-	CDecalView				m_wDecaView;
+	CTerrainToolView		m_wTerrainView;
 
 protected:
 	/**
