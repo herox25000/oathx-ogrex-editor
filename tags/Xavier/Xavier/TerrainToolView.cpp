@@ -147,6 +147,13 @@ void	CTerrainToolView::OnPaint()
 
 	rectTree.InflateRect(1, 1);
 	dc.Draw3dRect(rectTree, ::GetSysColor(COLOR_3DSHADOW), ::GetSysColor(COLOR_3DSHADOW));
+
+	CRect rectBrush;
+	m_ImageBrush.GetWindowRect(rectBrush);
+	ScreenToClient(rectBrush);
+
+	rectBrush.InflateRect(1,1);
+	dc.Draw3dRect(rectTree, ::GetSysColor(COLOR_3DSHADOW), ::GetSysColor(COLOR_3DSHADOW));
 }
 
 /**

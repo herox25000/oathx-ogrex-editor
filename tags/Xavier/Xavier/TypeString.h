@@ -13,4 +13,7 @@
 #define XAVIER_WORLDSPACE		"Xavier/WorldSpaceServer"
 #define XAVIER_SDKCAMERA		"Xavier/CameraServer"
 
+#define XML_EDITOR_NAME			"editor"
+#define XML_TYPE_NAME			"type"
+
 #endif

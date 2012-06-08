@@ -222,6 +222,22 @@ protected:
 	afx_msg void				OnContextMenu(CWnd* pWnd, CPoint point);
 	DECLARE_MESSAGE_MAP()
 
+public:
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 */
+	afx_msg void				OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 */
+	afx_msg void				OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG

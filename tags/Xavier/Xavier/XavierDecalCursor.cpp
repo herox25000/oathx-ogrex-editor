@@ -176,7 +176,11 @@ namespace Ogre
 	 */
 	void	XavierDecalCursor::setRadius(float fRadius)
 	{
-		m_fRadius = fRadius;
+		if (fRadius >= 0.5f)
+		{
+			m_fRadius = fRadius;
+			setDecalCursor(m_vPos.x, m_vPos.z, m_fRadius);
+		}
 	}
 
 	/**

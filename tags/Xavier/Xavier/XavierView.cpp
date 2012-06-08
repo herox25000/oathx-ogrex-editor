@@ -31,6 +31,8 @@ BEGIN_MESSAGE_MAP(CXavierView, CView)
 	ON_WM_RBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_MOUSEWHEEL()
+	ON_WM_KEYDOWN()
+	ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
@@ -421,4 +423,52 @@ BOOL CXavierView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 	}
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
+}
+
+/**
+ *
+ * \param nChar 
+ * \param nRepCnt 
+ * \param nFlags 
+ */
+void CXavierView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	switch( nChar )
+	{
+	case VK_OEM_PLUS:
+		{
+			if (m_pDecalCursor)
+			{
+				float fRadius = XavierDecalCursor::getSingleton().getRadius();
+				fRadius += 1.0f;
+				m_pDecalCursor->setRadius(fRadius);
+			}
+		}
+		
+		break;
+	case VK_OEM_MINUS:
+		{
+			if (m_pDecalCursor)
+			{
+				float fRadius = XavierDecalCursor::getSingleton().getRadius();
+				fRadius -= 1.0f;
+				m_pDecalCursor->setRadius(fRadius);
+			}
+		}
+		break;
+	}
+
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+/**
+ *
+ * \param nChar 
+ * \param nRepCnt 
+ * \param nFlags 
+ */
+void CXavierView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+
+	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
