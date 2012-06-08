@@ -1,42 +1,54 @@
 #include "stdafx.h"
 #include "Xavier.h"
-#include "DecalView.h"
+#include "TerrainToolView.h"
 
+IMPLEMENT_DYNAMIC(CTerrainToolView, CDockablePane)
 
-CDecalView::CDecalView()
+/**
+ *
+ * \return 
+ */
+CTerrainToolView::CTerrainToolView()
+{
+
+}
+
+/**
+ *
+ * \return 
+ */
+CTerrainToolView::~CTerrainToolView()
 {
 }
 
-CDecalView::~CDecalView()
-{
-}
 
-BEGIN_MESSAGE_MAP(CDecalView, CDockablePane)
+BEGIN_MESSAGE_MAP(CTerrainToolView, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
+
 /** View 窗口创建
  *
  * \param lpCreateStruct 
  * \return 
  */
-int		CDecalView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+int		CTerrainToolView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
-
-	if (!m_wDecaView.Create(CSize(128,128), WS_CHILD|WS_VISIBLE, rectDummy, this, 4))
+	
+	// 创建视图:
+	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
+	if (!m_TabCtrl.Create(dwViewStyle, rectDummy, this, 14))
 	{
 		return -1;
 	}
-
-	m_wDecaView.Load("./media/texture/terrain", "*.*");
 	
 	// 调整布局
 	AdjustLayout();
@@ -50,7 +62,7 @@ int		CDecalView::OnCreate(LPCREATESTRUCT lpCreateStruct)
  * \param cx 
  * \param cy 
  */
-void	CDecalView::OnSize(UINT nType, int cx, int cy)
+void	CTerrainToolView::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
@@ -60,7 +72,7 @@ void	CDecalView::OnSize(UINT nType, int cx, int cy)
 /** 布局调整
  *
  */
-void	CDecalView::AdjustLayout()
+void	CTerrainToolView::AdjustLayout()
 {
 	if (GetSafeHwnd() == NULL)
 	{
@@ -70,7 +82,7 @@ void	CDecalView::AdjustLayout()
 	CRect rectClient;
 	GetClientRect(rectClient);
 
-	m_wDecaView.SetWindowPos(NULL, rectClient.left + 1, rectClient.top + 1, rectClient.Width() - 2, 
+	m_TabCtrl.SetWindowPos(NULL, rectClient.left + 1, rectClient.top + 1, rectClient.Width() - 2, 
 		rectClient.Height() - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
@@ -78,12 +90,12 @@ void	CDecalView::AdjustLayout()
 /**
  *
  */
-void	CDecalView::OnPaint()
+void	CTerrainToolView::OnPaint()
 {
 	CPaintDC dc(this);
 
 	CRect rectTree;
-	m_wDecaView.GetWindowRect(rectTree);
+	m_TabCtrl.GetWindowRect(rectTree);
 	ScreenToClient(rectTree);
 
 	rectTree.InflateRect(1, 1);
@@ -94,18 +106,11 @@ void	CDecalView::OnPaint()
  *
  * \param pOldWnd 
  */
-void	CDecalView::OnSetFocus(CWnd* pOldWnd)
+void	CTerrainToolView::OnSetFocus(CWnd* pOldWnd)
 {
 	CDockablePane::OnSetFocus(pOldWnd);
 
-	m_wDecaView.SetFocus();
+	m_TabCtrl.SetFocus();
 }
 
-/**
- *
- * \return 
- */
-CString	CDecalView::GetHotItemText()
-{
-	return m_wDecaView.GetHotItemText();
-}
+
