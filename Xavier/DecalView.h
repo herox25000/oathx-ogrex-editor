@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ImageListBox.h"
+#include "ImageView.h"
 
 /**
 * \ingroup : Xavier
@@ -42,7 +42,11 @@ public:
 	 */
 	virtual ~CDecalView();
 
-
+	/**
+	 *
+	 * \return 
+	 */
+	virtual	CString			GetHotItemText();
 protected:
 	/**
 	 *

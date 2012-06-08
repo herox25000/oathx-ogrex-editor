@@ -7,11 +7,13 @@ enum{
 	EDIT_STATE_INVALID,
 	EDIT_STATE_DEFORM,
 	EDIT_STATE_PAINT,
+	EDIT_STATE_ADDLAYER,
 };
 
 namespace Ogre
 {
 	class Terrain;
+	class XavierTerrainEditor;	
 }
 
 /**
@@ -52,38 +54,31 @@ public:
 	 * \param evt 
 	 * \return 
 	 */
-	virtual bool	frameStarted(const Ogre::FrameEvent& evt);
+	virtual bool				frameStarted(const Ogre::FrameEvent& evt);
 		
 	/**
 	 *
 	 * \param evt 
 	 * \return 
 	 */
-	virtual bool	frameRenderingQueued(const Ogre::FrameEvent& evt);
+	virtual bool				frameRenderingQueued(const Ogre::FrameEvent& evt);
 
 	/**
 	 *
 	 * \param evt 
 	 * \return 
 	 */
-	virtual bool	frameEnded(const Ogre::FrameEvent& evt);
+	virtual bool				frameEnded(const Ogre::FrameEvent& evt);
 
 public:
 	/** ÇÐ»»±à¼­×´Ì¬
 	 *
 	 * \param nState 
 	 */
-	virtual	void	changeState(int nState);
+	virtual	void				changeState(int nState);
 
-	/**
-	 *
-	 * \param terrain 
-	 * \param vPos 
-	 * \param fElapsed 
-	 */
-	virtual	void	execturTerrain(Ogre::Terrain* terrain, const Ogre::Vector3& vCenter, float fElapsed);
 protected:
-	int				m_nState;
+	int							m_nState;
 };
 
 #endif

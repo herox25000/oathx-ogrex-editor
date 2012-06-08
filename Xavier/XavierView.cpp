@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Xavier.h"
+#include "MainFrm.h"
 #include "XavierDoc.h"
 #include "XavierView.h"
 #include "XavierFrameContext.h"
@@ -314,6 +315,7 @@ CXavierDoc* CXavierView::GetDocument() const
 void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_bLMouseDown = TRUE;
+
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -390,11 +392,6 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 					float fScreenY = (float)point.y / (float)(rc.Height());
 					
 					m_pDecalCursor->invalid(pCamera, fScreenX, fScreenY);
-
-					if (m_bLMouseDown)
-					{
-						m_pFrameContext->changeState(EDIT_STATE_PAINT);
-					}
 				}
 			}
 		}

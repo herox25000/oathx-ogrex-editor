@@ -4,6 +4,8 @@
 
 namespace Ogre
 {
+	class Terrain;
+
 	/**
 	* \ingroup : Xavier
 	*
@@ -35,5 +37,19 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~XavierTerrainEditor();
+
+		/** ÃÌº”ªÊ÷∆≤„
+		 *
+		 * \param nID 
+		 * \param texture 
+		 * \param normal 
+		 * \param fWorldSize 
+		 * \return 
+		 */
+		virtual	int					addLayer( const String& texture,  const String& normal, 
+			float fWorldSize);
+
+	protected:
+		Terrain*					m_pTerrain;
 	};
 }
