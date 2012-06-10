@@ -4,7 +4,7 @@
 #include "Resource.h"
 #include "Xavier.h"
 #include "MainFrm.h"
-#include "OgreSSSDK.h"
+#include "XavierAppEditor.h"
 
 
 using namespace Ogre;
@@ -108,17 +108,17 @@ LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 		m_wFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
 		
 		// 获取系统实例
-		System* pSystem = System::getSingletonPtr();
+		XavierEditorManager* pMgr = XavierEditorManager::getSingletonPtr();
 		
 		/*
 		* 遍历所有创建的编辑工具
 		*/
-		int iCount = pSystem->getServerCount();
-		for (int i=0; i<iCount; i++)
+		VEditorIter vector_editor = pMgr->getEditorIter();
+		for (VEditorIter::iterator it=vector_editor.begin();
+			it!=vector_editor.end(); it++)
 		{
-			Server* pServer = pSystem->getServer(i);
-			if (pServer)
-				m_wFileView.InsertItem(_T(pServer->getTypeName().c_str()), 0, 0, hRoot);
+			if ((*it) != NULL)
+				m_wFileView.InsertItem(_T((*it)->getTypeName().c_str()), 0, 0, hRoot);
 		}
 
 		m_wFileView.Expand(hRoot, TVE_EXPAND);
@@ -130,23 +130,6 @@ LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 	::SendMessage(pMainFrame->GetActiveView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
 
 	return 0;
-}
-
-/**
- *
- * \param args 
- * \return 
- */
-bool	CFileView::OnXMLSerializeCreated(const Ogre::EventArgs& args)
-{
-	// 发送创建完成消息到渲染窗口
-	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
-	if (pMainFrame != NULL)
-	{
-		::SendMessage(pMainFrame->GetActiveView()->m_hWnd, WM_CREATE_FNISHED, NULL, NULL);
-	}
-	
-	return true;
 }
 
 /** VIEW 窗口尺寸改变

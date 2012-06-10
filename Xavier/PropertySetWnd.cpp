@@ -3,6 +3,7 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "Xavier.h"
+#include "XavierAppEditor.h"
 
 using namespace Ogre;
 
@@ -136,29 +137,35 @@ void	CPropertySetWnd::OnSize(UINT nType, int cx, int cy)
  * \param lpszHelp 
  * \return 
  */
-//CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
-//																	   LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp)
-//{
-//	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
-//	if (pGroup != NULL)
-//	{
-//		CMFCPropertyGridColorProperty* gp = new CMFCPropertyGridColorProperty(
-//			lpszGroupName, 
-//			dwColour, 
-//			NULL, 
-//			lpszHelp
-//			);
-//		gp->EnableOtherButton(_T("其他..."));
-//		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
-//		
-//		pGroup->Expand();
-//		pGroup->AddSubItem(gp);
-//		
-//		return pGroup;
-//	}
-//
-//	return NULL;
-//}
+CMFCPropertyGridProperty*	CPropertySetWnd::CreateColourValueProperty(DWORD dwColour, float fAlpha, 
+																	   LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
+	if (pGroup != NULL)
+	{
+		CMFCPropertyGridColorProperty* gp = new CMFCPropertyGridColorProperty(
+			"RGB", 
+			dwColour, 
+			NULL, 
+			lpszHelp
+			);
+		gp->EnableOtherButton(_T("其他..."));
+		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
+		
+		CMFCPropertyGridProperty* al = new CMFCPropertyGridProperty("alpha", 
+			(_variant_t)fAlpha, 
+			NULL,
+			NULL);
+
+		pGroup->Expand();
+		pGroup->AddSubItem(gp);
+		pGroup->AddSubItem(al);
+		
+		return pGroup;
+	}
+
+	return NULL;
+}
 
 /**
  *
@@ -232,22 +239,92 @@ void	CPropertySetWnd::OnSize(UINT nType, int cx, int cy)
 
 /**
  *
+ */
+void	CPropertySetWnd::ClearProperty()
+{
+	// 设置字体
+	SetPropListFont();
+
+	// 清空原有属性
+	m_wPropList.RemoveAll();
+	m_wPropList.EnableHeaderCtrl(FALSE);
+	m_wPropList.EnableDescriptionArea();
+	m_wPropList.SetVSDotNetLook();
+	m_wPropList.MarkModifiedProperties();
+}
+
+/**
+ *
+ * \param pTool 
+ */
+void	CPropertySetWnd::CreateToolProperty(XavierEditor* pTool)
+{
+	// 获取属性迭代器
+	HashPropertyIter hash_property_iter = pTool->getHashPropertyIter();
+	
+	// 创建属性列表
+	for (HashPropertyIter::iterator it=hash_property_iter.begin();
+		it!=hash_property_iter.end(); it++)
+	{
+		String name = it->second->getName();
+
+		switch (it->second->getType())
+		{
+		case PVT_COLOUR:
+			{
+				// 转换颜色
+				ColourValue clr = any_cast<ColourValue>(it->second->getValue());
+
+				ARGB argb = clr.getAsARGB();
+				m_wPropList.AddProperty(CreateColourValueProperty(argb, clr.a, name.c_str(), name.c_str(), 
+					it->second->getDescribe().c_str()));
+			}
+			break;
+		}
+	}
+
+	m_wPropList.ExpandAll();
+}
+
+/**
+ *
  * \param wParam 
  * \param lParam 
  * \return 
  */
 LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 {
-	//wmSelectEvent* evt = (wmSelectEvent*)(wParam);
-	//if (evt != NULL)
-	//{
-	//	BaseEditor* pSelect = AppEdit::getSingletonPtr()->getEditor(evt->Name);
-	//	if (m_pSelectEditor != pSelect)
-	//	{
-	//		m_pSelectEditor = pSelect;
-	//		TKLogEvent("已选择编辑器 " + m_pSelectEditor->getTypeName());
-	//	}
-	//}
+	wmSelectEvent* evt = (wmSelectEvent*)(wParam);
+	if (evt != NULL)
+	{
+		// 后去选择的编辑器
+		XavierEditor* pSelectTool = XavierEditorManager::getSingleton().getTool(
+			evt->Name
+			);
+		if (pSelectTool)
+		{
+			// 获取当前选择的编辑器
+			XavierEditor* pCurrentTool = XavierEditorManager::getSingleton().getCurrentTool();
+			if (pCurrentTool != pSelectTool)
+			{
+				XavierEditorManager::getSingleton().setCurrentTool(
+					pSelectTool
+					);
+				
+				// 清空属性
+				ClearProperty();
+
+				// 创建编辑工具属性
+				CreateToolProperty(pSelectTool);
+			}
+		}
+		//BaseEditor* pSelect = AppEdit::getSingletonPtr()->getEditor(evt->Name);
+		//if (m_pSelectEditor != pSelect)
+		//{
+		//	m_pSelectEditor = pSelect;
+		//	TKLogEvent("已选择编辑器 " + m_pSelectEditor->getTypeName());
+		//}
+	}
 
 	//if (m_pSelectEditor != NULL)
 	//{

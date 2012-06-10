@@ -30,7 +30,7 @@ namespace Ogre
 		 * \param typeName 
 		 * \return 
 		 */
-		XavierTerrainEditor(const String& typeName);
+		XavierTerrainEditor(const String& typeName, const String& propertySetFile);
 
 		/**
 		 *

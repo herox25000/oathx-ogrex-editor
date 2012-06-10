@@ -96,12 +96,6 @@ public:
 	 */
 	virtual ~CFileView();
 
-	/**
-	 *
-	 * \param args 
-	 */
-	afx_msg bool			OnXMLSerializeCreated(const Ogre::EventArgs& args);
-
 protected:
 	/**
 	 *

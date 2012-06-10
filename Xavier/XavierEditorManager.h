@@ -5,7 +5,9 @@
 
 namespace Ogre
 {
-	typedef HashMap<String, XavierEditor*>	HashXavierEditor;
+	typedef std::vector<XavierEditor*>				VXavierEditor;
+	typedef HashMap<String, XavierEditorFactory*>	HashXavierEditorFactory;
+	typedef VectorIterator<VXavierEditor>			VEditorIter;
 
 	/**
 	* \ingroup : Xavier
@@ -52,6 +54,63 @@ namespace Ogre
 		 */
 		virtual ~XavierEditorManager(void);
 
+		/**
+		 *
+		 * \param pFactory 
+		 */
+		/**
+		 *
+		 * \param pFactory 
+		 */
+		virtual void					registerEditorFactory(XavierEditorFactory* pFactory);
+
+		/**
+		 *
+		 * \param typeName 
+		 * \return 
+		 */
+		virtual	XavierEditorFactory*	getEditorFactory(const String& typeName);
+
+		/**
+		 *
+		 * \param pFactory 
+		 */
+		virtual	void					unregisterEditorFactory(XavierEditorFactory* pFactory);
+
+		/**
+		 *
+		 */
+		virtual	void					clearEditorFactory();
+
+		/**
+		 *
+		 * \param pTool 
+		 */
+		virtual	void					addTool(XavierEditor* pTool);
+
+		/**
+		 *
+		 * \param name 
+		 */
+		virtual	XavierEditor*			getTool(const String& name);
+
+		/**
+		 *
+		 * \param pTool 
+		 */
+		virtual	void					delTool(XavierEditor* pTool);
+
+		/**
+		 *
+		 */
+		virtual	void					clearTool();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual VEditorIter				getEditorIter();
+
 		/** ¼ÓÔØ±à¼­Æ÷
 		 *
 		 * \param name 
@@ -59,12 +118,31 @@ namespace Ogre
 		 */
 		virtual	bool					load(const String& name);
 
+		/**
+		 *
+		 */
+		virtual	void					update();
+
 		/** Ð¶ÔØ±à¼­Æ÷
 		 *
 		 */
 		virtual	void					unload();
+		
+		/**
+		 *
+		 * \param typeName 
+		 * \return 
+		 */
+		virtual	void					setCurrentTool(XavierEditor* pTool);
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	XavierEditor*			getCurrentTool() const;
 	protected:
-		HashXavierEditor				m_HashEditor;
+		HashXavierEditorFactory			m_HashEditorFactory;
+		VXavierEditor					m_vEditor;
+		XavierEditor*					m_pCurrentTool;
 	};
 }

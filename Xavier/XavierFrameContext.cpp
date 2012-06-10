@@ -1,10 +1,7 @@
 #include "StdAfx.h"
 #include "MainFrm.h"
+#include "XavierAppEditor.h"
 #include "XavierFrameContext.h"
-#include "XavierDecalCursor.h"
-#include "XavierTerrainEditor.h"
-#include "OgreTSSDK.h"
-#include "OgreSSSDK.h"
 
 namespace Ogre
 {

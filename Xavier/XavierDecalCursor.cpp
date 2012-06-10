@@ -1,6 +1,6 @@
 #include "StdAfx.h"
+#include "XavierAppEditor.h"
 #include "XavierDecalCursor.h"
-#include "OgreTSSDK.h"
 
 namespace Ogre
 {

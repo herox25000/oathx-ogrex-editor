@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "Xavier.h"
+#include "XavierAppEditor.h"
 #include "TerrainToolView.h"
 
 IMPLEMENT_DYNAMIC(CTerrainToolView, CDockablePane)
