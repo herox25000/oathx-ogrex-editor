@@ -41,7 +41,7 @@ public:
 
 namespace Ogre
 {
-
+	class XavierEditor;
 }
 
 /**
@@ -100,14 +100,24 @@ protected:
 	CComboBox						m_wObjectCombo;
 	CPropertiesToolBar				m_wToolBar;
 	CMFCPropertyGridCtrl			m_wPropList;
-	//Ogre::BaseEditor*				m_pSelectEditor;
-
+	
 public:
 	/**
 	 *
 	 * \return 
 	 */
 	virtual ~CPropertySetWnd();
+	
+	/**
+	 *
+	 */
+	virtual	void					ClearProperty();
+
+	/**
+	 *
+	 * \param pTool 
+	 */
+	virtual	void					CreateToolProperty(Ogre::XavierEditor* pTool);
 
 	/** ´´½¨ÑÕÉ«ÊìÏ¤
 	 *
@@ -116,8 +126,8 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	/*CMFCPropertyGridProperty*		CreateColourValueProperty(DWORD dwColour, UINT dwAlpha, 
-		LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);*/
+	CMFCPropertyGridProperty*		CreateColourValueProperty(DWORD dwColour, float fAlpha, 
+		LPCTSTR lpszGroupName, LPCTSTR lpszName,  LPCTSTR lpszHelp);
 
 	/**
 	 *

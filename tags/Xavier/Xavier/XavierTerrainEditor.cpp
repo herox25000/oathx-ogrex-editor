@@ -1,6 +1,7 @@
 #include "stdafx.h"
+#include "XavierAppEditor.h"
 #include "XavierTerrainEditor.h"
-#include "OgreTSSDK.h"
+
 
 namespace Ogre
 {
@@ -9,7 +10,8 @@ namespace Ogre
 	 * \param typeName 
 	 * \return 
 	 */
-	XavierTerrainEditor::XavierTerrainEditor(const String& typeName) : XavierEditor(typeName), m_pTerrain(0)
+	XavierTerrainEditor::XavierTerrainEditor(const String& typeName, const String& propertySetFile) 
+		: XavierEditor(typeName, propertySetFile), m_pTerrain(0)
 	{
 
 	}

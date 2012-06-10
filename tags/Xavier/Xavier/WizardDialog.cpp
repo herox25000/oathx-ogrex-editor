@@ -3,9 +3,7 @@
 #include "WizardDialog.h"
 #include "FolderDialog.h"
 #include "MainFrm.h"
-#include "OgreSSSDK.h"
-#include "OgreTSSDK.h"
-
+#include "XavierAppEditor.h"
 
 IMPLEMENT_DYNAMIC(CWizardDialog, CDialog)
 
@@ -108,11 +106,14 @@ void	CWizardDialog::OnBnClickedOk()
 	}
 	else
 	{
-		System::getSingleton().clearServer();
-		System::getSingleton().clearPlugin();
+		// 清空所有编辑工具
+		XavierEditorManager::getSingleton().clearTool();
 		
-		ServerFactory* pWorldSpaceFactory = System::getSingleton().getServerFactory(WorldSpaceServerFactory::FactoryTypeName);
-		if (pWorldSpaceFactory != NULL)
+		// 世界空间编辑工具
+		XavierEditorFactory* pWorldSpaceFactory = XavierEditorManager::getSingleton().getEditorFactory(
+			XavierWorldSpaceEditorFactory::FACTORY_NAME
+			);
+		if (pWorldSpaceFactory)
 		{
 			SWorldSpaceServerAdp adp;
 			adp.typeName			= SERVER_WORLDSPACE;
@@ -120,11 +121,14 @@ void	CWizardDialog::OnBnClickedOk()
 			adp.clrAmbientLight		= ColourValue(0.5, 0.5, 0.5, 0.5);
 			adp.typeMask			= GetSceneTypeMask(m_typeMask);
 			
-			System::getSingleton().addServer(pWorldSpaceFactory->createServer(adp));
+			XavierEditorManager::getSingleton().addTool(pWorldSpaceFactory->create(adp));
 		}
 
-		ServerFactory* pCameraFacotry = System::getSingleton().getServerFactory(CameraServerFactory::FactoryTypeName);
-		if (pCameraFacotry != NULL)
+		// 摄像机编辑工具
+		XavierEditorFactory* pCameraFactory = XavierEditorManager::getSingleton().getEditorFactory(
+			XavierCameraEditorFactory::FACTORY_NAME
+			);
+		if (pCameraFactory)
 		{
 			SSdkCameraServerAdp adp;
 			adp.depServerName		= SERVER_WORLDSPACE;
@@ -138,22 +142,28 @@ void	CWizardDialog::OnBnClickedOk()
 			adp.fYaw				= 0;
 			adp.fPitch				= 0;
 
-			System::getSingleton().addServer(pCameraFacotry->createServer(adp));			
+			XavierEditorManager::getSingleton().addTool(pCameraFactory->create(adp));
 		}
 
-		ServerFactory* pViewportFactory = System::getSingleton().getServerFactory(ViewportServerFactory::FactoryTypeName);
-		if (pViewportFactory != NULL)
+		// 视口编辑器
+		XavierEditorFactory* pViewportFactory = XavierEditorManager::getSingleton().getEditorFactory(
+			XavierViewportEditorFactory::FACTORY_NAME
+			);
+		if (pViewportFactory)
 		{
 			SViewportServerAdp adp;
 			adp.depServerName		= SERVER_SDKCAMERA;
 			adp.typeName			= SERVER_SDKVIEWPORT;
 			adp.background			= ColourValue(0,0,0,0);
 
-			System::getSingleton().addServer(pViewportFactory->createServer(adp));
+			XavierEditorManager::getSingleton().addTool(pViewportFactory->create(adp));
 		}
 
-		ServerFactory* pBaseGridFactory = System::getSingleton().getServerFactory(BaseGridServerFactory::FactoryTypeName);
-		if (pBaseGridFactory != NULL)
+		// 基本线格编辑器
+		XavierEditorFactory* pBaseGridFactory = XavierEditorManager::getSingleton().getEditorFactory(
+			XavierBaseGridEditorFactory::FACTORY_NAME
+			);
+		if (pBaseGridFactory)
 		{
 			SBaseGridServerAdp adp;
 			adp.depServerName		= SERVER_WORLDSPACE;
@@ -162,51 +172,51 @@ void	CWizardDialog::OnBnClickedOk()
 			adp.fWidth				= 32;
 			adp.fDepth				= 32;
 
-			System::getSingleton().addServer(pBaseGridFactory->createServer(adp));
+			XavierEditorManager::getSingleton().addTool(pBaseGridFactory->create(adp));		
 		}
 
-
-		// 加载地形插件
-#ifdef _DEBUG
-		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
-#else
-		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
-#endif
-		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory("Terrain/TerrainGroupServerFactory");
-		if (pTerrainGroupFactory != NULL)
-		{
-			STerrainGroupServerAdp adp;
-			adp.depServerName			= SERVER_WORLDSPACE;
-			adp.typeName				= SERVER_TERRAIN_GROUP;
-			adp.fWorldSize				= 1200.0f;
-			adp.nTerrainSize			= 513;
-			adp.vOrigin					= Vector3::ZERO;
-			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
-			adp.fCompositeMapDistance	= 3000;
-			adp.fMaxPixelError			= 8;
-			adp.vLightMapDirection		= Vector3(0,0,0);
-			
-			System::getSingleton().addServer(pTerrainGroupFactory->createServer(adp));
-		}
-
-		ServerFactory* pTerrainPageFactory = System::getSingleton().getServerFactory("Terrain/TerrainPageServerFactory");
-		if (pTerrainPageFactory != NULL)
-		{
-			STerrainPageServerAdp adp;
-			adp.depServerName			= SERVER_TERRAIN_GROUP;
-			adp.typeName				= SERVER_TERRAIN_PAGE;
-			adp.nPageX					= 0;
-			adp.nPageY					= 0;
-			adp.nMinBatchSize			= 33;
-			adp.nMaxBatchSzie			= 65;
-			adp.diffuseTexture			= "dirt_grayrocky_diffusespecular.dds";
-			adp.normalheightTexture		= "dirt_grayrocky_normalheight.dds";
-			adp.fLayerWorldSize			= 80;
-
-			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
-		}
-
-
+//
+//		// 加载地形插件
+//#ifdef _DEBUG
+//		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
+//#else
+//		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
+//#endif
+//		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory("Terrain/TerrainGroupServerFactory");
+//		if (pTerrainGroupFactory != NULL)
+//		{
+//			STerrainGroupServerAdp adp;
+//			adp.depServerName			= SERVER_WORLDSPACE;
+//			adp.typeName				= SERVER_TERRAIN_GROUP;
+//			adp.fWorldSize				= 1200.0f;
+//			adp.nTerrainSize			= 513;
+//			adp.vOrigin					= Vector3::ZERO;
+//			adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
+//			adp.fCompositeMapDistance	= 3000;
+//			adp.fMaxPixelError			= 8;
+//			adp.vLightMapDirection		= Vector3(0,0,0);
+//			
+//			System::getSingleton().addServer(pTerrainGroupFactory->createServer(adp));
+//		}
+//
+//		ServerFactory* pTerrainPageFactory = System::getSingleton().getServerFactory("Terrain/TerrainPageServerFactory");
+//		if (pTerrainPageFactory != NULL)
+//		{
+//			STerrainPageServerAdp adp;
+//			adp.depServerName			= SERVER_TERRAIN_GROUP;
+//			adp.typeName				= SERVER_TERRAIN_PAGE;
+//			adp.nPageX					= 0;
+//			adp.nPageY					= 0;
+//			adp.nMinBatchSize			= 33;
+//			adp.nMaxBatchSzie			= 65;
+//			adp.diffuseTexture			= "dirt_grayrocky_diffusespecular.dds";
+//			adp.normalheightTexture		= "dirt_grayrocky_normalheight.dds";
+//			adp.fLayerWorldSize			= 80;
+//
+//			System::getSingleton().addServer(pTerrainPageFactory->createServer(adp));
+//		}
+//
+//
 		CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 		if (pMainFrame != NULL)
 		{

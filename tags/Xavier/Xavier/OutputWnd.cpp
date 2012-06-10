@@ -32,7 +32,8 @@ END_MESSAGE_MAP()
  */
 void	COutputWnd::OutputDebugMessage(const LPCTSTR& lpszMessage, COLORREF clr)
 {
-	m_wDebug.AddString(lpszMessage, clr);
+	if (m_wDebug.GetSafeHwnd())
+		m_wDebug.AddString(lpszMessage, clr);
 }
 
 /**

@@ -3,11 +3,7 @@
 #include "MainFrm.h"
 #include "XavierDoc.h"
 #include "XavierView.h"
-#include "XavierFrameContext.h"
-#include "XavierDecalCursor.h"
-#include "OgreSSSDK.h"
-#include "OgreTSSDK.h"
-#include "XavierEditorManager.h"
+#include "XavierAppEditor.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -130,26 +126,26 @@ LRESULT	CXavierView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 
 	// to do:
 
-	WorldSpaceServer* pWorldServer = static_cast<WorldSpaceServer*>(
-		System::getSingleton().getServer(SERVER_WORLDSPACE)
-		);
-	if (pWorldServer)
-	{
-		TerrainGroupServer* pTerrainServer = static_cast<TerrainGroupServer*>(
-			System::getSingleton().getServer(SERVER_TERRAIN_GROUP)
-			);
+	//WorldSpaceServer* pWorldServer = static_cast<WorldSpaceServer*>(
+	//	System::getSingleton().getServer(SERVER_WORLDSPACE)
+	//	);
+	//if (pWorldServer)
+	//{
+	//	TerrainGroupServer* pTerrainServer = static_cast<TerrainGroupServer*>(
+	//		System::getSingleton().getServer(SERVER_TERRAIN_GROUP)
+	//		);
 
-		m_pDecalCursor = new XavierDecalCursor(pWorldServer, pTerrainServer);
-		m_pDecalCursor->setDecalCursor(0, 0, 1);
-	}
+	//	m_pDecalCursor = new XavierDecalCursor(pWorldServer, pTerrainServer);
+	//	m_pDecalCursor->setDecalCursor(0, 0, 1);
+	//}
 
-	BaseGridServer* pGridServer = static_cast<BaseGridServer*>(
-		System::getSingleton().getServer(SERVER_BASEGRID)
-		);
-	if (pGridServer)
-	{
-		pGridServer->hide();
-	}
+	//BaseGridServer* pGridServer = static_cast<BaseGridServer*>(
+	//	System::getSingleton().getServer(SERVER_BASEGRID)
+	//	);
+	//if (pGridServer)
+	//{
+	//	pGridServer->hide();
+	//}
 
 	return 0;
 }
@@ -167,8 +163,8 @@ void	CXavierView::OnSize(UINT nType, int cx, int cy)
 	CRect rcView;
 	GetClientRect(&rcView);
 
-	ViewportServer* pSdkViewport = static_cast<ViewportServer*>(
-		System::getSingleton().getServer(SERVER_SDKVIEWPORT)
+	XavierViewportEditor* pSdkViewport = static_cast<XavierViewportEditor*>(
+		XavierEditorManager::getSingleton().getTool(SERVER_SDKVIEWPORT)
 		);
 	if (pSdkViewport != NULL)
 	{
@@ -188,7 +184,7 @@ void	CXavierView::OnTimer(UINT_PTR nIDEvent)
 	case IDT_RENDERTIME:
 		{	
 			if (m_dwState == ST_VIEW_UPDATE)
-				System::getSingletonPtr()->update();
+				XavierEditorManager::getSingletonPtr()->update();
 		}
 		break;
 	}
@@ -367,7 +363,21 @@ void	CXavierView::OnRButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CameraServer* pSdkCamera = static_cast<CameraServer*>(
+	XavierCameraEditor* pCameraEditor = static_cast<XavierCameraEditor*>(
+		XavierEditorManager::getSingleton().getTool(SERVER_SDKCAMERA)
+		);
+	if (pCameraEditor)
+	{
+		if (m_bRMouseDown)
+		{
+			CPoint cRel = point - m_cLMouseDown;
+			pCameraEditor->OnMouseMove(Vector2(cRel.x, cRel.y));
+
+			m_cLMouseDown = point;			
+		}
+	}
+
+	/*CameraServer* pSdkCamera = static_cast<CameraServer*>(
 		System::getSingleton().getServer(SERVER_SDKCAMERA)
 		);
 	if (pSdkCamera != NULL)
@@ -400,7 +410,7 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 				}
 			}
 		}
-	}
+	}*/
 
 	CView::OnMouseMove(nFlags, point);
 }
@@ -414,12 +424,12 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
  */
 BOOL CXavierView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	CameraServer* pSdkCamera = static_cast<CameraServer*>(
-		System::getSingleton().getServer(SERVER_SDKCAMERA)
+	XavierCameraEditor* pCameraEditor = static_cast<XavierCameraEditor*>(
+		XavierEditorManager::getSingleton().getTool(SERVER_SDKCAMERA)
 		);
-	if (pSdkCamera != NULL)
+	if (pCameraEditor)
 	{
-		pSdkCamera->injectMouseWheel(zDelta*5);
+		pCameraEditor->OnMouseWheel(zDelta*5, Vector2(pt.x, pt.y));
 	}
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
@@ -469,6 +479,5 @@ void CXavierView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
  */
 void CXavierView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }

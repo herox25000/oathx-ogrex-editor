@@ -13,7 +13,15 @@
 #define XAVIER_WORLDSPACE		"Xavier/WorldSpaceServer"
 #define XAVIER_SDKCAMERA		"Xavier/CameraServer"
 
-#define XML_EDITOR_NAME			"editor"
-#define XML_TYPE_NAME			"type"
+#define XML_FACTORY_NAME		"factory"
+#define XML_TYPE_NAME			"typename"
+#define XML_ATT_FILE			"file"
+#define XML_ATT_PROPERTYSET		"PropertySet"
+#define XML_ATT_PROPERTY		"property"
+#define XML_ATT_TYPE			"type"
+#define XML_ATT_NAME			"name"
+#define XML_ATT_VALUE			"value"
+#define XML_ATT_DESCRIBE		"describe"
+#define XML_ATT_WRITE			"write"
 
 #endif
