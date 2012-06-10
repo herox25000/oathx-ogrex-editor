@@ -111,6 +111,31 @@ void CTerrainPageDialog::OnBnClickedOk()
 
 		XavierEditorManager::getSingleton().addTool(pTerrainPageFactory->create(adp));
 	}
+	
+	// 创建地形贴花光标
+	XavierEditor* pWorldSpaceTool = XavierEditorManager::getSingleton().getTool(
+		SERVER_WORLDSPACE
+		);
+	if (pWorldSpaceTool)
+	{
+		XavierEditor* pTerrainTool = XavierEditorManager::getSingleton().getTool(
+			SERVER_TERRAIN_GROUP
+			);
+		if (pTerrainTool)
+		{
+			// 世界服务
+			WorldSpaceServer*	pWorld = static_cast<WorldSpaceServer*>(pWorldSpaceTool->getServer());
+			
+			// 地形服务
+			TerrainGroupServer*	pGroup = static_cast<TerrainGroupServer*>(
+				pTerrainTool->getServer()
+				);
+
+			// 创建地形贴花光标
+			new XavierDecalCursor(pWorld, 
+				pGroup);
+		}
+	}
 
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame != NULL)

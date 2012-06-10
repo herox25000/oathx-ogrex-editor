@@ -40,6 +40,19 @@ namespace Ogre
 
 	/**
 	 *
+	 * \return 
+	 */
+	Camera*			XavierCameraEditor::getCamera()
+	{
+		CameraServer* pCamerServer = static_cast<CameraServer*>(m_pServer);
+		if (pCamerServer)
+			return pCamerServer->getCamera();
+
+		return NULL;
+	}
+
+	/**
+	 *
 	 * \param vPos 
 	 * \return 
 	 */

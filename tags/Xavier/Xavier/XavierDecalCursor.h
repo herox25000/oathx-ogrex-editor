@@ -30,22 +30,6 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	/**
-	* \ingroup : Xavier
-	*
-	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008 & ogre1.8
-	*
-	* \VERSION : 1.0
-	*
-	* \@date   : 2012-06-09
-	*
-	* \Author  : lp
-	*
-	* \Desc    : 
-	*
-	* \bug     : 
-	*
-	*/
 	class XavierDecalCursor : public Singleton<XavierDecalCursor>
 	{
 	public:

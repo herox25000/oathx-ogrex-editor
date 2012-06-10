@@ -48,7 +48,6 @@ protected:
 	BOOL						m_bRMouseDown;
 	CPoint						m_cLMouseDown;
 	CPoint						m_cLMouseLost;
-
 protected:
 	Ogre::XavierFrameContext*	m_pFrameContext;
 	Ogre::XavierDecalCursor*	m_pDecalCursor;
@@ -238,6 +237,12 @@ public:
 	 * \param nFlags 
 	 */
 	afx_msg void				OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	/**
+	 *
+	 * \param pNewWnd 
+	 */
+	afx_msg void				OnKillFocus(CWnd* pNewWnd);
 };
 
 #ifndef _DEBUG

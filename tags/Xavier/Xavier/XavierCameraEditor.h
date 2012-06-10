@@ -42,6 +42,12 @@ namespace Ogre
 
 		/**
 		 *
+		 * \return 
+		 */
+		virtual Camera*				getCamera();
+
+		/**
+		 *
 		 * \param vPos 
 		 * \return 
 		 */
