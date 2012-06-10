@@ -12,7 +12,7 @@ material Editor/Grid
 
 			texture_unit
 			{
-				texture				Grid.png
+				texture				decal.png
 				tex_address_mode	wrap
 				filtering			anisotropic
 				max_anisotropy		8
@@ -53,4 +53,22 @@ material Editor/GridLine3D
          specular 		vertexcolour
       }
    }	
+}
+
+material Editor/TerrainMeshDecal
+{
+	technique
+	{
+		pass
+		{
+			scene_blend 	alpha_blend
+			depth_write 	off
+	
+			texture_unit
+			{
+				texture decal.png
+				scale 1 1
+			}
+		}
+	}
 }
