@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PropertySet typename="">
+	<!--
+		enum {
+		PVT_SHORT			= 0,
+		PVT_UNSIGNED_SHORT	= 1,
+		PVT_INT				= 2,
+		PVT_UNSIGNED_INT	= 3,
+		PVT_LONG			= 4, 
+		PVT_UNSIGNED_LONG	= 5,
+		PVT_REAL			= 6,
+		PVT_STRING			= 7,
+		PVT_VECTOR2			= 8, 
+		PVT_VECTOR3			= 9,
+		PVT_VECTOR4			= 10, 
+		PVT_COLOUR			= 11,
+		PVT_BOOL			= 12,
+		PVT_QUATERNION		= 13, 
+		PVT_MATRIX3			= 14,
+		PVT_MATRIX4			= 15, 
+		PVT_POLYGONMODE		= 16,
+
+		PVT_UNKNOWN			= 999
+	};
+	-->
+	<property type="11" name="BackgroundColour" value="1 1 1 1" write="true" describe="设置视口背景颜色"/>
+</PropertySet>

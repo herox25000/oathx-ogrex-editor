@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Xavier>
+	<PropertySet typename="Xavier/XavierWorldSpaceEditorFactory" file="./config/PYWorldSpace.xml"/>
+	<PropertySet typename="Xavier/XavierCameraEditorFactory" file="./config/PYCamera.xml"/>
+	<PropertySet typename="Xavier/XavierViewportEditorFactory" file="./config/PYViewport.xml"/>
+	<PropertySet typename="Xavier/XavierBaseGridEditorFactory" file="./config/PYBaseGrid.xml"/>
+	<PropertySet typename="Xavier/XavierTerrainEditorFactory" file="./config/PYTerrainGroup.xml"/>
+	<PropertySet typename="Xavier/XavierTerrainPageEditorFactory" file="./config/PYTerrainPage.xml"/>
+</Xavier>
