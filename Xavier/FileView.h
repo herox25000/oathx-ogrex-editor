@@ -1,7 +1,8 @@
 #pragma once
 
 #include "ViewTree.h"
-#include "ServerFactoryDialog.h"
+#include "TerrainDialog.h"
+#include "TerrainPageDialog.h"
 
 //////////////////////////////////////////////////////////////////////////
 namespace Ogre
@@ -87,7 +88,8 @@ protected:
 
 	CViewTree				m_wFileView;
 	CImageList				m_FileViewImages;
-	CServerFactoryDialog	m_wServerFactoryDlg;
+	CTerrainDialog			m_wTerrainDlg;
+	CTerrainPageDialog		m_wTerrainPageDlg;
 	CFileViewToolBar		m_wToolBar;
 public:
 	/**
@@ -174,5 +176,15 @@ protected:
 	afx_msg void			OnSetFocus(CWnd* pOldWnd);
 
 	DECLARE_MESSAGE_MAP()
+public:
+	/**
+	 *
+	 */
+	afx_msg void			OnCreateTerrainGroup();
+
+	/**
+	 *
+	 */
+	afx_msg void			OnCreateTerrainPage();
 };
 

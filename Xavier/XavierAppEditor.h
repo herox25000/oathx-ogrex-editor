@@ -14,6 +14,7 @@
 #include "XavierViewportEditor.h"
 #include "XavierBaseGridEditor.h"
 #include "XavierTerrainEditor.h"
+#include "XavierTerrainPageEditor.h"
 #include "XavierEditorManager.h"
 
 #endif

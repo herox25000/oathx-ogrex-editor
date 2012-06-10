@@ -408,6 +408,41 @@ LRESULT	CPropertySetWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
  */
 LRESULT	CPropertySetWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 {
+	XavierEditor* pSelectTool = XavierEditorManager::getSingleton().getCurrentTool();
+	if (pSelectTool == NULL)
+		return 0;
+
+	CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
+	if (pProperty != NULL)
+	{
+		// 类型名称
+		String typeName(_T(pProperty->GetName()));
+		
+		// 变量类型
+		COleVariant oldValue = pProperty->GetValue();
+		switch( oldValue.vt )
+		{
+		case VT_I4:
+			{
+				if (typeName == "RGB")
+				{
+					String name = pProperty->GetParent()->GetName();
+					
+					ColourValue clrValue;
+					clrValue.setAsABGR(oldValue.uintVal);
+					// 设置变量
+					pSelectTool->getServer()->setPropertyValue(name, 
+						clrValue);
+				}
+			}
+			break;
+		case VT_BSTR:
+			{
+				
+			}
+			break;
+		}
+	}
 	//if (m_pSelectEditor != NULL)
 	//{
 	//	CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);

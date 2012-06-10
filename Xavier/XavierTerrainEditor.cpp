@@ -10,10 +10,21 @@ namespace Ogre
 	 * \param typeName 
 	 * \return 
 	 */
-	XavierTerrainEditor::XavierTerrainEditor(const String& typeName, const String& propertySetFile) 
+	XavierTerrainEditor::XavierTerrainEditor(const String& typeName, const STerrainGroupServerAdp& adp, const String& propertySetFile) 
 		: XavierEditor(typeName, propertySetFile), m_pTerrain(0)
 	{
+		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory(
+			"Terrain/TerrainGroupServerFactory"
+			);
+		if (pTerrainGroupFactory)
+		{
+			m_pServer = pTerrainGroupFactory->createServer(adp);
+			ASSERT(m_pServer);
 
+			loadProperty();
+
+			System::getSingleton().addServer(m_pServer);
+		}
 	}
 
 	/**
@@ -22,7 +33,7 @@ namespace Ogre
 	 */
 	XavierTerrainEditor::~XavierTerrainEditor()
 	{
-
+		System::getSingleton().delServer(m_pServer);
 	}
 
 
@@ -56,5 +67,58 @@ namespace Ogre
 		}
 
 		return 5;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	const String	XavierTerrainEditorFactory::FACTORY_NAME	= "Xavier/XavierTerrainEditorFactory";
+
+	/**
+	 *
+	 * \param typeName 
+	 * \return 
+	 */
+	XavierTerrainEditorFactory::XavierTerrainEditorFactory()
+	{
+		// 加载地形插件
+#ifdef _DEBUG
+		System::getSingleton().loadPlugin("Plugin_Terrain_d.dll");
+#else
+		System::getSingleton().loadPlugin("Plugin_Terrain.dll");
+#endif
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	XavierTerrainEditorFactory::~XavierTerrainEditorFactory()
+	{
+		// 卸载地形插件
+#ifdef _DEBUG
+		System::getSingleton().unloadPlugin("Plugin_Terrain_d.dll");
+#else
+		System::getSingleton().unloadPlugin("Plugin_Terrain.dll");
+#endif
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	const String&	XavierTerrainEditorFactory::getTypeName() const
+	{
+		return XavierTerrainEditorFactory::FACTORY_NAME;
+	}
+
+	/**
+	 *
+	 * \param pNode 
+	 * \return 
+	 */
+	XavierEditor*	XavierTerrainEditorFactory::create(const SSAdp& ssadp)
+	{
+		const STerrainGroupServerAdp& adp = static_cast<const STerrainGroupServerAdp&>(ssadp);
+		return new XavierTerrainEditor(ssadp.typeName, adp, 
+			m_PropertySetFile);
 	}
 }

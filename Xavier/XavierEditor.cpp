@@ -95,6 +95,15 @@ namespace Ogre
 	{
 		return m_pServer->getHashPropertyIter();
 	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	Server*	XavierEditor::getServer() const
+	{
+		return m_pServer;
+	}
 	
 	/**
 	 *

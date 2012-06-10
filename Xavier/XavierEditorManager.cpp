@@ -170,6 +170,8 @@ namespace Ogre
 		registerEditorFactory(new XavierCameraEditorFactory());
 		registerEditorFactory(new XavierViewportEditorFactory());
 		registerEditorFactory(new XavierBaseGridEditorFactory());
+		registerEditorFactory(new XavierTerrainEditorFactory());
+		registerEditorFactory(new XavierTerrainPageEditorFactory());
 
 		TiXmlDocument* pDocument = new TiXmlDocument();
 
@@ -199,7 +201,7 @@ namespace Ogre
 					}
 				}
 
-				node = root->NextSiblingElement(XML_ATT_PROPERTYSET);
+				node = node->NextSiblingElement();
 			}
 
 		}catch(Ogre::Exception& e)

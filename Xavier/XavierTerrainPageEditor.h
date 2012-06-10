@@ -1,11 +1,11 @@
-#ifndef _____XavierViewportEditor_H
-#define _____XavierViewportEditor_H
+#ifndef _____XavierTerrainPageEditor_H
+#define _____XavierTerrainPageEditor_H
 
 #include "XavierEditor.h"
 
 namespace Ogre
 {
-	struct SViewportServerAdp;
+	struct STerrainPageServerAdp;
 
 	/**
 	* \ingroup : Xavier
@@ -23,7 +23,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class XavierViewportEditor : public XavierEditor
+	class XavierTerrainPageEditor : public XavierEditor
 	{
 	public:
 		/**
@@ -33,27 +33,14 @@ namespace Ogre
 		 * \param propertySetFile 
 		 * \return 
 		 */
-		XavierViewportEditor(const String& typeName, const SViewportServerAdp& adp, const String& propertySetFile);
+		XavierTerrainPageEditor(const String& typeName, const STerrainPageServerAdp& adp, const String& propertySetFile);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual ~XavierViewportEditor();
-
-		/**
-		 *
-		 */
-		virtual	void				windowMovedOrResized();
-
-		/**
-		 *
-		 * \param args 
-		 * \return 
-		 */
-		virtual	bool				onPropertyChanaged(const EventArgs& args);
+		virtual ~XavierTerrainPageEditor();
 	};
-
 
 	/**
 	* \ingroup : Xavier
@@ -62,7 +49,7 @@ namespace Ogre
 	*
 	* \VERSION : 1.0
 	*
-	* \@date   : 2012-06-09
+	* \@date   : 2012-06-10
 	*
 	* \Author  : lp
 	*
@@ -71,7 +58,7 @@ namespace Ogre
 	* \bug     : 
 	*
 	*/
-	class XavierViewportEditorFactory : public XavierEditorFactory
+	class XavierTerrainPageEditorFactory : public XavierEditorFactory
 	{
 	public:
 		static const String					FACTORY_NAME;
@@ -82,13 +69,13 @@ namespace Ogre
 		 * \param typeName 
 		 * \return 
 		 */
-		XavierViewportEditorFactory();
+		XavierTerrainPageEditorFactory();
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual ~XavierViewportEditorFactory();
+		virtual ~XavierTerrainPageEditorFactory();
 
 		/**
 		 *
@@ -101,7 +88,7 @@ namespace Ogre
 		 * \param pNode 
 		 * \return 
 		 */
-		virtual	XavierEditor*	create(const SSAdp& ssadp);
+		virtual	XavierEditor*	create(const SSAdp& ssadp);		
 	};
 }
 

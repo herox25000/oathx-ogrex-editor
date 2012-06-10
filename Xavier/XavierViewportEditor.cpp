@@ -20,6 +20,11 @@ namespace Ogre
 			m_pServer = pViewportFactory->createServer(adp);
 			ASSERT(m_pServer);
 			
+			// 订阅属性改变事件
+			m_pServer->subscribeEvent(PropertySet::EventValueChanged, 
+				Event::Subscriber(&XavierViewportEditor::onPropertyChanaged, this)
+				);
+
 			// 加载属性
 			loadProperty();
 
@@ -44,6 +49,31 @@ namespace Ogre
 		ViewportServer* pViewServer = static_cast<ViewportServer*>(m_pServer);
 		if (pViewServer)
 			pViewServer->windowMovedOrResized();
+	}
+
+	/**
+	 *
+	 * \param args 
+	 * \return 
+	 */
+	bool			XavierViewportEditor::onPropertyChanaged(const EventArgs& args)
+	{
+		const PropertyEventArgs& evt = static_cast<const PropertyEventArgs&>(args);
+		if (evt.pProperty != NULL)
+		{
+			ViewportServer* pViewServer = static_cast<ViewportServer*>(m_pServer);
+			if (pViewServer)
+			{
+				String name = evt.pProperty->getName();
+				if (name == "BackgroundColour")
+				{
+					ColourValue clrValue = any_cast<ColourValue>(evt.pProperty->getValue());
+					pViewServer->setBackgroundColour(clrValue);
+				}
+			}
+		}
+
+		return 0;
 	}
 	
 	//////////////////////////////////////////////////////////////////////////
