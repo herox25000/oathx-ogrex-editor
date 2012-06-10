@@ -31,6 +31,8 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_MESSAGE(WM_CREATE_FNISHED,	&CFileView::OnCreateFnished)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
+	ON_COMMAND(ID_32776, &CFileView::OnCreateTerrainGroup)
+	ON_COMMAND(ID_32777, &CFileView::OnCreateTerrainPage)
 END_MESSAGE_MAP()
 
 /** View 窗口创建
@@ -75,10 +77,12 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wToolBar.SetOwner(this);
 	m_wToolBar.SetRouteCommandsViaFrame(FALSE);
 	
-	/*
-	* 创建服务工厂对话框
-	*/
-	if (!m_wServerFactoryDlg.Create(IDD_DIALOG_SERVER))
+	// 创建地形对话框
+	if (!m_wTerrainDlg.Create(IDD_TERRAIN_DLG))
+		return -1;
+
+	// 创建地形页对话框
+	if (!m_wTerrainPageDlg.Create(IDD_DIALOG_TERRAIN_PAGE))
 		return -1;
 
 	// 调整布局
@@ -101,6 +105,9 @@ LRESULT	CFileView::OnCreateFnished(WPARAM wParam, LPARAM lParam)
 		CString sPath = pMainFrame->GetPath();
 		CString sName = pMainFrame->GetName();
 		
+		// 清空所有
+		m_wFileView.DeleteAllItems();
+
 		/*
 		*	插入文件视图跟项目
 		*/
@@ -213,25 +220,7 @@ void	CFileView::OnProperties()
  */
 void	CFileView::OnNewCreated()
 {
-	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
-	if (pMainFrame != NULL)
-	{
-		CRect rcMain;
-		pMainFrame->GetClientRect(&rcMain);
 
-		CRect rcDlg;
-		m_wServerFactoryDlg.GetClientRect(&rcDlg);
-
-		m_wServerFactoryDlg.SetWindowPos(&wndTop, rcMain.Width() / 2 - rcDlg.Width() / 2,
-			rcMain.Height() / 2 - rcDlg.Height() / 2, 0, 0, SWP_NOSIZE);
-		
-		/*
-		* 更新可用的工厂
-		*/
-		m_wServerFactoryDlg.UpdateFactory();
-
-		m_wServerFactoryDlg.ShowWindow(SW_SHOW);
-	}
 }
 
 /**
@@ -334,3 +323,51 @@ void	CFileView::OnChangeVisualStyle()
 }
 
 
+
+/**
+ *
+ */
+void CFileView::OnCreateTerrainGroup()
+{
+	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	if (pMainFrame != NULL)
+	{
+		CRect rcMain;
+		pMainFrame->GetClientRect(&rcMain);
+
+		CRect rcDlg;
+		m_wTerrainDlg.GetClientRect(&rcDlg);
+
+		// 设置到窗口中央
+		m_wTerrainDlg.SetWindowPos(&wndTop, rcMain.Width() / 2 - rcDlg.Width() / 2,
+			rcMain.Height() / 2 - rcDlg.Height() / 2, 
+			0, 0, SWP_NOSIZE);
+		
+		// 显示
+		m_wTerrainDlg.ShowWindow(SW_SHOW);
+	}
+}
+
+/**
+ *
+ */
+void CFileView::OnCreateTerrainPage()
+{
+	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	if (pMainFrame != NULL)
+	{
+		CRect rcMain;
+		pMainFrame->GetClientRect(&rcMain);
+
+		CRect rcDlg;
+		m_wTerrainPageDlg.GetClientRect(&rcDlg);
+
+		// 设置到窗口中央
+		m_wTerrainPageDlg.SetWindowPos(&wndTop, rcMain.Width() / 2 - rcDlg.Width() / 2,
+			rcMain.Height() / 2 - rcDlg.Height() / 2, 
+			0, 0, SWP_NOSIZE);
+
+		// 显示
+		m_wTerrainPageDlg.ShowWindow(SW_SHOW);
+	}
+}

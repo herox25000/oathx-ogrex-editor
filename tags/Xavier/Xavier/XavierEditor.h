@@ -37,7 +37,8 @@ namespace Ogre
 		 *
 		 * \return 
 		 */
-		virtual ~XavierEditor();		
+		virtual ~XavierEditor();
+
 		/**
 		 *
 		 * \return 
@@ -55,6 +56,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual HashPropertyIter	getHashPropertyIter();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Server*				getServer() const;
 
 		/**
 		 *

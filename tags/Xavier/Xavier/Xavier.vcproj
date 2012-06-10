@@ -573,6 +573,22 @@
 			Name="terrain"
 			>
 			<File
+				RelativePath=".\TerrainDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainPageDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainPageDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\TerrainToolView.cpp"
 				>
 			</File>
@@ -586,6 +602,14 @@
 			</File>
 			<File
 				RelativePath=".\XavierTerrainEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierTerrainPageEditor.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierTerrainPageEditor.h"
 				>
 			</File>
 		</Filter>
