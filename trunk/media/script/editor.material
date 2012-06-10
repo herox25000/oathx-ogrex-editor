@@ -66,7 +66,7 @@ material Editor/TerrainMeshDecal
 	
 			texture_unit
 			{
-				texture decal.png
+				texture select01.tga
 				scale 1 1
 			}
 		}
