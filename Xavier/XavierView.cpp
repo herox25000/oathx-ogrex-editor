@@ -29,6 +29,7 @@ BEGIN_MESSAGE_MAP(CXavierView, CView)
 	ON_WM_MOUSEWHEEL()
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
+	ON_WM_KILLFOCUS()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
@@ -39,7 +40,7 @@ using namespace Ogre;
  */
 CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_bRMouseDown(FALSE), m_pFrameContext(NULL),m_pDecalCursor(NULL)
 {
-	m_pEditorManager = NULL;
+	m_pEditorManager	= NULL;
 }
 
 /**
@@ -375,6 +376,31 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 
 			m_cLMouseDown = point;			
 		}
+		else
+		{
+			CRect rc;
+			GetClientRect(&rc);
+
+			XavierEditor* pCurrentTool = XavierEditorManager::getSingleton().getCurrentTool();
+			if (pCurrentTool != NULL)
+			{
+				XavierTerrainPageEditor* pTerrainPage = static_cast<XavierTerrainPageEditor*>(
+					pCurrentTool
+					);
+				if (pTerrainPage)
+				{
+					Camera* pCamera = pCameraEditor->getCamera();
+					
+					float fScreenX	= (float)point.x / (float)(rc.Width());
+					float fScreenY	= (float)point.y / (float)(rc.Height());
+
+					// 更新地形贴花
+					XavierDecalCursor::getSingleton().invalid(pCamera, 
+						fScreenX,
+						fScreenY);				
+				}
+			}
+		}
 	}
 
 	/*CameraServer* pSdkCamera = static_cast<CameraServer*>(
@@ -480,4 +506,13 @@ void CXavierView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CXavierView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
+}
+
+/**
+ *
+ * \param pNewWnd 
+ */
+void CXavierView::OnKillFocus(CWnd* pNewWnd)
+{
+	CView::OnKillFocus(pNewWnd);
 }
