@@ -19,9 +19,7 @@
 #define sprintf_s snprintf
 #endif
 
-#include "OgreSingleton.h"
-#include "OgreAny.h"
-#include "OgreIteratorWrapper.h"
+#include "Ogre.h"
 
 namespace Ogre
 {
@@ -32,5 +30,13 @@ namespace Ogre
 	class Property;
 	class PropertySet;
 }
+
+#ifdef _DEBUG
+	#define _OUTPUT_LOG
+#endif
+
+#ifndef TKLogEvent
+	#define TKLogEvent	Ogre::LogManager::getSingletonPtr()->getDefaultLog()->logMessage
+#endif
 
 #endif
