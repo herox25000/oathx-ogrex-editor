@@ -38,7 +38,7 @@ namespace Ogre
 	 * \param Value 
 	 * \param describe 
 	 */
-	void			PropertySet::addProperty(const String& name, Any anyValue,int typeProperty,
+	void				PropertySet::addProperty(const String& name, Any anyValue,int typeProperty,
 		bool bWrite/* =true */, const String& describe/*="null"*/)
 	{
 		HashProperty::iterator it = m_HashProperty.find(name);
@@ -59,7 +59,7 @@ namespace Ogre
 	 *
 	 * \param name 
 	 */
-	void			PropertySet::delProperty(const String& name)
+	void				PropertySet::delProperty(const String& name)
 	{
 		HashProperty::iterator it = m_HashProperty.find(name);
 		if ( it != m_HashProperty.end() )
@@ -76,7 +76,7 @@ namespace Ogre
 	 * \param name 
 	 * \return 
 	 */
-	Property*		PropertySet::getProperty(const String& name)
+	Property*			PropertySet::getProperty(const String& name)
 	{
 		HashProperty::iterator it = m_HashProperty.find(name);
 		if ( it != m_HashProperty.end() )
@@ -92,7 +92,7 @@ namespace Ogre
 	 * \param name 
 	 * \return 
 	 */
-	Any&			PropertySet::getPropertyValue(const String& name)
+	Any&				PropertySet::getPropertyValue(const String& name)
 	{
 		Property* pProperty = getProperty(name);
 		assert(pProperty != NULL);
@@ -105,7 +105,7 @@ namespace Ogre
 	 * \param name 
 	 * \param anyValue 
 	 */
-	void			PropertySet::setPropertyValue(const String& name, const Any& anyValue)
+	void				PropertySet::setPropertyValue(const String& name, const Any& anyValue)
 	{
 		Property* pProperty = getProperty(name);
 		if (pProperty != NULL)
@@ -121,8 +121,17 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	HashProperty&	PropertySet::getHashProperty()
+	HashProperty&		PropertySet::getHashProperty()
 	{
 		return m_HashProperty;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	HashPropertyIter	PropertySet::getHashPropertyIter()
+	{
+		return HashPropertyIter(m_HashProperty.begin(), m_HashProperty.end());
 	}
 }
