@@ -346,7 +346,7 @@ namespace Ogre
 		{
 			Server* pServer = m_vServer.back();
 #ifdef _OUTPUT_LOG
-			TKLogEvent("add server" + pServer->getTypeName(), LML_NORMAL);
+			TKLogEvent("del server" + pServer->getTypeName(), LML_NORMAL);
 #endif
 			delete pServer; m_vServer.pop_back();
 		}

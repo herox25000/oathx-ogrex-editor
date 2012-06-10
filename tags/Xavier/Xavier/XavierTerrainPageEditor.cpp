@@ -35,7 +35,7 @@ namespace Ogre
 	 */
 	XavierTerrainPageEditor::~XavierTerrainPageEditor()
 	{
-
+		System::getSingleton().delServer(m_pServer);
 	}
 
 	//////////////////////////////////////////////////////////////////////////
