@@ -58,11 +58,16 @@ public:
 	 * \return 
 	 */
 	CBitmap*		AdjustBitmap(LPCTSTR lpszImagePathName);
-
+	
+	/**
+	 *
+	 * \return 
+	 */
+	CString			GetSelectItemString();
 protected:
 	CImageList		m_ImageList;
 	CSize			m_ImageSize;
-	CString			m_cHotText;
+	CString			m_cItemText;
 
 protected:
 	DECLARE_MESSAGE_MAP()
@@ -74,6 +79,13 @@ public:
 	 * \param *pResult 
 	 */
 	afx_msg void	OnLvnItemchanged(NMHDR *pNMHDR, LRESULT *pResult);
+
+	/**
+	 *
+	 * \param *pNMHDR 
+	 * \param *pResult 
+	 */
+	afx_msg void	OnNMClick(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 

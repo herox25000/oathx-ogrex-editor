@@ -154,7 +154,7 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	VEditorIter			XavierEditorManager::getEditorIter()
+	VEditorIter				XavierEditorManager::getEditorIter()
 	{
 		return VEditorIter(m_vEditor.begin(), m_vEditor.end());
 	}
@@ -222,7 +222,7 @@ namespace Ogre
 	/**
 	 *
 	 */
-	void				XavierEditorManager::update()
+	void					XavierEditorManager::update()
 	{
 		System::getSingletonPtr()->update();
 	}
@@ -230,7 +230,7 @@ namespace Ogre
 	/**
 	 *
 	 */
-	void				XavierEditorManager::unload()
+	void					XavierEditorManager::unload()
 	{
 
 	}
@@ -240,7 +240,7 @@ namespace Ogre
 	 * \param pTool 
 	 * \return 
 	 */
-	void				XavierEditorManager::setCurrentTool(XavierEditor* pTool)
+	void					XavierEditorManager::setCurrentTool(XavierEditor* pTool)
 	{
 		if (m_pCurrentTool != pTool)
 		{
@@ -252,8 +252,17 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	XavierEditor*		XavierEditorManager::getCurrentTool() const
+	XavierEditor*			XavierEditorManager::getCurrentTool() const
 	{
 		return m_pCurrentTool;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	const VXavierEditor&	XavierEditorManager::getXavierEditor() const
+	{
+		return m_vEditor;
 	}
 }

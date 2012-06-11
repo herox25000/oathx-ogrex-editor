@@ -192,3 +192,12 @@ void	CTerrainToolView::OnTabPageSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
 	}
 	*pResult = 0;
 }
+
+/**
+ *
+ * \return 
+ */
+CString	CTerrainToolView::GetDecalImageName()
+{
+	return m_ImageDecal.GetSelectItemString();
+}

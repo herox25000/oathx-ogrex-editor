@@ -48,6 +48,7 @@ protected:
 	BOOL						m_bRMouseDown;
 	CPoint						m_cLMouseDown;
 	CPoint						m_cLMouseLost;
+	BOOL						m_bTrackMouse;
 protected:
 	Ogre::XavierFrameContext*	m_pFrameContext;
 	Ogre::XavierDecalCursor*	m_pDecalCursor;
@@ -80,6 +81,12 @@ public:
 	 * \return 
 	 */
 	virtual BOOL				PreCreateWindow(CREATESTRUCT& cs);
+
+	/**
+	 *
+	 * \return 
+	 */
+	virtual	BOOL				TrackMouseEvent();
 protected:
 	/**
 	 *
@@ -243,6 +250,18 @@ public:
 	 * \param pNewWnd 
 	 */
 	afx_msg void				OnKillFocus(CWnd* pNewWnd);
+
+	/**
+	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void				OnMouseHover(UINT nFlags, CPoint point);
+
+	/**
+	 *
+	 */
+	afx_msg void				OnMouseLeave();
 };
 
 #ifndef _DEBUG

@@ -140,6 +140,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	XavierEditor*			getCurrentTool() const;
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	const VXavierEditor&	getXavierEditor() const;
 	protected:
 		HashXavierEditorFactory			m_HashEditorFactory;
 		VXavierEditor					m_vEditor;

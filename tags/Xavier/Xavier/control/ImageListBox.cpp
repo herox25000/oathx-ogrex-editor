@@ -25,6 +25,7 @@ CImageListBox::~CImageListBox()
 
 BEGIN_MESSAGE_MAP(CImageListBox, CListCtrl)
 	
+	ON_NOTIFY_REFLECT(NM_CLICK, &CImageListBox::OnNMClick)
 END_MESSAGE_MAP()
 
 
@@ -124,4 +125,28 @@ BOOL		CImageListBox::Load(LPCTSTR lpszFilePath, LPCTSTR lpszFilter)
 CBitmap*	CImageListBox::AdjustBitmap(LPCTSTR lpszImagePathName)
 {
 	return NULL;
+}
+
+/**
+ *
+ * \return 
+ */
+CString		CImageListBox::GetSelectItemString()
+{
+	return m_cItemText;
+}
+/**
+ *
+ * \param *pNMHDR 
+ * \param *pResult 
+ */
+void		CImageListBox::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
+{
+	LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+	if (pNMItemActivate->iItem != -1)
+	{
+		m_cItemText = GetItemText(pNMItemActivate->iItem, pNMItemActivate->iSubItem);
+	}
+
+	*pResult = 0;
 }

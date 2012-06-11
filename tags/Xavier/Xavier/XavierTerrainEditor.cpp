@@ -11,7 +11,7 @@ namespace Ogre
 	 * \return 
 	 */
 	XavierTerrainEditor::XavierTerrainEditor(const String& typeName, const STerrainGroupServerAdp& adp, const String& propertySetFile) 
-		: XavierEditor(typeName, propertySetFile), m_pTerrain(0)
+		: XavierEditor(typeName, propertySetFile), m_pTerrain(0),m_nBlend(1)
 	{
 		ServerFactory* pTerrainGroupFactory = System::getSingleton().getServerFactory(
 			"Terrain/TerrainGroupServerFactory"
@@ -36,39 +36,55 @@ namespace Ogre
 		System::getSingleton().delServer(m_pServer);
 	}
 
+	/**
+	 *
+	 * \return 
+	 */
+	TerrainGroupServer*	XavierTerrainEditor::getTerrainGroupServer()
+	{
+		return  static_cast<TerrainGroupServer*>(m_pServer);
+	}
+	/**
+	 *
+	 * \param index 
+	 * \param texture 
+	 * \return 
+	 */
+	bool		XavierTerrainEditor::createTerrainBlend(const int index, const String& texture)
+	{
+		return 0;
+	}
 
 	/**
 	 *
-	 * \param nID 
-	 * \param texture 
-	 * \param normal 
-	 * \param fWorldSize 
+	 * \param vPos 
 	 * \return 
 	 */
-	int			XavierTerrainEditor::addLayer(const String& texture, const String& normal,
-		float fWorldSize)
+	bool			XavierTerrainEditor::OnLButtonDown(const Vector2& vPos)
 	{
-		TerrainGroupServer* pTerrainServer = static_cast<TerrainGroupServer*>(
-			System::getSingleton().getServer(SERVER_TERRAIN_GROUP)
-			);
-		if (pTerrainServer)
-		{
-			m_pTerrain = pTerrainServer->getTerrainGroup()->getTerrain(0, 0);
-			if (m_pTerrain)
-			{
-				StringVector vTexture;
-				vTexture.push_back(texture);
-				vTexture.push_back(normal);
-				
-				int nCount = m_pTerrain->getLayerCount();
-				m_pTerrain->addLayer(nCount, fWorldSize, &vTexture);
-				return nCount;
-			}
-		}
-
-		return 5;
+		return 0;
 	}
 
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			XavierTerrainEditor::OnMouseMove(const Vector2& vPos)
+	{
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			XavierTerrainEditor::OnLButtonUp(const Vector2& vPos)
+	{
+		return 0;
+	}
+	
 	//////////////////////////////////////////////////////////////////////////
 	const String	XavierTerrainEditorFactory::FACTORY_NAME	= "Xavier/XavierTerrainEditorFactory";
 

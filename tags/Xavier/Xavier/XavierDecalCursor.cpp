@@ -28,7 +28,7 @@ namespace Ogre
 	 * \return 
 	 */
 	XavierDecalCursor::XavierDecalCursor(Ogre::WorldSpaceServer* pWorldServer, Ogre::TerrainGroupServer* pTerrainServer)
-	: m_pWorldServer(pWorldServer), m_pTerrainServer(pTerrainServer), m_pDecalMesh(0),m_fRadius(3.0f)
+	: m_pWorldServer(pWorldServer), m_pTerrainServer(pTerrainServer), m_pDecalMesh(0),m_fRadius(3.0f), m_bVisible(false)
 	{
 		createDecalCursor(0); 
 	}
@@ -40,7 +40,13 @@ namespace Ogre
 	 */
 	XavierDecalCursor::~XavierDecalCursor(void)
 	{
-		delete m_pDecalMesh;
+		if (m_pWorldServer)
+		{
+			m_pWorldServer->getSceneManager()->destroyManualObject(
+				m_pDecalMesh
+				);
+			m_pDecalMesh = NULL;
+		}
 	}
 
 	/**
@@ -151,7 +157,7 @@ namespace Ogre
 	 */
 	void	XavierDecalCursor::invalid(Ogre::Camera* pCamera, float fScreenX, float fScreenY)
 	{
-		if (pCamera != NULL)
+		if (pCamera != NULL && isVisible())
 		{
 			if (m_pTerrainServer->rayIntersectsTerrain(
 				pCamera->getCameraToViewportRay(fScreenX, fScreenY), m_vPos))
@@ -191,6 +197,42 @@ namespace Ogre
 	{
 		return m_fRadius;
 	}
+	
+	/**
+	 *
+	 */
+	void	XavierDecalCursor::show()
+	{
+		m_bVisible = true; createDecalCursor(m_fRadius);
+	}
 
+	/**
+	 *
+	 * \return 
+	 */
+	bool	XavierDecalCursor::isVisible() const
+	{
+		return m_bVisible;
+	}
+
+	/**
+	 *
+	 */
+	void	XavierDecalCursor::hide()
+	{
+		m_bVisible = false;
+		
+		if (m_pWorldServer && m_pDecalMesh != NULL)
+		{
+			// 从场景中取下对象
+			m_pWorldServer->getSceneManager()->getRootSceneNode()->detachObject(m_pDecalMesh);
+
+			// 销毁
+			m_pWorldServer->getSceneManager()->destroyManualObject(
+				m_pDecalMesh
+				);
+			m_pDecalMesh = NULL;
+		}
+	}
 }
 

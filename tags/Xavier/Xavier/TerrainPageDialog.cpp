@@ -59,6 +59,7 @@ BOOL CTerrainPageDialog::OnInitDialog()
 	SetDlgItemText(IDC_EDIT5, CString("100"));
 	SetDlgItemText(IDC_EDIT6, CString("0"));
 	SetDlgItemText(IDC_EDIT7, CString("0"));
+	SetDlgItemText(IDC_EDIT8, CString("Server/TerrainPage0x0"));
 
 	return TRUE;
 }
@@ -134,6 +135,9 @@ void CTerrainPageDialog::OnBnClickedOk()
 			// 创建地形贴花光标
 			new XavierDecalCursor(pWorld, 
 				pGroup);
+			
+			// 隐藏
+			XavierDecalCursor::getSingleton().hide();
 		}
 	}
 
