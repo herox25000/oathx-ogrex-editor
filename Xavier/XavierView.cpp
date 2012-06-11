@@ -30,6 +30,8 @@ BEGIN_MESSAGE_MAP(CXavierView, CView)
 	ON_WM_KEYDOWN()
 	ON_WM_KEYUP()
 	ON_WM_KILLFOCUS()
+	ON_WM_MOUSEHOVER()
+	ON_WM_MOUSELEAVE()
 END_MESSAGE_MAP()
 
 using namespace Ogre;
@@ -41,6 +43,7 @@ using namespace Ogre;
 CXavierView::CXavierView() : m_dwState(ST_VIEW_WELCOME), m_bLMouseDown(FALSE), m_bRMouseDown(FALSE), m_pFrameContext(NULL),m_pDecalCursor(NULL)
 {
 	m_pEditorManager	= NULL;
+	m_bTrackMouse		= TRUE;
 }
 
 /**
@@ -62,6 +65,20 @@ BOOL	CXavierView::PreCreateWindow(CREATESTRUCT& cs)
 	return CView::PreCreateWindow(cs);
 }
 
+/**
+ *
+ * \return 
+ */
+BOOL	CXavierView::TrackMouseEvent()
+{
+	TRACKMOUSEEVENT tme;
+	tme.cbSize		= sizeof(TRACKMOUSEEVENT);
+	tme.dwFlags		= TME_LEAVE | TME_HOVER;
+	tme.hwndTrack	= m_hWnd;
+	tme.dwHoverTime	= 1;
+
+	return ::_TrackMouseEvent(&tme);
+}
 
 /**
  *
@@ -317,7 +334,6 @@ CXavierDoc* CXavierView::GetDocument() const
 void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	m_bLMouseDown = TRUE;
-
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -329,6 +345,7 @@ void	CXavierView::OnLButtonDown(UINT nFlags, CPoint point)
 void	CXavierView::OnLButtonUp(UINT nFlags, CPoint point)
 {
 	m_bLMouseDown = FALSE;
+
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -380,63 +397,36 @@ void	CXavierView::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			CRect rc;
 			GetClientRect(&rc);
+			
+			// 追踪鼠标进入离开世界
+			TrackMouseEvent();
 
 			XavierEditor* pCurrentTool = XavierEditorManager::getSingleton().getCurrentTool();
 			if (pCurrentTool != NULL)
 			{
-				XavierTerrainPageEditor* pTerrainPage = static_cast<XavierTerrainPageEditor*>(
-					pCurrentTool
-					);
-				if (pTerrainPage)
+				bool bVisible = XavierDecalCursor::getSingleton().isVisible();
+				if (bVisible)
 				{
-					Camera* pCamera = pCameraEditor->getCamera();
-					
-					float fScreenX	= (float)point.x / (float)(rc.Width());
-					float fScreenY	= (float)point.y / (float)(rc.Height());
+					// 更新贴花
+					XavierTerrainPageEditor* pTerrainPage = static_cast<XavierTerrainPageEditor*>(
+						pCurrentTool
+						);
+					if (pTerrainPage)
+					{
+						Camera* pCamera = pCameraEditor->getCamera();
 
-					// 更新地形贴花
-					XavierDecalCursor::getSingleton().invalid(pCamera, 
-						fScreenX,
-						fScreenY);				
+						float fScreenX	= (float)point.x / (float)(rc.Width());
+						float fScreenY	= (float)point.y / (float)(rc.Height());
+
+						// 更新地形贴花
+						XavierDecalCursor::getSingleton().invalid(pCamera, 
+							fScreenX,
+							fScreenY);				
+					}
 				}
 			}
 		}
 	}
-
-	/*CameraServer* pSdkCamera = static_cast<CameraServer*>(
-		System::getSingleton().getServer(SERVER_SDKCAMERA)
-		);
-	if (pSdkCamera != NULL)
-	{
-		if (m_bRMouseDown)
-		{
-			CPoint cRel = point - m_cLMouseDown;
-			pSdkCamera->injectMouseMove(cRel.x, cRel.y);
-
-			m_cLMouseDown = point;
-		}
-		else
-		{
-
-			CRect rc;
-			GetClientRect(&rc);
-
-			TerrainGroupServer* pTerrainServer = static_cast<TerrainGroupServer*>(
-				System::getSingleton().getServer(SERVER_TERRAIN_GROUP)
-				);
-			if (pTerrainServer)
-			{
-				Camera* pCamera = pSdkCamera->getCamera();
-				if (pCamera)
-				{
-					float fScreenX = (float)point.x / (float)(rc.Width());
-					float fScreenY = (float)point.y / (float)(rc.Height());
-					
-					m_pDecalCursor->invalid(pCamera, fScreenX, fScreenY);
-				}
-			}
-		}
-	}*/
 
 	CView::OnMouseMove(nFlags, point);
 }
@@ -473,22 +463,24 @@ void CXavierView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 	{
 	case VK_OEM_PLUS:
 		{
-			if (m_pDecalCursor)
+			XavierDecalCursor* pCursor = XavierDecalCursor::getSingletonPtr();
+			if (pCursor && pCursor->isVisible())
 			{
-				float fRadius = XavierDecalCursor::getSingleton().getRadius();
+				float fRadius = pCursor->getRadius();
 				fRadius += 1.0f;
-				m_pDecalCursor->setRadius(fRadius);
+				pCursor->setRadius(fRadius);
 			}
 		}
 		
 		break;
 	case VK_OEM_MINUS:
 		{
-			if (m_pDecalCursor)
+			XavierDecalCursor* pCursor = XavierDecalCursor::getSingletonPtr();
+			if (pCursor && pCursor->isVisible())
 			{
-				float fRadius = XavierDecalCursor::getSingleton().getRadius();
+				float fRadius = pCursor->getRadius();
 				fRadius -= 1.0f;
-				m_pDecalCursor->setRadius(fRadius);
+				pCursor->setRadius(fRadius);
 			}
 		}
 		break;
@@ -515,4 +507,58 @@ void CXavierView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 void CXavierView::OnKillFocus(CWnd* pNewWnd)
 {
 	CView::OnKillFocus(pNewWnd);
+}
+
+/**
+ *
+ * \param nFlags 
+ * \param point 
+ */
+void CXavierView::OnMouseHover(UINT nFlags, CPoint point)
+{
+	XavierEditor* pCurrentTool = XavierEditorManager::getSingleton().getCurrentTool();
+	if (pCurrentTool != NULL)
+	{
+		// 获取地形页编辑器
+		XavierTerrainPageEditor* pTerrainPage = static_cast<XavierTerrainPageEditor*>(
+			pCurrentTool
+			);
+		if (pTerrainPage)
+		{
+			// 显示贴花
+			bool bVisible = XavierDecalCursor::getSingleton().isVisible();
+			if (!bVisible)
+			{
+				XavierDecalCursor::getSingleton().show();
+			}		
+		}
+	}
+	
+	CView::OnMouseHover(nFlags, point);
+}
+
+/**
+ *
+ */
+void CXavierView::OnMouseLeave()
+{
+	XavierEditor* pCurrentTool = XavierEditorManager::getSingleton().getCurrentTool();
+	if (pCurrentTool != NULL)
+	{
+		// 获取地形页编辑器
+		XavierTerrainPageEditor* pTerrainPage = static_cast<XavierTerrainPageEditor*>(
+			pCurrentTool
+			);
+		if (pTerrainPage)
+		{
+			bool bVisible = XavierDecalCursor::getSingleton().isVisible();
+			if (bVisible)
+			{
+				// 关闭贴花
+				XavierDecalCursor::getSingleton().hide();
+			}
+		}
+	}
+
+	CView::OnMouseLeave();
 }

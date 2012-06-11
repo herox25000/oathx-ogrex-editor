@@ -40,19 +40,44 @@ namespace Ogre
 		 */
 		virtual ~XavierTerrainEditor();
 
-		/** ÃÌº”ªÊ÷∆≤„
+		/**
 		 *
-		 * \param nID 
-		 * \param texture 
-		 * \param normal 
-		 * \param fWorldSize 
 		 * \return 
 		 */
-		virtual	int					addLayer( const String& texture,  const String& normal, 
-			float fWorldSize);
+		virtual TerrainGroupServer*	getTerrainGroupServer();
+
+		/**
+		 *
+		 * \param index 
+		 * \param texture 
+		 * \return 
+		 */
+		virtual	bool				createTerrainBlend(const int index, const String& texture);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool				OnLButtonDown(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool				OnMouseMove(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool				OnLButtonUp(const Vector2& vPos);
 
 	protected:
 		Terrain*					m_pTerrain;
+		int							m_nBlend;
 	};
 
 	/**

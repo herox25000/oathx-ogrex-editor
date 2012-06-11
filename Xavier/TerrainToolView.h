@@ -44,7 +44,12 @@ public:
 	 *
 	 */
 	void						AdjustLayout();
-
+	
+	/**
+	 *
+	 * \return 
+	 */
+	virtual CString				GetDecalImageName();
 protected:
 	CTabCtrl					m_TabCtrl;
 	CImageListBox				m_ImageDecal;

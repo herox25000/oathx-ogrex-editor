@@ -109,12 +109,29 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	float				getRadius() const;
+
+		/**
+		 *
+		 */
+		virtual	void				show();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	bool				isVisible() const;
+
+		/**
+		 *
+		 */
+		virtual	void				hide();
 	protected:
 		Ogre::WorldSpaceServer*		m_pWorldServer;
 		Ogre::TerrainGroupServer*	m_pTerrainServer;
 		Ogre::ManualObject*			m_pDecalMesh;
 		Ogre::Vector3				m_vPos;
 		float						m_fRadius;
+		bool						m_bVisible;
 	};
 
 }
