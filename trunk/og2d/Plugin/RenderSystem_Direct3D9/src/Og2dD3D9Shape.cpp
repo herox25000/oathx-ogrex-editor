@@ -12,7 +12,7 @@ namespace Og2d
 	 * \param nLength 
 	 * \return 
 	 */
-	D3D9Shape::D3D9Shape(D3D9RenderSystem* pSystem, int nLength)
+	D3D9Shape::D3D9Shape(D3D9RenderSystem* pSystem, ulong nLength)
 		: Shape(nLength),m_pRenderSystem(pSystem),m_pVertex(NULL)
 	{
 #if USE_DYNAMIC_VERTEXBUFFER == 0
@@ -27,7 +27,7 @@ namespace Og2d
 				"D3D9Shape::D3D9Shape()");			
 		}
 #else
-		m_pVertex = new SVertex2D[nLength];
+		m_pVertex	= new SVertex2D[nLength];
 #endif
 	}
 

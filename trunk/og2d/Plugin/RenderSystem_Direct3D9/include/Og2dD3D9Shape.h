@@ -37,7 +37,7 @@ namespace Og2d
 		 * \param nLength 
 		 * \return 
 		 */
-		D3D9Shape(D3D9RenderSystem* pSystem, int nLength);
+		D3D9Shape(D3D9RenderSystem* pSystem, ulong nLength);
 
 		/**
 		 *

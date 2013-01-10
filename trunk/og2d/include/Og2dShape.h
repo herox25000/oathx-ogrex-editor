@@ -30,7 +30,7 @@ namespace Og2d
 		 * \param nLength 构成形状的需要的顶点数
 		 * \return 
 		 */
-		Shape(int nLength);
+		Shape(ulong nLength);
 
 		/** 析构函数
 		 *
@@ -42,7 +42,7 @@ namespace Og2d
 		 *
 		 * \return 
 		 */
-		virtual	int			getLength() const;
+		virtual	ulong		getLength() const;
 
 		/** 锁定顶点类存
 		 *
@@ -67,7 +67,7 @@ namespace Og2d
 		 */
 		virtual	void		unlock() = 0;
 	protected:
-		int					m_nLength;
+		ulong				m_nLength;
 	};
 }
 
