@@ -24,52 +24,29 @@ namespace Og2d
 	{
 	}
 
-	std::vector<Quad*> vQuad;
 	/**
 	 *
 	 */
-	void	AppDemo::createApplicationResource()
+	bool	AppDemo::createApplicationResource()
 	{
 		InputManager::getSingleton().addInputListener( new AppDemoInuptListener(this) );
 
 		// 创建世界对象
-		World* pWorld = System::getSingleton().createWorld("AppDemoWorld", Vector2D(0, 0), WORLD_PAGE_SECNE);
-		if (pWorld)
+		World* pWorld = System::getSingleton().createWorld("AppDemoWorld", 
+			Vector2D(0, 0), WORLD_PAGE_SECNE);
+		if (pWorld == NULL)
+			return 0;
+		
+		// 创建演示场景
+		Scene* pScene = pWorld->createScene("PageSceneFactory", "AppDemo",
+			Vector2D(0, 0), Size(32, 32));
+		if (pScene)
 		{
-			// 创建演示场景
-			Scene* pScene = pWorld->createScene("PageSceneFactory",
-				"AppDemo", Vector2D(0, 0), Size(640*10, 480*10), Rect(Vector2D(0,0),Size(1024,768)));
-			if (pScene)
-			{
-				m_pTexture = System::getSingleton().getRenderSystem()->createTextureFromFile("2.bmp");
-			
-				int nIndex = 0;
-
-				for (int i=0; i<32; i++)
-				{
-					for (int j=0; j<32; j++)
-					{
-						char szTmp[128];
-						sprintf(szTmp, "x=%d,y=%d", i, j);
-						SceneNode* pNode = pScene->createSceneNode(szTmp, 
-							Rect(Vector2D(i*640, j*480), Size(640, 480))
-							);
-						if (pNode)
-						{
-							Quad* pQuad = new Quad(pNode->getName(), Rect(Vector2D(0, 0), Size(640, 480)));
-
-							pQuad->setTexture(m_pTexture);
-							nIndex ++;
-							if (nIndex > 4)
-								nIndex = 0;
-							pNode->attachRenderTarget(pQuad);
-							vQuad.push_back(pQuad);
-						}
-					}
-				}
-
-			}
+			m_pTexture = System::getSingleton().getRenderSystem()->createTextureFromFile("../media/2.bmp");
+			assert(m_pTexture != NULL);
 		}
+
+		return true;
 	}
 	
 	/**
@@ -77,11 +54,7 @@ namespace Og2d
 	 */
 	void	AppDemo::clearUp()
 	{
-		std::vector<Quad*>::iterator it = vQuad.begin();
-		while( it != vQuad.end() )
-		{
-			SAFE_DELETE((*it)); it = vQuad.erase(it);
-		}
+		dropAndNULL(m_pTexture);
 	}
 
 	//////////////////////////////////////////////////////////////////////////

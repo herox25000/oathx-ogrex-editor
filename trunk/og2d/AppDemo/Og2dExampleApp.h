@@ -46,7 +46,7 @@ namespace Og2d
 		/**
 		 *
 		 */
-		virtual	void		createApplicationResource();
+		virtual	bool		createApplicationResource();
 
 		/**
 		 *
@@ -61,6 +61,7 @@ namespace Og2d
 	protected:
 		HWND				m_hWnd;
 		System*				m_pSystem;
+		String				m_szAppName;
 	};
 }
 

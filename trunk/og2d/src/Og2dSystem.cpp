@@ -6,6 +6,7 @@
 #include "Og2dPlugin.h"
 #include "Og2dRenderSystem.h"
 #include "Og2dSceneFactory.h"
+#include "Og2dSceneNodeFactoryManager.h"
 #include "Og2dException.h"
 
 namespace Og2d
@@ -67,6 +68,8 @@ namespace Og2d
 		new LogManager(szLogFile, true);
 		// construct
 		new InputManager();
+		// scene node
+		new SceneNodeFactoryManager();
 
 		// read plugin config file
 		std::fstream stream;
@@ -161,12 +164,17 @@ namespace Og2d
 		// delete singleton pointer
 		DynlibManager* pDynlibMgr = DynlibManager::getSingletonPtr();
 		SAFE_DELETE(pDynlibMgr);
-		// delete log manager
-		LogManager* pLogMgr = LogManager::getSingletonPtr();
-		SAFE_DELETE(pLogMgr);
+
 		// delete input manager
 		InputManager* pInputManager = InputManager::getSingletonPtr();
 		SAFE_DELETE(pInputManager);
+		// delete scene node manager
+		SceneNodeFactoryManager* pSceneNodeFactoryManager = SceneNodeFactoryManager::getSingletonPtr();
+		SAFE_DELETE(pSceneNodeFactoryManager);
+
+		// delete log manager
+		LogManager* pLogMgr = LogManager::getSingletonPtr();
+		SAFE_DELETE(pLogMgr);
 	}
 
 	/** add a new render sytem object to manager

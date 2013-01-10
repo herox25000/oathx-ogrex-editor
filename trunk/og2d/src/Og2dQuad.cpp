@@ -22,7 +22,7 @@ namespace Og2d
 		}
 		
 		// set bounding box
-		setBoundingBox(rect);
+		setArea(rect);
 
 		// init default texture rect
 		m_tUV[0] = 0.0f;
@@ -49,7 +49,7 @@ namespace Og2d
 		if (!equals(m_fScale, fScale))
 		{
 			m_fScale	=	fScale;
-			m_BouingBox *=	fScale;
+			m_rcArea	*=	fScale;
 		}
 	}
 
@@ -128,16 +128,16 @@ namespace Og2d
 			return 0;
 		
 		// set vertex data
-		pVertex[0] = SVertex2D(m_BouingBox[0],	m_BouingBox[1], 0.0f, 
+		pVertex[0] = SVertex2D(m_rcArea[0],	m_rcArea[1], 0.0f, 
 			m_colour[0], m_tUV[0], m_tUV[1]);
 
-		pVertex[1] = SVertex2D(m_BouingBox[2], m_BouingBox[1], 0.0f,
+		pVertex[1] = SVertex2D(m_rcArea[2], m_rcArea[1], 0.0f,
 			m_colour[1], m_tUV[2], m_tUV[1]);
 
-		pVertex[2] = SVertex2D(m_BouingBox[2], m_BouingBox[3], 0.0f,
+		pVertex[2] = SVertex2D(m_rcArea[2], m_rcArea[3], 0.0f,
 			m_colour[2], m_tUV[2], m_tUV[3]);
 
-		pVertex[3] = SVertex2D(m_BouingBox[0],	m_BouingBox[3], 0.0f,
+		pVertex[3] = SVertex2D(m_rcArea[0],	m_rcArea[3], 0.0f,
 			m_colour[3], m_tUV[0], m_tUV[3]);
 
 		// unlock shape

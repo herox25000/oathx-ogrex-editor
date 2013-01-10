@@ -9,7 +9,7 @@ namespace Og2d
 
 	// 定义使用动态顶点缓冲区
 #ifndef USE_DYNAMIC_VERTEXBUFFER
-#	define USE_DYNAMIC_VERTEXBUFFER		0
+#	define USE_DYNAMIC_VERTEXBUFFER		1
 #endif
 
 	/**

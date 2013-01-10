@@ -87,33 +87,27 @@ namespace Og2d
 		
 		/**
 		 *
-		 * \param vPos 
+		 * \param  
 		 */
-		virtual	void		setRelativelyPosition(const Vector2D& vPos);
+		virtual	void		setSize(const Size& cSize);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual	Vector2D	getRelativelyPosition() const;
+		virtual	Size		getSize() const;
 
 		/**
 		 *
-		 * \param rcBoundingBox 
+		 * \param rcArea 
 		 */
-		virtual	void		setBoundingBox(const Rect& rcBoundingBox);
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	Rect		getBoundingBox() const;
+		virtual	void		setArea(const Rect& rcArea);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual	Vector2D	getCenter() const;
+		virtual	Rect		getArea() const;
 
 		/**
 		 *
@@ -124,8 +118,7 @@ namespace Og2d
 		float				m_fScale;
 		String				m_szName;
 		bool				m_bVisible;
-		Vector2D			m_vRelativelyPosition;
-		Rect				m_BouingBox;
+		Rect				m_rcArea;
 	};
 }
 

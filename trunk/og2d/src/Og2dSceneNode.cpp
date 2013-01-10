@@ -5,21 +5,11 @@ namespace Og2d
 	/**
 	 *
 	 * \param szName 
-	 * \return 
-	 */
-	SceneNode::SceneNode()
-	{
-
-	}
-
-	/**
-	 *
-	 * \param szName 
 	 * \param rcBoundingBox 
 	 * \return 
 	 */
-	SceneNode::SceneNode(const String& szName, const Rect& rcBoundingBox, Node* pParent)
-		: Node(szName, rcBoundingBox, pParent)
+	SceneNode::SceneNode(const String& szName, const Vector2D& vPos)
+		: Node(szName, vPos)
 	{
 
 	}
@@ -43,13 +33,10 @@ namespace Og2d
 		MapRenderTarget::iterator it = m_vRenderTarget.find(pRenderTarget->getName());
 		if ( it == m_vRenderTarget.end() )
 		{
-			// 计算绝对位置
-			m_rcBoundingBox += pRenderTarget->getPosition();
-			
 			// 重设渲染目标位置
+			Vector2D vPos = m_vPos + pRenderTarget->getPosition();
 			pRenderTarget->setPosition(
-				m_rcBoundingBox.getUpper()
-				);
+				vPos);
 
 			m_vRenderTarget.insert(MapRenderTarget::value_type(pRenderTarget->getName(),
 				pRenderTarget));

@@ -156,6 +156,8 @@ namespace Og2d
 	class RenderSystem;
 	class Node;
 	class SceneNode;
+	class SceneNodeFactory;
+	class SceneNodeFactoryManager;
 	class Scene;
 	class SceneFactory;
 	class World;

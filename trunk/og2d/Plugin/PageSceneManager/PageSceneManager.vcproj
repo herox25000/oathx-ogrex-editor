@@ -179,14 +179,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\Og2dPage.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\Og2dPageManager.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\Og2dPageScene.cpp"
 				>
 			</File>
@@ -204,14 +196,6 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\include\Og2dPage.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\Og2dPageManager.h"
-				>
-			</File>
 			<File
 				RelativePath=".\include\Og2dPageScene.h"
 				>

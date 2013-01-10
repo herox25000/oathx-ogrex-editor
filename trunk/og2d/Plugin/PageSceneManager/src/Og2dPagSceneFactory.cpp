@@ -30,9 +30,8 @@ namespace Og2d
 	 * \param szName 
 	 * \return 
 	 */
-	Scene*	PageSceneFactory::createScene(const String& szName, const Vector2D& vOrigin,
-		const Size& cSize, const Rect& rcView)
+	Scene*	PageSceneFactory::createScene(const String& szName, const Vector2D& vPos, const Size& cSize)
 	{
-		return new PageScene(szName, vOrigin, cSize, rcView);
+		return new PageScene(szName, vPos, cSize);
 	}
 }

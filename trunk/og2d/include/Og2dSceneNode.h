@@ -28,18 +28,12 @@ namespace Og2d
 	class Og2d_Export_API SceneNode : public Node
 	{
 	public:
-		/**
-		 *
-		 * \return 
-		 */
-		SceneNode();
-
 		/** 构造函数
 		 *
 		 * \param szName 场景节点名称
 		 * \return 
 		 */
-		SceneNode(const String& szName, const Rect& rcBoundingBox, Node* pParent);
+		SceneNode(const String& szName, const Vector2D& vPos);
 
 		/** 析构函数
 		 *
@@ -68,7 +62,6 @@ namespace Og2d
 	protected:
 		String				m_szName;
 		MapRenderTarget		m_vRenderTarget;
-
 	};
 }
 

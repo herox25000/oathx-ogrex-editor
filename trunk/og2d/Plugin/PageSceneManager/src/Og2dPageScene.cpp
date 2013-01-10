@@ -12,9 +12,8 @@ namespace Og2d
 	 * \param rcView 
 	 * \return 
 	 */
-	PageScene::PageScene(const String& szName, const Vector2D& vOrigin, const Size& cSize,
-		const Rect& rcView)
-		: Scene(szName, vOrigin, cSize, rcView)
+	PageScene::PageScene(const String& szName, const Vector2D& vPos, const Size& cSize)
+		: Scene(szName, vPos, cSize)
 	{
 
 	}
@@ -25,19 +24,94 @@ namespace Og2d
 	 */
 	PageScene::~PageScene()
 	{
+		destroyAllSceneNode();
+	}
 
+	/**
+	 *
+	 * \param szName 
+	 * \param vPos 
+	 * \return 
+	 */
+	SceneNode*	PageScene::createSceneNode(const String& szName, const Vector2D& vPos)
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNode.find(szName);
+		if ( it == m_MapSceneNode.end() )
+		{
+			SceneNode* pSceneNode = new SceneNode(szName, vPos);
+			if (pSceneNode)
+			{
+				m_MapSceneNode.insert(
+					MapSceneNodeTab::value_type(szName, pSceneNode)
+					);
+				return pSceneNode;
+			}
+		}
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \param szName 
+	 * \return 
+	 */
+	SceneNode*	PageScene::getSceneNode(const String& szName)
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNode.find(szName);
+		if ( it != m_MapSceneNode.end() )
+		{
+			return it->second;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \param szName 
+	 */
+	void		PageScene::destroySceneNode(const String& szName)
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNode.find(szName);
+		if ( it != m_MapSceneNode.end() )
+		{
+			SAFE_DELETE(it->second); m_MapSceneNode.erase(it);
+		}
+	}
+
+	/**
+	 *
+	 * \param pSceneNode 
+	 */
+	void		PageScene::destroySceneNode(SceneNode* pSceneNode)
+	{
+		destroySceneNode(pSceneNode->getName());
+	}
+
+	/**
+	 *
+	 */
+	void		PageScene::destroyAllSceneNode()
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNode.begin();
+		while( it != m_MapSceneNode.end() )
+		{
+			SAFE_DELETE( it->second ); it = m_MapSceneNode.erase(it);
+		}
 	}
 
 	/**
 	 *
 	 * \param fElapsed 
 	 */
-	void	PageScene::update(float fElapsed)
+	void		PageScene::update(float fElapsed)
 	{
-		for (MapSceneNodeTab::iterator it=m_MapSceneNodeTab.begin();
-			it!=m_MapSceneNodeTab.end(); it++)
+		MapSceneNodeTab::iterator it = m_MapSceneNode.begin();
+		while( it != m_MapSceneNode.end() )
 		{
 			it->second->update(fElapsed);
+			it ++;
 		}
 	}
 }

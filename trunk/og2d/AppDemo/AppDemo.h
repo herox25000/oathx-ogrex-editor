@@ -44,7 +44,7 @@ namespace Og2d
 		/**
 		 *
 		 */
-		virtual	void	createApplicationResource();
+		virtual	bool	createApplicationResource();
 
 		/**
 		 *
