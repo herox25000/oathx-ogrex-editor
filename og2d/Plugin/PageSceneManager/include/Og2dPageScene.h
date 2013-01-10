@@ -2,7 +2,6 @@
 #define _____Og2dPageScene_H
 
 #include "Og2dScene.h"
-#include "Og2dPage.h"
 
 namespace Og2d
 {
@@ -30,8 +29,7 @@ namespace Og2d
 		 *
 		 * \return 
 		 */
-		PageScene(const String& szName, const Vector2D& vOrigin, const Size& cSize, 
-			const Rect& rcView);
+		PageScene(const String& szName, const Vector2D& vPos, const Size& cSize);
 
 		/**
 		 *
@@ -39,11 +37,45 @@ namespace Og2d
 		 */
 		virtual ~PageScene();
 
+		/** 创建场景节点
+		 *
+		 * \param szName		场景节点名称
+		 * \param rcBoundingBox 节点包围盒
+		 * \return 
+		 */
+		virtual	SceneNode*	createSceneNode(const String& szName, const Vector2D& vPos);
+
+		/** 获取场景节点
+		 *
+		 * \param szName 
+		 * \return 
+		 */
+		virtual	SceneNode*	getSceneNode(const String& szName);
+
+		/** 销毁场景节点
+		 *
+		 * \param szName 
+		 */
+		virtual	void		destroySceneNode(const String& szName);
+
+		/** 销毁场景节点
+		 *
+		 * \param pSceneNode 
+		 */
+		virtual	void		destroySceneNode(SceneNode* pSceneNode);
+		
+		/** 销毁所有的场景节点
+		 *
+		 */
+		virtual	void		destroyAllSceneNode();
+
 		/**
 		 *
 		 * \param fElapsed 
 		 */
-		virtual	void			update(float fElapsed);
+		virtual	void		update(float fElapsed);
+	protected:
+		MapSceneNodeTab		m_MapSceneNode;
 	};
 }
 

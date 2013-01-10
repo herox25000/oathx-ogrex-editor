@@ -134,7 +134,7 @@ namespace Og2d
 	 * \return 
 	 */
 	Scene*	World::createScene(const String& szCreateFactoryName, const String& szName, 
-		const Vector2D& vOrigin, const Size& cSize, const Rect& rcView)
+		const Vector2D& vPos, const Size& cSize)
 	{
 		SceneMapTab::iterator it = m_MapSceneTab.find(szName);
 		if ( it == m_MapSceneTab.end() )
@@ -146,7 +146,7 @@ namespace Og2d
 			if (pFactory)
 			{
 				// crate scene object
-				Scene* pScene = pFactory->createScene(szName, vOrigin, cSize, rcView);
+				Scene* pScene = pFactory->createScene(szName, vPos, cSize);
 				if (pScene)
 				{
 					// if current need updat scene is null 

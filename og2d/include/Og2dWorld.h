@@ -106,7 +106,7 @@ namespace Og2d
 		 * \return 
 		 */
 		virtual	Scene*			createScene(const String& szCreateFactoryName, const String& szName,
-			const Vector2D& vOrigin, const Size& cSize, const Rect& rcView);
+			const Vector2D& vPos, const Size& cSize);
 		
 		/** ªÒ»°≥°æ∞
 		 *

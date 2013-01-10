@@ -7,7 +7,7 @@
 namespace Og2d
 {
 	typedef map<String, SceneNode*>::type MapSceneNodeTab;
-
+	
 	/**
 	* \ingroup : Og2d
 	*
@@ -36,39 +36,26 @@ namespace Og2d
 		 * \param rcView	场景视口
 		 * \return 
 		 */
-		Scene(const String& szName, const Vector2D& vOrigin, const Size& cSize, 
-			const Rect& rcView);
+		Scene(const String& szName, const Vector2D& vPos, const Size& cSize);
 
 		/** 析构函数
 		 *
 		 * \return 
 		 */
 		virtual ~Scene();
-		
-		/** 设置场景名称
-		 *
-		 * \param szName 
-		 */
-		virtual	void		setName(const String& szName);
 
-		/** 获取场景名称
+		/**
+		 *
+		 * \param name 
+		 */
+		virtual	void		setName(const String& name);
+
+		/**
 		 *
 		 * \return 
 		 */
-		virtual	String		getName() const;
+		virtual String		getName() const;
 		
-		/** 获取场景原点
-		 *
-		 * \return 
-		 */
-		virtual	Vector2D	getOrigin() const;
-
-		/** 设置场景原点
-		 *
-		 * \param vOrigin 
-		 */
-		virtual	void		setOrigin(const Vector2D& vOrigin);
-
 		/** 获取场景尺寸
 		 *
 		 * \return 
@@ -81,17 +68,11 @@ namespace Og2d
 		 */
 		virtual	void		setSize(const Size& cSize);
 
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	Vector2D	getCenter() const;
-
 		/** 获取场景包围盒
 		 *
 		 * \return 
 		 */
-		virtual	Rect		getBoundingBox() const;
+		virtual	Rect		getArea() const;
 
 		/** 创建场景节点
 		 *
@@ -99,46 +80,41 @@ namespace Og2d
 		 * \param rcBoundingBox 节点包围盒
 		 * \return 
 		 */
-		virtual	SceneNode*	createSceneNode(const String& szName, const Rect& rcBoundingBox);
+		virtual	SceneNode*	createSceneNode(const String& szName, const Vector2D& vPos) = 0;
 
 		/** 获取场景节点
 		 *
 		 * \param szName 
 		 * \return 
 		 */
-		virtual	SceneNode*	getSceneNode(const String& szName);
+		virtual	SceneNode*	getSceneNode(const String& szName) = 0;
 
 		/** 销毁场景节点
 		 *
 		 * \param szName 
 		 */
-		virtual	void		destroySceneNode(const String& szName);
+		virtual	void		destroySceneNode(const String& szName) = 0;
 
 		/** 销毁场景节点
 		 *
 		 * \param pSceneNode 
 		 */
-		virtual	void		destroySceneNode(SceneNode* pSceneNode);
+		virtual	void		destroySceneNode(SceneNode* pSceneNode) = 0;
 		
 		/** 销毁所有的场景节点
 		 *
 		 */
-		virtual	void		destroyAllSceneNode();
+		virtual	void		destroyAllSceneNode() = 0;
 
-		/** 周期性场景更新
+		/**
 		 *
 		 * \param fElapsed 
 		 */
-		virtual	void		update(float fElapsed);
-		
+		virtual	void		update(float fElapsed) = 0;
 	protected:
+		Size				m_cSize;
+		Vector2D			m_vPos;
 		String				m_szName;
-		// 场景节点映射表
-		MapSceneNodeTab		m_MapSceneNodeTab;
-		// 场景包围盒
-		Rect				m_rcBouingBox;
-		// 场景原点位置
-		Vector2D			m_vOrigin;
 	};
 }
 

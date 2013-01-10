@@ -4,23 +4,14 @@ namespace Og2d
 {
 	/**
 	 *
-	 * \return 
-	 */
-	Node::Node() : m_pParent(NULL)
-	{
-
-	}
-
-	/**
-	 *
 	 * \param szName 
-	 * \param rcBoundingBox 
+	 * \param vPos 
 	 * \return 
 	 */
-	Node::Node(const String& szName, const Rect& rcBoundingBox, Node* pParent)
-		: m_szName(szName), m_rcBoundingBox(rcBoundingBox), m_pParent(pParent)
+	Node::Node(const String& szName, const Vector2D& vPos)
+		: m_szName(szName), m_vPos(vPos), m_pParent(NULL)
 	{
-
+		
 	}
 
 	/**
@@ -30,33 +21,6 @@ namespace Og2d
 	Node::~Node()
 	{
 		removeAllChildeNode();
-	}
-
-	/**
-	 *
-	 * \param rcBoundingBox 
-	 */
-	void		Node::setBoundingBox(const Rect& rcBoundingBox)
-	{
-		m_rcBoundingBox = rcBoundingBox;
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Rect		Node::getBoundingBox() const
-	{
-		return m_rcBoundingBox;
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Vector2D	Node::getCenter() const
-	{
-		return m_rcBoundingBox.getCenter();
 	}
 	
 	/**
@@ -79,29 +43,11 @@ namespace Og2d
 
 	/**
 	 *
-	 * \param vScale 
-	 */
-	void		Node::setScale(const Vector2D& vScale)
-	{
-		m_vScale = vScale;
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Vector2D	Node::getScale() const
-	{
-		return m_vScale;
-	}
-
-	/**
-	 *
 	 * \param vPos 
 	 */
 	void		Node::setPosition(const Vector2D& vPos)
 	{
-		m_rcBoundingBox += vPos;
+		m_vPos = vPos;
 	}
 
 	/**
@@ -110,25 +56,7 @@ namespace Og2d
 	 */
 	Vector2D	Node::getPosition() const
 	{
-		return m_rcBoundingBox.getUpper() + m_vRelativelyPosition;
-	}
-
-	/**
-	 *
-	 * \param vPos 
-	 */
-	void		Node::setRelativelyPosition(const Vector2D& vPos)
-	{
-		m_vRelativelyPosition = vPos;	
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Vector2D	Node::getRelativelyPosition() const
-	{
-		return m_vRelativelyPosition;
+		return m_vPos;
 	}
 
 	/**
@@ -151,38 +79,35 @@ namespace Og2d
 
 	/**
 	 *
-	 * \param szName 
-	 * \param rcBoundingBox 
-	 * \return 
-	 */
-	Node*		Node::createChildNode(const String& szName, const Rect& rcBoundingBox)
-	{
-		MapChildNode::iterator it = m_MapChildren.find(szName);
-		if ( it == m_MapChildren.end() )
-		{
-			Node* pNode = new Node(szName, rcBoundingBox, this);
-			if (pNode)
-			{
-				m_MapChildren.insert(MapChildNode::value_type(szName, pNode));
-				return pNode;
-			}
-		}
-
-		return NULL;
-	}
-
-	/**
-	 *
 	 * \param pNode 
 	 */
-	void		Node::addChildNode(Node* pNode)
+	bool		Node::addChildNode(Node* pNode)
 	{
 		MapChildNode::iterator it = m_MapChildren.find(pNode->getName());
 		if ( it == m_MapChildren.end() )
 		{
+			// if the node no parent
+			Node* pParent = pNode->getParent();
+			if (pParent != NULL)
+			{
+				// remove this node, but no destroy
+				pParent->removeChildNode(pNode, 0);
+			}			
+		
+			// set parent
+			pNode->setParent(this);
+
+			// update this node position
+			Vector2D vPos = m_vPos + pNode->getPosition(); 
+			pNode->setPosition(vPos);
+
 			m_MapChildren.insert(MapChildNode::value_type(pNode->getName(),
 				pNode));
+
+			return true;
 		}
+
+		return 0;
 	}
 
 	/**
@@ -203,25 +128,28 @@ namespace Og2d
 	 *
 	 * \param pNode 
 	 */
-	void		Node::removeChildNode(Node* pNode)
+	void		Node::removeChildNode(Node* pNode, 
+		bool bDestroy/* =true */)
 	{
-		MapChildNode::iterator it = m_MapChildren.find(pNode->getName());
-		if ( it != m_MapChildren.end() )
-		{
-			SAFE_DELETE(it->second); m_MapChildren.erase(it);
-		}
+		removeChildNode(pNode->getName(), bDestroy);
 	}
 
 	/**
 	 *
 	 * \param szName 
 	 */
-	void		Node::removeChildNode(const String& szName)
+	void		Node::removeChildNode(const String& name, 
+		bool bDestroy/* =true */)
 	{
-		MapChildNode::iterator it = m_MapChildren.find(szName);
+		MapChildNode::iterator it = m_MapChildren.find(name);
 		if ( it != m_MapChildren.end() )
 		{
-			SAFE_DELETE(it->second); m_MapChildren.erase(it);
+			if (bDestroy)
+			{
+				SAFE_DELETE(it->second);
+			}
+
+			m_MapChildren.erase(it);
 		}
 	}
 	

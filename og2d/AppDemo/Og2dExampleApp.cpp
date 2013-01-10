@@ -26,7 +26,7 @@ namespace Og2d
 			{
 				PostQuitMessage( 0 );
 			}
-			return FALSE;
+			return 0;
 
 		case WM_MOUSEMOVE:
 			{
@@ -51,7 +51,7 @@ namespace Og2d
 				
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
 
 		case WM_LBUTTONUP:
 			{
@@ -69,7 +69,7 @@ namespace Og2d
 				
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
 
 		case WM_MBUTTONDOWN:
 			{
@@ -83,7 +83,7 @@ namespace Og2d
 				
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
 
 		case WM_MBUTTONUP:
 			{
@@ -101,7 +101,7 @@ namespace Og2d
 
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
 
 		case WM_RBUTTONDOWN:
 			{
@@ -115,7 +115,7 @@ namespace Og2d
 				
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
 
 		case WM_RBUTTONUP:
 			{
@@ -133,7 +133,8 @@ namespace Og2d
 				
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
+
 		case WM_KEYDOWN:
 			{
 				BYTE allKey[256];
@@ -153,7 +154,8 @@ namespace Og2d
 				
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
+
 		case WM_KEYUP:
 			{
 				BYTE allKey[256];
@@ -173,7 +175,8 @@ namespace Og2d
 			
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
+
 		case WM_MOUSEWHEEL:
 			{
 				curEvt.iType			= EIPT_MOUSE;
@@ -184,7 +187,7 @@ namespace Og2d
 				
 				InputManager::getSingleton().injectEvent(curEvt);
 			}
-			return FALSE;
+			return 0;
 		}
 
 		return ::DefWindowProc(hWnd,msg,wParam,lParam);
@@ -198,7 +201,7 @@ namespace Og2d
 	 * \param void 
 	 * \return 
 	 */
-	ExampleApp::ExampleApp( const String& name, int w, int h, bool bFullScreen) : m_hWnd(NULL),m_pSystem(NULL)
+	ExampleApp::ExampleApp( const String& name, int w, int h, bool bFullScreen) : m_szAppName(name), m_hWnd(NULL),m_pSystem(NULL)
 	{
 		WNDCLASSEX wc;
 		wc.cbClsExtra		= 0;
@@ -238,7 +241,7 @@ namespace Og2d
 			int nTop	= (GetSystemMetrics(SM_CYSCREEN) - nHeight) / 2;
 
 			m_hWnd = ::CreateWindow(szClassName, 
-									name.c_str(), 
+									m_szAppName.c_str(), 
 									style,
 									nLeft,
 									nTop,
@@ -293,9 +296,9 @@ namespace Og2d
 	/**
 	 *
 	 */
-	void	ExampleApp::createApplicationResource()
+	bool	ExampleApp::createApplicationResource()
 	{
-		
+		return true;	
 	}
 	
 	/**
@@ -331,10 +334,9 @@ namespace Og2d
 				if (fFPSTime >= 1.0f)
 				{
 					char szFPS[64];
-					sprintf(szFPS, "System Updat: FPS=%d", dwFPS);
-					LogManager::getSingleton().logMessage(INFO_NORMAL,
-						szFPS);
-
+					sprintf(szFPS, "%s System Updat: FPS=%d", m_szAppName.c_str(), dwFPS);
+					SetWindowText(m_hWnd, szFPS);
+				
 					fFPSTime = 0;
 					dwFPS	 = 0;
 				}

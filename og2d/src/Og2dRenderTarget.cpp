@@ -82,7 +82,8 @@ namespace Og2d
 	 */
 	void		RenderTarget::setPosition(const Vector2D& vPos)
 	{
-		m_BouingBox += vPos;
+		Size cSize = getSize();
+		m_rcArea.setRect(vPos.x, vPos.y, cSize.w, cSize.h);
 	}
 
 	/**
@@ -91,51 +92,43 @@ namespace Og2d
 	 */
 	Vector2D	RenderTarget::getPosition() const
 	{
-		return m_BouingBox.getUpper();
+		return m_rcArea.getUpper();
 	}
 
 	/**
 	 *
-	 * \param vPos 
+	 * \param cSize 
 	 */
-	void		RenderTarget::setRelativelyPosition(const Vector2D& vPos)
+	void		RenderTarget::setSize(const Size& cSize)
 	{
-		m_vRelativelyPosition = vPos;
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Vector2D	RenderTarget::getRelativelyPosition() const
-	{
-		return m_vRelativelyPosition;
-	}
-
-	/**
-	 *
-	 * \param rcBoundingBox 
-	 */
-	void		RenderTarget::setBoundingBox(const Rect& rcBoundingBox)
-	{
-		m_BouingBox = rcBoundingBox;
+		Vector2D vPos = getPosition();
+		m_rcArea.setRect(vPos.x, vPos.y, cSize.w, cSize.h);
 	}
 
 	/**
 	 *
 	 * \return 
 	 */
-	Rect		RenderTarget::getBoundingBox() const
+	Size		RenderTarget::getSize() const
 	{
-		return m_BouingBox;
+		return m_rcArea.getSize();
+	}
+
+	/**
+	 *
+	 * \param rcArea 
+	 */
+	void		RenderTarget::setArea(const Rect& rcArea)
+	{
+		m_rcArea = rcArea;
 	}
 
 	/**
 	 *
 	 * \return 
 	 */
-	Vector2D	RenderTarget::getCenter() const
+	Rect		RenderTarget::getArea() const
 	{
-		return m_BouingBox.getCenter();
+		return m_rcArea;
 	}
 }

@@ -29,42 +29,18 @@ namespace Og2d
 	{
 	public:
 		/** 构造函数
-		 *
-		 * \return 
-		 */
-		Node();
-
-		/** 构造函数
 		 *	
 		 * \param szName		节点名
 		 * \param rcBoundingBox 
 		 * \return 
 		 */
-		Node(const String& szName, const Rect& rcBoundingBox, Node* pParent);
+		Node(const String& szName, const Vector2D& vPos);
 	
 		/**
 		 *
 		 * \return 
 		 */
 		virtual ~Node();
-
-		/**
-		 *
-		 * \param rcBoundingBox 
-		 */
-		virtual	void		setBoundingBox(const Rect& rcBoundingBox);
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	Rect		getBoundingBox() const;
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	Vector2D	getCenter() const;
 
 		/**
 		 *
@@ -76,19 +52,7 @@ namespace Og2d
 		 *
 		 * \return 
 		 */
-		virtual	String		getName() const;
-
-		/**
-		 *
-		 * \param vScale 
-		 */
-		virtual	void		setScale(const Vector2D& vScale);
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	Vector2D	getScale() const;
+		virtual String		getName() const;
 
 		/**
 		 *
@@ -100,19 +64,7 @@ namespace Og2d
 		 *
 		 * \return 
 		 */
-		virtual	Vector2D	getPosition() const;
-		
-		/**
-		 *
-		 * \param vPos 
-		 */
-		virtual	void		setRelativelyPosition(const Vector2D& vPos);
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	Vector2D	getRelativelyPosition() const;
+		virtual Vector2D	getPosition() const;
 
 		/**
 		 *
@@ -128,54 +80,45 @@ namespace Og2d
 
 		/**
 		 *
-		 * \param szName 
-		 * \param rcBoundingBox 
+		 * \param fElapsed 
+		 */
+		virtual	void		update(float fElapsed);
+
+		/**
+		 *
+		 * \param pNode 
 		 * \return 
 		 */
-		virtual	Node*		createChildNode(const String& szName, const Rect& rcBoundingBox);
+		virtual	bool		addChildNode(Node* pNode);
+
+		/**
+		 *
+		 * \param szName 
+		 * \return 
+		 */
+		virtual Node*		getChildNode(const String& szName);
 
 		/**
 		 *
 		 * \param pNode 
 		 */
-		virtual	void		addChildNode(Node* pNode);
+		virtual	void		removeChildNode(Node* pNode, bool bDestroy=true);
 
 		/**
 		 *
-		 * \param szName 
-		 * \return 
+		 * \param name 
 		 */
-		virtual	Node*		getChildNode(const String& szName);
+		virtual	void		removeChildNode(const String& name, bool bDestroy=true);
 
-		/**
-		 *
-		 * \param pNode 
-		 */
-		virtual	void		removeChildNode(Node* pNode);
-
-		/**
-		 *
-		 * \param szName 
-		 */
-		virtual	void		removeChildNode(const String& szName);
-		
 		/**
 		 *
 		 */
 		virtual	void		removeAllChildeNode();
-
-		/**
-		 *
-		 * \param fElapsed 
-		 */
-		virtual	void		update(float fElapsed);
 	protected:
 		String				m_szName;
-		Rect				m_rcBoundingBox;
-		Vector2D			m_vRelativelyPosition;
 		MapChildNode		m_MapChildren;
+		Vector2D			m_vPos;
 		Node*				m_pParent;
-		Vector2D			m_vScale;
 	};
 }
 

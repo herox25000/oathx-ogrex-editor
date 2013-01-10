@@ -260,11 +260,27 @@
 				>
 			</File>
 			<File
+				RelativePath="..\src\Og2dSceneNodeFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Og2dSceneNodeFactoryManager.cpp"
+				>
+			</File>
+			<File
 				RelativePath="..\src\Og2dShape.cpp"
 				>
 			</File>
 			<File
 				RelativePath="..\src\Og2dSystem.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Og2dTerrain.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\src\Og2dTerrainNode.cpp"
 				>
 			</File>
 			<File
@@ -406,6 +422,14 @@
 				>
 			</File>
 			<File
+				RelativePath="..\include\Og2dSceneNodeFactory.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Og2dSceneNodeFactoryManager.h"
+				>
+			</File>
+			<File
 				RelativePath="..\include\Og2dShape.h"
 				>
 			</File>
@@ -423,6 +447,14 @@
 			</File>
 			<File
 				RelativePath="..\include\Og2dSystem.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Og2dTerrain.h"
+				>
+			</File>
+			<File
+				RelativePath="..\include\Og2dTerrainNode.h"
 				>
 			</File>
 			<File
