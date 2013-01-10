@@ -8,7 +8,7 @@ namespace Og2d
 	 * \param nLength 
 	 * \return 
 	 */
-	Shape::Shape(int nLength) 
+	Shape::Shape(ulong nLength) 
 		: m_nLength(nLength)
 	{
 
@@ -27,7 +27,7 @@ namespace Og2d
 	 *
 	 * \return 
 	 */
-	int		Shape::getLength() const
+	ulong	Shape::getLength() const
 	{
 		return m_nLength;
 	}
