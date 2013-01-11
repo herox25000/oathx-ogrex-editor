@@ -46,22 +46,29 @@ namespace Og2d
 		 * \param pRenderTarget 
 		 * \return 
 		 */
-		virtual	bool		attachRenderTarget(RenderTarget* pRenderTarget);
+		virtual	bool			attachRenderTarget(RenderTarget* pRenderTarget);
+
+		/**
+		 *
+		 * \param name 
+		 * \return 
+		 */
+		virtual RenderTarget*	getRenderTarget(const String& name);
 
 		/** 取消绑定的渲染目标
 		 *
 		 * \param pRenderTarget 
 		 */
-		virtual	void		detachRenderTarget(RenderTarget* pRenderTarget);
+		virtual	void			detachRenderTarget(RenderTarget* pRenderTarget);
 
 		/** 更新场景节点
 		 *
 		 * \param fElapsed 
 		 */
-		virtual	void		update(float fElapsed);
+		virtual	void			update(float fElapsed);
 	protected:
-		String				m_szName;
-		MapRenderTarget		m_vRenderTarget;
+		String					m_szName;
+		MapRenderTarget			m_vRenderTarget;
 	};
 }
 

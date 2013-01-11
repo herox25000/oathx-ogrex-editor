@@ -1,7 +1,7 @@
 #ifndef _____Og2dMesh_H
 #define _____Og2dMesh_H
 
-#include "Og2dRenderTarget.h"
+#include "Og2dVertex.h"
 
 namespace Og2d
 {
@@ -22,7 +22,7 @@ namespace Og2d
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class Og2d_Export_API Mesh : public RenderTarget
+	class Og2d_Export_API Mesh
 	{
 	public:
 		/**
@@ -30,21 +30,17 @@ namespace Og2d
 		 * \param name 
 		 * \return 
 		 */
-		Mesh(const String& name, int nVertexCount);
+		Mesh(int nVertsPerRow, int nVertsPerCol, int nSpaceing);
 
 		/**
 		 *
 		 * \return 
 		 */
 		virtual ~Mesh();
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	ulong			getVertexCount() const;
 	protected:
-		ulong					m_nVertexCount;
+		int					m_nVertsPerRow;
+		int					m_nVertsPerCol;
+		int					m_nSpaceing;
 	};
 }
 
