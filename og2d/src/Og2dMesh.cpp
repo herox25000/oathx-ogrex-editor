@@ -11,8 +11,8 @@ namespace Og2d
 	 * \param nVertexCount 
 	 * \return 
 	 */
-	Mesh::Mesh(const String& name, int nVertexCount)
-		: RenderTarget(name), m_nVertexCount(nVertexCount)
+	Mesh::Mesh(int nVertsPerRow, int nVertsPerCol, int nSpaceing)
+		: m_nVertsPerRow(nVertsPerRow), m_nVertsPerCol(nVertsPerCol), m_nSpaceing(nSpaceing)
 	{
 
 	}
@@ -24,14 +24,5 @@ namespace Og2d
 	Mesh::~Mesh()
 	{
 
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	ulong		Mesh::getVertexCount() const
-	{
-		return m_nVertexCount;
 	}
 }

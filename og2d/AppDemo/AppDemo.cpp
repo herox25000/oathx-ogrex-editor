@@ -44,6 +44,30 @@ namespace Og2d
 		{
 			m_pTexture = System::getSingleton().getRenderSystem()->createTextureFromFile("../media/2.bmp");
 			assert(m_pTexture != NULL);
+
+			int row = 32;
+			int col = 32;
+			int w	= m_pTexture->getSize().w;
+			int h	= m_pTexture->getSize().h;
+
+			for (int i=0; i<col; i++)
+			{
+				for (int j=0; j<row; j++)
+				{
+					char szName[32];
+					sprintf(szName, "%d", i * col + j);
+					SceneNode* pNode = pScene->createSceneNode(szName, Vector2D(j * w, i * h));
+					if (pNode)
+					{
+						Quad* pQuad = new Quad(szName, Rect(0, 0, w, h));
+						if (pQuad)
+						{
+							pQuad->setTexture(m_pTexture);
+							pNode->attachRenderTarget(pQuad);
+						}
+					}
+				}
+			}
 		}
 
 		return true;
