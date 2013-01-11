@@ -28,7 +28,7 @@ namespace Og2d
 	 * \param pRenderTarget 
 	 * \return 
 	 */
-	bool		SceneNode::attachRenderTarget(RenderTarget* pRenderTarget)
+	bool			SceneNode::attachRenderTarget(RenderTarget* pRenderTarget)
 	{
 		MapRenderTarget::iterator it = m_vRenderTarget.find(pRenderTarget->getName());
 		if ( it == m_vRenderTarget.end() )
@@ -49,9 +49,25 @@ namespace Og2d
 
 	/**
 	 *
+	 * \param name 
+	 * \return 
+	 */
+	RenderTarget*	SceneNode::getRenderTarget(const String& name)
+	{
+		MapRenderTarget::iterator it = m_vRenderTarget.find(name);
+		if ( it != m_vRenderTarget.end() )
+		{
+			return it->second;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 *
 	 * \param pRenderTarget 
 	 */
-	void		SceneNode::detachRenderTarget(RenderTarget* pRenderTarget)
+	void			SceneNode::detachRenderTarget(RenderTarget* pRenderTarget)
 	{
 		MapRenderTarget::iterator it = m_vRenderTarget.find(pRenderTarget->getName());
 		if ( it != m_vRenderTarget.end() )
@@ -64,7 +80,7 @@ namespace Og2d
 	 *
 	 * \param fElapsed 
 	 */
-	void		SceneNode::update(float fElapsed)
+	void			SceneNode::update(float fElapsed)
 	{
 		// draw all render target
 		for (MapRenderTarget::iterator it=m_vRenderTarget.begin();

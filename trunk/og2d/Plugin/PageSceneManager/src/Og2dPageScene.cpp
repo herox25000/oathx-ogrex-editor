@@ -1,5 +1,6 @@
 #include "Og2dPageScenePrerequisites.h"
 #include "Og2dPageScene.h"
+#include "Og2dWorld.h"
 #include "Og2dDebug.h"
 
 namespace Og2d
@@ -15,7 +16,7 @@ namespace Og2d
 	PageScene::PageScene(const String& szName, const Vector2D& vPos, const Size& cSize)
 		: Scene(szName, vPos, cSize)
 	{
-
+		
 	}
 
 	/**
@@ -107,10 +108,29 @@ namespace Og2d
 	 */
 	void		PageScene::update(float fElapsed)
 	{
+		// get viewport
+		Viewport* pViewport = World::getSingletonPtr()->getViewport();
+		Rect rcViewArea = pViewport->getArea();
+		
 		MapSceneNodeTab::iterator it = m_MapSceneNode.begin();
 		while( it != m_MapSceneNode.end() )
 		{
-			it->second->update(fElapsed);
+			Rect rcNodeArea(it->second->getPosition(), Size(640, 480));
+			
+			Vector2D vLeftUpper		= rcNodeArea.getUpper();
+			Vector2D vLeftLower(rcNodeArea.left, rcNodeArea.bottom);
+			
+			Vector2D vRigthUpper	= rcNodeArea.getLower();
+			Vector2D vRightLower(rcNodeArea.right, rcNodeArea.top);
+
+			if (rcViewArea.ptInRect(vLeftUpper) ||
+				rcViewArea.ptInRect(vLeftLower) ||
+				rcViewArea.ptInRect(vRigthUpper) ||
+				rcViewArea.ptInRect(vRightLower))
+			{
+				it->second->update(fElapsed);
+			}
+			
 			it ++;
 		}
 	}
