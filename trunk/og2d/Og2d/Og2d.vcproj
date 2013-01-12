@@ -280,10 +280,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\src\Og2dTerrainNode.cpp"
-				>
-			</File>
-			<File
 				RelativePath="..\src\Og2dTexture.cpp"
 				>
 			</File>
@@ -451,10 +447,6 @@
 			</File>
 			<File
 				RelativePath="..\include\Og2dTerrain.h"
-				>
-			</File>
-			<File
-				RelativePath="..\include\Og2dTerrainNode.h"
 				>
 			</File>
 			<File
