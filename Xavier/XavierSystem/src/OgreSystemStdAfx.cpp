@@ -1,0 +1,1 @@
+#include "OgreSystemStdafx.h"
