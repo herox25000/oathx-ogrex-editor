@@ -23,6 +23,8 @@ namespace Ogre
 	class Ogre_System_Export_API World : public Singleton<World>
 	{
 	public:
+		static const String		DEFAULT_MAIN_CAMERA;
+	public:
 		/**
 		 *
 		 * \return 
@@ -38,15 +40,60 @@ namespace Ogre
 	public:
 		/**
 		 *
+		 * \param name 
+		 * \param typeMask 
+		 * \param clrAmbientLight 
+		 * \param vPos 
+		 * \param vLookAt 
+		 * \param fYaw 
+		 * \param fPitch 
+		 * \param fNearClipDistance 
+		 * \param fFarClipDistance 
 		 * \return 
 		 */
-		World();
+		World(const String& name, const SceneTypeMask& typeMask, const ColourValue& clrAmbientLight,
+			const Vector3& vPos, const Vector3& vLookAt, Real fYaw, Real fPitch, Real fNearClipDistance, Real fFarClipDistance, const ColourValue& background);
 
 		/**
 		 *
 		 * \return 
 		 */
 		virtual ~World();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	SceneManager*	getSceneManager() const;
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Camera*			getCamera() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Viewport*		getViewport() const;
+	protected:
+		/**
+		 *
+		 * \param vPos 
+		 * \param vLookAt 
+		 * \param fYaw 
+		 * \param fPitch 
+		 * \param fNearClipDistance 
+		 * \param fFarClipDistance 
+		 * \return 
+		 */
+		virtual	bool			configureDefault(const Vector3& vPos, const Vector3& vLookAt,
+			Real fYaw, Real fPitch, Real fNearClipDistance, Real fFarClipDistance, const ColourValue& background);
+	protected:
+		SceneManager*			m_pSceneManager;
+		Camera*					m_pCamera;
+		Viewport*				m_pViewport;
 	};
 }
 
