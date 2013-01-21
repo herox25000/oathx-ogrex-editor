@@ -446,6 +446,18 @@
 				>
 			</File>
 		</Filter>
+		<Filter
+			Name="editor"
+			>
+			<File
+				RelativePath=".\EditorTool.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorTool.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
 			>

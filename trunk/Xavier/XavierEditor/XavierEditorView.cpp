@@ -28,6 +28,9 @@ BEGIN_MESSAGE_MAP(CXavierEditorView, CView)
 	ON_WM_RBUTTONUP()
 END_MESSAGE_MAP()
 
+// 渲染定时器
+#define OGRE_RENDER_TIMER	9527
+
 /**
  *
  * \return 
@@ -155,6 +158,11 @@ int		CXavierEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CView::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
+	// 创建渲染窗口
+	System::getSingletonPtr()->createRenderWindow("EditorView", m_hWnd, 800, 600, 0);
+	
+	SetTimer(OGRE_RENDER_TIMER, 16, NULL);
+
 	return 0;
 }
 
@@ -176,6 +184,14 @@ LRESULT	CXavierEditorView::OnWizardFnished(WPARAM wParam, LPARAM lParam)
  */
 void	CXavierEditorView::OnTimer(UINT_PTR nIDEvent)
 {
+	switch( nIDEvent )
+	{
+	case OGRE_RENDER_TIMER:
+		{
+			System::getSingletonPtr()->update();
+		}
+		break;
+	}
 	CView::OnTimer(nIDEvent);
 }
 
@@ -184,6 +200,8 @@ void	CXavierEditorView::OnTimer(UINT_PTR nIDEvent)
  */
 void	CXavierEditorView::OnDestroy()
 {
+	KillTimer(OGRE_RENDER_TIMER);
+
 	CView::OnDestroy();
 }
 
@@ -217,7 +235,6 @@ BOOL	CXavierEditorView::OnEraseBkgnd(CDC* pDC)
  */
 BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
