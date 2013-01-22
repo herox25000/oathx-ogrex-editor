@@ -119,19 +119,24 @@ namespace Ogre
 	 */
 	EditorTool*	EditorTool::findEditorTool(const String& name)
 	{
-		EditorTool* pEditorTool = getEditorTool(name);
-		if (pEditorTool == NULL)
+		if (m_name == name)
+			return this;
+
+		EditorTool* pTool = getEditorTool(name);
+		if (pTool == NULL)
 		{
 			HashMapEditorTool::iterator it = m_HashMapEditorTool.begin();
 			while( it != m_HashMapEditorTool.end() )
 			{
-				it->second->findEditorTool(name);
+				pTool = it->second->findEditorTool(name);
+				if (pTool != NULL)
+					return pTool;
 
 				it ++;
-			}	
+			}
 		}
 
-		return pEditorTool;
+		return pTool;
 	}
 
 	/**
@@ -211,6 +216,19 @@ namespace Ogre
 	 * \return 
 	 */
 	bool		EditorTool::OnSize(int cx, int cy)
+	{
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param name 
+	 * \param angValue 
+	 * \param nValueType 
+	 * \return 
+	 */
+	bool		EditorTool::OnPropertyChanged(const String& parentName, const String& name, Any angValue,
+		int nValueType)
 	{
 		return 0;
 	}

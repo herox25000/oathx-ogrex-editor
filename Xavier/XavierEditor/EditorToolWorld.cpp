@@ -50,6 +50,44 @@ namespace Ogre
 		return true;
 	}
 
+	/**
+	 *
+	 * \param name 
+	 * \param angValue 
+	 * \param nValueType 
+	 * \return 
+	 */
+	bool	EditorToolWorld::OnPropertyChanged(const String& parentName, const String& name, Any angValue, int nValueType)
+	{
+		if (parentName == "Background")
+		{
+			if (name == "RGB")
+			{
+				Viewport* pViewport = m_pWorld->getViewport();
+				if (pViewport)
+				{
+					ColourValue background = pViewport->getBackgroundColour();
+
+					uint32 rgb = any_cast<uint32>(angValue);
+					int a = GetR(rgb);
+					int b = GetG(rgb);
+					int c = GetB(rgb);
+					
+					background.r = NormalValue(GetR(rgb));
+					background.g = NormalValue(GetG(rgb));
+					background.b = NormalValue(GetB(rgb));
+					
+					pViewport->setBackgroundColour(background);
+				}
+			}
+			else
+			{
+				
+			}
+		}
+		return true;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *
