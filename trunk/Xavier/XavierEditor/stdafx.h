@@ -34,6 +34,10 @@
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
 #include "OgreSystemAPIExport.h"
 #include "OgreEventSetStdAfx.h"
+#include "OgreAny.h"
+#include "OgrePropertySet.h"
+#include "OgreWorld.h"
+#include "XavierEditorMessageDef.h"
 
 using namespace Ogre;
 

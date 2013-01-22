@@ -8,7 +8,7 @@ namespace Ogre
 	 * \return 
 	 */
 	EditorTool::EditorTool(const String& name)
-		: m_name(name)
+		: m_name(name), m_pParent(NULL)
 	{
 
 	}
@@ -19,14 +19,18 @@ namespace Ogre
 	 */
 	EditorTool::~EditorTool()
 	{
-
+		HashMapEditorTool::iterator it = m_HashMapEditorTool.begin();
+		while( it != m_HashMapEditorTool.end() )
+		{
+			delete it->second; it = m_HashMapEditorTool.erase(it);
+		}
 	}
 	
 	/**
 	 *
 	 * \param name 
 	 */
-	void	EditorTool::setName(const String& name)
+	void		EditorTool::setName(const String& name)
 	{
 		m_name = name;
 	}
@@ -35,17 +39,116 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	String	EditorTool::getName() const
+	String		EditorTool::getName() const
 	{
 		return m_name;
 	}
+	
+	/**
+	 *
+	 * \param pParent 
+	 */
+	void		EditorTool::setParent(EditorTool* pParent)
+	{
+		m_pParent = pParent;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	EditorTool*	EditorTool::getParent() const
+	{
+		return m_pParent;
+	}
+
+	/**
+	 *
+	 * \param nType 
+	 * \param adp 
+	 * \return 
+	 */
+	bool		EditorTool::addEditorTool(EditorTool* pEditorTool)
+	{
+		HashMapEditorTool::iterator it = m_HashMapEditorTool.find(pEditorTool->getName());
+		if ( it == m_HashMapEditorTool.end() )
+		{
+			m_HashMapEditorTool.insert(
+				HashMapEditorTool::value_type(pEditorTool->getName(), pEditorTool)
+				);
+
+			return true;
+		}
+		
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param name 
+	 * \return 
+	 */
+	EditorTool*	EditorTool::getEditorTool(const String& name)
+	{
+		HashMapEditorTool::iterator it = m_HashMapEditorTool.find(name);
+		if ( it != m_HashMapEditorTool.end() )
+		{
+			return it->second;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \param pEditorTool 
+	 */
+	void		EditorTool::removeEditorTool(EditorTool* pEditorTool)
+	{
+		HashMapEditorTool::iterator it = m_HashMapEditorTool.find(pEditorTool->getName());
+		if ( it != m_HashMapEditorTool.end() )
+		{
+			delete it->second; m_HashMapEditorTool.erase(it);
+		}
+	}
+
+	/**
+	 *
+	 * \param name 
+	 * \return 
+	 */
+	EditorTool*	EditorTool::findEditorTool(const String& name)
+	{
+		EditorTool* pEditorTool = getEditorTool(name);
+		if (pEditorTool == NULL)
+		{
+			HashMapEditorTool::iterator it = m_HashMapEditorTool.begin();
+			while( it != m_HashMapEditorTool.end() )
+			{
+				it->second->findEditorTool(name);
+
+				it ++;
+			}	
+		}
+
+		return pEditorTool;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	EditorTool::HashMapEditorIter EditorTool::getHashMapEditorIter()
+	{
+		return HashMapEditorIter(m_HashMapEditorTool.begin(), m_HashMapEditorTool.end());
+	}
 
 	/**
 	 *
 	 * \param vPos 
 	 * \return 
 	 */
-	bool	EditorTool::OnLButtonDown(const Vector2& vPos)
+	bool		EditorTool::OnLButtonDown(const Vector2& vPos)
 	{
 		return 0;
 	}
@@ -55,7 +158,7 @@ namespace Ogre
 	 * \param vPos 
 	 * \return 
 	 */
-	bool	EditorTool::OnLButtonUp(const Vector2& vPos)
+	bool		EditorTool::OnLButtonUp(const Vector2& vPos)
 	{
 		return 0;
 	}
@@ -65,7 +168,7 @@ namespace Ogre
 	 * \param vPos 
 	 * \return 
 	 */
-	bool	EditorTool::OnRButtonDown(const Vector2& vPos)
+	bool		EditorTool::OnRButtonDown(const Vector2& vPos)
 	{
 		return 0;
 	}
@@ -75,7 +178,7 @@ namespace Ogre
 	 * \param vPos 
 	 * \return 
 	 */
-	bool	EditorTool::OnRButtonUp(const Vector2& vPos)
+	bool		EditorTool::OnRButtonUp(const Vector2& vPos)
 	{
 		return 0;
 	}
@@ -85,7 +188,7 @@ namespace Ogre
 	 * \param vPos 
 	 * \return 
 	 */
-	bool	EditorTool::OnMouseMove(const Vector2& vPos)
+	bool		EditorTool::OnMouseMove(const Vector2& vPos)
 	{
 		return 0;
 	}
@@ -96,7 +199,18 @@ namespace Ogre
 	 * \param vPos 
 	 * \return 
 	 */
-	bool	EditorTool::OnMouseWheel(float zDelta, const Vector2& vPos)
+	bool		EditorTool::OnMouseWheel(float zDelta, const Vector2& vPos)
+	{
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param cx 
+	 * \param cy 
+	 * \return 
+	 */
+	bool		EditorTool::OnSize(int cx, int cy)
 	{
 		return 0;
 	}

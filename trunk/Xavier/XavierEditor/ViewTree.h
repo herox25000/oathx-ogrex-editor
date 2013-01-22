@@ -1,23 +1,35 @@
-
 #pragma once
 
-/////////////////////////////////////////////////////////////////////////////
-// CViewTree 窗口
-
+/**
+* \ingroup : XavierEditor
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2013-01-22
+*
+* \Author  : lp
+*
+* \Desc    :
+*
+* \bug     : 
+*
+* \Copyright (c) 2012 lp All rights reserved.
+*/
 class CViewTree : public CTreeCtrl
 {
-// 构造
 public:
 	CViewTree();
 
-// 重写
 protected:
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
-// 实现
 public:
 	virtual ~CViewTree();
 
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
 };

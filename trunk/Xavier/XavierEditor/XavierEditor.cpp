@@ -6,6 +6,9 @@
 #include "XavierEditorDoc.h"
 #include "XavierEditorView.h"
 #include "SplashDialog.h"
+#include "EditorTool.h"
+#include "EditorToolManager.h"
+#include "EditorToolFactoryManager.h"
 
 #ifdef _DEBUG
 #	define new DEBUG_NEW
@@ -98,6 +101,8 @@ BOOL	CXavierEditorApp::InitInstance()
  */
 int		CXavierEditorApp::ExitInstance()
 {
+	delete EditorToolManager::getSingletonPtr();
+	delete EditorToolFactoryManager::getSingletonPtr();
 	/*
 	* Ïú»ÙÏµÍ³
 	*/
@@ -223,7 +228,10 @@ void	CXavierEditorApp::ShowSplashDialog()
 #else
 	m_pAppSystem->createSystem("plugins_d.cfg", "resources_d.cfg", false);
 #endif
-		
+	
+	new EditorToolFactoryManager();
+	new EditorToolManager("Xavier");
+
 	pCsw->CloseSplash();
 	delete pCsw;
 	pCsw = NULL;
