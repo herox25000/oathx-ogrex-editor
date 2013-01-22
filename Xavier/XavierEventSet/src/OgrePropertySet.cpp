@@ -125,4 +125,13 @@ namespace Ogre
 	{
 		return m_HashProperty;
 	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	HashPropertyIter	PropertySet::getHashPropertyIter()
+	{
+		return HashPropertyIter(m_HashProperty.begin(), m_HashProperty.end());
+	}
 }

@@ -134,7 +134,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual HashProperty&		getHashProperty();
-
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual HashPropertyIter	getHashPropertyIter();
 	public:
 		/**
 		 *

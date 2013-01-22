@@ -1,5 +1,6 @@
 #include "OgreSystemStdAfx.h"
 #include "OgreSystem.h"
+#include "OgreGlobalEventSet.h"
 
 namespace Ogre
 {
@@ -108,6 +109,8 @@ namespace Ogre
 		// create render window
 		m_pRoot->initialise(bAutoCreateWindow);
 
+		new GlobalEventSet();
+
 		return true;
 	}
 
@@ -124,6 +127,8 @@ namespace Ogre
 	 */
 	void		System::clearUp()
 	{
+		delete GlobalEventSet::getSingletonPtr();
+
 		if (m_pRoot != NULL)
 		{
 			delete m_pRoot;
