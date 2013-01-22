@@ -77,6 +77,11 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	Viewport*		getViewport() const;
+		
+		/**
+		 *
+		 */
+		virtual	void			windowMovedOrResized();
 	protected:
 		/**
 		 *

@@ -140,4 +140,20 @@ namespace Ogre
 
 		return true;
 	}
+
+	/**
+	 *
+	 */
+	void			World::windowMovedOrResized()
+	{
+		RenderWindow* pRenderWindow = System::getSingleton().getRenderWindow();
+		if (m_pCamera != NULL && pRenderWindow != NULL)
+		{
+			pRenderWindow->windowMovedOrResized();
+
+			m_pCamera->setAspectRatio(
+				Ogre::Real(m_pViewport->getActualWidth()) / Ogre::Real(m_pViewport->getActualHeight())
+				);	
+		}
+	}
 }
