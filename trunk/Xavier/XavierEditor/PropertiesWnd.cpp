@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTIES1, OnUpdateProperties1)
 	ON_COMMAND(ID_PROPERTIES2, OnProperties2)
 	ON_UPDATE_COMMAND_UI(ID_PROPERTIES2, OnUpdateProperties2)
+	ON_REGISTERED_MESSAGE(AFX_WM_PROPERTY_CHANGED, OnPropertyChanged)
 	ON_WM_SETFOCUS()
 	ON_WM_SETTINGCHANGE()
 END_MESSAGE_MAP()
@@ -397,6 +398,49 @@ LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 				// 创建属性
 				CreateToolProperty(pSelectTool);
 			}
+		}
+	}
+
+	return 0;
+}
+
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
+{
+	EditorTool* pSelectTool = EditorToolManager::getSingleton().getCurrentEditorTool();
+	if (pSelectTool == NULL)
+		return 0;
+
+	CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
+	if (pProperty != NULL)
+	{
+		String parentName;
+		CMFCPropertyGridProperty* pParent = pProperty->GetParent();
+		if (pParent)
+			parentName = pParent->GetName();
+
+		// 类型名称
+		String typeName(_T(pProperty->GetName()));
+
+		// 变量类型
+		COleVariant oldValue = pProperty->GetValue();
+		switch( oldValue.vt )
+		{
+		case VT_I4:
+			{
+				pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.uintVal), PVT_UNSIGNED_INT);
+			}
+			break;
+		case VT_BSTR:
+			{
+
+			}
+			break;
 		}
 	}
 

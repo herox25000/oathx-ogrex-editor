@@ -26,6 +26,7 @@
 #define sprintf_s snprintf
 #endif
 
+
 namespace Ogre
 {
 

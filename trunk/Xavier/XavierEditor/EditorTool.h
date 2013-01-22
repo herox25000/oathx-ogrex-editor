@@ -146,6 +146,16 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	bool				OnSize(int cx, int cy);
+
+		/**
+		 *
+		 * \param name 
+		 * \param angValue 
+		 * \param nValueType 
+		 * \return 
+		 */
+		virtual bool				OnPropertyChanged(const String& parentName, const String& name, 
+			Any angValue, int nValueType);
 	protected:
 		String						m_name;
 		HashMapEditorTool			m_HashMapEditorTool;

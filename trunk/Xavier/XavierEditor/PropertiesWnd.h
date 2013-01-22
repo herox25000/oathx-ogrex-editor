@@ -128,7 +128,21 @@ public:
 	virtual ~CPropertiesWnd();
 
 protected:
+	/**
+	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
 	afx_msg LRESULT			OnSelectEditor(WPARAM wParam, LPARAM lParam);
+
+	/**
+	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
+	afx_msg LRESULT			OnPropertyChanged(WPARAM wParam, LPARAM lParam);
 protected:
 	afx_msg int				OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void			OnSize(UINT nType, int cx, int cy);
