@@ -4,6 +4,7 @@
 #include "ClassView.h"
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
+#include "WizardDialog.h"
 
 /**
 * \ingroup : OgreEditor
@@ -65,6 +66,16 @@ public:
 	 */
 	virtual BOOL		AddLogMessage(LPCTSTR lpszMessage, COLORREF clr);
 
+	/**
+	 *
+	 */
+	virtual	void		UpdateFileView();
+public:
+	/**
+	 *
+	 * \return 
+	 */
+	CPropertiesWnd*		GetPropertyWnd();
 protected:
 	/**
 	 *
@@ -92,6 +103,7 @@ protected:
 	CClassView			m_wClassView;
 	COutputWnd			m_wOutput;
 	CPropertiesWnd		m_wProperties;
+	CWizardDialog		m_dWizardDialog;
 
 protected:
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);

@@ -1,10 +1,10 @@
-
 #include "stdafx.h"
-
 #include "PropertiesWnd.h"
 #include "Resource.h"
 #include "MainFrm.h"
 #include "XavierEditor.h"
+#include "EditorTool.h"
+#include "EditorToolManager.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -12,13 +12,18 @@ static char THIS_FILE[]=__FILE__;
 #define new DEBUG_NEW
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CResourceViewBar
-
+/**
+ *
+ * \return 
+ */
 CPropertiesWnd::CPropertiesWnd()
 {
 }
 
+/**
+ *
+ * \return 
+ */
 CPropertiesWnd::~CPropertiesWnd()
 {
 }
@@ -26,6 +31,7 @@ CPropertiesWnd::~CPropertiesWnd()
 BEGIN_MESSAGE_MAP(CPropertiesWnd, CDockablePane)
 	ON_WM_CREATE()
 	ON_WM_SIZE()
+	ON_MESSAGE(WM_SELECT_EDITOR,		&CPropertiesWnd::OnSelectEditor)
 	ON_COMMAND(ID_EXPAND_ALL, OnExpandAllProperties)
 	ON_UPDATE_COMMAND_UI(ID_EXPAND_ALL, OnUpdateExpandAllProperties)
 	ON_COMMAND(ID_SORTPROPERTIES, OnSortProperties)
@@ -41,7 +47,10 @@ END_MESSAGE_MAP()
 /////////////////////////////////////////////////////////////////////////////
 // CResourceViewBar 消息处理程序
 
-void CPropertiesWnd::AdjustLayout()
+/**
+ *
+ */
+void	CPropertiesWnd::AdjustLayout()
 {
 	if (GetSafeHwnd() == NULL)
 	{
@@ -61,7 +70,12 @@ void CPropertiesWnd::AdjustLayout()
 	m_wndPropList.SetWindowPos(NULL, rectClient.left, rectClient.top + cyCmb + cyTlb, rectClient.Width(), rectClient.Height() -(cyCmb+cyTlb), SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
+/**
+ *
+ * \param lpCreateStruct 
+ * \return 
+ */
+int		CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -100,59 +114,95 @@ int CPropertiesWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.SetPaneStyle(m_wndToolBar.GetPaneStyle() & ~(CBRS_GRIPPER | CBRS_SIZE_DYNAMIC | CBRS_BORDER_TOP | CBRS_BORDER_BOTTOM | CBRS_BORDER_LEFT | CBRS_BORDER_RIGHT));
 	m_wndToolBar.SetOwner(this);
 
-	// 所有命令将通过此控件路由，而不是通过主框架路由:
 	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
 
 	AdjustLayout();
 	return 0;
 }
 
-void CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
+/**
+ *
+ * \param nType 
+ * \param cx 
+ * \param cy 
+ */
+void	CPropertiesWnd::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
 }
 
-void CPropertiesWnd::OnExpandAllProperties()
+/**
+ *
+ */
+void	CPropertiesWnd::OnExpandAllProperties()
 {
 	m_wndPropList.ExpandAll();
 }
 
-void CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* pCmdUI)
+/**
+ *
+ * \param pCmdUI 
+ */
+void	CPropertiesWnd::OnUpdateExpandAllProperties(CCmdUI* pCmdUI)
 {
 }
 
-void CPropertiesWnd::OnSortProperties()
+/**
+ *
+ */
+void	CPropertiesWnd::OnSortProperties()
 {
 	m_wndPropList.SetAlphabeticMode(!m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
+/**
+ *
+ * \param pCmdUI 
+ */
+void	CPropertiesWnd::OnUpdateSortProperties(CCmdUI* pCmdUI)
 {
 	pCmdUI->SetCheck(m_wndPropList.IsAlphabeticMode());
 }
 
-void CPropertiesWnd::OnProperties1()
+/**
+ *
+ */
+void	CPropertiesWnd::OnProperties1()
 {
-	// TODO: 在此处添加命令处理程序代码
+	
 }
 
-void CPropertiesWnd::OnUpdateProperties1(CCmdUI* /*pCmdUI*/)
+/**
+ *
+ * \param pCmdUI
+ */
+void	CPropertiesWnd::OnUpdateProperties1(CCmdUI* pCmdUI)
 {
-	// TODO: 在此处添加命令更新 UI 处理程序代码
+	
 }
 
-void CPropertiesWnd::OnProperties2()
+/**
+ *
+ */
+void	CPropertiesWnd::OnProperties2()
 {
-	// TODO: 在此处添加命令处理程序代码
+	
 }
 
-void CPropertiesWnd::OnUpdateProperties2(CCmdUI* /*pCmdUI*/)
+/**
+ *
+ * \param pCmdUI 
+ */
+void	CPropertiesWnd::OnUpdateProperties2(CCmdUI* pCmdUI)
 {
-	// TODO: 在此处添加命令更新 UI 处理程序代码
+	
 }
 
-void CPropertiesWnd::InitPropList()
+/**
+ *
+ */
+void	CPropertiesWnd::InitPropList()
 {
 	SetPropListFont();
 
@@ -160,94 +210,33 @@ void CPropertiesWnd::InitPropList()
 	m_wndPropList.EnableDescriptionArea();
 	m_wndPropList.SetVSDotNetLook();
 	m_wndPropList.MarkModifiedProperties();
-
-	CMFCPropertyGridProperty* pGroup1 = new CMFCPropertyGridProperty(_T("外观"));
-
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("三维外观"), (_variant_t) false, _T("指定窗口的字体不使用粗体，并且控件将使用三维边框")));
-
-	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(_T("边框"), _T("Dialog Frame"), _T("其中之一: 无(None)、细(Thin)、可调整大小(Resizable)、对话框外框(Dialog Frame)"));
-	pProp->AddOption(_T("None"));
-	pProp->AddOption(_T("Thin"));
-	pProp->AddOption(_T("Resizable"));
-	pProp->AddOption(_T("Dialog Frame"));
-	pProp->AllowEdit(FALSE);
-
-	pGroup1->AddSubItem(pProp);
-	pGroup1->AddSubItem(new CMFCPropertyGridProperty(_T("标题"), (_variant_t) _T("关于"), _T("指定窗口标题栏中显示的文本")));
-
-	m_wndPropList.AddProperty(pGroup1);
-
-	CMFCPropertyGridProperty* pSize = new CMFCPropertyGridProperty(_T("窗口大小"), 0, TRUE);
-
-	pProp = new CMFCPropertyGridProperty(_T("高度"), (_variant_t) 250l, _T("指定窗口的高度"));
-	pProp->EnableSpinControl(TRUE, 50, 300);
-	pSize->AddSubItem(pProp);
-
-	pProp = new CMFCPropertyGridProperty( _T("宽度"), (_variant_t) 150l, _T("指定窗口的宽度"));
-	pProp->EnableSpinControl(TRUE, 50, 200);
-	pSize->AddSubItem(pProp);
-
-	m_wndPropList.AddProperty(pSize);
-
-	CMFCPropertyGridProperty* pGroup2 = new CMFCPropertyGridProperty(_T("字体"));
-
-	LOGFONT lf;
-	CFont* font = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
-	font->GetLogFont(&lf);
-
-	lstrcpy(lf.lfFaceName, _T("宋体, Arial"));
-
-	pGroup2->AddSubItem(new CMFCPropertyGridFontProperty(_T("字体"), lf, CF_EFFECTS | CF_SCREENFONTS, _T("指定窗口的默认字体")));
-	pGroup2->AddSubItem(new CMFCPropertyGridProperty(_T("使用系统字体"), (_variant_t) true, _T("指定窗口使用“MS Shell Dlg”字体")));
-
-	m_wndPropList.AddProperty(pGroup2);
-
-	CMFCPropertyGridProperty* pGroup3 = new CMFCPropertyGridProperty(_T("杂项"));
-	pProp = new CMFCPropertyGridProperty(_T("(名称)"), _T("应用程序"));
-	pProp->Enable(FALSE);
-	pGroup3->AddSubItem(pProp);
-
-	CMFCPropertyGridColorProperty* pColorProp = new CMFCPropertyGridColorProperty(_T("窗口颜色"), RGB(210, 192, 254), NULL, _T("指定默认的窗口颜色"));
-	pColorProp->EnableOtherButton(_T("其他..."));
-	pColorProp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
-	pGroup3->AddSubItem(pColorProp);
-
-	static TCHAR BASED_CODE szFilter[] = _T("图标文件(*.ico)|*.ico|所有文件(*.*)|*.*||");
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("图标"), TRUE, _T(""), _T("ico"), 0, szFilter, _T("指定窗口图标")));
-
-	pGroup3->AddSubItem(new CMFCPropertyGridFileProperty(_T("文件夹"), _T("c:\\")));
-
-	m_wndPropList.AddProperty(pGroup3);
-
-	CMFCPropertyGridProperty* pGroup4 = new CMFCPropertyGridProperty(_T("层次结构"));
-
-	CMFCPropertyGridProperty* pGroup41 = new CMFCPropertyGridProperty(_T("第一个子级"));
-	pGroup4->AddSubItem(pGroup41);
-
-	CMFCPropertyGridProperty* pGroup411 = new CMFCPropertyGridProperty(_T("第二个子级"));
-	pGroup41->AddSubItem(pGroup411);
-
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 1"), (_variant_t) _T("值 1"), _T("此为说明")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 2"), (_variant_t) _T("值 2"), _T("此为说明")));
-	pGroup411->AddSubItem(new CMFCPropertyGridProperty(_T("项 3"), (_variant_t) _T("值 3"), _T("此为说明")));
-
-	pGroup4->Expand(FALSE);
-	m_wndPropList.AddProperty(pGroup4);
 }
 
-void CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
+/**
+ *
+ * \param pOldWnd 
+ */
+void	CPropertiesWnd::OnSetFocus(CWnd* pOldWnd)
 {
 	CDockablePane::OnSetFocus(pOldWnd);
 	m_wndPropList.SetFocus();
 }
 
-void CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
+/**
+ *
+ * \param uFlags 
+ * \param lpszSection 
+ */
+void	CPropertiesWnd::OnSettingChange(UINT uFlags, LPCTSTR lpszSection)
 {
 	CDockablePane::OnSettingChange(uFlags, lpszSection);
 	SetPropListFont();
 }
 
-void CPropertiesWnd::SetPropListFont()
+/**
+ *
+ */
+void	CPropertiesWnd::SetPropListFont()
 {
 	::DeleteObject(m_fntPropList.Detach());
 
@@ -266,4 +255,150 @@ void CPropertiesWnd::SetPropListFont()
 	m_fntPropList.CreateFontIndirect(&lf);
 
 	m_wndPropList.SetFont(&m_fntPropList);
+}
+
+/**
+ *
+ * \param lpszValue 
+ * \param lpszName 
+ * \param lpszHelp 
+ * \param bEnable 
+ * \param pParent 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateStringProperty(LPCTSTR lpszName, LPCTSTR lpszValue, LPCTSTR lpszHelp, BOOL bEnable,
+														   CMFCPropertyGridProperty* pParent)
+{
+	CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(lpszName, (_variant_t)lpszValue, lpszHelp, NULL);
+	pProperty->Enable(bEnable);
+	if (pParent != NULL)
+		pParent->AddSubItem(pProperty);
+
+	return pProperty;
+}
+
+/**
+ *
+ * \param dwColour 
+ * \param lpszName 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateColourValueProperty(DWORD dwColour, float fAlpha, 
+																	   LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
+	if (pGroup != NULL)
+	{
+		CMFCPropertyGridColorProperty* gp = new CMFCPropertyGridColorProperty(
+			"RGB", 
+			dwColour, 
+			NULL, 
+			lpszHelp
+			);
+		gp->EnableOtherButton(_T("其他..."));
+		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
+		
+		CMFCPropertyGridProperty* al = new CMFCPropertyGridProperty("alpha", 
+			(_variant_t)fAlpha, 
+			NULL,
+			NULL);
+
+		pGroup->Expand();
+		pGroup->AddSubItem(gp);
+		pGroup->AddSubItem(al);
+		
+		return pGroup;
+	}
+
+	return NULL;
+}
+
+
+/**
+ *
+ */
+void	CPropertiesWnd::ClearProperty()
+{
+	// 设置字体
+	SetPropListFont();
+
+	// 清空原有属性
+	m_wndPropList.RemoveAll();
+	m_wndPropList.EnableHeaderCtrl(FALSE);
+	m_wndPropList.EnableDescriptionArea();
+	m_wndPropList.SetVSDotNetLook();
+	m_wndPropList.MarkModifiedProperties();
+}
+
+/**
+ *
+ * \param pTool 
+ */
+void	CPropertiesWnd::CreateToolProperty(Ogre::EditorTool* pTool)
+{
+	// 获取属性迭代器
+	HashPropertyIter hash_property_iter = pTool->getHashPropertyIter();
+	
+	// 创建属性列表
+	for (HashPropertyIter::iterator it=hash_property_iter.begin();
+		it!=hash_property_iter.end(); it++)
+	{
+		String name = it->second->getName();
+
+		switch (it->second->getType())
+		{
+		case PVT_COLOUR:
+			{
+				// 转换颜色
+				ColourValue clr = any_cast<ColourValue>(it->second->getValue());
+
+				ARGB argb = clr.getAsARGB();
+				m_wndPropList.AddProperty(CreateColourValueProperty(argb, clr.a, name.c_str(), name.c_str(), 
+					it->second->getDescribe().c_str()));
+			}
+			break;
+		case PVT_STRING:
+			{
+				String s = any_cast<String>(it->second->getValue());
+				m_wndPropList.AddProperty(CreateStringProperty(name.c_str(), s.c_str(),
+					it->second->getDescribe().c_str(), TRUE, NULL));
+			}
+			break;
+		}
+	}
+
+	m_wndPropList.ExpandAll();
+}
+
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
+{
+	wmSelectEvent* evt = (wmSelectEvent*)(wParam);
+	if (evt != NULL)
+	{
+		// 后去选择的编辑器
+		EditorTool* pSelectTool = EditorToolManager::getSingleton().getEditorTool(evt->Name);
+		if (pSelectTool)
+		{
+			// 获取当前选择的编辑器
+			EditorTool* pCurrentTool = EditorToolManager::getSingleton().getCurrentEditorTool();
+			if (pCurrentTool != pSelectTool)
+			{
+				EditorToolManager::getSingleton().setCurrentEditorTool(pSelectTool);
+
+				// 清空属性
+				ClearProperty();
+				// 创建属性
+				CreateToolProperty(pSelectTool);
+			}
+		}
+	}
+
+	return 0;
 }

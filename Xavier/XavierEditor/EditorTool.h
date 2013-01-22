@@ -1,5 +1,7 @@
 #pragma once
 
+#include "OgreIteratorWrapper.h"
+
 namespace Ogre
 {
 	/**
@@ -19,8 +21,12 @@ namespace Ogre
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class EditorTool
+	class EditorTool : public PropertySet
 	{
+	public:
+		typedef HashMap<String, EditorTool*>	HashMapEditorTool;
+		typedef MapIterator<HashMapEditorTool>	HashMapEditorIter;
+
 	public:
 		/**
 		 *
@@ -45,7 +51,51 @@ namespace Ogre
 		 */
 		virtual	String				getName() const;
 
-	protected:
+		/**
+		 *
+		 * \param pParent 
+		 */
+		virtual	void				setParent(EditorTool* pParent);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	EditorTool*			getParent() const;
+
+		/**
+		 *
+		 * \param nType 
+		 * \param adp 
+		 * \return 
+		 */
+		virtual	bool				addEditorTool(EditorTool* pEditorTool);
+		/**
+		 *
+		 * \param name 
+		 * \return 
+		 */
+		virtual	EditorTool*			getEditorTool(const String& name);
+
+		/**
+		 *
+		 * \param pEditorTool 
+		 */
+		virtual	void				removeEditorTool(EditorTool* pEditorTool);
+
+		/**
+		 *
+		 * \param name 
+		 * \return 
+		 */
+		virtual	EditorTool*			findEditorTool(const String& name);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	EditorTool::HashMapEditorIter	getHashMapEditorIter();
+	public:
 		/**
 		 *
 		 * \param vPos 
@@ -88,13 +138,23 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	bool				OnMouseWheel(float zDelta, const Vector2& vPos);
+
+		/**
+		 *
+		 * \param cx 
+		 * \param cy 
+		 * \return 
+		 */
+		virtual	bool				OnSize(int cx, int cy);
 	protected:
 		String						m_name;
+		HashMapEditorTool			m_HashMapEditorTool;
+		EditorTool*					m_pParent;
 	};
 
 	struct SEditorAdp
 	{
-		
+		String		name;
 	};
 
 	/**
@@ -134,7 +194,7 @@ namespace Ogre
 		 *
 		 * \param seadp 
 		 */
-		virtual void				createEditorTool(const SEditorAdp& seadp) = 0;
+		virtual EditorTool*			createEditorTool(const SEditorAdp& seadp) = 0;
 
 		/**
 		 *

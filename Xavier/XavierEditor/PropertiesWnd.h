@@ -1,56 +1,147 @@
-
 #pragma once
 
+/**
+* \ingroup : XavierEditor
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2013-01-22
+*
+* \Author  : lp
+*
+* \Desc    :
+*
+* \bug     : 
+*
+* \Copyright (c) 2012 lp All rights reserved.
+*/
 class CPropertiesToolBar : public CMFCToolBar
 {
 public:
-	virtual void OnUpdateCmdUI(CFrameWnd* /*pTarget*/, BOOL bDisableIfNoHndler)
+	/**
+	 *
+	 * \param pTarget 
+	 * \param bDisableIfNoHndler 
+	 */
+	virtual void OnUpdateCmdUI(CFrameWnd* pTarget, BOOL bDisableIfNoHndler)
 	{
 		CMFCToolBar::OnUpdateCmdUI((CFrameWnd*) GetOwner(), bDisableIfNoHndler);
 	}
 
-	virtual BOOL AllowShowOnList() const { return FALSE; }
+	/**
+	 *
+	 * \return 
+	 */
+	virtual BOOL AllowShowOnList() const 
+	{ 
+		return FALSE; 
+	}
 };
 
+namespace Ogre
+{
+	class EditorTool;
+}
+
+/**
+* \ingroup : XavierEditor
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2013-01-22
+*
+* \Author  : lp
+*
+* \Desc    :
+*
+* \bug     : 
+*
+* \Copyright (c) 2012 lp All rights reserved.
+*/
 class CPropertiesWnd : public CDockablePane
 {
 // 构造
 public:
 	CPropertiesWnd();
 
-	void AdjustLayout();
+	/**
+	 *
+	 */
+	void					AdjustLayout();
 
-// 属性
 public:
-	void SetVSDotNetLook(BOOL bSet)
+	/**
+	 *
+	 * \param bSet 
+	 */
+	void					SetVSDotNetLook(BOOL bSet)
 	{
 		m_wndPropList.SetVSDotNetLook(bSet);
 		m_wndPropList.SetGroupNameFullWidth(bSet);
 	}
+	
+	/**
+	 *
+	 */
+	void					ClearProperty();
 
+	/**
+	 *
+	 * \param lpszValue 
+	 * \param lpszName 
+	 * \param lpszHelp 
+	 * \param bEnable 
+	 * \param pParent 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*	CreateStringProperty(LPCTSTR lpszName, LPCTSTR lpszValue, LPCTSTR lpszHelp, BOOL bEnable,
+		CMFCPropertyGridProperty* pParent);
+
+	/**
+	 *
+	 * \param dwColour 
+	 * \param fAlpha 
+	 * \param lpszGroupName 
+	 * \param lpszName 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*	CreateColourValueProperty(DWORD dwColour, float fAlpha, 
+		LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp);
+
+	/**
+	 *
+	 * \param pTool 
+	 */
+	void					CreateToolProperty(Ogre::EditorTool* pTool);
 protected:
-	CFont m_fntPropList;
-	CComboBox m_wndObjectCombo;
-	CPropertiesToolBar m_wndToolBar;
-	CMFCPropertyGridCtrl m_wndPropList;
+	CFont					m_fntPropList;
+	CComboBox				m_wndObjectCombo;
+	CPropertiesToolBar		m_wndToolBar;
+	CMFCPropertyGridCtrl	m_wndPropList;
 
-// 实现
 public:
 	virtual ~CPropertiesWnd();
 
 protected:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
-	afx_msg void OnExpandAllProperties();
-	afx_msg void OnUpdateExpandAllProperties(CCmdUI* pCmdUI);
-	afx_msg void OnSortProperties();
-	afx_msg void OnUpdateSortProperties(CCmdUI* pCmdUI);
-	afx_msg void OnProperties1();
-	afx_msg void OnUpdateProperties1(CCmdUI* pCmdUI);
-	afx_msg void OnProperties2();
-	afx_msg void OnUpdateProperties2(CCmdUI* pCmdUI);
-	afx_msg void OnSetFocus(CWnd* pOldWnd);
-	afx_msg void OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
+	afx_msg LRESULT			OnSelectEditor(WPARAM wParam, LPARAM lParam);
+protected:
+	afx_msg int				OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg void			OnSize(UINT nType, int cx, int cy);
+	afx_msg void			OnExpandAllProperties();
+	afx_msg void			OnUpdateExpandAllProperties(CCmdUI* pCmdUI);
+	afx_msg void			OnSortProperties();
+	afx_msg void			OnUpdateSortProperties(CCmdUI* pCmdUI);
+	afx_msg void			OnProperties1();
+	afx_msg void			OnUpdateProperties1(CCmdUI* pCmdUI);
+	afx_msg void			OnProperties2();
+	afx_msg void			OnUpdateProperties2(CCmdUI* pCmdUI);
+	afx_msg void			OnSetFocus(CWnd* pOldWnd);
+	afx_msg void			OnSettingChange(UINT uFlags, LPCTSTR lpszSection);
 
 	DECLARE_MESSAGE_MAP()
 

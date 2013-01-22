@@ -4,6 +4,10 @@
 #include "XavierEditorView.h"
 #include "GraphDC.h"
 #include "OgreSystem.h"
+#include "MainFrm.h"
+#include "EditorTool.h"
+#include "EditorToolWorld.h"
+#include "EditorToolManager.h"
 
 #ifdef _DEBUG
 #	define new DEBUG_NEW
@@ -15,6 +19,7 @@ BEGIN_MESSAGE_MAP(CXavierEditorView, CView)
 	ON_COMMAND(ID_FILE_PRINT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CXavierEditorView::OnFilePrintPreview)
+	ON_MESSAGE(WM_WIZARD_FNISHED,			&CXavierEditorView::OnWizardFnished)
 	ON_WM_CREATE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
@@ -160,7 +165,7 @@ int		CXavierEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	// 创建渲染窗口
 	System::getSingletonPtr()->createRenderWindow("EditorView", m_hWnd, 800, 600, 0);
-	
+	// 设置渲染定器
 	SetTimer(OGRE_RENDER_TIMER, 16, NULL);
 
 	return 0;
@@ -175,6 +180,13 @@ int		CXavierEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 LRESULT	CXavierEditorView::OnWizardFnished(WPARAM wParam, LPARAM lParam)
 {
 	m_nState = EDIT_VIEW_EDIT;
+
+	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	if (pMainFrame)
+	{
+		pMainFrame->UpdateFileView();
+	}
+
 	return 0;
 }
 
@@ -213,6 +225,14 @@ void	CXavierEditorView::OnDestroy()
  */
 void	CXavierEditorView::OnSize(UINT nType, int cx, int cy)
 {
+	EditorToolWorld* pTool = static_cast<EditorToolWorld*>(
+		EditorToolManager::getSingleton().getEditorTool("World")
+		);
+	if (pTool)
+	{
+		pTool->OnSize(cx, cy);
+	}
+
 	CView::OnSize(nType, cx, cy);
 }
 

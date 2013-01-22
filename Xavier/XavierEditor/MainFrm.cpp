@@ -160,6 +160,11 @@ int		CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
 
+	if (!m_dWizardDialog.Create(IDD_DIALOG_WIZARD))
+	{
+		return -1;
+	}
+
 	return 0;
 }
 
@@ -404,6 +409,15 @@ BOOL	CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 
 /**
  *
+ * \return 
+ */
+CPropertiesWnd*	CMainFrame::GetPropertyWnd()
+{
+	return &m_wProperties;
+}
+
+/**
+ *
  * \param lpszMessage 
  * \param clr 
  * \return 
@@ -417,7 +431,23 @@ BOOL	CMainFrame::AddLogMessage(LPCTSTR lpszMessage, COLORREF clr)
 /**
  *
  */
+void	CMainFrame::UpdateFileView()
+{
+	m_wFileView.UpdateFileView();
+}
+
+/**
+ *
+ */
 void	CMainFrame::OnFileNew()
 {
+	CRect rc;
+	GetClientRect(&rc);
 
+	CRect rcWizard;
+	m_dWizardDialog.GetClientRect(&rcWizard);
+
+	m_dWizardDialog.SetWindowPos(&wndTop, rc.Width() / 2 - rcWizard.Width() / 2,
+		rc.Height() / 2 - rcWizard.Height() / 2, 0, 0, SWP_NOSIZE);
+	m_dWizardDialog.ShowWindow(SW_SHOW);
 }

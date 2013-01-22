@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mfc90d.lib OgreMain_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreMain_d.lib XavierEventSet_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -234,6 +234,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WizardDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierEditor.cpp"
 				>
 			</File>
@@ -288,11 +292,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\WizardDialog.h"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierEditor.h"
 				>
 			</File>
 			<File
 				RelativePath=".\XavierEditorDoc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\XavierEditorMessageDef.h"
 				>
 			</File>
 			<File
@@ -457,6 +469,30 @@
 				RelativePath=".\EditorTool.h"
 				>
 			</File>
+			<File
+				RelativePath=".\EditorToolFactoryManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolFactoryManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolWorld.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolWorld.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"
@@ -464,5 +500,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="XavierEditor.rc"
+		/>
 	</Globals>
 </VisualStudioProject>
