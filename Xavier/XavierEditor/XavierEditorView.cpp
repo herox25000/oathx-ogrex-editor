@@ -31,6 +31,8 @@ BEGIN_MESSAGE_MAP(CXavierEditorView, CView)
 	ON_WM_RBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_RBUTTONUP()
+	ON_WM_KEYDOWN()
+	ON_WM_KEYUP()
 END_MESSAGE_MAP()
 
 // äÖÈ¾¶¨Ê±Æ÷
@@ -225,12 +227,10 @@ void	CXavierEditorView::OnDestroy()
  */
 void	CXavierEditorView::OnSize(UINT nType, int cx, int cy)
 {
-	EditorToolWorld* pTool = static_cast<EditorToolWorld*>(
-		EditorToolManager::getSingleton().getEditorTool("World")
-		);
-	if (pTool)
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
 	{
-		pTool->OnSize(cx, cy);
+		pWorld->OnSize(cx, cy);
 	}
 
 	CView::OnSize(nType, cx, cy);
@@ -243,7 +243,14 @@ void	CXavierEditorView::OnSize(UINT nType, int cx, int cy)
  */
 BOOL	CXavierEditorView::OnEraseBkgnd(CDC* pDC)
 {
-	return CView::OnEraseBkgnd(pDC);
+	CRect rcView;
+	GetClientRect(&rcView);
+
+	CGraphDC dc(GetDC());
+	dc.FillRect(&rcView, 
+		&CBrush(RGB(0,0,0)));
+
+	return TRUE;
 }
 
 /**
@@ -255,6 +262,12 @@ BOOL	CXavierEditorView::OnEraseBkgnd(CDC* pDC)
  */
 BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnMouseWheel(zDelta * 2, Vector2(pt.x, pt.y));
+	}
+
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
 
@@ -265,6 +278,12 @@ BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
  */
 void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnLButtonDown(Vector2(point.x, point.y));
+	}
+
 	CView::OnLButtonDown(nFlags, point);
 }
 
@@ -275,6 +294,12 @@ void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnLButtonUp(Vector2(point.x, point.y));
+	}
+
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -285,8 +310,11 @@ void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	m_cRigthDwon	= point;
-	m_bRMouseDown	= TRUE;
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnRButtonDown(Vector2(point.x, point.y));
+	}
 
 	CView::OnRButtonDown(nFlags, point);
 }
@@ -298,7 +326,11 @@ void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
  */
 void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	m_bRMouseDown	= FALSE;
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnRButtonUp(Vector2(point.x, point.y));
+	}
 
 	CView::OnRButtonUp(nFlags, point);
 }
@@ -310,7 +342,50 @@ void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
+	EditorTool* pSelectTool = EditorToolManager::getSingletonPtr()->getSelectEditorTool();
+	if (pSelectTool)
+		pSelectTool->OnMouseMove(Vector2(point.x, point.y));
+
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnMouseMove(Vector2(point.x, point.y));
+	}
+
 	CView::OnMouseMove(nFlags, point);
 }
 
 
+/**
+ *
+ * \param nChar 
+ * \param nRepCnt 
+ * \param nFlags 
+ */
+void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnKeyDown(nChar, nRepCnt, nFlags);
+	}
+
+	CView::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+/**
+ *
+ * \param nChar 
+ * \param nRepCnt 
+ * \param nFlags 
+ */
+void	CXavierEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	if (pWorld)
+	{
+		pWorld->OnKeyUp(nChar, nRepCnt, nFlags);
+	}
+
+	CView::OnKeyUp(nChar, nRepCnt, nFlags);
+}

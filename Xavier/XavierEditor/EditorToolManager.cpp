@@ -28,7 +28,7 @@ namespace Ogre
 	 * \return 
 	 */
 	EditorToolManager::EditorToolManager(const String& rootName)
-		: m_pCurrent(NULL)
+		: m_pSelect(NULL)
 	{
 		m_pRoot = new EditorTool(rootName);
 	}
@@ -95,17 +95,17 @@ namespace Ogre
 	 *
 	 * \param pEditorTool 
 	 */
-	void		EditorToolManager::setCurrentEditorTool(EditorTool* pEditorTool)
+	void		EditorToolManager::setSelectEditorTool(EditorTool* pEditorTool)
 	{
-		m_pCurrent = pEditorTool;
+		m_pSelect = pEditorTool;
 	}
 
 	/**
 	 *
 	 * \return 
 	 */
-	EditorTool*	EditorToolManager::getCurrentEditorTool() const
+	EditorTool*	EditorToolManager::getSelectEditorTool() const
 	{
-		return m_pCurrent;
+		return m_pSelect;
 	}
 }

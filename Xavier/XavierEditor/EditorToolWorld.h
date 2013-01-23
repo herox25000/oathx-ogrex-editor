@@ -39,6 +39,34 @@ namespace Ogre
 
 		/**
 		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnRButtonDown(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnRButtonUp(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnMouseMove(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param zDelta 
+		 * \param vPos 
+		 */
+		virtual	bool			OnMouseWheel(float zDelta, const Vector2& vPos);
+
+		/**
+		 *
 		 * \param cx 
 		 * \param cy 
 		 * \return 
@@ -47,14 +75,32 @@ namespace Ogre
 
 		/**
 		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 */
+		virtual bool			OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 */
+		virtual bool			OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
 		 * \param name 
 		 * \param angValue 
 		 * \param nValueType 
 		 * \return 
 		 */
-		virtual	bool			OnPropertyChanged(const String& parentName, const String& name, Any angValue, int nValueType);
+		virtual	bool			OnPropertyChanged(const String& parentName, const String& name, Any anyValue, int nValueType);
 	protected:
 		World*					m_pWorld;
+		bool					m_bRMouseDown;
+		Vector2					m_vRigthDwon;
 	};
 	
 	struct SEditorWorldAdp : public SEditorAdp

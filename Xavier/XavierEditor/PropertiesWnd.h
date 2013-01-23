@@ -71,14 +71,14 @@ public:
 	/**
 	 *
 	 */
-	void					AdjustLayout();
+	void						AdjustLayout();
 
 public:
 	/**
 	 *
 	 * \param bSet 
 	 */
-	void					SetVSDotNetLook(BOOL bSet)
+	void						SetVSDotNetLook(BOOL bSet)
 	{
 		m_wndPropList.SetVSDotNetLook(bSet);
 		m_wndPropList.SetGroupNameFullWidth(bSet);
@@ -87,7 +87,7 @@ public:
 	/**
 	 *
 	 */
-	void					ClearProperty();
+	void						ClearProperty();
 
 	/**
 	 *
@@ -98,8 +98,17 @@ public:
 	 * \param pParent 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*	CreateStringProperty(LPCTSTR lpszName, LPCTSTR lpszValue, LPCTSTR lpszHelp, BOOL bEnable,
-		CMFCPropertyGridProperty* pParent);
+	template<typename T>
+		CMFCPropertyGridProperty*	CreateProperty(LPCTSTR lpszName, T tValue, LPCTSTR lpszHelp, BOOL bEnable,
+		CMFCPropertyGridProperty* pParent)
+	{
+		CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(lpszName, (_variant_t)tValue, lpszHelp, NULL);
+		pProperty->Enable(bEnable);
+		if (pParent)
+			pParent->AddSubItem(pProperty);
+	
+		return pProperty;
+	}
 
 	/**
 	 *
@@ -110,19 +119,29 @@ public:
 	 * \param lpszHelp 
 	 * \return 
 	 */
-	CMFCPropertyGridProperty*	CreateColourValueProperty(DWORD dwColour, float fAlpha, 
+	CMFCPropertyGridProperty*		CreateColourValueProperty(DWORD dwColour, float fAlpha, 
 		LPCTSTR lpszGroupName, LPCTSTR lpszName, LPCTSTR lpszHelp);
+
+	/**
+	 *
+	 * \param vPos 
+	 * \param lpszGroupName 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreateVector3ValueProperty(Ogre::Vector3 vPos, LPCTSTR lpszGroupName,
+		LPCTSTR lpszHelp);
 
 	/**
 	 *
 	 * \param pTool 
 	 */
-	void					CreateToolProperty(Ogre::EditorTool* pTool);
+	void							CreateToolProperty(Ogre::EditorTool* pTool);
 protected:
-	CFont					m_fntPropList;
-	CComboBox				m_wndObjectCombo;
-	CPropertiesToolBar		m_wndToolBar;
-	CMFCPropertyGridCtrl	m_wndPropList;
+	CFont							m_fntPropList;
+	CComboBox						m_wndObjectCombo;
+	CPropertiesToolBar				m_wndToolBar;
+	CMFCPropertyGridCtrl			m_wndPropList;
 
 public:
 	virtual ~CPropertiesWnd();

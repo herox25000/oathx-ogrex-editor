@@ -211,6 +211,30 @@ namespace Ogre
 
 	/**
 	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 * \return 
+	 */
+	bool		EditorTool::OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
+	{
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 * \return 
+	 */
+	bool		EditorTool::OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
+	{
+		return 0;
+	}
+
+	/**
+	 *
 	 * \param cx 
 	 * \param cy 
 	 * \return 

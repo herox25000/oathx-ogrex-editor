@@ -260,26 +260,6 @@ void	CPropertiesWnd::SetPropListFont()
 
 /**
  *
- * \param lpszValue 
- * \param lpszName 
- * \param lpszHelp 
- * \param bEnable 
- * \param pParent 
- * \return 
- */
-CMFCPropertyGridProperty*	CPropertiesWnd::CreateStringProperty(LPCTSTR lpszName, LPCTSTR lpszValue, LPCTSTR lpszHelp, BOOL bEnable,
-														   CMFCPropertyGridProperty* pParent)
-{
-	CMFCPropertyGridProperty* pProperty = new CMFCPropertyGridProperty(lpszName, (_variant_t)lpszValue, lpszHelp, NULL);
-	pProperty->Enable(bEnable);
-	if (pParent != NULL)
-		pParent->AddSubItem(pProperty);
-
-	return pProperty;
-}
-
-/**
- *
  * \param dwColour 
  * \param lpszName 
  * \param lpszHelp 
@@ -300,7 +280,7 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreateColourValueProperty(DWORD dwColo
 		gp->EnableOtherButton(_T("其他..."));
 		gp->EnableAutomaticButton(_T("默认"), ::GetSysColor(COLOR_3DFACE));
 		
-		CMFCPropertyGridProperty* al = new CMFCPropertyGridProperty("alpha", 
+		CMFCPropertyGridProperty* al = new CMFCPropertyGridProperty("Alpha", 
 			(_variant_t)fAlpha, 
 			NULL,
 			NULL);
@@ -309,6 +289,46 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreateColourValueProperty(DWORD dwColo
 		pGroup->AddSubItem(gp);
 		pGroup->AddSubItem(al);
 		
+		return pGroup;
+	}
+
+	return NULL;
+}
+
+/**
+ *
+ * \param vPos 
+ * \param lpszGroupName 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateVector3ValueProperty(Ogre::Vector3 vPos, LPCTSTR lpszGroupName, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszGroupName);
+	if (pGroup != NULL)
+	{
+		pGroup->SetDescription(lpszHelp);
+
+		CMFCPropertyGridProperty* x = new CMFCPropertyGridProperty("x", 
+			(_variant_t)vPos.x, 
+			NULL,
+			NULL);
+		
+		CMFCPropertyGridProperty* y = new CMFCPropertyGridProperty("y", 
+			(_variant_t)vPos.y, 
+			NULL,
+			NULL);
+		
+		CMFCPropertyGridProperty* z = new CMFCPropertyGridProperty("z", 
+			(_variant_t)vPos.z, 
+			NULL,
+			NULL);
+		
+		pGroup->Expand();
+		pGroup->AddSubItem(x);
+		pGroup->AddSubItem(y);
+		pGroup->AddSubItem(z);
+
 		return pGroup;
 	}
 
@@ -349,6 +369,20 @@ void	CPropertiesWnd::CreateToolProperty(Ogre::EditorTool* pTool)
 
 		switch (it->second->getType())
 		{
+		case PVT_UNSIGNED_SHORT:
+			{
+				uint16 val = any_cast<uint16>(it->second->getValue());
+				m_wndPropList.AddProperty(CreateProperty<uint16>(name.c_str(), val, it->second->getDescribe().c_str(), 
+					it->second->canWrite(), NULL));
+			}
+			break;
+		case PVT_REAL:
+			{
+				Real val = any_cast<Real>(it->second->getValue());
+				m_wndPropList.AddProperty(CreateProperty<Real>(name.c_str(), val, it->second->getDescribe().c_str(), 
+					it->second->canWrite(), NULL));
+			}
+			break;
 		case PVT_COLOUR:
 			{
 				// 转换颜色
@@ -361,9 +395,15 @@ void	CPropertiesWnd::CreateToolProperty(Ogre::EditorTool* pTool)
 			break;
 		case PVT_STRING:
 			{
-				String s = any_cast<String>(it->second->getValue());
-				m_wndPropList.AddProperty(CreateStringProperty(name.c_str(), s.c_str(),
-					it->second->getDescribe().c_str(), TRUE, NULL));
+				String val = any_cast<String>(it->second->getValue());
+				m_wndPropList.AddProperty(CreateProperty<LPCTSTR>(name.c_str(), val.c_str(), it->second->getDescribe().c_str(),
+					it->second->canWrite(), NULL));
+			}
+			break;
+		case PVT_VECTOR3:
+			{
+				Vector3 val = any_cast<Vector3>(it->second->getValue());
+				m_wndPropList.AddProperty(CreateVector3ValueProperty( val, name.c_str(), it->second->getDescribe().c_str()));
 			}
 			break;
 		}
@@ -384,19 +424,19 @@ LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 	if (evt != NULL)
 	{
 		// 后去选择的编辑器
-		EditorTool* pSelectTool = EditorToolManager::getSingleton().getEditorTool(evt->Name);
-		if (pSelectTool)
+		EditorTool* pTool = EditorToolManager::getSingleton().getEditorTool(evt->Name);
+		if (pTool)
 		{
 			// 获取当前选择的编辑器
-			EditorTool* pCurrentTool = EditorToolManager::getSingleton().getCurrentEditorTool();
-			if (pCurrentTool != pSelectTool)
+			EditorTool* pSelect = EditorToolManager::getSingleton().getSelectEditorTool();
+			if (pSelect != pTool)
 			{
-				EditorToolManager::getSingleton().setCurrentEditorTool(pSelectTool);
+				EditorToolManager::getSingleton().setSelectEditorTool(pTool);
 
 				// 清空属性
 				ClearProperty();
 				// 创建属性
-				CreateToolProperty(pSelectTool);
+				CreateToolProperty(pTool);
 			}
 		}
 	}
@@ -412,7 +452,7 @@ LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
  */
 LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 {
-	EditorTool* pSelectTool = EditorToolManager::getSingleton().getCurrentEditorTool();
+	EditorTool* pSelectTool = EditorToolManager::getSingleton().getSelectEditorTool();
 	if (pSelectTool == NULL)
 		return 0;
 
@@ -434,6 +474,11 @@ LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 		case VT_I4:
 			{
 				pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.uintVal), PVT_UNSIGNED_INT);
+			}
+			break;
+		case VT_R4:
+			{
+				pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.fltVal), PVT_REAL);
 			}
 			break;
 		case VT_BSTR:

@@ -2,6 +2,7 @@
 #include "EditorTool.h"
 #include "EditorToolFactoryManager.h"
 #include "EditorToolWorld.h"
+#include "EditorToolTerrain.h"
 
 namespace Ogre
 {
@@ -27,6 +28,7 @@ namespace Ogre
 	static const String EditorToolFactoryName[] = 
 	{
 		"EditorTool/World",
+		"EditorTool/Terrain"
 	};
 	/**
 	 *
@@ -36,6 +38,7 @@ namespace Ogre
 	EditorToolFactoryManager::EditorToolFactoryManager(void)
 	{
 		registerEditorToolFactory(new EditorToolWorldFactory(EditorToolFactoryName[EDITOR_WORLD]));
+		registerEditorToolFactory(new EditorToolTerrainFactory(EditorToolFactoryName[EDITOR_TERRAIN]));
 	}
 
 	/**

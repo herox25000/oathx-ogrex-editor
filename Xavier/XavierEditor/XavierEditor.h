@@ -5,6 +5,7 @@
 #endif
 
 #include "resource.h"
+#include "EditorDebugMessage.h"
 
 namespace Ogre
 {
@@ -23,6 +24,7 @@ public:
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
 	Ogre::System*			m_pAppSystem;
+	EditorDebugMessage*		m_pDebugLog;
 public:
 	/**
 	 *

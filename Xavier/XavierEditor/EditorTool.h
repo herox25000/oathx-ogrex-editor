@@ -149,13 +149,29 @@ namespace Ogre
 
 		/**
 		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 */
+		virtual bool				OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 */
+		virtual bool				OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
 		 * \param name 
 		 * \param angValue 
 		 * \param nValueType 
 		 * \return 
 		 */
 		virtual bool				OnPropertyChanged(const String& parentName, const String& name, 
-			Any angValue, int nValueType);
+			Any anyValue, int nValueType);
 	protected:
 		String						m_name;
 		HashMapEditorTool			m_HashMapEditorTool;
