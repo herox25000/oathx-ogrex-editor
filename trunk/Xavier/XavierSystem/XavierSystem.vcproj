@@ -61,7 +61,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib XavierEventSet_d.lib"
+				AdditionalDependencies="OgreMain_d.lib XavierEventSet_d.lib OgreTerrain_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -175,11 +175,19 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\src\OgreDecalMesh.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\OgreSystem.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\src\OgreSystemStdAfx.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\OgreTerrainSystem.cpp"
 				>
 			</File>
 			<File
@@ -193,6 +201,10 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\include\OgreDecalMesh.h"
+				>
+			</File>
+			<File
 				RelativePath=".\include\OgreSystem.h"
 				>
 			</File>
@@ -202,6 +214,10 @@
 			</File>
 			<File
 				RelativePath=".\include\OgreSystemStdAfx.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreTerrainSystem.h"
 				>
 			</File>
 			<File

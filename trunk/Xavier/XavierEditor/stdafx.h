@@ -37,7 +37,10 @@
 #include "OgreAny.h"
 #include "OgrePropertySet.h"
 #include "OgreWorld.h"
+#include "OgreTerrainSystem.h"
+#include "OgreDecalMesh.h"
 #include "XavierEditorMessageDef.h"
+#include "EditorPropertyKeyWordDef.h"
 
 using namespace Ogre;
 

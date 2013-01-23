@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mfc90d.lib OgreMain_d.lib XavierEventSet_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreMain_d.lib XavierEventSet_d.lib OgreTerrain_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="true"
@@ -462,6 +462,18 @@
 			Name="editor"
 			>
 			<File
+				RelativePath=".\EditorDebugMessage.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorDebugMessage.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorPropertyKeyWordDef.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EditorTool.cpp"
 				>
 			</File>
@@ -483,6 +495,14 @@
 			</File>
 			<File
 				RelativePath=".\EditorToolManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolTerrain.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolTerrain.h"
 				>
 			</File>
 			<File

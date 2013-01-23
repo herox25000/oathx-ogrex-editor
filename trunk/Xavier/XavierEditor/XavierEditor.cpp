@@ -6,6 +6,7 @@
 #include "XavierEditorDoc.h"
 #include "XavierEditorView.h"
 #include "SplashDialog.h"
+#include "EditorDebugMessage.h"
 #include "EditorTool.h"
 #include "EditorToolManager.h"
 #include "EditorToolFactoryManager.h"
@@ -25,7 +26,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
-CXavierEditorApp::CXavierEditorApp() : m_pAppSystem(NULL)
+CXavierEditorApp::CXavierEditorApp() : m_pAppSystem(NULL), m_pDebugLog(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -103,6 +104,13 @@ int		CXavierEditorApp::ExitInstance()
 {
 	delete EditorToolManager::getSingletonPtr();
 	delete EditorToolFactoryManager::getSingletonPtr();
+
+	if (m_pDebugLog)
+	{
+		Ogre::LogManager::getSingletonPtr()->getDefaultLog()->removeListener(m_pDebugLog);
+		delete m_pDebugLog;
+	}
+
 	/*
 	* Ïú»ÙÏµÍ³
 	*/
@@ -229,6 +237,12 @@ void	CXavierEditorApp::ShowSplashDialog()
 	m_pAppSystem->createSystem("plugins_d.cfg", "resources_d.cfg", false);
 #endif
 	
+	m_pDebugLog = new EditorDebugMessage();
+	if (m_pDebugLog)
+	{
+		Ogre::LogManager::getSingletonPtr()->getDefaultLog()->addListener(m_pDebugLog);
+	}
+
 	new EditorToolFactoryManager();
 	new EditorToolManager("Xavier");
 

@@ -6,6 +6,7 @@ namespace Ogre
 
 	enum {
 		EDITOR_WORLD,
+		EDITOR_TERRAIN,
 	};
 	/**
 	* \ingroup : XavierEditor

@@ -199,6 +199,21 @@ public:
 	 * \param point 
 	 */
 	afx_msg void		OnRButtonUp(UINT nFlags, CPoint point);
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 */
+	afx_msg void		OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 */
+	afx_msg void		OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
 };
 
 #ifndef _DEBUG 

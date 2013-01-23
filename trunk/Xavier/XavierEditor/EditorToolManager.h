@@ -71,15 +71,15 @@ namespace Ogre
 		 *
 		 * \param pEditorTool 
 		 */
-		virtual	void			setCurrentEditorTool(EditorTool* pEditorTool);
+		virtual	void			setSelectEditorTool(EditorTool* pEditorTool);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual	EditorTool*		getCurrentEditorTool() const;
+		virtual	EditorTool*		getSelectEditorTool() const;
 	protected:
 		EditorTool*				m_pRoot;
-		EditorTool*				m_pCurrent;
+		EditorTool*				m_pSelect;
 	};
 }
