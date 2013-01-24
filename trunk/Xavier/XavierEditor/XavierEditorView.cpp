@@ -3,11 +3,8 @@
 #include "XavierEditorDoc.h"
 #include "XavierEditorView.h"
 #include "GraphDC.h"
-#include "OgreSystem.h"
+#include "XavierEditorInclude.h"
 #include "MainFrm.h"
-#include "EditorTool.h"
-#include "EditorToolWorld.h"
-#include "EditorToolManager.h"
 
 #ifdef _DEBUG
 #	define new DEBUG_NEW
@@ -166,7 +163,7 @@ int		CXavierEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	// 创建渲染窗口
-	System::getSingletonPtr()->createRenderWindow("EditorView", m_hWnd, 800, 600, 0);
+	EditorSystem::getSingletonPtr()->createRenderWindow("EditorView", m_hWnd, 800, 600, 0);
 	// 设置渲染定器
 	SetTimer(OGRE_RENDER_TIMER, 16, NULL);
 
@@ -202,7 +199,7 @@ void	CXavierEditorView::OnTimer(UINT_PTR nIDEvent)
 	{
 	case OGRE_RENDER_TIMER:
 		{
-			System::getSingletonPtr()->update();
+			EditorSystem::getSingletonPtr()->update();
 		}
 		break;
 	}
@@ -227,11 +224,11 @@ void	CXavierEditorView::OnDestroy()
  */
 void	CXavierEditorView::OnSize(UINT nType, int cx, int cy)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnSize(cx, cy);
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnSize(cx, cy);
+	//}
 
 	CView::OnSize(nType, cx, cy);
 }
@@ -262,11 +259,11 @@ BOOL	CXavierEditorView::OnEraseBkgnd(CDC* pDC)
  */
 BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnMouseWheel(zDelta * 2, Vector2(pt.x, pt.y));
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnMouseWheel(zDelta * 2, Vector2(pt.x, pt.y));
+	//}
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
@@ -278,11 +275,11 @@ BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
  */
 void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnLButtonDown(Vector2(point.x, point.y));
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnLButtonDown(Vector2(point.x, point.y));
+	//}
 
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -294,11 +291,11 @@ void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnLButtonUp(Vector2(point.x, point.y));
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnLButtonUp(Vector2(point.x, point.y));
+	//}
 
 	CView::OnLButtonUp(nFlags, point);
 }
@@ -310,11 +307,11 @@ void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnRButtonDown(Vector2(point.x, point.y));
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnRButtonDown(Vector2(point.x, point.y));
+	//}
 
 	CView::OnRButtonDown(nFlags, point);
 }
@@ -326,11 +323,11 @@ void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
  */
 void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	/*EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
 	if (pWorld)
 	{
 		pWorld->OnRButtonUp(Vector2(point.x, point.y));
-	}
+	}*/
 
 	CView::OnRButtonUp(nFlags, point);
 }
@@ -342,15 +339,15 @@ void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	EditorTool* pSelectTool = EditorToolManager::getSingletonPtr()->getSelectEditorTool();
-	if (pSelectTool)
-		pSelectTool->OnMouseMove(Vector2(point.x, point.y));
+	//EditorTool* pSelectTool = EditorToolManager::getSingletonPtr()->getSelectEditorTool();
+	//if (pSelectTool)
+	//	pSelectTool->OnMouseMove(Vector2(point.x, point.y));
 
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnMouseMove(Vector2(point.x, point.y));
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnMouseMove(Vector2(point.x, point.y));
+	//}
 
 	CView::OnMouseMove(nFlags, point);
 }
@@ -364,11 +361,11 @@ void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnKeyDown(nChar, nRepCnt, nFlags);
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnKeyDown(nChar, nRepCnt, nFlags);
+	//}
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
@@ -381,11 +378,11 @@ void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
  */
 void	CXavierEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	if (pWorld)
-	{
-		pWorld->OnKeyUp(nChar, nRepCnt, nFlags);
-	}
+	//EditorTool* pWorld = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
+	//if (pWorld)
+	//{
+	//	pWorld->OnKeyUp(nChar, nRepCnt, nFlags);
+	//}
 
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }

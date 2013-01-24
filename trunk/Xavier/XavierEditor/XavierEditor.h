@@ -9,7 +9,7 @@
 
 namespace Ogre
 {
-	class System;
+	class EditorSystem;
 }
 
 class CXavierEditorApp : public CWinAppEx
@@ -23,7 +23,7 @@ public:
 
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
-	Ogre::System*			m_pAppSystem;
+	Ogre::EditorSystem*		m_pAppSystem;
 	EditorDebugMessage*		m_pDebugLog;
 public:
 	/**

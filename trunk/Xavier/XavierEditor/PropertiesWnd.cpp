@@ -3,8 +3,7 @@
 #include "Resource.h"
 #include "MainFrm.h"
 #include "XavierEditor.h"
-#include "EditorTool.h"
-#include "EditorToolManager.h"
+#include "XavierEditorInclude.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE

@@ -44,7 +44,7 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm154"
+				AdditionalOptions="-Zm174"
 				Optimization="0"
 				AdditionalIncludeDirectories="..\XavierEventSet\include;.\control;..\XavierSystem\include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
@@ -304,6 +304,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\XavierEditorInclude.h"
+				>
+			</File>
+			<File
 				RelativePath=".\XavierEditorMessageDef.h"
 				>
 			</File>
@@ -474,6 +478,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EditorSystem.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorSystem.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EditorTool.cpp"
 				>
 			</File>
@@ -498,19 +510,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EditorToolSceneManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorToolSceneManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EditorToolTerrain.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\EditorToolTerrain.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolWorld.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolWorld.h"
 				>
 			</File>
 		</Filter>

@@ -73,17 +73,6 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual bool				frameEnded(const Ogre::FrameEvent& evt);
-	protected:
-		/**
-		 *
-		 * \param terrain 
-		 * \param vCntre 
-		 * \param timeElapsed 
-		 */
-		virtual	void				upheave(Terrain* pTerrain, const Vector3& vCntre, bool bUpheave, Real timeElapsed);
-	protected:
-		TerrainSystem*				m_pTerrainSystem;
-		DecalMesh*					m_pDecalMesh;
 	};
 
 	struct SEditorTerrainAdp : public SEditorAdp
