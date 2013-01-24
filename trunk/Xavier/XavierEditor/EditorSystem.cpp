@@ -1,8 +1,8 @@
 #include "stdafx.h"
 #include "EditorSystem.h"
-#include "EditorTool.h"
-#include "EditorToolManager.h"
-#include "EditorToolFactoryManager.h"
+#include "EditorPlugin.h"
+#include "EditorPluginFactoryManager.h"
+#include "EditorPluginManager.h"
 #include "OgreGlobalEventSet.h"
 
 namespace Ogre
@@ -102,8 +102,8 @@ namespace Ogre
 		m_pRoot->initialise(bAutoCreateWindow);
 
 		new GlobalEventSet();
-		new EditorToolFactoryManager();
-		new EditorToolManager("Xavier");
+		new EditorPluginFactoryManager();
+		new EditorPluginManager("Xavier.world");
 
 		return true;
 	}
@@ -121,8 +121,8 @@ namespace Ogre
 	 */
 	void		EditorSystem::clearUp()
 	{
-		delete EditorToolFactoryManager::getSingletonPtr();
-		delete EditorToolManager::getSingletonPtr();
+		delete EditorPluginFactoryManager::getSingletonPtr();
+		delete EditorPluginManager::getSingletonPtr();
 		delete GlobalEventSet::getSingletonPtr();
 
 		if (m_pRoot != NULL)

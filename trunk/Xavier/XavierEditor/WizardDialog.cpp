@@ -28,24 +28,24 @@ END_MESSAGE_MAP()
 
 void CWizardDialog::OnBnClickedOk()
 {
-	EditorToolFactory* pWorldFactory = EditorToolFactoryManager::getSingletonPtr()->getEditorToolFactory(EDITOR_WORLD);
-	if (pWorldFactory)
-	{
-		SEditorSceneManagerAdp adp;
-		adp.worldName			= "App";
-		adp.name				= EDITOR_TOOL_WORLD_NAME;
-		adp.background			= ColourValue(0, 0, 0, 0);
-		adp.typeMask			= ST_EXTERIOR_FAR;
-		adp.clrAmbientLight		= ColourValue(0.5, 0.5, 0.5, 0.5);
-		adp.vPos				= Vector3(0, 5, 5);
-		adp.vLookAt				= Vector3(0,0,0);
-		adp.fNearClipDistance	= 0.1f;
-		adp.fFarClipDistance	= 3000;
-		adp.fYaw				= 0;
-		adp.fPitch				= 0;
+	//EditorToolFactory* pWorldFactory = EditorToolFactoryManager::getSingletonPtr()->getEditorToolFactory(EDITOR_WORLD);
+	//if (pWorldFactory)
+	//{
+	//	SEditorSceneManagerAdp adp;
+	//	adp.worldName			= "App";
+	//	adp.name				= EDITOR_TOOL_WORLD_NAME;
+	//	adp.background			= ColourValue(0, 0, 0, 0);
+	//	adp.typeMask			= ST_EXTERIOR_FAR;
+	//	adp.clrAmbientLight		= ColourValue(0.5, 0.5, 0.5, 0.5);
+	//	adp.vPos				= Vector3(0, 5, 5);
+	//	adp.vLookAt				= Vector3(0,0,0);
+	//	adp.fNearClipDistance	= 0.1f;
+	//	adp.fFarClipDistance	= 3000;
+	//	adp.fYaw				= 0;
+	//	adp.fPitch				= 0;
 
-		EditorToolManager::getSingletonPtr()->addEditorTool(pWorldFactory->createEditorTool(adp), NULL);
-	}
+	//	EditorToolManager::getSingletonPtr()->addEditorTool(pWorldFactory->createEditorTool(adp), NULL);
+	//}
 
 	//EditorToolFactory* pTerrainFactory = EditorToolFactoryManager::getSingletonPtr()->getEditorToolFactory(EDITOR_TERRAIN);
 	//if (pTerrainFactory)
@@ -66,13 +66,13 @@ void CWizardDialog::OnBnClickedOk()
 	//	EditorToolManager::getSingletonPtr()->addEditorTool(pTerrainFactory->createEditorTool(adp), NULL);
 	//}
 
-	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
-	if (pMainFrame != NULL)
-	{
-		// 通知文件窗口
-		::SendMessage(pMainFrame->GetActiveView()->m_hWnd,
-			WM_WIZARD_FNISHED, NULL, NULL);
-	}
+	//CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+	//if (pMainFrame != NULL)
+	//{
+	//	// 通知文件窗口
+	//	::SendMessage(pMainFrame->GetActiveView()->m_hWnd,
+	//		WM_WIZARD_FNISHED, NULL, NULL);
+	//}
 
 	OnOK();
 }

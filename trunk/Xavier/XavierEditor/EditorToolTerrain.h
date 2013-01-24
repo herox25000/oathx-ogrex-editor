@@ -127,6 +127,6 @@ namespace Ogre
 		 * \param seadp 
 		 * \return 
 		 */
-		virtual	EditorTool*		createEditorTool(const SEditorAdp& seadp);
+		virtual	EditorTool*		createEditorTool(const SEditorAdp& seadp, EditorTool* pParent);
 	};
 }

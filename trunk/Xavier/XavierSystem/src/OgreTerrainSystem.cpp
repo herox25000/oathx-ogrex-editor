@@ -51,6 +51,13 @@ namespace Ogre
 			m_pGlobalOptions->setMaxPixelError(fMaxPixelError);
 			m_pGlobalOptions->setCompositeMapDistance(fCompositeMapDistance);
 
+			TerrainMaterialGeneratorA::SM2Profile* pProfile = static_cast<TerrainMaterialGeneratorA::SM2Profile*>(
+				m_pGlobalOptions->getDefaultMaterialGenerator()->getActiveProfile()
+				);
+			pProfile->setReceiveDynamicShadowsEnabled(true);
+			pProfile->setReceiveDynamicShadowsLowLod(false);
+			pProfile->setReceiveDynamicShadowsDepth(true);
+			
 			ColourValue clrAmbientLinght = pSceneManager->getAmbientLight();
 			m_pGlobalOptions->setCompositeMapAmbient(clrAmbientLinght);
 
@@ -98,7 +105,7 @@ namespace Ogre
 	 * \param nMaxBatchSize 
 	 * \param defaultTexture 
 	 */
-	void		TerrainSystem::configureTerrainDefault(float fWorldSize, int nTerrainSize, float fInputScale, 
+	void					TerrainSystem::configureTerrainDefault(float fWorldSize, int nTerrainSize, float fInputScale, 
 		int nMinBatchSize, int nMaxBatchSize, const String& defaultTexture)
 	{
 		Terrain::ImportData& dmp = m_pTerrainGroup->getDefaultImportSettings();
@@ -121,7 +128,7 @@ namespace Ogre
 	 * \param nPageX 
 	 * \param nPageY 
 	 */
-	void		TerrainSystem::defineTerrain(int nPageX, int nPageY, bool bLoad)
+	void					TerrainSystem::defineTerrain(int nPageX, int nPageY, bool bLoad)
 	{
 		Terrain::ImportData& dmp = m_pTerrainGroup->getDefaultImportSettings();
 		m_pTerrainGroup->defineTerrain(nPageX, nPageY, &dmp);
@@ -138,7 +145,7 @@ namespace Ogre
 	 * \param vPos 
 	 * \return 
 	 */
-	Terrain*		TerrainSystem::rayIntersects(const Ray& ray, Vector3& vPos)
+	Terrain*				TerrainSystem::rayIntersects(const Ray& ray, Vector3& vPos)
 	{
 		TerrainGroup::RayResult result = m_pTerrainGroup->rayIntersects(ray);
 		LogManager::getSingleton().logMessage(LML_TRIVIAL, " hit :" + result.hit);
@@ -157,7 +164,7 @@ namespace Ogre
 	 * \param nPageY 
 	 * \return 
 	 */
-	Terrain*		TerrainSystem::getTerrain(int nPageX, int nPageY)
+	Terrain*				TerrainSystem::getTerrain(int nPageX, int nPageY)
 	{
 		return m_pTerrainGroup->getTerrain(nPageX, nPageY);
 	}
@@ -166,8 +173,17 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	TerrainGroup*	TerrainSystem::getTerrainGroup() const
+	TerrainGroup*			TerrainSystem::getTerrainGroup() const
 	{
 		return m_pTerrainGroup;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	TerrainGlobalOptions*	TerrainSystem::getTerrainGlobalOption() const
+	{
+		return m_pGlobalOptions;
 	}
 }

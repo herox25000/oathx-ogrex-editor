@@ -104,7 +104,7 @@ namespace Ogre
 	 * \param seadp 
 	 * \return 
 	 */
-	EditorTool*	EditorToolTerrainFactory::createEditorTool(const SEditorAdp& seadp)
+	EditorTool*	EditorToolTerrainFactory::createEditorTool(const SEditorAdp& seadp, EditorTool* pParent)
 	{
 		return NULL;
 	}
