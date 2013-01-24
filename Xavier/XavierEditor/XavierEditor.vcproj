@@ -308,10 +308,6 @@
 				>
 			</File>
 			<File
-				RelativePath=".\XavierEditorMessageDef.h"
-				>
-			</File>
-			<File
 				RelativePath=".\XavierEditorView.h"
 				>
 			</File>
@@ -474,6 +470,34 @@
 				>
 			</File>
 			<File
+				RelativePath=".\EditorMessageDef.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorPlugin.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorPlugin.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorPluginFactoryManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorPluginFactoryManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorPluginManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\EditorPluginManager.h"
+				>
+			</File>
+			<File
 				RelativePath=".\EditorPropertyKeyWordDef.h"
 				>
 			</File>
@@ -483,46 +507,6 @@
 			</File>
 			<File
 				RelativePath=".\EditorSystem.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorTool.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorTool.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolFactoryManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolFactoryManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolSceneManager.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolSceneManager.h"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolTerrain.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\EditorToolTerrain.h"
 				>
 			</File>
 		</Filter>

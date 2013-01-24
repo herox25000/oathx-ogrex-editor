@@ -357,58 +357,58 @@ void	CPropertiesWnd::ClearProperty()
  */
 void	CPropertiesWnd::CreateToolProperty(Ogre::EditorTool* pTool)
 {
-	// 获取属性迭代器
-	HashPropertyIter hash_property_iter = pTool->getHashPropertyIter();
-	
-	// 创建属性列表
-	for (HashPropertyIter::iterator it=hash_property_iter.begin();
-		it!=hash_property_iter.end(); it++)
-	{
-		String name = it->second->getName();
+	//// 获取属性迭代器
+	//HashPropertyIter hash_property_iter = pTool->getHashPropertyIter();
+	//
+	//// 创建属性列表
+	//for (HashPropertyIter::iterator it=hash_property_iter.begin();
+	//	it!=hash_property_iter.end(); it++)
+	//{
+	//	String name = it->second->getName();
 
-		switch (it->second->getType())
-		{
-		case PVT_UNSIGNED_SHORT:
-			{
-				uint16 val = any_cast<uint16>(it->second->getValue());
-				m_wndPropList.AddProperty(CreateProperty<uint16>(name.c_str(), val, it->second->getDescribe().c_str(), 
-					it->second->canWrite(), NULL));
-			}
-			break;
-		case PVT_REAL:
-			{
-				Real val = any_cast<Real>(it->second->getValue());
-				m_wndPropList.AddProperty(CreateProperty<Real>(name.c_str(), val, it->second->getDescribe().c_str(), 
-					it->second->canWrite(), NULL));
-			}
-			break;
-		case PVT_COLOUR:
-			{
-				// 转换颜色
-				ColourValue clr = any_cast<ColourValue>(it->second->getValue());
+	//	switch (it->second->getType())
+	//	{
+	//	case PVT_UNSIGNED_SHORT:
+	//		{
+	//			uint16 val = any_cast<uint16>(it->second->getValue());
+	//			m_wndPropList.AddProperty(CreateProperty<uint16>(name.c_str(), val, it->second->getDescribe().c_str(), 
+	//				it->second->canWrite(), NULL));
+	//		}
+	//		break;
+	//	case PVT_REAL:
+	//		{
+	//			Real val = any_cast<Real>(it->second->getValue());
+	//			m_wndPropList.AddProperty(CreateProperty<Real>(name.c_str(), val, it->second->getDescribe().c_str(), 
+	//				it->second->canWrite(), NULL));
+	//		}
+	//		break;
+	//	case PVT_COLOUR:
+	//		{
+	//			// 转换颜色
+	//			ColourValue clr = any_cast<ColourValue>(it->second->getValue());
 
-				ARGB argb = clr.getAsARGB();
-				m_wndPropList.AddProperty(CreateColourValueProperty(argb, clr.a, name.c_str(), name.c_str(), 
-					it->second->getDescribe().c_str()));
-			}
-			break;
-		case PVT_STRING:
-			{
-				String val = any_cast<String>(it->second->getValue());
-				m_wndPropList.AddProperty(CreateProperty<LPCTSTR>(name.c_str(), val.c_str(), it->second->getDescribe().c_str(),
-					it->second->canWrite(), NULL));
-			}
-			break;
-		case PVT_VECTOR3:
-			{
-				Vector3 val = any_cast<Vector3>(it->second->getValue());
-				m_wndPropList.AddProperty(CreateVector3ValueProperty( val, name.c_str(), it->second->getDescribe().c_str()));
-			}
-			break;
-		}
-	}
+	//			ARGB argb = clr.getAsARGB();
+	//			m_wndPropList.AddProperty(CreateColourValueProperty(argb, clr.a, name.c_str(), name.c_str(), 
+	//				it->second->getDescribe().c_str()));
+	//		}
+	//		break;
+	//	case PVT_STRING:
+	//		{
+	//			String val = any_cast<String>(it->second->getValue());
+	//			m_wndPropList.AddProperty(CreateProperty<LPCTSTR>(name.c_str(), val.c_str(), it->second->getDescribe().c_str(),
+	//				it->second->canWrite(), NULL));
+	//		}
+	//		break;
+	//	case PVT_VECTOR3:
+	//		{
+	//			Vector3 val = any_cast<Vector3>(it->second->getValue());
+	//			m_wndPropList.AddProperty(CreateVector3ValueProperty( val, name.c_str(), it->second->getDescribe().c_str()));
+	//		}
+	//		break;
+	//	}
+	//}
 
-	m_wndPropList.ExpandAll();
+	//m_wndPropList.ExpandAll();
 }
 
 /**
@@ -419,26 +419,26 @@ void	CPropertiesWnd::CreateToolProperty(Ogre::EditorTool* pTool)
  */
 LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 {
-	wmSelectEvent* evt = (wmSelectEvent*)(wParam);
-	if (evt != NULL)
-	{
-		// 后去选择的编辑器
-		EditorTool* pTool = EditorToolManager::getSingleton().getEditorTool(evt->Name);
-		if (pTool)
-		{
-			// 获取当前选择的编辑器
-			EditorTool* pSelect = EditorToolManager::getSingleton().getSelectEditorTool();
-			if (pSelect != pTool)
-			{
-				EditorToolManager::getSingleton().setSelectEditorTool(pTool);
+	//wmSelectEvent* evt = (wmSelectEvent*)(wParam);
+	//if (evt != NULL)
+	//{
+	//	// 后去选择的编辑器
+	//	EditorTool* pTool = EditorToolManager::getSingleton().getEditorTool(evt->Name);
+	//	if (pTool)
+	//	{
+	//		// 获取当前选择的编辑器
+	//		EditorTool* pSelect = EditorToolManager::getSingleton().getSelectEditorTool();
+	//		if (pSelect != pTool)
+	//		{
+	//			EditorToolManager::getSingleton().setSelectEditorTool(pTool);
 
-				// 清空属性
-				ClearProperty();
-				// 创建属性
-				CreateToolProperty(pTool);
-			}
-		}
-	}
+	//			// 清空属性
+	//			ClearProperty();
+	//			// 创建属性
+	//			CreateToolProperty(pTool);
+	//		}
+	//	}
+	//}
 
 	return 0;
 }
@@ -451,42 +451,42 @@ LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
  */
 LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 {
-	EditorTool* pSelectTool = EditorToolManager::getSingleton().getSelectEditorTool();
-	if (pSelectTool == NULL)
-		return 0;
+	//EditorTool* pSelectTool = EditorToolManager::getSingleton().getSelectEditorTool();
+	//if (pSelectTool == NULL)
+	//	return 0;
 
-	CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
-	if (pProperty != NULL)
-	{
-		String parentName;
-		CMFCPropertyGridProperty* pParent = pProperty->GetParent();
-		if (pParent)
-			parentName = pParent->GetName();
+	//CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
+	//if (pProperty != NULL)
+	//{
+	//	String parentName;
+	//	CMFCPropertyGridProperty* pParent = pProperty->GetParent();
+	//	if (pParent)
+	//		parentName = pParent->GetName();
 
-		// 类型名称
-		String typeName(_T(pProperty->GetName()));
+	//	// 类型名称
+	//	String typeName(_T(pProperty->GetName()));
 
-		// 变量类型
-		COleVariant oldValue = pProperty->GetValue();
-		switch( oldValue.vt )
-		{
-		case VT_I4:
-			{
-				pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.uintVal), PVT_UNSIGNED_INT);
-			}
-			break;
-		case VT_R4:
-			{
-				pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.fltVal), PVT_REAL);
-			}
-			break;
-		case VT_BSTR:
-			{
+	//	// 变量类型
+	//	COleVariant oldValue = pProperty->GetValue();
+	//	switch( oldValue.vt )
+	//	{
+	//	case VT_I4:
+	//		{
+	//			pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.uintVal), PVT_UNSIGNED_INT);
+	//		}
+	//		break;
+	//	case VT_R4:
+	//		{
+	//			pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.fltVal), PVT_REAL);
+	//		}
+	//		break;
+	//	case VT_BSTR:
+	//		{
 
-			}
-			break;
-		}
-	}
+	//		}
+	//		break;
+	//	}
+	//}
 
 	return 0;
 }

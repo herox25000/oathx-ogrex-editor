@@ -95,6 +95,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	TerrainGroup*				getTerrainGroup() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual TerrainGlobalOptions*		getTerrainGlobalOption() const;
 	protected:
 		/**
 		 *

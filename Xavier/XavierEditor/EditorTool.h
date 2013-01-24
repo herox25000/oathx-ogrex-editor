@@ -221,7 +221,7 @@ namespace Ogre
 		 *
 		 * \param seadp 
 		 */
-		virtual EditorTool*			createEditorTool(const SEditorAdp& seadp) = 0;
+		virtual EditorTool*			createEditorTool(const SEditorAdp& seadp, EditorTool* pParent) = 0;
 
 		/**
 		 *

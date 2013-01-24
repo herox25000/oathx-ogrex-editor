@@ -4,10 +4,7 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XavierEditor", "XavierEditor\XavierEditor.vcproj", "{53965838-D320-4967-ABAE-87E8FBE54914}"
 	ProjectSection(ProjectDependencies) = postProject
 		{B956115D-250A-4775-AECF-1ECB51F208A2} = {B956115D-250A-4775-AECF-1ECB51F208A2}
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F} = {AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}
 	EndProjectSection
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XavierSystem", "XavierSystem\XavierSystem.vcproj", "{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XavierEventSet", "XavierEventSet\XavierEventSet.vcproj", "{B956115D-250A-4775-AECF-1ECB51F208A2}"
 EndProject
@@ -21,10 +18,6 @@ Global
 		{53965838-D320-4967-ABAE-87E8FBE54914}.Debug|Win32.Build.0 = Debug|Win32
 		{53965838-D320-4967-ABAE-87E8FBE54914}.Release|Win32.ActiveCfg = Release|Win32
 		{53965838-D320-4967-ABAE-87E8FBE54914}.Release|Win32.Build.0 = Release|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Debug|Win32.Build.0 = Debug|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Release|Win32.ActiveCfg = Release|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Release|Win32.Build.0 = Release|Win32
 		{B956115D-250A-4775-AECF-1ECB51F208A2}.Debug|Win32.ActiveCfg = Debug|Win32
 		{B956115D-250A-4775-AECF-1ECB51F208A2}.Debug|Win32.Build.0 = Debug|Win32
 		{B956115D-250A-4775-AECF-1ECB51F208A2}.Release|Win32.ActiveCfg = Release|Win32

@@ -1,10 +1,9 @@
 #pragma once
 
 #include "EditorSystem.h"
-#include "XavierEditorMessageDef.h"
+#include "EditorMessageDef.h"
 #include "EditorPropertyKeyWordDef.h"
 #include "EditorDebugMessage.h"
-#include "EditorTool.h"
-#include "EditorToolSceneManager.h"
-#include "EditorToolManager.h"
-#include "EditorToolFactoryManager.h"
+#include "EditorPlugin.h"
+#include "EditorPluginFactoryManager.h"
+#include "EditorPluginManager.h"

@@ -448,12 +448,28 @@ namespace Ogre
 	 * \param seadp 
 	 * \return 
 	 */
-	EditorTool*	EditorToolSceneManagerFactory::createEditorTool(const SEditorAdp& seadp)
+	EditorTool*	EditorToolSceneManagerFactory::createEditorTool(const SEditorAdp& seadp, EditorTool* pParent)
 	{
 		const SEditorSceneManagerAdp& adp = static_cast<const SEditorSceneManagerAdp&>(seadp);
+		
+		//EditorToolManager* pSceneManager = new EditorToolSceneManager(
+		//	adp.name, 
+		//	adp.worldName, 
+		//	adp.typeMask, 
+		//	adp.clrAmbientLight,
+		//	adp.vPos, 
+		//	adp.vLookAt, 
+		//	adp.fYaw, 
+		//	adp.fPitch,
+		//	adp.fNearClipDistance, 
+		//	adp.fFarClipDistance,
+		//	adp.background);
+		//if (pParent)
+		//{
+		//	pParent->addEditorTool(pSceneManager);	
+		//}
 
-		return new EditorToolSceneManager(adp.name, adp.worldName, adp.typeMask, adp.clrAmbientLight,
-			adp.vPos, adp.vLookAt, adp.fYaw, adp.fPitch, adp.fNearClipDistance, adp.fFarClipDistance,
-			adp.background);
+		//return pSceneManager;
+		return NULL;
 	}
 }

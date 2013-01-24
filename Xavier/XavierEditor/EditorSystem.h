@@ -82,7 +82,7 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual RenderWindow*		getRenderWindow() const;
-	
+
 	protected:
 		Root*						m_pRoot;
 		RenderWindow*				m_pRenderWindow;

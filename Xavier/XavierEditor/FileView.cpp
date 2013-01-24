@@ -1,11 +1,9 @@
-
 #include "stdafx.h"
 #include "mainfrm.h"
 #include "FileView.h"
 #include "Resource.h"
 #include "XavierEditor.h"
-#include "EditorTool.h"
-#include "EditorToolManager.h"
+#include "XavierEditorInclude.h"
 
 #ifdef _DEBUG
 #undef THIS_FILE
@@ -93,22 +91,29 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
  */
 void CFileView::UpdateFileView()
 {
-	EditorTool* pRoot = EditorToolManager::getSingletonPtr()->getRoot();
-	if (pRoot)
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
 	{
-		HTREEITEM hRoot = m_wndFileView.InsertItem(pRoot->getName().c_str(), 0, 0);
+		// 创建根节点
+		HTREEITEM hRoot = m_wndFileView.InsertItem(pRootPlugin->getName().c_str(), 0, 0);
 		m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
-		
-		EditorTool::HashMapEditorIter hashMapEditor = pRoot->getHashMapEditorIter();
-		EditorTool::HashMapEditorIter::iterator it	= hashMapEditor.begin();
-		while( it != hashMapEditor.end() )
-		{
-			m_wndFileView.InsertItem(it->second->getName().c_str(), 0, 0, hRoot);
-			it ++;
-		}
-		
-		m_wndFileView.Expand(hRoot, TVE_EXPAND);
 	}
+	//EditorTool* pRoot = EditorToolManager::getSingletonPtr()->getRoot();
+	//if (pRoot)
+	//{
+	//	HTREEITEM hRoot = m_wndFileView.InsertItem(pRoot->getName().c_str(), 0, 0);
+	//	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+	//	
+	//	EditorTool::HashMapEditorIter hashMapEditor = pRoot->getHashMapEditorIter();
+	//	EditorTool::HashMapEditorIter::iterator it	= hashMapEditor.begin();
+	//	while( it != hashMapEditor.end() )
+	//	{
+	//		m_wndFileView.InsertItem(it->second->getName().c_str(), 0, 0, hRoot);
+	//		it ++;
+	//	}
+	//	
+	//	m_wndFileView.Expand(hRoot, TVE_EXPAND);
+	//}
 }
 
 /**
