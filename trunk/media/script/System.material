@@ -1,0 +1,74 @@
+material System/Grid
+{
+	technique
+	{
+		pass
+		{
+			alpha_rejection greater_equal 128
+			diffuse		0 0 0 1
+			emissive	0.5 0.5 0.5 0.5
+			
+			cull_hardware none
+
+			texture_unit
+			{
+				texture				decal.png
+				tex_address_mode	wrap
+				filtering			anisotropic
+				max_anisotropy		8
+			}
+		}
+	}
+}
+
+material System/DebugDraw
+{
+   technique
+   {
+      pass
+      {
+         lighting off
+         scene_blend alpha_blend
+         depth_check on
+         depth_write off
+         ambient vertexcolour
+         diffuse vertexcolour
+         specular vertexcolour 
+      }
+   }
+}
+
+material System/GridLine3D
+{
+   technique
+   {
+      pass
+      {
+         lighting 		off
+         scene_blend 	alpha_blend
+         depth_check 	on
+         depth_write 	off
+         ambient 		vertexcolour
+         diffuse 		vertexcolour
+         specular 		vertexcolour
+      }
+   }	
+}
+
+material System/TerrainMeshDecal
+{
+	technique
+	{
+		pass
+		{
+			scene_blend 	alpha_blend
+			depth_write 	off
+	
+			texture_unit
+			{
+				texture select01.tga
+				scale 1 1
+			}
+		}
+	}
+}
