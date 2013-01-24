@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "ViewTree.h"
 #include "MainFrm.h"
+#include "XavierEditorInclude.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

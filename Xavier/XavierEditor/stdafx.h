@@ -32,15 +32,16 @@
 #endif // _AFX_NO_AFXCMN_SUPPORT
 
 #include <afxcontrolbars.h>     // 功能区和控件条的 MFC 支持
-#include "OgreSystemAPIExport.h"
+#pragma warning(disable : 4251)
+#pragma warning(disable : 4193)
+#pragma warning(disable : 4275)
+#pragma warning(disable : 4661)
+
+#include <Ogre.h>
+
 #include "OgreEventSetStdAfx.h"
 #include "OgreAny.h"
 #include "OgrePropertySet.h"
-#include "OgreWorld.h"
-#include "OgreTerrainSystem.h"
-#include "OgreDecalMesh.h"
-#include "XavierEditorMessageDef.h"
-#include "EditorPropertyKeyWordDef.h"
 
 using namespace Ogre;
 

@@ -1,11 +1,7 @@
 #include "stdafx.h"
 #include "XavierEditor.h"
 #include "WizardDialog.h"
-#include "EditorTool.h"
-#include "EditorToolWorld.h"
-#include "EditorToolTerrain.h"
-#include "EditorToolManager.h"
-#include "EditorToolFactoryManager.h"
+#include "XavierEditorInclude.h"
 #include "MainFrm.h"
 
 IMPLEMENT_DYNAMIC(CWizardDialog, CDialog)
@@ -35,7 +31,7 @@ void CWizardDialog::OnBnClickedOk()
 	EditorToolFactory* pWorldFactory = EditorToolFactoryManager::getSingletonPtr()->getEditorToolFactory(EDITOR_WORLD);
 	if (pWorldFactory)
 	{
-		SEditorWorldAdp adp;
+		SEditorSceneManagerAdp adp;
 		adp.worldName			= "App";
 		adp.name				= EDITOR_TOOL_WORLD_NAME;
 		adp.background			= ColourValue(0, 0, 0, 0);
@@ -51,24 +47,24 @@ void CWizardDialog::OnBnClickedOk()
 		EditorToolManager::getSingletonPtr()->addEditorTool(pWorldFactory->createEditorTool(adp), NULL);
 	}
 
-	EditorToolFactory* pTerrainFactory = EditorToolFactoryManager::getSingletonPtr()->getEditorToolFactory(EDITOR_TERRAIN);
-	if (pTerrainFactory)
-	{
-		SEditorTerrainAdp adp;
-		adp.name					= EDITOR_TOOL_TERRAIN_NAME;
-		adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
-		adp.fCompositeMapDistance	= 3000;
-		adp.fMaxPixelError			= 8;
-		adp.fWorldSize				= 129;
-		adp.nTerrainSize			= 129;
-		adp.vOrigin					= Vector3::ZERO;
-		adp.fInputScale				= 2;
-		adp.nMinBatchSize			= 33;
-		adp.nMaxBatchSize			= 65;
-		adp.texture					= "desert_0_diffuse.png";
+	//EditorToolFactory* pTerrainFactory = EditorToolFactoryManager::getSingletonPtr()->getEditorToolFactory(EDITOR_TERRAIN);
+	//if (pTerrainFactory)
+	//{
+	//	SEditorTerrainAdp adp;
+	//	adp.name					= EDITOR_TOOL_TERRAIN_NAME;
+	//	adp.clrCompositeMapDiffuse	= ColourValue(1,1,1,1);
+	//	adp.fCompositeMapDistance	= 3000;
+	//	adp.fMaxPixelError			= 8;
+	//	adp.fWorldSize				= 129;
+	//	adp.nTerrainSize			= 129;
+	//	adp.vOrigin					= Vector3::ZERO;
+	//	adp.fInputScale				= 2;
+	//	adp.nMinBatchSize			= 33;
+	//	adp.nMaxBatchSize			= 65;
+	//	adp.texture					= "desert_0_diffuse.png";
 
-		EditorToolManager::getSingletonPtr()->addEditorTool(pTerrainFactory->createEditorTool(adp), NULL);
-	}
+	//	EditorToolManager::getSingletonPtr()->addEditorTool(pTerrainFactory->createEditorTool(adp), NULL);
+	//}
 
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame != NULL)

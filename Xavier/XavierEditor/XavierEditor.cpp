@@ -1,15 +1,11 @@
 #include "stdafx.h"
 #include "afxwinappex.h"
-#include "OgreSystem.h"
+#include "XavierEditorInclude.h"
 #include "XavierEditor.h"
 #include "MainFrm.h"
 #include "XavierEditorDoc.h"
 #include "XavierEditorView.h"
 #include "SplashDialog.h"
-#include "EditorDebugMessage.h"
-#include "EditorTool.h"
-#include "EditorToolManager.h"
-#include "EditorToolFactoryManager.h"
 
 #ifdef _DEBUG
 #	define new DEBUG_NEW
@@ -102,9 +98,6 @@ BOOL	CXavierEditorApp::InitInstance()
  */
 int		CXavierEditorApp::ExitInstance()
 {
-	delete EditorToolManager::getSingletonPtr();
-	delete EditorToolFactoryManager::getSingletonPtr();
-
 	if (m_pDebugLog)
 	{
 		Ogre::LogManager::getSingletonPtr()->getDefaultLog()->removeListener(m_pDebugLog);
@@ -230,11 +223,11 @@ void	CXavierEditorApp::ShowSplashDialog()
 	pCsw->ShowSplash();
 	
 	// 创建编辑系统
-	m_pAppSystem = new Ogre::System();
+	m_pAppSystem = new EditorSystem();
 #ifndef _DEBUG
-	m_pAppSystem->createSystem("plugins.cfg", "resources.cfg", false);
+	m_pAppSystem->createEditorSystem("plugins.cfg", "resources.cfg", false);
 #else
-	m_pAppSystem->createSystem("plugins_d.cfg", "resources_d.cfg", false);
+	m_pAppSystem->createEditorSystem("plugins_d.cfg", "resources_d.cfg", false);
 #endif
 	
 	m_pDebugLog = new EditorDebugMessage();
@@ -242,9 +235,6 @@ void	CXavierEditorApp::ShowSplashDialog()
 	{
 		Ogre::LogManager::getSingletonPtr()->getDefaultLog()->addListener(m_pDebugLog);
 	}
-
-	new EditorToolFactoryManager();
-	new EditorToolManager("Xavier");
 
 	pCsw->CloseSplash();
 	delete pCsw;

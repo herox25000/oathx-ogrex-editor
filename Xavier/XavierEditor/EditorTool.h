@@ -1,5 +1,6 @@
 #pragma once
 
+#include "EditorPropertyKeyWordDef.h"
 #include "OgreIteratorWrapper.h"
 
 namespace Ogre

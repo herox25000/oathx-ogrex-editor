@@ -1,8 +1,7 @@
 #include "StdAfx.h"
 #include "EditorTool.h"
 #include "EditorToolFactoryManager.h"
-#include "EditorToolWorld.h"
-#include "EditorToolTerrain.h"
+#include "EditorToolSceneManager.h"
 
 namespace Ogre
 {
@@ -27,7 +26,7 @@ namespace Ogre
 
 	static const String EditorToolFactoryName[] = 
 	{
-		"EditorTool/World",
+		"EditorTool/SceneManager",
 		"EditorTool/Terrain"
 	};
 	/**
@@ -37,8 +36,7 @@ namespace Ogre
 	 */
 	EditorToolFactoryManager::EditorToolFactoryManager(void)
 	{
-		registerEditorToolFactory(new EditorToolWorldFactory(EditorToolFactoryName[EDITOR_WORLD]));
-		registerEditorToolFactory(new EditorToolTerrainFactory(EditorToolFactoryName[EDITOR_TERRAIN]));
+		registerEditorToolFactory(new EditorToolSceneManagerFactory(EditorToolFactoryName[EDITOR_WORLD]));
 	}
 
 	/**

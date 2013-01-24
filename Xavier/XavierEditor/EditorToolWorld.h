@@ -98,7 +98,6 @@ namespace Ogre
 		 */
 		virtual	bool			OnPropertyChanged(const String& parentName, const String& name, Any anyValue, int nValueType);
 	protected:
-		World*					m_pWorld;
 		bool					m_bRMouseDown;
 		Vector2					m_vRigthDwon;
 	};

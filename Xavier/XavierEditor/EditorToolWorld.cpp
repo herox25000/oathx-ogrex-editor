@@ -4,65 +4,6 @@
 
 namespace Ogre
 {
-	//////////////////////////////////////////////////////////////////////////
-	enum {
-		EWP_WORLD_NAME,
-		EWP_BACKGROUND,
-		EWP_SCENETYPE,
-		EWP_CLRAMBIENTLIGHT,
-		EWP_CAMERA_POSITION,
-		EWP_CAMERA_YAW,
-		EWP_CAMERA_PITCH,
-		EWP_CAMERA_NEAR,
-		EWP_CAMERA_FAR,
-		EWP_COUNT,
-	};
-
-	static const String EditorToolWorldPropertyName[] = 
-	{
-		"WorldName",
-		"Background",
-		"SceneType",
-		"AmbientLight",
-		"CameraPosition",
-		"Yaw",
-		"Pitch",
-		"NearClipDistance",
-		"FarClipDistance"
-	};
-
-	static const String EditorToolWorldPropertyDesc[] = 
-	{
-		"修改世界节点名",
-		"修改视口背景颜色",
-		"场景管理器类型",
-		"环境光",
-		"摄像机位置",
-		"摄像机观察点",
-		"Yaw",
-		"Pitch",
-		"NearClipDistance",
-		"FarClipDistance"
-
-	};
-
-	/**
-	 *
-	 * \param name 
-	 * \return 
-	 */
-	static int	convertWorldPorpertyType(const String& name)
-	{
-		for (int i=0; i<EWP_COUNT; i++)
-		{
-			if (EditorToolWorldPropertyName[i] == name)
-				return i;
-		}
-
-		return -1;
-	}
-	//////////////////////////////////////////////////////////////////////////
-
 	/**
 	 *
 	 * \param name 
@@ -70,9 +11,9 @@ namespace Ogre
 	 */
 	EditorToolWorld::EditorToolWorld(const String& name, const String& worldName, const SceneTypeMask& typeMask, const ColourValue& clrAmbientLight,
 		const Vector3& vPos, const Vector3& vLookAt, Real fYaw, Real fPitch, Real fNearClipDistance, Real fFarClipDistance, const ColourValue& background)
-		: EditorTool(name), m_pWorld(NULL), m_bRMouseDown(false)
+		: EditorTool(name)
 	{
-		m_pWorld = new World(worldName, typeMask, clrAmbientLight, 
+	/*	m_pWorld = new World(worldName, typeMask, clrAmbientLight, 
 			vPos, vLookAt, fYaw, fPitch, fNearClipDistance, fFarClipDistance,
 			background);
 		if (m_pWorld)
@@ -95,7 +36,7 @@ namespace Ogre
 				EditorToolWorldPropertyDesc[EWP_CAMERA_NEAR]);
 			addProperty(EditorToolWorldPropertyName[EWP_CAMERA_FAR], Any(fFarClipDistance), PVT_REAL, true, 
 				EditorToolWorldPropertyDesc[EWP_CAMERA_FAR]);
-		}
+		}*/
 	}
 
 	/**
@@ -104,11 +45,11 @@ namespace Ogre
 	 */
 	EditorToolWorld::~EditorToolWorld()
 	{
-		if (m_pWorld)
-		{
-			delete m_pWorld;
-			m_pWorld = NULL;
-		}
+		//if (m_pWorld)
+		//{
+		//	delete m_pWorld;
+		//	m_pWorld = NULL;
+		//}
 	}
 
 	/**
@@ -118,8 +59,8 @@ namespace Ogre
 	 */
 	bool	EditorToolWorld::OnRButtonDown(const Vector2& vPos)
 	{
-		m_bRMouseDown	= true;
-		m_vRigthDwon	= vPos;
+		//m_bRMouseDown	= true;
+		//m_vRigthDwon	= vPos;
 		
 		return true;
 	}
@@ -131,7 +72,7 @@ namespace Ogre
 	 */
 	bool	EditorToolWorld::OnRButtonUp(const Vector2& vPos)
 	{
-		m_bRMouseDown = false;
+		//m_bRMouseDown = false;
 		return 0;
 	}
 
@@ -142,18 +83,18 @@ namespace Ogre
 	 */
 	bool	EditorToolWorld::OnMouseMove(const Vector2& vPos)
 	{
-		Camera* pCamera = m_pWorld->getCamera();
-		if (pCamera)
-		{
-			if (m_bRMouseDown)
-			{
-				Vector2 vRel = vPos - m_vRigthDwon;
-				pCamera->yaw(Degree(vRel.x * 0.15f));
-				pCamera->pitch(Degree(vRel.y * 0.15f));
-			}
-		}
-		
-		m_vRigthDwon = vPos;
+		//Camera* pCamera = m_pWorld->getCamera();
+		//if (pCamera)
+		//{
+		//	if (m_bRMouseDown)
+		//	{
+		//		Vector2 vRel = vPos - m_vRigthDwon;
+		//		pCamera->yaw(Degree(vRel.x * 0.15f));
+		//		pCamera->pitch(Degree(vRel.y * 0.15f));
+		//	}
+		//}
+		//
+		//m_vRigthDwon = vPos;
 
 		return true;
 	}
@@ -166,9 +107,9 @@ namespace Ogre
 	 */
 	bool	EditorToolWorld::OnMouseWheel(float zDelta, const Vector2& vPos)
 	{
-		Camera* pCamera = m_pWorld->getCamera();
-		if (pCamera)
-			pCamera->moveRelative(Ogre::Vector3(0, 0, zDelta * 0.02f));
+		//Camera* pCamera = m_pWorld->getCamera();
+		//if (pCamera)
+		//	pCamera->moveRelative(Ogre::Vector3(0, 0, zDelta * 0.02f));
 
 		return true;
 	}
@@ -182,41 +123,41 @@ namespace Ogre
 	 */
 	bool	EditorToolWorld::OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
 	{
-		Camera* pCamera = m_pWorld->getCamera();
-		if (!pCamera)
-			return 0;
+		//Camera* pCamera = m_pWorld->getCamera();
+		//if (!pCamera)
+		//	return 0;
 
-		switch( nChar )
-		{
-		case 'W':
-			{
-				Ogre::Vector3 accel = Ogre::Vector3::ZERO;
-				accel += pCamera->getDirection();
-				pCamera->move(accel);
-			}
-			break;
-		case 'S':
-			{
-				Ogre::Vector3 accel = Ogre::Vector3::ZERO;
-				accel -= pCamera->getDirection();
-				pCamera->move(accel);
-			}
-			break;
-		case 'A':
-			{
-				Ogre::Vector3 accel = Ogre::Vector3::ZERO;
-				accel -= pCamera->getRight();
-				pCamera->move(accel);
-			}
-			break;
-		case 'D':
-			{
-				Ogre::Vector3 accel = Ogre::Vector3::ZERO;
-				accel += pCamera->getRight();
-				pCamera->move(accel);
-			}
-			break;
-		}
+		//switch( nChar )
+		//{
+		//case 'W':
+		//	{
+		//		Ogre::Vector3 accel = Ogre::Vector3::ZERO;
+		//		accel += pCamera->getDirection();
+		//		pCamera->move(accel);
+		//	}
+		//	break;
+		//case 'S':
+		//	{
+		//		Ogre::Vector3 accel = Ogre::Vector3::ZERO;
+		//		accel -= pCamera->getDirection();
+		//		pCamera->move(accel);
+		//	}
+		//	break;
+		//case 'A':
+		//	{
+		//		Ogre::Vector3 accel = Ogre::Vector3::ZERO;
+		//		accel -= pCamera->getRight();
+		//		pCamera->move(accel);
+		//	}
+		//	break;
+		//case 'D':
+		//	{
+		//		Ogre::Vector3 accel = Ogre::Vector3::ZERO;
+		//		accel += pCamera->getRight();
+		//		pCamera->move(accel);
+		//	}
+		//	break;
+		//}
 		return 0;
 	}
 
@@ -240,8 +181,8 @@ namespace Ogre
 	 */
 	bool	EditorToolWorld::OnSize(int cx, int cy)
 	{
-		if (m_pWorld)
-			m_pWorld->windowMovedOrResized();
+		//if (m_pWorld)
+		//	m_pWorld->windowMovedOrResized();
 
 		return true;
 	}
@@ -255,7 +196,7 @@ namespace Ogre
 	 */
 	bool	EditorToolWorld::OnPropertyChanged(const String& parentName, const String& name, Any anyValue, int nValueType)
 	{
-		int nType = convertWorldPorpertyType(parentName.empty() ? name : parentName);
+		/*int nType = convertWorldPorpertyType(parentName.empty() ? name : parentName);
 		if ( nType < 0)
 		{
 			LogManager::getSingleton().logMessage(LML_TRIVIAL, "Can't find property " + name);
@@ -388,7 +329,7 @@ namespace Ogre
 			}
 			break;
 		}
-		
+		*/
 		return true;
 	}
 
