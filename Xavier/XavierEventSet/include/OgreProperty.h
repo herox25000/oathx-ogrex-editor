@@ -8,11 +8,11 @@ namespace Ogre
 {
 	enum {
 		PVT_SHORT			= 0,
-		PVT_UNSIGNED_SHORT	= 1,
+		PVT_USHORT			= 1,
 		PVT_INT				= 2,
-		PVT_UNSIGNED_INT	= 3,
+		PVT_UINT			= 3,
 		PVT_LONG			= 4, 
-		PVT_UNSIGNED_LONG	= 5,
+		PVT_ULONG			= 5,
 		PVT_REAL			= 6,
 		PVT_STRING			= 7,
 		PVT_VECTOR2			= 8, 
