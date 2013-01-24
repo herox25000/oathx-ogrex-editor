@@ -1,5 +1,5 @@
-#ifndef _____EditorToolWorld_H
-#define _____EditorToolWorld_H
+#ifndef _____EditorToolSceneManager_H
+#define _____EditorToolSceneManager_H
 
 namespace Ogre
 {
@@ -20,23 +20,50 @@ namespace Ogre
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class EditorToolWorld : public EditorTool
+	class EditorToolSceneManager : public EditorTool
 	{
+	public:
+		static const String		DEFAULT_MAIN_CAMERA;
+
 	public:
 		/**
 		 *
 		 * \param name 
 		 * \return 
 		 */
-		EditorToolWorld(const String& name, const String& worldName, const SceneTypeMask& typeMask, const ColourValue& clrAmbientLight,
+		EditorToolSceneManager(const String& name, const String& worldName, const SceneTypeMask& typeMask, const ColourValue& clrAmbientLight,
 			const Vector3& vPos, const Vector3& vLookAt, Real fYaw, Real fPitch, Real fNearClipDistance, Real fFarClipDistance, const ColourValue& background);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual ~EditorToolWorld();
+		virtual ~EditorToolSceneManager();
 
+				/**
+		 *
+		 * \return 
+		 */
+		virtual	SceneManager*	getSceneManager() const;
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Camera*			getCamera() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Viewport*		getViewport() const;
+		
+		/**
+		 *
+		 */
+		virtual	void			windowMovedOrResized();
+
+	public:
 		/**
 		 *
 		 * \param vPos 
@@ -98,11 +125,27 @@ namespace Ogre
 		 */
 		virtual	bool			OnPropertyChanged(const String& parentName, const String& name, Any anyValue, int nValueType);
 	protected:
+		/**
+		 *
+		 * \param vPos 
+		 * \param vLookAt 
+		 * \param fYaw 
+		 * \param fPitch 
+		 * \param fNearClipDistance 
+		 * \param fFarClipDistance 
+		 * \return 
+		 */
+		virtual	bool			configureDefault(const Vector3& vPos, const Vector3& vLookAt,
+			Real fYaw, Real fPitch, Real fNearClipDistance, Real fFarClipDistance, const ColourValue& background);
+	protected:
+		SceneManager*			m_pSceneManager;
+		Camera*					m_pCamera;
+		Viewport*				m_pViewport;
 		bool					m_bRMouseDown;
 		Vector2					m_vRigthDwon;
 	};
 	
-	struct SEditorWorldAdp : public SEditorAdp
+	struct SEditorSceneManagerAdp : public SEditorAdp
 	{
 		String					worldName;
 		SceneTypeMask			typeMask;
@@ -132,7 +175,7 @@ namespace Ogre
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class EditorToolWorldFactory : public EditorToolFactory
+	class EditorToolSceneManagerFactory : public EditorToolFactory
 	{
 	public:
 		/**
@@ -140,13 +183,13 @@ namespace Ogre
 		 * \param name 
 		 * \return 
 		 */
-		EditorToolWorldFactory(const String& name);
+		EditorToolSceneManagerFactory(const String& name);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual ~EditorToolWorldFactory();
+		virtual ~EditorToolSceneManagerFactory();
 
 		/**
 		 *
