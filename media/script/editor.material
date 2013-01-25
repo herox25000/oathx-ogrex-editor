@@ -1,4 +1,4 @@
-material Editor/Grid
+material System/Grid
 {
 	technique
 	{
@@ -21,7 +21,7 @@ material Editor/Grid
 	}
 }
 
-material Editor/DebugDraw
+material System/DebugDraw
 {
    technique
    {
@@ -38,7 +38,7 @@ material Editor/DebugDraw
    }
 }
 
-material Editor/GridLine3D
+material System/GridLine3D
 {
    technique
    {
@@ -55,7 +55,7 @@ material Editor/GridLine3D
    }	
 }
 
-material Editor/TerrainMeshDecal
+material System/TerrainMeshDecal
 {
 	technique
 	{
