@@ -109,7 +109,7 @@ BOOL CFileView::AddTreeItem(Ogre::EditorPlugin* pPlugin, HTREEITEM hParent)
 	if (pPlugin == NULL)
 		return FALSE;
 	
-	int nImage		= hParent ? 1 : 0;
+	int nImage		= hParent ? 0 : 1;
 	HTREEITEM hItem = m_wndFileView.InsertItem(pPlugin->getName().c_str(), nImage, nImage, hParent);
 
 	HashMapEditorPluginIter hashPlugin = pPlugin->getPluginIter();

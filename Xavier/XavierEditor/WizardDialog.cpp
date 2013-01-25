@@ -39,6 +39,7 @@ void CWizardDialog::OnBnClickedOk()
 		adp.expDensity			= 0.001;
 		adp.linearStart			= 0.0;
 		adp.linearEnd			= 1.0;
+		adp.clrAmbientLight		= ColourValue::White;
 
 		pSceneFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->getRootPlugin());
 	}
@@ -47,18 +48,58 @@ void CWizardDialog::OnBnClickedOk()
 	if (pViewportFactory)
 	{
 		SEditorPluginViewportAdp adp;
-		adp.background					= ColourValue::Black;
 		adp.pluginName					= EDITOR_VIEWPORT;
-
+		adp.background					= ColourValue::Black;
+		
 		adp.cameraAdp.pluginName		= EDITOR_VIEWPORT_CAMER;
-		adp.cameraAdp.vPos				= Vector3::ZERO;
+		adp.cameraAdp.vPos				= Vector3(0, 5, 5);
 		adp.cameraAdp.q					= Quaternion::IDENTITY;
 		adp.cameraAdp.fFarClipDistance	= 0.1f;
-		adp.cameraAdp.fNearClipDistance	= 1000.0f;
+		adp.cameraAdp.fNearClipDistance	= 3000.0f;
 		adp.cameraAdp.nQueryFlags		= 0;
 		adp.cameraAdp.fFov				= 1.0f;
 
 		pViewportFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->getRootPlugin());
+	}
+
+	EditorPluginFactory* pTerrainFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_TERRAIN);
+	if (pTerrainFactory)
+	{
+		SEditorPluginTerrainAdp adp;
+		adp.pluginName					= EDITOR_TERRAIN;
+		adp.fWorldSize					= 512.0f;
+		adp.nTerrainSize				= 129;
+		adp.nLightMapSize				= 1024;
+		adp.nLayerBlendMapSize			= 1024;
+		adp.nCompositeMapSize			= 1024;
+		adp.clrCompositeMapDiffuse		= ColourValue::White;
+		adp.fSkirtSize					= 0;
+		adp.fCompositeMapDistance		= 2000;
+		adp.fMaxPixelError				= 3;
+
+		pTerrainFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_SCENEPLUGIN_NAME));
+	}
+
+	EditorPluginFactory* pPageFactory	= EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_TERRAINPAGE);
+	if (pPageFactory)
+	{
+		SEditorPluginTerrainPageAdp adp;
+		adp.nLayerCount					= 1;
+		adp.tpl.fLayerWorldSize[0]		= 100.0f;
+		adp.tpl.layerDiffuseTexture[0]	= "dirt_grayrocky_diffusespecular.dds";
+		adp.tpl.layerNormalTexture[0]	= "dirt_grayrocky_normalheight.dds";
+		adp.nMinBatchSize				= 33;
+		adp.nMaxBatchSize				= 65;
+		adp.nPageX						= 0;
+		adp.nPageY						= 0;
+		adp.vPos						= Vector3::ZERO;
+		adp.bAtOnceLoad					= true;
+
+		char szPluginName[MAX_PATH];
+		sprintf(szPluginName, "%dx%d", adp.nPageX, adp.nPageY);
+		adp.pluginName					= szPluginName;
+
+		pPageFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN));
 	}
 	
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());

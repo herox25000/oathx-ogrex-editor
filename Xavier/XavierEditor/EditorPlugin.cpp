@@ -3,13 +3,14 @@
 
 namespace Ogre
 {
+	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *
 	 * \param pluginName 
 	 * \return 
 	 */
 	EditorPlugin::EditorPlugin(const String& pluginName)
-		: m_Name(pluginName), m_pParent(NULL), m_bInheritPick(0)
+		: m_Name(pluginName), m_pParent(NULL), m_bInheritPick(0), m_nPriority(PRIORITY_NORMAL)
 	{
 		
 	}
@@ -20,14 +21,7 @@ namespace Ogre
 	 */
 	EditorPlugin::~EditorPlugin()
 	{
-		HashMapEditorPlugin::iterator it = m_HashMapEditorPlugin.begin();
-		while( it != m_HashMapEditorPlugin.end() )
-		{
-			LogManager::getSingleton().logMessage(LML_NORMAL, 
-				"Deleted this plugin tool :  " + it->second->getName());
-
-			delete it->second; it = m_HashMapEditorPlugin.erase(it);
-		}
+		destroyAllPlugin();
 	}
 
 	/**
@@ -186,6 +180,47 @@ namespace Ogre
 
 	/**
 	 *
+	 */
+	void					EditorPlugin::destroyAllPlugin()
+	{
+		int nPriority	= PRIORITY_HEIGHT;
+		do {
+			HashMapEditorPlugin::iterator it = m_HashMapEditorPlugin.begin();
+			while( it != m_HashMapEditorPlugin.end() )
+			{
+				if ( it->second->getPriority() == nPriority)
+				{
+					LogManager::getSingleton().logMessage(LML_NORMAL, 
+						"Deleted this plugin tool :  " + it->second->getName());
+
+					delete it->second; it = m_HashMapEditorPlugin.erase(it);
+				}
+				else
+				{
+					it ++;
+				}
+			}
+
+			bool bFlags = 0;
+
+			for (HashMapEditorPlugin::iterator c = m_HashMapEditorPlugin.begin();
+				c!=m_HashMapEditorPlugin.end(); c++)
+			{
+				if (c->second->getPriority() == nPriority)
+				{
+					bFlags = true;
+					break;
+				}
+			}
+
+			if (!bFlags)
+				nPriority --;
+
+		} while (nPriority >= PRIORITY_LOWEST);
+	}
+
+	/**
+	 *
 	 * \return 
 	 */
 	HashMapEditorPluginIter	EditorPlugin::getPluginIter()
@@ -209,6 +244,24 @@ namespace Ogre
 	bool					EditorPlugin::getInheritPick() const
 	{
 		return m_bInheritPick;
+	}
+
+	/**
+	 *
+	 * \param nPriority 
+	 */
+	void					EditorPlugin::setPriority(int nPriority)
+	{
+		m_nPriority = nPriority;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	int						EditorPlugin::getPriority() const
+	{
+		return m_nPriority;
 	}
 
 	/**

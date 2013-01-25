@@ -93,6 +93,8 @@ namespace Ogre
 	 */
 	EditorSceneManager::~EditorSceneManager()
 	{
+		destroyAllPlugin();
+
 		if (m_pSceneManager)
 		{
 			Root::getSingletonPtr()->destroySceneManager(m_pSceneManager);
@@ -175,6 +177,9 @@ namespace Ogre
 			adp.clrFog, adp.expDensity, adp.linearStart, adp.linearEnd);
 		if (pEditorSceneManager)
 		{
+			// 设置删除优先级
+			pEditorSceneManager->setPriority(PRIORITY_LOWEST);
+
 			LogManager::getSingleton().logMessage(LML_NORMAL,
 				"Create editor plugin : " + adp.pluginName);
 

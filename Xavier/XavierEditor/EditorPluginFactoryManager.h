@@ -7,6 +7,8 @@ namespace Ogre
 		EPF_SCENEMANAGER,
 		EPF_CAMERA,
 		EPF_VIEWPORT,
+		EPF_TERRAIN,
+		EPF_TERRAINPAGE,
 	};
 	/**
 	* \ingroup : XavierEditor

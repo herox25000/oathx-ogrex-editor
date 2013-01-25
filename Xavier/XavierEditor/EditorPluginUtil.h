@@ -29,6 +29,7 @@ namespace Ogre
 	static const String		EDITOR_SCENEPLUGIN_NAME = "SceneManager";
 	static const String		EDITOR_VIEWPORT_CAMER	= "Camera";
 	static const String		EDITOR_VIEWPORT			= "Viewport";
+	static const String		EDITOR_TERRAIN			= "TerrainGroup";
 
 	//////////////////////////////////////////////////////////////////////////
 	enum {

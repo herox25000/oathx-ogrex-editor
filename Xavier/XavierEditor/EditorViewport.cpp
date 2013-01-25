@@ -171,7 +171,7 @@ namespace Ogre
 			return 0;
 		}
 
-		switch( nType )
+		switch( nPropertyType )
 		{
 		case VIEWPORT_BACKGROUND:
 			{
@@ -244,6 +244,9 @@ namespace Ogre
 		EditorViewport* pEditorViewport = new EditorViewport(adp.pluginName, adp.background, adp.cameraAdp);
 		if (pEditorViewport)
 		{
+			// 设置删除优先级
+			pEditorViewport->setPriority(PRIORITY_LOW);
+
 			LogManager::getSingleton().logMessage(LML_NORMAL,
 				"Create editor plugin : " + adp.pluginName);
 

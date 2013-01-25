@@ -50,6 +50,35 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	Camera*			getCamera() const;
+	public:
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnRButtonDown(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual bool			OnRButtonUp(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnMouseMove(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param fzDelta 
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnMouseWheel(float fzDelta, const Vector2& vPos);
 	protected:
 		/**
 		 *
@@ -66,6 +95,8 @@ namespace Ogre
 			uint32 nQueryFlags);
 	protected:
 		Camera*					m_pCamera;
+		bool					m_bRMouseDown;
+		Vector2					m_vRigthDwon;
 	};
 
 	// …„œÒª˙±‡º≠  ≈‰≤Œ ˝

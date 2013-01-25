@@ -10,10 +10,18 @@ namespace Ogre
 		String		pluginName;
 	};
 
+	//////////////////////////////////////////////////////////////////////////
 	// 插件映射表
 	typedef HashMap<String, EditorPlugin*>		HashMapEditorPlugin;
 	// 插件迭代器
 	typedef MapIterator<HashMapEditorPlugin>	HashMapEditorPluginIter;
+
+	enum{
+		PRIORITY_LOWEST,
+		PRIORITY_LOW,
+		PRIORITY_NORMAL,
+		PRIORITY_HEIGHT,
+	};
 
 	/**
 	* \ingroup : XavierEditor
@@ -98,6 +106,11 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	EditorPlugin*			getParent() const;
+		
+		/**
+		 *
+		 */
+		virtual	void					destroyAllPlugin();
 
 		/**
 		 *
@@ -116,6 +129,18 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	bool					getInheritPick() const;
+
+		/**
+		 *
+		 * \param nPriority 
+		 */
+		virtual void					setPriority(int nPriority);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	int						getPriority() const;
 	public:
 		/**
 		 *
@@ -202,6 +227,7 @@ namespace Ogre
 		String							m_Name;
 		EditorPlugin*					m_pParent;
 		bool							m_bInheritPick;
+		int								m_nPriority;
 	};
 
 	/**
