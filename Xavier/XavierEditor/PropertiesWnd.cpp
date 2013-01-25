@@ -616,42 +616,42 @@ LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
  */
 LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 {
-	//EditorTool* pSelectTool = EditorToolManager::getSingleton().getSelectEditorTool();
-	//if (pSelectTool == NULL)
-	//	return 0;
+	EditorPlugin* pSelectPlugin = EditorPluginManager::getSingleton().getSelectPlugin();
+	if (pSelectPlugin == NULL)
+		return 0;
 
-	//CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
-	//if (pProperty != NULL)
-	//{
-	//	String parentName;
-	//	CMFCPropertyGridProperty* pParent = pProperty->GetParent();
-	//	if (pParent)
-	//		parentName = pParent->GetName();
+	CMFCPropertyGridProperty* pProperty = (CMFCPropertyGridProperty*)(lParam);
+	if (pProperty != NULL)
+	{
+		String parentName;
+		CMFCPropertyGridProperty* pParent = pProperty->GetParent();
+		if (pParent)
+			parentName = pParent->GetName();
 
-	//	// 类型名称
-	//	String typeName(_T(pProperty->GetName()));
+		// 类型名称
+		String typeName(_T(pProperty->GetName()));
 
-	//	// 变量类型
-	//	COleVariant oldValue = pProperty->GetValue();
-	//	switch( oldValue.vt )
-	//	{
-	//	case VT_I4:
-	//		{
-	//			pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.uintVal), PVT_UNSIGNED_INT);
-	//		}
-	//		break;
-	//	case VT_R4:
-	//		{
-	//			pSelectTool->OnPropertyChanged(parentName, typeName, Any(oldValue.fltVal), PVT_REAL);
-	//		}
-	//		break;
-	//	case VT_BSTR:
-	//		{
+		// 变量类型
+		COleVariant oldValue = pProperty->GetValue();
+		switch( oldValue.vt )
+		{
+		case VT_I4:
+			{
+				pSelectPlugin->OnPropertyChanged(parentName, typeName, Any(oldValue.uintVal), PVT_UINT);
+			}
+			break;
+		case VT_R4:
+			{
+				pSelectPlugin->OnPropertyChanged(parentName, typeName, Any(oldValue.fltVal), PVT_REAL);
+			}
+			break;
+		case VT_BSTR:
+			{
 
-	//		}
-	//		break;
-	//	}
-	//}
+			}
+			break;
+		}
+	}
 
 	return 0;
 }

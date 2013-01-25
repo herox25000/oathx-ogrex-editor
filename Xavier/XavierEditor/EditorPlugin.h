@@ -104,10 +104,104 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	HashMapEditorPluginIter	getPluginIter();
+		
+		/**
+		 *
+		 * \param bInheritPick 
+		 */
+		virtual	void					setInheritPick(bool bInheritPick);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	bool					getInheritPick() const;
+	public:
+		/**
+		 *
+		 * \param cx 
+		 * \param cy 
+		 * \return 
+		 */
+		virtual	bool					OnSize(int cx, int cy);
+
+		/**
+		 *
+		 * \param fzDelta 
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool					OnMouseWheel(float fzDelta, const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool					OnLButtonDown(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool					OnLButtonUp(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool					OnRButtonDown(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool					OnRButtonUp(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool					OnMouseMove(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 * \return 
+		 */
+		virtual	bool					OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 * \return 
+		 */
+		virtual	bool					OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
+		 * \param parentName 
+		 * \param name 
+		 * \param anyValue 
+		 * \param nType 
+		 * \return 
+		 */
+		virtual	bool					OnPropertyChanged(const String& parentName, const String& name, 
+			const Any& anyValue, int nType);
+
 	protected:
 		HashMapEditorPlugin				m_HashMapEditorPlugin;
 		String							m_Name;
 		EditorPlugin*					m_pParent;
+		bool							m_bInheritPick;
 	};
 
 	/**

@@ -44,6 +44,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~EditorCamera();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Camera*			getCamera() const;
 	protected:
 		/**
 		 *

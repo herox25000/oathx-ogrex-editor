@@ -6,6 +6,7 @@ namespace Ogre
 	enum {
 		EPF_SCENEMANAGER,
 		EPF_CAMERA,
+		EPF_VIEWPORT,
 	};
 	/**
 	* \ingroup : XavierEditor

@@ -4,8 +4,8 @@
 namespace Ogre
 {
 	class EditorPlugin;
-
-	static const String		EDITOR_SCENEPLUGIN_NAME = "SceneManager";
-	static const String		EDITOR_MIAN_CAMER		= "MainCamera";
+	class EditorPluginManager;
+	class EditorPluginFactory;
+	class EditorPluginFactoryManager;
 }
 #endif

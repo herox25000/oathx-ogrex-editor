@@ -9,7 +9,7 @@ namespace Ogre
 	 * \return 
 	 */
 	EditorPlugin::EditorPlugin(const String& pluginName)
-		: m_Name(pluginName), m_pParent(NULL)
+		: m_Name(pluginName), m_pParent(NULL), m_bInheritPick(0)
 	{
 		
 	}
@@ -192,4 +192,213 @@ namespace Ogre
 	{
 		return HashMapEditorPluginIter(m_HashMapEditorPlugin.begin(), m_HashMapEditorPlugin.end());
 	}
+
+	/**
+	 *
+	 * \param bInheritPick 
+	 */
+	void					EditorPlugin::setInheritPick(bool bInheritPick)
+	{
+		m_bInheritPick = bInheritPick;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	bool					EditorPlugin::getInheritPick() const
+	{
+		return m_bInheritPick;
+	}
+
+	/**
+	 *
+	 * \param cx 
+	 * \param cy 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnSize(int cx, int cy)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnSize(cx, cy) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param fzDelta 
+	 * \param vPos 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnMouseWheel(float fzDelta, const Vector2& vPos)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnMouseWheel(fzDelta, vPos) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnLButtonDown(const Vector2& vPos)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnLButtonDown(vPos) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnLButtonUp(const Vector2& vPos)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnLButtonUp(vPos) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnRButtonDown(const Vector2& vPos)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnRButtonDown(vPos) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnRButtonUp(const Vector2& vPos)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnRButtonUp(vPos) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnMouseMove(const Vector2& vPos)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnMouseMove(vPos) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnKeyDown(nChar, nRepCnt, nFlags))
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnKeyUp(nChar, nRepCnt, nFlags) && !pPlugin->getInheritPick())
+				return true;
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param parentName 
+	 * \param name 
+	 * \param anyValue 
+	 * \param nType 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnPropertyChanged(const String& parentName, const String& name, 
+		const Any& anyValue, int nType)
+	{
+		HashMapEditorPluginIter hashPlugin = getPluginIter();
+		while( hashPlugin.hasMoreElements() )
+		{
+			EditorPlugin* pPlugin = hashPlugin.getNext();
+			if (pPlugin->OnPropertyChanged(parentName, name, anyValue, nType))
+				return true;
+		}
+
+		return 0;
+	}
+
 }
