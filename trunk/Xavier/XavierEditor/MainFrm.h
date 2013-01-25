@@ -69,7 +69,7 @@ public:
 	/**
 	 *
 	 */
-	virtual	void		UpdateFileView();
+	virtual	void		ResetFileViewTree();
 public:
 	/**
 	 *

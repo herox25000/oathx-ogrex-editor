@@ -20,16 +20,36 @@
 class CViewTree : public CTreeCtrl
 {
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	CViewTree();
 
 protected:
+	/**
+	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \param pResult 
+	 * \return 
+	 */
 	virtual BOOL OnNotify(WPARAM wParam, LPARAM lParam, LRESULT* pResult);
 
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	virtual ~CViewTree();
 
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
+	/**
+	 *
+	 * \param *pNMHDR 
+	 * \param *pResult 
+	 */
 	afx_msg void OnTvnSelchanged(NMHDR *pNMHDR, LRESULT *pResult);
 };

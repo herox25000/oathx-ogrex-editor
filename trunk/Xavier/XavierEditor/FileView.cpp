@@ -89,31 +89,42 @@ void CFileView::OnSize(UINT nType, int cx, int cy)
 /**
  *
  */
-void CFileView::UpdateFileView()
+void CFileView::UpdateTreeItem()
 {
 	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
 	if (pRootPlugin)
 	{
-		// 创建根节点
-		HTREEITEM hRoot = m_wndFileView.InsertItem(pRootPlugin->getName().c_str(), 0, 0);
-		m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
+		AddTreeItem(pRootPlugin, NULL);
 	}
-	//EditorTool* pRoot = EditorToolManager::getSingletonPtr()->getRoot();
-	//if (pRoot)
-	//{
-	//	HTREEITEM hRoot = m_wndFileView.InsertItem(pRoot->getName().c_str(), 0, 0);
-	//	m_wndFileView.SetItemState(hRoot, TVIS_BOLD, TVIS_BOLD);
-	//	
-	//	EditorTool::HashMapEditorIter hashMapEditor = pRoot->getHashMapEditorIter();
-	//	EditorTool::HashMapEditorIter::iterator it	= hashMapEditor.begin();
-	//	while( it != hashMapEditor.end() )
-	//	{
-	//		m_wndFileView.InsertItem(it->second->getName().c_str(), 0, 0, hRoot);
-	//		it ++;
-	//	}
-	//	
-	//	m_wndFileView.Expand(hRoot, TVE_EXPAND);
-	//}
+}
+
+/**
+ *
+ * \param pPlugin 
+ * \param hParent 
+ * \return 
+ */
+BOOL CFileView::AddTreeItem(Ogre::EditorPlugin* pPlugin, HTREEITEM hParent)
+{
+	if (pPlugin == NULL)
+		return FALSE;
+	
+	int nImage		= hParent ? 1 : 0;
+	HTREEITEM hItem = m_wndFileView.InsertItem(pPlugin->getName().c_str(), nImage, nImage, hParent);
+
+	HashMapEditorPluginIter hashPlugin = pPlugin->getPluginIter();
+	while ( hashPlugin.hasMoreElements() )
+	{
+		EditorPlugin* pNext = hashPlugin.getNext();
+		if (pNext)
+		{
+			AddTreeItem(pNext, hItem);
+		}
+	}
+
+	m_wndFileView.Expand(hItem, TVE_EXPAND);
+	
+	return TRUE;
 }
 
 /**

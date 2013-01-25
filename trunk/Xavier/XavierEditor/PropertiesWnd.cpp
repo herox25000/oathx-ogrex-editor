@@ -296,6 +296,131 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreateColourValueProperty(DWORD dwColo
 
 /**
  *
+ * \param Ogre::PolygonMode 
+ * \param lpszName 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreatePolygonValueProperty(LPCTSTR lpszName, Ogre::PolygonMode nMode,LPCTSTR lpszHelp)
+{
+	static const String PolygonModeString[] = 
+	{
+		/// Only points are rendered.
+		"PM_POINTS",
+		/// Wireframe models are rendered.
+		"PM_WIREFRAME",
+		/// Solid polygons are rendered.
+		"PM_SOLID"
+	};
+
+	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(lpszName, (_variant_t)PolygonModeString[nMode].c_str(),
+		lpszHelp);
+	if (pProp)
+	{
+		pProp->AddOption(PolygonModeString[0].c_str());
+		pProp->AddOption(PolygonModeString[1].c_str());
+		pProp->AddOption(PolygonModeString[2].c_str());
+		pProp->AllowEdit(FALSE);
+
+		return pProp;
+	}
+	
+	return NULL;
+}
+
+/**
+ *
+ * \param lpszName 
+ * \param fogMode 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateFogModeValueProperty(LPCTSTR lpszName, Ogre::FogMode fogMode, LPCTSTR lpszHelp)
+{
+	static const String FogModeString[] = 
+	{
+		/// No fog. Duh.
+		"FOG_NONE",
+		/// Fog density increases  exponentially from the camera (fog = 1/e^(distance * density))
+		"FOG_EXP",
+		/// Fog density increases at the square of FOG_EXP, i.e. even quicker (fog = 1/e^(distance * density)^2)
+		"FOG_EXP2",
+		/// Fog density increases linearly between the start and end distances
+		"FOG_LINEAR"
+	};
+
+	CMFCPropertyGridProperty* pProp = new CMFCPropertyGridProperty(lpszName, (_variant_t)FogModeString[fogMode].c_str(),
+		lpszHelp);
+	if (pProp)
+	{
+		pProp->AddOption(FogModeString[0].c_str());
+		pProp->AddOption(FogModeString[1].c_str());
+		pProp->AddOption(FogModeString[2].c_str());
+		pProp->AddOption(FogModeString[3].c_str());
+		pProp->AllowEdit(FALSE);
+
+		return pProp;
+	}
+
+	return NULL;
+}
+
+/**
+ *
+ * \param lpszName 
+ * \param q 
+ * \param lpszHelp 
+ * \return 
+ */
+CMFCPropertyGridProperty*	CPropertiesWnd::CreateQuaternionValueProperty(LPCTSTR lpszName, Ogre::Quaternion q, LPCTSTR lpszHelp)
+{
+	CMFCPropertyGridProperty* pGroup = new CMFCPropertyGridProperty(lpszName);
+	if (pGroup != NULL)
+	{
+		pGroup->SetDescription(lpszHelp);
+
+		static const LPCTSTR QuaternionString[] = 
+		{
+			"w",
+			"x",
+			"y",
+			"z",
+		};
+
+		CMFCPropertyGridProperty* w = new CMFCPropertyGridProperty(QuaternionString[0], 
+			(_variant_t)q.w, 
+			NULL,
+			NULL);
+
+		CMFCPropertyGridProperty* x = new CMFCPropertyGridProperty(QuaternionString[1], 
+			(_variant_t)q.x, 
+			NULL,
+			NULL);
+
+		CMFCPropertyGridProperty* y = new CMFCPropertyGridProperty(QuaternionString[2], 
+			(_variant_t)q.y, 
+			NULL,
+			NULL);
+
+		CMFCPropertyGridProperty* z = new CMFCPropertyGridProperty(QuaternionString[3], 
+			(_variant_t)q.z, 
+			NULL,
+			NULL);
+
+		pGroup->Expand();
+		pGroup->AddSubItem(w);
+		pGroup->AddSubItem(x);
+		pGroup->AddSubItem(y);
+		pGroup->AddSubItem(z);
+
+		return pGroup;
+	}
+
+	return NULL;
+}
+
+/**
+ *
  * \param vPos 
  * \param lpszGroupName 
  * \param lpszHelp 
@@ -308,17 +433,24 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreateVector3ValueProperty(Ogre::Vecto
 	{
 		pGroup->SetDescription(lpszHelp);
 
-		CMFCPropertyGridProperty* x = new CMFCPropertyGridProperty("x", 
+		static const LPCTSTR Vector3String[] = 
+		{
+			"x",
+			"y",
+			"z",
+		};
+
+		CMFCPropertyGridProperty* x = new CMFCPropertyGridProperty(Vector3String[0], 
 			(_variant_t)vPos.x, 
 			NULL,
 			NULL);
 		
-		CMFCPropertyGridProperty* y = new CMFCPropertyGridProperty("y", 
+		CMFCPropertyGridProperty* y = new CMFCPropertyGridProperty(Vector3String[1], 
 			(_variant_t)vPos.y, 
 			NULL,
 			NULL);
 		
-		CMFCPropertyGridProperty* z = new CMFCPropertyGridProperty("z", 
+		CMFCPropertyGridProperty* z = new CMFCPropertyGridProperty(Vector3String[2], 
 			(_variant_t)vPos.z, 
 			NULL,
 			NULL);
@@ -355,60 +487,93 @@ void	CPropertiesWnd::ClearProperty()
  *
  * \param pTool 
  */
-void	CPropertiesWnd::CreateToolProperty(Ogre::EditorTool* pTool)
+void	CPropertiesWnd::CreatePluginProperty(Ogre::EditorPlugin* pPlugin)
 {
-	//// 获取属性迭代器
-	//HashPropertyIter hash_property_iter = pTool->getHashPropertyIter();
-	//
-	//// 创建属性列表
-	//for (HashPropertyIter::iterator it=hash_property_iter.begin();
-	//	it!=hash_property_iter.end(); it++)
-	//{
-	//	String name = it->second->getName();
+	// 获取属性迭代器
+	HashPropertyIter hashProperty = pPlugin->getHashPropertyIter();
+	while( hashProperty.hasMoreElements() )
+	{
+		Property* pProperty = hashProperty.getNext();
+		if (pProperty)
+		{
+			Any		anyValue	= pProperty->getValue();
+			String	describe	= pProperty->getDescribe();
+			String	name		= pProperty->getName();
+			bool	bWrite		= pProperty->canWrite();
 
-	//	switch (it->second->getType())
-	//	{
-	//	case PVT_UNSIGNED_SHORT:
-	//		{
-	//			uint16 val = any_cast<uint16>(it->second->getValue());
-	//			m_wndPropList.AddProperty(CreateProperty<uint16>(name.c_str(), val, it->second->getDescribe().c_str(), 
-	//				it->second->canWrite(), NULL));
-	//		}
-	//		break;
-	//	case PVT_REAL:
-	//		{
-	//			Real val = any_cast<Real>(it->second->getValue());
-	//			m_wndPropList.AddProperty(CreateProperty<Real>(name.c_str(), val, it->second->getDescribe().c_str(), 
-	//				it->second->canWrite(), NULL));
-	//		}
-	//		break;
-	//	case PVT_COLOUR:
-	//		{
-	//			// 转换颜色
-	//			ColourValue clr = any_cast<ColourValue>(it->second->getValue());
+			switch( pProperty->getType() )
+			{
+			case PVT_USHORT:
+				{
+					uint16 val = any_cast<uint16>(anyValue);
+					m_wndPropList.AddProperty(CreateProperty<uint16>(name.c_str(), val, describe.c_str(), 
+						bWrite, NULL));
+				}
+				break;
+			case PVT_INT:
+				{
+					int val = any_cast<int>(anyValue);
+					m_wndPropList.AddProperty(CreateProperty<int>(name.c_str(), val, describe.c_str(), 
+						bWrite, NULL));
+				}
+				break;
+			case PVT_REAL:
+				{
+					Real val = any_cast<Real>(anyValue);
+					m_wndPropList.AddProperty(CreateProperty<Real>(name.c_str(), val, describe.c_str(), 
+						bWrite, NULL));
+				}
+				break;
+			case PVT_COLOUR:
+				{
+					// 转换颜色
+					ColourValue clr = any_cast<ColourValue>(anyValue);
 
-	//			ARGB argb = clr.getAsARGB();
-	//			m_wndPropList.AddProperty(CreateColourValueProperty(argb, clr.a, name.c_str(), name.c_str(), 
-	//				it->second->getDescribe().c_str()));
-	//		}
-	//		break;
-	//	case PVT_STRING:
-	//		{
-	//			String val = any_cast<String>(it->second->getValue());
-	//			m_wndPropList.AddProperty(CreateProperty<LPCTSTR>(name.c_str(), val.c_str(), it->second->getDescribe().c_str(),
-	//				it->second->canWrite(), NULL));
-	//		}
-	//		break;
-	//	case PVT_VECTOR3:
-	//		{
-	//			Vector3 val = any_cast<Vector3>(it->second->getValue());
-	//			m_wndPropList.AddProperty(CreateVector3ValueProperty( val, name.c_str(), it->second->getDescribe().c_str()));
-	//		}
-	//		break;
-	//	}
-	//}
+					ARGB argb = clr.getAsARGB();
+					m_wndPropList.AddProperty(CreateColourValueProperty(argb, clr.a, name.c_str(), name.c_str(), 
+						describe.c_str()));
+				}
+				break;
+			case PVT_STRING:
+				{
+					String val = any_cast<String>(anyValue);
+					m_wndPropList.AddProperty(CreateProperty<LPCTSTR>(name.c_str(), val.c_str(), describe.c_str(),
+						bWrite, NULL));
+				}
+				break;
+			case PVT_VECTOR3:
+				{
+					Vector3 val = any_cast<Vector3>(anyValue);
+					m_wndPropList.AddProperty(CreateVector3ValueProperty( val, name.c_str(), 
+						describe.c_str()));
+				}
+				break;
+			case PVT_POLYGONMODE:
+				{
+					PolygonMode val = any_cast<PolygonMode>(anyValue);
+					m_wndPropList.AddProperty(CreatePolygonValueProperty(name.c_str(), val,
+						describe.c_str()));
+				}
+				break;
+			case PVT_QUATERNION:
+				{
+					Quaternion val = any_cast<Quaternion>(anyValue);
+					m_wndPropList.AddProperty(CreateQuaternionValueProperty(name.c_str(), val,
+						describe.c_str()));
+				}
+				break;
+			case PVT_FOGMODE:
+				{
+					FogMode val = any_cast<FogMode>(anyValue);
+					m_wndPropList.AddProperty(CreateFogModeValueProperty(name.c_str(), val,
+						describe.c_str()));
+				}
+				break;
+			}
+		}
+	}
 
-	//m_wndPropList.ExpandAll();
+	m_wndPropList.ExpandAll();
 }
 
 /**
@@ -419,26 +584,26 @@ void	CPropertiesWnd::CreateToolProperty(Ogre::EditorTool* pTool)
  */
 LRESULT CPropertiesWnd::OnSelectEditor(WPARAM wParam, LPARAM lParam)
 {
-	//wmSelectEvent* evt = (wmSelectEvent*)(wParam);
-	//if (evt != NULL)
-	//{
-	//	// 后去选择的编辑器
-	//	EditorTool* pTool = EditorToolManager::getSingleton().getEditorTool(evt->Name);
-	//	if (pTool)
-	//	{
-	//		// 获取当前选择的编辑器
-	//		EditorTool* pSelect = EditorToolManager::getSingleton().getSelectEditorTool();
-	//		if (pSelect != pTool)
-	//		{
-	//			EditorToolManager::getSingleton().setSelectEditorTool(pTool);
+	wmSelectEvent* evt = (wmSelectEvent*)(wParam);
+	if (evt != NULL)
+	{
+		// 后去选择的编辑器
+		EditorPlugin* pPlugin = EditorPluginManager::getSingleton().findPlugin(evt->Name);
+		if (pPlugin)
+		{
+			// 获取当前选择的编辑器
+			EditorPlugin* pSelect = EditorPluginManager::getSingleton().getSelectPlugin();
+			if (pSelect != pPlugin)
+			{
+				EditorPluginManager::getSingleton().setSelectPlugin(pPlugin);
 
-	//			// 清空属性
-	//			ClearProperty();
-	//			// 创建属性
-	//			CreateToolProperty(pTool);
-	//		}
-	//	}
-	//}
+				// 清空属性
+				ClearProperty();
+				// 创建属性
+				CreatePluginProperty(pPlugin);
+			}
+		}
+	}
 
 	return 0;
 }

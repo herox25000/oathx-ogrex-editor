@@ -42,7 +42,7 @@
 #include "OgreEventSetStdAfx.h"
 #include "OgreAny.h"
 #include "OgrePropertySet.h"
-
+#include "EditorPluginTypes.h"
 using namespace Ogre;
 
 #ifndef max

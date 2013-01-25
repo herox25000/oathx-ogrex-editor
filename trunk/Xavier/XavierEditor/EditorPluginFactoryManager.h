@@ -3,6 +3,10 @@
 
 namespace Ogre
 {
+	enum {
+		EPF_SCENEMANAGER,
+		EPF_CAMERA,
+	};
 	/**
 	* \ingroup : XavierEditor
 	*
@@ -60,6 +64,13 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	EditorPluginFactory*		getEditorPluginFactory(const String& factoryName);
+
+		/**
+		 *
+		 * \param nType 
+		 * \return 
+		 */
+		virtual	EditorPluginFactory*		getEditorPluginFactory(const int nType);
 
 		/**
 		 *

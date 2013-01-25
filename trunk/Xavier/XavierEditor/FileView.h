@@ -77,7 +77,15 @@ public:
 	/**
 	 *
 	 */
-	virtual	void		UpdateFileView();
+	virtual	void		UpdateTreeItem();
+
+	/**
+	 *
+	 * \param hItem 
+	 * \param lpszName 
+	 * \return 
+	 */
+	virtual	BOOL		AddTreeItem(Ogre::EditorPlugin* pPlugin, HTREEITEM hParent);
 protected:
 	/**
 	 *

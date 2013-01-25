@@ -501,6 +501,10 @@
 					>
 				</File>
 				<File
+					RelativePath=".\EditorPluginTypes.h"
+					>
+				</File>
+				<File
 					RelativePath=".\EditorPropertyKeyWordDef.h"
 					>
 				</File>

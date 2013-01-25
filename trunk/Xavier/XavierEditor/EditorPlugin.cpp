@@ -34,7 +34,7 @@ namespace Ogre
 	 *
 	 * \param pluginName 
 	 */
-	void		EditorPlugin::setName(const String& pluginName)
+	void				EditorPlugin::setName(const String& pluginName)
 	{
 		m_Name = pluginName;
 	}
@@ -43,7 +43,7 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	String		EditorPlugin::getName() const
+	String				EditorPlugin::getName() const
 	{
 		return m_Name;
 	}
@@ -53,7 +53,7 @@ namespace Ogre
 	 * \param pPlugin 
 	 * \return 
 	 */
-	bool		EditorPlugin::registerPlugin(EditorPlugin* pPlugin)
+	bool				EditorPlugin::registerPlugin(EditorPlugin* pPlugin)
 	{
 		if (m_Name == pPlugin->getName())
 		{
@@ -67,7 +67,7 @@ namespace Ogre
 		if ( it == m_HashMapEditorPlugin.end() )
 		{
 			LogManager::getSingleton().logMessage(LML_NORMAL, 
-				m_Name + "Register editor plugin : " + pPlugin->getName());
+				m_Name + "->Register editor plugin : " + pPlugin->getName());
 			
 			EditorPlugin* pParent = pPlugin->getParent();
 			if (pParent)
@@ -95,7 +95,7 @@ namespace Ogre
 	 * \param pluginName 
 	 * \return 
 	 */
-	EditorPlugin*	EditorPlugin::getPlugin(const String& pluginName)
+	EditorPlugin*			EditorPlugin::getPlugin(const String& pluginName)
 	{
 		HashMapEditorPlugin::iterator it = m_HashMapEditorPlugin.find(pluginName);
 		if ( it != m_HashMapEditorPlugin.end() )
@@ -116,7 +116,7 @@ namespace Ogre
 	 * \param pluginName 
 	 * \return 
 	 */
-	EditorPlugin*	EditorPlugin::findPlugin(const String& pluginName)
+	EditorPlugin*			EditorPlugin::findPlugin(const String& pluginName)
 	{	
 		if (m_Name == pluginName)
 			return this;
@@ -142,7 +142,7 @@ namespace Ogre
 	 *
 	 * \param pPlugin 
 	 */
-	void			EditorPlugin::unregisterPlugin(EditorPlugin* pPlugin, bool bDestroy)
+	void					EditorPlugin::unregisterPlugin(EditorPlugin* pPlugin, bool bDestroy)
 	{
 		HashMapEditorPlugin::iterator it = m_HashMapEditorPlugin.find(pPlugin->getName());
 		if ( it != m_HashMapEditorPlugin.end() )
@@ -170,7 +170,7 @@ namespace Ogre
 	 *
 	 * \param pParent 
 	 */
-	void			EditorPlugin::setParent(EditorPlugin* pParent)
+	void					EditorPlugin::setParent(EditorPlugin* pParent)
 	{
 		m_pParent = pParent;
 	}
@@ -179,8 +179,17 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	EditorPlugin*	EditorPlugin::getParent() const
+	EditorPlugin*			EditorPlugin::getParent() const
 	{
 		return m_pParent;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	HashMapEditorPluginIter	EditorPlugin::getPluginIter()
+	{
+		return HashMapEditorPluginIter(m_HashMapEditorPlugin.begin(), m_HashMapEditorPlugin.end());
 	}
 }

@@ -42,7 +42,7 @@ public:
 
 namespace Ogre
 {
-	class EditorTool;
+	class EditorPlugin;
 }
 
 /**
@@ -124,6 +124,34 @@ public:
 
 	/**
 	 *
+	 * \param Ogre::PolygonMode 
+	 * \param lpszName 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreatePolygonValueProperty(LPCTSTR lpszName, Ogre::PolygonMode nMode,
+		LPCTSTR lpszHelp);
+
+	/**
+	 *
+	 * \param lpszName 
+	 * \param q 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreateQuaternionValueProperty(LPCTSTR lpszName, Ogre::Quaternion q, LPCTSTR lpszHelp);
+
+	/**
+	 *
+	 * \param lpszName 
+	 * \param fogMode 
+	 * \param lpszHelp 
+	 * \return 
+	 */
+	CMFCPropertyGridProperty*		CreateFogModeValueProperty(LPCTSTR lpszName, Ogre::FogMode fogMode, LPCTSTR lpszHelp);
+
+	/**
+	 *
 	 * \param vPos 
 	 * \param lpszGroupName 
 	 * \param lpszHelp 
@@ -136,7 +164,7 @@ public:
 	 *
 	 * \param pTool 
 	 */
-	void							CreateToolProperty(Ogre::EditorTool* pTool);
+	void							CreatePluginProperty(Ogre::EditorPlugin* pPlugin);
 protected:
 	CFont							m_fntPropList;
 	CComboBox						m_wndObjectCombo;
