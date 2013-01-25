@@ -10,6 +10,11 @@ namespace Ogre
 		String		pluginName;
 	};
 
+	// 插件映射表
+	typedef HashMap<String, EditorPlugin*>		HashMapEditorPlugin;
+	// 插件迭代器
+	typedef MapIterator<HashMapEditorPlugin>	HashMapEditorPluginIter;
+
 	/**
 	* \ingroup : XavierEditor
 	*
@@ -30,12 +35,6 @@ namespace Ogre
 	class EditorPlugin : public PropertySet
 	{
 	public:
-		// 插件映射表
-		typedef HashMap<String, EditorPlugin*>		HashMapEditorPlugin;
-		// 插件迭代器
-		typedef MapIterator<HashMapEditorPlugin>	HashMapEditorPluginIter;
-
-	public:
 		/**
 		 *
 		 * \param name 
@@ -53,56 +52,62 @@ namespace Ogre
 		 *
 		 * \param name 
 		 */
-		virtual	void			setName(const String& pluginName);
+		virtual	void					setName(const String& pluginName);
 
 		/** 获取编辑插件名
 		 *
 		 * \return 
 		 */
-		virtual	String			getName() const;
+		virtual	String					getName() const;
 
 		/** 注册编辑插件
 		 *
 		 * \param pPlugin 
 		 * \return 
 		 */
-		virtual	bool			registerPlugin(EditorPlugin* pPlugin);
+		virtual	bool					registerPlugin(EditorPlugin* pPlugin);
 
 		/** 获取编辑插件
 		 *
 		 * \param name 
 		 * \return 
 		 */
-		virtual	EditorPlugin*	getPlugin(const String& pluginName);
+		virtual	EditorPlugin*			getPlugin(const String& pluginName);
 
 		/**
 		 *
 		 * \param pluginName 
 		 * \return 
 		 */
-		virtual	EditorPlugin*	findPlugin(const String& pluginName);
+		virtual	EditorPlugin*			findPlugin(const String& pluginName);
 
 		/** 注销编辑插件
 		 *
 		 * \param pPlugin 
 		 */
-		virtual	void			unregisterPlugin(EditorPlugin* pPlugin, bool bDestroy=true);
+		virtual	void					unregisterPlugin(EditorPlugin* pPlugin, bool bDestroy=true);
 
 		/**
 		 *
 		 * \param pParent 
 		 */
-		virtual	void			setParent(EditorPlugin* pParent);
+		virtual	void					setParent(EditorPlugin* pParent);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual	EditorPlugin*	getParent() const;
+		virtual	EditorPlugin*			getParent() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	HashMapEditorPluginIter	getPluginIter();
 	protected:
-		HashMapEditorPlugin		m_HashMapEditorPlugin;
-		String					m_Name;
-		EditorPlugin*			m_pParent;
+		HashMapEditorPlugin				m_HashMapEditorPlugin;
+		String							m_Name;
+		EditorPlugin*					m_pParent;
 	};
 
 	/**

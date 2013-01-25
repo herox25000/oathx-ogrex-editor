@@ -183,7 +183,7 @@ LRESULT	CXavierEditorView::OnWizardFnished(WPARAM wParam, LPARAM lParam)
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 	if (pMainFrame)
 	{
-		pMainFrame->UpdateFileView();
+		pMainFrame->ResetFileViewTree();
 	}
 
 	return 0;
@@ -199,7 +199,10 @@ void	CXavierEditorView::OnTimer(UINT_PTR nIDEvent)
 	{
 	case OGRE_RENDER_TIMER:
 		{
-			EditorSystem::getSingletonPtr()->update();
+			if (m_nState != EDIT_VIEW_INVALID)
+			{
+				EditorSystem::getSingletonPtr()->update();
+			}
 		}
 		break;
 	}

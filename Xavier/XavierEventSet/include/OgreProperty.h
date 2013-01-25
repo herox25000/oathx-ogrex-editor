@@ -24,6 +24,7 @@ namespace Ogre
 		PVT_MATRIX3			= 14,
 		PVT_MATRIX4			= 15, 
 		PVT_POLYGONMODE		= 16,
+		PVT_FOGMODE			= 17,
 
 		PVT_UNKNOWN			= 999
 	};

@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "EditorPlugin.h"
 #include "EditorPluginFactoryManager.h"
+#include "EditorSceneManager.h"
+#include "EditorCamera.h"
 
 namespace Ogre
 {
@@ -23,13 +25,25 @@ namespace Ogre
 		assert(msSingleton != NULL); return msSingleton;
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+	static const String		EditorPluginFoctoryName[]= {
+		"Factory/EditorSceneManager",
+		"Factory/EditorCamera",
+	};
+
+	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *
 	 * \return 
 	 */
 	EditorPluginFactoryManager::EditorPluginFactoryManager()
 	{
-
+		registerEditorPluginFactory(
+			new EditorSceneManagerFactory(EditorPluginFoctoryName[EPF_SCENEMANAGER])
+			);
+		registerEditorPluginFactory(
+			new EditorCameraFactory(EditorPluginFoctoryName[EPF_CAMERA])
+			);
 	}
 
 	/**
@@ -94,6 +108,16 @@ namespace Ogre
 		}
 
 		return NULL;
+	}
+
+	/**
+	 *
+	 * \param nType 
+	 * \return 
+	 */
+	EditorPluginFactory*	EditorPluginFactoryManager::getEditorPluginFactory(const int nType)
+	{
+		return getEditorPluginFactory(EditorPluginFoctoryName[nType]);
 	}
 
 	/**

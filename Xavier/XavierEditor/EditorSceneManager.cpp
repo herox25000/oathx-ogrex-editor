@@ -4,6 +4,19 @@
 
 namespace Ogre
 {
+	enum {
+		ESMP_PLUGIN_NAME,
+		ESMP_SCENETYPEMASK,
+		ESMP_AMBIENTLIGHT,
+		ESMP_FOGMODE,
+		ESMP_FOGCOLOUR,
+		ESMP_EXPDENSITY,
+		ESMP_LINEARSTART,
+		ESMP_LINEAREND,
+
+		ESMP_COUNT,
+	};
+
 	// 属性名
 	static const String esmpName[] = {
 		"Name",
@@ -53,23 +66,14 @@ namespace Ogre
 		const ColourValue& clrAmbientLight, FogMode fogMode, const ColourValue& clrFog, float expDensity, float linearStart, float linearEnd)
 		: EditorPlugin(pluginName)
 	{
-		m_pSceneManager = Root::getSingletonPtr()->createSceneManager(typeMask, pluginName);
-		if (m_pSceneManager)
+		if (configure(pluginName, typeMask, clrAmbientLight, fogMode, clrFog, expDensity, linearStart, linearEnd))
 		{
-			// 设置漫反射
-			m_pSceneManager->setAmbientLight(clrAmbientLight);
-
-			// 设置雾
-			m_pSceneManager->setFog(fogMode, clrFog, 
-				expDensity, linearStart, linearEnd);
-
-			// 添加属性
 			addProperty(esmpName[ESMP_AMBIENTLIGHT],
 				Any(clrAmbientLight), PVT_COLOUR, true,	esmpDesc[ESMP_AMBIENTLIGHT]);
 			addProperty(esmpName[ESMP_SCENETYPEMASK],
 				Any(typeMask), PVT_USHORT, 0, esmpDesc[ESMP_SCENETYPEMASK]);
 			addProperty(esmpName[ESMP_FOGMODE], 
-				Any((int)fogMode), PVT_INT, true, esmpDesc[ESMP_FOGMODE]);
+				Any(fogMode), PVT_FOGMODE, true, esmpDesc[ESMP_FOGMODE]);
 			addProperty(esmpName[ESMP_FOGCOLOUR], 
 				Any(clrFog), PVT_COLOUR, true, esmpDesc[ESMP_FOGCOLOUR]);
 			addProperty(esmpName[ESMP_EXPDENSITY], 
@@ -87,7 +91,10 @@ namespace Ogre
 	 */
 	EditorSceneManager::~EditorSceneManager()
 	{
-
+		if (m_pSceneManager)
+		{
+			Root::getSingletonPtr()->destroySceneManager(m_pSceneManager);
+		}
 	}
 
 	/**
@@ -98,13 +105,28 @@ namespace Ogre
 	 * \param linearStart 
 	 * \param linearEnd 
 	 */
-	void			EditorSceneManager::configureFog(FogMode fogMode, const ColourValue& clrFog, 
-		float expDensity, float linearStart, float linearEnd)
+	bool			EditorSceneManager::configure(const String& pluginName, const SceneTypeMask& typeMask, const ColourValue& clrAmbientLight,
+		FogMode fogMode, const ColourValue& clrFog, float expDensity, float linearStart, float linearEnd)
 	{
+		m_pSceneManager = Root::getSingletonPtr()->createSceneManager(typeMask, pluginName);
 		if (m_pSceneManager)
 		{
-			m_pSceneManager->setFog(fogMode, clrFog, expDensity, linearStart, linearEnd);
+			// 设置漫反射
+			m_pSceneManager->setAmbientLight(clrAmbientLight);
+
+			// 设置雾
+			m_pSceneManager->setFog(fogMode, clrFog, 
+				expDensity, linearStart, linearEnd);
+			
+			return true;
 		}
+		else
+		{
+			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
+				"Can't create ogre scene manager : " + pluginName);
+		}
+
+		return 0;
 	}
 
 	/**
@@ -114,5 +136,52 @@ namespace Ogre
 	SceneManager*	EditorSceneManager::getSceneManager() const
 	{
 		return m_pSceneManager;
+	}
+
+	/**
+	 *
+	 * \param factoryName 
+	 * \return 
+	 */
+	EditorSceneManagerFactory::EditorSceneManagerFactory(const String& factoryName)
+		: EditorPluginFactory(factoryName)
+	{
+
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	EditorSceneManagerFactory::~EditorSceneManagerFactory()
+	{
+
+	}
+
+	/**
+	 *
+	 * \param ssadp 
+	 * \param pParent 
+	 * \return 
+	 */
+	EditorPlugin*		EditorSceneManagerFactory::createPlugin(const SEditorPluginAdp& ssadp, 
+		EditorPlugin* pParent)
+	{
+		const SEditorPluginSceneManagerAdp& adp = static_cast<const SEditorPluginSceneManagerAdp&>(ssadp);
+
+		EditorSceneManager* pEditorSceneManager = new EditorSceneManager(adp.pluginName, adp.typeMask, adp.clrAmbientLight, adp.fogMode, 
+			adp.clrFog, adp.expDensity, adp.linearStart, adp.linearEnd);
+		if (pEditorSceneManager)
+		{
+			LogManager::getSingleton().logMessage(LML_NORMAL,
+				"Create editor plugin : " + adp.pluginName);
+
+			if (pParent)
+				pParent->registerPlugin(pEditorSceneManager);
+
+			return pEditorSceneManager;
+		}
+
+		return NULL;
 	}
 }

@@ -431,9 +431,9 @@ BOOL	CMainFrame::AddLogMessage(LPCTSTR lpszMessage, COLORREF clr)
 /**
  *
  */
-void	CMainFrame::UpdateFileView()
+void	CMainFrame::ResetFileViewTree()
 {
-	m_wFileView.UpdateFileView();
+	m_wFileView.UpdateTreeItem();
 }
 
 /**
