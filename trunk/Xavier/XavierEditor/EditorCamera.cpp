@@ -155,6 +155,15 @@ namespace Ogre
 		return 0;
 	}
 
+	/**
+	 *
+	 * \return 
+	 */
+	Camera*			EditorCamera::getCamera() const
+	{
+		return m_pCamera;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *

@@ -3,6 +3,7 @@
 #include "EditorPluginFactoryManager.h"
 #include "EditorSceneManager.h"
 #include "EditorCamera.h"
+#include "EditorViewport.h"
 
 namespace Ogre
 {
@@ -29,6 +30,7 @@ namespace Ogre
 	static const String		EditorPluginFoctoryName[]= {
 		"Factory/EditorSceneManager",
 		"Factory/EditorCamera",
+		"Factory/EditorViewport",
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -43,6 +45,9 @@ namespace Ogre
 			);
 		registerEditorPluginFactory(
 			new EditorCameraFactory(EditorPluginFoctoryName[EPF_CAMERA])
+			);
+		registerEditorPluginFactory(
+			new EditorViewportFactory(EditorPluginFoctoryName[EPF_VIEWPORT])
 			);
 	}
 

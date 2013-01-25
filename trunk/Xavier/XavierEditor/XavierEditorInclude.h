@@ -7,5 +7,6 @@
 #include "EditorPlugin.h"
 #include "EditorSceneManager.h"
 #include "EditorCamera.h"
+#include "EditorViewport.h"
 #include "EditorPluginFactoryManager.h"
 #include "EditorPluginManager.h"

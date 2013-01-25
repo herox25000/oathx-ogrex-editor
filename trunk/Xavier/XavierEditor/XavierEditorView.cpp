@@ -244,11 +244,11 @@ BOOL	CXavierEditorView::OnEraseBkgnd(CDC* pDC)
  */
 void	CXavierEditorView::OnSize(UINT nType, int cx, int cy)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnSize(cx, cy);
-	//}
+	EditorPlugin* pSelectPlugin = EditorPluginManager::getSingletonPtr()->getSelectPlugin();
+	if (pSelectPlugin)
+	{
+		pSelectPlugin->OnSize(cx, cy);
+	}
 
 	CView::OnSize(nType, cx, cy);
 }

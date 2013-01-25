@@ -68,8 +68,10 @@ namespace Ogre
 	{
 		if (configure(pluginName, typeMask, clrAmbientLight, fogMode, clrFog, expDensity, linearStart, linearEnd))
 		{
+			addProperty(esmpName[ESMP_PLUGIN_NAME],
+				Any(pluginName), PVT_STRING, 0, esmpDesc[ESMP_PLUGIN_NAME]);
 			addProperty(esmpName[ESMP_AMBIENTLIGHT],
-				Any(clrAmbientLight), PVT_COLOUR, true,	esmpDesc[ESMP_AMBIENTLIGHT]);
+				Any(clrAmbientLight), PVT_COLOUR, true, esmpDesc[ESMP_AMBIENTLIGHT]);
 			addProperty(esmpName[ESMP_SCENETYPEMASK],
 				Any(typeMask), PVT_USHORT, 0, esmpDesc[ESMP_SCENETYPEMASK]);
 			addProperty(esmpName[ESMP_FOGMODE], 

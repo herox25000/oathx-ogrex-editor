@@ -43,19 +43,22 @@ void CWizardDialog::OnBnClickedOk()
 		pSceneFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->getRootPlugin());
 	}
 
-	EditorPluginFactory* pCameraFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_CAMERA);
-	if (pCameraFactory)
+	EditorPluginFactory* pViewportFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_VIEWPORT);
+	if (pViewportFactory)
 	{
-		SEditorCamearAdp adp;
-		adp.pluginName			= EDITOR_MIAN_CAMER;
-		adp.vPos				= Vector3::ZERO;
-		adp.q					= Quaternion::IDENTITY;
-		adp.fFarClipDistance	= 0.1f;
-		adp.fNearClipDistance	= 1000.0f;
-		adp.nQueryFlags			= 0;
-		adp.fFov				= 1.0f;
+		SEditorPluginViewportAdp adp;
+		adp.background					= ColourValue::Black;
+		adp.pluginName					= EDITOR_VIEWPORT;
 
-		pCameraFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->getRootPlugin());
+		adp.cameraAdp.pluginName		= EDITOR_VIEWPORT_CAMER;
+		adp.cameraAdp.vPos				= Vector3::ZERO;
+		adp.cameraAdp.q					= Quaternion::IDENTITY;
+		adp.cameraAdp.fFarClipDistance	= 0.1f;
+		adp.cameraAdp.fNearClipDistance	= 1000.0f;
+		adp.cameraAdp.nQueryFlags		= 0;
+		adp.cameraAdp.fFov				= 1.0f;
+
+		pViewportFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->getRootPlugin());
 	}
 	
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
