@@ -4,6 +4,8 @@
 #include "EditorSceneManager.h"
 #include "EditorCamera.h"
 #include "EditorViewport.h"
+#include "EditorTerrain.h"
+#include "EditorTerrainPage.h"
 
 namespace Ogre
 {
@@ -31,6 +33,8 @@ namespace Ogre
 		"Factory/EditorSceneManager",
 		"Factory/EditorCamera",
 		"Factory/EditorViewport",
+		"Factory/EditorTerrain",
+		"Factory/EditorTerrainPage",
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -48,6 +52,12 @@ namespace Ogre
 			);
 		registerEditorPluginFactory(
 			new EditorViewportFactory(EditorPluginFoctoryName[EPF_VIEWPORT])
+			);
+		registerEditorPluginFactory(
+			new EditorTerrrainFactory(EditorPluginFoctoryName[EPF_TERRAIN])
+			);
+		registerEditorPluginFactory(
+			new EditorTerrainPageFactory(EditorPluginFoctoryName[EPF_TERRAINPAGE])
 			);
 	}
 

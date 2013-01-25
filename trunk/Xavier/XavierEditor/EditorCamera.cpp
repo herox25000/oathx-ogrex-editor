@@ -76,7 +76,7 @@ namespace Ogre
 	 */
 	EditorCamera::EditorCamera(const String& pluginName, const Vector3& vPos, const Quaternion& q, float fNearClipDistance,
 		float fFarClipDistance, float fFov, bool bAutoAspectRatio,
-		uint32 nQueryFlags) : EditorPlugin(pluginName), m_pCamera(NULL)
+		uint32 nQueryFlags) : EditorPlugin(pluginName), m_pCamera(NULL), m_bRMouseDown(0)
 	{
 		if (configure(pluginName, vPos, q, fNearClipDistance, fFarClipDistance, fFov, bAutoAspectRatio, nQueryFlags))
 		{
@@ -164,6 +164,68 @@ namespace Ogre
 		return m_pCamera;
 	}
 
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorCamera::OnRButtonDown(const Vector2& vPos)
+	{
+		m_bRMouseDown	= true;
+		m_vRigthDwon	= vPos;
+
+		return true;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorCamera::OnRButtonUp(const Vector2& vPos)
+	{
+		m_bRMouseDown	= 0;
+		m_vRigthDwon	= vPos;
+		
+		return 0;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorCamera::OnMouseMove(const Vector2& vPos)
+	{
+		if (m_pCamera == NULL)
+			return 0;
+		
+		if (m_bRMouseDown)
+		{
+			Vector2 vRel = vPos - m_vRigthDwon;
+			m_pCamera->yaw(Degree(vRel.x * 0.15f));
+			m_pCamera->pitch(Degree(vRel.y * 0.15f));
+		}
+		
+		m_vRigthDwon = vPos;
+
+		return true;
+	}
+
+	/**
+	 *
+	 * \param fzDelta 
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorCamera::OnMouseWheel(float fzDelta, const Vector2& vPos)
+	{
+		if (m_pCamera)
+			m_pCamera->moveRelative(Ogre::Vector3(0, 0, fzDelta * 2 * 0.02f));
+
+		return true;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *
@@ -199,6 +261,9 @@ namespace Ogre
 			adp.fNearClipDistance, adp.fFarClipDistance, adp.fFov, adp.bAutoAspectRatio, adp.nQueryFlags);
 		if (pCameraPlugin)
 		{
+			// 设置删除优先级
+			pCameraPlugin->setPriority(PRIORITY_LOW);
+
 			LogManager::getSingleton().logMessage(LML_NORMAL, 
 				"Create editor plugin : " + adp.pluginName);
 

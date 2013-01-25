@@ -537,6 +537,22 @@
 					>
 				</File>
 				<File
+					RelativePath=".\EditorTerrain.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorTerrain.h"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorTerrainPage.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorTerrainPage.h"
+					>
+				</File>
+				<File
 					RelativePath=".\EditorViewport.cpp"
 					>
 				</File>

@@ -244,10 +244,10 @@ BOOL	CXavierEditorView::OnEraseBkgnd(CDC* pDC)
  */
 void	CXavierEditorView::OnSize(UINT nType, int cx, int cy)
 {
-	EditorPlugin* pSelectPlugin = EditorPluginManager::getSingletonPtr()->getSelectPlugin();
-	if (pSelectPlugin)
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
 	{
-		pSelectPlugin->OnSize(cx, cy);
+		pRootPlugin->OnSize(cx, cy);
 	}
 
 	CView::OnSize(nType, cx, cy);
@@ -263,11 +263,11 @@ void	CXavierEditorView::OnSize(UINT nType, int cx, int cy)
  */
 BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnMouseWheel(zDelta * 2, Vector2(pt.x, pt.y));
-	//}
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
+	{
+		pRootPlugin->OnMouseWheel(zDelta, Vector2(pt.x, pt.y));
+	}
 
 	return CView::OnMouseWheel(nFlags, zDelta, pt);
 }
@@ -279,11 +279,11 @@ BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
  */
 void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnLButtonDown(Vector2(point.x, point.y));
-	//}
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
+	{
+		pRootPlugin->OnLButtonDown(Vector2(point.x, point.y));
+	}
 
 	CView::OnLButtonDown(nFlags, point);
 }
@@ -295,12 +295,11 @@ void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnLButtonUp(Vector2(point.x, point.y));
-	//}
-
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
+	{
+		pRootPlugin->OnLButtonUp(Vector2(point.x, point.y));
+	}
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -311,12 +310,11 @@ void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnRButtonDown(Vector2(point.x, point.y));
-	//}
-
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
+	{
+		pRootPlugin->OnRButtonDown(Vector2(point.x, point.y));
+	}
 	CView::OnRButtonDown(nFlags, point);
 }
 
@@ -327,11 +325,11 @@ void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
  */
 void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnRButtonUp(Vector2(point.x, point.y));
-	//}
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
+	{
+		pRootPlugin->OnRButtonUp(Vector2(point.x, point.y));
+	}
 
 	CView::OnRButtonUp(nFlags, point);
 }
@@ -343,15 +341,11 @@ void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	//EditorTool* pSelectEdtior = EditorToolManager::getSingletonPtr()->getSelectEditorTool();
-	//if (pSelectEdtior)
-	//	pSelectEdtior->OnMouseMove(Vector2(point.x, point.y));
-
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnMouseMove(Vector2(point.x, point.y));
-	//}
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
+	{
+		pRootPlugin->OnMouseMove(Vector2(point.x, point.y));
+	}
 
 	CView::OnMouseMove(nFlags, point);
 }
@@ -365,11 +359,11 @@ void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnKeyDown(nChar, nRepCnt, nFlags);
-	//}
+	EditorPlugin* pSelectPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pSelectPlugin)
+	{
+		pSelectPlugin->OnKeyDown(nChar, nRepCnt, nFlags);
+	}
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
 }
@@ -382,11 +376,11 @@ void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
  */
 void	CXavierEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	//EditorTool* pSceneManagerEditor = EditorToolManager::getSingletonPtr()->getEditorTool(EDITOR_TOOL_WORLD_NAME);
-	//if (pSceneManagerEditor)
-	//{
-	//	pSceneManagerEditor->OnKeyUp(nChar, nRepCnt, nFlags);
-	//}
+	EditorPlugin* pSelectPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pSelectPlugin)
+	{
+		pSelectPlugin->OnKeyUp(nChar, nRepCnt, nFlags);
+	}
 
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
 }
