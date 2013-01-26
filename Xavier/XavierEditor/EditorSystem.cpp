@@ -93,7 +93,7 @@ namespace Ogre
 
 		Ogre::RenderSystem *rsys = *pRend;
 
-		rsys->setConfigOption( "VSync", "No" );
+		rsys->setConfigOption( "VSync", "Yes" );
 		rsys->setConfigOption( "Full Screen", "No" );
 		rsys->setConfigOption("FSAA", "2");
 		m_pRoot->setRenderSystem( rsys );

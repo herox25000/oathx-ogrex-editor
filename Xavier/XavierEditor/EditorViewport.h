@@ -48,7 +48,20 @@ namespace Ogre
 		 *
 		 */
 		virtual	void			windowMovedOrResized();
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	EditorCamera*	getActiveCamera() const;
 
+		/**
+		 *
+		 * \param vPos 
+		 * \param ray 
+		 * \return 
+		 */
+		virtual bool			getMouseRay(const Vector2& vPos, Ray& ray);
 	public:
 		/**
 		 *
