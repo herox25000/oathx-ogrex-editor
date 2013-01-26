@@ -385,8 +385,12 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnMouseMove(vPos) && !pPlugin->getInheritPick())
-				return true;
+			if (pPlugin)
+			{
+				if (pPlugin->OnMouseMove(vPos) && !pPlugin->getInheritPick())
+					return true;
+			}
+
 		}
 
 		return 0;

@@ -139,6 +139,38 @@ namespace Ogre
 
 	/**
 	 *
+	 * \return 
+	 */
+	EditorCamera*	EditorViewport::getActiveCamera() const
+	{
+		return m_pCamera;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \param ray 
+	 * \return 
+	 */
+	bool			EditorViewport::getMouseRay(const Vector2& vPos, Ray& ray)
+	{
+		if (m_pCamera == NULL || m_pViewport == NULL)
+			return 0;
+		
+		Camera* pActive = m_pCamera->getCamera();
+		if (pActive)
+		{
+			ray = pActive->getCameraToViewportRay(vPos.x / m_pViewport->getActualWidth(), 
+				vPos.y / m_pViewport->getActualHeight());
+
+			return true;
+		}
+	
+		return 0;
+	}
+
+	/**
+	 *
 	 * \param cx 
 	 * \param cy 
 	 * \return 

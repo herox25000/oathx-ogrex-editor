@@ -25,11 +25,20 @@ namespace Ogre
 
 #define NormalValue(a)			(a/255.0f)
 
+#ifndef SAFE_DELETE
+#define SAFE_DELETE( p ) { if (NULL != p) {delete p; p=NULL;}}
+#endif
+
 	//////////////////////////////////////////////////////////////////////////
 	static const String		EDITOR_SCENEPLUGIN_NAME = "SceneManager";
 	static const String		EDITOR_VIEWPORT_CAMER	= "Camera";
 	static const String		EDITOR_VIEWPORT			= "Viewport";
 	static const String		EDITOR_TERRAIN			= "TerrainGroup";
+
+	// »­Ë¢Íø¸ñÃû³Æ
+	static const String		BRUSH_MESH_NAME			= "XavierEditorBrushMesh";
+
+	static const float		BRUSH_MAX_VALUE			= 999999;
 
 	//////////////////////////////////////////////////////////////////////////
 	enum {
