@@ -131,7 +131,7 @@ namespace Ogre
 		}
 		else
 		{
-			TKLogEvent("Can't find terrain plugin : " + EDITOR_TERRAIN, LML_TRIVIAL);
+			TKLogEvent("Can't find terrain plugin : " + EDITOR_TERRAIN, LML_CRITICAL);
 		}
 
 		return 0;

@@ -98,7 +98,7 @@ namespace Ogre
 		else
 		{
 			TKLogEvent("This plugin factory has been exist : " + pFactory->getName(), 
-				LML_TRIVIAL);	
+				LML_CRITICAL);	
 		}
 
 		return 0;
@@ -119,7 +119,7 @@ namespace Ogre
 		else
 		{
 			TKLogEvent("This plugin factory can not be found :  " + factoryName,
-				LML_TRIVIAL);
+				LML_CRITICAL);
 		}
 
 		return NULL;
@@ -152,7 +152,7 @@ namespace Ogre
 		else
 		{
 			TKLogEvent("This plugin factory can not be found :  " + factoryName, 
-				LML_TRIVIAL);
+				LML_CRITICAL);
 		}	
 	}
 }

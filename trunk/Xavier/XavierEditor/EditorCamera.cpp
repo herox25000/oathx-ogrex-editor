@@ -60,6 +60,27 @@ namespace Ogre
 		return -1;
 	}
 
+	static const String	CameraPloygonModeStr[] = {
+		"PM_POINTS",
+		"PM_WIREFRAME",
+		"PM_SOLID"
+	};
+
+	/**
+	 *
+	 * \param name 
+	 * \return 
+	 */
+	static int	convertPloggonMode(const String& name)
+	{
+		for (int i=0; i<=PM_SOLID; i++)
+		{
+			if (CameraPloygonModeStr[i] == name)
+				return i;
+		}
+
+		return -1;
+	}
 	//////////////////////////////////////////////////////////////////////////
 
 	/**
@@ -127,7 +148,7 @@ namespace Ogre
 			);
 		if (!pSceneManagerPlugin)
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL,
+			LogManager::getSingleton().logMessage(LML_CRITICAL,
 				"Can't find plugin + " + EDITOR_SCENEPLUGIN_NAME);
 			return 0;
 		}
@@ -148,7 +169,7 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL,
+			LogManager::getSingleton().logMessage(LML_CRITICAL,
 				"Can't create ogre camera + " + name);
 		}
 		
@@ -162,6 +183,34 @@ namespace Ogre
 	Camera*			EditorCamera::getCamera() const
 	{
 		return m_pCamera;
+	}
+
+	/**
+	 *
+	 * \param parentName 
+	 * \param name 
+	 * \param anyValue 
+	 * \param nType 
+	 * \return 
+	 */
+	bool			EditorCamera::OnPropertyChanged(const String& parentName, const String& name, 
+		const Any& anyValue, int nType)
+	{
+		int nPropertyType = convertCameraPropertyType(parentName.empty() ? name : parentName);
+		switch (nPropertyType)
+		{
+		case CAMERA_POLYGONMODE:
+			{
+				String val		= any_cast<String>(anyValue);
+				int nPlogonMode	= convertPloggonMode(val);
+				if (nPlogonMode >= 0)
+				{
+					m_pCamera->setPolygonMode((PolygonMode)(nPlogonMode));
+				}
+			}
+			break;
+		}
+		return true;
 	}
 
 	/**

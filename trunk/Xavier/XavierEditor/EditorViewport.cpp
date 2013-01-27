@@ -82,7 +82,7 @@ namespace Ogre
 			m_pCamera = static_cast<EditorCamera*>(pCameraFactory->createPlugin(adp, this));
 			if (m_pCamera == NULL)
 			{
-				LogManager::getSingleton().logMessage(LML_TRIVIAL, 
+				LogManager::getSingleton().logMessage(LML_CRITICAL, 
 					"Can't create editor plugin : " + adp.pluginName);
 				return 0;
 			}
@@ -199,7 +199,7 @@ namespace Ogre
 		int nPropertyType = convertViewportPropertyType(parentName.empty() ? name : parentName);
 		if ( nPropertyType < 0)
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, "Can't find property " + name);
+			LogManager::getSingleton().logMessage(LML_CRITICAL, "Can't find property " + name);
 			return 0;
 		}
 
