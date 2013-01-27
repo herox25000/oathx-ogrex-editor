@@ -153,7 +153,22 @@ namespace Ogre
 	 */
 	int				EditorTerrainPage::getLayerID(const String& texture)
 	{
-		int nSamplerID = -1;
+		TerrainLayerSamplerList vSampler = m_pTerrain->getLayerDeclaration().samplers;
+		for (int nSamplerID=0; nSamplerID<vSampler.size(); nSamplerID++)
+		{
+			for (int nLayerID=0; nLayerID<m_pTerrain->getLayerCount(); nLayerID++)
+			{
+				String name = m_pTerrain->getLayerTextureName(nLayerID, nSamplerID);
+				if (name == texture)
+				{
+					return nLayerID;
+				}
+			}
+		}
+
+		return INVALID_LAYER;
+
+/*		int nSamplerID = -1;
 
 		TerrainLayerSamplerList vSampler = m_pTerrain->getLayerDeclaration().samplers;
 		for(int i=0; i<vSampler.size(); i++)
@@ -179,7 +194,7 @@ namespace Ogre
 			}
 		}
 		
-		return nLayerID;
+		return nLayerID*/;
 	}
 
 	/**

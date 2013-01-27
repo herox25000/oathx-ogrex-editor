@@ -70,7 +70,7 @@ int		CTerrainToolView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 	// 加载地形贴花图片
-	m_ImageDecal.Load("D:\\sdk\\trunk\\media\\texture\\terrain\\decal", "*.*");
+	m_ImageDecal.Load(".\\media\\texture\\terrain\\decal", "*.*");
 
 	// 地形刷页面
 	CString strTabBrush;
@@ -85,7 +85,7 @@ int		CTerrainToolView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 	// 加载地形贴花图片
-	m_ImageBrush.Load("D:\\sdk\\trunk\\media\\texture\\terrain\\brush", "*.*");
+	m_ImageBrush.Load(".\\media\\texture\\terrain\\brush", "*.*");
 	m_ImageBrush.ShowWindow(SW_HIDE);
 
 	CString strTabOpt;
