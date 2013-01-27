@@ -637,12 +637,14 @@ LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 		{
 		case VT_I4:
 			{
-				pSelectPlugin->OnPropertyChanged(parentName, typeName, Any(oldValue.uintVal), PVT_UINT);
+				pSelectPlugin->OnPropertyChanged(parentName, typeName,
+					Any(oldValue.uintVal), PVT_UINT);
 			}
 			break;
 		case VT_R4:
 			{
-				pSelectPlugin->OnPropertyChanged(parentName, typeName, Any(oldValue.fltVal), PVT_REAL);
+				pSelectPlugin->OnPropertyChanged(parentName, typeName,
+					Any(oldValue.fltVal), PVT_REAL);
 			}
 			break;
 		case VT_BSTR:

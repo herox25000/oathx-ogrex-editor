@@ -37,7 +37,7 @@ namespace Ogre
 		if (m_pViewporPlugin == NULL)
 		{
 			TKLogEvent("Can't find editor plugin : " + EDITOR_VIEWPORT,
-				LML_TRIVIAL);
+				LML_CRITICAL);
 		}
 
 		m_nActionValue	= ETM_NONE;
@@ -299,7 +299,7 @@ namespace Ogre
 		mapY += (int)(ty * 2.0f) - (mapY * 2);
 
 		mapRect		= Rect(mapX, mapY, mMapBrushSize + mapX, mMapBrushSize + mapY);
-		brushRect	= Rect(0,0,m_fBrushSize,m_fBrushSize);
+		brushRect	= Rect(0,0, m_fBrushSize, m_fBrushSize);
 
 		if(mapRect.left < 0)
 		{
@@ -328,10 +328,10 @@ namespace Ogre
 		if(((mapRect.right - mapRect.left) < 1) || ((mapRect.bottom - mapRect.top) < 1))
 			return 0;
 
-		brushRect.left *= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
-		brushRect.right *= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
-		brushRect.top *= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
-		brushRect.bottom *= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
+		brushRect.left		*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
+		brushRect.right		*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
+		brushRect.top		*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
+		brushRect.bottom	*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
 
 		return true;
 	}

@@ -77,7 +77,7 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
+			LogManager::getSingleton().logMessage(LML_CRITICAL, 
 				"This plugin tool has been exist : " + pPlugin->getName());	
 		}
 
@@ -98,8 +98,8 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
-				"This plugin tool can not be found :  " + pluginName);
+			//LogManager::getSingleton().logMessage(LML_CRITICAL, 
+			//	"This plugin tool can not be found :  " + pluginName);
 		}
 
 		return NULL;
@@ -155,7 +155,7 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
+			LogManager::getSingleton().logMessage(LML_CRITICAL, 
 				"This plugin tool can not be found :  " + pPlugin->getName());
 		}
 	}

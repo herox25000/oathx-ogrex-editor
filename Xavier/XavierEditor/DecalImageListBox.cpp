@@ -64,12 +64,13 @@ void		CDecalImageListBox::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 					}
 					else
 					{
-						TKLogEvent("file name error: " + String(m_cItemText.GetBuffer()), LML_TRIVIAL);
+						AfxMessageBox("´íÎóµÄÌùÍ¼ÃüÃû");
+						TKLogEvent("file name error: " + String(m_cItemText.GetBuffer()), LML_CRITICAL);
 					}
 				}
 			}
 
-			TKLogEvent("Select decal image " + String(m_cItemText.GetBuffer()), LML_NORMAL);
+			TKLogEvent("Select decal image " + String(m_cItemText.GetBuffer()), LML_CRITICAL);
 
 			m_oldDecalName = m_cItemText;
 		}

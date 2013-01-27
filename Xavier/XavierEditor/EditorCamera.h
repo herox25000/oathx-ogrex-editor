@@ -53,6 +53,17 @@ namespace Ogre
 	public:
 		/**
 		 *
+		 * \param parentName 
+		 * \param name 
+		 * \param anyValue 
+		 * \param nType 
+		 * \return 
+		 */
+		virtual	bool			OnPropertyChanged(const String& parentName, const String& name, 
+			const Any& anyValue, int nType);
+
+		/**
+		 *
 		 * \param vPos 
 		 * \return 
 		 */

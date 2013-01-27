@@ -127,7 +127,7 @@ namespace Ogre
 		else
 		{
 			TKLogEvent("Can't create ogre scene manager : " + pluginName,
-				LML_TRIVIAL);
+				LML_CRITICAL);
 		}
 
 		return 0;
