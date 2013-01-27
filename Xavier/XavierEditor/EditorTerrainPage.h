@@ -4,7 +4,11 @@
 namespace Ogre
 {
 #ifndef MAX_LAYERS_ALLOWED
-#define MAX_LAYERS_ALLOWED 6
+#define MAX_LAYERS_ALLOWED	6
+#endif
+
+#ifndef INVALID_LAYER
+#define INVALID_LAYER		-1
 #endif
 
 	struct STerrainPageLayer

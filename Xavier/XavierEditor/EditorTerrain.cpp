@@ -375,16 +375,17 @@ namespace Ogre
 				return 0;
 			
 			int nLayerID = pPage->getLayerID(m_BlendTexture);
-			if (nLayerID < 0)
+			if (nLayerID == INVALID_LAYER)
 			{
 				nLayerID = pPage->addLayer(m_BlendTexture, m_BlendNormal, 30);
-				if (nLayerID < 0)
-				{
-					TKLogEvent("Waring: Supports up to 5 layers texture blend",
-						LML_CRITICAL);
+			}
 
-					return 0;
-				}
+			if (nLayerID == INVALID_LAYER)
+			{
+				TKLogEvent("Waring: Supports up to 5 layers texture blend",
+					LML_CRITICAL);
+
+				return 0;
 			}
 
 			int	nLayerCount	= pTerrain->getLayerCount();
