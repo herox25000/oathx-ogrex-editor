@@ -37,7 +37,7 @@ namespace Ogre
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class EditorTerrain : public EditorPlugin
+	class EditorTerrain : public EditorPlugin, public FrameListener
 	{
 	public:
 		/**
@@ -70,7 +70,82 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	TerrainGroup*	getTerrainGroup() const;
-	
+		
+		/**
+		 *
+		 * \param nBrushSize 
+		 */
+		virtual	void			setBrushSize(float nBrushSize);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual float			getBrushSize() const;
+
+		/**
+		 *
+		 * \param texture 
+		 */
+		virtual	void			setBrushName(const String& texture);
+		
+		/**
+		 *
+		 * \param vPos 
+		 */
+		virtual	void			setBrushPosition(const Vector3& vPos);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Vector3			getBrushPosition() const;
+
+		/**
+		 *
+		 * \param texture 
+		 * \param normal 
+		 */
+		virtual	void			setBlendTexture(const String& texture, const String& normal);
+	public:
+        /** Called when a frame is about to begin rendering.
+		@remarks
+			This event happens before any render targets have begun updating. 
+            @return
+                True to go ahead, false to abort rendering and drop
+                out of the rendering loop.
+        */
+		virtual bool			frameStarted(const FrameEvent& evt);
+       
+		/** Called after all render targets have had their rendering commands 
+			issued, but before render windows have been asked to flip their 
+			buffers over.
+		@remarks
+			The usefulness of this event comes from the fact that rendering 
+			commands are queued for the GPU to process. These can take a little
+			while to finish, and so while that is happening the CPU can be doing
+			useful things. Once the request to 'flip buffers' happens, the thread
+			requesting it will block until the GPU is ready, which can waste CPU
+			cycles. Therefore, it is often a good idea to use this callback to 
+			perform per-frame processing. Of course because the frame's rendering
+			commands have already been issued, any changes you make will only
+			take effect from the next frame, but in most cases that's not noticeable.
+		@return
+			True to continue rendering, false to drop out of the rendering loop.
+		*/
+		virtual bool			frameRenderingQueued(const FrameEvent& evt);
+                
+
+        /** Called just after a frame has been rendered.
+		@remarks
+			This event happens after all render targets have been fully updated
+			and the buffers switched.
+            @return
+                True to continue with the next frame, false to drop
+                out of the rendering loop.
+        */
+        virtual bool			frameEnded(const FrameEvent& evt);
+
 	public:
 		/**
 		 *
@@ -78,7 +153,38 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	bool			OnMouseMove(const Vector2& vPos);
+		
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnLButtonDown(const Vector2& vPos);
 
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual bool			OnLButtonUp(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 * \return 
+		 */
+		virtual	bool			OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
+		 * \param nChar 
+		 * \param nRepCnt 
+		 * \param nFlags 
+		 * \return 
+		 */
+		virtual	bool			OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
 	protected:
 		/**
 		 *
@@ -98,13 +204,45 @@ namespace Ogre
 		
 		/**
 		 *
+		 * \param pPage 
+		 * \param vPos 
+		 * \param timePassed 
+		 */
+		virtual bool			optPaint(EditorTerrainPage* pPage, Vector3& vPos,
+			float timePassed);
+
+		/**
+		 *
+		 * \param pPage 
+		 * \param vPos 
+		 * \param timePassed 
 		 * \return 
 		 */
-		virtual	bool			configureBrush(SceneManager* pSceneManager);
+		virtual	bool			optSplat(EditorTerrainPage* pPage, Vector3& vPos,
+			float timePassed);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \param brushRect 
+		 * \param mapRect 
+		 * \param nSize 
+		 * \return 
+		 */
+		virtual	bool			optRect(const Vector3& vPos, Rect& brushRect, 
+			Rect& mapRect, int nSize);
 	protected:
 		EditorViewport*			m_pViewporPlugin;
 		TerrainGroup*			m_pTerrainGroup;
 		TerrainGlobalOptions*	m_pGlobalOptions;
+		float					m_fBrushSize;
+		Rect					m_Region;
+		SceneNode*				m_pBrushNode;
+		float*					m_pBrushData;
+		TexturePtr				m_pBrushTexture;
+		int						m_nEtmValue;
+		String					m_BlendTexture;
+		String					m_BlendNormal;
 	};
 
 	// 地形创建适配参数

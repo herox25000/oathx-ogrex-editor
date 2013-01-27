@@ -10,6 +10,7 @@ namespace Ogre
 	class EditorViewport;
 	class EditorSceneManager;
 	class EditorTerrain;
+	class EditorTerrainPage;
 	class EditorPluginFactoryManager;
 }
 #endif

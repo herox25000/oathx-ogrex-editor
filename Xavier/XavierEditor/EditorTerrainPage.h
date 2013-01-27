@@ -56,6 +56,28 @@ namespace Ogre
 		 */
 		virtual ~EditorTerrainPage();
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Terrain*		getTerrain() const;
+
+		/**
+		 *
+		 * \param texture 
+		 * \return 
+		 */
+		virtual	int				getLayerID(const String& texture);
+
+		/**
+		 *
+		 * \param texture 
+		 * \param normal 
+		 * \param fWorldSize 
+		 * \return 
+		 */
+		virtual	int				addLayer(const String& texture, const String& normal, 
+			float fWorldSize);
 	protected:
 		/**
 		 *
@@ -74,6 +96,7 @@ namespace Ogre
 
 	protected:
 		Terrain*				m_pTerrain;
+		STerrainPageLayer		m_PageLayer;
 	};
 
 
