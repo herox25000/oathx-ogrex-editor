@@ -26,9 +26,12 @@
 #include "OgreSingleton.h"
 #include "OgreAny.h"
 #include "OgreIteratorWrapper.h"
+#include "OgreLogManager.h"
 
 #ifndef TKLogEvent
 #define TKLogEvent	Ogre::LogManager::getSingletonPtr()->getDefaultLog()->logMessage
 #endif
+
+#define _OUTPUT_LOG
 
 #endif
