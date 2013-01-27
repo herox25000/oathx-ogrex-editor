@@ -54,8 +54,8 @@ void CWizardDialog::OnBnClickedOk()
 		adp.cameraAdp.pluginName		= EDITOR_VIEWPORT_CAMER;
 		adp.cameraAdp.vPos				= Vector3(0, 5, 5);
 		adp.cameraAdp.q					= Quaternion::IDENTITY;
-		adp.cameraAdp.fFarClipDistance	= 0.1f;
-		adp.cameraAdp.fNearClipDistance	= 3000.0f;
+		adp.cameraAdp.fFarClipDistance	= 50000.0f;
+		adp.cameraAdp.fNearClipDistance	= 0.1f;
 		adp.cameraAdp.nQueryFlags		= 0;
 		adp.cameraAdp.fFov				= 1.0f;
 
@@ -96,10 +96,12 @@ void CWizardDialog::OnBnClickedOk()
 		adp.bAtOnceLoad					= true;
 
 		char szPluginName[MAX_PATH];
-		sprintf(szPluginName, "%dx%d", adp.nPageX, adp.nPageY);
+		sprintf_s(szPluginName, "%dx%d", adp.nPageX, adp.nPageY);
 		adp.pluginName					= szPluginName;
 
 		pPageFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN));
+	
+
 	}
 	
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
