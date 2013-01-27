@@ -453,6 +453,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\control\ImageListBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\control\ImageListBox.h"
+				>
+			</File>
+			<File
 				RelativePath=".\control\SplashDialog.cpp"
 				>
 			</File>
@@ -564,6 +572,42 @@
 					>
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="view"
+			>
+			<File
+				RelativePath=".\BrushImageListBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\BrushImageListBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\DecalImageListBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\DecalImageListBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainOptDialog.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainOptDialog.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainToolView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainToolView.h"
+				>
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt"

@@ -5,6 +5,7 @@
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
 #include "WizardDialog.h"
+#include "TerrainToolView.h"
 
 /**
 * \ingroup : OgreEditor
@@ -104,7 +105,7 @@ protected:
 	COutputWnd			m_wOutput;
 	CPropertiesWnd		m_wProperties;
 	CWizardDialog		m_dWizardDialog;
-
+	CTerrainToolView	m_wTerrainView;
 protected:
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void		OnViewCustomize();

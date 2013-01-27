@@ -49,7 +49,7 @@ void EditorDebugMessage::messageLogged( const Ogre::String& message,
 		switch (lml)
 		{
 		case Ogre::LML_TRIVIAL:
-			pMainFrame->AddLogMessage(msg.c_str(), RGB(192, 192, 192));
+			pMainFrame->AddLogMessage(msg.c_str(), RGB(0, 0, 255));
 			break;
 		case Ogre::LML_NORMAL:
 			pMainFrame->AddLogMessage(msg.c_str(), RGB(0, 0, 0));

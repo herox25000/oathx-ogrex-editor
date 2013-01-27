@@ -28,7 +28,7 @@ namespace Ogre
 	 */
 	EditorTerrain::EditorTerrain(const String& pluginName, float fMaxPixelError, uint16 nCompositeMapSize, float fCompositeMapDistance,
 		uint16 nLightMapSize, uint16 nLayerBlendMapSize, float fSkirtSize,const ColourValue& clrCompositeMapDiffuse, uint16 nTerrainSize, float fWorldSize)
-		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_fBrushSize(1), m_pBrushNode(NULL), m_nEtmValue(ETM_NONE)
+		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_fBrushSize(1), m_pBrushNode(NULL)
 	{
 		// get viewport plugin
 		m_pViewporPlugin = static_cast<EditorViewport*>(
@@ -36,9 +36,12 @@ namespace Ogre
 			);
 		if (m_pViewporPlugin == NULL)
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
-				"Can't find editor plugin : " + EDITOR_VIEWPORT);
+			TKLogEvent("Can't find editor plugin : " + EDITOR_VIEWPORT,
+				LML_TRIVIAL);
 		}
+
+		m_nActionValue	= ETM_NONE;
+		m_nCurAction	= ETM_NONE;
 		
 		// configure all
 		if (configure(fMaxPixelError, nCompositeMapSize, fCompositeMapDistance, nLightMapSize, nLayerBlendMapSize, fSkirtSize,
@@ -122,11 +125,12 @@ namespace Ogre
 					m_pBrushData	= new float[BRUSH_DATA_SIZE * BRUSH_DATA_SIZE];
 					m_pBrushTexture = TextureManager::getSingletonPtr()->createManual(BRUSH_MESH_NAME,ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 						TEX_TYPE_2D, 256, 256, 1, 1, PF_A8R8G8B8, TU_DYNAMIC_WRITE_ONLY);
+
+					setBrushSize(10);
+					setBrushIntensity(100);
+					setBrushName("sharp_circular.png");
 				}
 
-				setBrushSize(52);
-				setBrushName("sharp_circular.png");
-				setBlendTexture("ice_4_diffusespecular.dds", "ice_4_normalheight.dds");
 				return true;
 			}
 		}
@@ -159,6 +163,24 @@ namespace Ogre
 	float			EditorTerrain::getBrushSize() const
 	{
 		return m_fBrushSize;
+	}
+
+	/**
+	 *
+	 * \param fBrushIntensity 
+	 */
+	void			EditorTerrain::setBrushIntensity(float fBrushIntensity)
+	{
+		m_fBrushIntensity = fBrushIntensity;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	float			EditorTerrain::getBrushIntensity() const
+	{
+		return m_fBrushIntensity;
 	}
 
 	/**
@@ -242,6 +264,15 @@ namespace Ogre
 	{
 		m_BlendTexture	= texture;
 		m_BlendNormal	= normal;
+	}
+
+	/**
+	 *
+	 * \param nActionValue 
+	 */
+	void			EditorTerrain::setActionValue(int nActionValue)
+	{
+		m_nActionValue	= nActionValue;
 	}
 
 	/**
@@ -347,10 +378,16 @@ namespace Ogre
 			if (nLayerID < 0)
 			{
 				nLayerID = pPage->addLayer(m_BlendTexture, m_BlendNormal, 30);
+				if (nLayerID < 0)
+				{
+					TKLogEvent("Waring: Supports up to 5 layers texture blend",
+						LML_CRITICAL);
+
+					return 0;
+				}
 			}
 
 			int	nLayerCount	= pTerrain->getLayerCount();
-
 			if (nLayerCount > 1)
 			{
 				TerrainLayerBlendMap*	pBlendMaps[128];
@@ -368,7 +405,7 @@ namespace Ogre
 						pBlendData[i] = pBlendMaps[i]->getBlendPointer();
 					}
 
-					float	fFactor	= 70 * timePassed * 0.2f;
+					float	fFactor	= m_fBrushIntensity * timePassed * 0.2f;
 					float	fRatio	= (float)(BRUSH_DATA_SIZE) / m_fBrushSize;
 					int		nRight	= brushRect.right;
 
@@ -430,6 +467,64 @@ namespace Ogre
 
 		return true;
 	}
+
+	/**
+	 *
+	 * \param pPage 
+	 * \param vPos 
+	 * \param timePassed 
+	 * \return 
+	 */
+	bool			EditorTerrain::optDeform(EditorTerrainPage* pPage, Vector3& vPos, float timePassed)
+	{
+		if (pPage)
+		{
+			Terrain* pTerrain = pPage->getTerrain();
+			if (pTerrain == NULL)
+				return 0;
+
+			uint16 nTerrainSize = pTerrain->getSize();
+			vPos.x *= (float)(nTerrainSize - 1);
+			vPos.y *= (float)(nTerrainSize - 1);
+
+			Rect	brushRect;
+			Rect	mapRect;
+			if (!optRect(vPos, brushRect, mapRect,  nTerrainSize))
+				return 0;
+
+			float* pHeightData = pTerrain->getHeightData();
+			if (pHeightData)
+			{
+				float	fRatio	= (float)(BRUSH_DATA_SIZE) / m_fBrushSize;
+				float	fBrushPos;
+				int		nMapPos;
+
+				for (int j=mapRect.top; j<mapRect.bottom; j++)
+				{
+					fBrushPos	= (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
+					fBrushPos	+= brushRect.left;
+					nMapPos		= (j * nTerrainSize) + mapRect.left;
+
+					for(int i=mapRect.left; i<mapRect.right; i++)
+					{
+						float fVal = pHeightData[nMapPos] + (m_pBrushData[(int)fBrushPos] * m_fBrushIntensity * 10 * timePassed);
+						pHeightData[nMapPos] = fVal;
+						
+						++ nMapPos;
+
+						fBrushPos += fRatio;
+					}
+				}
+
+				pTerrain->dirtyRect(mapRect);
+
+				if (m_pTerrainGroup)
+					m_pTerrainGroup->update();
+			}
+		}
+
+		return true;
+	}
 	
 	/**
 	 *
@@ -448,7 +543,7 @@ namespace Ogre
 	 */
 	bool			EditorTerrain::frameRenderingQueued(const FrameEvent& evt)
 	{
-		if (m_pBrushNode && m_nEtmValue != ETM_NONE)
+		if (m_pBrushNode && m_nCurAction != ETM_NONE)
 		{
 			// 当前画刷节点位置
 			Vector3 vPos		= m_pBrushNode->getPosition();
@@ -486,11 +581,16 @@ namespace Ogre
 		
 				if (pSelectPage)
 				{
-					switch( m_nEtmValue )
+					switch( m_nCurAction )
 					{
 					case ETM_SPLAT:
 						{
 							optSplat(pSelectPage, vRegin, evt.timeSinceLastFrame);
+						}
+						break;
+					case ETM_DEFORM:
+						{
+							optDeform(pSelectPage, vRegin, evt.timeSinceLastEvent);
 						}
 						break;
 					}
@@ -543,7 +643,11 @@ namespace Ogre
 	 */
 	bool			EditorTerrain::OnLButtonDown(const Vector2& vPos)
 	{
-		m_nEtmValue = ETM_SPLAT;
+		if (m_nActionValue != ETM_NONE)
+		{
+			m_nCurAction = m_nActionValue;
+		}
+
 		return 0;
 	}
 
@@ -554,7 +658,7 @@ namespace Ogre
 	 */
 	bool			EditorTerrain::OnLButtonUp(const Vector2& vPos)
 	{
-		m_nEtmValue = ETM_NONE;
+		m_nCurAction = ETM_NONE;
 		return 0;
 	}
 
@@ -624,8 +728,8 @@ namespace Ogre
 			// 设置删除优先级
 			pEditorTerrain->setPriority(PRIORITY_LOW);
 
-			LogManager::getSingleton().logMessage(LML_NORMAL,
-				"Create editor plugin : " + adp.pluginName);
+			TKLogEvent("Create editor plugin : " + adp.pluginName,
+				LML_NORMAL);
 
 			if (pParent)
 				pParent->registerPlugin(pEditorTerrain);

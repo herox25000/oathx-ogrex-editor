@@ -336,6 +336,21 @@ BEGIN
     PUSHBUTTON      "取消",IDCANCEL,259,164,50,14
 END
 
+IDD_TERRAIN_OPTDIALOG DIALOGEX 0, 0, 706, 226
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_BORDER | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    RTEXT           "Brush Size:",IDC_STATIC,10,31,52,11
+    CONTROL         "",IDC_SLIDER_BRUSHSIZE,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,62,31,124,11
+    RTEXT           "Brush Intensity:",IDC_STATIC,10,43,53,11
+    CONTROL         "",IDC_SLIDER_INTENSITY,"msctls_trackbar32",TBS_BOTH | TBS_NOTICKS | WS_TABSTOP,62,43,124,11
+    CONTROL         "Splat",IDC_RADIO_SPLAT,"Button",BS_AUTORADIOBUTTON,21,14,33,11
+    CONTROL         "Deform",IDC_RADIO_DEFORM,"Button",BS_AUTORADIOBUTTON,62,15,35,11
+    CONTROL         "Paint",IDC_RADIO_PAINT,"Button",BS_AUTORADIOBUTTON,108,15,30,11
+    CONTROL         "Stamp",IDC_RADIO_STAMP,"Button",BS_AUTORADIOBUTTON,146,15,34,11
+    CONTROL         "",IDC_LIST2,"SysListView32",LVS_ALIGNLEFT | LVS_NOSCROLL | WS_BORDER | WS_TABSTOP,7,55,174,67
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -399,6 +414,14 @@ BEGIN
         TOPMARGIN, 7
         BOTTOMMARGIN, 178
     END
+
+    IDD_TERRAIN_OPTDIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 699
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 219
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -411,6 +434,10 @@ END
 STRINGTABLE 
 BEGIN
     IDP_OLE_INIT_FAILED     "OLE 初始化失败。请确保 OLE 库是正确的版本。"
+    IDS_TAB_DECAL           "贴花"
+    IDS_TAB_BRUSH           "画刷"
+    IDS_TERRAIN_VIEW        "地形工具"
+    IDS_TAB_OPT             "操作"
 END
 
 STRINGTABLE 

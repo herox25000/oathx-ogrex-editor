@@ -131,8 +131,7 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL,
-				"Can't find terrain plugin : " + EDITOR_TERRAIN);
+			TKLogEvent("Can't find terrain plugin : " + EDITOR_TERRAIN, LML_TRIVIAL);
 		}
 
 		return 0;
@@ -250,8 +249,7 @@ namespace Ogre
 			// 设置删除优先级
 			pEditorTerrainPage->setPriority(PRIORITY_LOW);
 
-			LogManager::getSingleton().logMessage(LML_NORMAL,
-				"Create editor plugin : " + adp.pluginName);
+			TKLogEvent("Create editor plugin : " + adp.pluginName, LML_NORMAL);
 
 			if (pParent)
 				pParent->registerPlugin(pEditorTerrainPage);

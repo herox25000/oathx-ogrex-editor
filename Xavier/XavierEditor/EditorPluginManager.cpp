@@ -34,8 +34,7 @@ namespace Ogre
 		m_pRootPlugin = new EditorPlugin(rootName);
 		if (m_pRootPlugin)
 		{
-			LogManager::getSingleton().logMessage(LML_NORMAL, 
-				"Init root plugin : " + rootName);
+			TKLogEvent("Init root plugin : " + rootName, LML_NORMAL);
 		}
 	}
 
@@ -87,18 +86,5 @@ namespace Ogre
 	EditorPlugin*	EditorPluginManager::getSelectPlugin() const
 	{
 		return m_pSelectPlugin;
-	}
-
-	/**
-	 *
-	 * \param factoryName 
-	 * \param seadp 
-	 * \param pParent 
-	 * \return 
-	 */
-	EditorPlugin*	EditorPluginManager::createEditorPlugin(const int factoryType, const SEditorPluginAdp& seadp,
-		EditorPlugin* pParent)
-	{
-		return NULL;
 	}
 }

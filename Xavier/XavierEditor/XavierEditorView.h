@@ -125,7 +125,6 @@ protected:
 	 * \return 
 	 */
 	afx_msg LRESULT		OnWizardFnished(WPARAM wParam, LPARAM lParam);
-
 public:
 	/**
 	 *
