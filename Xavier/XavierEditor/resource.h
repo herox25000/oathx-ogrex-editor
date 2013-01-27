@@ -97,7 +97,7 @@
 #define IDC_RADIO_DEFORM                1009
 #define IDC_RADIO_PAINT                 1010
 #define IDC_RADIO_STAMP                 1011
-#define IDC_RADIO1                      1013
+#define IDC_STATIC_DESC                 1014
 
 // Next default values for new objects
 // 
@@ -105,7 +105,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1014
+#define _APS_NEXT_CONTROL_VALUE         1015
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

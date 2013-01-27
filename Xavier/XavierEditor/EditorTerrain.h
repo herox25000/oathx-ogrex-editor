@@ -87,13 +87,13 @@ namespace Ogre
 		 *
 		 * \param fBrushIntensity 
 		 */
-		virtual	void			setBrushIntensity(float fBrushIntensity);
+		virtual	void			setIntensity(float fIntensity);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual	float			getBrushIntensity() const;
+		virtual	float			getIntensity() const;
 
 		/**
 		 *
@@ -268,7 +268,7 @@ namespace Ogre
 		SceneNode*				m_pBrushNode;
 		float*					m_pBrushData;
 		TexturePtr				m_pBrushTexture;
-		float					m_fBrushIntensity;
+		float					m_fIntensity;
 		int						m_nActionValue;
 		int						m_nCurAction;
 		String					m_BlendTexture;

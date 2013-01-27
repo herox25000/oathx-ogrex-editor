@@ -73,7 +73,7 @@ void CWizardDialog::OnBnClickedOk()
 		adp.nLayerBlendMapSize			= 1024;
 		adp.nCompositeMapSize			= 1024;
 		adp.clrCompositeMapDiffuse		= ColourValue::White;
-		adp.fSkirtSize					= 0;
+		adp.fSkirtSize					= 1;
 		adp.fCompositeMapDistance		= 2000;
 		adp.fMaxPixelError				= 3;
 

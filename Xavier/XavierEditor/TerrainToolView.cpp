@@ -143,9 +143,8 @@ void	CTerrainToolView::AdjustLayout()
 	m_ImageBrush.SetWindowPos(NULL, rcTab.left + 1, rcTab.top, rcTab.Width() + 1, rcTab.Height()-23, 
 		SWP_NOACTIVATE | SWP_NOZORDER);
 
-	CRect rcWindow;
-	GetWindowRect(&rcWindow);
-	m_TOptDialog.MoveWindow(CRect(rcWindow.left + 1, rcWindow.top, rcWindow.right, rcWindow.bottom-23));
+	m_TOptDialog.SetWindowPos(NULL, rcTab.left + 1, rcTab.top, rcTab.Width() + 1, rcTab.Height()-23, 
+		SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
 
@@ -182,6 +181,7 @@ void	CTerrainToolView::OnSetFocus(CWnd* pOldWnd)
 	m_TabCtrl.SetFocus();
 }
 
+
 /**
  *
  * \param pNMHDR 
@@ -215,3 +215,4 @@ void	CTerrainToolView::OnTabPageSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
 	}
 	*pResult = 0;
 }
+

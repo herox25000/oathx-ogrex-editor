@@ -1,6 +1,7 @@
 #pragma once
 
 #include "resource.h"
+#include "afxcmn.h"
 
 /**
 * \ingroup : XavierEditor
@@ -38,6 +39,12 @@ public:
 
 	enum { IDD = IDD_TERRAIN_OPTDIALOG };
 
+	/**
+	 *
+	 * \return 
+	 */
+	virtual BOOL	OnInitDialog();
+
 protected:
 	virtual void	DoDataExchange(CDataExchange* pDX);
 
@@ -52,4 +59,19 @@ public:
 	 *
 	 */
 	afx_msg void	OnBnClickedRadioDeform();
+
+	/**
+	 *
+	 */
+	afx_msg void	OnPaint();
+	
+	/**
+	 *
+	 * \param nIDEvent 
+	 */
+	afx_msg void	OnTimer(UINT_PTR nIDEvent);
+
+protected:
+	CSliderCtrl		m_BrushSize;
+	CSliderCtrl		m_Intensity;	
 };

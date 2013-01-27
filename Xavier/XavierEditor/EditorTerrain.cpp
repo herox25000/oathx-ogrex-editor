@@ -127,7 +127,7 @@ namespace Ogre
 						TEX_TYPE_2D, 256, 256, 1, 1, PF_A8R8G8B8, TU_DYNAMIC_WRITE_ONLY);
 
 					setBrushSize(10);
-					setBrushIntensity(100);
+					setIntensity(70);
 					setBrushName("sharp_circular.png");
 				}
 
@@ -169,18 +169,18 @@ namespace Ogre
 	 *
 	 * \param fBrushIntensity 
 	 */
-	void			EditorTerrain::setBrushIntensity(float fBrushIntensity)
+	void			EditorTerrain::setIntensity(float fIntensity)
 	{
-		m_fBrushIntensity = fBrushIntensity;
+		m_fIntensity = fIntensity;
 	}
 
 	/**
 	 *
 	 * \return 
 	 */
-	float			EditorTerrain::getBrushIntensity() const
+	float			EditorTerrain::getIntensity() const
 	{
-		return m_fBrushIntensity;
+		return m_fIntensity;
 	}
 
 	/**
@@ -405,7 +405,7 @@ namespace Ogre
 						pBlendData[i] = pBlendMaps[i]->getBlendPointer();
 					}
 
-					float	fFactor	= m_fBrushIntensity * timePassed * 0.2f;
+					float	fFactor	= m_fIntensity * timePassed * 0.2f;
 					float	fRatio	= (float)(BRUSH_DATA_SIZE) / m_fBrushSize;
 					int		nRight	= brushRect.right;
 
@@ -495,7 +495,7 @@ namespace Ogre
 			float* pHeightData = pTerrain->getHeightData();
 			if (pHeightData)
 			{
-				float	fRatio	= (float)(BRUSH_DATA_SIZE) / m_fBrushSize;
+				float	fRatio	= (float)(BRUSH_DATA_SIZE) / m_fBrushSize / 2;
 				float	fBrushPos;
 				int		nMapPos;
 
@@ -507,7 +507,7 @@ namespace Ogre
 
 					for(int i=mapRect.left; i<mapRect.right; i++)
 					{
-						float fVal = pHeightData[nMapPos] + (m_pBrushData[(int)fBrushPos] * m_fBrushIntensity * 10 * timePassed);
+						float fVal = pHeightData[nMapPos] + (m_pBrushData[(int)fBrushPos] * m_fIntensity * 10 * timePassed);
 						pHeightData[nMapPos] = fVal;
 						
 						++ nMapPos;
