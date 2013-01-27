@@ -4,6 +4,10 @@
 //
 #define IDD_ABOUTBOX                    100
 #define IDP_OLE_INIT_FAILED             100
+#define IDS_TAB_DECAL                   101
+#define IDS_TAB_BRUSH                   102
+#define IDS_TERRAIN_VIEW                103
+#define IDS_TAB_OPT                     104
 #define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
@@ -85,14 +89,23 @@
 #define IDS_EDIT_MENU                   306
 #define IDD_DIALOG1                     310
 #define IDD_DIALOG_WIZARD               310
+#define IDD_TERRAIN_OPTDIALOG           311
+#define IDC_SLIDER_BRUSHSIZE            1003
+#define IDC_RADIO_SPLAT                 1004
+#define IDC_LIST2                       1006
+#define IDC_SLIDER_INTENSITY            1008
+#define IDC_RADIO_DEFORM                1009
+#define IDC_RADIO_PAINT                 1010
+#define IDC_RADIO_STAMP                 1011
+#define IDC_RADIO1                      1013
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        311
+#define _APS_NEXT_RESOURCE_VALUE        312
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         1000
+#define _APS_NEXT_CONTROL_VALUE         1014
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

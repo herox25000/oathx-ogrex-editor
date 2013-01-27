@@ -70,8 +70,8 @@ namespace Ogre
 		HashMapEditorPluginFactory::iterator it = m_HashMapEditorPluginFactory.begin();
 		while ( it != m_HashMapEditorPluginFactory.end() )
 		{
-			LogManager::getSingleton().logMessage(LML_NORMAL, 
-				"Deleted this plugin factory :  " + it->second->getName());
+			TKLogEvent("Deleted this plugin factory :  " + it->second->getName(), 
+				LML_NORMAL);
 
 			delete it->second; it = m_HashMapEditorPluginFactory.erase(it);
 		}
@@ -87,8 +87,8 @@ namespace Ogre
 		HashMapEditorPluginFactory::iterator it = m_HashMapEditorPluginFactory.find(pFactory->getName());
 		if ( it == m_HashMapEditorPluginFactory.end() )
 		{
-			LogManager::getSingleton().logMessage(LML_NORMAL, 
-				"Register editor plugin factory : " + pFactory->getName());
+			TKLogEvent("Register editor plugin factory : " + pFactory->getName(), 
+				LML_NORMAL);
 
 			m_HashMapEditorPluginFactory.insert(
 				HashMapEditorPluginFactory::value_type(pFactory->getName(), pFactory)
@@ -97,8 +97,8 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
-				"This plugin factory has been exist : " + pFactory->getName());	
+			TKLogEvent("This plugin factory has been exist : " + pFactory->getName(), 
+				LML_TRIVIAL);	
 		}
 
 		return 0;
@@ -118,8 +118,8 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
-				"This plugin factory can not be found :  " + factoryName);
+			TKLogEvent("This plugin factory can not be found :  " + factoryName,
+				LML_TRIVIAL);
 		}
 
 		return NULL;
@@ -144,15 +144,15 @@ namespace Ogre
 		HashMapEditorPluginFactory::iterator it = m_HashMapEditorPluginFactory.find(factoryName);
 		if ( it != m_HashMapEditorPluginFactory.end() )
 		{
-			LogManager::getSingleton().logMessage(LML_NORMAL, 
-				"Deleted this plugin factory :  " + factoryName);
+			TKLogEvent("Deleted this plugin factory :  " + factoryName,
+				LML_NORMAL);
 
 			delete it->second; m_HashMapEditorPluginFactory.erase(it);
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
-				"This plugin factory can not be found :  " + factoryName);
+			TKLogEvent("This plugin factory can not be found :  " + factoryName, 
+				LML_TRIVIAL);
 		}	
 	}
 }

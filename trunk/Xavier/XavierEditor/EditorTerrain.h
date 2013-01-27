@@ -82,6 +82,18 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual float			getBrushSize() const;
+	
+		/**
+		 *
+		 * \param fBrushIntensity 
+		 */
+		virtual	void			setBrushIntensity(float fBrushIntensity);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	float			getBrushIntensity() const;
 
 		/**
 		 *
@@ -107,6 +119,12 @@ namespace Ogre
 		 * \param normal 
 		 */
 		virtual	void			setBlendTexture(const String& texture, const String& normal);
+
+		/**
+		 *
+		 * \param nActionValue 
+		 */
+		virtual	void			setActionValue(int nActionValue);
 	public:
         /** Called when a frame is about to begin rendering.
 		@remarks
@@ -223,6 +241,16 @@ namespace Ogre
 
 		/**
 		 *
+		 * \param pPage 
+		 * \param vPos 
+		 * \param timePassed 
+		 * \return 
+		 */
+		virtual	bool			optDeform(EditorTerrainPage* pPage, Vector3& vPos,
+			float timePassed);
+
+		/**
+		 *
 		 * \param vPos 
 		 * \param brushRect 
 		 * \param mapRect 
@@ -240,7 +268,9 @@ namespace Ogre
 		SceneNode*				m_pBrushNode;
 		float*					m_pBrushData;
 		TexturePtr				m_pBrushTexture;
-		int						m_nEtmValue;
+		float					m_fBrushIntensity;
+		int						m_nActionValue;
+		int						m_nCurAction;
 		String					m_BlendTexture;
 		String					m_BlendNormal;
 	};

@@ -126,8 +126,8 @@ namespace Ogre
 		}
 		else
 		{
-			LogManager::getSingleton().logMessage(LML_TRIVIAL, 
-				"Can't create ogre scene manager : " + pluginName);
+			TKLogEvent("Can't create ogre scene manager : " + pluginName,
+				LML_TRIVIAL);
 		}
 
 		return 0;
@@ -180,8 +180,8 @@ namespace Ogre
 			// 设置删除优先级
 			pEditorSceneManager->setPriority(PRIORITY_LOWEST);
 
-			LogManager::getSingleton().logMessage(LML_NORMAL,
-				"Create editor plugin : " + adp.pluginName);
+			TKLogEvent("Create editor plugin : " + adp.pluginName,
+				LML_NORMAL);
 
 			if (pParent)
 				pParent->registerPlugin(pEditorSceneManager);

@@ -73,16 +73,6 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	EditorPlugin*			getSelectPlugin() const;
-
-		/** 创建插件
-		 *
-		 * \param factoryName 
-		 * \param seadp 
-		 * \param pParent 
-		 * \return 
-		 */
-		virtual	EditorPlugin*			createEditorPlugin(const int factoryType,
-			const SEditorPluginAdp& seadp, EditorPlugin* pParent);
 	protected:
 		// 根插件
 		EditorPlugin*					m_pRootPlugin;
