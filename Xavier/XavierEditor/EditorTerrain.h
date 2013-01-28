@@ -95,6 +95,7 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	float*			getBrushData() const;
+		
 	protected:
 		SceneManager*			m_pSceneManager;
 		SceneNode*				m_pBrushNode;
@@ -318,7 +319,7 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	bool			optRect(const Vector3& vPos, Rect& brushRect, 
-			Rect& mapRect, int nSize);
+			Rect& mapRect, int nSize, float fRaidus);
 
 	protected:
 		EditorViewport*			m_pViewporPlugin;

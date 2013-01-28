@@ -332,7 +332,7 @@ namespace Ogre
 					m_pTerrainGroup->setOrigin(Vector3::ZERO);
 				}
 				
-				m_pBrush = new MeshBrush(pSceneManager, "System/BrushMesh", 10, 70, "sharp_circular.png");
+				m_pBrush = new MeshBrush(pSceneManager, "System/BrushMesh", 1, 70, "sharp_circular.png");
 		
 				return true;
 			}
@@ -388,12 +388,12 @@ namespace Ogre
 	 * \return 
 	 */
 	bool			EditorTerrain::optRect(const Vector3& vPos, Rect& brushRect,
-		Rect& mapRect, int nSize)
+		Rect& mapRect, int nSize, float fRaidus)
 	{
 		if (m_pBrush == NULL)
 			return 0;
 
-		float fBrushSize	= m_pBrush->getRadius();
+		float fBrushSize	= fRaidus;
 		int mMapBrushSize	= (float)fBrushSize; 
 		float halfSize		= (float)fBrushSize / 2.0f;
 
@@ -476,10 +476,12 @@ namespace Ogre
 			vPos.x	*= nBlendMapSize;
 			vPos.y	= (1.0f - vPos.y) * (float)(nBlendMapSize);
 
+			float	fIntensity	= m_pBrush->getIntensity();
+			float	fBrushSize	= m_pBrush->getRadius();
+			
 			Rect	brushRect;
 			Rect	mapRect;
-
-			if (!optRect(vPos, brushRect, mapRect, nBlendMapSize))
+			if (!optRect(vPos, brushRect, mapRect, nBlendMapSize, fBrushSize))
 				return 0;
 			
 			int nLayerID = pPage->getLayerID(m_BlendTexture);
@@ -508,9 +510,7 @@ namespace Ogre
 					// 当前混合数据
 					float*	pLayerData	= pLayerMaps->getBlendPointer();
 					float*	pBrushData	= m_pBrush->getBrushData();
-					float	fIntensity	= m_pBrush->getIntensity();
-					float	fBrushSize	= m_pBrush->getRadius();
-
+					
 					for (int i=nLayerID; i<nLayerCount; i++)
 					{
 						pBlendMaps[i] = pTerrain->getLayerBlendMap(i);
@@ -602,7 +602,7 @@ namespace Ogre
 
 		Rect	brushRect;
 		Rect	mapRect;
-		if (!optRect(vPos, brushRect, mapRect,  nTerrainSize))
+		if (!optRect(vPos, brushRect, mapRect,  nTerrainSize, m_pBrush->getRadius()))
 			return 0;
 
 		float	fIntensity	= m_pBrush->getIntensity();
