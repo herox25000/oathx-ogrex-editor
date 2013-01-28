@@ -21,7 +21,6 @@ namespace Ogre
 	MeshBrush::MeshBrush(SceneManager* pSceneManager, const String& materialName, float fRaidus, float fIntensity, const String& texture)
 		: m_pSceneManager(pSceneManager), m_pBrushMesh(NULL), m_pBrushNode(NULL), m_fRaidus(fRaidus), m_fIntensity(fIntensity), m_pBrushData(NULL)
 	{
-
 		m_pBrushData	= new float[BRUSH_DATA_SIZE * BRUSH_DATA_SIZE];
 		m_pBrushTexture = TextureManager::getSingletonPtr()->createManual(BRUSH_MESH_NAME, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
 			TEX_TYPE_2D, 256, 256, 1, 1, PF_A8R8G8B8, TU_DYNAMIC_WRITE_ONLY);
