@@ -51,7 +51,11 @@ void		CBrushImageListBox::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 					);
 				if (pPlugin)
 				{
-					pPlugin->setBrushName(m_cItemText.GetBuffer());
+					MeshBrush* pBrush = pPlugin->getMeshBrush();
+					if (pBrush)
+					{
+						pBrush->setBrushTexture(m_cItemText.GetBuffer());
+					}
 				}
 			}
 

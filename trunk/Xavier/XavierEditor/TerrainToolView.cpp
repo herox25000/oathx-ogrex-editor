@@ -57,11 +57,38 @@ int		CTerrainToolView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	BOOL bNameValid = FALSE;
 
+	CString strTabOpt;
+	bNameValid = strTabOpt.LoadString(IDS_TAB_OPT);
+	ASSERT(bNameValid);
+	m_TabCtrl.InsertItem(0, strTabOpt);
+
+	// 创建地形操作对话框
+	if (!m_TOptDialog.Create(IDD_TERRAIN_OPTDIALOG, &m_TabCtrl))
+	{
+		return -1;
+	}
+
+	// 地形画刷页面
+	CString strTabBrush;
+	bNameValid = strTabBrush.LoadString(IDS_TAB_BRUSH);
+	ASSERT(bNameValid);
+	m_TabCtrl.InsertItem(1, strTabBrush);
+
+	// 地形画刷图片
+	if (!m_ImageBrush.Create(CSize(64,64), WS_CHILD|WS_VISIBLE,
+		rectDummy, &m_TabCtrl, ID_TERRAIN_BRUSH))
+	{
+		return -1;
+	}
+	// 加载地形画刷图片
+	m_ImageBrush.Load(".\\media\\texture\\terrain\\brush", "*.*");
+	m_ImageBrush.ShowWindow(SW_HIDE);
+
 	// 地形贴花页面
 	CString strTabDecal;
 	bNameValid = strTabDecal.LoadString(IDS_TAB_DECAL);
 	ASSERT(bNameValid);
-	m_TabCtrl.InsertItem(0, strTabDecal);
+	m_TabCtrl.InsertItem(2, strTabDecal);
 	
 	// 地形贴花图片
 	if (!m_ImageDecal.Create(CSize(64,64), WS_CHILD|WS_VISIBLE,
@@ -72,32 +99,12 @@ int		CTerrainToolView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// 加载地形贴花图片
 	m_ImageDecal.Load(".\\media\\texture\\terrain\\decal", "*.*");
 
-	// 地形刷页面
-	CString strTabBrush;
-	bNameValid = strTabBrush.LoadString(IDS_TAB_BRUSH);
-	ASSERT(bNameValid);
-	m_TabCtrl.InsertItem(1, strTabBrush);
-
-	// 地形贴花图片
-	if (!m_ImageBrush.Create(CSize(64,64), WS_CHILD|WS_VISIBLE,
-		rectDummy, &m_TabCtrl, ID_TERRAIN_BRUSH))
-	{
-		return -1;
-	}
-	// 加载地形贴花图片
-	m_ImageBrush.Load(".\\media\\texture\\terrain\\brush", "*.*");
+	// 设置初始选择页面
+	m_TabCtrl.SetCurSel(0);
+	// 页面显示状态更新
+	m_TOptDialog.ShowWindow(SW_SHOW);
+	m_ImageDecal.ShowWindow(SW_HIDE);
 	m_ImageBrush.ShowWindow(SW_HIDE);
-
-	CString strTabOpt;
-	bNameValid = strTabOpt.LoadString(IDS_TAB_OPT);
-	ASSERT(bNameValid);
-	m_TabCtrl.InsertItem(2, strTabOpt);
-
-	// 创建地形操作对话框
-	if (!m_TOptDialog.Create(IDD_TERRAIN_OPTDIALOG, &m_TabCtrl))
-	{
-		return -1;
-	}
 
 	// 调整布局
 	AdjustLayout();
@@ -193,8 +200,8 @@ void	CTerrainToolView::OnTabPageSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
 	{
 	case 0:
 		{
-			m_ImageDecal.ShowWindow(SW_SHOW);
-			m_TOptDialog.ShowWindow(SW_HIDE);
+			m_TOptDialog.ShowWindow(SW_SHOW);
+			m_ImageDecal.ShowWindow(SW_HIDE);
 			m_ImageBrush.ShowWindow(SW_HIDE);
 		}
 		break;
@@ -207,12 +214,11 @@ void	CTerrainToolView::OnTabPageSelChanged(NMHDR* pNMHDR, LRESULT* pResult)
 		break;
 	case 2:
 		{
-			m_TOptDialog.ShowWindow(SW_SHOW);
-			m_ImageDecal.ShowWindow(SW_HIDE);
+			m_ImageDecal.ShowWindow(SW_SHOW);
+			m_TOptDialog.ShowWindow(SW_HIDE);
 			m_ImageBrush.ShowWindow(SW_HIDE);
 		}
 		break;
 	}
-	*pResult = 0;
 }
 

@@ -11,6 +11,226 @@ namespace Ogre
 {
 	static const uint16		BRUSH_DATA_SIZE	= 128;
 
+	/**
+	 *
+	 * \param pSceneManager 
+	 * \param materialName 
+	 * \param fRaidus 
+	 * \return 
+	 */
+	MeshBrush::MeshBrush(SceneManager* pSceneManager, const String& materialName, float fRaidus, float fIntensity, const String& texture)
+		: m_pSceneManager(pSceneManager), m_pBrushMesh(NULL), m_pBrushNode(NULL), m_fRaidus(fRaidus), m_fIntensity(fIntensity), m_pBrushData(NULL)
+	{
+
+		m_pBrushData	= new float[BRUSH_DATA_SIZE * BRUSH_DATA_SIZE];
+		m_pBrushTexture = TextureManager::getSingletonPtr()->createManual(BRUSH_MESH_NAME, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
+			TEX_TYPE_2D, 256, 256, 1, 1, PF_A8R8G8B8, TU_DYNAMIC_WRITE_ONLY);
+		
+		setBrushTexture(texture);
+
+		m_pBrushMesh = new ManualObject(BRUSH_MESH_NAME);
+		m_pSceneManager->getRootSceneNode()->attachObject(m_pBrushMesh);
+
+		int x_size = 8;
+		int z_size = 8;
+
+		m_pBrushMesh->begin(materialName, RenderOperation::OT_TRIANGLE_LIST);
+		for (int i = 0; i <= x_size; i++)
+		{
+			for (int j = 0; j <= z_size; j++)
+			{
+				m_pBrushMesh->position(Ogre::Vector3(i, 0, j));
+				m_pBrushMesh->textureCoord((float)i / (float)x_size, (float)j / (float)z_size);
+			}
+		}
+
+		for (int i = 0; i < x_size; i++)
+		{
+			for (int j = 0; j < z_size; j++)
+			{
+				m_pBrushMesh->quad( 
+					i * (x_size + 1) + j,
+					i * (x_size + 1) + j + 1,
+					(i + 1) * (x_size + 1) + j + 1,
+					(i + 1) * (x_size + 1) + j);
+			}
+		}
+		m_pBrushMesh->end();
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	MeshBrush::~MeshBrush()
+	{
+		if (m_pBrushData != NULL)
+		{
+			delete []m_pBrushData;
+			m_pBrushData = NULL;
+		}
+
+		m_pSceneManager->getRootSceneNode()->detachObject(m_pBrushMesh);
+		SAFE_DELETE(m_pBrushMesh);
+	}
+
+	/**
+	 *
+	 * \param texture 
+	 */
+	void			MeshBrush::setBrushTexture(const String& texture)
+	{
+		if(!m_pBrushTexture.isNull())
+		{
+			Image image;
+			image.load(texture, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+
+			uint8* pData = new uint8[image.getWidth() * image.getHeight() * 3];
+			PixelBox resultBox(image.getWidth(), 
+				image.getHeight(), 
+				1, 
+				PF_B8G8R8, 
+				pData);
+			PixelUtil::bulkPixelConversion(image.getPixelBox(), resultBox);
+
+			resultBox.setConsecutive();
+
+			for (uint32 i=0, idx=0; i<image.getWidth() * image.getHeight(); i++)
+			{
+				pData[idx + 0] = 0;
+				pData[idx + 1] = 0;
+				pData[idx + 2] = (pData[idx + 2] * 0.8f);
+
+				idx += 3;
+			}
+
+			m_pBrushTexture->setWidth(
+				image.getWidth());
+			m_pBrushTexture->setHeight(image.getHeight());
+
+			HardwarePixelBufferSharedPtr hps = m_pBrushTexture->getBuffer();
+			hps->blitFromMemory(resultBox);
+			delete [] pData;
+
+			image.resize(BRUSH_DATA_SIZE, BRUSH_DATA_SIZE);
+			uint32 nPos = 0;
+			ColourValue c;
+			for(uint32 y=0; y<BRUSH_DATA_SIZE; y++)
+			{
+				nPos = ((BRUSH_DATA_SIZE - 1) - y) * BRUSH_DATA_SIZE;
+				for(uint32 x=0; x<BRUSH_DATA_SIZE; x++)
+				{
+					c = image.getColourAt(x,y,0);
+					m_pBrushData[nPos] = c.r;
+					nPos++;
+				}
+			}
+		}
+	}
+
+	/**
+	 *
+	 * \param pTerrain 
+	 * \param vPos 
+	 */
+	void		MeshBrush::setPosition(Terrain* pTerrain, const Vector3& vPos)
+	{
+		if (pTerrain)
+		{
+			Real x1 = vPos.x - m_fRaidus;
+			Real z1 = vPos.z - m_fRaidus;
+
+			int x_size = 8;
+			int z_size = 8;
+
+			Real x_step = (m_fRaidus * 2) / x_size;
+			Real z_step = (m_fRaidus * 2) / z_size;
+
+			m_pBrushMesh->beginUpdate(0);
+			for (int i=0; i<=x_size; i++)
+			{
+				for (int j= 0; j<=z_size; j++)
+				{
+					float f = pTerrain->getHeightAtWorldPosition(x1, vPos.y, z1);
+					m_pBrushMesh->position(Vector3(x1,  f + 0.5, z1));
+					m_pBrushMesh->textureCoord((float)i / (float)x_size, (float)j / (float)z_size);
+					z1 += z_step;
+				}
+				x1 += x_step;
+				z1 = vPos.z - m_fRaidus;
+			}
+
+			for (int i=0; i<x_size; i++)
+			{
+				for (int j=0; j<z_size; j++)
+				{
+					m_pBrushMesh->quad( 
+						i * (x_size + 1) + j,
+						i * (x_size + 1) + j + 1,
+						(i + 1) * (x_size + 1) + j + 1,
+						(i + 1) * (x_size + 1) + j);
+				}
+			}
+			m_pBrushMesh->end();
+		}
+
+		m_vBrushPos = vPos;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	Vector3			MeshBrush::getPosition() const
+	{
+		return m_vBrushPos;
+	}
+
+	/**
+	 *
+	 * \param fRadius 
+	 */
+	void			MeshBrush::setRadius(float fRadius)
+	{
+		m_fRaidus = fRadius;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	float			MeshBrush::getRadius() const
+	{
+		return m_fRaidus;
+	}
+
+	/**
+	 *
+	 * \param fBrushIntensity 
+	 */
+	void			MeshBrush::setIntensity(float fIntensity)
+	{
+		m_fIntensity = fIntensity;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	float			MeshBrush::getIntensity() const
+	{
+		return m_fIntensity;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	float*			MeshBrush::getBrushData() const
+	{
+		return m_pBrushData;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *
@@ -28,7 +248,7 @@ namespace Ogre
 	 */
 	EditorTerrain::EditorTerrain(const String& pluginName, float fMaxPixelError, uint16 nCompositeMapSize, float fCompositeMapDistance,
 		uint16 nLightMapSize, uint16 nLayerBlendMapSize, float fSkirtSize,const ColourValue& clrCompositeMapDiffuse, uint16 nTerrainSize, float fWorldSize)
-		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_fBrushSize(1), m_pBrushNode(NULL)
+		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_pBrush(NULL)
 	{
 		// get viewport plugin
 		m_pViewporPlugin = static_cast<EditorViewport*>(
@@ -42,7 +262,7 @@ namespace Ogre
 
 		m_nActionValue	= ETM_NONE;
 		m_nCurAction	= ETM_NONE;
-		
+
 		// configure all
 		if (configure(fMaxPixelError, nCompositeMapSize, fCompositeMapDistance, nLightMapSize, nLayerBlendMapSize, fSkirtSize,
 			clrCompositeMapDiffuse, nTerrainSize, fWorldSize))
@@ -60,12 +280,7 @@ namespace Ogre
 	 */
 	EditorTerrain::~EditorTerrain()
 	{
-		if (m_pBrushData)
-		{
-			delete [] m_pBrushData;
-			m_pBrushData = NULL;
-		}
-
+		SAFE_DELETE(m_pBrush);
 		SAFE_DELETE(m_pGlobalOptions);
 		SAFE_DELETE(m_pTerrainGroup);
 	}
@@ -117,20 +332,8 @@ namespace Ogre
 					m_pTerrainGroup->setOrigin(Vector3::ZERO);
 				}
 				
-				// create brush node
-				m_pBrushNode = pSceneManager->getRootSceneNode()->createChildSceneNode();
-				if (m_pBrushNode)
-				{
-					// brush data
-					m_pBrushData	= new float[BRUSH_DATA_SIZE * BRUSH_DATA_SIZE];
-					m_pBrushTexture = TextureManager::getSingletonPtr()->createManual(BRUSH_MESH_NAME,ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-						TEX_TYPE_2D, 256, 256, 1, 1, PF_A8R8G8B8, TU_DYNAMIC_WRITE_ONLY);
-
-					setBrushSize(10);
-					setIntensity(70);
-					setBrushName("sharp_circular.png");
-				}
-
+				m_pBrush = new MeshBrush(pSceneManager, "System/BrushMesh", 10, 70, "sharp_circular.png");
+		
 				return true;
 			}
 		}
@@ -149,110 +352,11 @@ namespace Ogre
 
 	/**
 	 *
-	 * \param nBrushSize 
-	 */
-	void			EditorTerrain::setBrushSize(float nBrushSize)
-	{
-		m_fBrushSize = nBrushSize;
-	}
-
-	/**
-	 *
 	 * \return 
 	 */
-	float			EditorTerrain::getBrushSize() const
+	MeshBrush*		EditorTerrain::getMeshBrush() const
 	{
-		return m_fBrushSize;
-	}
-
-	/**
-	 *
-	 * \param fBrushIntensity 
-	 */
-	void			EditorTerrain::setIntensity(float fIntensity)
-	{
-		m_fIntensity = fIntensity;
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	float			EditorTerrain::getIntensity() const
-	{
-		return m_fIntensity;
-	}
-
-	/**
-	 *
-	 * \param texture 
-	 */
-	void			EditorTerrain::setBrushName(const String& texture)
-	{
-		if(!m_pBrushTexture.isNull())
-		{
-			Image image;
-			image.load(texture, ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
-
-			uint8* pData = new uint8[image.getWidth() * image.getHeight() * 3];
-			PixelBox resultBox(image.getWidth(), 
-				image.getHeight(), 
-				1, 
-				PF_B8G8R8, 
-				pData);
-			PixelUtil::bulkPixelConversion(image.getPixelBox(), resultBox);
-
-			resultBox.setConsecutive();
-
-			for (uint32 i=0, idx=0; i<image.getWidth() * image.getHeight(); i++)
-			{
-				pData[idx + 0] = 0;
-				pData[idx + 1] = 0;
-				pData[idx + 2] = (pData[idx + 2] * 0.8f);
-
-				idx += 3;
-			}
-
-			m_pBrushTexture->setWidth(
-				image.getWidth());
-			m_pBrushTexture->setHeight(image.getHeight());
-
-			HardwarePixelBufferSharedPtr hps = m_pBrushTexture->getBuffer();
-			hps->blitFromMemory(resultBox);
-			delete [] pData;
-
-			image.resize(BRUSH_DATA_SIZE, BRUSH_DATA_SIZE);
-			uint32 nPos = 0;
-			ColourValue c;
-			for(uint32 y=0; y<BRUSH_DATA_SIZE; y++)
-			{
-				nPos = ((BRUSH_DATA_SIZE - 1) - y) * BRUSH_DATA_SIZE;
-				for(uint32 x=0; x<BRUSH_DATA_SIZE; x++)
-				{
-					c = image.getColourAt(x,y,0);
-					m_pBrushData[nPos] = c.r;
-					nPos++;
-				}
-			}
-		}
-	}
-	
-	/**
-	 *
-	 * \param vPos 
-	 */
-	void			EditorTerrain::setBrushPosition(const Vector3& vPos)
-	{
-		m_pBrushNode->setPosition(vPos);
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Vector3			EditorTerrain::getBrushPosition() const
-	{
-		return m_pBrushNode->getPosition();
+		return m_pBrush;
 	}
 
 	/**
@@ -286,8 +390,12 @@ namespace Ogre
 	bool			EditorTerrain::optRect(const Vector3& vPos, Rect& brushRect,
 		Rect& mapRect, int nSize)
 	{
-		int mMapBrushSize	= (float)m_fBrushSize; 
-		float halfSize		= (float)m_fBrushSize / 2.0f;
+		if (m_pBrush == NULL)
+			return 0;
+
+		float fBrushSize	= m_pBrush->getRadius();
+		int mMapBrushSize	= (float)fBrushSize; 
+		float halfSize		= (float)fBrushSize / 2.0f;
 
 		float tx = vPos.x - halfSize;
 		float ty = vPos.y - halfSize;
@@ -299,7 +407,7 @@ namespace Ogre
 		mapY += (int)(ty * 2.0f) - (mapY * 2);
 
 		mapRect		= Rect(mapX, mapY, mMapBrushSize + mapX, mMapBrushSize + mapY);
-		brushRect	= Rect(0,0, m_fBrushSize, m_fBrushSize);
+		brushRect	= Rect(0, 0, fBrushSize, fBrushSize);
 
 		if(mapRect.left < 0)
 		{
@@ -328,10 +436,10 @@ namespace Ogre
 		if(((mapRect.right - mapRect.left) < 1) || ((mapRect.bottom - mapRect.top) < 1))
 			return 0;
 
-		brushRect.left		*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
-		brushRect.right		*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
-		brushRect.top		*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
-		brushRect.bottom	*= (float)BRUSH_DATA_SIZE / (float)m_fBrushSize;
+		brushRect.left		*= (float)BRUSH_DATA_SIZE / (float)fBrushSize;
+		brushRect.right		*= (float)BRUSH_DATA_SIZE / (float)fBrushSize;
+		brushRect.top		*= (float)BRUSH_DATA_SIZE / (float)fBrushSize;
+		brushRect.bottom	*= (float)BRUSH_DATA_SIZE / (float)fBrushSize;
 
 		return true;
 	}
@@ -358,7 +466,7 @@ namespace Ogre
 	bool			EditorTerrain::optSplat(EditorTerrainPage* pPage, Vector3& vPos, 
 		float timePassed)
 	{
-		if (pPage == NULL)
+		if (pPage == NULL || m_pBrush == NULL)
 			return 0;
 		
 		Terrain* pTerrain = pPage->getTerrain();
@@ -399,15 +507,18 @@ namespace Ogre
 				{
 					// 当前混合数据
 					float*	pLayerData	= pLayerMaps->getBlendPointer();
-					
+					float*	pBrushData	= m_pBrush->getBrushData();
+					float	fIntensity	= m_pBrush->getIntensity();
+					float	fBrushSize	= m_pBrush->getRadius();
+
 					for (int i=nLayerID; i<nLayerCount; i++)
 					{
 						pBlendMaps[i] = pTerrain->getLayerBlendMap(i);
 						pBlendData[i] = pBlendMaps[i]->getBlendPointer();
 					}
 
-					float	fFactor	= m_fIntensity * timePassed * 0.2f;
-					float	fRatio	= (float)(BRUSH_DATA_SIZE) / m_fBrushSize;
+					float	fFactor	= fIntensity * timePassed * 0.2f;
+					float	fRatio	= (float)(BRUSH_DATA_SIZE) / fBrushSize;
 					int		nRight	= brushRect.right;
 
 					brushRect.right	= BRUSH_DATA_SIZE - brushRect.left;
@@ -435,7 +546,7 @@ namespace Ogre
 								fSum += pBlendData[u][nMapPos];
 							}
 
-							float fVal	= pLayerData[nMapPos] + (m_pBrushData[(int)fBrushPos] * fFactor);
+							float fVal	= pLayerData[nMapPos] + (pBrushData[(int)fBrushPos] * fFactor);
 							fSum		+= fVal;
 
 							if (fSum > 1.0f)
@@ -478,52 +589,55 @@ namespace Ogre
 	 */
 	bool			EditorTerrain::optDeform(EditorTerrainPage* pPage, Vector3& vPos, float timePassed)
 	{
-		if (pPage)
+		if (pPage == NULL || m_pBrush == NULL)
+			return 0;
+	
+		Terrain* pTerrain = pPage->getTerrain();
+		if (pTerrain == NULL)
+			return 0;
+
+		uint16 nTerrainSize = pTerrain->getSize();
+		vPos.x *= (float)(nTerrainSize - 1);
+		vPos.y *= (float)(nTerrainSize - 1);
+
+		Rect	brushRect;
+		Rect	mapRect;
+		if (!optRect(vPos, brushRect, mapRect,  nTerrainSize))
+			return 0;
+
+		float	fIntensity	= m_pBrush->getIntensity();
+		float	fBrushSize	= m_pBrush->getRadius();
+		float*	pBrushData	= m_pBrush->getBrushData();
+		float*	pHeightData	= pTerrain->getHeightData();
+		if (pHeightData)
 		{
-			Terrain* pTerrain = pPage->getTerrain();
-			if (pTerrain == NULL)
-				return 0;
+			float	fRatio	= (float)(BRUSH_DATA_SIZE) / fBrushSize;
+			float	fBrushPos;
+			int		nMapPos;
 
-			uint16 nTerrainSize = pTerrain->getSize();
-			vPos.x *= (float)(nTerrainSize - 1);
-			vPos.y *= (float)(nTerrainSize - 1);
-
-			Rect	brushRect;
-			Rect	mapRect;
-			if (!optRect(vPos, brushRect, mapRect,  nTerrainSize))
-				return 0;
-
-			float* pHeightData = pTerrain->getHeightData();
-			if (pHeightData)
+			for (int j=mapRect.top; j<mapRect.bottom; j++)
 			{
-				float	fRatio	= (float)(BRUSH_DATA_SIZE) / m_fBrushSize / 2;
-				float	fBrushPos;
-				int		nMapPos;
+				fBrushPos	= (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
+				fBrushPos	+= brushRect.left;
+				nMapPos		= (j * nTerrainSize) + mapRect.left;
 
-				for (int j=mapRect.top; j<mapRect.bottom; j++)
+				for(int i=mapRect.left; i<mapRect.right; i++)
 				{
-					fBrushPos	= (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
-					fBrushPos	+= brushRect.left;
-					nMapPos		= (j * nTerrainSize) + mapRect.left;
+					float fVal = pHeightData[nMapPos] + (pBrushData[(int)fBrushPos] * fIntensity * 10 * timePassed);
+					pHeightData[nMapPos] = fVal;
+					
+					++ nMapPos;
 
-					for(int i=mapRect.left; i<mapRect.right; i++)
-					{
-						float fVal = pHeightData[nMapPos] + (m_pBrushData[(int)fBrushPos] * m_fIntensity * 10 * timePassed);
-						pHeightData[nMapPos] = fVal;
-						
-						++ nMapPos;
-
-						fBrushPos += fRatio;
-					}
+					fBrushPos += fRatio;
 				}
-
-				pTerrain->dirtyRect(mapRect);
-
-				if (m_pTerrainGroup)
-					m_pTerrainGroup->update();
 			}
-		}
 
+			pTerrain->dirtyRect(mapRect);
+
+			if (m_pTerrainGroup)
+				m_pTerrainGroup->update();
+		}
+	
 		return true;
 	}
 	
@@ -544,16 +658,17 @@ namespace Ogre
 	 */
 	bool			EditorTerrain::frameRenderingQueued(const FrameEvent& evt)
 	{
-		if (m_pBrushNode && m_nCurAction != ETM_NONE)
+		if (m_pBrush != NULL && m_nCurAction != ETM_NONE)
 		{
 			// 当前画刷节点位置
-			Vector3 vPos		= m_pBrushNode->getPosition();
+			Vector3 vPos		= m_pBrush->getPosition();
+			float fBrushSize	= m_pBrush->getRadius();
 
 			float fWorldSize	= m_pTerrainGroup->getTerrainWorldSize();
 			float fMapSize		= m_pTerrainGroup->getTerrainSize();
 
 			TerrainGroup::TerrainList vTerrain;
-			float fBrushWorld	= (fWorldSize * m_fBrushSize) / fMapSize / 2;
+			float fBrushWorld	= (fWorldSize * fBrushSize) / fMapSize / 2;
 			Sphere s(vPos, fBrushWorld);
 			m_pTerrainGroup->sphereIntersects(s, &vTerrain);
 
@@ -629,7 +744,8 @@ namespace Ogre
 				TerrainGroup::RayResult rayResult = m_pTerrainGroup->rayIntersects(ray);
 				if (rayResult.hit)
 				{
-					setBrushPosition(rayResult.position);
+					if (m_pBrush)
+						m_pBrush->setPosition(rayResult.terrain, rayResult.position);
 				}
 			}
 		}

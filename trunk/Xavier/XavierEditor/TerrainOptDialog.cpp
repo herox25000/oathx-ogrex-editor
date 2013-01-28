@@ -110,8 +110,12 @@ void CTerrainOptDialog::OnTimer(UINT_PTR nIDEvent)
 			);
 		if (pPlugin)
 		{
-			pPlugin->setBrushSize(m_BrushSize.GetPos());
-			pPlugin->setIntensity(m_Intensity.GetPos());
+			MeshBrush* pBrush = pPlugin->getMeshBrush();
+			if (pBrush)
+			{
+				pBrush->setRadius(m_BrushSize.GetPos());
+				pBrush->setIntensity(m_Intensity.GetPos());
+			}
 		}
 
 		char szTmp[MAX_PATH];
