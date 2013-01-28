@@ -262,7 +262,7 @@ namespace Ogre
 		if (pEditorTerrainPage)
 		{
 			// 设置删除优先级
-			pEditorTerrainPage->setPriority(PRIORITY_LOW);
+			pEditorTerrainPage->setPriority(PRIORITY_NORMAL);
 
 			TKLogEvent("Create editor plugin : " + adp.pluginName, LML_NORMAL);
 
