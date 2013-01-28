@@ -477,7 +477,7 @@ namespace Ogre
 
 			float	fIntensity	= m_pBrush->getIntensity();
 			float	fBrushSize	= m_pBrush->getRadius();
-			
+			fBrushSize *= (5 + (fBrushSize / BRUSH_DATA_SIZE));
 			Rect	brushRect;
 			Rect	mapRect;
 			if (!optRect(vPos, brushRect, mapRect, nBlendMapSize, fBrushSize))
