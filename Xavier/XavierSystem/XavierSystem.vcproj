@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\OgreServer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\OgreSystem.cpp"
 				>
 			</File>
@@ -202,6 +206,10 @@
 			>
 			<File
 				RelativePath=".\include\OgreDecalMesh.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServer.h"
 				>
 			</File>
 			<File
