@@ -29,7 +29,7 @@
 
 namespace Ogre
 {
-
+	class Server;
 }
 
 #endif

@@ -49,10 +49,10 @@ BOOL CTerrainOptDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();
 
-	m_BrushSize.SetRange(1, 128);
-	m_BrushSize.SetPos(30);
+	m_BrushSize.SetRange(2, 10);
+	m_BrushSize.SetPos(3);
 
-	m_Intensity.SetRange(1, 100);
+	m_Intensity.SetRange(2, 128);
 	m_Intensity.SetPos(80);
 
 	SetTimer(BRUSH_UPDATE_TIMER, 60, NULL);
