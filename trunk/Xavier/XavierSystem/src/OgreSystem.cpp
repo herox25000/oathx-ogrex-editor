@@ -76,7 +76,7 @@ namespace Ogre
 		}
 
 		/*
-		 *	创建渲染系统
+		 *	create and select render system
 		 */
 		Ogre::RenderSystemList::const_iterator pRend = m_pRoot->getAvailableRenderers().begin();
 		while(pRend != m_pRoot->getAvailableRenderers().end())
@@ -104,6 +104,7 @@ namespace Ogre
 		rsys->setConfigOption( "Full Screen", "No" );
 #endif
 		rsys->setConfigOption("FSAA", "2");
+		// set render system
 		m_pRoot->setRenderSystem( rsys );
 		
 		// create render window

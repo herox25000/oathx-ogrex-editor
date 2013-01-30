@@ -175,10 +175,6 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\src\OgreDecalMesh.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\src\OgreServer.cpp"
 				>
 			</File>
@@ -190,24 +186,12 @@
 				RelativePath=".\src\OgreSystemStdAfx.cpp"
 				>
 			</File>
-			<File
-				RelativePath=".\src\OgreTerrainSystem.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\src\OgreWorld.cpp"
-				>
-			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
-			<File
-				RelativePath=".\include\OgreDecalMesh.h"
-				>
-			</File>
 			<File
 				RelativePath=".\include\OgreServer.h"
 				>
@@ -222,14 +206,6 @@
 			</File>
 			<File
 				RelativePath=".\include\OgreSystemStdAfx.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreTerrainSystem.h"
-				>
-			</File>
-			<File
-				RelativePath=".\include\OgreWorld.h"
 				>
 			</File>
 		</Filter>
