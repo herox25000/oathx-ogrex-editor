@@ -76,7 +76,7 @@ namespace Ogre
 		for (int i=0; i<=PM_SOLID; i++)
 		{
 			if (CameraPloygonModeStr[i] == name)
-				return i;
+				return i+1;
 		}
 
 		return -1;

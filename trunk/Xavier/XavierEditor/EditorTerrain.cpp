@@ -331,7 +331,7 @@ namespace Ogre
 					m_pTerrainGroup->setOrigin(Vector3::ZERO);
 				}
 				
-				m_pBrush = new MeshBrush(pSceneManager, "System/BrushMesh", 4, 70, "sharp_circular.png");
+				m_pBrush = new MeshBrush(pSceneManager, "System/BrushMesh", 6, 25, "sharp_circular.png");
 		
 				return true;
 			}
@@ -622,7 +622,7 @@ namespace Ogre
 
 				for(int i=mapRect.left; i<mapRect.right; i++)
 				{
-					float fVal = pHeightData[nMapPos] + (pBrushData[(int)fBrushPos] * fIntensity * timePassed);
+					float fVal = pHeightData[nMapPos] + (pBrushData[(int)fBrushPos] * fIntensity * timePassed * -1);
 					pHeightData[nMapPos] = fVal;
 					
 					++ nMapPos;
@@ -705,7 +705,7 @@ namespace Ogre
 						break;
 					case ETM_DEFORM:
 						{
-							optDeform(pSelectPage, vRegin, evt.timeSinceLastEvent);
+							optDeform(pSelectPage, vRegin, evt.timeSinceLastFrame);
 						}
 						break;
 					}

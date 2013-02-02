@@ -67,15 +67,15 @@ void CWizardDialog::OnBnClickedOk()
 	{
 		SEditorPluginTerrainAdp adp;
 		adp.pluginName					= EDITOR_TERRAIN;
-		adp.fWorldSize					= 512.0f;
+		adp.fWorldSize					= 1024;
 		adp.nTerrainSize				= 129;
 		adp.nLightMapSize				= 1024;
 		adp.nLayerBlendMapSize			= 1024;
 		adp.nCompositeMapSize			= 1024;
 		adp.clrCompositeMapDiffuse		= ColourValue::White;
-		adp.fSkirtSize					= 1;
+		adp.fSkirtSize					= 0;
 		adp.fCompositeMapDistance		= 2000;
-		adp.fMaxPixelError				= 3;
+		adp.fMaxPixelError				= 8;
 
 		pTerrainFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_SCENEPLUGIN_NAME));
 	}
@@ -89,7 +89,7 @@ void CWizardDialog::OnBnClickedOk()
 		adp.tpl.layerDiffuseTexture[0]	= "dirt_grayrocky_diffusespecular.dds";
 		adp.tpl.layerNormalTexture[0]	= "dirt_grayrocky_normalheight.dds";
 		adp.nMinBatchSize				= 33;
-		adp.nMaxBatchSize				= 65;
+		adp.nMaxBatchSize				= 33;
 		adp.nPageX						= 0;
 		adp.nPageY						= 0;
 		adp.vPos						= Vector3::ZERO;

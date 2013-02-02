@@ -1,5 +1,4 @@
 #include "OgreSystemStdAfx.h"
-#include "OgrePropertySet.h"
 #include "OgreServer.h"
 
 namespace Ogre
@@ -94,7 +93,7 @@ namespace Ogre
 	 * \param pServer 
 	 * \return 
 	 */
-	bool			Server::registerServer(Server* pServer)
+	bool			Server::attachServer(Server* pServer)
 	{
 		if (m_Name == pServer->getName())
 		{
@@ -112,13 +111,14 @@ namespace Ogre
 
 			Server* pParent = pServer->getParent();
 			if (pParent)
-				pServer->unregisterServer(pServer, 0);
+				pServer->detachServer(pServer);
 
 			pServer->setParent(this);
 
 			m_HashMapServer.insert(
 				HashMapServer::value_type(pServer->getName(), pServer)
 				);
+			
 
 			return true;
 		}
@@ -177,13 +177,13 @@ namespace Ogre
 	 * \param pServer 
 	 * \param bDestroy 
 	 */
-	void			Server::unregisterServer(Server* pServer, bool bDestroy)
+	void			Server::detachServer(Server* pServer, bool bDestroy)
 	{
 		HashMapServer::iterator it = m_HashMapServer.find(pServer->getName());
 		if ( it != m_HashMapServer.end() )
 		{
 			pServer->setParent(NULL);
-
+			
 			if (bDestroy)
 			{
 				LogManager::getSingleton().logMessage(LML_NORMAL, 

@@ -179,6 +179,30 @@
 				>
 			</File>
 			<File
+				RelativePath=".\src\OgreServerCamera.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\OgreServerFactory.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\OgreServerFactoryManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\OgreServerManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\OgreServerSceneManager.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\src\OgreServerViewport.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\src\OgreSystem.cpp"
 				>
 			</File>
@@ -194,6 +218,30 @@
 			>
 			<File
 				RelativePath=".\include\OgreServer.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServerCamera.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServerFactory.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServerFactoryManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServerManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServerSceneManager.h"
+				>
+			</File>
+			<File
+				RelativePath=".\include\OgreServerViewport.h"
 				>
 			</File>
 			<File

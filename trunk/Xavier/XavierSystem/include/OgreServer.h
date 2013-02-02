@@ -1,13 +1,14 @@
 #ifndef _____OgreServer_H
 #define _____OgreServer_H
 
+#include "OgrePropertySet.h"
+
 namespace Ogre
 {
 	// server create adapter param
 	struct SServerAdp
 	{
-		int			ID;
-		String		Name;
+		String		name;
 	};
 
 	// server hash table
@@ -83,7 +84,7 @@ namespace Ogre
 		 * \param pServer 
 		 * \return 
 		 */
-		virtual	bool				registerServer(Server* pServer);
+		virtual	bool				attachServer(Server* pServer);
 		
 		/** get child server object
 		 *
@@ -105,7 +106,7 @@ namespace Ogre
 		 * \param pServer 
 		 * \param bDestroy	if the param is true, then will destroy
 		 */
-		virtual	void				unregisterServer(Server* pServer, bool bDestroy=true);
+		virtual	void				detachServer(Server* pServer, bool bDestroy=true);
 		
 		/**
 		 *
