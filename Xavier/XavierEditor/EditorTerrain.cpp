@@ -331,7 +331,7 @@ namespace Ogre
 					m_pTerrainGroup->setOrigin(Vector3::ZERO);
 				}
 				
-				m_pBrush = new MeshBrush(pSceneManager, "System/BrushMesh", 1, 70, "sharp_circular.png");
+				m_pBrush = new MeshBrush(pSceneManager, "System/BrushMesh", 4, 70, "sharp_circular.png");
 		
 				return true;
 			}
@@ -622,7 +622,7 @@ namespace Ogre
 
 				for(int i=mapRect.left; i<mapRect.right; i++)
 				{
-					float fVal = pHeightData[nMapPos] + (pBrushData[(int)fBrushPos] * fIntensity * 10 * timePassed);
+					float fVal = pHeightData[nMapPos] + (pBrushData[(int)fBrushPos] * fIntensity * timePassed);
 					pHeightData[nMapPos] = fVal;
 					
 					++ nMapPos;
