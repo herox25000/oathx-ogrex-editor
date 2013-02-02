@@ -101,7 +101,7 @@ namespace Ogre
 				dmp.inputImage		= 0;
 				dmp.inputFloat		= 0;
 				dmp.constantHeight	= 0;
-				dmp.inputScale		= 1.0f;
+				dmp.inputScale		= 0.0f;
 				
 				dmp.minBatchSize	= nMinBatchSize;
 				dmp.maxBatchSize	= nMaxBatchSize;

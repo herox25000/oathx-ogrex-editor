@@ -8,8 +8,6 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XavierEditor", "XavierEdito
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XavierEventSet", "XavierEventSet\XavierEventSet.vcproj", "{B956115D-250A-4775-AECF-1ECB51F208A2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "XavierSystem", "XavierSystem\XavierSystem.vcproj", "{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -24,10 +22,6 @@ Global
 		{B956115D-250A-4775-AECF-1ECB51F208A2}.Debug|Win32.Build.0 = Debug|Win32
 		{B956115D-250A-4775-AECF-1ECB51F208A2}.Release|Win32.ActiveCfg = Release|Win32
 		{B956115D-250A-4775-AECF-1ECB51F208A2}.Release|Win32.Build.0 = Release|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Debug|Win32.ActiveCfg = Debug|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Debug|Win32.Build.0 = Debug|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Release|Win32.ActiveCfg = Release|Win32
-		{AA6F0D82-93B3-4054-8B7F-0CAB34BC678F}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

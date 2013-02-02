@@ -1,6 +1,10 @@
 #include "OgreSystemStdAfx.h"
 #include "OgreSystem.h"
 #include "OgreGlobalEventSet.h"
+#include "OgreServer.h"
+#include "OgreServerManager.h"
+#include "OgreServerFactory.h"
+#include "OgreServerFactoryManager.h"
 
 namespace Ogre
 {
@@ -111,6 +115,8 @@ namespace Ogre
 		m_pRoot->initialise(bAutoCreateWindow);
 
 		new GlobalEventSet();
+		new ServerManager("Xavier");
+		new ServerFactoryManager();
 
 		return true;
 	}
@@ -128,6 +134,8 @@ namespace Ogre
 	 */
 	void		System::clearUp()
 	{
+		delete ServerManager::getSingletonPtr();
+		delete ServerFactoryManager::getSingletonPtr();
 		delete GlobalEventSet::getSingletonPtr();
 
 		if (m_pRoot != NULL)
