@@ -320,7 +320,7 @@ CMFCPropertyGridProperty*	CPropertiesWnd::CreatePolygonValueProperty(LPCTSTR lps
 		pProp->AddOption(PolygonModeString[0].c_str());
 		pProp->AddOption(PolygonModeString[1].c_str());
 		pProp->AddOption(PolygonModeString[2].c_str());
-		pProp->AllowEdit(FALSE);
+		//pProp->AllowEdit(FALSE);
 
 		return pProp;
 	}
@@ -649,7 +649,11 @@ LRESULT	CPropertiesWnd::OnPropertyChanged(WPARAM wParam, LPARAM lParam)
 			break;
 		case VT_BSTR:
 			{
+				oldValue.ChangeType(VT_BSTR);
+				CString s(oldValue.bstrVal);
 
+				pSelectPlugin->OnPropertyChanged(parentName, typeName, 
+					Any(String(s.GetBuffer())), PVT_STRING);
 			}
 			break;
 		}
