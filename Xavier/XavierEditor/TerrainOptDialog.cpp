@@ -43,6 +43,7 @@ BEGIN_MESSAGE_MAP(CTerrainOptDialog, CDialog)
 	ON_BN_CLICKED(IDC_RADIO_DEFORM, &CTerrainOptDialog::OnBnClickedRadioDeform)
 	ON_WM_PAINT()
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDC_RADIO_STAMP, &CTerrainOptDialog::OnBnClickedRadioStamp)
 END_MESSAGE_MAP()
 
 BOOL CTerrainOptDialog::OnInitDialog()
@@ -92,6 +93,20 @@ void CTerrainOptDialog::OnBnClickedRadioDeform()
 /**
  *
  */
+void CTerrainOptDialog::OnBnClickedRadioStamp()
+{
+	EditorTerrain* pPlugin = static_cast<EditorTerrain*>(
+		EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN)
+		);
+	if (pPlugin)
+	{
+		pPlugin->setActionValue(ETM_SMOOTH);
+	}
+}
+
+/**
+ *
+ */
 void CTerrainOptDialog::OnPaint()
 {
 	CPaintDC dc(this);
@@ -125,3 +140,5 @@ void CTerrainOptDialog::OnTimer(UINT_PTR nIDEvent)
 
 	CDialog::OnTimer(nIDEvent);
 }
+
+

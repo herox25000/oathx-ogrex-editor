@@ -74,4 +74,6 @@ public:
 protected:
 	CSliderCtrl		m_BrushSize;
 	CSliderCtrl		m_Intensity;	
+public:
+	afx_msg void OnBnClickedRadioStamp();
 };

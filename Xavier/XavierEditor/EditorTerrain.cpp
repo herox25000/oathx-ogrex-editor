@@ -247,7 +247,7 @@ namespace Ogre
 	 */
 	EditorTerrain::EditorTerrain(const String& pluginName, float fMaxPixelError, uint16 nCompositeMapSize, float fCompositeMapDistance,
 		uint16 nLightMapSize, uint16 nLayerBlendMapSize, float fSkirtSize,const ColourValue& clrCompositeMapDiffuse, uint16 nTerrainSize, float fWorldSize)
-		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_pBrush(NULL)
+		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_pBrush(NULL), m_bShift(false)
 	{
 		// get viewport plugin
 		m_pViewporPlugin = static_cast<EditorViewport*>(
@@ -445,6 +445,47 @@ namespace Ogre
 
 	/**
 	 *
+	 * \param pPahe 
+	 * \param Vector3&vPos 
+	 * \param fAvg 
+	 * \param nSampleCount 
+	 */
+	void			EditorTerrain::calcSmoothingFactor(EditorTerrainPage* pPage, Vector3&vPos, float& fAvg, int& nSampleCount)
+	{
+		Terrain* pTerrain = pPage->getTerrain();
+		
+		Rect brushRect;
+		Rect mapRect;
+
+		int nMapSize = pTerrain->getSize();
+		vPos.x *= (float)(nMapSize - 1);
+		vPos.y *= (float)(nMapSize - 1);
+
+		fAvg			= 0.0f;
+		nSampleCount	= 0;
+
+		if(!optRect(vPos, brushRect, mapRect, nMapSize, m_pBrush->getRadius()))
+			return;
+
+		float* pHeightData = pTerrain->getHeightData();
+		int nMapPos;
+
+		for(int j=mapRect.top; j<mapRect.bottom; j++)
+		{
+			nMapPos = (j * nMapSize) + mapRect.left;
+
+			for(int i= mapRect.left; i<mapRect.right; i++)
+			{
+				fAvg += pHeightData[nMapPos];
+				++nMapPos;
+			}
+		}
+
+		nSampleCount = (mapRect.right - mapRect.left) * (mapRect.bottom - mapRect.top);
+	}
+
+	/**
+	 *
 	 * \param pPage 
 	 * \param vPos 
 	 * \param timePassed 
@@ -525,52 +566,83 @@ namespace Ogre
 
 					float	fBrushPos;
 					int		nMapPos;
-					int		u;
-					float	fSum;
-					
-					for (int j=mapRect.top; j<mapRect.bottom; j++)
+
+					if (!m_bShift)
 					{
-						fBrushPos	= (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
-						fBrushPos	+= brushRect.right;
+						int		u;
+						float	fSum;
 
-						nMapPos		= j * nBlendMapSize + mapRect.left;
-
-						for (int i=mapRect.left; i<mapRect.right; i++)
+						for (int j=mapRect.top; j<mapRect.bottom; j++)
 						{
-							fBrushPos	-= fRatio;
-							fSum		= 0.0f;
+							fBrushPos	= (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
+							fBrushPos	+= brushRect.right;
 
-							for (u=nLayerID + 1; u<nLayerCount; u++)
+							nMapPos		= j * nBlendMapSize + mapRect.left;
+
+							for (int i=mapRect.left; i<mapRect.right; i++)
 							{
-								fSum += pBlendData[u][nMapPos];
-							}
+								fBrushPos	-= fRatio;
+								fSum		= 0.0f;
 
-							float fVal	= pLayerData[nMapPos] + (pBrushData[(int)fBrushPos] * fFactor);
-							fSum		+= fVal;
-
-							if (fSum > 1.0f)
-							{
-								float fNormalFactor = 1.0f / fSum;
-								pLayerData[nMapPos]	= fVal * fNormalFactor;
-
-								for (u=nLayerID +1; u<nLayerCount; u++)
+								for (u=nLayerID + 1; u<nLayerCount; u++)
 								{
-									pBlendData[u][nMapPos] *= fNormalFactor;
+									fSum += pBlendData[u][nMapPos];
 								}
-							}
-							else
-							{
-								pLayerData[nMapPos] = fVal;
-							}
 
-							++ nMapPos;
+								float fVal	= pLayerData[nMapPos] + (pBrushData[(int)fBrushPos] * fFactor);
+								fSum		+= fVal;
+
+								if (fSum > 1.0f)
+								{
+									float fNormalFactor = 1.0f / fSum;
+									pLayerData[nMapPos]	= fVal * fNormalFactor;
+
+									for (u=nLayerID +1; u<nLayerCount; u++)
+									{
+										pBlendData[u][nMapPos] *= fNormalFactor;
+									}
+								}
+								else
+								{
+									pLayerData[nMapPos] = fVal;
+								}
+
+								++ nMapPos;
+							}
+						}
+
+						for (u=nLayerID; u<nLayerCount; u++)
+						{
+							pBlendMaps[u]->dirtyRect(mapRect);
+							pBlendMaps[u]->update();
 						}
 					}
-
-					for (u=nLayerID; u<nLayerCount; u++)
+					else
 					{
-						pBlendMaps[u]->dirtyRect(mapRect);
-						pBlendMaps[u]->update();
+						for (int j=mapRect.top; j<mapRect.bottom; j++)
+						{
+							fBrushPos	= (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
+							fBrushPos	+= brushRect.right;
+
+							nMapPos		= j * nBlendMapSize + mapRect.left;
+
+							for (int i=mapRect.left; i<mapRect.right; i++)
+							{
+								fBrushPos -= fRatio;
+
+								float fVal = pLayerData[nMapPos] - (pBrushData[(int)fBrushPos] * fFactor);
+
+								if(fVal < 0.0f)
+									fVal = 0.0f;
+
+								pLayerData[nMapPos] = fVal;
+
+								++nMapPos;
+							}
+						}
+
+						pLayerMaps->dirtyRect(mapRect);
+						pLayerMaps->update();
 					}
 				}
 			}
@@ -604,7 +676,7 @@ namespace Ogre
 		if (!optRect(vPos, brushRect, mapRect,  nTerrainSize, m_pBrush->getRadius()))
 			return 0;
 
-		float	fIntensity	= m_pBrush->getIntensity();
+		float	fIntensity	= m_pBrush->getIntensity() * ((m_bShift) ? -1 : 1);
 		float	fBrushSize	= m_pBrush->getRadius();
 		float*	pBrushData	= m_pBrush->getBrushData();
 		float*	pHeightData	= pTerrain->getHeightData();
@@ -622,7 +694,7 @@ namespace Ogre
 
 				for(int i=mapRect.left; i<mapRect.right; i++)
 				{
-					float fVal = pHeightData[nMapPos] + (pBrushData[(int)fBrushPos] * fIntensity * timePassed * -1);
+					float fVal = pHeightData[nMapPos] + (pBrushData[(int)fBrushPos] * fIntensity * timePassed);
 					pHeightData[nMapPos] = fVal;
 					
 					++ nMapPos;
@@ -637,6 +709,89 @@ namespace Ogre
 				m_pTerrainGroup->update();
 		}
 	
+		return true;
+	}
+
+	/**
+	 *
+	 * \param pPage 
+	 * \param vPos 
+	 * \param timePassed 
+	 * \return 
+	 */
+	bool			EditorTerrain::optSmooth(EditorTerrainPage* pPage, Vector3& vPos, float fAvg, float timePassed)
+	{
+		Terrain* pTerrain = pPage->getTerrain();
+		if (pTerrain == NULL)
+			return 0;
+
+
+		float*	pHeightData	= pTerrain->getHeightData();
+		float*	pBrushData	= m_pBrush->getBrushData();
+		float	fIntensity	= m_pBrush->getIntensity();
+		float	fRadius		= m_pBrush->getRadius();
+
+		int nMapSize	= pTerrain->getSize();
+		vPos.x *= (float)(nMapSize - 1);
+		vPos.y *= (float)(nMapSize - 1);
+
+		Rect	brushRect;
+		Rect	mapRect;
+		if(!optRect(vPos, brushRect, mapRect, nMapSize, fRadius))
+			return 0;
+
+		float	fRatio		= (float)BRUSH_DATA_SIZE / fRadius;
+		float	fFactor		= fIntensity * timePassed * 0.03f;
+
+		float	brushPos;
+		int		nMapPos;
+
+		if(!m_bShift)
+		{
+			for(int j=mapRect.top; j<mapRect.bottom; j++)
+			{
+				brushPos = (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
+				brushPos += brushRect.left;
+				nMapPos = (j * nMapSize) + mapRect.left;
+
+				for(int i = mapRect.left;i < mapRect.right;i++)
+				{
+					float fVal = fAvg - pHeightData[nMapPos];
+					fVal = fVal * min(pBrushData[(int)brushPos] * fFactor, 1.0f);
+					pHeightData[nMapPos] -= fVal;
+
+					++ nMapPos;
+					
+					brushPos += fRatio;
+				}
+			}
+		}
+		else
+		{
+			for(int j=mapRect.top; j<mapRect.bottom; j++)
+			{
+				brushPos = (brushRect.top + (int)((j - mapRect.top) * fRatio)) * BRUSH_DATA_SIZE;
+				brushPos += brushRect.left;
+				nMapPos = (j * nMapSize) + mapRect.left;
+
+				for(int i=mapRect.left; i<mapRect.right; i++)
+				{
+					float fVal = fAvg - pHeightData[nMapPos];
+					fVal = fVal * min(pBrushData[(int)brushPos] * fFactor, 1.0f);
+					pHeightData[nMapPos] += fVal;
+					
+					++ nMapPos;
+
+					brushPos += fRatio;
+				}
+			}
+		}
+
+		pTerrain->dirtyRect(mapRect);
+
+		if (m_pTerrainGroup)
+			m_pTerrainGroup->update();
+
 		return true;
 	}
 	
@@ -678,6 +833,39 @@ namespace Ogre
 				vPos.z + fBrushWorld));
 	
 			Vector3 vRegin;
+			float	fAvgTotal			= 0.0f;
+			float	fSampleCountTotal	= 0;
+
+			if(m_nCurAction == ETM_SMOOTH)
+			{
+				for (int i=0; i<vTerrain.size(); i++)
+				{
+					vTerrain[i]->getTerrainPosition(vPos, &vRegin);
+
+					// —°‘Ò“≥
+					EditorTerrainPage* pSelectPage = NULL;
+
+					HashMapEditorPluginIter hashPlugin = getPluginIter();
+					while( hashPlugin.hasMoreElements() )
+					{
+						pSelectPage = static_cast<EditorTerrainPage*>(hashPlugin.getNext());
+						if (pSelectPage->getTerrain() == vTerrain[i])
+							break;
+					}
+
+					if (pSelectPage)
+					{
+						float	 fAvg			= 0.0f;
+						int		nSampleCount	= 0;
+						calcSmoothingFactor(pSelectPage, vRegin, fAvg, nSampleCount);
+
+						fAvgTotal += fAvg;
+						fSampleCountTotal += nSampleCount;
+					}
+				}
+			}
+
+			
 			for (int i=0; i<vTerrain.size(); i++)
 			{
 				vTerrain[i]->getTerrainPosition(vPos,
@@ -706,6 +894,12 @@ namespace Ogre
 					case ETM_DEFORM:
 						{
 							optDeform(pSelectPage, vRegin, evt.timeSinceLastFrame);
+						}
+						break;
+					case ETM_SMOOTH:
+						{
+							optSmooth(pSelectPage, vRegin, fAvgTotal / (float)fSampleCountTotal, 
+								evt.timeSinceLastFrame);
 						}
 						break;
 					}
@@ -790,6 +984,14 @@ namespace Ogre
 		if (EditorPlugin::OnKeyDown(nChar, nRepCnt, nFlags))
 			return true;
 
+		switch( nChar )
+		{
+		case VK_SHIFT:
+			{
+				m_bShift = true;
+			}
+			break;
+		}
 		return 0;
 	}
 
@@ -802,7 +1004,16 @@ namespace Ogre
 	 */
 	bool			EditorTerrain::OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
 	{
-		return true;
+		switch( nChar )
+		{
+		case VK_SHIFT:
+			{
+				m_bShift = 0;
+			}
+			break;
+		}
+
+		return 0;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
