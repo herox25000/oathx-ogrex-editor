@@ -309,6 +309,15 @@ namespace Ogre
 		 */
 		virtual	bool			optDeform(EditorTerrainPage* pPage, Vector3& vPos,
 			float timePassed);
+		
+		/**
+		 *
+		 * \param pPage 
+		 * \param vPos 
+		 * \param timePassed 
+		 * \return 
+		 */
+		virtual	bool			optSmooth(EditorTerrainPage* pPage, Vector3& vPos, float fAvg, float timePassed);
 
 		/**
 		 *
@@ -320,7 +329,16 @@ namespace Ogre
 		 */
 		virtual	bool			optRect(const Vector3& vPos, Rect& brushRect, 
 			Rect& mapRect, int nSize, float fRaidus);
-
+		
+		/**
+		 *
+		 * \param pPahe 
+		 * \param Vector3&vPos 
+		 * \param fAvg 
+		 * \param nSampleCount 
+		 */
+		virtual	void			calcSmoothingFactor(EditorTerrainPage* pPahe, Vector3&vPos,
+			float& fAvg, int& nSampleCount);
 	protected:
 		EditorViewport*			m_pViewporPlugin;
 		TerrainGroup*			m_pTerrainGroup;
@@ -331,6 +349,7 @@ namespace Ogre
 		int						m_nCurAction;
 		String					m_BlendTexture;
 		String					m_BlendNormal;
+		bool					m_bShift;
 	};
 
 	// 地形创建适配参数
