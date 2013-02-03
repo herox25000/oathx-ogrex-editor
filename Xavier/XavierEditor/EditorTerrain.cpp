@@ -247,7 +247,7 @@ namespace Ogre
 	 */
 	EditorTerrain::EditorTerrain(const String& pluginName, float fMaxPixelError, uint16 nCompositeMapSize, float fCompositeMapDistance,
 		uint16 nLightMapSize, uint16 nLayerBlendMapSize, float fSkirtSize,const ColourValue& clrCompositeMapDiffuse, uint16 nTerrainSize, float fWorldSize)
-		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_pBrush(NULL), m_bShift(false)
+		: EditorPlugin(pluginName), m_pGlobalOptions(NULL), m_pTerrainGroup(NULL), m_pBrush(NULL), m_bShift(false), m_bActive(false)
 	{
 		// get viewport plugin
 		m_pViewporPlugin = static_cast<EditorViewport*>(
@@ -676,6 +676,8 @@ namespace Ogre
 		if (!optRect(vPos, brushRect, mapRect,  nTerrainSize, m_pBrush->getRadius()))
 			return 0;
 
+		pPage->alterStart(0, mapRect);
+
 		float	fIntensity	= m_pBrush->getIntensity() * ((m_bShift) ? -1 : 1);
 		float	fBrushSize	= m_pBrush->getRadius();
 		float*	pBrushData	= m_pBrush->getBrushData();
@@ -794,6 +796,35 @@ namespace Ogre
 
 		return true;
 	}
+
+	/**
+	 *
+	 */
+	void			EditorTerrain::optStart()
+	{
+		m_bActive = true;
+	}
+
+	/**
+	 *
+	 */
+	void			EditorTerrain::optEnd()
+	{
+		if (m_bActive)
+		{
+			m_bActive = false;
+
+			HashMapEditorPluginIter hashPlugin = getPluginIter();
+			while( hashPlugin.hasMoreElements() )
+			{
+				EditorTerrainPage* pPage = static_cast<EditorTerrainPage*>(hashPlugin.getNext());
+				if (pPage)
+				{
+					pPage->alterEnd(0);
+				}
+			}
+		}
+	}
 	
 	/**
 	 *
@@ -864,7 +895,6 @@ namespace Ogre
 					}
 				}
 			}
-
 			
 			for (int i=0; i<vTerrain.size(); i++)
 			{
@@ -956,6 +986,7 @@ namespace Ogre
 		if (m_nActionValue != ETM_NONE)
 		{
 			m_nCurAction = m_nActionValue;
+			optStart();
 		}
 
 		return 0;
@@ -968,7 +999,12 @@ namespace Ogre
 	 */
 	bool			EditorTerrain::OnLButtonUp(const Vector2& vPos)
 	{
-		m_nCurAction = ETM_NONE;
+		if (m_nActionValue != ETM_NONE)
+		{
+			optEnd();
+			m_nCurAction = ETM_NONE;
+		}
+
 		return 0;
 	}
 

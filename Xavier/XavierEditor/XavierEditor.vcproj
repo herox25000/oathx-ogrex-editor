@@ -476,6 +476,22 @@
 				Name="core"
 				>
 				<File
+					RelativePath=".\EditorAction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorAction.h"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorActionManager.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorActionManager.h"
+					>
+				</File>
+				<File
 					RelativePath=".\EditorDebugMessage.cpp"
 					>
 				</File>
@@ -537,6 +553,14 @@
 				</File>
 				<File
 					RelativePath=".\EditorCamera.h"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorHeightAction.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorHeightAction.h"
 					>
 				</File>
 				<File

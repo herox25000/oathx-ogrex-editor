@@ -17,6 +17,7 @@ BEGIN_MESSAGE_MAP(CXavierEditorView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CXavierEditorView::OnFilePrintPreview)
 	ON_MESSAGE(WM_WIZARD_FNISHED, &CXavierEditorView::OnWizardFnished)
+	ON_MESSAGE(WM_HOTKEY, OnHotKey)
 	ON_WM_CREATE()
 	ON_WM_TIMER()
 	ON_WM_DESTROY()
@@ -167,6 +168,8 @@ int		CXavierEditorView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	// …Ë÷√‰÷»æ∂®∆˜
 	SetTimer(OGRE_RENDER_TIMER, 16, NULL);
 
+	::RegisterHotKey(m_hWnd, 0, MOD_CONTROL, 'Z');
+	::RegisterHotKey(m_hWnd, 1, MOD_CONTROL, 'Y');
 	return 0;
 }
 
@@ -383,4 +386,27 @@ void	CXavierEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 	}
 
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
+}
+
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LONG	CXavierEditorView::OnHotKey(WPARAM wParam,LPARAM lParam)
+{
+	UINT fuModifiers	= (UINT) LOWORD(lParam);  // key-modifier flags    
+	UINT uVirtKey		= (UINT) HIWORD(lParam);     // virtual-key code    
+
+	if( MOD_CONTROL == fuModifiers && 'Z' == uVirtKey )  
+	{  
+		EditorActionManager::getSingleton().redo();
+	}  
+	else if( MOD_CONTROL == fuModifiers && 'Y' == uVirtKey )  
+	{  
+		EditorActionManager::getSingleton().undo();
+	}
+
+	return 0;
 }

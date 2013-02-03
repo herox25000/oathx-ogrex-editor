@@ -3,7 +3,9 @@
 #include "EditorPlugin.h"
 #include "EditorPluginFactoryManager.h"
 #include "EditorPluginManager.h"
+#include "EditorActionManager.h"
 #include "OgreGlobalEventSet.h"
+
 
 namespace Ogre
 {
@@ -104,6 +106,7 @@ namespace Ogre
 		new GlobalEventSet();
 		new EditorPluginFactoryManager();
 		new EditorPluginManager("Xavier.world");
+		new EditorActionManager();
 
 		return true;
 	}
@@ -121,6 +124,7 @@ namespace Ogre
 	 */
 	void		EditorSystem::clearUp()
 	{
+		delete EditorActionManager::getSingletonPtr();
 		delete EditorPluginFactoryManager::getSingletonPtr();
 		delete EditorPluginManager::getSingletonPtr();
 		delete GlobalEventSet::getSingletonPtr();

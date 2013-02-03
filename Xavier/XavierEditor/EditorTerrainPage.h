@@ -1,6 +1,8 @@
 #ifndef _____EditorTerrainPage_H
 #define _____EditorTerrainPage_H
 
+#include "EditorPlugin.h"
+
 namespace Ogre
 {
 #ifndef MAX_LAYERS_ALLOWED
@@ -82,6 +84,25 @@ namespace Ogre
 		 */
 		virtual	int				addLayer(const String& texture, const String& normal, 
 			float fWorldSize);
+
+		/**
+		 *
+		 * \param area 
+		 * \param pData 
+		 */
+		virtual void			swapHeight(Rect area, float* pData);
+
+		/**
+		 *
+		 * \param nValue 
+		 */
+		virtual	void			alterStart(int nValue, const Rect& area);
+
+		/**
+		 *
+		 * \param nValue 
+		 */
+		virtual	void			alterEnd(int nValue);
 	protected:
 		/**
 		 *
@@ -101,6 +122,8 @@ namespace Ogre
 	protected:
 		Terrain*				m_pTerrain;
 		STerrainPageLayer		m_PageLayer;
+		float*					m_pSaveHeight;
+		Rect					m_AlterRect;
 	};
 
 
