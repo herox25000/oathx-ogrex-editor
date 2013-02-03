@@ -44,8 +44,7 @@ namespace Ogre
 		 */
 		virtual	void		execute();
 	protected:
-		char				m_chSaveName[MAX_PATH];
-		String				m_Name;
+		char				m_chFileName[MAX_PATH];
 		Rect				m_Rect;
 		int					m_nPageX;
 		int					m_nPageY;

@@ -1,11 +1,5 @@
 #include "stdafx.h"
-#include "EditorPlugin.h"
 #include "EditorPluginFactoryManager.h"
-#include "EditorSceneManager.h"
-#include "EditorCamera.h"
-#include "EditorViewport.h"
-#include "EditorTerrain.h"
-#include "EditorTerrainPage.h"
 
 namespace Ogre
 {

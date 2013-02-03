@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "EditorPlugin.h"
 #include "EditorSceneManager.h"
 #include "EditorPluginManager.h"
 #include "EditorCamera.h"
@@ -102,7 +101,7 @@ namespace Ogre
 		if (configure(pluginName, vPos, q, fNearClipDistance, fFarClipDistance, fFov, bAutoAspectRatio, nQueryFlags))
 		{
 			addProperty(cameraName[CAMERA_PLUGIN_NAME],
-				Any(pluginName), PVT_STRING, true, cameraDesc[CAMERA_PLUGIN_NAME]);
+				Any(pluginName), PVT_STRING, 0, cameraDesc[CAMERA_PLUGIN_NAME]);
 			addProperty(cameraName[CAMERA_POS],
 				Any(vPos), PVT_VECTOR3, true, cameraDesc[CAMERA_POS]);
 			addProperty(cameraName[CAMERA_Q],
@@ -236,7 +235,7 @@ namespace Ogre
 		m_bRMouseDown	= 0;
 		m_vRigthDwon	= vPos;
 		
-		return 0;
+		return true;
 	}
 
 	/**

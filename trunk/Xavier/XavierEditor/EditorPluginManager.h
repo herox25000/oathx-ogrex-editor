@@ -1,6 +1,8 @@
 #ifndef _____EditorPluginManager_H
 #define _____EditorPluginManager_H
 
+#include "EditorPlugin.h"
+
 namespace Ogre
 {
 	/**

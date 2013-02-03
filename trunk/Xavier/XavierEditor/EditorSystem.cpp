@@ -1,9 +1,5 @@
 #include "stdafx.h"
 #include "EditorSystem.h"
-#include "EditorPlugin.h"
-#include "EditorPluginFactoryManager.h"
-#include "EditorPluginManager.h"
-#include "EditorActionManager.h"
 #include "OgreGlobalEventSet.h"
 
 
@@ -174,5 +170,33 @@ namespace Ogre
 	RenderWindow*	EditorSystem::getRenderWindow() const
 	{
 		return m_pRenderWindow;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	String			EditorSystem::getModulePath()
+	{
+		char szPath[MAX_PATH];
+		::GetModuleFileName(NULL, szPath, MAX_PATH);
+
+		String curPath(szPath);
+		size_t iPos = curPath.find_last_of('\\');
+		if (iPos == String::npos)
+		{
+			iPos = curPath.find_last_of('/');
+		}
+
+		if (iPos != String::npos)
+		{
+			curPath = curPath.substr(0,  iPos);
+		}
+		else
+		{
+			curPath.clear();
+		}
+
+		return curPath;
 	}
 }

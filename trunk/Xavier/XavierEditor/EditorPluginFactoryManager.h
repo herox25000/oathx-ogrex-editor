@@ -1,6 +1,12 @@
 #ifndef _____EditorPluginFactoryManager_H
 #define _____EditorPluginFactoryManager_H
 
+#include "EditorSceneManager.h"
+#include "EditorCamera.h"
+#include "EditorViewport.h"
+#include "EditorTerrain.h"
+#include "EditorTerrainPage.h"
+
 namespace Ogre
 {
 	enum {

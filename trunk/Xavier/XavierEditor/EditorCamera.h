@@ -1,6 +1,8 @@
 #ifndef _____EditorCamera_H
 #define _____EditorCamera_H
 
+#include "EditorPlugin.h"
+
 namespace Ogre
 {
 	/**

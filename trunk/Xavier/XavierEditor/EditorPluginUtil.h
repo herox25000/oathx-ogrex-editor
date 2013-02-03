@@ -68,5 +68,27 @@ namespace Ogre
 
 		return -1;
 	}
+
+	static const String FogModePropertyName[] = {
+		/// No fog. Duh.
+		"FOG_NONE",
+		/// Fog density increases  exponentially from the camera (fog = 1/e^(distance * density))
+		"FOG_EXP",
+		/// Fog density increases at the square of FOG_EXP, i.e. even quicker (fog = 1/e^(distance * density)^2)
+		"FOG_EXP2",
+		/// Fog density increases linearly between the start and end distances
+		"FOG_LINEAR"
+	};
+
+	static int	convertFogModePropertyType(const String& name)
+	{
+		for (int i=0; i<=FOG_LINEAR; i++)
+		{
+			if (FogModePropertyName[i] == name)
+				return i;
+		}
+
+		return 0;
+	}
 	//////////////////////////////////////////////////////////////////////////
 }

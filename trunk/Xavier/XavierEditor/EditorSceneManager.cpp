@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "EditorPlugin.h"
 #include "EditorSceneManager.h"
 
 namespace Ogre
@@ -142,6 +141,206 @@ namespace Ogre
 		return m_pSceneManager;
 	}
 
+	/**
+	 *
+	 * \param parentName 
+	 * \param name 
+	 * \param anyValue 
+	 * \param nType 
+	 * \return 
+	 */
+	bool			EditorSceneManager::OnPropertyChanged(const String& parentName, const String& name,
+		const Any& anyValue, int nType)
+	{
+		int nPropertyType = convertSceneManagerPropertyType(parentName.empty() ? name : parentName);
+		if (nPropertyType >= 0)
+		{
+			switch( nPropertyType )
+			{
+			case ESMP_AMBIENTLIGHT:
+				{
+					ColourValue clrAmbientLight = m_pSceneManager->getAmbientLight();
+
+					int nNormal = convertNormalPropertyType(name);
+					switch( nNormal )
+					{
+					case NORMAL_RGB:
+						{
+							uint32 rgb = any_cast<uint32>(anyValue);
+							int a = GetR(rgb);
+							int b = GetG(rgb);
+							int c = GetB(rgb);
+
+							clrAmbientLight.r = NormalValue(GetR(rgb));
+							clrAmbientLight.g = NormalValue(GetG(rgb));
+							clrAmbientLight.b = NormalValue(GetB(rgb));
+						}
+						break;
+					case NORMAL_ALHPA:
+						{
+							clrAmbientLight.a = any_cast<float>(anyValue);
+						}
+						break;
+					}
+
+					setPropertyValue<ColourValue>(parentName.empty() ? name : parentName, 
+						clrAmbientLight);
+					m_pSceneManager->setAmbientLight(clrAmbientLight);
+				}
+				break;
+			case ESMP_FOGMODE:
+				{
+					String	val		= any_cast<String>(anyValue);
+					FogMode mode	= (FogMode)(convertFogModePropertyType(val));
+					setPropertyValue<FogMode>(parentName.empty() ? name : parentName,
+						mode);
+
+					ColourValue clrFog;
+					getPropertyValue<ColourValue>(esmpName[ESMP_FOGCOLOUR], 
+						clrFog);
+
+					float		fExpDensity;
+					getPropertyValue<float>(esmpName[ESMP_EXPDENSITY], 
+						fExpDensity);
+
+					float		fLinearStart;
+					getPropertyValue<float>(esmpName[ESMP_LINEARSTART], 
+						fLinearStart);
+
+					float		fLinearEnd;
+					getPropertyValue<float>(esmpName[ESMP_LINEAREND], 
+						fLinearEnd);
+
+					m_pSceneManager->setFog(mode, clrFog, fExpDensity, fLinearStart, fLinearEnd);
+				}
+				break;
+			case ESMP_FOGCOLOUR:
+				{
+					ColourValue clrFog = m_pSceneManager->getFogColour();
+
+					int nNormal = convertNormalPropertyType(name);
+					switch( nNormal )
+					{
+					case NORMAL_RGB:
+						{
+							uint32 rgb = any_cast<uint32>(anyValue);
+							int a = GetR(rgb);
+							int b = GetG(rgb);
+							int c = GetB(rgb);
+
+							clrFog.r = NormalValue(GetR(rgb));
+							clrFog.g = NormalValue(GetG(rgb));
+							clrFog.b = NormalValue(GetB(rgb));
+						}
+						break;
+					case NORMAL_ALHPA:
+						{
+							clrFog.a = any_cast<float>(anyValue);
+						}
+						break;
+					}
+					setPropertyValue<ColourValue>(parentName.empty() ? name : parentName,
+						clrFog);
+
+					FogMode		mode;
+					getPropertyValue<FogMode>(esmpName[ESMP_FOGMODE], mode);
+
+					float		fExpDensity;
+					getPropertyValue<float>(esmpName[ESMP_EXPDENSITY], 
+						fExpDensity);
+
+					float		fLinearStart;
+					getPropertyValue<float>(esmpName[ESMP_LINEARSTART], 
+						fLinearStart);
+
+					float		fLinearEnd;
+					getPropertyValue<float>(esmpName[ESMP_LINEAREND], 
+						fLinearEnd);
+
+					m_pSceneManager->setFog(mode, clrFog, fExpDensity, fLinearStart, fLinearEnd);
+
+				}
+				break;
+			case ESMP_EXPDENSITY:
+				{
+					float fExpDensity = any_cast<float>(anyValue);
+					setPropertyValue<float>(parentName.empty() ? name : parentName,
+						fExpDensity);
+
+					FogMode		mode;
+					getPropertyValue<FogMode>(esmpName[ESMP_FOGMODE], mode);
+
+					ColourValue clrFog;
+					getPropertyValue<ColourValue>(esmpName[ESMP_FOGCOLOUR], 
+						clrFog);
+
+					float		fLinearStart;
+					getPropertyValue<float>(esmpName[ESMP_LINEARSTART], 
+						fLinearStart);
+
+					float		fLinearEnd;
+					getPropertyValue<float>(esmpName[ESMP_LINEAREND], 
+						fLinearEnd);
+
+					m_pSceneManager->setFog(mode, clrFog, fExpDensity, fLinearStart, fLinearEnd);
+
+				}
+				break;
+			case ESMP_LINEARSTART:
+				{
+					float fLinearStart = any_cast<float>(anyValue);
+					setPropertyValue<float>(parentName.empty() ? name : parentName,
+						fLinearStart);
+
+					FogMode		mode;
+					getPropertyValue<FogMode>(esmpName[ESMP_FOGMODE], mode);
+
+					ColourValue clrFog;
+					getPropertyValue<ColourValue>(esmpName[ESMP_FOGCOLOUR], 
+						clrFog);
+
+					float		fExpDensity;
+					getPropertyValue<float>(esmpName[ESMP_EXPDENSITY], 
+						fExpDensity);
+
+					float		fLinearEnd;
+					getPropertyValue<float>(esmpName[ESMP_LINEAREND], 
+						fLinearEnd);
+
+					m_pSceneManager->setFog(mode, clrFog, fExpDensity, fLinearStart, fLinearEnd);
+				}
+				break;
+			case ESMP_LINEAREND:
+				{
+					float fLinearEnd = any_cast<float>(anyValue);
+					setPropertyValue<float>(parentName.empty() ? name : parentName,
+						fLinearEnd);
+
+					FogMode		mode;
+					getPropertyValue<FogMode>(esmpName[ESMP_FOGMODE], mode);
+
+					ColourValue clrFog;
+					getPropertyValue<ColourValue>(esmpName[ESMP_FOGCOLOUR], 
+						clrFog);
+
+					float		fExpDensity;
+					getPropertyValue<float>(esmpName[ESMP_EXPDENSITY], 
+						fExpDensity);
+
+					float		fLinearStart;
+					getPropertyValue<float>(esmpName[ESMP_LINEARSTART], 
+						fLinearStart);
+
+					m_pSceneManager->setFog(mode, clrFog, fExpDensity, fLinearStart, fLinearEnd);
+				}
+				break;
+
+			}
+		}
+		return true;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *
 	 * \param factoryName 

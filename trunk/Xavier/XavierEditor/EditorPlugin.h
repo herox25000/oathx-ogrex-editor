@@ -95,48 +95,37 @@ namespace Ogre
 		 */
 		virtual	void					unregisterPlugin(EditorPlugin* pPlugin, bool bDestroy=true);
 
-		/**
+		/** 设置父编辑器
 		 *
 		 * \param pParent 
 		 */
 		virtual	void					setParent(EditorPlugin* pParent);
 
-		/**
+		/** 获取当前编辑器的父亲
 		 *
 		 * \return 
 		 */
 		virtual	EditorPlugin*			getParent() const;
 		
-		/**
+		/** 销毁所有编辑器
 		 *
 		 */
 		virtual	void					destroyAllPlugin();
 
-		/**
+		/** 获取子插件迭代器
 		 *
 		 * \return 
 		 */
 		virtual	HashMapEditorPluginIter	getPluginIter();
 		
-		/**
-		 *
-		 * \param bInheritPick 
-		 */
-		virtual	void					setInheritPick(bool bInheritPick);
 
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	bool					getInheritPick() const;
-
-		/**
+		/** 设置优先级，该优先级将决定编辑插件的删除顺序
 		 *
 		 * \param nPriority 
 		 */
 		virtual void					setPriority(int nPriority);
 
-		/**
+		/** 获取优先级
 		 *
 		 * \return 
 		 */
@@ -226,7 +215,6 @@ namespace Ogre
 		HashMapEditorPlugin				m_HashMapEditorPlugin;
 		String							m_Name;
 		EditorPlugin*					m_pParent;
-		bool							m_bInheritPick;
 		int								m_nPriority;
 	};
 

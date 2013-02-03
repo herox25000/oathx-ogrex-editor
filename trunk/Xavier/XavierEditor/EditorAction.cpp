@@ -7,7 +7,8 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	EditorAction::EditorAction()
+	EditorAction::EditorAction(const String& name)
+		: m_Name(name)
 	{
 
 	}
@@ -24,8 +25,17 @@ namespace Ogre
 	/**
 	 *
 	 */
-	void	EditorAction::execute()
+	void			EditorAction::execute()
 	{
 		
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	const String&	EditorAction::getName() const
+	{
+		return m_Name;
 	}
 }

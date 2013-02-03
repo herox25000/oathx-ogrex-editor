@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "EditorPlugin.h"
 #include "EditorPluginManager.h"
 #include "EditorTerrain.h"
 #include "EditorTerrainPage.h"
@@ -235,14 +234,6 @@ namespace Ogre
 
 			m_pTerrain->dirtyRect(area);
 			m_pTerrain->update();
-
-			EditorTerrain* pPlugin = static_cast<EditorTerrain*>(
-				EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN)
-				);
-			if (pPlugin)
-			{
-				pPlugin->getTerrainGroup()->update();
-			}
 		}
 	}
 
@@ -307,7 +298,7 @@ namespace Ogre
 					getPropertyValue(terrainPageName[TERRAINPAGE_PAGEY], nPageY);
 
 					EditorActionManager::getSingleton().addRedo( 
-						new EditorHeightAction(name, nPageX, nPageY, m_pSaveHeight, m_AlterRect));
+						new EditorHeightAction(name, nPageX, nPageY, pData, m_AlterRect));
 					
 					delete [] pData;
 					delete [] m_pSaveHeight;

@@ -1,6 +1,14 @@
 #ifndef _____EditorTerrainPage_H
 #define _____EditorTerrainPage_H
 
+#include "OgreDataStream.h"
+#include "OgreStreamSerialiser.h"
+#include "OgreTerrain.h"
+#include "OgreTerrainGroup.h"
+#include "OgreTerrainQuadTreeNode.h"
+#include "OgreTerrainMaterialGeneratorA.h"
+#include "OgreTerrainPaging.h"
+
 #include "EditorPlugin.h"
 
 namespace Ogre
