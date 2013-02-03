@@ -1,8 +1,10 @@
 #include "stdafx.h"
 #include "EditorPlugin.h"
-#include "EditorTerrain.h"
 #include "EditorPluginManager.h"
+#include "EditorTerrain.h"
 #include "EditorTerrainPage.h"
+#include "EditorHeightAction.h"
+#include "EditorActionManager.h"
 
 namespace Ogre
 {
@@ -50,14 +52,20 @@ namespace Ogre
 	 */
 	EditorTerrainPage::EditorTerrainPage(const String& pluginName, int nPageX, int nPageY, const Vector3& vPos, uint16 nMinBatchSize, uint16 nMaxBatchSize,
 		uint16 nLayerCount, const STerrainPageLayer& tpl, bool bAtOnceLoad)
-		: EditorPlugin(pluginName), m_pTerrain(NULL)
+		: EditorPlugin(pluginName), m_pTerrain(NULL), m_pSaveHeight(NULL)
 	{
+		m_AlterRect = Rect(0, 0, 0, 0);
+
 		if (configure(nPageX, nPageY, vPos, nMinBatchSize, nMaxBatchSize, nLayerCount, tpl, bAtOnceLoad))
 		{
 			addProperty(terrainPageName[TERRAINPAGE_PLUGIN_NAME],
 				Any(pluginName), PVT_STRING, 0, terrainPageDesc[TERRAINPAGE_PLUGIN_NAME]);
 			addProperty(terrainPageName[TERRAINPAGE_LAYERCOUNT],
 				Any(nLayerCount), PVT_USHORT, true, terrainPageDesc[TERRAINPAGE_LAYERCOUNT]);
+			addProperty(terrainPageName[TERRAINPAGE_PAGEX],
+				Any(nPageX), PVT_INT, true, terrainPageDesc[TERRAINPAGE_PAGEX]);
+			addProperty(terrainPageName[TERRAINPAGE_PAGEY],
+				Any(nPageY), PVT_INT, true, terrainPageDesc[TERRAINPAGE_PAGEY]);
 		}
 	}
 
@@ -67,7 +75,11 @@ namespace Ogre
 	 */
 	EditorTerrainPage::~EditorTerrainPage()
 	{
-
+		if (m_pSaveHeight)
+		{
+			delete [] m_pSaveHeight;
+			m_pSaveHeight = NULL;
+		}
 	}
 
 	/**
@@ -167,34 +179,6 @@ namespace Ogre
 		}
 
 		return INVALID_LAYER;
-
-/*		int nSamplerID = -1;
-
-		TerrainLayerSamplerList vSampler = m_pTerrain->getLayerDeclaration().samplers;
-		for(int i=0; i<vSampler.size(); i++)
-		{
-			if(vSampler[i].alias == "albedo_specular")
-			{
-				nSamplerID = i;
-				break;
-			}
-		}
-
-		if(nSamplerID == -1) 
-			return -1;
-
-		int nLayerID = -1;
-		for (int i=0; i<m_pTerrain->getLayerCount(); i++)
-		{
-			String name = m_pTerrain->getLayerTextureName(i, nSamplerID);
-			if (name == texture)
-			{
-				nLayerID  = i;
-				break;
-			}
-		}
-		
-		return nLayerID*/;
 	}
 
 	/**
@@ -222,6 +206,118 @@ namespace Ogre
 		}
 
 		return -1;
+	}
+
+	/**
+	 *
+	 * \param area 
+	 * \param pData 
+	 */
+	void			EditorTerrainPage::swapHeight(Rect area, float* pData)
+	{
+		if (m_pTerrain)
+		{
+			float*	pCurHeightData	= m_pTerrain->getHeightData();
+			int		nRowSize		= m_pTerrain->getSize();
+
+			int		nPos = 0;
+			for(int y = area.top;y < area.bottom;y++)
+			{
+				for(int x = area.left;x < area.right;x++)
+				{
+					float fVal	= pCurHeightData[y * nRowSize + x];
+					pCurHeightData[y * nRowSize + x] = pData[nPos];
+					pData[nPos] = fVal;
+
+					++ nPos;
+				}
+			}
+
+			m_pTerrain->dirtyRect(area);
+			m_pTerrain->update();
+
+			EditorTerrain* pPlugin = static_cast<EditorTerrain*>(
+				EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN)
+				);
+			if (pPlugin)
+			{
+				pPlugin->getTerrainGroup()->update();
+			}
+		}
+	}
+
+	/**
+	 *
+	 * \param nValue 
+	 */
+	void			EditorTerrainPage::alterStart(int nValue, const Rect& area)
+	{
+		switch( nValue )
+		{
+		case 0:
+			{
+				if (m_pSaveHeight == NULL)
+				{
+					uint32 nSize	= m_pTerrain->getSize() * m_pTerrain->getSize();
+					m_pSaveHeight = new float[nSize];
+
+					float* pData	= m_pTerrain->getHeightData();
+					memcpy(m_pSaveHeight, pData, sizeof(float) * nSize);
+				}
+			}
+			break;
+		}
+
+		m_AlterRect.merge(area);
+	}
+
+	/**
+	 *
+	 * \param nValue 
+	 * \param area 
+	 */
+	void			EditorTerrainPage::alterEnd(int nValue)
+	{
+		switch( nValue )
+		{
+		case 0:
+			{
+				uint32 nSize = m_AlterRect.width() * m_AlterRect.height();
+				if(nSize && m_pSaveHeight)
+				{
+					float*	pData	= new float[nSize];
+					int		nPos	= 0;	
+					int		nRowSize= m_pTerrain->getSize();
+
+					for(int y=m_AlterRect.top; y<m_AlterRect.bottom; y++)
+					{
+						for(int x=m_AlterRect.left; x<m_AlterRect.right; x++)
+						{
+							pData[nPos] = m_pSaveHeight[y * nRowSize + x];
+
+							++ nPos;
+						}
+					}
+
+					String name;
+					getPropertyValue(terrainPageName[TERRAINPAGE_PLUGIN_NAME], name);
+					int nPageX;
+					getPropertyValue(terrainPageName[TERRAINPAGE_PAGEX], nPageX);
+					int nPageY;
+					getPropertyValue(terrainPageName[TERRAINPAGE_PAGEY], nPageY);
+
+					EditorActionManager::getSingleton().addRedo( 
+						new EditorHeightAction(name, nPageX, nPageY, m_pSaveHeight, m_AlterRect));
+					
+					delete [] pData;
+					delete [] m_pSaveHeight;
+					m_pSaveHeight = NULL;
+					
+					m_AlterRect = Rect(0, 0, 0, 0);
+				}
+			}
+			break;
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////

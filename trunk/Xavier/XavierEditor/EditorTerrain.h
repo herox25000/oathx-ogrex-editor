@@ -332,6 +332,16 @@ namespace Ogre
 		
 		/**
 		 *
+		 */
+		virtual	void			optStart();
+
+		/**
+		 *
+		 */
+		virtual	void			optEnd();
+
+		/**
+		 *
 		 * \param pPahe 
 		 * \param Vector3&vPos 
 		 * \param fAvg 
@@ -350,6 +360,7 @@ namespace Ogre
 		String					m_BlendTexture;
 		String					m_BlendNormal;
 		bool					m_bShift;
+		bool					m_bActive;
 	};
 
 	// 地形创建适配参数

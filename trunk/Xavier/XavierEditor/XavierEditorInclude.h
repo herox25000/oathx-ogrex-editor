@@ -12,3 +12,5 @@
 #include "EditorTerrainPage.h"
 #include "EditorPluginFactoryManager.h"
 #include "EditorPluginManager.h"
+#include "EditorAction.h"
+#include "EditorActionManager.h"
