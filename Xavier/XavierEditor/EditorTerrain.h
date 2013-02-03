@@ -1,11 +1,7 @@
 #ifndef _____EditorTerrain_H
 #define _____EditorTerrain_H
 
-#include "OgreTerrain.h"
-#include "OgreTerrainGroup.h"
-#include "OgreTerrainQuadTreeNode.h"
-#include "OgreTerrainMaterialGeneratorA.h"
-#include "OgreTerrainPaging.h"
+#include "EditorTerrainPage.h"
 
 namespace Ogre
 {

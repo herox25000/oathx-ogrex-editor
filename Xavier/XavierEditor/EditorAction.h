@@ -14,7 +14,7 @@ namespace Ogre
 	*
 	* \Author  : lp
 	*
-	* \Desc    : 
+	* \Desc    : 编辑动作，用于redo和undo
 	*
 	* \bug     : 
 	*
@@ -23,22 +23,30 @@ namespace Ogre
 	class EditorAction
 	{
 	public:
-		/**
+		/** 行为名称
 		 *
 		 * \return 
 		 */
-		EditorAction();
+		EditorAction(const String& name);
 
-		/**
+		/** 析构函数
 		 *
 		 * \return 
 		 */
 		virtual ~EditorAction();
 
-		/**
+		/** 执行该动作
 		 *
 		 */
-		virtual	void		execute();
+		virtual	void			execute();
+
+		/** 获取动作名
+		 *
+		 * \return 
+		 */
+		virtual const String&	getName() const;
+	protected:
+		String					m_Name;
 	};
 }
 

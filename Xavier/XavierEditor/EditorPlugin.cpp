@@ -10,7 +10,7 @@ namespace Ogre
 	 * \return 
 	 */
 	EditorPlugin::EditorPlugin(const String& pluginName)
-		: m_Name(pluginName), m_pParent(NULL), m_bInheritPick(0), m_nPriority(PRIORITY_NORMAL)
+		: m_Name(pluginName), m_pParent(NULL), m_nPriority(PRIORITY_NORMAL)
 	{
 		
 	}
@@ -230,24 +230,6 @@ namespace Ogre
 
 	/**
 	 *
-	 * \param bInheritPick 
-	 */
-	void					EditorPlugin::setInheritPick(bool bInheritPick)
-	{
-		m_bInheritPick = bInheritPick;
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	bool					EditorPlugin::getInheritPick() const
-	{
-		return m_bInheritPick;
-	}
-
-	/**
-	 *
 	 * \param nPriority 
 	 */
 	void					EditorPlugin::setPriority(int nPriority)
@@ -276,7 +258,7 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnSize(cx, cy) && !pPlugin->getInheritPick())
+			if (pPlugin->OnSize(cx, cy))
 				return true;
 		}
 
@@ -295,7 +277,7 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnMouseWheel(fzDelta, vPos) && !pPlugin->getInheritPick())
+			if (pPlugin->OnMouseWheel(fzDelta, vPos))
 				return true;
 		}
 
@@ -313,7 +295,7 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnLButtonDown(vPos) && !pPlugin->getInheritPick())
+			if (pPlugin->OnLButtonDown(vPos))
 				return true;
 		}
 
@@ -331,7 +313,7 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnLButtonUp(vPos) && !pPlugin->getInheritPick())
+			if (pPlugin->OnLButtonUp(vPos))
 				return true;
 		}
 
@@ -349,7 +331,7 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnRButtonDown(vPos) && !pPlugin->getInheritPick())
+			if (pPlugin->OnRButtonDown(vPos))
 				return true;
 		}
 
@@ -367,7 +349,7 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnRButtonUp(vPos) && !pPlugin->getInheritPick())
+			if (pPlugin->OnRButtonUp(vPos))
 				return true;
 		}
 
@@ -387,7 +369,7 @@ namespace Ogre
 			EditorPlugin* pPlugin = hashPlugin.getNext();
 			if (pPlugin)
 			{
-				if (pPlugin->OnMouseMove(vPos) && !pPlugin->getInheritPick())
+				if (pPlugin->OnMouseMove(vPos))
 					return true;
 			}
 
@@ -429,7 +411,7 @@ namespace Ogre
 		while( hashPlugin.hasMoreElements() )
 		{
 			EditorPlugin* pPlugin = hashPlugin.getNext();
-			if (pPlugin->OnKeyUp(nChar, nRepCnt, nFlags) && !pPlugin->getInheritPick())
+			if (pPlugin->OnKeyUp(nChar, nRepCnt, nFlags))
 				return true;
 		}
 

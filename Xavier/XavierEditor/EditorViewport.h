@@ -1,6 +1,8 @@
 #ifndef _____EditorViewport_H
 #define _____EditorViewport_H
 
+#include "EditorPlugin.h"
+
 namespace Ogre
 {
 	/**
@@ -23,47 +25,47 @@ namespace Ogre
 	class EditorViewport : public EditorPlugin
 	{
 	public:
-		/**
+		/** 构造视口编辑插件
 		 *
-		 * \param pluginName 
-		 * \param background 
-		 * \param adp 
+		 * \param pluginName	插件名
+		 * \param background	视口默认颜色
+		 * \param adp			视口默认摄像机适配参数
 		 * \return 
 		 */
 		EditorViewport(const String& pluginName, const ColourValue& background, const SEditorCamearAdp& adp);
 
-		/**
+		/** 析构函数
 		 *
 		 * \return 
 		 */
 		virtual ~EditorViewport();
 
-		/**
+		/** 获取包装的视口对象
 		 *
 		 * \return 
 		 */
 		virtual	Viewport*		getViewport() const;
 		
-		/**
+		/** 窗口尺寸改变
 		 *
 		 */
 		virtual	void			windowMovedOrResized();
 		
-		/**
+		/** 获取当前激活的摄像机
 		 *
 		 * \return 
 		 */
 		virtual	EditorCamera*	getActiveCamera() const;
 
-		/**
+		/** 获取鼠标射线
 		 *
-		 * \param vPos 
+		 * \param vPos	当前鼠标屏幕位置
 		 * \param ray 
 		 * \return 
 		 */
 		virtual bool			getMouseRay(const Vector2& vPos, Ray& ray);
 	public:
-		/**
+		/**	当框架窗口尺寸改变时触发
 		 *
 		 * \param cx 
 		 * \param cy 
@@ -71,19 +73,19 @@ namespace Ogre
 		 */
 		virtual	bool			OnSize(int cx, int cy);
 
-		/**
+		/** 当编辑插件属性改变时触发
 		 *
-		 * \param parentName 
-		 * \param name 
-		 * \param anyValue 
-		 * \param nType 
+		 * \param parentName	父属性
+		 * \param name			属性名
+		 * \param anyValue		属性值
+		 * \param nType			属性值类型
 		 * \return 
 		 */
 		virtual bool			OnPropertyChanged(const String& parentName, const String& name, 
 			const Any& anyValue, int nType);
 
 	protected:
-		/**
+		/** 构造配置
 		 *
 		 * \param pluginName 
 		 * \param background 
@@ -137,10 +139,10 @@ namespace Ogre
 		 */
 		virtual ~EditorViewportFactory();
 
-		/**
+		/**	创建编辑插件
 		 *
-		 * \param ssadp 
-		 * \param pParent 
+		 * \param ssadp			插件适配参数
+		 * \param pParent		父插件
 		 * \return 
 		 */
 		virtual	EditorPlugin*			createPlugin(const SEditorPluginAdp& ssadp, EditorPlugin* pParent);

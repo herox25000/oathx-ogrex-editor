@@ -1,6 +1,10 @@
 #ifndef _____EditorSystem_H
 #define _____EditorSystem_H
 
+#include "EditorPluginFactoryManager.h"
+#include "EditorPluginManager.h"
+#include "EditorActionManager.h"
+
 namespace Ogre
 {
 	/**
@@ -83,6 +87,11 @@ namespace Ogre
 		 */
 		virtual RenderWindow*		getRenderWindow() const;
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	String				getModulePath();
 	protected:
 		Root*						m_pRoot;
 		RenderWindow*				m_pRenderWindow;

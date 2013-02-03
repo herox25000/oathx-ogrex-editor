@@ -303,6 +303,7 @@ void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 	{
 		pRootPlugin->OnLButtonUp(Vector2(point.x, point.y));
 	}
+
 	CView::OnLButtonUp(nFlags, point);
 }
 
@@ -318,6 +319,7 @@ void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 	{
 		pRootPlugin->OnRButtonDown(Vector2(point.x, point.y));
 	}
+
 	CView::OnRButtonDown(nFlags, point);
 }
 
@@ -362,10 +364,10 @@ void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	EditorPlugin* pSelectPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pSelectPlugin)
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
 	{
-		pSelectPlugin->OnKeyDown(nChar, nRepCnt, nFlags);
+		pRootPlugin->OnKeyDown(nChar, nRepCnt, nFlags);
 	}
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -379,10 +381,10 @@ void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
  */
 void	CXavierEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	EditorPlugin* pSelectPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pSelectPlugin)
+	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
+	if (pRootPlugin)
 	{
-		pSelectPlugin->OnKeyUp(nChar, nRepCnt, nFlags);
+		pRootPlugin->OnKeyUp(nChar, nRepCnt, nFlags);
 	}
 
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);

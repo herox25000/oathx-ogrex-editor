@@ -44,6 +44,7 @@
 #include "OgrePropertySet.h"
 #include "EditorPluginTypes.h"
 #include "EditorPluginUtil.h"
+
 using namespace Ogre;
 
 #ifndef max

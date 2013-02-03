@@ -1,6 +1,8 @@
 #ifndef _____EditorSceneManager_H
 #define _____EditorSceneManager_H
 
+#include "EditorPlugin.h"
+
 namespace Ogre
 {
 	/**
@@ -49,6 +51,19 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	SceneManager*		getSceneManager() const;
+
+	public:
+		/** 处理属性改变事件
+		 *
+		 * \param parentName 
+		 * \param name 
+		 * \param anyValue 
+		 * \param nType 
+		 * \return 
+		 */
+		virtual	bool				OnPropertyChanged(const String& parentName, const String& name, 
+			const Any& anyValue, int nType);
+
 	protected:
 		/**
 		 *
@@ -62,6 +77,7 @@ namespace Ogre
 		 */
 		virtual	bool				configure(const String& pluginName, const SceneTypeMask& typeMask, const ColourValue& clrAmbientLight,
 			FogMode fogMode, const ColourValue& clrFog, float expDensity, float linearStart, float linearEnd);
+
 	protected:
 		SceneManager*				m_pSceneManager;
 	};

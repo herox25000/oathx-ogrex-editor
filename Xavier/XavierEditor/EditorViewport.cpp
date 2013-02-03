@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "EditorPlugin.h"
 #include "EditorCamera.h"
 #include "EditorViewport.h"
 #include "EditorPluginFactoryManager.h"

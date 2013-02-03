@@ -1,5 +1,4 @@
 #include "stdafx.h"
-#include "EditorPlugin.h"
 #include "EditorPluginManager.h"
 
 namespace Ogre
