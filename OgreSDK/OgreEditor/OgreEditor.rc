@@ -417,6 +417,7 @@ END
 STRINGTABLE 
 BEGIN
     IDP_OLE_INIT_FAILED     "OLE 初始化失败。请确保 OLE 库是正确的版本。"
+    IDS_TERRAIN_VIEW        "地形编辑器"
 END
 
 STRINGTABLE 

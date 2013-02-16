@@ -243,6 +243,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TerrainEditorView.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ViewTree.cpp"
 				>
 			</File>
@@ -302,6 +306,10 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainEditorView.h"
 				>
 			</File>
 			<File
