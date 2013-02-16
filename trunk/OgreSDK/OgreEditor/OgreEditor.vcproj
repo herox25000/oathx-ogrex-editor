@@ -207,6 +207,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreEditorDebug.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreEditorDoc.cpp"
 				>
 			</File>
@@ -274,6 +278,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEditorDebug.h"
 				>
 			</File>
 			<File

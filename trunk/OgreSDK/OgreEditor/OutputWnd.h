@@ -1,59 +1,137 @@
 
 #pragma once
 
-/////////////////////////////////////////////////////////////////////////////
-// COutputList 窗口
+#include "ColorListBox.h"
 
-class COutputList : public CListBox
+/**
+* \ingroup : OgreEditor
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2013-02-16
+*
+* \Author  : lp
+*
+* \Desc    :
+*
+* \bug     : 
+*
+* \Copyright (c) 2012 lp All rights reserved.
+*/
+class COutputList : public CColorListBox
 {
-// 构造
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	COutputList();
 
-// 实现
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	virtual ~COutputList();
 
 protected:
-	afx_msg void OnContextMenu(CWnd* pWnd, CPoint point);
-	afx_msg void OnEditCopy();
-	afx_msg void OnEditClear();
-	afx_msg void OnViewOutput();
+	/**
+	 *
+	 * \param pWnd 
+	 * \param point 
+	 */
+	afx_msg void			OnContextMenu(CWnd* pWnd, CPoint point);
+
+	/**
+	 *
+	 */
+	afx_msg void			OnEditCopy();
+
+	/**
+	 *
+	 */
+	afx_msg void			OnEditClear();
+
+	/**
+	 *
+	 */
+	afx_msg void			OnViewOutput();
 
 	DECLARE_MESSAGE_MAP()
 };
 
+
+/**
+* \ingroup : OgreEditor
+*
+* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2013-02-16
+*
+* \Author  : lp
+*
+* \Desc    :
+*
+* \bug     : 
+*
+* \Copyright (c) 2012 lp All rights reserved.
+*/
 class COutputWnd : public CDockablePane
 {
-// 构造
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	COutputWnd();
 
-// 属性
 protected:
-	CFont m_Font;
-
-	CMFCTabCtrl	m_wndTabs;
-
-	COutputList m_wndOutputBuild;
-	COutputList m_wndOutputDebug;
-	COutputList m_wndOutputFind;
+	CFont					m_Font;
+	CMFCTabCtrl				m_wTabs;
+	COutputList				m_wBuild;
+	COutputList				m_wDebug;
+	COutputList				m_wFind;
 
 protected:
-	void FillBuildWindow();
-	void FillDebugWindow();
-	void FillFindWindow();
-
+	/**
+	 *
+	 * \param wndListBox 
+	 */
 	void AdjustHorzScroll(CListBox& wndListBox);
-
-// 实现
+	
 public:
+	/**
+	 *
+	 * \return 
+	 */
 	virtual ~COutputWnd();
-
+	
+	/** 输出LOG消息
+	 *
+	 * \param message 
+	 * \param clr 
+	 * \return 
+	 */
+	virtual void			OutputDebugMessage(const LPCTSTR& lpszMessage, COLORREF clr);
 protected:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void OnSize(UINT nType, int cx, int cy);
+	/**
+	 *
+	 * \param lpCreateStruct 
+	 * \return 
+	 */
+	afx_msg int				OnCreate(LPCREATESTRUCT lpCreateStruct);
+
+	/**
+	 *
+	 * \param nType 
+	 * \param cx 
+	 * \param cy 
+	 */
+	afx_msg void			OnSize(UINT nType, int cx, int cy);
 
 	DECLARE_MESSAGE_MAP()
 };
-
