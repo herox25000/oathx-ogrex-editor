@@ -247,10 +247,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\TerrainEditorView.cpp"
-				>
-			</File>
-			<File
 				RelativePath=".\ViewTree.cpp"
 				>
 			</File>
@@ -314,10 +310,6 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
-				>
-			</File>
-			<File
-				RelativePath=".\TerrainEditorView.h"
 				>
 			</File>
 			<File
@@ -480,6 +472,18 @@
 			</File>
 			<File
 				RelativePath=".\control\SplashDialog.h"
+				>
+			</File>
+		</Filter>
+		<Filter
+			Name="Editor"
+			>
+			<File
+				RelativePath=".\TerrainEditorView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainEditorView.h"
 				>
 			</File>
 		</Filter>
