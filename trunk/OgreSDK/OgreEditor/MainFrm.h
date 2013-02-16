@@ -5,6 +5,7 @@
 #include "OutputWnd.h"
 #include "PropertiesWnd.h"
 #include "WizardDialog.h"
+#include "TerrainEditorView.h"
 
 class CMainFrame : public CFrameWndEx
 {
@@ -40,6 +41,7 @@ protected:
 	COutputWnd			m_wndOutput;
 	CPropertiesWnd		m_wndProperties;
 	CWizardDialog		m_dWizardDialog;
+	CTerrainEditorView	m_wndTerrainView;
 protected:
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void		OnViewCustomize();
