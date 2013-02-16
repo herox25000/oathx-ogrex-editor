@@ -181,6 +181,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreTerrainEditorBrush.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreTerrainEditorPlugin.cpp"
 				>
 			</File>
@@ -200,6 +204,10 @@
 			>
 			<File
 				RelativePath=".\OgreTerrainEditor.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreTerrainEditorBrush.h"
 				>
 			</File>
 			<File
