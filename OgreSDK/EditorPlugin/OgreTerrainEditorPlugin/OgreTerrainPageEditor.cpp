@@ -1,5 +1,5 @@
 #include "OgreTerrainEditorPluginStdAfx.h"
-#include "OgreTerrainEditor.h"
+#include "OgreTerrainPageEditor.h"
 
 namespace Ogre
 {

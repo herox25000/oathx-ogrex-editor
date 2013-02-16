@@ -179,6 +179,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreEditorCoreStdAfx.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreEditorInput.cpp"
 				>
 			</File>
