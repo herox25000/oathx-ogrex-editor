@@ -36,7 +36,8 @@ namespace Ogre
 	 */
 	void			TerrainEditorPlugin::install()
 	{
-
+		EditorPluginFactoryManager::getSingletonPtr()->registerEditorPluginFactory(
+			new TerrrainEditorFactory("Factory/EditorTerrainGroup"));
 	}
 
 	/**
@@ -44,7 +45,7 @@ namespace Ogre
 	 */
 	void			TerrainEditorPlugin::initialise()
 	{
-
+		
 	}
 
 	/**
@@ -52,7 +53,7 @@ namespace Ogre
 	 */
 	void			TerrainEditorPlugin::uninstall()
 	{
-
+		EditorPluginFactoryManager::getSingletonPtr()->unregisterEditorPluginFactory("Factory/EditorTerrainGroup");
 	}
 
 	/**

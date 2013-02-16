@@ -74,7 +74,7 @@ namespace Ogre
 		uint16 nLayerBlendMapSize, float fSkirtSize, const ColourValue& clrCompositeMapDiffuse, uint16 nTerrainSize, float fWorldSize)
 	{
 		EditorSceneManager* pPlugin = static_cast<EditorSceneManager*>(
-			EditorPluginManager::getSingletonPtr()->findPlugin(CPN::EDITOR_SCENEPLUGIN_NAME)
+			EditorPluginManager::getSingletonPtr()->findPlugin(CPN::EDITOR_SCENE_MANAGER)
 			);
 		if (pPlugin)
 		{
@@ -827,6 +827,7 @@ namespace Ogre
 	}
 
 	//////////////////////////////////////////////////////////////////////////
+
 	/**
 	 *
 	 * \param factoryName 

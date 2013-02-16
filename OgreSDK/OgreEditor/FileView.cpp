@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include "mainfrm.h"
 #include "FileView.h"
@@ -32,6 +31,7 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
+	ON_COMMAND(ID_32771, &CFileView::OnCreateTerrainGroup)
 END_MESSAGE_MAP()
 
 
@@ -94,6 +94,7 @@ void CFileView::UpdateTreeItem()
 	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
 	if (pRootPlugin)
 	{
+		m_wndFileView.DeleteAllItems();
 		AddTreeItem(pRootPlugin, NULL);
 	}
 }
@@ -264,7 +265,7 @@ void CFileView::OnSetFocus(CWnd* pOldWnd)
 /**
  *
  */
-void CFileView::OnChangeVisualStyle()
+void	CFileView::OnChangeVisualStyle()
 {
 	m_wndToolBar.CleanUpLockedImages();
 	m_wndToolBar.LoadBitmap(theApp.m_bHiColorIcons ? IDB_EXPLORER_24 : IDR_EXPLORER, 0, 0, TRUE /* Ëø¶¨ */);
@@ -294,3 +295,42 @@ void CFileView::OnChangeVisualStyle()
 	m_wndFileView.SetImageList(&m_FileViewImages, TVSIL_NORMAL);
 }
 
+/**
+ *
+ */
+void	CFileView::OnCreateTerrainGroup()
+{
+	CTreeCtrl* pWndTree = (CTreeCtrl*) &m_wndFileView;
+	if (pWndTree)
+	{
+		// get current select tiem
+		HTREEITEM hSelectItem = pWndTree->GetSelectedItem();
+		if (hSelectItem)
+		{
+			// get current select item the name
+			CString name = pWndTree->GetItemText(hSelectItem);
+			if (CPN::EDITOR_SCENE_MANAGER != name.GetBuffer())
+				return;
+			
+			EditorPluginFactory* pTerrainFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_TERRAINGROUP);
+			if (pTerrainFactory)
+			{
+				STerrainEditorAdp adp;
+				adp.pluginName					= CPN::EDITOR_TERRAIN_GROUP;
+				adp.fWorldSize					= 1024;
+				adp.nTerrainSize				= 129;
+				adp.nLightMapSize				= 1024;
+				adp.nLayerBlendMapSize			= 1024;
+				adp.nCompositeMapSize			= 1024;
+				adp.clrCompositeMapDiffuse		= ColourValue::White;
+				adp.fSkirtSize					= 4;
+				adp.fCompositeMapDistance		= 2000;
+				adp.fMaxPixelError				= 3;
+
+				pTerrainFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(CPN::EDITOR_SCENE_MANAGER));
+			}
+
+			UpdateTreeItem();
+		}
+	}
+}

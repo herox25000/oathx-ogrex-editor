@@ -254,7 +254,11 @@ IDR_POPUP_EXPLORER MENU
 BEGIN
     POPUP "资源管理器"
     BEGIN
-        MENUITEM "打开(&O)",                      ID_OPEN
+        POPUP "新建"
+        BEGIN
+            MENUITEM "地形组",                         ID_32771
+            MENUITEM "地形页",                         ID_32772
+        END
         MENUITEM "打开方式(&W)....",                ID_OPEN_WITH
         MENUITEM SEPARATOR
         MENUITEM "编译(&C)",                      ID_DUMMY_COMPILE

@@ -60,15 +60,15 @@ void CTerrainEditorView::OnDestroy()
 {
 	CDockablePane::OnDestroy();
 
-	try {
-#ifdef _DEBUG
-	EditorSystem::getSingletonPtr()->unloadPlugin("OgreTerrainEditorPlugin_d.dll");
-#else
-	EditorSystem::getSingletonPtr()->unloadPlugin("OgreTerrainEditorPlugin.dll");
-#endif
-	}
-	catch(Exception& e)
-	{
-		AfxMessageBox(e.getFullDescription().c_str());
-	}
+//	try {
+//#ifdef _DEBUG
+//	EditorSystem::getSingletonPtr()->unloadPlugin("OgreTerrainEditorPlugin_d.dll");
+//#else
+//	EditorSystem::getSingletonPtr()->unloadPlugin("OgreTerrainEditorPlugin.dll");
+//#endif
+//	}
+//	catch(Exception& e)
+//	{
+//		AfxMessageBox(e.getFullDescription().c_str());
+//	}
 }

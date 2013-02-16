@@ -32,9 +32,11 @@
 
 #pragma warning(disable : 4193)
 #pragma warning(disable : 4996)
+#pragma warning(disable : 4244)
+#pragma warning(disable : 4108)
 
-//#include "OgreEditorInclude.h"
-#include "OgreEditorCoreStdAfx.h"
+#include "OgreEditorInclude.h"
+
 using namespace Ogre;
 
 #ifdef _UNICODE

@@ -60,7 +60,7 @@ namespace Ogre
 	class Ogre_EditorCore_Export_API CPN
 	{
 	public:
-		static	String		EDITOR_SCENEPLUGIN_NAME;
+		static	String		EDITOR_SCENE_MANAGER;
 		static	String		EDITOR_VIEWPORT;
 		static	String		EDITOR_MAIN_CAMER;
 		static	String		EDITOR_TERRAIN_GROUP;

@@ -1,6 +1,8 @@
 #ifndef _____OgreTerrainEditorPlugin_H
 #define _____OgreTerrainEditorPlugin_H
 
+#include "OgreTerrainEditor.h"
+
 namespace Ogre
 {
 	/**
