@@ -1,6 +1,9 @@
 #include "OgreEditorCoreStdAfx.h"
 #include "OgreGlobalEventSet.h"
 #include "OgreEditorSystem.h"
+#include "OgreDynLibManager.h"
+#include "OgrePlugin.h"
+#include "OgreDynLib.h"
 
 namespace Ogre
 {
@@ -22,6 +25,10 @@ namespace Ogre
 	{
 		assert(msSingleton != NULL); return msSingleton;
 	}
+
+	// 插件导出
+	typedef void (*DLLPluginStart)(void);
+	typedef void (*DLLPluginStop)(void);
 
 	/**
 	 *
@@ -122,6 +129,8 @@ namespace Ogre
 		delete EditorPluginFactoryManager::getSingletonPtr();
 		delete GlobalEventSet::getSingletonPtr();
 
+		clearPlugin();
+
 		if (m_pRoot != NULL)
 		{
 			delete m_pRoot;
@@ -171,50 +180,112 @@ namespace Ogre
 
 	/**
 	 *
-	 * \return 
+	 * \param name 
 	 */
-	String			EditorSystem::getModulePath()
+	void			EditorSystem::loadPlugin(const String& name)
 	{
-		char szPath[MAX_PATH];
-		::GetModuleFileName(NULL, szPath, MAX_PATH);
-
-		String curPath(szPath);
-		size_t iPos = curPath.find_last_of('\\');
-		if (iPos == String::npos)
+		DynLib* pLib = DynLibManager::getSingleton().load(name);
+		if (pLib != NULL)
 		{
-			iPos = curPath.find_last_of('/');
-		}
+			m_vDynlibRegister.push_back(pLib);
 
-		if (iPos != String::npos)
-		{
-			curPath = curPath.substr(0,  iPos);
-		}
-		else
-		{
-			curPath.clear();
-		}
+			DLLPluginStart call = (DLLPluginStart)pLib->getSymbol("dllStartPlugin");
 
-		return curPath;
+			if (!call)
+				OGRE_EXCEPT(Exception::ERR_ITEM_NOT_FOUND, "Cannot find symbol dllStartPlugin in library " + name,
+				"AppEdit::loadPlugin");
+
+			call();
+		}
 	}
 
 	/**
 	 *
 	 * \param name 
-	 * \return 
 	 */
-	bool			EditorSystem::createProject(const String& name)
+	void			EditorSystem::unloadPlugin(const String& name)
 	{
-		return true;	
+		for (DynlibRegister::iterator it=m_vDynlibRegister.begin();
+			it!=m_vDynlibRegister.end(); it++)
+		{
+			if ( (*it)->getName() == name)
+			{
+				DLLPluginStop call = (DLLPluginStop)(*it)->getSymbol("dllStopPlugin");
+				if (!call)
+					OGRE_EXCEPT(Exception::ERR_ITEM_NOT_FOUND, "Cannot find symbol dllStopPlugin in library " + name,
+					"AppEdit::unloadPlugin");
+
+				call();
+
+				DynLibManager::getSingleton().unload(*it); m_vDynlibRegister.erase(it);
+
+				break;
+			}
+		}
 	}
 
 	/**
 	 *
-	 * \param name 
-	 * \param parent 
-	 * \return 
+	 * \param pPlugin 
 	 */
-	bool			EditorSystem::createDirectory(const String& name, const String& parent)
+	void			EditorSystem::installPlugin(Plugin* pPlugin)
 	{
-		return true;
+		if (pPlugin != NULL)
+		{
+			LogManager::getSingleton().logMessage("Installing plugin: " + pPlugin->getName());
+
+			m_vPluginRegister.push_back(pPlugin);
+
+			// 安装插件
+			pPlugin->install();
+			// 初始化
+			pPlugin->initialise();
+
+			LogManager::getSingleton().logMessage("Plugin successfully installed");
+		}	
+	}
+
+	/**
+	 *
+	 * \param pPlugin 
+	 */
+	void			EditorSystem::uninstallPlugin(Plugin* pPlugin)
+	{
+		LogManager::getSingleton().logMessage("Uninstalling plugin: " + pPlugin->getName());
+		PluginRegister::iterator it = 
+			std::find(m_vPluginRegister.begin(), m_vPluginRegister.end(), pPlugin);
+		if (it != m_vPluginRegister.end())
+		{
+			pPlugin->shutdown();
+			pPlugin->uninstall(); m_vPluginRegister.erase(it);
+		}
+
+		LogManager::getSingleton().logMessage("Plugin successfully uninstalled");
+	}
+
+	/**
+	 *
+	 */
+	void			EditorSystem::clearPlugin()
+	{
+		for (DynlibRegister::reverse_iterator it = m_vDynlibRegister.rbegin(); 
+			it != m_vDynlibRegister.rend(); ++it)
+		{
+			DLLPluginStop call = (DLLPluginStop)(*it)->getSymbol("dllStopPlugin");
+
+			call();
+
+			DynLibManager::getSingleton().unload(*it);
+
+		}
+		m_vDynlibRegister.clear();
+
+		for (PluginRegister::reverse_iterator it = m_vPluginRegister.rbegin();
+			it != m_vPluginRegister.rend(); ++it)
+		{
+			(*it)->uninstall();
+		}
+
+		m_vPluginRegister.clear();
 	}
 }

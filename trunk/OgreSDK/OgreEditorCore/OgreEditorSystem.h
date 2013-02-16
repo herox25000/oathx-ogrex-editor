@@ -6,6 +6,9 @@
 
 namespace Ogre
 {
+	typedef std::vector<Plugin*>	PluginRegister;
+	typedef std::vector<DynLib*>	DynlibRegister;
+
 	/**
 	* \ingroup : OgreSystem
 	*
@@ -86,29 +89,39 @@ namespace Ogre
 		 */
 		virtual RenderWindow*		getRenderWindow() const;
 
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	String				getModulePath();
-
-		/**
+		/** 加载插件
 		 *
 		 * \param name 
-		 * \param parent 
-		 * \return 
 		 */
-		virtual bool				createDirectory(const String& name, const String& parent);
+		virtual	void				loadPlugin(const String& name);
 
-		/**
+		/** 卸载插件
 		 *
 		 * \param name 
-		 * \return 
 		 */
-		virtual	bool				createProject(const String& name);
+		virtual void				unloadPlugin(const String& name);
+
+		/** 安装插件
+		 *
+		 * \param pPlugin 
+		 */
+		virtual void				installPlugin(Plugin* pPlugin);
+
+		/** 卸载插件
+		 *
+		 * \param pPlugin 
+		 */
+		virtual void				uninstallPlugin(Plugin* pPlugin);
+
+		/** 清空插件
+		 *
+		 */
+		virtual void				clearPlugin();
 	protected:
 		Root*						m_pRoot;
 		RenderWindow*				m_pRenderWindow;
+		PluginRegister				m_vPluginRegister;
+		DynlibRegister				m_vDynlibRegister;
 	};
 }
 
