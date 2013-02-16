@@ -63,6 +63,7 @@ namespace Ogre
 		static	String		EDITOR_SCENEPLUGIN_NAME;
 		static	String		EDITOR_VIEWPORT;
 		static	String		EDITOR_MAIN_CAMER;
+		static	String		EDITOR_TERRAIN_GROUP;
 	};
 
 	//////////////////////////////////////////////////////////////////////////
