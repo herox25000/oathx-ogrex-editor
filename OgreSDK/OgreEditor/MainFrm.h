@@ -18,12 +18,8 @@ public:
 	virtual BOOL		LoadFrame(UINT nIDResource, DWORD dwDefaultStyle = WS_OVERLAPPEDWINDOW | FWS_ADDTOTITLE, CWnd* pParentWnd = NULL,
 		CCreateContext* pContext = NULL);
 	virtual	void		ResetFileTree();
-
-	/**
-	 *
-	 * \return 
-	 */
 	CPropertiesWnd*		GetPropertyWnd();
+	void				AddDebugMessage(LPCTSTR lpszMessage, COLORREF clr);
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG

@@ -5,6 +5,7 @@
 #include "SplashDialog.h"
 #include "OgreEditorDoc.h"
 #include "OgreEditorView.h"
+#include "OgreEditorDebug.h"
 
 #ifdef _DEBUG
 #	define new DEBUG_NEW
@@ -21,7 +22,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
-COgreEditorApp::COgreEditorApp() : m_pAppSystem(NULL)
+COgreEditorApp::COgreEditorApp() : m_pAppSystem(NULL), m_pAppDebug(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -92,6 +93,12 @@ BOOL	COgreEditorApp::InitInstance()
  */
 int		COgreEditorApp::ExitInstance()
 {
+	if (m_pAppDebug)
+	{
+		LogManager::getSingletonPtr()->getDefaultLog()->removeListener(m_pAppDebug);
+		SAFE_DELETE(m_pAppDebug);
+	}
+
 	/*
 	* Ïú»ÙÏµÍ³
 	*/
@@ -218,6 +225,13 @@ void	COgreEditorApp::ShowSplashDialog()
 #else
 		m_pAppSystem->createEditorSystem("plugins_d.cfg", "resources_d.cfg", false);
 #endif
+
+		m_pAppDebug = new EditorDebug();
+		if (m_pAppDebug)
+		{
+			LogManager::getSingletonPtr()->getDefaultLog()->addListener(m_pAppDebug);
+		}
+
 	}
 	catch(Exception& e)
 	{

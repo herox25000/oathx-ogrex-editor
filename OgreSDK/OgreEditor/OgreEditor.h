@@ -9,6 +9,7 @@
 namespace Ogre
 {
 	class EditorSystem;
+	class EditorDebug;
 }
 
 /**
@@ -40,6 +41,7 @@ public:
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
 	Ogre::EditorSystem*		m_pAppSystem;
+	Ogre::EditorDebug*		m_pAppDebug;
 public:
 	/**
 	 *

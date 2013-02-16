@@ -452,3 +452,13 @@ CPropertiesWnd*	CMainFrame::GetPropertyWnd()
 {
 	return &m_wndProperties;
 }
+
+/**
+ *
+ * \param lpszMessage 
+ * \param clr 
+ */
+void			CMainFrame::AddDebugMessage(LPCTSTR lpszMessage, COLORREF clr)
+{
+	m_wndOutput.OutputDebugMessage(lpszMessage, clr);
+}
