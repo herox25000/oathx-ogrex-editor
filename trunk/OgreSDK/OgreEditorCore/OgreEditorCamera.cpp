@@ -143,12 +143,12 @@ namespace Ogre
 	{
 		// 获取场景插件
 		EditorSceneManager* pSceneManagerPlugin = static_cast<EditorSceneManager*>(
-			EditorPluginManager::getSingletonPtr()->findPlugin(CPN::EDITOR_SCENEPLUGIN_NAME)
+			EditorPluginManager::getSingletonPtr()->findPlugin(CPN::EDITOR_SCENE_MANAGER)
 			);
 		if (!pSceneManagerPlugin)
 		{
 			LogManager::getSingleton().logMessage(LML_CRITICAL,
-				"Can't find plugin + " + CPN::EDITOR_SCENEPLUGIN_NAME);
+				"Can't find plugin + " + CPN::EDITOR_SCENE_MANAGER);
 			return 0;
 		}
 		

@@ -84,7 +84,7 @@ void CWizardDialog::OnBnClickedOk()
 		if (pSceneFactory)
 		{
 			SEditorPluginSceneManagerAdp adp;
-			adp.pluginName			= CPN::EDITOR_SCENEPLUGIN_NAME;
+			adp.pluginName			= CPN::EDITOR_SCENE_MANAGER;
 			adp.typeMask			= ST_EXTERIOR_FAR;
 			adp.fogMode				= FOG_LINEAR;
 			adp.clrFog				= ColourValue(1.0f, 1.0f, 0.8f);

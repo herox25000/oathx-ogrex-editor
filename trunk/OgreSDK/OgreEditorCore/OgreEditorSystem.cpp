@@ -126,10 +126,10 @@ namespace Ogre
 	void		EditorSystem::clearUp()
 	{
 		delete EditorPluginManager::getSingletonPtr();
+	
+		clearPlugin();
 		delete EditorPluginFactoryManager::getSingletonPtr();
 		delete GlobalEventSet::getSingletonPtr();
-
-		clearPlugin();
 
 		if (m_pRoot != NULL)
 		{

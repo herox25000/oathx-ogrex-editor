@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm170"
 				Optimization="0"
-				AdditionalIncludeDirectories="../OgreEventSet/include;../OgreEditorCore;./Control"
+				AdditionalIncludeDirectories="../EditorPlugin/OgreTerrainEditorPlugin;../OgreEventSet/include;../OgreEditorCore;./Control"
 				PreprocessorDefinitions="_AFXDLL;WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
