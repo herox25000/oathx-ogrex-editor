@@ -71,6 +71,7 @@ protected:
 	CViewTree			m_wndFileView;
 	CImageList			m_FileViewImages;
 	CFileViewToolBar	m_wndToolBar;
+	
 
 public:
 	virtual ~CFileView();
@@ -151,5 +152,6 @@ public:
 	 *
 	 */
 	afx_msg void		OnCreateTerrainGroup();
+	afx_msg void		OnCreateTerrainPage();
 };
 

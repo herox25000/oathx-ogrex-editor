@@ -1,12 +1,12 @@
-#ifndef _____OgreEditorDebug_H
-#define _____OgreEditorDebug_H
+#pragma once
 
 namespace Ogre
 {
+
 	/**
 	* \ingroup : OgreEditor
 	*
-	* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
 	*
 	* \VERSION : 1.0
 	*
@@ -14,7 +14,7 @@ namespace Ogre
 	*
 	* \Author  : lp
 	*
-	* \Desc    : 
+	* \Desc    :
 	*
 	* \bug     : 
 	*
@@ -22,7 +22,7 @@ namespace Ogre
 	*/
 	class EditorDebug : public LogListener
 	{
-		typedef std::deque<String>	DequeString;
+		typedef std::deque<String>	VString;
 	public:
 		/** ¹¹Ôìº¯Êý
 		 *
@@ -52,8 +52,9 @@ namespace Ogre
 
 	private:
 		int				m_nLine;
-		DequeString		m_DequeString;
+		VString			m_vString;
+		
 	};
-}
 
-#endif
+
+}

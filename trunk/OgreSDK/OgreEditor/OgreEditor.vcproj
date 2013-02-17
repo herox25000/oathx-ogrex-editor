@@ -247,6 +247,10 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\TerrainCrtDialog.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\ViewTree.cpp"
 				>
 			</File>
@@ -310,6 +314,10 @@
 			</File>
 			<File
 				RelativePath=".\targetver.h"
+				>
+			</File>
+			<File
+				RelativePath=".\TerrainCrtDialog.h"
 				>
 			</File>
 			<File

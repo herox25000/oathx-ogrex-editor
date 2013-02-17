@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
 	ON_COMMAND(ID_32771, &CFileView::OnCreateTerrainGroup)
+	ON_COMMAND(ID_32772, &CFileView::OnCreateTerrainPage)
 END_MESSAGE_MAP()
 
 
@@ -70,6 +71,8 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.SetRouteCommandsViaFrame(FALSE);
 
 	AdjustLayout();
+
+
 
 	return 0;
 }
@@ -311,26 +314,42 @@ void	CFileView::OnCreateTerrainGroup()
 			CString name = pWndTree->GetItemText(hSelectItem);
 			if (CPN::EDITOR_SCENE_MANAGER != name.GetBuffer())
 				return;
-			
-			EditorPluginFactory* pTerrainFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_TERRAINGROUP);
-			if (pTerrainFactory)
+		
+			CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
+			if (pMainFrame)
 			{
-				STerrainEditorAdp adp;
-				adp.pluginName					= CPN::EDITOR_TERRAIN_GROUP;
-				adp.fWorldSize					= 1024;
-				adp.nTerrainSize				= 129;
-				adp.nLightMapSize				= 1024;
-				adp.nLayerBlendMapSize			= 1024;
-				adp.nCompositeMapSize			= 1024;
-				adp.clrCompositeMapDiffuse		= ColourValue::White;
-				adp.fSkirtSize					= 4;
-				adp.fCompositeMapDistance		= 2000;
-				adp.fMaxPixelError				= 3;
-
-				pTerrainFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(CPN::EDITOR_SCENE_MANAGER));
+				pMainFrame->ShowTerrainDialog();
 			}
-
-			UpdateTreeItem();
 		}
 	}
+}
+
+/**
+ *
+ */
+void CFileView::OnCreateTerrainPage()
+{
+	//EditorPluginFactory* pPageFactory	= EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_TERRAINPAGE);
+	//if (pPageFactory)
+	//{
+	//	STerrainPageEditorAdp adp;
+	//	adp.nLayerCount					= 1;
+	//	adp.tpl.fLayerWorldSize[0]		= 20.0f;
+	//	adp.tpl.layerDiffuseTexture[0]	= "dirt_grayrocky_diffusespecular.dds";
+	//	adp.tpl.layerNormalTexture[0]	= "dirt_grayrocky_normalheight.dds";
+	//	adp.nMinBatchSize				= 33;
+	//	adp.nMaxBatchSize				= 65;
+	//	adp.nPageX						= 0;
+	//	adp.nPageY						= 0;
+	//	adp.vPos						= Vector3::ZERO;
+	//	adp.bAtOnceLoad					= true;
+
+	//	char szPluginName[MAX_PATH];
+	//	sprintf_s(szPluginName, "%dx%d", adp.nPageX, adp.nPageY);
+	//	adp.pluginName					= szPluginName;
+
+	//	pPageFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(CPN::EDITOR_TERRAIN_GROUP));
+	//}
+
+	UpdateTreeItem();
 }

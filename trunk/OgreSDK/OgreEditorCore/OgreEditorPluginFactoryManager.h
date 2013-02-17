@@ -12,6 +12,7 @@ namespace Ogre
 		EPF_CAMERA,
 		EPF_VIEWPORT,
 		EPF_TERRAINGROUP,
+		EPF_TERRAINPAGE,
 	};
 
 	/**
