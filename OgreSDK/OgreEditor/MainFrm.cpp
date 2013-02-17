@@ -168,6 +168,12 @@ int		CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 	}
 
+	// create the wizard dialog
+	if (!m_wndCrtDialog.Create(IDD_DIALOG_CRTTERRAIN))
+	{
+		return -1;
+	}
+
 	return 0;
 }
 
@@ -461,4 +467,20 @@ CPropertiesWnd*	CMainFrame::GetPropertyWnd()
 void			CMainFrame::AddDebugMessage(LPCTSTR lpszMessage, COLORREF clr)
 {
 	m_wndOutput.OutputDebugMessage(lpszMessage, clr);
+}
+
+/**
+ *
+ */
+void			CMainFrame::ShowTerrainDialog()
+{
+	CRect rc;
+	GetClientRect(&rc);
+
+	CRect rcCrt;
+	m_wndCrtDialog.GetClientRect(&rcCrt);
+
+	m_wndCrtDialog.SetWindowPos(&wndTop, rc.Width() / 2 - rcCrt.Width() / 2,
+		rc.Height() / 2 - rcCrt.Height() / 2, 0, 0, SWP_NOSIZE);
+	m_wndCrtDialog.ShowWindow(SW_SHOW);
 }

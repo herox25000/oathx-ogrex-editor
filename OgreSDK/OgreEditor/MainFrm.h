@@ -6,6 +6,7 @@
 #include "PropertiesWnd.h"
 #include "WizardDialog.h"
 #include "TerrainEditorView.h"
+#include "TerrainCrtDialog.h"
 
 class CMainFrame : public CFrameWndEx
 {
@@ -20,6 +21,7 @@ public:
 	virtual	void		ResetFileTree();
 	CPropertiesWnd*		GetPropertyWnd();
 	void				AddDebugMessage(LPCTSTR lpszMessage, COLORREF clr);
+	void				ShowTerrainDialog();
 public:
 	virtual ~CMainFrame();
 #ifdef _DEBUG
@@ -38,6 +40,7 @@ protected:
 	CPropertiesWnd		m_wndProperties;
 	CWizardDialog		m_dWizardDialog;
 	CTerrainEditorView	m_wndTerrainView;
+	CTerrainCrtDialog	m_wndCrtDialog;
 protected:
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void		OnViewCustomize();

@@ -85,10 +85,14 @@
 #define IDS_EXPLORER                    305
 #define IDS_EDIT_MENU                   306
 #define IDD_DIALOG_WIZARD               310
+#define IDD_DIALOG_CRTTERRAIN           312
 #define IDC_EDIT_PATH                   1000
 #define IDC_BUTTON_PATH                 1001
 #define IDC_EDIT2                       1002
 #define IDC_EDIT_NAME                   1002
+#define IDC_EDIT1                       1003
+#define IDC_EDIT_WORLDSIZE              1003
+#define IDC_COMBO1                      1006
 #define ID_32771                        32771
 #define ID_32772                        32772
 
@@ -96,9 +100,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        312
+#define _APS_NEXT_RESOURCE_VALUE        313
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1003
+#define _APS_NEXT_CONTROL_VALUE         1007
 #define _APS_NEXT_SYMED_VALUE           310
 #endif
 #endif

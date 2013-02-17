@@ -1,6 +1,6 @@
-#include "StdAfx.h"
-#include "OgreEditorDebug.h"
+#include "stdafx.h"
 #include "MainFrm.h"
+#include "OgreEditorDebug.h"
 
 namespace Ogre
 {
@@ -10,7 +10,7 @@ namespace Ogre
 	 * \return 
 	 */
 	EditorDebug::EditorDebug(void)
-		:m_nLine(0)
+	:m_nLine(0)
 	{
 	}
 
@@ -31,11 +31,11 @@ namespace Ogre
 	 * \param &logName 
 	 * \param skipThisMessage 
 	 */
-	void EditorDebug::messageLogged( const Ogre::String& message, 
-													 Ogre::LogMessageLevel lml, 
-													 bool maskDebug, 
-													 const Ogre::String &logName, 
-													 bool& skipThisMessage )
+	void EditorDebug::messageLogged(const String& message, 
+									LogMessageLevel lml, 
+									bool maskDebug, 
+									const String &logName, 
+									bool& skipThisMessage)
 	{
 		String debugMessage;
 
@@ -44,15 +44,15 @@ namespace Ogre
 		char szTmp[32];
 		sprintf(szTmp, "%d> ", m_nLine);
 		debugMessage = debugMessage + szTmp + message;
-		m_DequeString.push_back(debugMessage);
+		m_vString.push_back(debugMessage);
 
-		while (!m_DequeString.empty())
+		while( !m_vString.empty() )
 		{
 			CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());
 			if (pMainFrame == NULL)
 				break;
-
-			debugMessage = m_DequeString.front();
+			
+			debugMessage = m_vString.front();
 			switch (lml)
 			{
 			case LML_TRIVIAL:
@@ -65,8 +65,7 @@ namespace Ogre
 				pMainFrame->AddDebugMessage(debugMessage.c_str(), RGB(255, 0, 0));
 				break;
 			}
-			m_DequeString.pop_front();
+			m_vString.pop_front();
 		}
 	}
 }
-

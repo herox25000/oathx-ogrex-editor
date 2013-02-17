@@ -28,6 +28,7 @@ namespace Ogre
 		"Factory/EditorCamera",
 		"Factory/EditorViewport",
 		"Factory/EditorTerrainGroup",
+		"Factory/EditorTerrainPage"
 	};
 
 	//////////////////////////////////////////////////////////////////////////
