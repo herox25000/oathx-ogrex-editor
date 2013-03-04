@@ -64,7 +64,7 @@ public:
 		BYTE bCardValue=GetCardValue(bCardData);
 
 		//×ª»»ÊýÖµ
-		if(bCardValue==1)return 6;
+		if(bCardValue==10)return 0;
 
 		return bCardValue;
 	}
