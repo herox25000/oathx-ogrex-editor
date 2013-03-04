@@ -113,10 +113,6 @@ bool __cdecl CTableFrameSink::IsUserPlaying(WORD wChairID)
 //游戏开始
 bool __cdecl CTableFrameSink::OnEventGameStart()
 {
-#ifdef _DEBUG
-		m_pITableFrame->SetGameTimer(1,10*1000L,1,0L);
-#endif
-
 	//设置状态
 	m_pITableFrame->SetGameStatus(GS_TK_CALL);
 
@@ -601,15 +597,6 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 //定时器事件
 bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 {
-	
-#ifdef _DEBUG
-	switch (wTimerID)
-	{
-	case 1:	
-		AfxMessageBox("sdfsdf");
-		break;
-	}
-#endif
 
 	return false;
 }
