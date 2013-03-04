@@ -44,7 +44,7 @@
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(SolutionDir)\objs\$(ProjectName)\$(ConfigurationName)\$(ProjectName).pdb"
 				SubSystem="2"
-				ImportLibrary="../../链接库/plugin_ui_d.lib"
+				ImportLibrary="../../开发库/Lib/plugin_ui_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -111,7 +111,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../链接库/plugin_ui.lib"
+				ImportLibrary="../../开发库/Lib/plugin_ui.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"

@@ -33,14 +33,14 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../链接库/plugin_ui_d.lib"
+				AdditionalDependencies="../../开发库/Lib/plugin_ui_d.lib"
 				OutputFile="../../运行/Debug/plugin_skinResource_d.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\SkinResourceD.def"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(SolutionDir)\objs\$(ProjectName)\$(ConfigurationName)\$(ProjectName).pdb"
 				SubSystem="2"
-				ImportLibrary="../../链接库/plugin_skinResource_d.lib"
+				ImportLibrary="../../开发库/Lib/plugin_skinResource_d.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"
@@ -91,7 +91,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../链接库/plugin_ui.lib"
+				AdditionalDependencies="../../开发库/Lib/plugin_ui.lib"
 				OutputFile="../../运行/Release/plugin_skinResource.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\SkinResource.def"
@@ -100,7 +100,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="../../链接库/plugin_skinResource.lib"
+				ImportLibrary="../../开发库/Lib/plugin_skinResource.lib"
 				TargetMachine="1"/>
 			<Tool
 				Name="VCMIDLTool"

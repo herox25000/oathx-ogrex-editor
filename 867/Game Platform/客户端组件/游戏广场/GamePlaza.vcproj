@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../链接库/plugin_common_d.lib ../../链接库/plugin_share_d.lib ../../链接库/plugin_ui_d.lib ../../链接库/plugin_channel_d.lib ../../链接库/plugin_property_d.lib Winmm.lib Zipd.lib"
+				AdditionalDependencies="../../开发库/Lib/plugin_common_d.lib ../../开发库/Lib/plugin_share_d.lib ../../开发库/Lib/plugin_ui_d.lib ../../开发库/Lib/plugin_channel_d.lib ../../开发库/Lib/plugin_property_d.lib Winmm.lib Zipd.lib"
 				OutputFile="../../运行/Debug/GamePlaza.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -90,7 +90,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../链接库/plugin_common.lib ../../链接库/plugin_share.lib ../../链接库/plugin_ui.lib ../../链接库/plugin_channel.lib ../../链接库/plugin_property.lib Zip.lib Winmm.lib"
+				AdditionalDependencies="../../开发库/Lib/plugin_common.lib ../../开发库/Lib/plugin_share.lib ../../开发库/Lib/plugin_ui.lib ../../开发库/Lib/plugin_channel.lib ../../开发库/Lib/plugin_property.lib Zip.lib Winmm.lib"
 				OutputFile="../../运行/Release/GamePlaza.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
