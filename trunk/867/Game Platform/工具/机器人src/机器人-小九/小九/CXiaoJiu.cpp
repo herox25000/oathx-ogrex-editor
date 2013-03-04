@@ -224,21 +224,6 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 						PlaceJetton.cbJettonArea = ID_DAO_MEN;
 						break;
 					}
-				//case 3:
-				//	{
-				//		PlaceJetton.cbJettonArea = ID_ZUO_JIAO;
-				//		break;
-				//	}
-				//case 4:
-				//	{
-				//		PlaceJetton.cbJettonArea = ID_YOU_JIAO;
-				//		break;
-				//	}
-				//case 5:
-				//	{
-				//		PlaceJetton.cbJettonArea = ID_QIAO;
-				//		break;
-				//	}
 				}
 				switch(rand()%4)
 				{
@@ -287,27 +272,6 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 							bSend=FALSE ;
 						break;
 					}
-				//case ID_QIAO:
-				//	{
-				//		__int64 lMaxTieKingScore= GetMaxTieKingScore();
-				//		if ( lMaxTieKingScore < PlaceJetton.lJettonScore )
-				//			bSend=FALSE ;
-				//		break;
-				//	}
-				//case ID_ZUO_JIAO:
-				//	{
-				//		__int64 lMaxPlayerKingScore = GetMaxPlayerKingScore();
-				//		if ( lMaxPlayerKingScore < PlaceJetton.lJettonScore )
-				//			bSend=FALSE ;
-				//		break;
-				//	}
-				//case ID_YOU_JIAO:
-				//	{
-				//		__int64 lMaxBankerKingScore = GetMaxBankerKingScore();
-				//		if ( lMaxBankerKingScore < PlaceJetton.lJettonScore )
-				//			bSend=FALSE ;
-				//		break;
-				//	}
 				}
 
 				if(bSend)
@@ -329,21 +293,6 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 							m_lMeDaoMenScore += PlaceJetton.lJettonScore;
 							break;
 						}
-					//case ID_QIAO:
-					//	{
-					//		m_lMeQiaoScore += PlaceJetton.lJettonScore;
-					//		break;
-					//	}
-					//case ID_ZUO_JIAO:
-					//	{
-					//		m_lMeZuoJiaoScore += PlaceJetton.lJettonScore;
-					//		break;
-					//	}
-					//case ID_YOU_JIAO:
-					//	{
-					//		m_lMeYouJiaoScore += PlaceJetton.lJettonScore;
-					//		break;
-					//	}
 					}
 
 					SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, &PlaceJetton, sizeof(PlaceJetton));
@@ -473,14 +422,6 @@ bool CPaiJiu::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, WOR
 					m_bMeIsBanker = false;
 					m_nBankerTimes = 0;
 				}
-
-//  				m_wCurrentBanker = pChangeBanker->wChairID;
-//  
-// 				if(m_ApplyBankerVec.empty()&&!m_bMeApplyBanker)
-// 				{
-// 					SetTimer(IDI_APPLY_BANKER, rand()%10000+5000, 1);
-// 					m_bMeApplyBanker = true;
-// 				}
 			}
 
 			m_wCurrentBanker = pChangeBanker->wChairID;

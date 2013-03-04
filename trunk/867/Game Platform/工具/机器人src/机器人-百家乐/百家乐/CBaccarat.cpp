@@ -455,14 +455,6 @@ bool CBaccarat::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, W
 					m_bMeIsBanker = false;
 					m_nBankerTimes = 0;
 				}
-
-////				m_wCurrentBanker = pChangeBanker->wChairID;
-////
-//// 				if(m_ApplyBankerVec.empty()&&!m_bMeApplyBanker)
-//// 				{
-//// 					SetTimer(IDI_APPLY_BANKER, rand()%10000+5000, 1);
-//// 					m_bMeApplyBanker = true;
-//// 				}
 			}
 
 			m_wCurrentBanker = pChangeBanker->wChairID;
@@ -494,11 +486,6 @@ bool CBaccarat::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, W
 					m_bMeIsBanker = false;
 				}
 			}
-
-			//if(m_bMeIsBanker == false && pChangeBanker->wChairID != INVALID_CHAIR)
-			//{
-			//	//this->OnPlaceJetton();
-			//}
 			break;
 		}
 	case SUB_S_CHANGE_USER_SCORE://更新积分
@@ -561,10 +548,10 @@ bool CBaccarat::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, W
 				}
 				else
 				{
-					if(m_bMeApplyBanker==false)
-					{
+					//if(m_bMeApplyBanker==false)
+					//{
 						this->OnPlaceJetton();
-					}
+					//}
 				}
 			}
 			else
