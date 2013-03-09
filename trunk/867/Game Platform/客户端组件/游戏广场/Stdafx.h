@@ -44,19 +44,19 @@
 #include "AfxInet.h"
 
 //全局头文件
-#include "..\..\公共文件\Constant.h"
-#include "..\..\公共文件\GlobalDef.h"
-#include "..\..\公共文件\GlobalField.h"
-#include "..\..\公共文件\GlobalFrame.h"
-#include "..\..\公共文件\GlobalRight.h"
+#include "..\..\开发库\Include\Constant.h"
+#include "..\..\开发库\Include\GlobalDef.h"
+#include "..\..\开发库\Include\GlobalField.h"
+#include "..\..\开发库\Include\GlobalFrame.h"
+#include "..\..\开发库\Include\GlobalRight.h"
 
 //命令头文件
-#include "..\..\消息定义\CMD_Game.h"
-#include "..\..\消息定义\CMD_Plaza.h"
-#include "..\..\消息定义\CMD_Video.h"
+#include "..\..\开发库\Include\CMD_Game.h"
+#include "..\..\开发库\Include\CMD_Plaza.h"
+#include "..\..\开发库\Include\CMD_Video.h"
 
-//模板库
-#include "..\..\模板库\Template.h"
+//开发库\Include
+#include "..\..\开发库\Include\Template.h"
 
 //组件头文件
 #include "..\头像组件\UserFace.h"

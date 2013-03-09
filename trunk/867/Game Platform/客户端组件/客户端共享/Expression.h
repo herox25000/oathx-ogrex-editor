@@ -7,7 +7,7 @@
 
 //宏定义
 #define MAX_EXPRESS_ITEM			121										//表情数目
-#define WM_HIT_EXPMESSTION			WM_USER+100								//消息定义
+#define WM_HIT_EXPMESSTION			WM_USER+100								//开发库\Include
 
 //////////////////////////////////////////////////////////////////////////
 

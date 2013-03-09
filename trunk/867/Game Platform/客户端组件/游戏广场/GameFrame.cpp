@@ -38,10 +38,12 @@
 #define IDC_SERVER_ITEM_VIEW		1019								//列表控制
 #define IDC_COMPANION_LIST			1020								//好友列表
 	
-//消息定义
+//开发库\Include
 #define WM_CLOSE_ROOM_VIEW_ITEM		WM_USER+10							//关闭消息
 #define WM_SETUP_FINISH				WM_USER+100							//安装完成
 
+
+PROCESS_INFORMATION GameProcessInfo;
 //////////////////////////////////////////////////////////////////////////
 
 BEGIN_MESSAGE_MAP(CGameFrame, CFrameWnd)
@@ -204,7 +206,18 @@ void __cdecl CGameFrame::OnTreeLeftDBClick(CListItem *pListItem, HTREEITEM hTree
 	case ItemGenre_Server:	//游戏房间
 		{
 			CListServer * pListServer=(CListServer *)pListItem;
-			CreateRoomViewItem(pListServer);
+			CListKind * pListKind=pListServer->GetListKind();
+			tagGameKind * pGameKind=pListKind->GetItemInfo();
+			if ( pGameKind->wTypeID==1 && pGameKind->wKindID<100 )
+			{
+				//启动外部exe程序
+				OpenExternalGame(pListServer);
+			}
+			else
+			{
+				CreateRoomViewItem(pListServer);
+			}
+
 			return;
 		}
 	}
@@ -667,6 +680,46 @@ CRoomViewItem * CGameFrame::SearchRoomViewItem(WORD wKindID, WORD wServerID)
 	}
 
 	return NULL;
+}
+
+//进入外部直连游戏
+BOOL CGameFrame::OpenExternalGame(CListServer * pListServer)
+{
+	//判断状态
+	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+	if ( GlobalUserData.dwUserID==0L )
+	{
+		ShowMessageBox(TEXT("您还没有登录，请先登录游戏广场！"),MB_ICONQUESTION);
+		return FALSE;
+	}
+
+	CListKind		*pListKind=pListServer->GetListKind();
+	tagGameKind		*pGameKind=pListKind->GetItemInfo();
+	tagGameServer	*pGameServer=pListServer->GetItemInfo();
+
+	//构造命令行
+	CString strCommonLine;
+	strCommonLine.Format(TEXT("%s --ip 0x%X --port %d --uid %d --ver 0x%X --pwd %s"),
+		pGameKind->szProcessName,
+		pGameServer->dwServerAddr,
+		pGameServer->wServerPort,
+		GlobalUserData.dwUserID,
+		g_GlobalUnits.GetPlazaVersion(),
+		GlobalUserData.szPassWord);
+
+	//启动游戏客户端
+	STARTUPINFO StartInfo;
+	memset(&StartInfo,0,sizeof(StartInfo));
+	StartInfo.cb=sizeof(StartInfo);
+	StartInfo.wShowWindow=SW_SHOWNORMAL;
+
+	memset(&GameProcessInfo,0,sizeof(GameProcessInfo));
+
+	BOOL bSuccess=CreateProcess(NULL,strCommonLine.GetBuffer(),NULL,NULL,FALSE,
+		CREATE_DEFAULT_ERROR_MODE,NULL,NULL,&StartInfo,&GameProcessInfo);
+
+	strCommonLine.ReleaseBuffer();
+	return bSuccess;
 }
 
 //进入房间
@@ -1305,7 +1358,8 @@ void CGameFrame::OnClose()
 
 	//隐藏界面
 	ShowWindow(SW_HIDE);
-
+	//关闭外部直连exe
+	::TerminateProcess(GameProcessInfo.hProcess,0);
 	//关闭房间
 	CloseAllRoomViewItem();
 

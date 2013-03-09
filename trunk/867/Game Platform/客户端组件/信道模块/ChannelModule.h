@@ -4,8 +4,8 @@
 //////////////////////////////////////////////////////////////////////////
 
 //平台头文件
-#include "..\..\模板库\Template.h"
-#include "..\..\公共文件\GlobalDef.h"
+#include "..\..\开发库\Include\Template.h"
+#include "..\..\开发库\Include\GlobalDef.h"
 
 //组件头文件
 #include "..\..\共享组件\公共服务\ComService.h"

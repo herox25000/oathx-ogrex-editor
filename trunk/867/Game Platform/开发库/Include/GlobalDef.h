@@ -6,10 +6,11 @@
 
 //////////////////////////////////////////////////////////////////////////
 //公共定义
-
+#define NAME_LEN						32								//名字长度
+#define IDCARD_LEN						19								//身份证号长度
+#define PASS_LEN						33								//密码长度
 #define MAX_CHAIR						100								//最大椅子
 #define MAX_CHAIR_NORMAL				8								//最大人数
-
 #define MAX_ANDROID						256								//最大机器
 #define MAX_CHAT_LEN					128								//聊天长度
 #define LIMIT_CHAT_TIMES				1200							//限时聊天
@@ -343,6 +344,76 @@ const BYTE g_RecvByteMap[256]=
 	0x3F,0x28,0xF2,0x69,0x74,0x68,0xB7,0xA3,0x50,0xD0,0x79,0x1D,0xFC,0xCE,0x8A,0x8D,
 	0x2E,0x62,0x30,0xEA,0xED,0x2B,0x26,0xB9,0x81,0x7C,0x46,0x89,0x73,0xA2,0xF7,0x72
 };
+
+
+// 命令行
+typedef void (WINAPI *__RunCommand)(LPCTSTR lpszCommand, LPCTSTR lpszParam, LPARAM lParam);
+
+static void ParseCommandLine(LPCTSTR lpCmdLine, __RunCommand funRunCommand, LPARAM lParam)
+{
+	int len=(int)strlen(lpCmdLine);
+
+	for ( int i=0; i<len-1; i++ )
+	{
+		if ( lpCmdLine[i]=='-' && lpCmdLine[i+1]=='-' )
+		{
+			i++;
+			i++;
+			char szCommand[1024]={0};
+			char szParam[1024]={0};
+
+			//--消灭--和命令之间的空格-------------
+			for (; i<len; i++)
+			{
+				if ( lpCmdLine[i]=='-' || lpCmdLine[i]=='\\' || lpCmdLine[i]=='/' )
+					break;
+				if ( lpCmdLine[i]==' ')
+					continue;
+				else
+					break;
+			}
+
+			//--把命令取出来-------------------------
+			for (int k=0; i<len; i++)
+			{
+				if ( lpCmdLine[i]=='-' || lpCmdLine[i]=='\\' || lpCmdLine[i]=='/' )
+					break;
+
+				if ( lpCmdLine[i]!=' ' && lpCmdLine[i]!=':' )
+					szCommand[k++]=lpCmdLine[i];
+				else
+					break;
+			}
+
+			//--消灭命令和参数之间的空格-------------
+			for (; i<len; i++)
+			{
+				if ( lpCmdLine[i]=='-' || lpCmdLine[i]=='\\' || lpCmdLine[i]=='/' )
+					break;
+				if ( lpCmdLine[i]==' ' || lpCmdLine[i]==':' )
+					continue;
+				else
+					break;
+			}
+
+			//--把参数取出来-------------
+			for (int m=0; i<len; i++)
+			{
+				if ( lpCmdLine[i]=='-' || lpCmdLine[i]=='\\' || lpCmdLine[i]=='/' )
+					break;
+				if ( lpCmdLine[i]!=' ' )
+					szParam[m++]=lpCmdLine[i];
+				else
+					break;
+			}
+
+			if ( lpCmdLine[i]=='-' )
+				i--;
+
+			funRunCommand( szCommand, szParam, lParam);
+		}
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////
 

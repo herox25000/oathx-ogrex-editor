@@ -160,6 +160,8 @@ public:
 	CRoomViewItem * SearchRoomViewItem(WORD wKindID, WORD wServerID);
 	//进入房间
 	CRoomViewItem * CreateRoomViewItem(CListServer * pListServer);
+	//进入外部直连游戏
+	BOOL OpenExternalGame(CListServer * pListServer);
 	//关闭房间
 	void CloseRoomViewItem(IRoomViewItem * pIRoomViewItem);
 	//关闭房间
