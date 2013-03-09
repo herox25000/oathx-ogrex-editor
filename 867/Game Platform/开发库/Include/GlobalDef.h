@@ -5,6 +5,10 @@
 #include "GlobalProperty.h"
 
 //////////////////////////////////////////////////////////////////////////
+//平台主页
+#define WEB_HOME	"www.baidu.com"										//平台主页			
+
+
 //公共定义
 #define NAME_LEN						32								//名字长度
 #define IDCARD_LEN						19								//身份证号长度
