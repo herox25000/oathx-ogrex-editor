@@ -438,6 +438,24 @@ public:
 	virtual bool __cdecl WriteUserScore(WORD wChairID, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1)=NULL;
 	//写入积分
 	virtual bool __cdecl WriteUserScore(IServerUserItem * pIServerUserItem, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1)=NULL;
+
+	//工具接口
+public:
+	//划拨银子
+	virtual bool __cdecl TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwUserID_IN, __int64 lMoney)=NULL;
+	//查询自己的转账记录
+	virtual bool __cdecl QueryTransferLog(IServerUserItem * pIServerUserItem)=NULL;
+	//充值
+	virtual bool __cdecl FillMoney(IServerUserItem * pIServerUserItem, TCHAR szCardNo[9], TCHAR szPassword[7], TCHAR szGameType[NAME_LEN])=NULL;
+	//修改登陆密码
+	virtual bool __cdecl ModifyLoginPassword(IServerUserItem * pIServerUserItem, TCHAR szOLDPassword[PASS_LEN], TCHAR szNEWPassword[PASS_LEN])=NULL;
+	//修改银行密码
+	virtual bool __cdecl ModifyBankPassword(IServerUserItem * pIServerUserItem, TCHAR szOLDPassword[PASS_LEN], TCHAR szNEWPassword[PASS_LEN])=NULL;
+	//修改昵称
+	virtual bool __cdecl ModifyNickname(IServerUserItem * pIServerUserItem, TCHAR szNickname[NAME_LEN])=NULL;
+	//银行操作
+	virtual bool __cdecl BankOperation(IServerUserItem * pIServerUserItem, LONG lBankTask, TCHAR szPassword[PASS_LEN], __int64 lMoneyNumber)=NULL;
+
 };
 
 //////////////////////////////////////////////////////////////////////////

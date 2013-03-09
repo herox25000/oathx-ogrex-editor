@@ -3,11 +3,11 @@
 //////////////////////////////////////////////////////////////////////////
 
 //全局头文件
-#include "..\..\公共文件\GlobalProperty.h"
+#include "..\..\开发库\Include\GlobalProperty.h"
 
-//模板库
-#include "..\..\模板库\Template.h"
-#include "..\..\模板库\Module.h"
+//开发库\Include
+#include "..\..\开发库\Include\Template.h"
+#include "..\..\开发库\Include\Module.h"
 
 //组件头文件
 #include "..\客户端共享\ClientShare.h"

@@ -265,7 +265,8 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//ÐÞ¸Ä»ý·Ö
 			for (WORD i=0;i<m_wPlayerCount;i++)
 			{
-				if(m_bPlayStatus[i]==FALSE)continue;
+				if(m_bPlayStatus[i]==FALSE)
+					continue;
 				enScoreKind nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
 				m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],GameEnd.lGameTax[i],nScoreKind);
 			}

@@ -11,7 +11,7 @@
 using namespace Gdiplus;
 
 //平台头文件
-#include "..\..\模板库\Template.h"
+#include "..\..\开发库\Include\Template.h"
 
 //QQ控件
 #import "ImageOle.dll" named_guids

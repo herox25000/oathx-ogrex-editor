@@ -4,14 +4,14 @@
 //////////////////////////////////////////////////////////////////////////
 
 //平台头文件
-#include "..\..\模板库\Template.h"
-#include "..\..\公共文件\GlobalDef.h"
+#include "..\..\开发库\Include\Template.h"
+#include "..\..\开发库\Include\GlobalDef.h"
 
-//消息定义
-#include "..\..\消息定义\CMD_Video.h"
+//开发库\Include
+#include "..\..\开发库\Include\CMD_Video.h"
 
 //组件头文件
-#include "..\..\模板库\Module.h"
+#include "..\..\开发库\Include\Module.h"
 #include "..\..\共享组件\界面控件\SkinControls.h"
 #include "..\..\客户端组件\游戏框架\GameFrame.h"
 #include "..\..\客户端组件\鲜花道具\FlowerEffectcontrol.h"
