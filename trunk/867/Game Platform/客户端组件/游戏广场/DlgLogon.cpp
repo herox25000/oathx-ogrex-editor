@@ -167,8 +167,11 @@ BOOL CDlgRegister::OnInitDialog()
 	((CEdit *)(GetDlgItem(IDC_PASSWORD)))->LimitText(PASS_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_PASSWORD2)))->LimitText(PASS_LEN-1);
 	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineRegWeb.ShowWindow(SW_HIDE);
 	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineMainPage.ShowWindow(SW_HIDE);
 	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LinePassWord.ShowWindow(SW_HIDE);
 
 	//加载头像
 	g_GlobalUnits.m_UserFaceRes->FillImageList(m_ImageList);
@@ -363,8 +366,11 @@ BOOL CDlgLogon::OnInitDialog()
 
 	//设置控件
 	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineMainPage.ShowWindow(SW_HIDE);
 	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LinePassWord.ShowWindow(SW_HIDE);
 	m_LineGetPassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineGetPassWord.ShowWindow(SW_HIDE);
 	m_LineMainPage.BringWindowToTop();
 	m_LinePassWord.BringWindowToTop();
 	m_LineGetPassWord.BringWindowToTop();
@@ -686,8 +692,8 @@ void CDlgLogon::LoadLogonServer()
 	m_strLogonServer=AfxGetApp()->GetProfileString(REG_OPTION_LOGON,TEXT("LogonServer"),NULL);
 	if (m_strLogonServer.IsEmpty()==FALSE)
 	{
-		pComBoxServer->AddString(m_strLogonServer);
-		pComBoxServer->SetWindowText(m_strLogonServer);
+		pComBoxServer->AddString(TEXT("电信服务器"));
+		pComBoxServer->SetWindowText(TEXT("电信服务器"));
 	}
 
 	//读取服务器列表
@@ -793,7 +799,12 @@ bool CDlgLogon::CheckLogonInput(bool bShowError)
 		}
 
 		//登录服务器
-		GetDlgItemText(IDC_SERVER,m_strLogonServer);
+		CString server_name;
+		GetDlgItemText(IDC_SERVER,server_name);
+		if (server_name == "电信服务器")
+		{
+			m_strLogonServer = TEXT("222.186.36.78");
+		}
 		m_strLogonServer.TrimLeft();
 		m_strLogonServer.TrimRight();
 		if (m_strLogonServer.IsEmpty())
@@ -1067,8 +1078,10 @@ void CDlgLogon::OnRegisterAccounts()
 	lstrcpy(m_szPassword,DlgRegister.m_szPassword);
 
 	//服务器
-	GetDlgItemText(IDC_SERVER,m_strLogonServer);
-	if (m_strLogonServer.IsEmpty()) m_strLogonServer=TEXT("ca111.vicp.net");
+	CString server_name;
+	GetDlgItemText(IDC_SERVER,server_name);
+	if (server_name.IsEmpty()) 
+		m_strLogonServer=TEXT("222.186.36.78");
 
 	//登录广场
 	ShowWindow(SW_HIDE);
