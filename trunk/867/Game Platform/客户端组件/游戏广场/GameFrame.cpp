@@ -1089,11 +1089,12 @@ void CGameFrame::RectifyControl(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_BrowerAD,NULL,300,5,250,52,uFlags);
 
 	//导航按钮
-	DeferWindowPos(hDwp,m_btButton1,NULL,nWidth-rcButton.Width()*5-nButtonSpace*4-nEndPos,6,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btButton2,NULL,nWidth-rcButton.Width()*4-nButtonSpace*3-nEndPos,6,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btButton3,NULL,nWidth-rcButton.Width()*3-nButtonSpace*2-nEndPos,6,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btButton4,NULL,nWidth-rcButton.Width()*2-nButtonSpace*1-nEndPos,6,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btButton5,NULL,nWidth-rcButton.Width()*1-nButtonSpace*0-nEndPos,6,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton1,NULL,nWidth-rcButton.Width()*4-nButtonSpace*4-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton2,NULL,nWidth-rcButton.Width()*3-nButtonSpace*3-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton3,NULL,nWidth-rcButton.Width()*2-nButtonSpace*2-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton4,NULL,nWidth-rcButton.Width()*1-nButtonSpace*1-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton5,NULL,nWidth-rcButton.Width()*1-nButtonSpace*0-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	m_btButton5.ShowWindow(SW_HIDE);
 
 	//获取位置
 	CRect rcButtonRect;
@@ -1231,8 +1232,11 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btButton5.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_BUTTON_5);
 	m_btGamePlaza.Create(TEXT("游戏大厅"),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_PLAZA);
 	m_btSelfOption.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SELF_OPTION);
+	m_btSelfOption.ShowWindow(SW_HIDE);
 	m_btSwitchUser.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SWITCH_ACCOUNTS);
+	m_btSwitchUser.ShowWindow(SW_HIDE);
 	m_btGlobalOption.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SYSTEM_OPTION);
+	m_btGlobalOption.ShowWindow(SW_HIDE);
 	m_btListControl1.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_1);
 	//m_btListControl2.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_2);
 	for (WORD i=0;i<CountArray(m_btViewItem);i++)
