@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (P.R.C.) resources
+// 中文(中华人民共和国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -72,13 +72,13 @@ IDR_MAINFRAME           ICON                    "res\\GameClient.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,5,1,0
- PRODUCTVERSION 6,5,1,0
- FILEFLAGSMASK 0x3fL
+ FILEVERSION 6,6,1,0
+ PRODUCTVERSION 6,6,1,0
+ FILEFLAGSMASK 0x1fL
 #ifdef _DEBUG
- FILEFLAGS 0x21L
+ FILEFLAGS 0x1L
 #else
- FILEFLAGS 0x20L
+ FILEFLAGS 0x0L
 #endif
  FILEOS 0x4L
  FILETYPE 0x1L
@@ -88,16 +88,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "杭州捷钺网络科技有限公司"
-            VALUE "CompanyName", "杭州捷钺网络科技有限公司"
             VALUE "FileDescription", "港式五张游戏客户端"
-            VALUE "FileVersion", "6, 5, 1, 0"
+            VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "HKFiveCard.exe"
-            VALUE "LegalCopyright", "杭州捷钺网络科技有限公司保留所有权利。"
             VALUE "OriginalFilename", "HKFiveCard.exe"
             VALUE "ProductName", "港式五张游戏客户端"
-            VALUE "ProductVersion", "6, 5, 1, 0"
-            VALUE "SpecialBuild", "杭州下沙网至尊宝游戏中心"
+            VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"
@@ -190,7 +186,7 @@ END
 
 JETTON_VIEW             PNG                     "res\\JETTON_VIEW.png"
 NUMBER                  PNG                     "res\\NUMBER.PNG"
-#endif    // Chinese (P.R.C.) resources
+#endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

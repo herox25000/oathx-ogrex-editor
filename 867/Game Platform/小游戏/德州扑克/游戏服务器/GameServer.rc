@@ -63,8 +63,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 6,6,1,0
+ PRODUCTVERSION 6,6,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -82,12 +82,12 @@ BEGIN
             VALUE "Comments", "艾棋牌游网络科技"
             VALUE "CompanyName", "棋牌游网络科技"
             VALUE "FileDescription", "TODO: <文件说明>"
-            VALUE "FileVersion", "1, 0, 0, 0"
+            VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "GameServer.dll"
             VALUE "LegalCopyright", "棋牌游网络科技保留所有权利。"
             VALUE "OriginalFilename", "GameServer.dll"
             VALUE "ProductName", "TODO: <产品名>"
-            VALUE "ProductVersion", "1, 0, 0, 0"
+            VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"
