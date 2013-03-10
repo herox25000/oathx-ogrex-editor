@@ -79,15 +79,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "深圳网狐科技有限公司"
-            VALUE "CompanyName", "深圳网狐科技有限公司"
             VALUE "FileDescription", "中国象棋游戏服务器"
-VALUE "FileVersion", "6, 6, 1, 0"
+            VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "GameServer.dll"
-            VALUE "LegalCopyright", "深圳网狐科技有限公司保留所有权利。"
             VALUE "OriginalFilename", "GameServer.dll"
             VALUE "ProductName", "中国象棋游戏服务器"
-VALUE "ProductVersion", "6, 6, 1, 0"
+            VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"

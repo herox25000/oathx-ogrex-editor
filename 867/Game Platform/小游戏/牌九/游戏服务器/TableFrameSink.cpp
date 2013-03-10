@@ -1585,63 +1585,94 @@ bool CTableFrameSink::CheckCardRight()
 {
 	if ( m_CurrentBanker.dwUserID != 0 )
 	{
+		bool bChangeCard = false;
+		int	 nChangeID = INDEX_BANKER;
+		int nRand = rand() % 100;
+		BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
 		if (m_CurrentBanker.dwUserType == 10)
 		{
 			//机器人（至少营一家）
-			int nRand = rand() % 100;
-			BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
 			SortCardComp(chCardSort, 4);
-			if (nRand <= 20)
+			if (nRand < 12)
 			{
-				if (chCardSort[2] == INDEX_BANKER)
+				if (chCardSort[3] != INDEX_BANKER)
 				{
-					return true;
-				}
-				else
-				{
-					BYTE nIndex = chCardSort[2];
-					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
-					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
-					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
-					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
-					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
-					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+					bChangeCard = true;
+					nChangeID = chCardSort[3];
 				}
 			}
-			else if (nRand < 70)
+			else if (nRand < 40)
 			{
-				if (chCardSort[1] == INDEX_BANKER)
+				if (chCardSort[2] != INDEX_BANKER)
 				{
-					return true;
+					bChangeCard = true;
+					nChangeID = chCardSort[2];
 				}
-				else
+			}
+			else if (nRand < 85)
+			{
+				if (chCardSort[1] != INDEX_BANKER)
 				{
-					BYTE nIndex = chCardSort[1];
-					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
-					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
-					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
-					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
-					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
-					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+					bChangeCard = true;
+					nChangeID = chCardSort[1];
+					return true;
 				}
 			}
 			else
 			{
-				if (chCardSort[0] == INDEX_BANKER)
+				if (chCardSort[0] != INDEX_BANKER)
 				{
+					bChangeCard = true;
+					nChangeID = chCardSort[0];
 					return true;
 				}
-				else
+			}
+		}
+		else
+		{
+			if (nRand < 25)
+			{
+				if (chCardSort[3] != INDEX_BANKER)
 				{
-					BYTE nIndex = chCardSort[0];
-					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
-					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
-					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
-					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
-					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
-					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+					bChangeCard = true;
+					nChangeID = chCardSort[3];
 				}
 			}
+			else if (nRand < 60)
+			{
+				if (chCardSort[2] != INDEX_BANKER)
+				{
+					bChangeCard = true;
+					nChangeID = chCardSort[2];
+				}
+			}
+			else if (nRand < 90)
+			{
+				if (chCardSort[1] != INDEX_BANKER)
+				{
+					bChangeCard = true;
+					nChangeID = chCardSort[1];
+					return true;
+				}
+			}
+			else
+			{
+				if (chCardSort[0] != INDEX_BANKER)
+				{
+					bChangeCard = true;
+					nChangeID = chCardSort[0];
+					return true;
+				}
+			}
+		}
+		if (bChangeCard)
+		{
+			BYTE bFirstCard = m_cbTableCardArray[nChangeID][0];
+			BYTE bNextCard = m_cbTableCardArray[nChangeID][1];
+			m_cbTableCardArray[nChangeID][0] = m_cbTableCardArray[INDEX_BANKER][0];
+			m_cbTableCardArray[nChangeID][1] = m_cbTableCardArray[INDEX_BANKER][1];
+			m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
+			m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
 		}
 	}
 	return true;
