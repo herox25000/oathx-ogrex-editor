@@ -182,7 +182,8 @@ VOID CUserInfoView::OnPaint()
 						_sntprintf(szString,CountArray(szString),TEXT("性别：保密"));
 					else if ( m_pCurrentUserData->cbGender == 1 ) 
 						_sntprintf(szString,CountArray(szString),TEXT("性别：男"));
-					else _sntprintf(szString,CountArray(szString),TEXT("性别：女"));
+					else 
+						_sntprintf(szString,CountArray(szString),TEXT("性别：女"));
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;
