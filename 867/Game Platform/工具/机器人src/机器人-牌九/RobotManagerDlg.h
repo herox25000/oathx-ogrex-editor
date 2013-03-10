@@ -25,6 +25,7 @@ public:
 	void	ChangeRobot();
 	void	Login();
 	void	Logout();
+	BOOL	Find(DWORD dwID);
 	//ÆäËû¿Ø¼þ
 public:
 	struct CGame
@@ -37,7 +38,7 @@ public:
 		CGameBase	*_pGame;
 		int			_nTimes;
 	};
-	typedef std::vector<CGameBase*> CGameVec;
+	typedef std::vector<CPaiJiu*> CGameVec;
 	typedef std::map<DWORD, CGame> CGameMap;
 	CGameVec						m_BaVec;
 	IUnknownEx						*m_pIUnknownEx;			 
