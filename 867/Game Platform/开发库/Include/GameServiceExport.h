@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //平台头文件
-#include "..\..\模板库\Template.h"
+#include "Template.h"
 #include "..\..\公共文件\GlobalDef.h"
 #include "..\..\公共文件\GlobalField.h"
 #include "..\..\公共文件\GlobalFrame.h"
@@ -12,10 +12,10 @@
 #include "..\..\公共文件\GlobalService.h"
 
 //命令码文件
-#include "..\..\消息定义\CMD_Game.h"
-#include "..\..\消息定义\CMD_Video.h"
-#include "..\..\消息定义\CMD_Plaza.h"
-#include "..\..\消息定义\CMD_Center.h"
+#include "CMD_Game.h"
+#include "CMD_Video.h"
+#include "CMD_Plaza.h"
+#include "CMD_Center.h"
 
 //组件头文件
 #include "..\..\服务器组件\内核引擎\KernelEngineHead.h"
