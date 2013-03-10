@@ -171,7 +171,7 @@ stCardType CGameLogic::GetCardLevel(BYTE bCardList[])//Á½ÕÅÅÆ
 	//10  6  4  ºÚ
 	if( bCardList[0]==0x1A && bCardList[1]==0x3A || bCardList[0]==0x3A && bCardList[1]==0x1A ||	\
 		bCardList[0]==0x16 && bCardList[1]==0x36 || bCardList[0]==0x36 && bCardList[1]==0x16 ||	\
-		bCardList[0]==0x14 && bCardList[1]==0x34 || bCardList[0]==0x3A && bCardList[1]==0x14 
+		bCardList[0]==0x14 && bCardList[1]==0x34 || bCardList[0]==0x34 && bCardList[1]==0x14 
 		)
 	{
 		sCardType.nCardType=CT_DOUBLE;
