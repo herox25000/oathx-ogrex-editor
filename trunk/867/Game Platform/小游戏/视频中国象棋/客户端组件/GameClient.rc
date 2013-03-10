@@ -72,8 +72,8 @@ IDR_MAINFRAME           ICON                    "res\\GameClient.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION 6,6,1,0
-PRODUCTVERSION 6,6,1,0
+ FILEVERSION 6,6,1,0
+ PRODUCTVERSION 6,6,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -88,15 +88,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "深圳市网狐科技有限公司"
-            VALUE "CompanyName", "深圳市网狐科技有限公司"
             VALUE "FileDescription", "中国象棋"
-VALUE "FileVersion", "6, 6, 1, 0"
+            VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "ChinaChess.exe"
-            VALUE "LegalCopyright", "深圳市网狐科技有限公司保留所有权利。"
             VALUE "OriginalFilename", "ChinaChess.exe"
             VALUE "ProductName", "中国象棋"
-VALUE "ProductVersion", "6, 6, 1, 0"
+            VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"

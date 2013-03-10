@@ -1188,6 +1188,20 @@ void CTableFrameSink::CalculateScore()
 	__int64 lUserLostScore[GAME_PLAYER];
 	ZeroMemory(lUserLostScore, sizeof(lUserLostScore));
 
+	bool	bLessDouble = false;
+	if (m_lTianMenScore + m_lDaoMenScore + m_lShunMenScore < m_CurrentBanker.lUserScore / 2)
+		bLessDouble = true;
+	BYTE cbDouble = 0;
+	stCardType sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER1]);
+	if (sType.nCardType == CT_DOUBLE && bLessDouble)
+		cbDouble |= ID_SHUN_MEN;
+	sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER2]);
+	if (sType.nCardType == CT_DOUBLE && bLessDouble)
+		cbDouble |= ID_TIAN_MEN;
+	sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER3]);
+	if (sType.nCardType == CT_DOUBLE && bLessDouble)
+		cbDouble |= ID_DAO_MEN;
+
 	//计算积分
 	for (WORD i=0;i<GAME_PLAYER;i++)
 	{
@@ -1201,9 +1215,18 @@ void CTableFrameSink::CalculateScore()
 		//顺门
 		if(ID_SHUN_MEN & GameScore.cbWinner)
 		{
-			m_lUserWinScore[i]+=m_lUserShunMenScore[i];
-			m_lUserReturnScore[i] += m_lUserShunMenScore[i] ;
-			lBankerWinScore -= m_lUserShunMenScore[i];
+			if (ID_SHUN_MEN & cbDouble)
+			{
+				m_lUserWinScore[i] += m_lUserShunMenScore[i] * 2;
+				m_lUserReturnScore[i] += m_lUserShunMenScore[i] * 2;
+				lBankerWinScore -= m_lUserShunMenScore[i] * 2;
+			}
+			else
+			{
+				m_lUserWinScore[i]+=m_lUserShunMenScore[i];
+				m_lUserReturnScore[i] += m_lUserShunMenScore[i] ;
+				lBankerWinScore -= m_lUserShunMenScore[i];
+			}
 		}
 		else
 		{
@@ -1213,9 +1236,18 @@ void CTableFrameSink::CalculateScore()
 		//天门
 		if(ID_TIAN_MEN & GameScore.cbWinner)
 		{
-			m_lUserWinScore[i]+=m_lUserTianMenScore[i];
-			m_lUserReturnScore[i] += m_lUserTianMenScore[i] ;
-			lBankerWinScore -= m_lUserTianMenScore[i];
+			if (ID_TIAN_MEN & cbDouble)
+			{
+				m_lUserWinScore[i]+=m_lUserTianMenScore[i]*2;
+				m_lUserReturnScore[i] += m_lUserTianMenScore[i]*2 ;
+				lBankerWinScore -= m_lUserTianMenScore[i]*2;
+			}
+			else
+			{
+				m_lUserWinScore[i]+=m_lUserTianMenScore[i];
+				m_lUserReturnScore[i] += m_lUserTianMenScore[i] ;
+				lBankerWinScore -= m_lUserTianMenScore[i];
+			}
 		}
 		else
 		{
@@ -1225,9 +1257,18 @@ void CTableFrameSink::CalculateScore()
 		//倒门
 		if(ID_DAO_MEN & GameScore.cbWinner)
 		{
-			m_lUserWinScore[i]+=m_lUserDaoMenScore[i];
-			m_lUserReturnScore[i] += m_lUserDaoMenScore[i] ;
-			lBankerWinScore -= m_lUserDaoMenScore[i];
+			if (ID_DAO_MEN & cbDouble)
+			{
+				m_lUserWinScore[i]+=m_lUserDaoMenScore[i]*2;
+				m_lUserReturnScore[i] += m_lUserDaoMenScore[i]*2 ;
+				lBankerWinScore -= m_lUserDaoMenScore[i]*2;
+			}
+			else
+			{
+				m_lUserWinScore[i]+=m_lUserDaoMenScore[i];
+				m_lUserReturnScore[i] += m_lUserDaoMenScore[i] ;
+				lBankerWinScore -= m_lUserDaoMenScore[i];
+			}
 		}
 		else
 		{
@@ -1235,54 +1276,54 @@ void CTableFrameSink::CalculateScore()
 			lBankerWinScore += m_lUserDaoMenScore[i] ;
 		}
 
-		//左角
-		if(ID_SHUN_MEN & GameScore.cbWinner && ID_TIAN_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserZuoJiaoScore[i];
-			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
-			lBankerWinScore -= m_lUserZuoJiaoScore[i];
-		}
-		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_TIAN_MEN & GameScore.cbWinner)
-		{
-			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserZuoJiaoScore[i] ;
-			lBankerWinScore += m_lUserZuoJiaoScore[i] ;
-		}
-		//右角
-		if(ID_TIAN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserYouJiaoScore[i];
-			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
-			lBankerWinScore -= m_lUserYouJiaoScore[i];
-		}
-		else if(ID_TIAN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserYouJiaoScore[i] ;
-			lBankerWinScore += m_lUserYouJiaoScore[i] ;
-		}
-		//桥
-		if(ID_SHUN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserQiaoScore[i];
-			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
-			lBankerWinScore -= m_lUserQiaoScore[i];
-		}
-		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserQiaoScore[i] ;
-			lBankerWinScore += m_lUserQiaoScore[i] ;
-		}
+// 		//左角
+// 		if(ID_SHUN_MEN & GameScore.cbWinner && ID_TIAN_MEN & GameScore.cbWinner)
+// 		{
+// 			m_lUserWinScore[i]+=m_lUserZuoJiaoScore[i];
+// 			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
+// 			lBankerWinScore -= m_lUserZuoJiaoScore[i];
+// 		}
+// 		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_TIAN_MEN & GameScore.cbWinner)
+// 		{
+// 			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
+// 		}
+// 		else
+// 		{
+// 			lUserLostScore[i] -=m_lUserZuoJiaoScore[i] ;
+// 			lBankerWinScore += m_lUserZuoJiaoScore[i] ;
+// 		}
+// 		//右角
+// 		if(ID_TIAN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
+// 		{
+// 			m_lUserWinScore[i]+=m_lUserYouJiaoScore[i];
+// 			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
+// 			lBankerWinScore -= m_lUserYouJiaoScore[i];
+// 		}
+// 		else if(ID_TIAN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
+// 		{
+// 			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
+// 		}
+// 		else
+// 		{
+// 			lUserLostScore[i] -=m_lUserYouJiaoScore[i] ;
+// 			lBankerWinScore += m_lUserYouJiaoScore[i] ;
+// 		}
+// 		//桥
+// 		if(ID_SHUN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
+// 		{
+// 			m_lUserWinScore[i]+=m_lUserQiaoScore[i];
+// 			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
+// 			lBankerWinScore -= m_lUserQiaoScore[i];
+// 		}
+// 		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
+// 		{
+// 			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
+// 		}
+// 		else
+// 		{
+// 			lUserLostScore[i] -=m_lUserQiaoScore[i] ;
+// 			lBankerWinScore += m_lUserQiaoScore[i] ;
+// 		}
 
 		//总的分数
 		m_lUserWinScore[i] += lUserLostScore[i];
@@ -1589,63 +1630,94 @@ bool CTableFrameSink::CheckCardRight()
 {
 	if ( m_CurrentBanker.dwUserID != 0 )
 	{
+		bool bChangeCard = false;
+		int	 nChangeID = INDEX_BANKER;
+		int nRand = rand() % 100;
+		BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
 		if (m_CurrentBanker.dwUserType == 10)
 		{
 			//机器人（至少营一家）
-			int nRand = rand() % 100;
-			BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
 			SortCardComp(chCardSort, 4);
-			if (nRand <= 20)
+			if (nRand < 12)
 			{
-				if (chCardSort[2] == INDEX_BANKER)
+				if (chCardSort[3] != INDEX_BANKER)
 				{
-					return true;
-				}
-				else
-				{
-					BYTE nIndex = chCardSort[2];
-					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
-					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
-					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
-					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
-					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
-					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+					bChangeCard = true;
+					nChangeID = chCardSort[3];
 				}
 			}
-			else if (nRand < 70)
+			else if (nRand < 40)
 			{
-				if (chCardSort[1] == INDEX_BANKER)
+				if (chCardSort[2] != INDEX_BANKER)
 				{
-					return true;
+					bChangeCard = true;
+					nChangeID = chCardSort[2];
 				}
-				else
+			}
+			else if (nRand < 85)
+			{
+				if (chCardSort[1] != INDEX_BANKER)
 				{
-					BYTE nIndex = chCardSort[1];
-					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
-					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
-					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
-					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
-					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
-					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+					bChangeCard = true;
+					nChangeID = chCardSort[1];
+					return true;
 				}
 			}
 			else
 			{
-				if (chCardSort[0] == INDEX_BANKER)
+				if (chCardSort[0] != INDEX_BANKER)
 				{
+					bChangeCard = true;
+					nChangeID = chCardSort[0];
 					return true;
 				}
-				else
+			}
+		}
+		else
+		{
+			if (nRand < 25)
+			{
+				if (chCardSort[3] != INDEX_BANKER)
 				{
-					BYTE nIndex = chCardSort[0];
-					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
-					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
-					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
-					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
-					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
-					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+					bChangeCard = true;
+					nChangeID = chCardSort[3];
 				}
 			}
+			else if (nRand < 60)
+			{
+				if (chCardSort[2] != INDEX_BANKER)
+				{
+					bChangeCard = true;
+					nChangeID = chCardSort[2];
+				}
+			}
+			else if (nRand < 90)
+			{
+				if (chCardSort[1] != INDEX_BANKER)
+				{
+					bChangeCard = true;
+					nChangeID = chCardSort[1];
+					return true;
+				}
+			}
+			else
+			{
+				if (chCardSort[0] != INDEX_BANKER)
+				{
+					bChangeCard = true;
+					nChangeID = chCardSort[0];
+					return true;
+				}
+			}
+		}
+		if (bChangeCard)
+		{
+			BYTE bFirstCard = m_cbTableCardArray[nChangeID][0];
+			BYTE bNextCard = m_cbTableCardArray[nChangeID][1];
+			m_cbTableCardArray[nChangeID][0] = m_cbTableCardArray[INDEX_BANKER][0];
+			m_cbTableCardArray[nChangeID][1] = m_cbTableCardArray[INDEX_BANKER][1];
+			m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
+			m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
 		}
 	}
 	return true;
