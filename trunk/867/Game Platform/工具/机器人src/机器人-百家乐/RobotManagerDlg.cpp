@@ -15,11 +15,13 @@
 #define  CHANGE_ROBOT		1
 #define  LOGIN				2
 #define  LOGOUT				3
+// RobotManagerDlg.cpp : 实现文件
+//
 
 // CRobotManagerDlg 对话框
 
 CRobotManagerDlg::CRobotManagerDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CRobotManagerDlg::IDD, pParent)
+: CDialog(CRobotManagerDlg::IDD, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	srand((unsigned)time(NULL)); 
@@ -65,7 +67,7 @@ BOOL CRobotManagerDlg::OnInitDialog()
 	//	m_EventService->SetRichEditHwnd(m_RichEditCtrl.GetSafeHwnd());
 	//}
 
-//	m_RichEditCtrl.SetBackgroundColor(FALSE,RGB(220,220,220));
+	//	m_RichEditCtrl.SetBackgroundColor(FALSE,RGB(220,220,220));
 
 	return TRUE;  // 除非设置了控件的焦点，否则返回 TRUE
 }
@@ -168,7 +170,7 @@ void CRobotManagerDlg::ChangeRobot()
 	m_BaMap.clear();
 
 	Login();	
-	SetTimer(LOGIN, rand()%120000+180000, NULL);
+	SetTimer(LOGIN, rand()%3000+5000, NULL);
 }
 
 void CRobotManagerDlg::OnBnClickedCancel()
@@ -184,8 +186,19 @@ void CRobotManagerDlg::OnBnClickedCancel()
 		}
 		m_TimerEngine.EndService();
 	}
-	
+
 	OnCancel();
+}
+
+BOOL CRobotManagerDlg::Find(DWORD dwID)
+{
+	for (int i=0; i<m_BaVec.size(); i++)
+	{
+		if ( m_BaVec[i]->GetUserID() == dwID)
+			return TRUE;
+	}
+
+	return FALSE;
 }
 
 void CRobotManagerDlg::Login()
@@ -194,19 +207,35 @@ void CRobotManagerDlg::Login()
 	{
 		m_TimerEngine.BeginService();
 
-		CBaccarat *pGame = new CBaccarat(m_nStartID);
-		pGame->BeginServer(m_strIP, m_nPort, m_strPsw);
+		DWORD dwUserID = 0;
+		do 
+		{
+			dwUserID = rand() % ( m_nEndID - m_nStartID) + m_nStartID;
+			if ( FALSE == Find(dwUserID) )
+			{
+				break;
+			}
+			else
+			{
+				dwUserID = 0;
+			}
 
-		m_BaVec.push_back(pGame);
-		//pGame->SetEventService(m_pIUnknownEx);
-		pGame->SetTimerEngine(&m_TimerEngine);
+		} while (m_BaVec.size() < m_nEndID - m_nStartID);
 
-		m_BaMap.insert(CGameMap::value_type(m_nStartID, CGame(pGame, 0)));
-		SetTimer(m_nStartID, 5000, NULL);
+		if (dwUserID)
+		{
+			CBaccarat *pGame = new CBaccarat(dwUserID);
+			pGame->BeginServer(m_strIP, m_nPort, m_strPsw);
 
-		m_BaVec[0]->SetSmall();
+			m_BaVec.push_back(pGame);
+			//pGame->SetEventService(m_pIUnknownEx);
+			pGame->SetTimerEngine(&m_TimerEngine);
 
-		m_nStartID++;
+			m_BaMap.insert(CGameMap::value_type(dwUserID, CGame(pGame, 0)));
+			SetTimer(dwUserID, 5000, NULL);
+
+			m_BaVec[0]->SetSmall();
+		}
 	}
 }
 
@@ -223,69 +252,69 @@ void CRobotManagerDlg::OnTimer(UINT nIDEvent)
 		ChangeRobot();
 	}
 	else
-	if(nIDEvent == LOGIN)
-	{
-		if(m_nStartID<=m_nEndID)
+		if(nIDEvent == LOGIN)
 		{
-			Login();
-		}
-		else
-		{
-			KillTimer(LOGIN);
-		}
-	}
-	else
-	if(nIDEvent == LOGOUT)
-	{
-		if(!m_BaVec.empty())
-		{
-			Logout();
-		}
-		else
-		{
-		//	m_EventService->ShowEventNotify("机器人已经全部退出！",Level_Normal);
-			CTraceService::TraceString("机器人已经全部退出！",TraceLevel_Normal);
-			KillTimer(CHANGE_ROBOT);
-
-			GetDlgItem(IDC_END_SERVER)->EnableWindow(FALSE);
-			GetDlgItem(IDOK)->EnableWindow(TRUE);
-			KillTimer(LOGOUT);
-		}
-	}
-	else
-	{
-		CGameMap::iterator iter = m_BaMap.find(nIDEvent);
-
-		if(iter != m_BaMap.end())
-		{
-			if(iter->second._nTimes > 10)
+			if(m_nStartID<=m_nEndID)
 			{
-				iter->second._pGame->EndServer();
-
-				CString strMsg;
-				strMsg.Format("%i 无法进入游戏！", nIDEvent);
-				//m_EventService->ShowEventNotify(strMsg, Level_Normal);
-
-				CTraceService::TraceString(strMsg,TraceLevel_Normal);
-				KillTimer(nIDEvent);
+				Login();
 			}
 			else
 			{
-				if(iter->second._pGame->IsSitOk() == false)
+				KillTimer(LOGIN);
+			}
+		}
+		else
+			if(nIDEvent == LOGOUT)
+			{
+				if(!m_BaVec.empty())
 				{
-					iter->second._pGame->EndServer();
-					iter->second._nTimes++;
-					iter->second._pGame->BeginServer(m_strIP, m_nPort, m_strPsw);
+					Logout();
 				}
 				else
 				{
-					KillTimer(nIDEvent);
+					//	m_EventService->ShowEventNotify("机器人已经全部退出！",Level_Normal);
+					CTraceService::TraceString("机器人已经全部退出！",TraceLevel_Normal);
+					KillTimer(CHANGE_ROBOT);
+
+					GetDlgItem(IDC_END_SERVER)->EnableWindow(FALSE);
+					GetDlgItem(IDOK)->EnableWindow(TRUE);
+					KillTimer(LOGOUT);
 				}
 			}
-		}
-	
-	}
-	CDialog::OnTimer(nIDEvent);
+			else
+			{
+				CGameMap::iterator iter = m_BaMap.find(nIDEvent);
+
+				if(iter != m_BaMap.end())
+				{
+					if(iter->second._nTimes > 10)
+					{
+						iter->second._pGame->EndServer();
+
+						CString strMsg;
+						strMsg.Format("%i 无法进入游戏！", nIDEvent);
+						//m_EventService->ShowEventNotify(strMsg, Level_Normal);
+
+						CTraceService::TraceString(strMsg,TraceLevel_Normal);
+						KillTimer(nIDEvent);
+					}
+					else
+					{
+						if(iter->second._pGame->IsSitOk() == false)
+						{
+							iter->second._pGame->EndServer();
+							iter->second._nTimes++;
+							iter->second._pGame->BeginServer(m_strIP, m_nPort, m_strPsw);
+						}
+						else
+						{
+							KillTimer(nIDEvent);
+						}
+					}
+				}
+
+			}
+			CDialog::OnTimer(nIDEvent);
 }
 
 void CRobotManagerDlg::OnBnClickedEndServer()
@@ -323,7 +352,7 @@ void CRobotManagerDlg::Logout()
 	}
 	if(m_BaVec.empty())
 	{
-	//	m_EventService->ShowEventNotify("机器人已经全部退出！",Level_Normal);
+		//	m_EventService->ShowEventNotify("机器人已经全部退出！",Level_Normal);
 
 		CTraceService::TraceString("机器人已经全部退出！",TraceLevel_Normal);
 		KillTimer(CHANGE_ROBOT);

@@ -22,6 +22,7 @@ public:
 	CPaiJiu(DWORD dwUserID);
 	~CPaiJiu();
 
+	DWORD							GetUserID() const {return m_MeUserInfo.dwUserID;}
 	//限制信息
 protected:
 	__int64							m_lMeMaxScore;						//最大下注

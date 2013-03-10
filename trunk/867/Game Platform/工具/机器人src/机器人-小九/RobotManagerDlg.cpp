@@ -168,7 +168,7 @@ void CRobotManagerDlg::ChangeRobot()
 	m_BaMap.clear();
 
 	Login();	
-	SetTimer(LOGIN, rand()%120000+180000, NULL);
+	SetTimer(LOGIN, rand()%3000+5000, NULL);
 }
 
 void CRobotManagerDlg::OnBnClickedCancel()
@@ -188,25 +188,52 @@ void CRobotManagerDlg::OnBnClickedCancel()
 	OnCancel();
 }
 
+BOOL CRobotManagerDlg::Find(DWORD dwID)
+{
+	for (int i=0; i<m_BaVec.size(); i++)
+	{
+		if ( m_BaVec[i]->GetUserID() == dwID)
+			return TRUE;
+	}
+
+	return FALSE;
+}
+
 void CRobotManagerDlg::Login()
 {
 	if(m_nStartID>0 && m_nEndID>0 && m_nEndID>=m_nStartID)
 	{
 		m_TimerEngine.BeginService();
 
-		CPaiJiu *pGame = new CPaiJiu(m_nStartID);
-		pGame->BeginServer(m_strIP, m_nPort, m_strPsw);
+		DWORD dwUserID = 0;
+		do 
+		{
+			dwUserID = rand() % ( m_nEndID - m_nStartID) + m_nStartID;
+			if ( FALSE == Find(dwUserID) )
+			{
+				break;
+			}
+			else
+			{
+				dwUserID = 0;
+			}
+			
+		} while (m_BaVec.size() < m_nEndID - m_nStartID);
 
-		m_BaVec.push_back(pGame);
-		//pGame->SetEventService(m_pIUnknownEx);
-		pGame->SetTimerEngine(&m_TimerEngine);
+		if (dwUserID)
+		{
+			CPaiJiu *pGame = new CPaiJiu(dwUserID);
+			pGame->BeginServer(m_strIP, m_nPort, m_strPsw);
 
-		m_BaMap.insert(CGameMap::value_type(m_nStartID, CGame(pGame, 0)));
-		SetTimer(m_nStartID, 5000, NULL);
+			m_BaVec.push_back(pGame);
+			//pGame->SetEventService(m_pIUnknownEx);
+			pGame->SetTimerEngine(&m_TimerEngine);
 
-		m_BaVec[0]->SetSmall();
+			m_BaMap.insert(CGameMap::value_type(dwUserID, CGame(pGame, 0)));
+			SetTimer(dwUserID, 5000, NULL);
 
-		m_nStartID++;
+			m_BaVec[0]->SetSmall();
+		}
 	}
 }
 
