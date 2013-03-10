@@ -274,8 +274,14 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_MAX		:				//最大化窗
 		{
-			if (m_bMaxShow==true) RestoreWindow();
-			else MaxSizeWindow();
+			if (m_bMaxShow==true)
+			{
+				//RestoreWindow();
+			}
+			else
+			{
+				MaxSizeWindow();
+			}
 
 			return TRUE;
 		}
@@ -1457,8 +1463,14 @@ void CGameFrame::OnLButtonDblClk(UINT nFlags, CPoint Point)
 	if (Point.y>m_ImageInfoFrame.nTBorder-FRAME_EXALTATION) return;
 
 	//控制窗口
-	if (m_bMaxShow==true) RestoreWindow();
-	else MaxSizeWindow();
+	if (m_bMaxShow==true) 
+	{
+		//RestoreWindow();
+	}
+	else 
+	{	
+		MaxSizeWindow();
+	}
 
 	return;
 }
