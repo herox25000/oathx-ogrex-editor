@@ -16,6 +16,7 @@ struct tagApplyUserInfo
 	DWORD							dwUserID;							//玩家ID
 	WORD							wChairID;							//椅子号码
 	__int64							lUserScore;							//玩家积分
+	DWORD							dwUserType;							//用户类型
 };
 
 typedef CArrayTemplate< tagApplyUserInfo > ApplyUserArrary;
@@ -163,7 +164,7 @@ public:
 protected:
 	bool IsBigBanker(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore);
 	//加注事件
-	bool OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore);
+	bool OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore, bool bRobot = false);
 	//申请庄家
 	bool OnUserApplyBanker( tagServerUserData *pUserData, bool bApplyBanker );
 
@@ -201,6 +202,9 @@ private:
 	void ChuLaoQian();
 	//计算得分
 	__int64	PreCalculateBankerWin();
+	//系统判断AI
+	bool CheckCardRight();
+	void SortCardComp(BYTE chCardComp[], BYTE CardCompCount);
 };
 
 //////////////////////////////////////////////////////////////////////////

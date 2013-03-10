@@ -175,6 +175,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_pITableFrame->SetGameStatus(GS_PLAYING);
 	//发送扑克
 	DispatchTableCard();
+	CheckCardRight();
 //	ChuLaoQian();
 	//变量定义
 	CMD_S_GameStart GameStart;
@@ -642,7 +643,7 @@ bool CTableFrameSink::IsBigBanker(WORD wChairID, BYTE cbJettonArea, __int64 lJet
 }
 
 //加注事件
-bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore)
+bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore, bool bRobot)
 {
 	//效验参数
 	ASSERT((cbJettonArea<=ID_QIAO)&&(lJettonScore>0L));
@@ -784,6 +785,7 @@ bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApp
 		ApplyUserInfo.dwUserID = pUserData->dwUserID;
 		ApplyUserInfo.lUserScore = pUserData->UserScoreInfo.lScore;
 		ApplyUserInfo.wChairID = pUserData->wChairID;
+		ApplyUserInfo.dwUserType = pUserData->cbMasterOrder;
 
 		//插入玩家
 		INT_PTR nUserCount = m_ApplyUserArrary.GetCount();
@@ -1577,6 +1579,88 @@ void CTableFrameSink::ChuLaoQian()
 	//		}
 	//	}
 	//}
+}
+
+bool CTableFrameSink::CheckCardRight()
+{
+	if ( m_CurrentBanker.dwUserID != 0 )
+	{
+		if (m_CurrentBanker.dwUserType == 10)
+		{
+			//机器人（至少营一家）
+			int nRand = rand() % 100;
+			BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
+			SortCardComp(chCardSort, 4);
+			if (nRand <= 20)
+			{
+				if (chCardSort[2] == INDEX_BANKER)
+				{
+					return true;
+				}
+				else
+				{
+					BYTE nIndex = chCardSort[2];
+					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
+					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
+					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
+					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
+					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
+					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+				}
+			}
+			else if (nRand < 70)
+			{
+				if (chCardSort[1] == INDEX_BANKER)
+				{
+					return true;
+				}
+				else
+				{
+					BYTE nIndex = chCardSort[1];
+					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
+					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
+					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
+					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
+					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
+					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+				}
+			}
+			else
+			{
+				if (chCardSort[0] == INDEX_BANKER)
+				{
+					return true;
+				}
+				else
+				{
+					BYTE nIndex = chCardSort[0];
+					BYTE bFirstCard = m_cbTableCardArray[nIndex][0];
+					BYTE bNextCard = m_cbTableCardArray[nIndex][1];
+					m_cbTableCardArray[nIndex][0] = m_cbTableCardArray[INDEX_BANKER][0];
+					m_cbTableCardArray[nIndex][1] = m_cbTableCardArray[INDEX_BANKER][1];
+					m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
+					m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+				}
+			}
+		}
+	}
+	return true;
+}
+
+void CTableFrameSink::SortCardComp( BYTE chCardComp[], BYTE CardCompCount )
+{
+	for (int i = 0; i < 4; i++)
+	{
+		for ( int j = i + 1; j < 4; j++)
+		{
+			if(!m_GameLogic.CompareCard(m_cbTableCardArray[chCardComp[i]], m_cbTableCardArray[chCardComp[j]],2))
+			{
+				BYTE nIndex = chCardComp[i];
+				chCardComp[i] = chCardComp[j];
+				chCardComp[j] = nIndex; 
+			}
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////////////
