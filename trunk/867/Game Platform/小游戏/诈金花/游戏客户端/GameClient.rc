@@ -72,8 +72,8 @@ IDR_MAINFRAME           ICON                    "res\\GameClient.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 6,6,1,0
+ PRODUCTVERSION 6,6,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -88,15 +88,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "棋牌游科技"
-            VALUE "CompanyName", "棋牌游科技"
             VALUE "FileDescription", "诈金花游戏客户端"
-            VALUE "FileVersion", "1, 0, 0, 0"
+            VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "ZaJinHua.exe"
-            VALUE "LegalCopyright", "棋牌游科技保留所有权利。"
             VALUE "OriginalFilename", "ZaJinHua.exe"
             VALUE "ProductName", "诈金花游戏客户端"
-            VALUE "ProductVersion", "1, 0, 0, 0"
+            VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"
