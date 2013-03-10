@@ -85,6 +85,11 @@ void CPaiJiu::OnPlaceJetton()
 	SetTimer(IDI_PLACE_JETTON, rand()%20000+1000, 1);
 }
 
+DWORD CPaiJiu::GetUserID() const
+{
+	return m_MeUserInfo.dwUserID;
+}
+
 //×î´óÏÂ×¢
 __int64 CPaiJiu::GetMaxPlayerScore()
 {
