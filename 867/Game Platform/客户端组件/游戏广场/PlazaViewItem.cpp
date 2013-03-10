@@ -1183,7 +1183,7 @@ afx_msg void CPlazaViewItem::OnBnClickedHOME()
 }
 afx_msg void CPlazaViewItem::OnBnClickedBBS()
 {
-	m_pHtmlBrower->Navigate("http://ca111.vicp.net");
+	//m_pHtmlBrower->Navigate("http://www.baidu.com");
 }
 
 //-----------------------------------------------

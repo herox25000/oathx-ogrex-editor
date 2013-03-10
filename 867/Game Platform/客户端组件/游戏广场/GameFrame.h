@@ -83,7 +83,7 @@ public:
 	//列表按钮
 public:
 	CSkinButton							m_btListControl1;				//控制按钮
-	CSkinButton							m_btListControl2;				//控制按钮
+	//CSkinButton							m_btListControl2;				//控制按钮
 
 	//环绕信息
 protected:

@@ -253,7 +253,7 @@ BOOL CRoomViewItem::OnInitDialog()
 
 	//创建控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
-	m_BrowerAD.Navigate(TEXT("http://ca111.vicp.net/AD/GameRoomAD.asp"),NULL,NULL,NULL,NULL);
+	//m_BrowerAD.Navigate(TEXT("http://www.baidu.com/AD/GameRoomAD.asp"),NULL,NULL,NULL,NULL);
 
 	//道具控件
 	m_PropertyBar.SetSkinResource(GetResInstanceHandle(),&g_GlobalUnits.m_PropertyViewImage);
