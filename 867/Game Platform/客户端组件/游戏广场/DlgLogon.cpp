@@ -719,7 +719,7 @@ void CDlgLogon::LoadLogonServer()
 	if ((pComBoxServer->GetWindowTextLength()==0)&&(pComBoxServer->GetCount()>0)) pComBoxServer->SetCurSel(0);
 	if (pComBoxServer->GetCount()==0)
 	{
-		pComBoxServer->AddString(TEXT("ca111.vicp.net"));
+		pComBoxServer->AddString(TEXT("电信服务器"));
 		pComBoxServer->SetCurSel(0);
 	}
 
