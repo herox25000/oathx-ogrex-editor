@@ -195,7 +195,7 @@ struct tagLevelItem
 //用户积分信息
 struct tagUserScore
 {
-	LONG								lScore;								//用户分数
+	__int64								lScore;								//用户分数
 	LONG								lGameGold;							//游戏金币//
 	LONG								lInsureScore;						//存储金币
 	LONG								lWinCount;							//胜利盘数

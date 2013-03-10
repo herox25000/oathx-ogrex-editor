@@ -5,11 +5,11 @@
 
 //平台头文件
 #include "Template.h"
-#include "..\..\公共文件\GlobalDef.h"
-#include "..\..\公共文件\GlobalField.h"
-#include "..\..\公共文件\GlobalFrame.h"
-#include "..\..\公共文件\GlobalRight.h"
-#include "..\..\公共文件\GlobalService.h"
+#include "GlobalDef.h"
+#include "GlobalField.h"
+#include "GlobalFrame.h"
+#include "GlobalRight.h"
+#include "GlobalService.h"
 
 //命令码文件
 #include "CMD_Game.h"

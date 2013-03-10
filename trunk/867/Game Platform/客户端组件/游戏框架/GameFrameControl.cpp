@@ -149,7 +149,7 @@ BOOL CGameFrameControl::OnInitDialog()
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
-	m_BrowerAD.Navigate(TEXT("http://ca111.vicp.net/AD/GameFrameAD.asp"),NULL,NULL,NULL,NULL);
+	m_BrowerAD.Navigate(TEXT("www.baidu.com/AD/GameFrameAD.asp"),NULL,NULL,NULL,NULL);
 
 	//加载资源
 	UpdateSkinResource();
@@ -435,7 +435,7 @@ void CGameFrameControl::OnBnClickedOption()
 void CGameFrameControl::OnBnClickedRule()
 {
 	TCHAR szRuleUrl[128];
-	_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://ca111.vicp.net/GameRule.asp?KindID=%ld"),m_UserListView.m_wKindID);
+	_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("www.baidu.com/GameRule.asp?KindID=%ld"),m_UserListView.m_wKindID);
 	ShellExecute(NULL,TEXT("open"),szRuleUrl,NULL,NULL,SW_SHOWDEFAULT);
 
 	return;
