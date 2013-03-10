@@ -166,9 +166,9 @@ BOOL CDlgRegister::OnInitDialog()
 	((CComboBox *)(GetDlgItem(IDC_ACCOUNTS)))->LimitText(NAME_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_PASSWORD)))->LimitText(PASS_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_PASSWORD2)))->LimitText(PASS_LEN-1);
-	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://ca111.vicp.net"));
-	m_LineMainPage.SetHyperLinkUrl(TEXT("http://ca111.vicp.net"));
-	m_LinePassWord.SetHyperLinkUrl(TEXT("http://ca111.vicp.net"));
+	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
 
 	//加载头像
 	g_GlobalUnits.m_UserFaceRes->FillImageList(m_ImageList);
@@ -350,7 +350,7 @@ BOOL CDlgLogon::OnInitDialog()
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
-	m_BrowerAD.Navigate(TEXT("http://ca111.vicp.net/AD/LogonAD.asp"),NULL,NULL,NULL,NULL);
+	m_BrowerAD.Navigate(TEXT("http://www.baidu.com"),NULL,NULL,NULL,NULL);
 
 	//广告位置
 	int nXExcursion=GetXExcursionPos();
@@ -362,9 +362,9 @@ BOOL CDlgLogon::OnInitDialog()
 	m_TabLogonMode.InsertItem(LOGON_BY_USERID,TEXT("ＩＤ登录"));
 
 	//设置控件
-	m_LineMainPage.SetHyperLinkUrl(TEXT("http://ca111.vicp.net"));
-	m_LinePassWord.SetHyperLinkUrl(TEXT("http://ca111.vicp.net/Passwordprotection.asp"));
-	m_LineGetPassWord.SetHyperLinkUrl(TEXT("http://ca111.vicp.net/FindPassWord.asp"));
+	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineGetPassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
 	m_LineMainPage.BringWindowToTop();
 	m_LinePassWord.BringWindowToTop();
 	m_LineGetPassWord.BringWindowToTop();
@@ -1046,7 +1046,7 @@ void CDlgLogon::OnTcnSelchangeLogonType(NMHDR * pNMHDR, LRESULT * pResult)
 void CDlgLogon::OnRegisterAccounts()
 {
 //#ifndef _DEBUG
-//	ShellExecute(NULL,TEXT("open"),TEXT("http://ca111.vicp.net/service/viewrule.jsp"),NULL,NULL,SW_SHOWDEFAULT);
+//	ShellExecute(NULL,TEXT("open"),TEXT("http://www.baidu.com/service/viewrule.jsp"),NULL,NULL,SW_SHOWDEFAULT);
 //	return;
 //#endif
 

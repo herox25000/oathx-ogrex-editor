@@ -144,7 +144,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 			CListInside * pListInside=(CListInside *)pListItem;
 			tagGameInside * pGameInside=pListInside->GetItemInfo();
 
-			WebBrowse(TEXT("http://ca111.vicp.net"),false);
+			WebBrowse(TEXT("http://www.baidu.com"),false);
 
 			return;
 		}
@@ -156,7 +156,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 
 			//连接规则
 			TCHAR szRuleUrl[256]=TEXT("");
-			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://ca111.vicp.net/GameRule.asp?KindID=%ld"),pGameKind->wKindID);
+			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.baidu.com/GameRule.asp?KindID=%ld"),pGameKind->wKindID);
 			WebBrowse(szRuleUrl,true);
 
 			return;
@@ -284,10 +284,10 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 	case IDC_BT_BUTTON_4:				//功能按钮
 	case IDC_BT_BUTTON_5:				//功能按钮
 		{
-			if(IDC_BT_BUTTON_1==nCommandID)WebBrowse(TEXT("http://ca111.vicp.net/index.asp"),true);
-			if(IDC_BT_BUTTON_2==nCommandID)WebBrowse(TEXT("http://ca111.vicp.net/PayBuy.asp"),true);
-			if(IDC_BT_BUTTON_4==nCommandID)WebBrowse(TEXT("http://ca111.vicp.net/user/ExChange.asp"),true);
-			if(IDC_BT_BUTTON_5==nCommandID)WebBrowse(TEXT("http://ca111.vicp.net/bbs/index.asp?action=frameon"),true);
+			if(IDC_BT_BUTTON_1==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
+			if(IDC_BT_BUTTON_2==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
+			if(IDC_BT_BUTTON_4==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
+			if(IDC_BT_BUTTON_5==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
 
 			return TRUE;
 		}
@@ -391,7 +391,7 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 			{
 				//隐藏按钮
 				m_btListControl1.ShowWindow(SW_HIDE);
-				m_btListControl2.ShowWindow(SW_HIDE);
+				//m_btListControl2.ShowWindow(SW_HIDE);
 				m_ServerItemView.ShowWindow(SW_HIDE);
 				m_UserCompanionList.ShowWindow(SW_HIDE);
 			}
@@ -403,15 +403,15 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 
 				//设置按钮
 				m_btListControl1.ShowWindow(SW_SHOW);
-				m_btListControl2.ShowWindow(SW_SHOW);
+				//m_btListControl2.ShowWindow(SW_SHOW);
 				UINT uControl1=((IDC_BT_LIST_CONTROL_1==m_wShowListType)?GetPlatformRes().uFrameServiceBtShow1:GetPlatformRes().uFrameServiceBtHide1);
-				UINT uControl2=((IDC_BT_LIST_CONTROL_2==m_wShowListType)?GetPlatformRes().uFrameServiceBtShow2:GetPlatformRes().uFrameServiceBtHide2);
+				//UINT uControl2=((IDC_BT_LIST_CONTROL_2==m_wShowListType)?GetPlatformRes().uFrameServiceBtShow2:GetPlatformRes().uFrameServiceBtHide2);
 				m_btListControl1.SetButtonImage(uControl1,GetResInstanceHandle(),false);
-				m_btListControl2.SetButtonImage(uControl2,GetResInstanceHandle(),false);
+				//m_btListControl2.SetButtonImage(uControl2,GetResInstanceHandle(),false);
 
 				//判断显示
 				m_ServerItemView.ShowWindow((m_wShowListType==IDC_BT_LIST_CONTROL_1)?SW_SHOW:SW_HIDE);
-				m_UserCompanionList.ShowWindow((m_wShowListType==IDC_BT_LIST_CONTROL_2)?SW_SHOW:SW_HIDE);
+				//m_UserCompanionList.ShowWindow((m_wShowListType==IDC_BT_LIST_CONTROL_2)?SW_SHOW:SW_HIDE);
 			}
 
 			return TRUE;
@@ -576,9 +576,9 @@ bool CGameFrame::UpdateSkinResource()
 
 	//列表按钮
 	UINT uControl1=((IDC_BT_LIST_CONTROL_1==m_wShowListType)?PlatformFrameImage.uFrameServiceBtShow1:PlatformFrameImage.uFrameServiceBtHide1);
-	UINT uControl2=((IDC_BT_LIST_CONTROL_2==m_wShowListType)?PlatformFrameImage.uFrameServiceBtShow2:PlatformFrameImage.uFrameServiceBtHide2);
+	//UINT uControl2=((IDC_BT_LIST_CONTROL_2==m_wShowListType)?PlatformFrameImage.uFrameServiceBtShow2:PlatformFrameImage.uFrameServiceBtHide2);
 	m_btListControl1.SetButtonImage(uControl1,hResInstance,false);
-	m_btListControl2.SetButtonImage(uControl2,hResInstance,false);
+	//m_btListControl2.SetButtonImage(uControl2,hResInstance,false);
 
 	//设置图片
 	for (int i=0;i<CountArray(m_pRoomViewItem);i++)
@@ -1073,7 +1073,7 @@ void CGameFrame::RectifyControl(int nWidth, int nHeight)
 	m_btListControl1.GetWindowRect(&rcItemRect);
 	INT nY = m_ImageInfoFrame.nTBorder-FRAME_EXALTATION+uUserTitleHeight+5;
 	DeferWindowPos(hDwp,m_btListControl1,NULL,m_ImageInfoFrame.nLBorder+5,nY,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btListControl2,NULL,m_ImageInfoFrame.nLBorder+5,nY+rcItemRect.Height()+1,0,0,uFlags|SWP_NOSIZE);
+	//DeferWindowPos(hDwp,m_btListControl2,NULL,m_ImageInfoFrame.nLBorder+5,nY+rcItemRect.Height()+1,0,0,uFlags|SWP_NOSIZE);
 
 	//按钮位置
 	CRect rcButton;
@@ -1198,7 +1198,8 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,IDC_BROWER_AD,NULL);
-	m_BrowerAD.Navigate(TEXT("http://ca111.vicp.net/AD/GamePlazaAD.asp"),NULL,NULL,NULL,NULL);
+	//m_BrowerAD.Navigate(TEXT("http://www.baidu.com/AD/GamePlazaAD.asp"),NULL,NULL,NULL,NULL);
+	m_BrowerAD.ShowWindow(SW_HIDE);
 
 	//拆分条控件
 	m_Splitter.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,IDC_SPLITTER,NULL);
@@ -1233,7 +1234,7 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btSwitchUser.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SWITCH_ACCOUNTS);
 	m_btGlobalOption.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SYSTEM_OPTION);
 	m_btListControl1.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_1);
-	m_btListControl2.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_2);
+	//m_btListControl2.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_2);
 	for (WORD i=0;i<CountArray(m_btViewItem);i++)
 	{
 		CRect rcCreate(0,0,0,0);
