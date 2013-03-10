@@ -86,6 +86,11 @@ BOOL CPlazaViewItem::OnInitDialog()
 	m_WEB_HOME.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_WEB_HOME);
 	m_WEB_NEXT.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_WEB_NEXT);
 	m_WEB_STOP.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_WEB_STOP);
+	m_WEB_BEFORE.ShowWindow(SW_HIDE);
+	m_WEB_BRUSH.ShowWindow(SW_HIDE);
+	m_WEB_HOME.ShowWindow(SW_HIDE);
+	m_WEB_NEXT.ShowWindow(SW_HIDE);
+	m_WEB_STOP.ShowWindow(SW_HIDE);
 
 	//º”‘ÿ◊ ‘¥
 	UpdateSkinResource();
