@@ -23,6 +23,7 @@ public:
 	~CBaccarat();
 
 	//限制信息
+	DWORD							GetUserID() const {return m_MeUserInfo.dwUserID;}
 protected:
 	__int64							m_lMeMaxScore;						//最大下注
 	__int64							m_lCellScore;						//最大单元分数
