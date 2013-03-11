@@ -11,7 +11,7 @@
 #include "DrawCard.h"
 
 
-#define JETTON_COUNT				9									//筹码数目
+#define JETTON_COUNT				7									//筹码数目
 #define JETTON_RADII				54									//筹码半径
 
 //消息定义
