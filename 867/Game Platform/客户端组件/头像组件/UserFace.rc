@@ -79,13 +79,10 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", ""
-            VALUE "CompanyName", ""
             VALUE "FileDescription", "头像资源组件"
             VALUE "FileVersion", "6, 5, 1, 0"
-            VALUE "InternalName", "UserFace.dll"
-            VALUE "LegalCopyright", ""
-            VALUE "OriginalFilename", "UserFace.dll"
+            VALUE "InternalName", "plugin_head.dll"
+            VALUE "OriginalFilename", "plugin_head.dll"
             VALUE "ProductName", "头像资源组件"
             VALUE "ProductVersion", "6, 5, 1, 0"
         END
