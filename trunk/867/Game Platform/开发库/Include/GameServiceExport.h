@@ -18,7 +18,7 @@
 #include "CMD_Center.h"
 
 //组件头文件
-#include "..\..\服务器组件\内核引擎\KernelEngineHead.h"
+#include "KernelEngineHead.h"
 #include "..\..\客户端组件\鲜花道具\PropertyModule.h"
 
 //////////////////////////////////////////////////////////////////////////
@@ -286,7 +286,7 @@ public:
 	//设置规则
 	virtual bool __cdecl SetUserRule(tagUserRule & UserRule)=NULL;
 	//积分信息
-	virtual bool __cdecl GetUserScoreInfo(tagUserScore & ScoreModifyInfo)=NULL;
+	virtual bool __cdecl GetUserModifyScoreInfo(tagUserScore & ScoreModifyInfo)=NULL;
 	//修改积分
     virtual bool __cdecl WriteScore(tagScoreInfo & ScoreInfo, DWORD dwPlayTimeCount)=NULL;
 	//设置状态
@@ -295,7 +295,10 @@ public:
 	virtual bool __cdecl ModifyBankStorageGold(LONG lStorageCount)=NULL;
 	//积分信息
 	virtual tagUserScore* __cdecl GetUserScoreModifyInfo()=NULL;
-
+	//清空用户当前输赢分数
+	virtual bool __cdecl EmptyWinLoseScore()=NULL;
+	//修改基本原始积分
+	virtual bool __cdecl WriteBaseScore(__int64 lNewScore)=NULL;
 	//功能接口
 public:
 	//控制状态
@@ -815,6 +818,13 @@ public:
 	virtual bool __cdecl DeleteUserItem(IServerUserItem * pIServerUserItem)=NULL;
 	//输出信息
 	virtual void __cdecl ExportInformation(LPCTSTR pszString, enTraceLevel TraceLevel)=NULL;
+
+	//数据库接口
+public:
+	//请求事件
+	virtual bool __cdecl PostDataBaseRequest(WORD wRequestID, DWORD dwContextID, VOID * pData, WORD wDataSize)=NULL;
+
+
 };
 
 //////////////////////////////////////////////////////////////////////////
