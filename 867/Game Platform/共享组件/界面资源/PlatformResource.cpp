@@ -838,12 +838,15 @@ bool __cdecl CPlatformResource::GetGameFrameImage(tagGameFrameImage * GameFrameI
 	GameFrameImage->uBtGameUnLookOn	=DEF_IDB_BT_GAME_UNLOOKON;
 	GameFrameImage->uBtGameSound		=DEF_IDB_BT_GAME_SOUND	;
 	GameFrameImage->uBtGameUnSound	=DEF_IDB_BT_GAME_UNSOUND;
+	GameFrameImage->uBtBank	=DEF_IDB_BT_GAME_BANK;
+
 	m_pImageMap->AddImage(DEF_IDB_BT_GAME_OPTION, RES_DEF_IDB_BT_GAME_OPTION);
 	m_pImageMap->AddImage(DEF_IDB_BT_GAME_RULE, RES_DEF_IDB_BT_GAME_RULE);
 	m_pImageMap->AddImage(DEF_IDB_BT_GAME_LOOKON, RES_DEF_IDB_BT_GAME_LOOKON);
 	m_pImageMap->AddImage(DEF_IDB_BT_GAME_UNLOOKON, RES_DEF_IDB_BT_GAME_UNLOOKON);
 	m_pImageMap->AddImage(DEF_IDB_BT_GAME_SOUND, RES_DEF_IDB_BT_GAME_SOUND);
 	m_pImageMap->AddImage(DEF_IDB_BT_GAME_UNSOUND, RES_DEF_IDB_BT_GAME_UNSOUND);
+	m_pImageMap->AddImage(DEF_IDB_BT_GAME_BANK, RES_DEF_IDB_BT_GAME_BANK);
 
 	//用户信息
 	GameFrameImage->uBtExchangeCharm = DEF_IDB_BT_GAME_EXCHANGE;

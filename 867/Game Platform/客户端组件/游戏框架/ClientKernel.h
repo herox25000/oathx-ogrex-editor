@@ -116,7 +116,7 @@ public:
 	//自己位置
 	virtual WORD __cdecl GetMeChairID() { return m_wChairID; }
 	//获取自己
-	virtual const tagUserData * __cdecl GetMeUserInfo() { return m_pMeUserItem; }
+	virtual tagUserData * __cdecl GetMeUserInfo() { return m_pMeUserItem; }
 	//获取玩家
 	virtual const tagUserData * __cdecl GetUserInfo(WORD wChairID);
 

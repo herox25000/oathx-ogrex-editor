@@ -24,6 +24,7 @@
 #define IDC_LOOKON                      8005
 #define IDC_BUTTON1                     8006
 #define IDC_CONTROL                     8006
+#define IDC_BANK						8007
 #define IDC_EXCHANGE_CHARM_VALUE        8010
 #define IDD_FRAME_CONTROL               8011
 #define IDB_USER_STATUS                 8012

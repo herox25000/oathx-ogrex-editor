@@ -5,6 +5,17 @@
 
 #include ".\dlglogon.h"
 
+
+static BOOL GetOptionItem(LPCTSTR lpAppName, LPCTSTR lpKey, LPSTR lpText, int iLen)
+{
+	char szPath[MAX_PATH];
+	::GetModulePath(szPath, sizeof(szPath));
+	SafeStrCat(szPath, "\\LogonServer.ini", sizeof(szPath));
+
+	lpText[0]=0;
+	return ::GetPrivateProfileString(lpAppName, lpKey, NULL, lpText, iLen, szPath);
+}
+
 //登录方式
 #define LOGON_BY_ACCOUNTS				0						//帐号登录
 #define LOGON_BY_USERID					1						//ID 登录
@@ -587,6 +598,12 @@ bool CDlgLogon::OnLogonSuccess()
 		CRegKey RegUserID;
 		if (RegUserID.Open(HKEY_CURRENT_USER,REG_USER_INFO)==ERROR_SUCCESS)	RegUserID.RecurseDeleteKey(szBuffer);
 	}
+	CComboBox * pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);
+	//读取最近登录服务器
+	for( int i=0; i<pComBoxServer->GetCount(); i++)
+	{
+		SERVER_ITEM* pSI=(SERVER_ITEM*)pComBoxServer->GetItemData(i);
+	}
 
 	//关闭窗口
 	DestroyWindow();
@@ -687,42 +704,69 @@ void CDlgLogon::LoadAccountsInfo()
 //加载服务器
 void CDlgLogon::LoadLogonServer()
 {
+	////读取最近登录服务器
+	//CComboBox * pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);
+	//m_strLogonServer=AfxGetApp()->GetProfileString(REG_OPTION_LOGON,TEXT("LogonServer"),NULL);
+	//if (m_strLogonServer.IsEmpty()==FALSE)
+	//{
+	//	pComBoxServer->AddString(TEXT("电信服务器"));
+	//	pComBoxServer->SetWindowText(TEXT("电信服务器"));
+	//}
+
+	////读取服务器列表
+	//CRegKey RegLogonServer;
+	//RegLogonServer.Open(HKEY_CURRENT_USER,REG_LOGON_SERVER,KEY_READ);
+	//if (RegLogonServer!=NULL)
+	//{
+	//	TCHAR szLogonServer[128]=TEXT("");
+	//	DWORD dwIndex=0,dwBufferSize=sizeof(szLogonServer);
+	//	do
+	//	{
+	//		dwBufferSize=sizeof(szLogonServer);
+	//		if (RegLogonServer.EnumKey(dwIndex++,szLogonServer,&dwBufferSize,NULL)!=ERROR_SUCCESS) break;
+	//		if (szLogonServer[0]!=0)
+	//		{
+	//			if (m_strLogonServer.IsEmpty()) m_strLogonServer=szLogonServer;
+	//			if (ComboBoxFindString(pComBoxServer,szLogonServer)==LB_ERR) pComBoxServer->AddString(szLogonServer);
+	//		}
+	//	} while (true);
+	//}
+
+	////设置选择
+	//if ((pComBoxServer->GetWindowTextLength()==0)&&(pComBoxServer->GetCount()>0)) pComBoxServer->SetCurSel(0);
+	//if (pComBoxServer->GetCount()==0)
+	//{
+	//	pComBoxServer->AddString(TEXT("电信服务器"));
+	//	pComBoxServer->SetCurSel(0);
+	//}
+
+
 	//读取最近登录服务器
 	CComboBox * pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);
-	m_strLogonServer=AfxGetApp()->GetProfileString(REG_OPTION_LOGON,TEXT("LogonServer"),NULL);
-	if (m_strLogonServer.IsEmpty()==FALSE)
+	char szAppName[256];
+	char szName[256];
+	char szIPAddress[256];
+	for ( int i=0; i<5; i++ )
 	{
-		pComBoxServer->AddString(TEXT("电信服务器"));
-		pComBoxServer->SetWindowText(TEXT("电信服务器"));
-	}
-
-	//读取服务器列表
-	CRegKey RegLogonServer;
-	RegLogonServer.Open(HKEY_CURRENT_USER,REG_LOGON_SERVER,KEY_READ);
-	if (RegLogonServer!=NULL)
-	{
-		TCHAR szLogonServer[128]=TEXT("");
-		DWORD dwIndex=0,dwBufferSize=sizeof(szLogonServer);
-		do
+		_snprintf(szAppName, sizeof(szAppName), "Server%d", i);
+		GetOptionItem(szAppName, "Name",  szName, 256);
+		GetOptionItem(szAppName, "IPAddress",  szIPAddress, 256);
+		if ( strlen(szName)>0 && strlen(szIPAddress)>0 )
 		{
-			dwBufferSize=sizeof(szLogonServer);
-			if (RegLogonServer.EnumKey(dwIndex++,szLogonServer,&dwBufferSize,NULL)!=ERROR_SUCCESS) break;
-			if (szLogonServer[0]!=0)
-			{
-				if (m_strLogonServer.IsEmpty()) m_strLogonServer=szLogonServer;
-				if (ComboBoxFindString(pComBoxServer,szLogonServer)==LB_ERR) pComBoxServer->AddString(szLogonServer);
-			}
-		} while (true);
+			SERVER_ITEM* pSI=new SERVER_ITEM;
+			memset(pSI, 0, sizeof(SERVER_ITEM));
+			lstrcpyn(pSI->szName, szName, sizeof(pSI->szName));
+			lstrcpyn(pSI->szIPAddress, szIPAddress, sizeof(pSI->szIPAddress));
+			int iAdd=pComBoxServer->AddString(szName);
+			pComBoxServer->SetItemData(iAdd, (DWORD)pSI);
+		}
 	}
 
-	//设置选择
-	if ((pComBoxServer->GetWindowTextLength()==0)&&(pComBoxServer->GetCount()>0)) pComBoxServer->SetCurSel(0);
-	if (pComBoxServer->GetCount()==0)
-	{
-		pComBoxServer->AddString(TEXT("电信服务器"));
-		pComBoxServer->SetCurSel(0);
-	}
+	pComBoxServer->SetCurSel(0);
 
+	int iLogonServer=AfxGetApp()->GetProfileInt(REG_OPTION_LOGON,TEXT("LogonServer"), 0);
+	if ( iLogonServer>=0 )
+		pComBoxServer->SetCurSel(iLogonServer);
 	return;
 }
 
@@ -799,19 +843,30 @@ bool CDlgLogon::CheckLogonInput(bool bShowError)
 		}
 
 		//登录服务器
-		CString server_name;
-		GetDlgItemText(IDC_SERVER,server_name);
-		if (server_name == "电信服务器")
-		{
-			m_strLogonServer = TEXT("222.186.36.78");
-		}
-		m_strLogonServer.TrimLeft();
-		m_strLogonServer.TrimRight();
-		if (m_strLogonServer.IsEmpty())
+		CComboBox * pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);
+		int iCur=pComBoxServer->GetCurSel();
+		SERVER_ITEM* pSI=(SERVER_ITEM*)pComBoxServer->GetItemData(iCur);
+		if (pSI==0)
 		{
 			uControlID=IDC_SERVER;
 			throw TEXT("登录服务器不能为空，请重新选择或者输入登录服务器！");
 		}
+
+		m_strLogonServer=pSI->szIPAddress;
+		////登录服务器
+		//CString server_name;
+		//GetDlgItemText(IDC_SERVER,server_name);
+		//if (server_name == "电信服务器")
+		//{
+		//	m_strLogonServer = TEXT("222.186.36.78");
+		//}
+		//m_strLogonServer.TrimLeft();
+		//m_strLogonServer.TrimRight();
+		//if (m_strLogonServer.IsEmpty())
+		//{
+		//	uControlID=IDC_SERVER;
+		//	throw TEXT("登录服务器不能为空，请重新选择或者输入登录服务器！");
+		//}
 
 		//登录帐号
 		switch (m_LogonMode)
@@ -1077,12 +1132,19 @@ void CDlgLogon::OnRegisterAccounts()
 	lstrcpy(m_szAccounts,DlgRegister.m_szAccounts);
 	lstrcpy(m_szPassword,DlgRegister.m_szPassword);
 
+	////服务器
+	//CString server_name;
+	//GetDlgItemText(IDC_SERVER,server_name);
+	//if (server_name.IsEmpty()) 
+	//	m_strLogonServer=TEXT("222.186.36.78");
 	//服务器
-	CString server_name;
-	GetDlgItemText(IDC_SERVER,server_name);
-	if (server_name.IsEmpty()) 
-		m_strLogonServer=TEXT("222.186.36.78");
+	CComboBox* pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);
+	int iCur=pComBoxServer->GetCurSel();
+	SERVER_ITEM* pSI=(SERVER_ITEM*)pComBoxServer->GetItemData(iCur);
+	if ( pSI==0 )
+		return;
 
+	m_strLogonServer=pSI->szIPAddress;
 	//登录广场
 	ShowWindow(SW_HIDE);
 	IPlazaViewItem * pIPlazaViewItem=((CGameFrame*)AfxGetMainWnd())->GetPlazaViewItem();
