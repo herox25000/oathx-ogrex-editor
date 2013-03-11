@@ -187,6 +187,9 @@
 				RelativePath=".\ApplyUserList.h">
 			</File>
 			<File
+				RelativePath=".\Res\APPY_USER_BACK.bmp">
+			</File>
+			<File
 				RelativePath="..\消息定义\CMD_XiaoJiu.h">
 			</File>
 			<File
@@ -222,9 +225,6 @@
 				RelativePath=".\Res\APPLY_USER_BACK.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\APPY_USER_BACK.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\BANKER_INFO.bmp">
 			</File>
 			<File
@@ -256,6 +256,9 @@
 			</File>
 			<File
 				RelativePath=".\Res\BT_JETTON_1000000.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\BT_JETTON_10000000.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Bt_jetton_500.bmp">
@@ -406,6 +409,9 @@
 			</File>
 			<File
 				RelativePath=".\Res\SCORE_1000000.cur">
+			</File>
+			<File
+				RelativePath=".\Res\SCORE_10000000.cur">
 			</File>
 			<File
 				RelativePath=".\Res\SCORE_500.cur">

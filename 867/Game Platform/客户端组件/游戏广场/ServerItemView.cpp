@@ -1039,11 +1039,13 @@ LPCTSTR CServerItemView::GetGameItemTitle(CListKind * pListKind, LPTSTR pszTitle
 	{
 		if (pListKind->m_bInstall==true)
 		{
-			_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ]"),pGameKind->szKindName,pGameKind->dwOnLineCount);
+			//_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ]"),pGameKind->szKindName,pGameKind->dwOnLineCount);
+			_snprintf(pszTitle,wBufferSize,TEXT("%s [ Óµ¼· ]"),pGameKind->szKindName);	
 		}
 		else
 		{
-			_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ] £¨Ë«»÷ÏÂÔØ£©"),pGameKind->szKindName,pGameKind->dwOnLineCount);
+			//_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ] £¨Ë«»÷ÏÂÔØ£©"),pGameKind->szKindName,pGameKind->dwOnLineCount);
+			_snprintf(pszTitle,wBufferSize,TEXT("%s [ Óµ¼· ] £¨Ë«»÷ÏÂÔØ£©"),pGameKind->szKindName);
 		}
 	}
 	else
@@ -1072,7 +1074,8 @@ LPCTSTR CServerItemView::GetGameItemTitle(CListServer * pListServer, LPTSTR pszT
 	tagGameServer * pGameServer=pListServer->GetItemInfo();
 	if (m_bShowOnLineCount==true)
 	{
-		_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ]"),pGameServer->szServerName,pGameServer->dwOnLineCount);
+		//_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ]"),pGameServer->szServerName,pGameServer->dwOnLineCount);
+		_snprintf(pszTitle,wBufferSize,TEXT("%s [ Óµ¼· ]"),pGameServer->szServerName);
 	}
 	else 
 	{

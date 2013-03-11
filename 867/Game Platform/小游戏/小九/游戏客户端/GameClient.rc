@@ -88,14 +88,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "互联星空-财神游戏"
-            VALUE "CompanyName", "宏杰科技有限公司"
+            VALUE "Comments", "867游戏"
             VALUE "FileDescription", "界面控件类库组件"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "XiaoJiu.exe"
-            VALUE "LegalCopyright", "宏杰科技有限公司保留所有权利。"
             VALUE "OriginalFilename", "XiaoJiu.exe"
-            VALUE "ProductName", "互联星空-财神游戏"
+            VALUE "ProductName", "867游戏"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
@@ -156,6 +154,7 @@ IDB_FRAME_XIAN_TIAN_WANG1 BITMAP                  "res\\FRAME_XIAN_TIAN_WANG1.bm
 IDB_FRAME_ZHUANG_JIA1   BITMAP                  "res\\FRAME_ZHUANG_JIA1.bmp"
 IDB_FRAME_ZHUANG_TIAN_WANG1 BITMAP                  "res\\FRAME_ZHUANG_TIAN_WANG1.bmp"
 IDB_FRAME_PING_JIA1     BITMAP                  "res\\FRAME_PING_JIA1.bmp"
+IDB_BT_JETTON_10000000  BITMAP                  "res\\BT_JETTON_10000000.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -169,7 +168,7 @@ IDC_SCORE_500000        CURSOR                  "res\\SCORE_500000.cur"
 IDC_SCORE_50000         CURSOR                  "res\\SCORE_50000.cur"
 IDC_SCORE_10000         CURSOR                  "res\\SCORE_10000.cur"
 IDC_SCORE_1000          CURSOR                  "res\\SCORE_1000.cur"
-IDC_SCORE_100           CURSOR                  "res\\SCORE_100.cur"
+IDC_SCORE_10000000      CURSOR                  "res\\SCORE_10000000.cur"
 IDC_SCORE_500           CURSOR                  "res\\SCORE_500.cur"
 
 /////////////////////////////////////////////////////////////////////////////

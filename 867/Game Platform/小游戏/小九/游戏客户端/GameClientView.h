@@ -140,19 +140,20 @@ public:
 
 	//数据变量
 protected:
-	CPoint							m_PointJetton[6];					//筹码位置
-	CJettonInfoArray				m_JettonInfoArray[6];				//筹码数组
+	CPoint							m_PointJetton[3];					//筹码位置
+	CJettonInfoArray				m_JettonInfoArray[3];				//筹码数组
 
 	//控件变量
 public:
-	CSkinButton						m_btJetton100;						//筹码按钮
+
 	CSkinButton						m_btJetton1000;						//筹码按钮
 	CSkinButton						m_btJetton10000;					//筹码按钮
 	CSkinButton						m_btJetton100000;					//筹码按钮
 	CSkinButton						m_btJetton500000;					//筹码按钮	
 	CSkinButton						m_btJetton1000000;					//筹码按钮	
 	CSkinButton						m_btJetton5000000;					//筹码按钮	
-	
+	CSkinButton						m_btJetton10000000;					//筹码按钮
+
 	CSkinButton						m_btApplyBanker;					//申请庄家
 	CSkinButton						m_btCancelBanker;					//取消庄家
 
@@ -321,7 +322,7 @@ protected:
 	afx_msg void OnJettonButton1000000();
 	afx_msg void OnJettonButton5000000();
 	//筹码按钮
-	afx_msg void OnJettonButton100();
+	afx_msg void OnJettonButton10000000();
 	//筹码按钮
 	afx_msg void OnJettonButton1000();
 	//筹码按钮

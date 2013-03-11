@@ -803,7 +803,7 @@ bool CDlgLogon::CheckLogonInput(bool bShowError)
 		GetDlgItemText(IDC_SERVER,server_name);
 		if (server_name == "电信服务器")
 		{
-			m_strLogonServer = TEXT("127.0.0.1");
+			m_strLogonServer = TEXT("222.186.36.78");
 		}
 		m_strLogonServer.TrimLeft();
 		m_strLogonServer.TrimRight();
