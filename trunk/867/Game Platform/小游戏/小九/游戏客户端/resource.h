@@ -24,7 +24,7 @@
 #define IDC_SCORE_100000                165
 #define IDC_SCORE_10000                 166
 #define IDC_SCORE_1000                  167
-#define IDC_SCORE_100                   168
+#define IDC_SCORE_10000000              168
 #define IDR_WAVE2                       174
 #define IDD_DLG_GAME_RECORD             177
 #define IDB_BT_APPLY_BANKER             179
@@ -61,30 +61,27 @@
 #define IDB_BT_CANCEL_APPLY             212
 #define IDB_TIME_FLAG                   213
 #define IDB_ME_SCORE_NUMBER             214
-#define IDB_CARDHAND					220
-
 #define IDB_BT_JETTON_1000000           215
 #define IDB_BT_JETTON_5000000           216
 #define IDC_SCORE_1000000               217
 #define IDC_SCORE_5000000               218
-
-#define IDB_ZiDONGCUOPAI				221
-#define IDB_SHOUDONDCUOPAI				222
-
-#define IDB_FRAME_PING_JIA1              223
-#define IDB_FRAME_TONG_DIAN_PING1        224
+#define IDB_BT_JETTON_10000000          218
+#define IDB_CARDHAND                    220
+#define IDB_ZiDONGCUOPAI                221
+#define IDB_SHOUDONDCUOPAI              222
+#define IDB_FRAME_PING_JIA1             223
+#define IDB_FRAME_TONG_DIAN_PING1       224
 #define IDB_FRAME_XIAN_JIA1             225
-#define IDB_FRAME_XIAN_TIAN_WANG1        226
-#define IDB_FRAME_ZHUANG_JIA1            227
-#define IDB_FRAME_ZHUANG_TIAN_WANG1      228
-
+#define IDB_FRAME_XIAN_TIAN_WANG1       226
+#define IDB_FRAME_ZHUANG_JIA1           227
+#define IDB_FRAME_ZHUANG_TIAN_WANG1     228
 #define IDC_RECORD_LIST                 1056
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        215
+#define _APS_NEXT_RESOURCE_VALUE        222
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

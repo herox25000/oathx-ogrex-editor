@@ -123,7 +123,7 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 		m_GameClientView.SetCurrentJetton(0L);
 
 		//½ûÖ¹°´Å¥
-		m_GameClientView.m_btJetton100.EnableWindow(FALSE);
+		m_GameClientView.m_btJetton10000000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton1000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton10000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton100000.EnableWindow(FALSE);
@@ -540,14 +540,13 @@ void CGameClientDlg::UpdateButtonContron()
 		}
 
 		//¿ØÖÆ°´Å¥
-		m_GameClientView.m_btJetton100.EnableWindow((lLeaveScore>=100)?TRUE:FALSE);
 		m_GameClientView.m_btJetton1000.EnableWindow((lLeaveScore>=1000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton10000.EnableWindow((lLeaveScore>=10000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton100000.EnableWindow((lLeaveScore>=100000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton500000.EnableWindow((lLeaveScore>=500000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton1000000.EnableWindow((lLeaveScore>=1000000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton5000000.EnableWindow((lLeaveScore>=5000000)?TRUE:FALSE);
-
+		m_GameClientView.m_btJetton10000000.EnableWindow((lLeaveScore>=10000000)?TRUE:FALSE);
 	}
 	else
 	{
@@ -555,7 +554,7 @@ void CGameClientDlg::UpdateButtonContron()
 		m_GameClientView.SetCurrentJetton(0L);
 
 		//½ûÖ¹°´Å¥
-		m_GameClientView.m_btJetton100.EnableWindow(FALSE);
+		m_GameClientView.m_btJetton10000000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton1000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton10000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton100000.EnableWindow(FALSE);

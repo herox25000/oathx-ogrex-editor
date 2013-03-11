@@ -79,14 +79,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "互联星空-财神游戏"
-            VALUE "CompanyName", "宏杰科技有限公司"
+            VALUE "Comments", "867游戏"
             VALUE "FileDescription", "界面控件类库组件"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "GameServer.dll"
-            VALUE "LegalCopyright", "宏杰科技有限公司保留所有权利。"
             VALUE "OriginalFilename", "GameServer.dll"
-            VALUE "ProductName", "互联星空-财神游戏"
+            VALUE "ProductName", "867游戏"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
