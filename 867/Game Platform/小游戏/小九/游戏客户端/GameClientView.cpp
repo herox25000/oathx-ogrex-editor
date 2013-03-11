@@ -561,12 +561,11 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	CSize SizeJettonItem(m_ImageJettonView.GetWidth()/JETTON_COUNT,m_ImageJettonView.GetHeight());
 
 	//绘画筹码
-	for (INT i=0;i<6;i++)
+	for (INT i=0;i<3;i++)
 	{
 		//变量定义
 		__int64 lScoreCount=0L;
-		__int64 lScoreJetton[JETTON_COUNT]={100L,500L,1000L,10000L,50000L,100000L,500000L,1000000L,5000000L};
-
+		__int64 lScoreJetton[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
 		//绘画筹码
 		for (INT_PTR j=0;j<m_JettonInfoArray[i].GetCount();j++)
 		{
@@ -584,7 +583,8 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		}
 
 		//绘画数字
-		if (lScoreCount>0L)	DrawNumberString(pDC,lScoreCount,m_PointJetton[i].x,m_PointJetton[i].y);
+		if (lScoreCount>0L)	
+			DrawNumberString(pDC,lScoreCount,m_PointJetton[i].x,m_PointJetton[i].y);
 	}
 
 	for(int i=0;i<5;i++)
@@ -828,7 +828,7 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 
 	//变量定义
 	bool bPlaceJetton=false;
-	__int64 lScoreIndex[JETTON_COUNT]={100L,500L,1000L,10000L,50000L,100000L,500000L,1000000L,5000000L};
+	__int64 lScoreIndex[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
 
 	//边框宽度
 	int nFrameWidth = 120, nFrameHeight = 150;
