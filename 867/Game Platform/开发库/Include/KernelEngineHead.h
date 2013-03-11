@@ -14,7 +14,7 @@
 #include "..\..\开发库\Include\Template.h"
 #include "..\..\开发库\Include\Constant.h"
 #include "..\..\开发库\Include\GlobalDef.h"
-#include "..\..\开发库\Include\ComService.h"
+#include "..\..\共享组件\公共服务\ComService.h"
 
 //////////////////////////////////////////////////////////////////////////
 //ADO 定义
@@ -332,33 +332,22 @@ interface IDataBase : public IUnknownEx
 public:
 	//打开连接
 	virtual VOID __cdecl OpenConnection()=NULL;
+	//关闭记录
+	virtual VOID __cdecl CloseRecordset()=NULL;
 	//关闭连接
 	virtual VOID __cdecl CloseConnection()=NULL;
+	//重新连接
+	virtual bool __cdecl TryConnectAgain(bool bFocusConnect, CComError * pComError)=NULL;
 	//连接信息
 	virtual bool __cdecl SetConnectionInfo(DWORD dwDBAddr, WORD wPort, LPCTSTR szDBName, LPCTSTR szUser, LPCTSTR szPassword)=NULL;
 	//连接信息
 	virtual bool __cdecl SetConnectionInfo(LPCTSTR szDBAddr, WORD wPort, LPCTSTR szDBName, LPCTSTR szUser, LPCTSTR szPassword)=NULL;
-
-	//参数接口
-public:
-	//清除参数
-	virtual VOID __cdecl ClearParameters()=NULL;
-	//获取参数
-	virtual VOID __cdecl GetParameter(LPCTSTR pszParamName, CDBVarValue & DBVarValue)=NULL;
-	//插入参数
-	virtual VOID __cdecl AddParameter(LPCTSTR pszName, ADOCG::DataTypeEnum Type, ADOCG::ParameterDirectionEnum Direction, LONG lSize, CDBVarValue & DBVarValue)=NULL;
-
-	//控制接口
-public:
+	//是否连接错误
+	virtual bool __cdecl IsConnectError()=NULL;
+	//是否打开
+	virtual bool __cdecl IsRecordsetOpened()=NULL;
 	//切换记录
 	virtual VOID __cdecl NextRecordset()=NULL;
-	//关闭记录
-	virtual VOID __cdecl CloseRecordset()=NULL;
-	//绑定对象
-	virtual VOID __cdecl BindToRecordset(CADORecordBinding * pBind)=NULL;
-
-	//记录接口
-public:
 	//往下移动
 	virtual VOID __cdecl MoveToNext()=NULL;
 	//移到开头
@@ -367,13 +356,42 @@ public:
 	virtual bool __cdecl IsRecordsetEnd()=NULL;
 	//获取数目
 	virtual LONG __cdecl GetRecordCount()=NULL;
+	//获取大小
+	virtual long __cdecl GetActualSize(LPCTSTR pszParamName)=NULL;
+	//绑定对象
+	virtual VOID __cdecl BindToRecordset(CADORecordBinding * pBind)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, BYTE & bValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, WORD & wValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, INT & nValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, LONG & lValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, DWORD & ulValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, UINT & ulValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, DOUBLE & dbValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, __int64 & llValue)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, TCHAR szBuffer[], UINT uSize)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, COleDateTime & Time)=NULL;
+	//获取参数
+	virtual bool __cdecl GetFieldValue(LPCTSTR lpFieldName, bool & bValue)=NULL;
+	//插入参数
+	virtual VOID __cdecl AddParameter(LPCTSTR pszName, ADOCG::DataTypeEnum Type, ADOCG::ParameterDirectionEnum Direction, LONG lSize, CDBVarValue & DBVarValue)=NULL;
+	//清除参数
+	virtual VOID __cdecl ClearParameters()=NULL;
+	//获取参数
+	virtual VOID __cdecl GetParameter(LPCTSTR pszParamName, CDBVarValue & DBVarValue)=NULL;
 	//返回数值
 	virtual LONG __cdecl GetReturnValue()=NULL;
 	//获取数据
 	virtual VOID __cdecl GetRecordsetValue(LPCTSTR pszItem, CDBVarValue & DBVarValue)=NULL;
-
-	//控制接口
-public:
 	//存储过程
 	virtual VOID __cdecl ExecuteProcess(LPCTSTR pszSPName, bool bRecordset)=NULL;
 	//执行语句
