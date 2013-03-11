@@ -108,7 +108,7 @@ public:
 	//自己位置
 	virtual WORD __cdecl GetMeChairID()=NULL;
 	//获取自己
-	virtual const tagUserData * __cdecl GetMeUserInfo()=NULL;
+	virtual tagUserData * __cdecl GetMeUserInfo()=NULL;
 	//获取玩家
 	virtual const tagUserData * __cdecl GetUserInfo(WORD wChairID)=NULL;
 

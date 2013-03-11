@@ -116,7 +116,7 @@ IDC_HAND_CUR            CURSOR                  ".\\res\\HAND_CUR.cur"
 #define _AFX_NO_PROPERTY_RESOURCES
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
-语言 4、2
+LANGUAGE 4,2
 #pragma code_page(936)
 #include "res\SkinControls.rc2"  // 非 Microsoft Visual C++ 编辑资源
 #include "afxres.rc"     // 标准组件

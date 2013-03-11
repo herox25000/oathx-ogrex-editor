@@ -302,6 +302,7 @@ struct tagGameFrameImage
 	UINT							uBtGameUnLookOn;					//资源标识
 	UINT							uBtGameSound;						//资源标识
 	UINT							uBtGameUnSound;						//资源标识
+	UINT							uBtBank;							//资源标识
 };
 
 //视频资源

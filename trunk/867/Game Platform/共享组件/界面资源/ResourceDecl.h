@@ -719,7 +719,7 @@
 #define DEF_IDB_VIDEO_SMALL_VOLUME_EX   1189
 #define DEF_IDB_VIDEO_SMALL_FEMALE      1190
 #define DEF_IDB_VIDEO_SMALL_PHOTO       1191
-
+#define DEF_IDB_BT_GAME_BANK			1192
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -1421,6 +1421,5 @@
 #define RES_BLACK_IDB_BT_GAME_EXCHANGE                   "Res\\BLACK_RESOURCE\\GAME_USER\\BT_EXCHANGE_CHARM_VALUE.bmp"
 #define RES_BLACK_IDB_GAME_FEMALE_FACE                   "Res\\BLACK_RESOURCE\\GAME_USER\\FEMALE.bmp"
 #define RES_BLACK_IDB_GAME_MALE_FACE                    "Res\\BLACK_RESOURCE\\GAME_USER\\MALE.bmp"
-
-
+#define RES_DEF_IDB_BT_GAME_BANK						"Res\\DEF_RESOURCE\\GAME_FRAME\\BT_BANK.bmp"
 #endif // ResourceDecl_h__
