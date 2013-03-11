@@ -31,7 +31,6 @@
 #define IDC_ZIDONGCUOPAI			213
 #define IDC_SHOUDONGCUOPAI			214
 #define IDC_CUOPAI					215
-
 //庄家信息
 #define BANKER_INFO_LEN				150									//庄家信息
 
@@ -620,9 +619,9 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			_sntprintf(szGameScore,CountArray(szGameScore),TEXT("%I64d"),pMeUserData->lScore-lMeJetton);
 			_sntprintf(szResultScore,CountArray(szResultScore),TEXT("%I64d"),m_lMeResultCount);
 
-			CRect rcAccount(CPoint(nWidth/2-380+70,nHeight/2+350-100),CPoint(nWidth/2-380+70+65,nHeight/2+350-100+15));
+			CRect rcAccount(CPoint(nWidth/2-380+70,nHeight/2+370-203),CPoint(nWidth/2-380+70+65,nHeight/2+370-203+15));
 			CRect rcGameScore(CPoint(nWidth/2-380+70,nHeight/2+370-185),CPoint(nWidth/2-380+70+65,nHeight/2+370-185+15));
-			CRect rcResultScore(CPoint(nWidth/2-380+70,nHeight/2+370-170),CPoint(nWidth/2-380+70+65,nHeight/2+370-170+15));
+			CRect rcResultScore(CPoint(nWidth/2-380+70,nHeight/2+370-167),CPoint(nWidth/2-380+70+65,nHeight/2+370-167+15));
 
 			pDC->DrawText(pMeUserData->szName,lstrlen(pMeUserData->szName),rcAccount,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
 			pDC->DrawText(szGameScore,lstrlen(szGameScore),rcGameScore,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
