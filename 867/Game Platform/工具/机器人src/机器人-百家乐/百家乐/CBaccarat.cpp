@@ -114,21 +114,28 @@ void CBaccarat::OnPlaceJetton()
 		}
 		}*/
 
-		int nType2 = rand()%2;
-		int nScore = 0;
-		switch (nType2)
+		//int nType2 = rand()%2;
+		//int nScore = 0;
+		//switch (nType2)
+		//{
+		//case 0:
+		//	{
+		//		nScore = 10000;
+		//		break;
+		//	}
+		//case 1:
+		//	{
+		//		nScore = 100000;
+		//		break;
+		//	}
+		//}
+
+		static __int64 JScore[] = 
 		{
-		case 0:
-			{
-				nScore = 10000;
-				break;
-			}
-		case 1:
-			{
-				nScore = 100000;
-				break;
-			}
-		}
+			1000, 10000, 100000, 500000, 1000000, 5000000
+		};
+
+		__int64 nScore = JScore[rand() % 6];
 
 		if (m_bSmall)
 		{
@@ -137,19 +144,26 @@ void CBaccarat::OnPlaceJetton()
 				cbJettonArea = ID_PING_JIA;
 			}
 
-			switch(nType2)
+			//switch(nType2)
+			//{
+			//case 0:
+			//	{
+			//		nScore = 100;
+			//		break;
+			//	}
+			//case 1:
+			//	{
+			//		nScore = 1000;
+			//		break;
+			//	}
+			//}
+
+			static __int64 JScore[] = 
 			{
-			case 0:
-				{
-					nScore = 100;
-					break;
-				}
-			case 1:
-				{
-					nScore = 1000;
-					break;
-				}
-			}
+				1000, 10000, 100000, 500000, 1000000, 5000000
+			};
+
+			__int64 nScore = JScore[rand() % 6];
 		}
 
 		m_JecVec.push_back(tagJetInfo(cbJettonArea, nScore));
@@ -157,7 +171,7 @@ void CBaccarat::OnPlaceJetton()
 
 	if (!m_JecVec.empty())
 	{
-		SetTimer(IDI_PLACE_JETTON, rand()%5000+1000, (DWORD)m_JecVec.size());
+		SetTimer(IDI_PLACE_JETTON, rand()%20000+1000, (DWORD)m_JecVec.size());
 	}
 }
 

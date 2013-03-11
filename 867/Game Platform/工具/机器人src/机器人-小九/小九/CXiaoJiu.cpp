@@ -225,29 +225,36 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 						break;
 					}
 				}
-				switch(rand()%4)
+
+				static __int64 JScore[] = 
 				{
-				case 0:
-					{
-						PlaceJetton.lJettonScore = 100;
-						break;
-					}
-				case 1:
-					{
-						PlaceJetton.lJettonScore = 1000;
-						break;
-					}
-				case 2:
-					{
-						PlaceJetton.lJettonScore = 10000;
-						break;
-					}
-				case 3:
-					{
-						PlaceJetton.lJettonScore = 100000;
-						break;
-					}
-				}
+					1000, 10000, 100000, 500000, 1000000, 5000000
+				};
+				
+				PlaceJetton.lJettonScore = JScore[rand() % 6];
+				//switch(rand()%4)
+				//{
+				//case 0:
+				//	{
+				//		PlaceJetton.lJettonScore = 100;
+				//		break;
+				//	}
+				//case 1:
+				//	{
+				//		PlaceJetton.lJettonScore = 1000;
+				//		break;
+				//	}
+				//case 2:
+				//	{
+				//		PlaceJetton.lJettonScore = 10000;
+				//		break;
+				//	}
+				//case 3:
+				//	{
+				//		PlaceJetton.lJettonScore = 100000;
+				//		break;
+				//	}
+				//}
 				BOOL bSend=TRUE;
 				switch( PlaceJetton.cbJettonArea )
 				{
