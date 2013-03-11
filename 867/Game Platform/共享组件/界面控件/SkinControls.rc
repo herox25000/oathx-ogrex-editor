@@ -79,13 +79,10 @@ BEGIN
     BEGIN
         BLOCK "080404b0"
         BEGIN
-            VALUE "Comments", "同城欢乐棋牌科技有限公司"
-            VALUE "CompanyName", "同城欢乐棋牌科技有限公司"
             VALUE "FileDescription", "界面控件类库组件"
             VALUE "FileVersion", "6, 0, 1, 0"
-            VALUE "InternalName", "SkinControls.dll"
-            VALUE "LegalCopyright", "同城欢乐棋牌科技有限公司保留所有权利。"
-            VALUE "OriginalFilename", "SkinControls.dll"
+            VALUE "InternalName", "plugin_ui.dll"
+            VALUE "OriginalFilename", "plugin_ui.dll"
             VALUE "ProductName", "界面控件类库组件"
             VALUE "ProductVersion", "6, 0, 1, 0"
         END
@@ -119,6 +116,7 @@ IDC_HAND_CUR            CURSOR                  ".\\res\\HAND_CUR.cur"
 #define _AFX_NO_PROPERTY_RESOURCES
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+语言 4、2
 #pragma code_page(936)
 #include "res\SkinControls.rc2"  // 非 Microsoft Visual C++ 编辑资源
 #include "afxres.rc"     // 标准组件
@@ -126,3 +124,4 @@ IDC_HAND_CUR            CURSOR                  ".\\res\\HAND_CUR.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
