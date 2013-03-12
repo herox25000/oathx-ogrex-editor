@@ -88,6 +88,7 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
+            VALUE "Comments", "867游戏"
             VALUE "FileDescription", "中国象棋"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "ChinaChess.exe"

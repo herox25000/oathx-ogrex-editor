@@ -79,10 +79,11 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
+            VALUE "Comments", "867游戏"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "HKFiveCardServer.dll"
             VALUE "OriginalFilename", "HKFiveCardServer.dll"
-            VALUE "ProductName", "升级游戏服务器"
+            VALUE "ProductName", " 港式五张服务器"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END

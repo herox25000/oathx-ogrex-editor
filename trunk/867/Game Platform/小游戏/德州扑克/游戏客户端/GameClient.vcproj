@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib.lib"
+				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib"
 				OutputFile="../../../运行/Debug/DZShowHand.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -290,10 +290,10 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\BT_PASS.bmp">
 			</File>
 			<File
-				RelativePath=".\Bt_pass_card.bmp">
+				RelativePath=".\Res\Bt_pass_card.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Bt_pass_card.bmp">
+				RelativePath=".\Bt_pass_card.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\BT_SHOWHAND.bmp">

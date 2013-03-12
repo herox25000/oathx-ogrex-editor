@@ -88,12 +88,10 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "棋牌游科技有限公司"
-            VALUE "CompanyName", "棋牌游科技有限公司"
+            VALUE "Comments", "867游戏"
             VALUE "FileDescription", "斗地主游戏客户端"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "Land.exe"
-            VALUE "LegalCopyright", "棋牌游科技有限公司保留所有权利。"
             VALUE "OriginalFilename", "Land.exe"
             VALUE "ProductName", "斗地主游戏客户端"
             VALUE "ProductVersion", "6, 6, 1, 0"

@@ -89,11 +89,11 @@ BEGIN
         BLOCK "080403a8"
         BEGIN
             VALUE "Comments", "867游戏"
-            VALUE "FileDescription", "界面控件类库组件"
+            VALUE "FileDescription", "小九客户端"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "XiaoJiu.exe"
             VALUE "OriginalFilename", "XiaoJiu.exe"
-            VALUE "ProductName", "867游戏"
+            VALUE "ProductName", "小九客户端"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END

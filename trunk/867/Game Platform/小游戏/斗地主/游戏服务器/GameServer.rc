@@ -13,7 +13,7 @@
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
-// Chinese (P.R.C.) resources
+// 中文(中华人民共和国) resources
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 #ifdef _WIN32
@@ -63,8 +63,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,5,1,0
- PRODUCTVERSION 6,5,1,0
+ FILEVERSION 6,6,1,0
+ PRODUCTVERSION 6,6,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -79,14 +79,13 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "CompanyName", "棋牌游科技有限公司"
-            VALUE "FileDescription", "棋牌游科技"
-            VALUE "FileVersion", "6.5.1.0"
-            VALUE "InternalName", "GameServer.dll"
-            VALUE "LegalCopyright", "棋牌游科技有限公司"
-            VALUE "OriginalFilename", "GameServer.dll"
-            VALUE "ProductName", "棋牌游斗地主服务端"
-            VALUE "ProductVersion", "6.5.1.0"
+            VALUE "Comments", "867游戏"
+            VALUE "FileDescription", "斗地主服务器"
+            VALUE "FileVersion", "6.6.1.0"
+            VALUE "InternalName", "LandServer.dll"
+            VALUE "OriginalFilename", "LandServer.dll"
+            VALUE "ProductName", "斗地主服务端"
+            VALUE "ProductVersion", "6.6.1.0"
         END
     END
     BLOCK "VarFileInfo"
@@ -95,7 +94,7 @@ BEGIN
     END
 END
 
-#endif    // Chinese (P.R.C.) resources
+#endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
 

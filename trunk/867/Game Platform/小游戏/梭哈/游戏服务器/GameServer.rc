@@ -63,8 +63,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,0,1,0
- PRODUCTVERSION 6,0,1,0
+ FILEVERSION 6,6,1,0
+ PRODUCTVERSION 6,6,1,0
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -79,13 +79,10 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "深圳网狐科技有限公司"
-            VALUE "CompanyName", "深圳网狐科技有限公司"
-            VALUE "FileVersion", "6, 0, 1, 0"
-            VALUE "InternalName", "GameServer.dll"
-            VALUE "LegalCopyright", "深圳网狐科技有限公司保留所有权利。"
-            VALUE "OriginalFilename", "GameServer.dll"
-            VALUE "ProductVersion", "6, 0, 1, 0"
+            VALUE "FileVersion", "6, 6, 1, 0"
+            VALUE "InternalName", "ShowHandServer.dll"
+            VALUE "OriginalFilename", "ShowHandServer.dll"
+            VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END
     BLOCK "VarFileInfo"
@@ -112,6 +109,7 @@ END
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
 LANGUAGE 4, 2
 #pragma code_page(936)
+#include "res\GameServer.rc2"  // 不是由 Microsoft Visual C++ 编辑过的资源
 #include "afxres.rc"     // 标准组件
 #endif
 
