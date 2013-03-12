@@ -37,7 +37,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib.lib ../../../开发库/Lib/plugin_video_d.lib.lib"
+				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib ../../../开发库/Lib/plugin_video_d.lib"
 				OutputFile="../../../运行/Debug/ChinaChessVD.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"

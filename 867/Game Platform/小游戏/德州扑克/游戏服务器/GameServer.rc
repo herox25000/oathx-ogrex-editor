@@ -79,14 +79,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "Comments", "艾棋牌游网络科技"
-            VALUE "CompanyName", "棋牌游网络科技"
-            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "Comments", "867游戏"
+            VALUE "FileDescription", "德州扑克服务端"
             VALUE "FileVersion", "6, 6, 1, 0"
-            VALUE "InternalName", "GameServer.dll"
-            VALUE "LegalCopyright", "棋牌游网络科技保留所有权利。"
-            VALUE "OriginalFilename", "GameServer.dll"
-            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "InternalName", "DZShowHandServer.dll"
+            VALUE "OriginalFilename", "DZShowHandServer.dll"
+            VALUE "ProductName", "德州扑克服务器"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END

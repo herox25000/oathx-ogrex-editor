@@ -1,9 +1,9 @@
 //
-// GameClient.RC2 - Microsoft Visual C++ 不会直接编辑的资源
+// GameServer.RC2 - Microsoft Visual C++ 不会直接编辑的资源
 //
 
 #ifdef APSTUDIO_INVOKED
-#error 此文件不能由 Microsoft Visual C++ 编辑
+#error this file is not editable by Microsoft Visual C++
 #endif //APSTUDIO_INVOKED
 
 

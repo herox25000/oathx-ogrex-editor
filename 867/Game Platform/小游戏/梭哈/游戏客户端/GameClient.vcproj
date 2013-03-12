@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib.lib Winmm.lib"
+				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib Winmm.lib"
 				OutputFile="../../../运行/Debug/ShowHand.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"

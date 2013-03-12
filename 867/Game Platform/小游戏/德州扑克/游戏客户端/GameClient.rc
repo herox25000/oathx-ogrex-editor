@@ -88,12 +88,12 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
+            VALUE "Comments", "867游戏"
             VALUE "FileDescription", "德州扑克游戏客户端"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "DZShowHand.exe"
-            VALUE "LegalCopyright", "棋牌游网络科技保留所有权利。"
             VALUE "OriginalFilename", "DZShowHand.exe"
-            VALUE "ProductName", "梭哈游戏客户端"
+            VALUE "ProductName", "德州扑克游戏客户端"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END

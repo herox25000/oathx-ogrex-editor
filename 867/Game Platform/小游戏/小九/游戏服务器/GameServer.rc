@@ -80,10 +80,10 @@ BEGIN
         BLOCK "080403a8"
         BEGIN
             VALUE "Comments", "867游戏"
-            VALUE "FileDescription", "界面控件类库组件"
+            VALUE "FileDescription", "小九服务器"
             VALUE "FileVersion", "6, 6, 1, 0"
-            VALUE "InternalName", "GameServer.dll"
-            VALUE "OriginalFilename", "GameServer.dll"
+            VALUE "InternalName", "XiaoJiuServer.dll"
+            VALUE "OriginalFilename", "XiaoJiuServer.dll"
             VALUE "ProductName", "867游戏"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
