@@ -149,10 +149,21 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 
 	m_ImageTimeFlag.SetLoadInfo(IDB_TIME_FLAG, hInstance);
 
+	char szPath[MAX_PATH];
+	::GetModulePath(szPath, sizeof(szPath));
+	CString str;
+	str.Format(TEXT("%s\\Resource\\Games\\XiaoJiu\\RES\\PNG_IDB_IDB_TIPC_PNG.png"),szPath);
+	m_pngc.LoadImage(str);
+	str.Format(TEXT("%s\\Resource\\Games\\XiaoJiu\\RES\\PNG_IDB_IDB_TIPP_PNG.png"),szPath);
+	m_pngp.LoadImage(str);
+
 	GetMaxTieScore();
 	m_bCanGo=false;
 	m_bSet=false;
 	m_bAutoCard=true;
+	m_bJettonstate=true;
+	m_lKeXiaSocre=0;
+	m_lAllJettonScore=0;
 	return;
 }
 
@@ -375,33 +386,6 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			m_ImageFrameZhuangJia.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			break;
 		}
-	//case ID_ZUO_JIAO:
-	//	{
-	//		CImageHandle ImageHandleXianTianWang(&m_ImageFrameXianTianWang);
-	//		nXPos = nWidth / 2 - 260;
-	//		nYPos = nHeight / 2 - 230+177;
-
-	//		m_ImageFrameXianTianWang.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
-	//		break;
-	//	}
-	//case ID_YOU_JIAO:
-	//	{
-	//		CImageHandle ImageHandleZhuangTianWang(&m_ImageFrameZhuangTianWang);
-	//		nXPos = nWidth / 2 -260+173+171;
-	//		nYPos = nHeight / 2 - 230+177;
-
-	//		m_ImageFrameZhuangTianWang.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
-	//		break;
-	//	}
-	//case ID_QIAO:
-	//	{
-	//		CImageHandle ImageHandleTongDianPing(&m_ImageFrameTongDianPing);
-	//		nXPos = nWidth / 2  - 260+173;
-	//		nYPos = nHeight / 2 - 230;
-	//		
-	//		m_ImageFrameTongDianPing.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
-	//		break;
-	//	}
 	}
 
 	//胜利标志
@@ -587,11 +571,6 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			DrawNumberString(pDC,lScoreCount,m_PointJetton[i].x,m_PointJetton[i].y);
 	}
 
-	for(int i=0;i<5;i++)
-	{
-		m_DrawCard[i].Draw(pDC);
-	}
-
 	//我的下注
 	DrawMeJettonNumber(pDC);
 	//显示结果
@@ -626,7 +605,33 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			pDC->DrawText(pMeUserData->szName,lstrlen(pMeUserData->szName),rcAccount,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
 			pDC->DrawText(szGameScore,lstrlen(szGameScore),rcGameScore,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
 			pDC->DrawText(szResultScore,lstrlen(szResultScore),rcResultScore,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
+		
 		}
+	}
+
+	// 如果是下注状态
+	if(m_bJettonstate && m_lKeXiaSocre>0)
+	{
+		//绘制下注进度条
+		int iStatrX=nWidth/2-170;
+		int iStatrY=nHeight/2-230;
+		//文字提示
+		m_pngc.DrawImage(pDC,iStatrX,iStatrY);
+		//数值
+		DrawNumberString(pDC,m_lKeXiaSocre,iStatrX+m_pngc.GetWidth()+m_pngp.GetWidth()/2,iStatrY,true);
+		DrawNumberString(pDC,m_lAllJettonScore,iStatrX+m_pngc.GetWidth()+m_pngp.GetWidth()/2,iStatrY+12+m_pngp.GetHeight()/2,true);
+		//进度条
+		m_pngp.DrawImage(pDC,iStatrX+m_pngc.GetWidth(),iStatrY+6,m_pngp.GetWidth(),m_pngp.GetHeight()/2,0,0,m_pngp.GetWidth(),m_pngp.GetHeight()/2);
+		float a=m_lAllJettonScore*1.0f;
+		float b=a/m_lKeXiaSocre;
+		int jindu = floor(b*m_pngp.GetWidth());
+		m_pngp.DrawImage(pDC,iStatrX+m_pngc.GetWidth(),iStatrY+6,jindu,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,jindu,m_pngp.GetHeight()/2);
+	}
+
+	//绘制牌
+	for(int i=0;i<5;i++)
+	{
+		m_DrawCard[i].Draw(pDC);
 	}
 
 	return;
@@ -850,30 +855,6 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 			m_lAllBankerScore += lScoreCount;
 			break;
 		}
-	//case ID_ZUO_JIAO:
-	//	{ 
-	//		m_lAllPlayerKingScore += lScoreCount;
-
-	//		nFrameWidth = 88;
-	//		nFrameHeight = 45;
-	//		break;
-	//	}
-	//case ID_YOU_JIAO:
-	//	{ 
-	//		m_lAllBankerKingScore += lScoreCount;
-
-	//		nFrameWidth = 88;
-	//		nFrameHeight = 45;
-	//		break;
-	//	}
-	//case ID_QIAO:
-	//	{ 
-	//		m_lAllTieSamePointScore += lScoreCount;
-
-	//		nFrameWidth = 88;
-	//		nFrameHeight = 45;
-	//		break;
-	//	}
 	}
 
 	//增加筹码
@@ -911,15 +892,6 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 			case ID_DAO_MEN:
 				nIndex=3;
 				break;
-			//case ID_ZUO_JIAO:
-			//	nIndex=4;
-			//	break;
-			//case ID_YOU_JIAO:
-			//	nIndex=5;
-			//	break;
-			//case ID_QIAO:
-			//	nIndex=6;
-			//	break;
 			}
 			//插入数组
 			bPlaceJetton=true;
@@ -928,9 +900,9 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 		//减少数目
 		lScoreCount-=lCellCount*lScoreIndex[cbScoreIndex];
 	}
-
 	//更新界面
-	if (bPlaceJetton==true) UpdateGameView(NULL);
+	if (bPlaceJetton==true)
+		UpdateGameView(NULL);
 
 	return;
 }
@@ -989,29 +961,6 @@ BYTE CGameClientView::GetJettonArea(CPoint MousePoint)
 	rcZhuangJia.right = rcZhuangJia.left + 200;
 	rcZhuangJia.bottom = rcZhuangJia.top + 300;
 	if ( rcZhuangJia.PtInRect(MousePoint) ) return ID_DAO_MEN;
-
-	//CRect rcXianTianWang;
-	//rcXianTianWang.left = nWidth / 2 - 260;
-	//rcXianTianWang.top = nHeight / 2 - 230+177;
-	//rcXianTianWang.right = rcXianTianWang.left + 177;
-	//rcXianTianWang.bottom = rcXianTianWang.top + 92;
-	//if ( rcXianTianWang.PtInRect(MousePoint) ) return ID_ZUO_JIAO;	
-
-	//CRect rcTongDianPing;
-	//rcTongDianPing.left = nWidth / 2  - 260+173;
-	//rcTongDianPing.top = nHeight / 2 - 230;
-	//rcTongDianPing.right = rcTongDianPing.left + 175;
-	//rcTongDianPing.bottom = rcTongDianPing.top + 93;
-	//if ( rcTongDianPing.PtInRect(MousePoint) ) return ID_QIAO;	
-
-	//CRect rcZhuangTianWang;
-
-	//rcZhuangTianWang.left = nWidth / 2 -260+173+171;
-	//rcZhuangTianWang.top = nHeight / 2 - 230+177;
-	//rcZhuangTianWang.right = rcZhuangTianWang.left + 177;
-	//rcZhuangTianWang.bottom = rcZhuangTianWang.top + 92;
-	//if ( rcZhuangTianWang.PtInRect(MousePoint) ) return ID_YOU_JIAO;
-
 	return 0xFF;
 }
 
@@ -1023,7 +972,8 @@ void CGameClientView::DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, IN
 	CImageHandle HandleMeScoreNumber(&m_ImageMeScoreNumber);
 	CSize SizeScoreNumber(m_ImageScoreNumber.GetWidth()/10,m_ImageScoreNumber.GetHeight());
 
-	if ( bMeScore ) SizeScoreNumber.SetSize(m_ImageMeScoreNumber.GetWidth()/10, m_ImageMeScoreNumber.GetHeight());
+	if ( bMeScore )
+		SizeScoreNumber.SetSize(m_ImageMeScoreNumber.GetWidth()/10, m_ImageMeScoreNumber.GetHeight());
 
 	//计算数目
 	LONG lNumberCount=0;
@@ -1201,27 +1151,6 @@ void CGameClientView::OnLButtonDown(UINT nFlags, CPoint Point)
 					return ;
 				break;
 			}
-		//case ID_QIAO:
-		//	{
-		//		__int64 lMaxTieKingScore= GetMaxTieKingScore();
-		//		if ( lMaxTieKingScore < m_lCurrentJetton )
-		//			return ;
-		//		break;
-		//	}
-		//case ID_ZUO_JIAO:
-		//	{
-		//		__int64 lMaxPlayerKingScore = GetMaxPlayerKingScore();
-		//		if ( lMaxPlayerKingScore < m_lCurrentJetton )
-		//			return ;
-		//		break;
-		//	}
-		//case ID_YOU_JIAO:
-		//	{
-		//		__int64 lMaxBankerKingScore = GetMaxBankerKingScore();
-		//		if ( lMaxBankerKingScore < m_lCurrentJetton )
-		//			return ;
-		//		break;
-		//	}
 		}
 
 		if (cbJettonArea!=0xFF) AfxGetMainWnd()->SendMessage(IDM_PLACE_JETTON, cbJettonArea, (LPARAM)(&m_lCurrentJetton));
@@ -1443,6 +1372,7 @@ void CGameClientView::SetBankerInfo( WORD wChairID, BYTE cbBankerTime, __int64 l
 void CGameClientView::SetBankerTreasure(__int64 lBankerTreasure)
 {
 	m_lBankerTreasure = lBankerTreasure;
+	m_lKeXiaSocre=lBankerTreasure;
 	UpdateGameView(NULL);
 }
 
@@ -1832,9 +1762,6 @@ void CGameClientView::DrawMeJettonNumber(CDC *pDC)
 	if ( 0 < m_lMeShunMenScore ) DrawNumberString(pDC,m_lMeShunMenScore,m_PointJetton[0].x,m_PointJetton[0].y+25, true);
 	if ( 0 < m_lMeTianMenScore) DrawNumberString(pDC,m_lMeTianMenScore,m_PointJetton[1].x,m_PointJetton[1].y+25, true);
 	if ( 0 < m_lMeDaoMenScore ) DrawNumberString(pDC,m_lMeDaoMenScore,m_PointJetton[2].x,m_PointJetton[2].y+25, true);
-	if ( 0 < m_lMeZuoJiaoScore ) DrawNumberString(pDC,m_lMeZuoJiaoScore,m_PointJetton[3].x,m_PointJetton[3].y+25, true);
-	if ( 0 < m_lMeYouJiaoScore ) DrawNumberString(pDC,m_lMeYouJiaoScore,m_PointJetton[4].x,m_PointJetton[4].y+25, true);
-	if ( 0 < m_lMeQiaoScore ) DrawNumberString(pDC,m_lMeQiaoScore,m_PointJetton[5].x,m_PointJetton[5].y+25, true);
 }
 
 //////////////////////////////////////////////////////////////////////////

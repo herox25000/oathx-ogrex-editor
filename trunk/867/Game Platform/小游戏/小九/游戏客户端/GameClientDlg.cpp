@@ -62,7 +62,7 @@ CGameClientDlg::~CGameClientDlg()
 bool CGameClientDlg::InitGameFrame()
 {
 	//设置标题
-	SetWindowText(TEXT("牌九"));
+	SetWindowText(TEXT("小九"));
 
 	//设置图标
 	HICON hIcon=LoadIcon(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_MAINFRAME));
@@ -341,6 +341,9 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	SetGameStatus(GS_PLAYING);
 	KillGameTimer(IDI_PLACE_JETTON);
 	//SetGameTimer(GetMeChairID(),IDI_SHOW_TIME,pGameStart->cbTimeLeave);
+	m_GameClientView.m_bJettonstate=false;
+	m_GameClientView.m_lKeXiaSocre=0;
+	m_GameClientView.m_lAllJettonScore=0;
 	//更新控制
 	UpdateButtonContron();
 	DispatchUserCard(pGameStart->cbTableCardArray[INDEX_BANKER],pGameStart->cbTableCardArray[INDEX_PLAYER1],
@@ -356,16 +359,15 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 	//效验数据
 	ASSERT(wDataSize==sizeof(CMD_S_PlaceJetton));
 	if (wDataSize!=sizeof(CMD_S_PlaceJetton)) return false;
-
 	//消息处理
 	CMD_S_PlaceJetton * pPlaceJetton=(CMD_S_PlaceJetton *)pBuffer;
-
+	m_GameClientView.m_lKeXiaSocre = pPlaceJetton->lKeXiaSocre;
+	m_GameClientView.m_lAllJettonScore = pPlaceJetton->lAllJettonScore;
 	//播放声音
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
-
 	//加注界面
 	m_GameClientView.PlaceUserJetton(pPlaceJetton->cbJettonArea,pPlaceJetton->lJettonScore);
-
+	
 	return true;
 }
 
@@ -478,6 +480,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	//设置时间
 	SetGameTimer(GetMeChairID(),IDI_PLACE_JETTON,pGameEnd->cbTimeLeave);
 
+	m_GameClientView.m_bJettonstate=true;
 	return true;
 }
 
@@ -566,22 +569,22 @@ void CGameClientDlg::UpdateButtonContron()
 	//申请按钮
 	if ( ! IsLookonMode() )
 	{
-		//状态判断
-		if ( GetGameStatus()==GS_FREE ) 
-		{
+		////状态判断
+		//if ( GetGameStatus()==GS_FREE ) 
+		//{
+		//	m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
+		//	m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
+		//}
+		//if ( GetGameStatus()==(GS_PLAYING+1) ) 
+		//{
 			m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
 			m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
-		}
-		if ( GetGameStatus()==(GS_PLAYING+1) ) 
-		{
-			m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
-			m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
-		}
-		else
-		{
-			m_GameClientView.m_btCancelBanker.EnableWindow(FALSE);
-			m_GameClientView.m_btApplyBanker.EnableWindow(FALSE);
-		}
+		//}
+		//else
+		//{
+		//	m_GameClientView.m_btCancelBanker.EnableWindow(FALSE);
+		//	m_GameClientView.m_btApplyBanker.EnableWindow(FALSE);
+		//}
 
 		//显示判断
 		const tagUserData *pMeUserData = GetUserData( GetMeChairID() );
@@ -815,24 +818,6 @@ LRESULT CGameClientDlg::OnPlaceJetton(WPARAM wParam, LPARAM lParam)
 				m_GameClientView.SetMeBankerScore(m_lMeDaoMenScore);
 				break;
 			}
-		//case ID_QIAO:
-		//	{
-		//		m_lMeQiaoScore += lJettonScore;
-		//		m_GameClientView.SetMeTieSamePointScore(m_lMeQiaoScore);
-		//		break;
-		//	}
-		//case ID_ZUO_JIAO:
-		//	{
-		//		m_lMeZuoJiaoScore += lJettonScore;
-		//		m_GameClientView.SetMePlayerKingScore(m_lMeZuoJiaoScore);
-		//		break;
-		//	}
-		//case ID_YOU_JIAO:
-		//	{
-		//		m_lMeYouJiaoScore += lJettonScore;
-		//		m_GameClientView.SetMeBankerKingScore(m_lMeYouJiaoScore);
-		//		break;
-		//	}
 	}
 
 	//变量定义

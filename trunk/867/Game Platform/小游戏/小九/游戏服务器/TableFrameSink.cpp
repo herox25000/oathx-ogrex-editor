@@ -285,12 +285,11 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			__int64	allZhu=0;
 			if ( pIServerUserItem->GetUserID()==m_CurrentBanker.dwUserID ) //庄家强退
 			{
-				allZhu=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore+m_lQiaoScore+m_lYouJiaoScore+m_lZuoJiaoScore;
+				allZhu=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore;
 			}
 			else
 			{
-				allZhu=m_lUserTianMenScore[wChairID]+m_lUserDaoMenScore[wChairID]+m_lUserShunMenScore[wChairID]+
-					m_lUserQiaoScore[wChairID]+m_lUserYouJiaoScore[wChairID]+m_lUserZuoJiaoScore[wChairID];
+				allZhu=m_lUserTianMenScore[wChairID]+m_lUserDaoMenScore[wChairID]+m_lUserShunMenScore[wChairID];
 			}
 
 			if ( allZhu>0 )
@@ -346,9 +345,9 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			StatusFree.lTieScore=m_lTianMenScore;
 			StatusFree.lBankerScore=m_lDaoMenScore;
 			StatusFree.lPlayerScore=m_lShunMenScore;
-			StatusFree.lTieSamePointScore = m_lQiaoScore;
-			StatusFree.lBankerKingScore = m_lYouJiaoScore;
-			StatusFree.lPlayerKingScore = m_lZuoJiaoScore;
+			StatusFree.lTieSamePointScore = 0;
+			StatusFree.lBankerKingScore = 0;
+			StatusFree.lPlayerKingScore = 0;
 			//庄家信息
 			StatusFree.lApplyBankerCondition = m_lApplyBankerCondition;
 
@@ -397,9 +396,9 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			StatusPlay.lTieScore=m_lTianMenScore;
 			StatusPlay.lBankerScore=m_lDaoMenScore;
 			StatusPlay.lPlayerScore=m_lShunMenScore;
-			StatusPlay.lTieSamePointScore = m_lQiaoScore;
-			StatusPlay.lBankerKingScore = m_lYouJiaoScore;
-			StatusPlay.lPlayerKingScore = m_lZuoJiaoScore;
+			StatusPlay.lTieSamePointScore = 0;
+			StatusPlay.lBankerKingScore = 0;
+			StatusPlay.lPlayerKingScore = 0;
 
 			//庄家信息
 			StatusPlay.lApplyBankerCondition = m_lApplyBankerCondition;
@@ -634,7 +633,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 
 bool CTableFrameSink::IsBigBanker(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore)
 {
-	__int64 all=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore+m_lQiaoScore+m_lYouJiaoScore+m_lZuoJiaoScore+lJettonScore;
+	__int64 all=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore+lJettonScore;
 	IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
 	if (pIServerUserItem)
 	{
@@ -658,18 +657,21 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	if (m_pITableFrame->GetGameStatus()!=GS_FREE) return true;
 
 	//庄家判断
-	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) return true;
-	if ( m_CurrentBanker.dwUserID == 0 ) return true;
+	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
+		return true;
+	if ( m_CurrentBanker.dwUserID == 0 )
+		return true;
 
 	//变量定义
 	IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
-	__int64 lJettonCount=m_lUserTianMenScore[wChairID]+m_lUserDaoMenScore[wChairID]+m_lUserShunMenScore[wChairID]+
-		m_lUserQiaoScore[wChairID] + m_lUserZuoJiaoScore[wChairID] + m_lUserYouJiaoScore[wChairID];
+	__int64 lJettonCount=m_lUserTianMenScore[wChairID]+m_lUserDaoMenScore[wChairID]+m_lUserShunMenScore[wChairID];
 	__int64 lUserScore = pIServerUserItem->GetUserScore()->lScore;
 
-	if ( lUserScore < lJettonCount + lJettonScore ) return true;
+	if ( lUserScore < lJettonCount + lJettonScore ) 
+		return true;
 
-	if (IsBigBanker(wChairID, cbJettonArea, lJettonScore)==true)  return true;
+	if (IsBigBanker(wChairID, cbJettonArea, lJettonScore)==true) 
+		return true;
 
 	//合法验证
 	if ( ID_SHUN_MEN == cbJettonArea )
@@ -680,14 +682,6 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 		m_lShunMenScore += lJettonScore;
 		m_lUserShunMenScore[wChairID] += lJettonScore;
 	}
-	//else if ( ID_ZUO_JIAO == cbJettonArea )
-	//{
-	//	if ( GetMaxPlayerKingScore(wChairID) <lJettonScore ) return true;
-
-	//	//保存下注
-	//	m_lZuoJiaoScore += lJettonScore;
-	//	m_lUserZuoJiaoScore[wChairID] += lJettonScore;
-	//}
 	else if ( ID_TIAN_MEN == cbJettonArea )
 	{
 		if ( GetMaxTieScore(wChairID) <lJettonScore ) return true;
@@ -696,14 +690,6 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 		m_lTianMenScore += lJettonScore;
 		m_lUserTianMenScore[wChairID] += lJettonScore;
 	}
-	//else if ( ID_QIAO == cbJettonArea )
-	//{
-	//	if ( GetMaxTieKingScore(wChairID) <lJettonScore ) return true;
-
-	//	//保存下注
-	//	m_lQiaoScore += lJettonScore;
-	//	m_lUserQiaoScore[wChairID] += lJettonScore;
-	//}
 	else if ( ID_DAO_MEN == cbJettonArea )
 	{
 		if ( GetMaxBankerScore(wChairID) <lJettonScore ) return true;
@@ -712,14 +698,6 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 		m_lDaoMenScore += lJettonScore;
 		m_lUserDaoMenScore[wChairID] += lJettonScore;
 	}
-	//else if ( ID_YOU_JIAO == cbJettonArea )
-	//{
-	//	if ( GetMaxBankerKingScore(wChairID) <lJettonScore ) return true;
-
-	//	//保存下注
-	//	m_lYouJiaoScore += lJettonScore;
-	//	m_lUserYouJiaoScore[wChairID] += lJettonScore;
-	//}
 	else
 	{
 		ASSERT(FALSE);
@@ -729,11 +707,15 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	//变量定义
 	CMD_S_PlaceJetton PlaceJetton;
 	ZeroMemory(&PlaceJetton,sizeof(PlaceJetton));
-
-	//构造变量
 	PlaceJetton.wChairID=wChairID;
 	PlaceJetton.cbJettonArea=cbJettonArea;
 	PlaceJetton.lJettonScore=lJettonScore;
+	pIServerUserItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	if (pIServerUserItem)
+	{
+		PlaceJetton.lKeXiaSocre=pIServerUserItem->GetUserScore()->lScore; 
+	}
+	PlaceJetton.lAllJettonScore=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore;
 
 	//发送消息
 	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_PLACE_JETTON,&PlaceJetton,sizeof(PlaceJetton));
@@ -761,9 +743,12 @@ __int64 CTableFrameSink::AccountPayoffScore()
 
 	//盈利计算
 	__int64 lPayoffScore=0L;
-	if (cbPlayerCount>cbBankerCount) lPayoffScore=m_lTianMenScore+m_lDaoMenScore-m_lShunMenScore;
-	else if (cbPlayerCount<cbBankerCount) lPayoffScore=m_lTianMenScore+m_lShunMenScore-m_lDaoMenScore;
-	else lPayoffScore=-m_lTianMenScore*8L;
+	if (cbPlayerCount>cbBankerCount) 
+		lPayoffScore=m_lTianMenScore+m_lDaoMenScore-m_lShunMenScore;
+	else if (cbPlayerCount<cbBankerCount)
+		lPayoffScore=m_lTianMenScore+m_lShunMenScore-m_lDaoMenScore;
+	else
+		lPayoffScore=-m_lTianMenScore*8L;
 
 	return lPayoffScore;
 }
@@ -994,7 +979,7 @@ __int64 CTableFrameSink::GetMaxPlayerScore(WORD wChairID)//顺门
 {
 	//其他区域
 
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+ m_lQiaoScore+ m_lYouJiaoScore+m_lZuoJiaoScore+m_lShunMenScore;
+	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 
 	//最大下注
@@ -1024,7 +1009,7 @@ __int64 CTableFrameSink::GetMaxPlayerScore(WORD wChairID)//顺门
 __int64 CTableFrameSink::GetMaxPlayerKingScore(WORD wChairID)//左角
 {
 	//其他区域
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+ m_lQiaoScore+ m_lYouJiaoScore+m_lZuoJiaoScore+m_lShunMenScore;
+	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 
 	//最大下注
@@ -1051,7 +1036,7 @@ __int64 CTableFrameSink::GetMaxPlayerKingScore(WORD wChairID)//左角
 __int64 CTableFrameSink::GetMaxBankerScore(WORD wChairID)//倒门
 {
 	//其他区域
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+ m_lQiaoScore+ m_lYouJiaoScore+m_lZuoJiaoScore+m_lShunMenScore;
+	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 
@@ -1078,7 +1063,7 @@ __int64 CTableFrameSink::GetMaxBankerScore(WORD wChairID)//倒门
 __int64 CTableFrameSink::GetMaxBankerKingScore(WORD wChairID)//右角
 {
 	//其他区域
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+ m_lQiaoScore+ m_lYouJiaoScore+m_lZuoJiaoScore+m_lShunMenScore;
+	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 
 	//最大下注
@@ -1103,7 +1088,7 @@ __int64 CTableFrameSink::GetMaxBankerKingScore(WORD wChairID)//右角
 //最大下注
 __int64 CTableFrameSink::GetMaxTieScore(WORD wChairID)//天门
 {
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+ m_lQiaoScore+ m_lYouJiaoScore+m_lZuoJiaoScore+m_lShunMenScore;
+	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 
@@ -1128,7 +1113,7 @@ __int64 CTableFrameSink::GetMaxTieScore(WORD wChairID)//天门
 //最大下注
 __int64 CTableFrameSink::GetMaxTieKingScore(WORD wChairID)//桥
 {
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+ m_lQiaoScore+ m_lYouJiaoScore+m_lZuoJiaoScore+m_lShunMenScore;
+	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 
