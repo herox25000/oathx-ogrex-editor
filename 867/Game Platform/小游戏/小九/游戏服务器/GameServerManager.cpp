@@ -17,7 +17,7 @@ CGameServiceManager::CGameServiceManager(void)
 	m_GameServiceAttrib.wChairCount=GAME_PLAYER;
 	lstrcpyn(m_GameServiceAttrib.szKindName,GAME_NAME,CountArray(m_GameServiceAttrib.szKindName));
 	lstrcpyn(m_GameServiceAttrib.szDataBaseName,szTreasureDB,CountArray(m_GameServiceAttrib.szDataBaseName));
-	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("牌九游戏服务组件"),CountArray(m_GameServiceAttrib.szDescription));
+	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("小九游戏服务组件"),CountArray(m_GameServiceAttrib.szDescription));
 	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("XiaoJiu.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
 	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("XiaoJiuServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
 	m_GameServiceAttrib.cbJoinInGame = FALSE;

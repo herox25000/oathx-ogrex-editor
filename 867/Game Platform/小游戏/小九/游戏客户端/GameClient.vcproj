@@ -390,6 +390,12 @@
 				RelativePath=".\Res\NO_BANKER.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\png1.bin">
+			</File>
+			<File
+				RelativePath=".\Res\png2.bin">
+			</File>
+			<File
 				RelativePath=".\Res\SCORE_1.cur">
 			</File>
 			<File
@@ -461,6 +467,18 @@
 		</File>
 		<File
 			RelativePath=".\Res\PLACE_JETTON.wav">
+		</File>
+		<File
+			RelativePath=".\Res\PNG_IDB_IDB_TIPC_PNG.png">
+		</File>
+		<File
+			RelativePath=".\Res\PNG_IDB_IDB_TIPN_PNG">
+		</File>
+		<File
+			RelativePath=".\Res\PNG_IDB_IDB_TIPN_PNG.png">
+		</File>
+		<File
+			RelativePath=".\Res\PNG_IDB_IDB_TIPP_PNG.png">
 		</File>
 		<File
 			RelativePath=".\Res\SEND_CARD.wav">

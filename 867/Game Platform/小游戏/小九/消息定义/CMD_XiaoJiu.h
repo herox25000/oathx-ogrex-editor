@@ -35,9 +35,6 @@ static void SuperRand()
 #define ID_SHUN_MEN					0x01			//顺门（上门）
 #define ID_TIAN_MEN					0x02			//天门（对门）
 #define ID_DAO_MEN					0x04			//倒门（下门）
-//#define ID_ZUO_JIAO					0x08
-//#define ID_YOU_JIAO					0x10
-//#define ID_QIAO						0x20
 #define ID_QUAN_SHU					0x40									//全输
 
 //记录信息
@@ -188,6 +185,8 @@ struct CMD_S_PlaceJetton
 	WORD							wChairID;							//用户位置
 	BYTE							cbJettonArea;						//筹码区域
 	__int64							lJettonScore;						//加注数目
+	__int64							lKeXiaSocre;						//可下注值
+	__int64							lAllJettonScore;					//已经下注的总值	
 };
 
 //游戏结束
