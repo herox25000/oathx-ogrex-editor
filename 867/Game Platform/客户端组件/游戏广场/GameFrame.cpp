@@ -144,7 +144,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 			CListInside * pListInside=(CListInside *)pListItem;
 			tagGameInside * pGameInside=pListInside->GetItemInfo();
 
-			WebBrowse(TEXT("http://www.baidu.com"),false);
+		//	WebBrowse(TEXT("http://site7353.s5.idc2.cn/"),false);
 
 			return;
 		}
@@ -156,7 +156,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 
 			//连接规则
 			TCHAR szRuleUrl[256]=TEXT("");
-			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.baidu.com/GameRule.asp?KindID=%ld"),pGameKind->wKindID);
+			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://site7353.s5.idc2.cn"),pGameKind->wKindID);
 			WebBrowse(szRuleUrl,true);
 
 			return;
@@ -290,10 +290,34 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 	case IDC_BT_BUTTON_4:				//功能按钮
 	case IDC_BT_BUTTON_5:				//功能按钮
 		{
-			if(IDC_BT_BUTTON_1==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
-			if(IDC_BT_BUTTON_2==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
-			if(IDC_BT_BUTTON_4==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
-			if(IDC_BT_BUTTON_5==nCommandID)WebBrowse(TEXT("http://www.baidu.com"),true);
+			TCHAR chDir[MAX_PATH];
+			GetCurrentDirectory(MAX_PATH, chDir);
+
+			TCHAR chFilePath[MAX_PATH];
+			sprintf(chFilePath, "%s\\BLQ.ini", chDir);
+
+			TCHAR chBrowse[MAX_PATH];
+			if(IDC_BT_BUTTON_1==nCommandID)
+			{
+				::GetPrivateProfileString("Http", "MainPage", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
+				WebBrowse(TEXT(chBrowse),true);
+			}
+
+			if(IDC_BT_BUTTON_2==nCommandID)
+			{
+				::GetPrivateProfileString("Http", "MainSet", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
+				WebBrowse(TEXT(chBrowse),true);
+			}
+			if(IDC_BT_BUTTON_4==nCommandID)
+			{
+				::GetPrivateProfileString("Http", "MainBuy", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
+				WebBrowse(TEXT(chBrowse),true);
+			}
+			if(IDC_BT_BUTTON_5==nCommandID)
+			{
+				::GetPrivateProfileString("Http", "MainLock", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
+				WebBrowse(TEXT(chBrowse),true);
+			}
 
 			return TRUE;
 		}
@@ -1205,7 +1229,7 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,IDC_BROWER_AD,NULL);
-	//m_BrowerAD.Navigate(TEXT("http://www.baidu.com/AD/GamePlazaAD.asp"),NULL,NULL,NULL,NULL);
+	//m_BrowerAD.Navigate(TEXT("http://site7353.s5.idc2.cn//AD/GamePlazaAD.asp"),NULL,NULL,NULL,NULL);
 	m_BrowerAD.ShowWindow(SW_HIDE);
 
 	//拆分条控件

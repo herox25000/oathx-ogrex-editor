@@ -1188,7 +1188,7 @@ afx_msg void CPlazaViewItem::OnBnClickedHOME()
 }
 afx_msg void CPlazaViewItem::OnBnClickedBBS()
 {
-	//m_pHtmlBrower->Navigate("http://www.baidu.com");
+	//m_pHtmlBrower->Navigate("http://site7353.s5.idc2.cn/");
 }
 
 //-----------------------------------------------
