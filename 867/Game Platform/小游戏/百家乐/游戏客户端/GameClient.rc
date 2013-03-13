@@ -72,8 +72,8 @@ IDR_MAINFRAME           ICON                    "res\\GameClient.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,6,1,0
- PRODUCTVERSION 6,6,1,0
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x21L
@@ -88,12 +88,13 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
+            VALUE "Comments", "867游戏"
             VALUE "FileDescription", "百家乐游戏客户端"
-            VALUE "FileVersion", "6, 6, 1, 0"
+            VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "Baccarat.exe"
             VALUE "OriginalFilename", "Baccarat.exe"
             VALUE "ProductName", "百家乐游戏客户端"
-            VALUE "ProductVersion", "6, 6, 1, 0"
+            VALUE "ProductVersion", "1, 0, 0, 1"
             VALUE "SpecialBuild", "867游戏"
         END
     END

@@ -188,6 +188,8 @@ struct CMD_S_PlaceJetton
 	WORD							wChairID;							//用户位置
 	BYTE							cbJettonArea;						//筹码区域
 	__int64							lJettonScore;						//加注数目
+	__int64							lKeXiaSocre;						//可下注值
+	__int64							lAllJettonScore;					//已经下注的总值	
 };
 
 //游戏结束

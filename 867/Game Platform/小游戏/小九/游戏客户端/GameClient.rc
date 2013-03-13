@@ -72,8 +72,8 @@ IDR_MAINFRAME           ICON                    "res\\GameClient.ico"
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,6,1,0
- PRODUCTVERSION 6,6,1,0
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -90,11 +90,11 @@ BEGIN
         BEGIN
             VALUE "Comments", "867游戏"
             VALUE "FileDescription", "小九客户端"
-            VALUE "FileVersion", "6, 6, 1, 0"
+            VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "XiaoJiu.exe"
             VALUE "OriginalFilename", "XiaoJiu.exe"
             VALUE "ProductName", "小九客户端"
-            VALUE "ProductVersion", "6, 6, 1, 0"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"
@@ -214,12 +214,6 @@ BEGIN
     END
 END
 #endif    // APSTUDIO_INVOKED
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// PNG
-//
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////

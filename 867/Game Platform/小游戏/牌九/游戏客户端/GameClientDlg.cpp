@@ -342,6 +342,9 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	SetGameStatus(GS_PLAYING);
 	KillGameTimer(IDI_PLACE_JETTON);
 	//SetGameTimer(GetMeChairID(),IDI_SHOW_TIME,pGameStart->cbTimeLeave);
+	m_GameClientView.m_bJettonstate=false;
+	m_GameClientView.m_lKeXiaSocre=0;
+	m_GameClientView.m_lAllJettonScore=0;
 	//更新控制
 	UpdateButtonContron();
 	DispatchUserCard(pGameStart->cbTableCardArray[INDEX_BANKER],pGameStart->cbTableCardArray[INDEX_PLAYER1],
@@ -360,7 +363,8 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 
 	//消息处理
 	CMD_S_PlaceJetton * pPlaceJetton=(CMD_S_PlaceJetton *)pBuffer;
-
+	m_GameClientView.m_lKeXiaSocre = pPlaceJetton->lKeXiaSocre;
+	m_GameClientView.m_lAllJettonScore = pPlaceJetton->lAllJettonScore;
 	//播放声音
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
 
@@ -478,7 +482,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	KillTimer(IDI_SHOW_GAME_RESULT);
 	//设置时间
 	SetGameTimer(GetMeChairID(),IDI_PLACE_JETTON,pGameEnd->cbTimeLeave);
-
+	m_GameClientView.m_bJettonstate=true;
 	return true;
 }
 

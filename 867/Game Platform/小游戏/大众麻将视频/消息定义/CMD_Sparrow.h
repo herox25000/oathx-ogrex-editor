@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 //公共宏定义
 
-#define KIND_ID						528									//游戏 I D
+#define KIND_ID						301									//游戏 I D
 #define GAME_PLAYER					4									//游戏人数
 #define GAME_NAME					TEXT("大众麻将视频")					//游戏名字
 #define GAME_GENRE					(GAME_GENRE_SCORE|GAME_GENRE_MATCH|GAME_GENRE_GOLD)	//游戏类型

@@ -33,7 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib.lib ../../../开发库/Lib/plugin_video_d.lib.lib"
+				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib ../../../开发库/Lib/plugin_video_d.lib"
 				OutputFile="../../../运行/Debug/SparrowDZVD.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
@@ -304,10 +304,10 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\CONTROL_TOP.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_1.wav">
+				RelativePath=".\Res\麻将声音\女\F_1.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\F_1.wav">
+				RelativePath=".\Res\麻将声音\男\F_1.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\F_2.wav">
@@ -316,22 +316,22 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\女\F_2.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_3.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\F_3.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_4.wav">
+				RelativePath=".\Res\麻将声音\男\F_3.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\F_4.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\F_5.wav">
+				RelativePath=".\Res\麻将声音\男\F_4.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\F_5.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\女\F_5.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\F_6.wav">
@@ -340,10 +340,10 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\男\F_6.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\F_7.wav">
+				RelativePath=".\Res\麻将声音\女\F_7.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\F_7.wav">
+				RelativePath=".\Res\麻将声音\男\F_7.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\Game_end.wav">
@@ -397,10 +397,10 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\OUT_CARD_TIP.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_1.wav">
+				RelativePath=".\Res\麻将声音\女\S_1.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\S_1.wav">
+				RelativePath=".\Res\麻将声音\男\S_1.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\S_2.wav">
@@ -409,22 +409,22 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\男\S_2.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\S_3.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\S_3.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_4.wav">
+				RelativePath=".\Res\麻将声音\女\S_3.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\S_4.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\S_5.wav">
+				RelativePath=".\Res\麻将声音\男\S_4.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\S_5.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\女\S_5.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\S_6.wav">
@@ -433,43 +433,43 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\女\S_6.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\S_7.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\S_7.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_8.wav">
+				RelativePath=".\Res\麻将声音\女\S_7.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\S_8.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\S_9.wav">
+				RelativePath=".\Res\麻将声音\男\S_8.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\S_9.wav">
 			</File>
 			<File
-				RelativePath=".\Res\SELECT.bmp">
+				RelativePath=".\Res\麻将声音\男\S_9.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_1.wav">
+				RelativePath=".\Res\SELECT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\T_1.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\T_2.wav">
+				RelativePath=".\Res\麻将声音\男\T_1.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\T_2.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_3.wav">
+				RelativePath=".\Res\麻将声音\女\T_2.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\T_3.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\T_3.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\T_4.wav">
@@ -478,22 +478,22 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\男\T_4.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\T_5.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\T_5.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_6.wav">
+				RelativePath=".\Res\麻将声音\女\T_5.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\T_6.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\T_7.wav">
+				RelativePath=".\Res\麻将声音\男\T_6.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\T_7.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\女\T_7.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\T_8.wav">
@@ -502,16 +502,16 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\女\T_8.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\T_9.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\T_9.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\Ting.wav">
+				RelativePath=".\Res\麻将声音\男\T_9.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\Ting.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\Ting.wav">
 			</File>
 			<File
 				RelativePath=".\Res\TRUSTEE.bmp">
@@ -529,16 +529,16 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\View_center.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_1.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\W_1.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\W_2.wav">
+				RelativePath=".\Res\麻将声音\男\W_1.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\W_2.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\女\W_2.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\W_3.wav">
@@ -547,22 +547,22 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\女\W_3.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\女\W_4.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\男\W_4.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_5.wav">
+				RelativePath=".\Res\麻将声音\女\W_4.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\W_5.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_6.wav">
+				RelativePath=".\Res\麻将声音\男\W_5.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\W_6.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\W_6.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\男\W_7.wav">
@@ -571,16 +571,16 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\麻将声音\女\W_7.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_8.wav">
-			</File>
-			<File
 				RelativePath=".\Res\麻将声音\女\W_8.wav">
 			</File>
 			<File
-				RelativePath=".\Res\麻将声音\男\W_9.wav">
+				RelativePath=".\Res\麻将声音\男\W_8.wav">
 			</File>
 			<File
 				RelativePath=".\Res\麻将声音\女\W_9.wav">
+			</File>
+			<File
+				RelativePath=".\Res\麻将声音\男\W_9.wav">
 			</File>
 			<File
 				RelativePath=".\Res\WAIT_TIP.bmp">
@@ -596,31 +596,31 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 			RelativePath=".\Res\ARROW.png">
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\女\Chi.wav">
-		</File>
-		<File
 			RelativePath=".\Res\麻将声音\男\Chi.wav">
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\女\Chi_hu.wav">
+			RelativePath=".\Res\麻将声音\女\Chi.wav">
 		</File>
 		<File
 			RelativePath=".\Res\麻将声音\男\Chi_hu.wav">
 		</File>
 		<File
-			RelativePath=".\Res\DISC.png">
+			RelativePath=".\Res\麻将声音\女\Chi_hu.wav">
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\男\Gang.wav">
+			RelativePath=".\Res\DISC.png">
 		</File>
 		<File
 			RelativePath=".\Res\麻将声音\女\Gang.wav">
 		</File>
 		<File
-			RelativePath=".\Res\麻将声音\女\Peng.wav">
+			RelativePath=".\Res\麻将声音\男\Gang.wav">
 		</File>
 		<File
 			RelativePath=".\Res\麻将声音\男\Peng.wav">
+		</File>
+		<File
+			RelativePath=".\Res\麻将声音\女\Peng.wav">
 		</File>
 		<File
 			RelativePath=".\Res\Trustee.png">

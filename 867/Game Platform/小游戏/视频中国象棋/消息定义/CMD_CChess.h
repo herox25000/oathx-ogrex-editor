@@ -4,22 +4,11 @@
 //////////////////////////////////////////////////////////////////////////
 //公共宏定义
 
-#ifdef VIDEO_GAME
-#define KIND_ID						506									//视频游戏ID
-#else 
-#define KIND_ID						200									//游戏 I D
-#endif
-
+ 
+#define KIND_ID						300									//游戏 I D
 #define GAME_PLAYER					2									//游戏人数
-
-#ifdef VIDEO_GAME
-#define GAME_NAME					TEXT("视频中国象棋")					//游戏名字
-#else 
 #define GAME_NAME					TEXT("中国象棋")				//游戏名字
-#endif
-
 #define GAME_GENRE					GAME_GENRE_SCORE					//游戏类型
-
 #define IS_VIDEO_GAME				0									//视频类型
 
 //////////////////////////////////////////////////////////////////////////

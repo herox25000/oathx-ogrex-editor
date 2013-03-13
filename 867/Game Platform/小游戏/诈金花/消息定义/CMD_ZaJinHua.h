@@ -4,7 +4,7 @@
 //////////////////////////////////////////////////////////////////////////
 //公共宏定义
 
-#define KIND_ID							3									//游戏 I D
+#define KIND_ID							205									//游戏 I D
 #define GAME_PLAYER						5									//游戏人数
 #define GAME_NAME						TEXT("诈金花")						//游戏名字
 #define GAME_GENRE						(GAME_GENRE_GOLD|GAME_GENRE_MATCH)	//游戏类型

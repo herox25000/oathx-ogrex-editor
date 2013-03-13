@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="诈金花"
+	Name="诈金花服务器"
 	ProjectGUID="{CA071FF5-97BF-42C3-99AF-FE8F8A0F0AF2}"
 	Keyword="MFCDLLProj">
 	<Platforms>

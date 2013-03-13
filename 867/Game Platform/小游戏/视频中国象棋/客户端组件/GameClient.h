@@ -28,8 +28,8 @@ public:
 //应用程序对象
 extern CGameClientApp theApp;
 
-//视频对象
-#ifdef VIDEO_GAME
-extern CVideoServiceManager g_VideoServiceManager;
-#endif
+////视频对象
+//#ifdef VIDEO_GAME
+//extern CVideoServiceManager g_VideoServiceManager;
+//#endif
 //////////////////////////////////////////////////////////////////////////

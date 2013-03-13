@@ -5,10 +5,10 @@
 //应用程序对象
 CGameClientApp theApp;
 
-//视频对象
-#ifdef VIDEO_GAME
-CVideoServiceManager g_VideoServiceManager;
-#endif
+////视频对象
+//#ifdef VIDEO_GAME
+//CVideoServiceManager g_VideoServiceManager;
+//#endif
 
 //////////////////////////////////////////////////////////////////////////
 

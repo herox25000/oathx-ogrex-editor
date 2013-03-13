@@ -203,7 +203,15 @@ protected:
 	CSkinImage						m_ImageGameEndFrame;				//边框图片
 	CSkinImage						m_ImageGamePoint;					//点数图片
 	CSkinImage						m_ImageCard;						//图片资源
+protected:
+	CPngImage						m_pngc;			
+	CPngImage						m_pngp;
 
+public:
+	__int64 							m_lKeXiaSocre;						//可下注值
+	__int64 							m_lAllJettonScore;					//已经下注的总值	
+	bool							m_bJettonstate;						//是否是下注状态
+	//函数定义
 
 	//函数定义
 public:

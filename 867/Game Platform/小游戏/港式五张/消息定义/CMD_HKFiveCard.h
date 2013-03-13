@@ -5,7 +5,7 @@
 //公共宏定义
 
 
-#define KIND_ID						2										//非视频游戏 I D
+#define KIND_ID						204										//非视频游戏 I D
 
 #define GAME_PLAYER						5									//游戏人数
 #define GAME_NAME						TEXT("港式五张")					//游戏名字
