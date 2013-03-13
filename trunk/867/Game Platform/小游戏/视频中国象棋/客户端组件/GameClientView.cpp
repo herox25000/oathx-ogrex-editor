@@ -196,9 +196,9 @@ VOID CGameClientView::RectifyGameView(INT nWidth, INT nHeight)
 	m_ptUserInfoView.x=-5+m_nXBorder;
 	m_ptUserInfoView.y=m_EncircleInfoViewBack.nTBorder+nYChessBorad+(m_SizeChessBorad.cy-m_SizeUserInfoView.cy)/2;
 
-#ifdef VIDEO_GAME
-	m_ptUserInfoView.y=m_EncircleInfoViewBack.nTBorder+nYChessBorad+(m_SizeChessBorad.cy-m_SizeUserInfoView.cy)/2+53;
-#endif
+//#ifdef VIDEO_GAME
+//	m_ptUserInfoView.y=m_EncircleInfoViewBack.nTBorder+nYChessBorad+(m_SizeChessBorad.cy-m_SizeUserInfoView.cy)/2+53;
+//#endif
 
 	//棋谱位置
 	if ((bChessManual==true)&&(nWidth>m_nFrameWidth))
@@ -282,11 +282,11 @@ VOID CGameClientView::RectifyGameView(INT nWidth, INT nHeight)
 	//m_UserRequestRegret.GetWindowRect(&rcScoreControl1);
 	//m_UserRequestRegret.MoveWindow(rcScoreControl1.left-80,rcScoreControl1.top,rcScoreControl1.Width(),rcScoreControl1.Height());
 
-#ifdef VIDEO_GAME
-	//视频窗口
-	DeferWindowPos(hDwp,m_DlgVideoService[0],NULL,5,2,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_DlgVideoService[1],NULL,5,nHeight/2+270,0,0,uFlags|SWP_NOSIZE);
-#endif
+//#ifdef VIDEO_GAME
+//	//视频窗口
+//	DeferWindowPos(hDwp,m_DlgVideoService[0],NULL,5,2,0,0,uFlags|SWP_NOSIZE);
+//	DeferWindowPos(hDwp,m_DlgVideoService[1],NULL,5,nHeight/2+270,0,0,uFlags|SWP_NOSIZE);
+//#endif
 
 	//结束移动
 	EndDeferWindowPos(hDwp);
@@ -787,18 +787,18 @@ INT CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_ToolTipCtrl.AddTool(&m_btManualNext,TEXT("下一步"));
 	m_ToolTipCtrl.AddTool(&m_btManualTail,TEXT("最后"));
 
-#ifdef VIDEO_GAME
-	//创建视频
-	for (WORD i=0;i<GAME_PLAYER;i++)
-	{
-		//创建视频
-		m_DlgVideoService[i].Create(NULL,NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,200+i);
-		m_DlgVideoService[i].InitVideoService(i==1,i==1);
-
-		//设置视频
-		g_VideoServiceManager.SetVideoServiceControl(i,&m_DlgVideoService[i]);
-	}
-#endif
+//#ifdef VIDEO_GAME
+//	//创建视频
+//	for (WORD i=0;i<GAME_PLAYER;i++)
+//	{
+//		//创建视频
+//		m_DlgVideoService[i].Create(NULL,NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,200+i);
+//		m_DlgVideoService[i].InitVideoService(i==1,i==1);
+//
+//		//设置视频
+//		g_VideoServiceManager.SetVideoServiceControl(i,&m_DlgVideoService[i]);
+//	}
+//#endif
 	//创建窗口
 	//CDlgUserRequest * pDlgUserHint=&m_UserRequestRegret;
 	//if (pDlgUserHint->m_hWnd==NULL) pDlgUserHint->Create(IDD_USER_REQUEST,this);

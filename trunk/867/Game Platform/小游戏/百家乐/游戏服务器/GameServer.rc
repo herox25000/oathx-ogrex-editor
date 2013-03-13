@@ -63,8 +63,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 1,0,0,0
- PRODUCTVERSION 1,0,0,0
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -81,11 +81,11 @@ BEGIN
         BEGIN
             VALUE "Comments", "867游戏"
             VALUE "FileDescription", "百家乐服务端"
-            VALUE "FileVersion", "1,0,0,0"
+            VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "BaccaratServer.dll"
             VALUE "OriginalFilename", "BaccaratServer.dll"
-            VALUE "ProductName", "867游戏"
-            VALUE "ProductVersion", "1,0,0,0"
+            VALUE "ProductName", "百家乐服务器"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"

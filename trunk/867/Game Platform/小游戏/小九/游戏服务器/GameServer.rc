@@ -63,8 +63,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,6,1,0
- PRODUCTVERSION 6,6,1,0
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -81,11 +81,11 @@ BEGIN
         BEGIN
             VALUE "Comments", "867游戏"
             VALUE "FileDescription", "小九服务器"
-            VALUE "FileVersion", "6, 6, 1, 0"
+            VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "XiaoJiuServer.dll"
             VALUE "OriginalFilename", "XiaoJiuServer.dll"
-            VALUE "ProductName", "867游戏"
-            VALUE "ProductVersion", "6, 6, 1, 0"
+            VALUE "ProductName", "小九服务器"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"

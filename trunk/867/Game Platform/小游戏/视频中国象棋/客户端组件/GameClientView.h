@@ -135,11 +135,11 @@ protected:
 	CSkinImage						m_ImageChessManualB;				//棋谱背景
 	tagEncircleImage				m_EncircleImageViewBack;			//框架信息
 
-#ifdef VIDEO_GAME
-	//控件变量
-protected:
-	CVideoServiceControl			m_DlgVideoService[GAME_PLAYER];		//视频窗口
-#endif
+//#ifdef VIDEO_GAME
+//	//控件变量
+//protected:
+//	CVideoServiceControl			m_DlgVideoService[GAME_PLAYER];		//视频窗口
+//#endif
 
 	//函数定义
 public:

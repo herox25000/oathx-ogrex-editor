@@ -80,9 +80,11 @@ BEGIN
         BLOCK "080403a8"
         BEGIN
             VALUE "Comments", "867游戏"
+            VALUE "FileDescription", "牛牛服务器"
             VALUE "FileVersion", "6, 6, 1, 0"
             VALUE "InternalName", "OxServer.dll"
             VALUE "OriginalFilename", "OxServer.dll"
+            VALUE "ProductName", "牛牛服务器"
             VALUE "ProductVersion", "6, 6, 1, 0"
         END
     END

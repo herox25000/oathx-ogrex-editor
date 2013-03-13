@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="7.10"
-	Name="中国象棋"
+	Name="中国象棋客户端"
 	ProjectGUID="{3A34A9AE-B81F-4884-9D1C-316B9B204899}"
 	SccProjectName=""
 	SccAuxPath=""
@@ -38,7 +38,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../../开发库/Lib/plugin_framework_d.lib ../../../开发库/Lib/plugin_ui_d.lib ../../../开发库/Lib/plugin_video_d.lib"
-				OutputFile="../../../运行/Debug/ChinaChessVD.exe"
+				OutputFile="../../../运行/Debug/ChinaChess.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
@@ -94,7 +94,7 @@ copy /y ..\..\..\运行\Debug\$(TargetFileName) ..\..\..\发布组件\客户端组件\Debug
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../../开发库/Lib/plugin_framework.lib ../../../开发库/Lib/plugin_ui.lib ../../../开发库/Lib/plugin_video.lib"
-				OutputFile="../../../运行/Release/ChinaChessVD.exe"
+				OutputFile="../../../运行/Release/ChinaChess.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"

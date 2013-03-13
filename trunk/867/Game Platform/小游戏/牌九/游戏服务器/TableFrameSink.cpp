@@ -730,6 +730,12 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	PlaceJetton.wChairID=wChairID;
 	PlaceJetton.cbJettonArea=cbJettonArea;
 	PlaceJetton.lJettonScore=lJettonScore;
+	pIServerUserItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	if (pIServerUserItem)
+	{
+		PlaceJetton.lKeXiaSocre=pIServerUserItem->GetUserScore()->lScore; 
+	}
+	PlaceJetton.lAllJettonScore=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore+m_lQiaoScore+m_lYouJiaoScore+m_lZuoJiaoScore;
 
 	//·¢ËÍÏûÏ¢
 	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_PLACE_JETTON,&PlaceJetton,sizeof(PlaceJetton));

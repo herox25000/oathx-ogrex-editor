@@ -88,7 +88,7 @@ void CDrawCard::Draw(CDC *pDC)
 				}
 				else if(i==0)
 				{
-					dwXImagePos=m_CardSize.cx*2;
+					dwXImagePos=m_CardSize.cx*5;
 					dwYImagePos=m_CardSize.cy*4;
 				}
 				else 
@@ -100,7 +100,7 @@ void CDrawCard::Draw(CDC *pDC)
 			}
 			else
 			{
-				dwXImagePos=m_CardSize.cx*2;
+				dwXImagePos=m_CardSize.cx*5;
 				dwYImagePos=m_CardSize.cy*4;
 			}
 
@@ -125,14 +125,14 @@ void CDrawCard::Draw(CDC *pDC)
 			}
 
 
-			if(!m_bfirstCard)
-			{
-				if(i<1 && !m_bIsTuiPaiOver)
-				{
-					dwXImagePos=m_CardSize.cx*5;
-					dwYImagePos=m_CardSize.cy*4;
-				}
-			}
+			//if(!m_bfirstCard)
+			//{
+			//	if(i<1 && !m_bIsTuiPaiOver)
+			//	{
+			//		dwXImagePos=m_CardSize.cx*5;
+			//		dwYImagePos=m_CardSize.cy*4;
+			//	}
+			//}
 
 			m_ImageCard.AlphaDrawImage(pDC,
 				dwXScreenPos+m_nCardPosX,
@@ -143,10 +143,10 @@ void CDrawCard::Draw(CDC *pDC)
 				dwYImagePos,
 				0xFF00FF);
 		}
-		//if(!pWnd->m_bAutoCard && m_bYouTui && m_bShowCard && m_bShowHand)
-		//	m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-32, m_nCardPosY-10,RGB(255, 0, 255) );
-		//else if(m_bYouTui && !m_bIsTuiPaiOver && m_bShowHand)
-		//	m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-32, m_nCardPosY-10,RGB(255, 0, 255) );
+		if(!pWnd->m_bAutoCard && m_bYouTui && m_bShowCard && m_bShowHand)
+			m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-32, m_nCardPosY-10,RGB(255, 0, 255) );
+		else if(m_bYouTui && !m_bIsTuiPaiOver && m_bShowHand)
+			m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-32, m_nCardPosY-10,RGB(255, 0, 255) );
 	}
 }
 

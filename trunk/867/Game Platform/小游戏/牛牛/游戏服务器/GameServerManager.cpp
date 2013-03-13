@@ -19,15 +19,15 @@ CGameServiceManager::CGameServiceManager(void)
 	m_GameServiceAttrib.wChairCount=GAME_PLAYER;
 	lstrcpyn(m_GameServiceAttrib.szKindName,GAME_NAME,CountArray(m_GameServiceAttrib.szKindName));
 	lstrcpyn(m_GameServiceAttrib.szDataBaseName,szTreasureDB,CountArray(m_GameServiceAttrib.szDataBaseName));
-#ifdef VIDEO_GAME
-	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("视频牛牛游戏服务组件"),CountArray(m_GameServiceAttrib.szDescription));
-	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("OxVD.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
-	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("OxVDServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
-#else 
+//#ifdef VIDEO_GAME
+//	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("视频牛牛游戏服务组件"),CountArray(m_GameServiceAttrib.szDescription));
+//	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("OxVD.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
+//	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("OxVDServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
+//#else 
 	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("牛牛游戏服务组件"),CountArray(m_GameServiceAttrib.szDescription));
 	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("OxServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
 	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("Ox.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
-#endif
+//#endif
 	return;
 }
 

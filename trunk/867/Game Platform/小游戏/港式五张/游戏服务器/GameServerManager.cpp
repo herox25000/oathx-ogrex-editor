@@ -18,7 +18,7 @@ CGameServiceManager::CGameServiceManager(void)
 	m_GameServiceAttrib.wChairCount=GAME_PLAYER;
 	m_GameServiceAttrib.cbJoinInGame = FALSE;
 	lstrcpyn(m_GameServiceAttrib.szKindName,GAME_NAME,CountArray(m_GameServiceAttrib.szKindName));
-	lstrcpyn(m_GameServiceAttrib.szDataBaseName,TEXT("QPTreasureDB"),CountArray(m_GameServiceAttrib.szDataBaseName));
+	lstrcpyn(m_GameServiceAttrib.szDataBaseName,szTreasureDB,CountArray(m_GameServiceAttrib.szDataBaseName));
 	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("港式五张游戏服务组件"),CountArray(m_GameServiceAttrib.szDescription));
 	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("HKFiveCard.exe"),CountArray(m_GameServiceAttrib.szClientModuleName));
 	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("HKFiveCardServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));

@@ -63,8 +63,8 @@ END
 //
 
 VS_VERSION_INFO VERSIONINFO
- FILEVERSION 6,6,1,0
- PRODUCTVERSION 6,6,1,0
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
  FILEFLAGSMASK 0x3fL
 #ifdef _DEBUG
  FILEFLAGS 0x1L
@@ -79,12 +79,13 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
-            VALUE "FileDescription", "TODO: <文件说明>"
-            VALUE "FileVersion", "6, 6, 1, 0"
+            VALUE "Comments", "867游戏"
+            VALUE "FileDescription", "扎金花服务器"
+            VALUE "FileVersion", "1, 0, 0, 1"
             VALUE "InternalName", "ZaJinHuaServer.DLL"
             VALUE "OriginalFilename", "ZaJinHuaServer.DLL"
-            VALUE "ProductName", "TODO: <产品名>"
-            VALUE "ProductVersion", "6, 6, 1, 0"
+            VALUE "ProductName", "炸金花服务器"
+            VALUE "ProductVersion", "1, 0, 0, 1"
         END
     END
     BLOCK "VarFileInfo"

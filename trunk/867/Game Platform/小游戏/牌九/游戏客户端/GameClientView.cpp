@@ -150,10 +150,21 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 
 	m_ImageTimeFlag.SetLoadInfo(IDB_TIME_FLAG, hInstance);
 
+	char szPath[MAX_PATH];
+	::GetModulePath(szPath, sizeof(szPath));
+	CString str;
+	str.Format(TEXT("%s\\Resource\\Games\\PaiJiu\\RES\\PNG_IDB_IDB_TIPC_PNG.png"),szPath);
+	m_pngc.LoadImage(str);
+	str.Format(TEXT("%s\\Resource\\Games\\PaiJiu\\RES\\PNG_IDB_IDB_TIPP_PNG.png"),szPath);
+	m_pngp.LoadImage(str);
+
 	GetMaxTieScore();
 	m_bCanGo=false;
 	m_bSet=false;
 	m_bAutoCard=true;
+	m_bJettonstate=true;
+	m_lKeXiaSocre=0;
+	m_lAllJettonScore=0;
 	return;
 }
 
@@ -622,11 +633,6 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		if (lScoreCount>0L)	DrawNumberString(pDC,lScoreCount,m_PointJetton[i].x,m_PointJetton[i].y);
 	}
 
-	for(int i=0;i<5;i++)
-	{
-		m_DrawCard[i].Draw(pDC);
-	}
-
 	//我的下注
 	DrawMeJettonNumber(pDC);
 	//显示结果
@@ -664,6 +670,30 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		}
 	}
 
+	// 如果是下注状态
+	if(m_bJettonstate && m_lKeXiaSocre>0)
+	{
+		//绘制下注进度条
+		int iStatrX=nWidth/2-170;
+		int iStatrY=nHeight/2-230;
+		//文字提示
+		m_pngc.DrawImage(pDC,iStatrX,iStatrY);
+		//数值
+		DrawNumberString(pDC,m_lKeXiaSocre,iStatrX+m_pngc.GetWidth()+m_pngp.GetWidth()/2,iStatrY,true);
+		DrawNumberString(pDC,m_lAllJettonScore,iStatrX+m_pngc.GetWidth()+m_pngp.GetWidth()/2,iStatrY+12+m_pngp.GetHeight()/2,true);
+		//进度条
+		m_pngp.DrawImage(pDC,iStatrX+m_pngc.GetWidth(),iStatrY+6,m_pngp.GetWidth(),m_pngp.GetHeight()/2,0,0,m_pngp.GetWidth(),m_pngp.GetHeight()/2);
+		float a=m_lAllJettonScore*1.0f;
+		float b=a/m_lKeXiaSocre;
+		int jindu = floor(b*m_pngp.GetWidth());
+		m_pngp.DrawImage(pDC,iStatrX+m_pngc.GetWidth(),iStatrY+6,jindu,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,jindu,m_pngp.GetHeight()/2);
+	}
+
+
+	for(int i=0;i<5;i++)
+	{
+		m_DrawCard[i].Draw(pDC);
+	}
 	return;
 }
 
@@ -1483,6 +1513,7 @@ void CGameClientView::SetBankerInfo( WORD wChairID, BYTE cbBankerTime, __int64 l
 void CGameClientView::SetBankerTreasure(__int64 lBankerTreasure)
 {
 	m_lBankerTreasure = lBankerTreasure;
+	m_lKeXiaSocre=lBankerTreasure;
 	UpdateGameView(NULL);
 }
 

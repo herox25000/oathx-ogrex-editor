@@ -40,8 +40,5 @@
 
 #include "..\消息定义\CMD_CChess.h"
 #include "..\..\..\开发库\Include\GameFrame.h"
-#ifdef VIDEO_GAME
-#include "..\..\..\开发库\Include\VideoServiceModule.h"
-#endif
 
 //////////////////////////////////////////////////////////////////////////

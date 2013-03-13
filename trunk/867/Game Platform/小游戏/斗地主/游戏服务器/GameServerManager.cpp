@@ -20,15 +20,15 @@ CGameServiceManager::CGameServiceManager(void)
 	lstrcpyn(m_GameServiceAttrib.szDescription,TEXT("斗地主游戏服务组件"),CountArray(m_GameServiceAttrib.szDescription));
 	m_GameServiceAttrib.cbJoinInGame = FALSE;
 
-#ifdef VIDEO_GAME
-	lstrcpyn(m_GameServiceAttrib.szDataBaseName,TEXT( "QPLandVDDB" ),CountArray(m_GameServiceAttrib.szDataBaseName));	
-	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("LandVD.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
-	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("LandVDServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
-#else
-	lstrcpyn(m_GameServiceAttrib.szDataBaseName,TEXT( "QPLandDB" ),CountArray(m_GameServiceAttrib.szDataBaseName));	
+//#ifdef VIDEO_GAME
+//	lstrcpyn(m_GameServiceAttrib.szDataBaseName,TEXT( "QPLandVDDB" ),CountArray(m_GameServiceAttrib.szDataBaseName));	
+//	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("LandVD.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
+//	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("LandVDServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
+//#else
+	lstrcpyn(m_GameServiceAttrib.szDataBaseName,szTreasureDB,CountArray(m_GameServiceAttrib.szDataBaseName));	
 	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("Land.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
 	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("LandServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
-#endif
+//#endif
 
 
 	return;
