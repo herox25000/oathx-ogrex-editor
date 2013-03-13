@@ -177,11 +177,11 @@ BOOL CDlgRegister::OnInitDialog()
 	((CComboBox *)(GetDlgItem(IDC_ACCOUNTS)))->LimitText(NAME_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_PASSWORD)))->LimitText(PASS_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_PASSWORD2)))->LimitText(PASS_LEN-1);
-	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
 	m_LineRegWeb.ShowWindow(SW_HIDE);
-	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineMainPage.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
 	m_LineMainPage.ShowWindow(SW_HIDE);
-	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LinePassWord.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
 	m_LinePassWord.ShowWindow(SW_HIDE);
 
 	//加载头像
@@ -364,7 +364,8 @@ BOOL CDlgLogon::OnInitDialog()
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
-	m_BrowerAD.Navigate(TEXT("http://www.baidu.com"),NULL,NULL,NULL,NULL);
+	m_BrowerAD.Navigate(TEXT("http://site7353.s5.idc2.cn/"),NULL,NULL,NULL,NULL);
+	m_BrowerAD.ShowWindow(SW_HIDE);
 
 	//广告位置
 	int nXExcursion=GetXExcursionPos();
@@ -376,11 +377,11 @@ BOOL CDlgLogon::OnInitDialog()
 	m_TabLogonMode.InsertItem(LOGON_BY_USERID,TEXT("ＩＤ登录"));
 
 	//设置控件
-	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineMainPage.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
 	m_LineMainPage.ShowWindow(SW_HIDE);
-	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LinePassWord.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
 	m_LinePassWord.ShowWindow(SW_HIDE);
-	m_LineGetPassWord.SetHyperLinkUrl(TEXT("http://www.baidu.com"));
+	m_LineGetPassWord.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
 	m_LineGetPassWord.ShowWindow(SW_HIDE);
 	m_LineMainPage.BringWindowToTop();
 	m_LinePassWord.BringWindowToTop();
@@ -1112,7 +1113,7 @@ void CDlgLogon::OnTcnSelchangeLogonType(NMHDR * pNMHDR, LRESULT * pResult)
 void CDlgLogon::OnRegisterAccounts()
 {
 //#ifndef _DEBUG
-//	ShellExecute(NULL,TEXT("open"),TEXT("http://www.baidu.com/service/viewrule.jsp"),NULL,NULL,SW_SHOWDEFAULT);
+//	ShellExecute(NULL,TEXT("open"),TEXT("http://site7353.s5.idc2.cn//service/viewrule.jsp"),NULL,NULL,SW_SHOWDEFAULT);
 //	return;
 //#endif
 

@@ -37,8 +37,8 @@ BOOL CDlgIndividualInfo::OnInitDialog()
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
-	m_BrowerAD.Navigate(TEXT("http://www.baidu.com"),NULL,NULL,NULL,NULL);
-
+	//m_BrowerAD.Navigate(TEXT("http://site7353.s5.idc2.cn/"),NULL,NULL,NULL,NULL);
+	//m_BrowerAD.ShowWindow(SW_HIDE);
 	//广告位置
 	int nXExcursion=GetXExcursionPos();
 	int nYExcursion=GetYExcursionPos();
