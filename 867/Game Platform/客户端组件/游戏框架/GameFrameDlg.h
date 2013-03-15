@@ -133,6 +133,9 @@ public:
 	bool PlayGameSound(LPCTSTR pszSoundName);
 	//播放声音
 	bool PlayGameSound(HINSTANCE hInstance, LPCTSTR pszSoundName);
+	//点击银行按钮
+	void UserOnBankBT();
+
 
 	//消息函数
 public:

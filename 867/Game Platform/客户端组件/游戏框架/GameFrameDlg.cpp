@@ -721,12 +721,17 @@ void CGameFrameDlg::OnWindowPosChanging(WINDOWPOS * lpwndpos)
 void CGameFrameDlg::OnSize(UINT nType, int cx, int cy)
 {
 	__super::OnSize(nType, cx, cy);
-
 	//调整控件
 	RectifyControl(cx,cy);
-
 	return;
-
 }
 
+//点击银行按钮
+void CGameFrameDlg::UserOnBankBT()
+{
+	//获取用户
+	tagUserData *pMeUserData = m_ClientKernelHelper->GetMeUserInfo();
+	//显示银行
+	ShowBankStorageDlg(m_ClientKernelHelper.GetInterface(),NULL,pMeUserData);
+}
 //////////////////////////////////////////////////////////////////////////
