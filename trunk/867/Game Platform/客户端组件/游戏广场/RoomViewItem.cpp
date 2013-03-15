@@ -2041,7 +2041,7 @@ void CRoomViewItem::RectifyControl(int nWidth, int nHeight)
 	if (m_bRectifyHor==false)
 	{
 		m_bRectifyHor=true;
-		rcHorSplitter.top=nHeight*2/5;
+		rcHorSplitter.top=nHeight*2/3;
 		rcHorSplitter.bottom=rcHorSplitter.top+nSplitterHeight;
 	}
 
