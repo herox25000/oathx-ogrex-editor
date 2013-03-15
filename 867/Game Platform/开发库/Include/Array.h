@@ -381,10 +381,12 @@ void CArrayTemplate<TYPE,ARG_TYPE>::InsertAt(INT_PTR nIndex, ARG_TYPE newElement
 		for (INT_PTR i=0;i<nCount;i++) (m_pData+nOldCount+i)->~TYPE();
 		memmove(m_pData+nIndex+nCount,m_pData+nIndex,(nOldCount-nIndex)*sizeof(TYPE));
 		memset(m_pData+nIndex,0,nCount*sizeof(TYPE));
+#pragma warning( disable : 4345 )
 #pragma push_macro("new")
 #undef new
 		for (INT_PTR i=0;i<nCount;i++) ::new (m_pData+nIndex+i) TYPE();
 #pragma pop_macro("new")
+#pragma warning( default : 4345 )
 	}
 	else SetSize(nIndex+nCount);
 
