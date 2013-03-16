@@ -259,7 +259,6 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_bSet=false;
 	m_bAutoCard=true;
 	m_bJettonstate=true;
-	m_lKexiaScore=0;
 	m_fWinCount[0]=0.00f;
 	m_fWinCount[1]=0.00f;
 	m_fWinCount[2]=0.00f;

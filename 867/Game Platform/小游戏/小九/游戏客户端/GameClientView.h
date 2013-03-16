@@ -253,8 +253,7 @@ protected:
 	CPngImage						m_pngp;
 
 public:
-	__int64 							m_lKexiaScore;						//可下注值
-	bool								m_bJettonstate;						//是否是下注状态
+	bool							m_bJettonstate;						//是否是下注状态
 
 	//函数定义
 public:
