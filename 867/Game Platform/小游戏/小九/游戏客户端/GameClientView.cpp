@@ -245,6 +245,7 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	{
 		int dx = x + i * JETTON_WIDTH;
 		m_JettonButton[i].Create(CRect(dx, y, dx + JETTON_WIDTH, y + JETTON_HEIGHT), IDBT_JETTON[i], hInstance);
+		m_JettonButton[i].Enabled(TRUE);
 	}
 	
 	GetMaxTieScore();
