@@ -61,11 +61,11 @@ protected:
 
 	//导航按钮
 public:
-	CSkinButton							m_btButton1;					//功能按钮
-	CSkinButton							m_btButton2;					//功能按钮
-	CSkinButton							m_btButton3;					//功能按钮
-	CSkinButton							m_btButton4;					//功能按钮
-	CSkinButton							m_btButton5;					//功能按钮
+	CSkinButton							m_btButton1;					//主页
+	CSkinButton							m_btButton2;					//充值
+	CSkinButton							m_btButton3;					//设置
+	CSkinButton							m_btButton4;					//银行
+	CSkinButton							m_btButton5;					//锁机
 
 	//大厅按钮
 public:
