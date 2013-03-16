@@ -24,15 +24,18 @@ typedef CArrayTemplate< tagApplyUserInfo > ApplyUserArrary;
 //游戏桌子类
 class CTableFrameSink : public ITableFrameSink, public ITableUserAction
 {
+public:
+	int				m_lAllPlayCount;
+	int				m_lShunMenWinCount;
+	int				m_lDaoMenWinCount;
+	int				m_lTianMenWinCount;
+
 	//下注信息
 protected:
 //-jian
 	__int64							m_lTianMenScore;					//买天门总注		
 	__int64							m_lDaoMenScore;						//买倒门总注
 	__int64							m_lShunMenScore;					//买顺门总注
-	__int64							m_lQiaoScore;						//平桥注
-	__int64							m_lYouJiaoScore;					//右角注
-	__int64							m_lZuoJiaoScore;					//左角注
 
 	//下注信息
 protected:
@@ -40,16 +43,12 @@ protected:
 	__int64							m_lUserTianMenScore[GAME_PLAYER];		//买天门总注		
 	__int64							m_lUserDaoMenScore[GAME_PLAYER];		//买倒门总注
 	__int64							m_lUserShunMenScore[GAME_PLAYER];		//买顺门总注
-	__int64							m_lUserQiaoScore[GAME_PLAYER];			//平桥注
-	__int64							m_lUserYouJiaoScore[GAME_PLAYER];		//右角注
-	__int64							m_lUserZuoJiaoScore[GAME_PLAYER];		//左角注
 //-
 	//玩家成绩
 protected:
 	__int64							m_lUserWinScore[GAME_PLAYER];			//玩家成绩
 	__int64							m_lUserReturnScore[GAME_PLAYER];		//返回下注
-	__int64							m_lUserRevenue[GAME_PLAYER];			//玩家税收
-
+	__int64							m_lUserRevenue[GAME_PLAYER];			//玩家扣币	
 	//扑克信息
 protected:
 	BYTE							m_cbCardCount[2];					//扑克数目
@@ -183,25 +182,25 @@ private:
 
 	//最大下注
 	__int64 GetMaxPlayerScore(WORD wChairID);
-	//最大下注
-	__int64 GetMaxPlayerKingScore(WORD wChairID);
+	////最大下注
+	//__int64 GetMaxPlayerKingScore(WORD wChairID);
 	//最大下注
 	__int64 GetMaxBankerScore(WORD wChairID);
-	//最大下注
-	__int64 GetMaxBankerKingScore(WORD wChairID);
+	////最大下注
+	//__int64 GetMaxBankerKingScore(WORD wChairID);
 	//最大下注
 	__int64 GetMaxTieScore(WORD wChairID);
-	//最大下注
-	__int64 GetMaxTieKingScore(WORD wChairID);
+	////最大下注
+	//__int64 GetMaxTieKingScore(WORD wChairID);
 
 	//计算得分
     void CalculateScore();
 	//推断赢家
 	void DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner);
-	//出老千
-	void ChuLaoQian();
-	//计算得分
-	__int64	PreCalculateBankerWin();
+	////出老千
+	//void ChuLaoQian();
+	////计算得分
+	//__int64	PreCalculateBankerWin();
 	//系统判断AI
 	bool CheckCardRight();
 	void SortCardComp(BYTE chCardComp[], BYTE CardCompCount);

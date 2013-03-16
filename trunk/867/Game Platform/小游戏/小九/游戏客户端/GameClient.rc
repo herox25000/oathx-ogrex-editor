@@ -155,6 +155,10 @@ IDB_FRAME_ZHUANG_JIA1   BITMAP                  "res\\FRAME_ZHUANG_JIA1.bmp"
 IDB_FRAME_ZHUANG_TIAN_WANG1 BITMAP                  "res\\FRAME_ZHUANG_TIAN_WANG1.bmp"
 IDB_FRAME_PING_JIA1     BITMAP                  "res\\FRAME_PING_JIA1.bmp"
 IDB_BT_JETTON_10000000  BITMAP                  "res\\BT_JETTON_10000000.bmp"
+IDB_BT_SHENGYIN         BITMAP                  "res\\shengyin.bmp"
+IDB_BT_NOSHENGYIN       BITMAP                  "res\\shengyinNO.bmp"
+IDB_BT_QUQIAN           BITMAP                  "res\\quqian.bmp"
+IDB_BT_CUNQIAN          BITMAP                  "res\\cunqian.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

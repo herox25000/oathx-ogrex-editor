@@ -241,26 +241,21 @@ stCardType CGameLogic::GetCardLevel(BYTE bCardList[])//两张牌
 //	sCardType.nLevel=11;
 //	return sCardType;
 //}
-bool CGameLogic::CompareCard(BYTE bFirstList[], BYTE bNextList[], BYTE bCardCount)//庄   闲  庄赢为true
+bool CGameLogic::CompareCard(BYTE bFirstList[], BYTE bNextList[], BYTE bCardCount,bool &bTongdian)//庄   闲  庄赢为true
 {
+	bTongdian = false;
 	stCardType sFirstCard,sNextCard;
 	sFirstCard=GetCardLevel(bFirstList);
 	sNextCard=GetCardLevel(bNextList);
+	//牌型一样
 	if(sFirstCard.nCardType==sNextCard.nCardType)
 	{
 		BYTE FirstTotalValue=(GetCardLogicValue(bFirstList[0])+GetCardLogicValue(bFirstList[1]))%10;
 		BYTE NextTotalValue=(GetCardLogicValue(bNextList[0])+GetCardLogicValue(bNextList[1]))%10;
-
+		//同点
 		if(FirstTotalValue==NextTotalValue) 
 		{
-			//if(FirstTotalValue==0)
-			//	return true;
-			//int bValue1=GetMaxSingleValue(bFirstList);//庄
-			//int bValue2=GetMaxSingleValue(bNextList); //闲
-			//if(bValue1>bValue2)
-			//{
-			//	return false;
-			//}
+			bTongdian = true;
 			return true;
 		}
 		else 
@@ -269,7 +264,7 @@ bool CGameLogic::CompareCard(BYTE bFirstList[], BYTE bNextList[], BYTE bCardCoun
 		}
 	}
 	else
-	{
+	{//睡的牌型下谁大
 		return sFirstCard.nLevel<sNextCard.nLevel ? true: false;
 	}
 	return false;

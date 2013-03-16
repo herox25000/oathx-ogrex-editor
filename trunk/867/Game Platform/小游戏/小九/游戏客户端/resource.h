@@ -76,13 +76,18 @@
 #define IDB_FRAME_ZHUANG_JIA1           227
 #define IDB_FRAME_ZHUANG_TIAN_WANG1     228
 #define IDR_PNG1                        229
+#define IDB_BT_SHENGYIN                 230
+#define IDB_BT_NOSHENGYIN               231
+#define IDB_BT_QUQIAN                   232
+#define IDB_BITMAP3                     233
+#define IDB_BT_CUNQIAN                  233
 #define IDC_RECORD_LIST                 1056
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        230
+#define _APS_NEXT_RESOURCE_VALUE        234
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

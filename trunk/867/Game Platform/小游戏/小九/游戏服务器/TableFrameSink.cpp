@@ -6,31 +6,18 @@
 //常量定义
 #define SEND_COUNT					8									//发送次数
 
-//索引定义
-//#define INDEX_PLAYER1				0									//闲家索引
-//#define INDEX_BANKER				1									//庄家索引
-
 #define INDEX_BANKER				0									//庄家索引
 #define INDEX_PLAYER1				1									//闲家1索引
 #define INDEX_PLAYER2				2									//闲家1索引
 #define INDEX_PLAYER3				3									//闲家1索引
 
-//下注时间
-#define IDI_PLACE_JETTON			1									//下注时间
+//定时器ID
+#define IDI_PLACE_JETTON			1									//下注阶段
+#define IDI_GAME_END				2									//开牌阶段
 
-#ifdef _DEBUG
-#define TIME_PLACE_JETTON			30									//下注时间
-#else
+//各阶段的时间长度
 #define TIME_PLACE_JETTON			25									//下注时间
-#endif
-
-//结束时间
-#define IDI_GAME_END				2									//结束时间
-#ifdef _DEBUG
 #define TIME_GAME_END				20									//结束时间
-#else
-#define TIME_GAME_END				20									//结束时间
-#endif
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -45,10 +32,6 @@ CTableFrameSink::CTableFrameSink()
 	m_lTianMenScore=0L;
 	m_lDaoMenScore=0L;
 	m_lShunMenScore=0L;
-	m_lQiaoScore=0L;
-	m_lYouJiaoScore=0L;
-	m_lZuoJiaoScore=0L;
-
 	//状态变量
 	m_dwJettonTime=0L;
 
@@ -56,10 +39,6 @@ CTableFrameSink::CTableFrameSink()
 	ZeroMemory(m_lUserTianMenScore,sizeof(m_lUserTianMenScore));
 	ZeroMemory(m_lUserDaoMenScore,sizeof(m_lUserDaoMenScore));
 	ZeroMemory(m_lUserShunMenScore,sizeof(m_lUserShunMenScore));
-	ZeroMemory(m_lUserQiaoScore,sizeof(m_lUserQiaoScore));
-	ZeroMemory(m_lUserYouJiaoScore,sizeof(m_lUserYouJiaoScore));
-	ZeroMemory(m_lUserZuoJiaoScore,sizeof(m_lUserZuoJiaoScore));
-
 	//玩家成绩
 	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
 	ZeroMemory(m_lUserReturnScore, sizeof(m_lUserReturnScore));
@@ -88,7 +67,10 @@ CTableFrameSink::CTableFrameSink()
 
 	//读取分数
 	m_lApplyBankerCondition = BANK_CONDITION_MONEY;
-
+	m_lAllPlayCount=0;
+	m_lShunMenWinCount=0;
+	m_lTianMenWinCount=0;
+	m_lDaoMenWinCount=0;
 	return;
 }
 
@@ -122,6 +104,9 @@ bool __cdecl CTableFrameSink::InitTableFrameSink(IUnknownEx * pIUnknownEx)
 	m_pGameServiceOption=m_pITableFrame->GetGameServiceOption();
 	ASSERT(m_pGameServiceOption!=NULL);
 
+	//上庄条件
+	if(m_pGameServiceOption != NULL)
+		m_lApplyBankerCondition=m_pGameServiceOption->lCellScore;	
 	return true;
 }
 
@@ -132,27 +117,17 @@ void __cdecl CTableFrameSink::RepositTableFrameSink()
 	m_lTianMenScore=0L;
 	m_lDaoMenScore=0L;
 	m_lShunMenScore=0L;
-	m_lQiaoScore=0L;
-	m_lYouJiaoScore=0L;
-	m_lZuoJiaoScore=0L;
-
 	//下注信息
 	ZeroMemory(m_lUserTianMenScore,sizeof(m_lUserTianMenScore));
 	ZeroMemory(m_lUserDaoMenScore,sizeof(m_lUserDaoMenScore));
 	ZeroMemory(m_lUserShunMenScore,sizeof(m_lUserShunMenScore));
-	ZeroMemory(m_lUserQiaoScore,sizeof(m_lUserQiaoScore));
-	ZeroMemory(m_lUserYouJiaoScore,sizeof(m_lUserYouJiaoScore));
-	ZeroMemory(m_lUserZuoJiaoScore,sizeof(m_lUserZuoJiaoScore));
-
 	//扑克信息
 	ZeroMemory(m_cbCardCount,sizeof(m_cbCardCount));
 	ZeroMemory(m_cbTableCardArray,sizeof(m_cbTableCardArray));
-
 	//玩家成绩
 	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
 	ZeroMemory(m_lUserReturnScore, sizeof(m_lUserReturnScore));
 	ZeroMemory(m_lUserRevenue, sizeof(m_lUserRevenue));
-
 	return;
 }
 
@@ -173,6 +148,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 {
 	//设置状态
 	m_pITableFrame->SetGameStatus(GS_PLAYING);
+	m_lAllPlayCount++;
 	//发送扑克
 	DispatchTableCard();
 	CheckCardRight();
@@ -190,7 +166,6 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_START,&GameStart,sizeof(GameStart));
 	//计算分数
 	CalculateScore();
-
 	return true;
 }
 
@@ -204,27 +179,24 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//结束消息
 			CMD_S_GameEnd GameEnd;
 			ZeroMemory(&GameEnd,sizeof(GameEnd));
-
+			GameEnd.fShunMen = m_lShunMenWinCount*100.00f/m_lAllPlayCount;
+			GameEnd.fTianMen = m_lTianMenWinCount*100.00f/m_lAllPlayCount;
+			GameEnd.fDaomMen = m_lDaoMenWinCount*100.00f/m_lAllPlayCount;
 			GameEnd.nBankerTime = m_cbBankerTimer;
 			GameEnd.lBankerTotalScore = m_lBankerWinScore;
-
 			//推断赢家
 			DeduceWinner(GameEnd.cbWinner, GameEnd.cbKingWinner);			
-
 			//写入积分
 			for ( WORD wUserChairID = 0; wUserChairID < GAME_PLAYER; ++wUserChairID )
 			{
 				IServerUserItem *pIServerUserItem = m_pITableFrame->GetServerUserItem(wUserChairID);
 				if ( pIServerUserItem == NULL )
 					continue;
-
 				//胜利类型
-				enScoreKind ScoreKind=(m_lUserWinScore[wUserChairID]>0L)?enScoreKind_Win:enScoreKind_Lost;
-
+				enScoreKind ScoreKind=(m_lUserWinScore[wUserChairID]>=0L)?enScoreKind_Win:enScoreKind_Lost;
 				//写入积分
 				if (m_lUserWinScore[wUserChairID]!=0L)
 					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], m_lUserRevenue[wUserChairID], ScoreKind);
-
 				//庄家判断
 				if ( m_CurrentBanker.dwUserID == pIServerUserItem->GetUserID() )
 					m_CurrentBanker.lUserScore = pIServerUserItem->GetUserScore()->lScore;
@@ -239,9 +211,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				IServerUserItem *pIServerUserItem = m_pITableFrame->GetServerUserItem(wUserIndex);
 				if ( pIServerUserItem == NULL )
 					continue;
-
 				//发送消息					
-				GameEnd.lCellScore=m_pGameServiceOption->lCellScore;
 				GameEnd.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
 				m_pITableFrame->SendTableData(wUserIndex,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
 				m_pITableFrame->SendLookonData(wUserIndex,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
@@ -334,13 +304,12 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 
 				nIndex = (nIndex+1) % MAX_SCORE_HISTORY;
 			}
-			if (wBufferSize>0) m_pITableFrame->SendUserData(pIServerUserItem,SUB_S_SEND_RECORD,cbBuffer,wBufferSize);
+			if (wBufferSize>0) 
+				m_pITableFrame->SendUserData(pIServerUserItem,SUB_S_SEND_RECORD,cbBuffer,wBufferSize);
 
 			//构造数据
 			CMD_S_StatusFree StatusFree;
 			ZeroMemory(&StatusFree,sizeof(StatusFree));
-
-			StatusFree.lCellScore=m_pGameServiceOption->lCellScore;
 			//下注信息
 			StatusFree.lTieScore=m_lTianMenScore;
 			StatusFree.lBankerScore=m_lDaoMenScore;
@@ -357,9 +326,9 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 				StatusFree.lMeTieScore=m_lUserTianMenScore[wChiarID];
 				StatusFree.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
 				StatusFree.lMePlayerScore=m_lUserShunMenScore[wChiarID];
-				StatusFree.lMeTieKingScore = m_lUserQiaoScore[wChiarID];
-				StatusFree.lMeBankerKingScore = m_lUserYouJiaoScore[wChiarID];
-				StatusFree.lMePlayerKingScore = m_lUserZuoJiaoScore[wChiarID];
+				StatusFree.lMeTieKingScore = 0;
+				StatusFree.lMeBankerKingScore = 0;
+				StatusFree.lMePlayerKingScore = 0;
 				StatusFree.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
 			}
 	
@@ -390,8 +359,6 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			CMD_S_StatusPlay StatusPlay;
 			ZeroMemory(&StatusPlay,sizeof(StatusPlay));
-
-			StatusPlay.lCellScore=m_pGameServiceOption->lCellScore;
 			//下注信息
 			StatusPlay.lTieScore=m_lTianMenScore;
 			StatusPlay.lBankerScore=m_lDaoMenScore;
@@ -409,9 +376,9 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 				StatusPlay.lMeTieScore=m_lUserTianMenScore[wChiarID];
 				StatusPlay.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
 				StatusPlay.lMePlayerScore=m_lUserShunMenScore[wChiarID];
-				StatusPlay.lMeTieKingScore = m_lUserQiaoScore[wChiarID];
-				StatusPlay.lMeBankerKingScore = m_lUserYouJiaoScore[wChiarID];
-				StatusPlay.lMePlayerKingScore = m_lUserZuoJiaoScore[wChiarID];
+				StatusPlay.lMeTieKingScore = 0;
+				StatusPlay.lMeBankerKingScore = 0;
+				StatusPlay.lMePlayerKingScore = 0;
 				StatusPlay.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
 			}
 
@@ -650,17 +617,28 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 {
 	//效验参数
 	ASSERT((cbJettonArea<=ID_DAO_MEN)&&(lJettonScore>0L));
-	if ((cbJettonArea>ID_DAO_MEN)||(lJettonScore<=0L)) return false;
-
+	if ((cbJettonArea>ID_DAO_MEN)||(lJettonScore<=0L)) 
+		return false;
 	//效验状态
 	ASSERT(m_pITableFrame->GetGameStatus()==GS_FREE);
-	if (m_pITableFrame->GetGameStatus()!=GS_FREE) return true;
-
+	if (m_pITableFrame->GetGameStatus()!=GS_FREE)
+		return true;
 	//庄家判断
 	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
 		return true;
 	if ( m_CurrentBanker.dwUserID == 0 )
 		return true;
+	//判断玩家是不是点的按钮下注
+	bool illegal=true;
+	__int64 lScoreJetton[7]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
+	for(int i=0;i<7;++i)
+	{
+		if(lJettonScore == lScoreJetton[i])
+			illegal = false;
+	}
+	if(illegal)
+		return true;
+	
 
 	//变量定义
 	IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
@@ -676,24 +654,24 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	//合法验证
 	if ( ID_SHUN_MEN == cbJettonArea )
 	{
-		if ( GetMaxPlayerScore(wChairID) < lJettonScore ) return true;
-
+		if ( GetMaxPlayerScore(wChairID) < lJettonScore ) 
+			return true;
 		//保存下注
 		m_lShunMenScore += lJettonScore;
 		m_lUserShunMenScore[wChairID] += lJettonScore;
 	}
 	else if ( ID_TIAN_MEN == cbJettonArea )
 	{
-		if ( GetMaxTieScore(wChairID) <lJettonScore ) return true;
-
+		if ( GetMaxTieScore(wChairID) <lJettonScore ) 
+			return true;
 		//保存下注
 		m_lTianMenScore += lJettonScore;
 		m_lUserTianMenScore[wChairID] += lJettonScore;
 	}
 	else if ( ID_DAO_MEN == cbJettonArea )
 	{
-		if ( GetMaxBankerScore(wChairID) <lJettonScore ) return true;
-
+		if ( GetMaxBankerScore(wChairID) <lJettonScore )
+			return true;
 		//保存下注
 		m_lDaoMenScore += lJettonScore;
 		m_lUserDaoMenScore[wChairID] += lJettonScore;
@@ -710,13 +688,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	PlaceJetton.wChairID=wChairID;
 	PlaceJetton.cbJettonArea=cbJettonArea;
 	PlaceJetton.lJettonScore=lJettonScore;
-	pIServerUserItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
-	if (pIServerUserItem)
-	{
-		PlaceJetton.lKeXiaSocre=pIServerUserItem->GetUserScore()->lScore; 
-	}
-	PlaceJetton.lAllJettonScore=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore;
-
+	PlaceJetton.lZhuangSocre=m_CurrentBanker.lUserScore; 
+	PlaceJetton.lKexiaSocre=m_CurrentBanker.lUserScore-(m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore);
 	//发送消息
 	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_PLACE_JETTON,&PlaceJetton,sizeof(PlaceJetton));
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_PLACE_JETTON,&PlaceJetton,sizeof(PlaceJetton));
@@ -978,163 +951,130 @@ bool __cdecl CTableFrameSink::OnActionUserOffLine(WORD wChairID, IServerUserItem
 __int64 CTableFrameSink::GetMaxPlayerScore(WORD wChairID)//顺门
 {
 	//其他区域
-
 	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-
 	//最大下注
 	__int64 lMaxPlayerScore = m_CurrentBanker.lUserScore-lAllAreaScore;
-
 	//已下注额
 	__int64 lNowJetton = 0;
 	lNowJetton += m_lUserShunMenScore[wChairID];
-	lNowJetton += m_lUserZuoJiaoScore[wChairID];
 	lNowJetton += m_lUserDaoMenScore[wChairID];
 	lNowJetton += m_lUserTianMenScore[wChairID];
-	lNowJetton += m_lUserQiaoScore[wChairID];
-	lNowJetton += m_lUserYouJiaoScore[wChairID];
-
 	//我的下注
 	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
 	ASSERT(lMeLessScore >= 0 );
 	lMeLessScore = max(lMeLessScore, 0);
-
 	//最大下注
 	__int64 lMaxJetton = min(lMaxPlayerScore, lMeLessScore);
-
 	return lMaxJetton;
 }
 
-//最大下注
-__int64 CTableFrameSink::GetMaxPlayerKingScore(WORD wChairID)//左角
-{
-	//其他区域
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
-	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-
-	//最大下注
-	__int64 lMaxPlayerScore = m_CurrentBanker.lUserScore-lAllAreaScore;
-
-	//已下注额
-	__int64 lNowJetton = 0;
-	lNowJetton += m_lUserShunMenScore[wChairID];
-	lNowJetton += m_lUserZuoJiaoScore[wChairID];
-	lNowJetton += m_lUserDaoMenScore[wChairID];
-	lNowJetton += m_lUserTianMenScore[wChairID];
-	lNowJetton += m_lUserQiaoScore[wChairID];
-	lNowJetton += m_lUserYouJiaoScore[wChairID];
-
-	//我的下注
-	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
-	//最大下注
-	__int64 lMaxJetton = min(lMaxPlayerScore, lMeLessScore);
-
-	return lMaxJetton;
-}
+////最大下注
+//__int64 CTableFrameSink::GetMaxPlayerKingScore(WORD wChairID)//左角
+//{
+//	//其他区域
+//	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
+//	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
+//	//最大下注
+//	__int64 lMaxPlayerScore = m_CurrentBanker.lUserScore-lAllAreaScore;
+//	//已下注额
+//	__int64 lNowJetton = 0;
+//	lNowJetton += m_lUserShunMenScore[wChairID];
+//	lNowJetton += m_lUserDaoMenScore[wChairID];
+//	lNowJetton += m_lUserTianMenScore[wChairID];
+//	//我的下注
+//	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
+//	//最大下注
+//	__int64 lMaxJetton = min(lMaxPlayerScore, lMeLessScore);
+//	return lMaxJetton;
+//}
 
 //最大下注
 __int64 CTableFrameSink::GetMaxBankerScore(WORD wChairID)//倒门
 {
 	//其他区域
 	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
-
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-
 	//最大下注
 	__int64 lMaxPlayerScore =m_CurrentBanker.lUserScore-lAllAreaScore;
-
 	//已下注额
 	__int64 lNowJetton = 0;
 	lNowJetton += m_lUserShunMenScore[wChairID];
-	lNowJetton += m_lUserZuoJiaoScore[wChairID];
 	lNowJetton += m_lUserDaoMenScore[wChairID];
 	lNowJetton += m_lUserTianMenScore[wChairID];
-	lNowJetton += m_lUserQiaoScore[wChairID];
-	lNowJetton += m_lUserYouJiaoScore[wChairID];
-
 	//我的下注
 	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
 	__int64 lMaxJetton = min(lMaxPlayerScore, lMeLessScore);
-
 	return lMaxJetton;
 }
-
-//最大下注
-__int64 CTableFrameSink::GetMaxBankerKingScore(WORD wChairID)//右角
-{
-	//其他区域
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
-	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-
-	//最大下注
-	__int64 lMaxPlayerScore =  m_CurrentBanker.lUserScore-lAllAreaScore;
-
-	//已下注额
-	__int64 lNowJetton = 0;
-	lNowJetton += m_lUserShunMenScore[wChairID];
-	lNowJetton += m_lUserZuoJiaoScore[wChairID];
-	lNowJetton += m_lUserDaoMenScore[wChairID];
-	lNowJetton += m_lUserTianMenScore[wChairID];
-	lNowJetton += m_lUserQiaoScore[wChairID];
-	lNowJetton += m_lUserYouJiaoScore[wChairID];
-
-	//我的下注
-	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
-	__int64 lMaxJetton = min(lMaxPlayerScore, lMeLessScore);
-
-	return lMaxJetton;
-}
+//
+////最大下注
+//__int64 CTableFrameSink::GetMaxBankerKingScore(WORD wChairID)//右角
+//{
+//	//其他区域
+//	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
+//	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
+//
+//	//最大下注
+//	__int64 lMaxPlayerScore =  m_CurrentBanker.lUserScore-lAllAreaScore;
+//
+//	//已下注额
+//	__int64 lNowJetton = 0;
+//	lNowJetton += m_lUserShunMenScore[wChairID];
+//	lNowJetton += m_lUserZuoJiaoScore[wChairID];
+//	lNowJetton += m_lUserDaoMenScore[wChairID];
+//	lNowJetton += m_lUserTianMenScore[wChairID];
+//	lNowJetton += m_lUserQiaoScore[wChairID];
+//	lNowJetton += m_lUserYouJiaoScore[wChairID];
+//
+//	//我的下注
+//	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
+//	__int64 lMaxJetton = min(lMaxPlayerScore, lMeLessScore);
+//
+//	return lMaxJetton;
+//}
 
 //最大下注
 __int64 CTableFrameSink::GetMaxTieScore(WORD wChairID)//天门
 {
 	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
-
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-
 	__int64 lMaxTieScore = m_CurrentBanker.lUserScore-lAllAreaScore;
-
 	//已下注额
 	__int64 lNowJetton = 0;
 	lNowJetton += m_lUserShunMenScore[wChairID];
-	lNowJetton += m_lUserZuoJiaoScore[wChairID];
 	lNowJetton += m_lUserDaoMenScore[wChairID];
 	lNowJetton += m_lUserTianMenScore[wChairID];
-	lNowJetton += m_lUserQiaoScore[wChairID];
-	lNowJetton += m_lUserYouJiaoScore[wChairID];
-
 	//我的下注
 	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
 	__int64 lMaxJetton = min(lMaxTieScore, lMeLessScore);
-
 	return lMaxJetton;
 }
 
-//最大下注
-__int64 CTableFrameSink::GetMaxTieKingScore(WORD wChairID)//桥
-{
-	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
-
-	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-
-	//最大下注
-	__int64 lMaxTieScore = m_CurrentBanker.lUserScore-lAllAreaScore;
-
-	//已下注额
-	__int64 lNowJetton = 0;
-	lNowJetton += m_lUserShunMenScore[wChairID];
-	lNowJetton += m_lUserZuoJiaoScore[wChairID];
-	lNowJetton += m_lUserDaoMenScore[wChairID];
-	lNowJetton += m_lUserTianMenScore[wChairID];
-	lNowJetton += m_lUserQiaoScore[wChairID];
-	lNowJetton += m_lUserYouJiaoScore[wChairID];
-
-	//我的下注
-	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
-	__int64 lMaxJetton = min(lMaxTieScore, lMeLessScore);
-
-	return lMaxJetton;
-}
+////最大下注
+//__int64 CTableFrameSink::GetMaxTieKingScore(WORD wChairID)//桥
+//{
+//	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
+//
+//	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
+//
+//	//最大下注
+//	__int64 lMaxTieScore = m_CurrentBanker.lUserScore-lAllAreaScore;
+//
+//	//已下注额
+//	__int64 lNowJetton = 0;
+//	lNowJetton += m_lUserShunMenScore[wChairID];
+//	lNowJetton += m_lUserZuoJiaoScore[wChairID];
+//	lNowJetton += m_lUserDaoMenScore[wChairID];
+//	lNowJetton += m_lUserTianMenScore[wChairID];
+//	lNowJetton += m_lUserQiaoScore[wChairID];
+//	lNowJetton += m_lUserYouJiaoScore[wChairID];
+//	//我的下注
+//	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
+//	__int64 lMaxJetton = min(lMaxTieScore, lMeLessScore);
+//
+//	return lMaxJetton;
+//}
 
 //计算得分
 void CTableFrameSink::CalculateScore()
@@ -1142,14 +1082,18 @@ void CTableFrameSink::CalculateScore()
 	//结束消息
 	CMD_S_GameScore GameScore;
 	ZeroMemory(&GameScore,sizeof(GameScore));
-
 	//计算牌点
 	BYTE cbPlayerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_PLAYER1],m_cbCardCount[INDEX_PLAYER1]);
 	BYTE cbBankerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
-
 	//推断玩家
 	DeduceWinner(GameScore.cbWinner, GameScore.cbKingWinner);
-
+	//统计各门获胜的次数
+	if(ID_SHUN_MEN & GameScore.cbWinner)
+		m_lShunMenWinCount++;
+	if(ID_TIAN_MEN & GameScore.cbWinner)
+		m_lTianMenWinCount++;
+	if(ID_DAO_MEN & GameScore.cbWinner)
+		m_lDaoMenWinCount++;
 	//游戏记录
 	tagServerGameRecord &GameRecord = m_GameRecordArrary[m_nRecordLast];
 	GameRecord.cbBankerCount = cbBankerCount;
@@ -1158,14 +1102,12 @@ void CTableFrameSink::CalculateScore()
 	GameRecord.lPlayerScore = m_lShunMenScore;
 	GameRecord.lTieScore = m_lTianMenScore;
 	GameRecord.wWinner = GameScore.cbWinner;
-
 	//移动下标
 	m_nRecordLast = (m_nRecordLast+1) % MAX_SCORE_HISTORY;
-	if ( m_nRecordLast == m_nRecordFirst ) m_nRecordFirst = (m_nRecordFirst+1) % MAX_SCORE_HISTORY;
-
+	if ( m_nRecordLast == m_nRecordFirst ) 
+		m_nRecordFirst = (m_nRecordFirst+1) % MAX_SCORE_HISTORY;
 	//庄家总量
 	__int64 lBankerWinScore = 0;
-
 	//玩家成绩
 	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
 	ZeroMemory(m_lUserReturnScore, sizeof(m_lUserReturnScore));
@@ -1173,26 +1115,29 @@ void CTableFrameSink::CalculateScore()
 	__int64 lUserLostScore[GAME_PLAYER];
 	ZeroMemory(lUserLostScore, sizeof(lUserLostScore));
 
+	//投注没穿过庄家一半如果闲家是豹子则翻倍
+	BYTE cbDouble = 0;
 	bool	bLessDouble = false;
 	if (m_lTianMenScore + m_lDaoMenScore + m_lShunMenScore < m_CurrentBanker.lUserScore / 2)
 		bLessDouble = true;
-	BYTE cbDouble = 0;
-	stCardType sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER1]);
-	if (sType.nCardType == CT_DOUBLE && bLessDouble)
-		cbDouble |= ID_SHUN_MEN;
-	sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER2]);
-	if (sType.nCardType == CT_DOUBLE && bLessDouble)
-		cbDouble |= ID_TIAN_MEN;
-	sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER3]);
-	if (sType.nCardType == CT_DOUBLE && bLessDouble)
-		cbDouble |= ID_DAO_MEN;
+	if(bLessDouble )
+	{
+		stCardType sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER1]);
+		if (sType.nCardType == CT_DOUBLE)
+			cbDouble |= ID_SHUN_MEN;
+		sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER2]);
+		if (sType.nCardType == CT_DOUBLE)
+			cbDouble |= ID_TIAN_MEN;
+		sType = m_GameLogic.GetCardLevel(m_cbTableCardArray[INDEX_PLAYER3]);
+		if (sType.nCardType == CT_DOUBLE)
+			cbDouble |= ID_DAO_MEN;
+	}
 
 	//计算积分
 	for (WORD i=0;i<GAME_PLAYER;i++)
 	{
 		//庄家判断
 		if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == i ) continue;
-
 		//获取用户
 		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(i);
 		if (pIServerUserItem==NULL) continue;
@@ -1260,57 +1205,6 @@ void CTableFrameSink::CalculateScore()
 			lUserLostScore[i] -=m_lUserDaoMenScore[i] ;
 			lBankerWinScore += m_lUserDaoMenScore[i] ;
 		}
-
-// 		//左角
-// 		if(ID_SHUN_MEN & GameScore.cbWinner && ID_TIAN_MEN & GameScore.cbWinner)
-// 		{
-// 			m_lUserWinScore[i]+=m_lUserZuoJiaoScore[i];
-// 			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
-// 			lBankerWinScore -= m_lUserZuoJiaoScore[i];
-// 		}
-// 		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_TIAN_MEN & GameScore.cbWinner)
-// 		{
-// 			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
-// 		}
-// 		else
-// 		{
-// 			lUserLostScore[i] -=m_lUserZuoJiaoScore[i] ;
-// 			lBankerWinScore += m_lUserZuoJiaoScore[i] ;
-// 		}
-// 		//右角
-// 		if(ID_TIAN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
-// 		{
-// 			m_lUserWinScore[i]+=m_lUserYouJiaoScore[i];
-// 			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
-// 			lBankerWinScore -= m_lUserYouJiaoScore[i];
-// 		}
-// 		else if(ID_TIAN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
-// 		{
-// 			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
-// 		}
-// 		else
-// 		{
-// 			lUserLostScore[i] -=m_lUserYouJiaoScore[i] ;
-// 			lBankerWinScore += m_lUserYouJiaoScore[i] ;
-// 		}
-// 		//桥
-// 		if(ID_SHUN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
-// 		{
-// 			m_lUserWinScore[i]+=m_lUserQiaoScore[i];
-// 			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
-// 			lBankerWinScore -= m_lUserQiaoScore[i];
-// 		}
-// 		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
-// 		{
-// 			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
-// 		}
-// 		else
-// 		{
-// 			lUserLostScore[i] -=m_lUserQiaoScore[i] ;
-// 			lBankerWinScore += m_lUserQiaoScore[i] ;
-// 		}
-
-		//总的分数
 		m_lUserWinScore[i] += lUserLostScore[i];
 
 		//计算税收
@@ -1318,7 +1212,10 @@ void CTableFrameSink::CalculateScore()
 		{
 			m_lUserRevenue[i]  = m_lUserWinScore[i]*m_pGameServiceOption->wRevenue/1000L;
 			LIMIT_VALUE(m_lUserRevenue[i], 1, 1000);
-			//m_lUserWinScore[i] -= m_lUserRevenue[i];
+			if(m_lUserWinScore[i] >= m_lUserRevenue[i])
+				m_lUserWinScore[i] -= m_lUserRevenue[i];
+			else
+				m_lUserRevenue[i]=0;
 		}
 	}
 
@@ -1333,11 +1230,13 @@ void CTableFrameSink::CalculateScore()
 		{
 			m_lUserRevenue[wBankerChairID]  = m_lUserWinScore[wBankerChairID]*m_pGameServiceOption->wRevenue/1000L;
 			LIMIT_VALUE(m_lUserRevenue[wBankerChairID], 1, 1000);
-			//m_lUserWinScore[wBankerChairID] -= m_lUserRevenue[wBankerChairID];
+			if(m_lUserWinScore[wBankerChairID] > m_lUserRevenue[wBankerChairID])
+				m_lUserWinScore[wBankerChairID] -= m_lUserRevenue[wBankerChairID];
+			else
+				m_lUserRevenue[wBankerChairID] = 0;
 			lBankerWinScore = m_lUserWinScore[wBankerChairID];
 		}
 		IServerUserItem *pBankerUserItem = m_pITableFrame->GetServerUserItem(wBankerChairID);
-
 		//累计积分
 		m_lBankerWinScore += lBankerWinScore;
 	}
@@ -1346,10 +1245,9 @@ void CTableFrameSink::CalculateScore()
 	GameScore.lDrawTieScore=m_lTianMenScore;
 	GameScore.lDrawBankerScore=m_lDaoMenScore;
 	GameScore.lDrawPlayerScore=m_lShunMenScore;
-	GameScore.lDrawTieSamPointScore = m_lQiaoScore;
-	GameScore.lDrawBankerKingScore = m_lYouJiaoScore;
-	GameScore.lDrawPlayerKingScore = m_lZuoJiaoScore;
-
+	GameScore.lDrawTieSamPointScore = 0;
+	GameScore.lDrawBankerKingScore = 0;
+	GameScore.lDrawPlayerKingScore = 0;
 	GameScore.lBankerScore = lBankerWinScore;
 
 	//发送积分
@@ -1357,15 +1255,13 @@ void CTableFrameSink::CalculateScore()
 	{
 		IServerUserItem *pIServerUserItem = m_pITableFrame->GetServerUserItem(wUserIndex);
 		if ( pIServerUserItem == NULL ) continue;
-
 		//我的下注
 		GameScore.lMeTieScore=m_lUserTianMenScore[wUserIndex];
 		GameScore.lMeBankerScore=m_lUserDaoMenScore[wUserIndex];
 		GameScore.lMePlayerScore=m_lUserShunMenScore[wUserIndex];
-		GameScore.lMeTieKingScore = m_lUserQiaoScore[wUserIndex];
-		GameScore.lMeBankerKingScore = m_lUserYouJiaoScore[wUserIndex];
-		GameScore.lMePlayerKingScore = m_lUserZuoJiaoScore[wUserIndex];
-
+		GameScore.lMeTieKingScore = 0;
+		GameScore.lMeBankerKingScore = 0;
+		GameScore.lMePlayerKingScore = 0;
 		//发送消息
 		GameScore.lMeGameScore=m_lUserWinScore[wUserIndex];
 		GameScore.lMeReturnScore = m_lUserReturnScore[wUserIndex];
@@ -1375,201 +1271,218 @@ void CTableFrameSink::CalculateScore()
 	return ;
 }
 
-__int64 CTableFrameSink::PreCalculateBankerWin()
-{
-	//结束消息
-	CMD_S_GameScore GameScore;
-	ZeroMemory(&GameScore,sizeof(GameScore));
-
-	//计算牌点
-	BYTE cbPlayerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_PLAYER1],m_cbCardCount[INDEX_PLAYER1]);
-	BYTE cbBankerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
-
-	//推断玩家
-	DeduceWinner(GameScore.cbWinner, GameScore.cbKingWinner);
-
-	//游戏记录
-	tagServerGameRecord &GameRecord = m_GameRecordArrary[m_nRecordLast];
-	GameRecord.cbBankerCount = cbBankerCount;
-	GameRecord.cbPlayerCount = cbPlayerCount;
-	GameRecord.lBankerScore = m_lDaoMenScore;
-	GameRecord.lPlayerScore = m_lShunMenScore;
-	GameRecord.lTieScore = m_lTianMenScore;
-	GameRecord.wWinner = GameScore.cbWinner;
-
-	//移动下标
-	m_nRecordLast = (m_nRecordLast+1) % MAX_SCORE_HISTORY;
-	if ( m_nRecordLast == m_nRecordFirst ) m_nRecordFirst = (m_nRecordFirst+1) % MAX_SCORE_HISTORY;
-
-	//庄家总量
-	__int64 lBankerWinScore = 0;
-
-	//玩家成绩
-	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
-	ZeroMemory(m_lUserReturnScore, sizeof(m_lUserReturnScore));
-	ZeroMemory(m_lUserRevenue, sizeof(m_lUserRevenue));
-	__int64 lUserLostScore[GAME_PLAYER];
-	ZeroMemory(lUserLostScore, sizeof(lUserLostScore));
-
-	//计算积分
-	for (WORD i=0;i<GAME_PLAYER;i++)
-	{
-		//庄家判断
-		if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == i ) continue;
-
-		//获取用户
-		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(i);
-		if (pIServerUserItem==NULL) continue;
-
-		//顺门
-		if(ID_SHUN_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserShunMenScore[i];
-			m_lUserReturnScore[i] += m_lUserShunMenScore[i] ;
-			lBankerWinScore -= m_lUserShunMenScore[i];
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserShunMenScore[i] ;
-			lBankerWinScore += m_lUserShunMenScore[i] ;
-		}
-		//天门
-		if(ID_TIAN_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserTianMenScore[i];
-			m_lUserReturnScore[i] += m_lUserTianMenScore[i] ;
-			lBankerWinScore -= m_lUserTianMenScore[i];
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserTianMenScore[i] ;
-			lBankerWinScore += m_lUserTianMenScore[i] ;
-		}
-		//倒门
-		if(ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserDaoMenScore[i];
-			m_lUserReturnScore[i] += m_lUserDaoMenScore[i] ;
-			lBankerWinScore -= m_lUserDaoMenScore[i];
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserDaoMenScore[i] ;
-			lBankerWinScore += m_lUserDaoMenScore[i] ;
-		}
-
-		//左角
-		if(ID_SHUN_MEN & GameScore.cbWinner && ID_TIAN_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserZuoJiaoScore[i];
-			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
-			lBankerWinScore -= m_lUserZuoJiaoScore[i];
-		}
-		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_TIAN_MEN & GameScore.cbWinner)
-		{
-			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserZuoJiaoScore[i] ;
-			lBankerWinScore += m_lUserZuoJiaoScore[i] ;
-		}
-		//右角
-		if(ID_TIAN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserYouJiaoScore[i];
-			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
-			lBankerWinScore -= m_lUserYouJiaoScore[i];
-		}
-		else if(ID_TIAN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserYouJiaoScore[i] ;
-			lBankerWinScore += m_lUserYouJiaoScore[i] ;
-		}
-		//桥
-		if(ID_SHUN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserWinScore[i]+=m_lUserQiaoScore[i];
-			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
-			lBankerWinScore -= m_lUserQiaoScore[i];
-		}
-		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
-		{
-			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
-		}
-		else
-		{
-			lUserLostScore[i] -=m_lUserQiaoScore[i] ;
-			lBankerWinScore += m_lUserQiaoScore[i] ;
-		}
-
-		//总的分数
-		m_lUserWinScore[i] += lUserLostScore[i];
-
-		//计算税收
-		if ( m_lUserWinScore[i]>0 )
-		{
-			m_lUserRevenue[i]  = m_lUserWinScore[i]*m_pGameServiceOption->wRevenue/1000L;
-			LIMIT_VALUE(m_lUserRevenue[i], 1, 1000);
-			//m_lUserWinScore[i] -= m_lUserRevenue[i];
-		}
-	}
-
-	//庄家成绩
-	if ( m_CurrentBanker.dwUserID != 0 )
-	{
-		WORD wBankerChairID = m_CurrentBanker.wChairID;
-		m_lUserWinScore[wBankerChairID] = lBankerWinScore;
-
-		//计算税收
-		if ( 0 < m_lUserWinScore[wBankerChairID] )
-		{
-			m_lUserRevenue[wBankerChairID]  = m_lUserWinScore[wBankerChairID]*m_pGameServiceOption->wRevenue/1000L;
-			LIMIT_VALUE(m_lUserRevenue[wBankerChairID], 1, 1000);
-			//m_lUserWinScore[wBankerChairID] -= m_lUserRevenue[wBankerChairID];
-			lBankerWinScore = m_lUserWinScore[wBankerChairID];
-		}
-		IServerUserItem *pBankerUserItem = m_pITableFrame->GetServerUserItem(wBankerChairID);
-	}
-
-	//玩家成绩
-	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
-	ZeroMemory(m_lUserReturnScore, sizeof(m_lUserReturnScore));
-	ZeroMemory(m_lUserRevenue, sizeof(m_lUserRevenue));
-
-	return lBankerWinScore;
-}
+//
+//__int64 CTableFrameSink::PreCalculateBankerWin()
+//{
+//	//结束消息
+//	CMD_S_GameScore GameScore;
+//	ZeroMemory(&GameScore,sizeof(GameScore));
+//
+//	//计算牌点
+//	BYTE cbPlayerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_PLAYER1],m_cbCardCount[INDEX_PLAYER1]);
+//	BYTE cbBankerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
+//
+//	//推断玩家
+//	DeduceWinner(GameScore.cbWinner, GameScore.cbKingWinner);
+//
+//	//游戏记录
+//	tagServerGameRecord &GameRecord = m_GameRecordArrary[m_nRecordLast];
+//	GameRecord.cbBankerCount = cbBankerCount;
+//	GameRecord.cbPlayerCount = cbPlayerCount;
+//	GameRecord.lBankerScore = m_lDaoMenScore;
+//	GameRecord.lPlayerScore = m_lShunMenScore;
+//	GameRecord.lTieScore = m_lTianMenScore;
+//	GameRecord.wWinner = GameScore.cbWinner;
+//
+//	//移动下标
+//	m_nRecordLast = (m_nRecordLast+1) % MAX_SCORE_HISTORY;
+//	if ( m_nRecordLast == m_nRecordFirst ) m_nRecordFirst = (m_nRecordFirst+1) % MAX_SCORE_HISTORY;
+//
+//	//庄家总量
+//	__int64 lBankerWinScore = 0;
+//
+//	//玩家成绩
+//	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
+//	ZeroMemory(m_lUserReturnScore, sizeof(m_lUserReturnScore));
+//	ZeroMemory(m_lUserRevenue, sizeof(m_lUserRevenue));
+//	__int64 lUserLostScore[GAME_PLAYER];
+//	ZeroMemory(lUserLostScore, sizeof(lUserLostScore));
+//
+//	//计算积分
+//	for (WORD i=0;i<GAME_PLAYER;i++)
+//	{
+//		//庄家判断
+//		if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == i ) continue;
+//
+//		//获取用户
+//		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(i);
+//		if (pIServerUserItem==NULL) continue;
+//
+//		//顺门
+//		if(ID_SHUN_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserWinScore[i]+=m_lUserShunMenScore[i];
+//			m_lUserReturnScore[i] += m_lUserShunMenScore[i] ;
+//			lBankerWinScore -= m_lUserShunMenScore[i];
+//		}
+//		else
+//		{
+//			lUserLostScore[i] -=m_lUserShunMenScore[i] ;
+//			lBankerWinScore += m_lUserShunMenScore[i] ;
+//		}
+//		//天门
+//		if(ID_TIAN_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserWinScore[i]+=m_lUserTianMenScore[i];
+//			m_lUserReturnScore[i] += m_lUserTianMenScore[i] ;
+//			lBankerWinScore -= m_lUserTianMenScore[i];
+//		}
+//		else
+//		{
+//			lUserLostScore[i] -=m_lUserTianMenScore[i] ;
+//			lBankerWinScore += m_lUserTianMenScore[i] ;
+//		}
+//		//倒门
+//		if(ID_DAO_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserWinScore[i]+=m_lUserDaoMenScore[i];
+//			m_lUserReturnScore[i] += m_lUserDaoMenScore[i] ;
+//			lBankerWinScore -= m_lUserDaoMenScore[i];
+//		}
+//		else
+//		{
+//			lUserLostScore[i] -=m_lUserDaoMenScore[i] ;
+//			lBankerWinScore += m_lUserDaoMenScore[i] ;
+//		}
+//
+//		//左角
+//		if(ID_SHUN_MEN & GameScore.cbWinner && ID_TIAN_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserWinScore[i]+=m_lUserZuoJiaoScore[i];
+//			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
+//			lBankerWinScore -= m_lUserZuoJiaoScore[i];
+//		}
+//		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_TIAN_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserReturnScore[i] += m_lUserZuoJiaoScore[i] ;
+//		}
+//		else
+//		{
+//			lUserLostScore[i] -=m_lUserZuoJiaoScore[i] ;
+//			lBankerWinScore += m_lUserZuoJiaoScore[i] ;
+//		}
+//		//右角
+//		if(ID_TIAN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserWinScore[i]+=m_lUserYouJiaoScore[i];
+//			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
+//			lBankerWinScore -= m_lUserYouJiaoScore[i];
+//		}
+//		else if(ID_TIAN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserReturnScore[i] += m_lUserYouJiaoScore[i] ;
+//		}
+//		else
+//		{
+//			lUserLostScore[i] -=m_lUserYouJiaoScore[i] ;
+//			lBankerWinScore += m_lUserYouJiaoScore[i] ;
+//		}
+//		//桥
+//		if(ID_SHUN_MEN & GameScore.cbWinner && ID_DAO_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserWinScore[i]+=m_lUserQiaoScore[i];
+//			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
+//			lBankerWinScore -= m_lUserQiaoScore[i];
+//		}
+//		else if(ID_SHUN_MEN & GameScore.cbWinner || ID_DAO_MEN & GameScore.cbWinner)
+//		{
+//			m_lUserReturnScore[i] += m_lUserQiaoScore[i] ;
+//		}
+//		else
+//		{
+//			lUserLostScore[i] -=m_lUserQiaoScore[i] ;
+//			lBankerWinScore += m_lUserQiaoScore[i] ;
+//		}
+//
+//		//总的分数
+//		m_lUserWinScore[i] += lUserLostScore[i];
+//
+//		//计算税收
+//		if ( m_lUserWinScore[i]>0 )
+//		{
+//			m_lUserRevenue[i]  = m_lUserWinScore[i]*m_pGameServiceOption->wRevenue/1000L;
+//			LIMIT_VALUE(m_lUserRevenue[i], 1, 1000);
+//			//m_lUserWinScore[i] -= m_lUserRevenue[i];
+//		}
+//	}
+//
+//	//庄家成绩
+//	if ( m_CurrentBanker.dwUserID != 0 )
+//	{
+//		WORD wBankerChairID = m_CurrentBanker.wChairID;
+//		m_lUserWinScore[wBankerChairID] = lBankerWinScore;
+//
+//		//计算税收
+//		if ( 0 < m_lUserWinScore[wBankerChairID] )
+//		{
+//			m_lUserRevenue[wBankerChairID]  = m_lUserWinScore[wBankerChairID]*m_pGameServiceOption->wRevenue/1000L;
+//			LIMIT_VALUE(m_lUserRevenue[wBankerChairID], 1, 1000);
+//			//m_lUserWinScore[wBankerChairID] -= m_lUserRevenue[wBankerChairID];
+//			lBankerWinScore = m_lUserWinScore[wBankerChairID];
+//		}
+//		IServerUserItem *pBankerUserItem = m_pITableFrame->GetServerUserItem(wBankerChairID);
+//	}
+//
+//	//玩家成绩
+//	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
+//	ZeroMemory(m_lUserReturnScore, sizeof(m_lUserReturnScore));
+//	ZeroMemory(m_lUserRevenue, sizeof(m_lUserRevenue));
+//
+//	return lBankerWinScore;
+//}
 
 //推断赢家
 void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 {
 	cbWinner = 0;
 	cbKingWinner = 0;
-
-	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER1],2))
+	bool bTongdian=false;
+	bool bChaoguo=false;
+	//如果下注成功一半 平点位和
+	if (m_lTianMenScore + m_lDaoMenScore + m_lShunMenScore >= m_CurrentBanker.lUserScore / 2)
 	{
-		cbWinner = (cbWinner & ~ID_SHUN_MEN);
+		bChaoguo=true;
+	}
+
+	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER1],2,bTongdian))
+	{	
+		if(bChaoguo && bTongdian)
+			cbWinner|=ID_SHUN_MEN_PIN;
+		else
+			cbWinner = (cbWinner & ~ID_SHUN_MEN);
 	}
 	else
 	{
 		cbWinner|=ID_SHUN_MEN;
 	}
 
-	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER2],2))
+	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER2],2,bTongdian))
 	{
-		cbWinner = (cbWinner & ~ID_TIAN_MEN);
+		if(bChaoguo && bTongdian)
+			cbWinner|=ID_TIAN_MEN_PIN;
+		else
+			cbWinner = (cbWinner & ~ID_TIAN_MEN);
 	}
 	else
 	{
 		cbWinner |=ID_TIAN_MEN;
 	}
-	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER3],2))
+	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER3],2,bTongdian))
 	{
-		cbWinner = (cbWinner & ~ID_DAO_MEN);
+		if(bChaoguo && bTongdian)
+			cbWinner|=ID_DAO_MEN_PIN;
+		else
+			cbWinner = (cbWinner & ~ID_DAO_MEN);
 	}
 	else
 	{
@@ -1582,34 +1495,34 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 }
 
 
-void CTableFrameSink::ChuLaoQian()
-{
-	//TCHAR szINI[512];
-	//::GetModulePath(szINI, sizeof(szINI));
-	//SafeStrCat(szINI, "\\XiaoJiu.ini", sizeof(szINI));
-	//LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-	//LIMIT_VALUE(lWinRate, 1, 10);
-
-	////获取玩家
-	//IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem( m_CurrentBanker.wChairID );
-	//if ( pServerUserItem )
-	//{
-	//	tagServerUserData const *pBankerData=pServerUserItem->GetUserData();
-	//	if ( ( pBankerData->dwLaoQian>0 ) && ( rand()%lWinRate==0 ) )
-	//	{
-	//		OUTPUT("111111111111111");
-	//		for (int redo=0; redo<50; redo++)
-	//		{
-	//			if ( PreCalculateBankerWin()<0 )
-	//			{
-	//				DispatchTableCard();
-	//			}
-	//			else
-	//				break;
-	//		}
-	//	}
-	//}
-}
+//void CTableFrameSink::ChuLaoQian()
+//{
+//	//TCHAR szINI[512];
+//	//::GetModulePath(szINI, sizeof(szINI));
+//	//SafeStrCat(szINI, "\\XiaoJiu.ini", sizeof(szINI));
+//	//LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
+//	//LIMIT_VALUE(lWinRate, 1, 10);
+//
+//	////获取玩家
+//	//IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem( m_CurrentBanker.wChairID );
+//	//if ( pServerUserItem )
+//	//{
+//	//	tagServerUserData const *pBankerData=pServerUserItem->GetUserData();
+//	//	if ( ( pBankerData->dwLaoQian>0 ) && ( rand()%lWinRate==0 ) )
+//	//	{
+//	//		OUTPUT("111111111111111");
+//	//		for (int redo=0; redo<50; redo++)
+//	//		{
+//	//			if ( PreCalculateBankerWin()<0 )
+//	//			{
+//	//				DispatchTableCard();
+//	//			}
+//	//			else
+//	//				break;
+//	//		}
+//	//	}
+//	//}
+//}
 
 bool CTableFrameSink::CheckCardRight()
 {
@@ -1710,11 +1623,12 @@ bool CTableFrameSink::CheckCardRight()
 
 void CTableFrameSink::SortCardComp( BYTE chCardComp[], BYTE CardCompCount )
 {
+	bool bTongdian=false;
 	for (int i = 0; i < 4; i++)
 	{
 		for ( int j = i + 1; j < 4; j++)
 		{
-			if(!m_GameLogic.CompareCard(m_cbTableCardArray[chCardComp[i]], m_cbTableCardArray[chCardComp[j]],2))
+			if(!m_GameLogic.CompareCard(m_cbTableCardArray[chCardComp[i]], m_cbTableCardArray[chCardComp[j]],2,bTongdian))
 			{
 				BYTE nIndex = chCardComp[i];
 				chCardComp[i] = chCardComp[j];

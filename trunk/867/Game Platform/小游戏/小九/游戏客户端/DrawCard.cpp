@@ -134,9 +134,9 @@ void CDrawCard::Draw(CDC *pDC)
 				0xFF00FF);
 		}
 		if(!pWnd->m_bAutoCard && m_bYouTui && m_bShowCard && m_bShowHand)
-			m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-32, m_nCardPosY-10,RGB(255, 0, 255) );
+			m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-30, m_nCardPosY-7,RGB(255, 0, 255) );
 		else if(m_bYouTui && !m_bIsTuiPaiOver && m_bShowHand)
-			m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-32, m_nCardPosY-10,RGB(255, 0, 255) );
+			m_ImageCardHand.AlphaDrawImage( pDC, m_nCardPosX-30, m_nCardPosY-7,RGB(255, 0, 255) );
 	}
 }
 
@@ -150,22 +150,25 @@ void CDrawCard::TuiPai()
 	if(!m_bIsTuiPaiOver)
 	{
 		if(m_bYouTui && pWnd->m_bAutoCard)
-			m_OffsetX+=2;
+		{
+			m_OffsetX+=1;
+			m_OffsetY+=4;
+		}
 		else
-			m_OffsetX-=2;
-		if(m_OffsetX<=-17 && m_bYouTui==false)
+		{
+			m_OffsetX-=1;
+		}
+		if(m_OffsetX<= -1 && m_bYouTui==false)
 		{
 			if(!pWnd->m_bAutoCard)
 			{
 				m_bIsTuiPaiOver=true;
 				m_bShowCard=true;
-			
 			}
 			m_bYouTui=true;
 			m_bShowHand=true;
 			m_OffsetX=0;
 			m_OffsetY=0;	
-			
 		}
 		if(m_bYouTui && pWnd->m_bAutoCard)
 		{

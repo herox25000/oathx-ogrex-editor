@@ -9,15 +9,18 @@
 #include "ApplyUserList.h"
 #include "GameLogic.h"
 #include "DrawCard.h"
-
+#include <vector>
 
 #define JETTON_COUNT				7									//筹码数目
 #define JETTON_RADII				54									//筹码半径
+#define JETTON_WIDTH				59
+#define JETTON_HEIGHT				51
 
 //消息定义
 #define IDM_PLACE_JETTON			WM_USER+200							//加住信息
 #define IDM_APPLY_BANKER			WM_USER+201							//申请信息
 #define IDM_CUOPAI					WM_USER+202							
+#define IDM_ONBANK					WM_USER+203
 
 #define INDEX_BANKER				0									//庄家索引
 #define INDEX_PLAYER1				1									//闲家1索引
@@ -76,6 +79,9 @@ public:
 	bool							m_bAutoCard;
 	bool							m_bCanGo;
 	bool							m_bSet;
+	//各门的获胜概率 顺 天  倒
+	float							m_fWinCount[3];
+
 	//下注信息
 protected:
 	__int64							m_lMeMaxScore;						//最大下注
@@ -153,15 +159,16 @@ public:
 	CSkinButton						m_btJetton1000000;					//筹码按钮	
 	CSkinButton						m_btJetton5000000;					//筹码按钮	
 	CSkinButton						m_btJetton10000000;					//筹码按钮
-
 	CSkinButton						m_btApplyBanker;					//申请庄家
 	CSkinButton						m_btCancelBanker;					//取消庄家
-
-	CSkinButton						m_btScoreMoveL;						//移动成绩
-	CSkinButton						m_btScoreMoveR;						//移动成绩
-
+	CSkinButton						m_btScoreMoveL;						//历史记录移动按钮
+	CSkinButton						m_btScoreMoveR;						//历史记录移动按钮
 	CSkinButton						m_btnZiDongCuoPai;						
-	CSkinButton						m_btnShouDongCuoPai;						
+	CSkinButton						m_btnShouDongCuoPai;	
+	CSkinButton						m_btnShengyin;						
+	CSkinButton						m_btnNoShengyin;
+	CSkinButton						m_btnQuqian;						
+	CSkinButton						m_btnCunqian;
 
 	//控件变量
 public:
@@ -178,6 +185,9 @@ protected:
 	CSkinImage						m_ImageMeScoreNumber;				//数字视图
 	CSkinImage						m_ImageTimeFlag;					//时间标识
 
+	CSkinImage						m_JettonButtonSkin[6];
+	UINT							m_JettonState;
+	int								m_JettonIndex;
 	//边框资源
 protected:
 	CSkinImage						m_ImageFrameXianJia;				//边框图片
@@ -206,13 +216,15 @@ protected:
 	CSkinImage						m_ImageCard;						//图片资源
 
 protected:
-	CPngImage						m_pngc;			
+	CPngImage						m_pngc;								//可下注
+	CPngImage						m_pngc1;							//可下注
 	CPngImage						m_pngp;
 
 public:
-	__int64 							m_lKeXiaSocre;						//可下注值
-	__int64 							m_lAllJettonScore;					//已经下注的总值	
-	bool							m_bJettonstate;						//是否是下注状态
+	__int64 							m_lZhuangScore;						//可下注值
+	__int64 							m_lKexiaScore;					//已经下注的总值	
+	bool								m_bJettonstate;						//是否是下注状态
+
 	//函数定义
 public:
 	//构造函数
@@ -273,16 +285,16 @@ public:
 protected:
 	//最大下注
 	__int64 GetMaxPlayerScore();
-	//最大下注
-	__int64 GetMaxPlayerKingScore();
+	////最大下注
+	//__int64 GetMaxPlayerKingScore();
 	//最大下注
 	__int64 GetMaxBankerScore();
-	//最大下注
-	__int64 GetMaxBankerKingScore();
+	////最大下注
+	//__int64 GetMaxBankerKingScore();
 	//最大下注
 	__int64 GetMaxTieScore();
-	//最大下注
-	__int64 GetMaxTieKingScore();
+	////最大下注
+	//__int64 GetMaxTieKingScore();
 
 
 	//界面函数
@@ -297,7 +309,9 @@ public:
 	void DrawTextString(CDC * pDC, LPCTSTR pszString, COLORREF crText, COLORREF crFrame, int nXPos, int nYPos);
 	//绘画数字
 	void DrawMeJettonNumber(CDC *pDC);
-
+	//数字换化为字符串
+	CString ChangNumber(__int64 iNumber);
+	CString ChangNumber(int iNumber);
 	//内联函数
 public:
 	//当前筹码
@@ -344,9 +358,8 @@ protected:
 	afx_msg void OnScoreMoveL();
 	//移动按钮
 	afx_msg void OnScoreMoveR();
-
 	afx_msg void OnCuoPaiModel();
-
+	afx_msg void OnBank();
 	//消息映射
 protected:
 	//定时器消息

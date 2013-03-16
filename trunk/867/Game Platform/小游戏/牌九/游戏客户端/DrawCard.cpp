@@ -160,10 +160,15 @@ void CDrawCard::TuiPai()
 	if(!m_bIsTuiPaiOver)
 	{
 		if(m_bYouTui && pWnd->m_bAutoCard)
-			m_OffsetX+=2;
+		{
+			m_OffsetX+=1;
+			m_OffsetY+=4;
+		}
 		else
-			m_OffsetX-=2;
-		if(m_OffsetX<=-17 && m_bYouTui==false)
+		{
+			m_OffsetX-=1;
+		}
+		if(m_OffsetX<=-1 && m_bYouTui==false)
 		{
 			if(!pWnd->m_bAutoCard)
 			{

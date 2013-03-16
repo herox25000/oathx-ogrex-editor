@@ -228,6 +228,9 @@
 				RelativePath=".\Res\BANKER_INFO.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\bitmap3.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\BT_APPLY_BANKER.bmp">
 			</File>
 			<File
@@ -283,6 +286,9 @@
 			</File>
 			<File
 				RelativePath=".\Res\CHANGE_BANKER.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\cunqian.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\cursor1.cur">
@@ -396,6 +402,9 @@
 				RelativePath=".\Res\png2.bin">
 			</File>
 			<File
+				RelativePath=".\Res\quqian.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\SCORE_1.cur">
 			</File>
 			<File
@@ -436,6 +445,12 @@
 			</File>
 			<File
 				RelativePath=".\Res\SCORE_NUMBER.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\shengyin.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\shengyinNO.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\ShouDongCuoPai.bmp">
