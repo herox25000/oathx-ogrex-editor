@@ -275,7 +275,7 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 			else pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
 			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->SetTextColor(RGB(255,255,255));
-			else if ( 0 < pIUserItem->cbMemberOrder && (DTP_USER_ACCOUNTS == m_wDataDescribe[i])) pDC->SetTextColor(RGB(255,0,0));
+			else if ( 0 < pIUserItem->cbMemberOrder /*&& (DTP_USER_ACCOUNTS == m_wDataDescribe[i])*/) pDC->SetTextColor(RGB(255,0,0));
 			else pDC->SetTextColor(RGB(0,0,0));
 
 			//»æ»­±êÖ¾
@@ -298,7 +298,7 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 			else pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
 			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->SetTextColor(RGB(255,255,255));
-			else if ( 0 < pIUserItem->cbMemberOrder && DTP_GAME_ID == m_wDataDescribe[i]) pDC->SetTextColor(RGB(255,0,0));
+			else if ( 0 < pIUserItem->cbMemberOrder /*&& DTP_GAME_ID == m_wDataDescribe[i]*/) pDC->SetTextColor(RGB(255,0,0));
 			else pDC->SetTextColor(RGB(0,0,0));
 
 			GetItemText(iItem,i,szBuffer,sizeof(szBuffer));
