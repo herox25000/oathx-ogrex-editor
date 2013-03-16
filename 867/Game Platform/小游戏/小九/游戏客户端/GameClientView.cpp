@@ -1506,8 +1506,9 @@ void CGameClientView::DrawWinFlags(CDC * pDC)
 		int nXPos = m_nWinFlagsExcursionX + ((nIndex - m_nScoreHead + MAX_SCORE_HISTORY) % MAX_SCORE_HISTORY) * 39;
 		int nYPos = m_nWinFlagsExcursionY+3;
 
+
 		if(ClientGameRecord.enOperateFlags == enOperateResult_NULL)
-		{
+		{// 自己没有押注的时候
 			int nCount=0;	
 			for(WORD i=ID_SHUN_MEN; i<=ID_DAO_MEN ;i*=2)
 			{
@@ -1523,141 +1524,182 @@ void CGameClientView::DrawWinFlags(CDC * pDC)
 					nCount=2;
 					break;
 				}
-				if ( ClientGameRecord.wWinner & i)
+				if(ClientGameRecord.wWinner & (i*8))
 				{
 					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(), 0, 0, RGB(255, 0, 255) );
+						m_ImageWinFlags.GetHeight(), m_ImageWinFlags.GetWidth()/6*5, 0, RGB(255, 0, 255) );
+				}
+				else if ( ClientGameRecord.wWinner & i)
+				{
+					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
+						m_ImageWinFlags.GetHeight(), m_ImageWinFlags.GetWidth()/6, 0, RGB(255, 0, 255) );
 				}
 				else
 				{
 					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
+						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
 				}
 				nCount++;
 			}
 		}
 		else
-		{
-			if(ClientGameRecord.wWinner & ID_SHUN_MEN)
+		{// 自己有押注的时候
+			
+			for(WORD i=ID_SHUN_MEN; i<=ID_DAO_MEN ;i*=2)
 			{
-				if(ClientGameRecord.lMeShunMenScore>0)
+				int nCount=0;
+				__int64 XiaZhuScore=0;
+				switch(i)
 				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
+				case ID_SHUN_MEN:
+					XiaZhuScore = ClientGameRecord.lMeShunMenScore;
+					nCount=0;
+					break;
+				case ID_TIAN_MEN:
+					XiaZhuScore = ClientGameRecord.lMeTianMenScore;
+					nCount=1;
+					break;
+				case ID_DAO_MEN:
+					XiaZhuScore = ClientGameRecord.lMeDaoMenScore;
+					nCount=2;
+					break;
 				}
-				else if(ClientGameRecord.lMeZuoJiaoScore>0 && ClientGameRecord.wWinner & ID_TIAN_MEN ||	\
-						ClientGameRecord.lMeQiaoScore>0 && ClientGameRecord.wWinner & ID_DAO_MEN)
+				if(ClientGameRecord.wWinner & (i*8))
 				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
+					if(XiaZhuScore>0)
+					{
+						m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
+							m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6*4, 0, RGB(255, 0, 255) );
+					}
+					else
+					{
+						m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount,m_ImageWinFlags.GetWidth()/6 , 
+							m_ImageWinFlags.GetHeight(), m_ImageWinFlags.GetWidth()/6*5, 0, RGB(255, 0, 255) );
+					}
+				}
+				else if(ClientGameRecord.wWinner & i)
+				{
+					if(XiaZhuScore>0)
+					{
+						m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
+							m_ImageWinFlags.GetHeight(),0 , 0, RGB(255, 0, 255) );
+					}
+					else
+					{
+						m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount,m_ImageWinFlags.GetWidth()/6 , 
+							m_ImageWinFlags.GetHeight(), m_ImageWinFlags.GetWidth()/6, 0, RGB(255, 0, 255) );
+					}
 				}
 				else
 				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos,m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(), 0 , 0, RGB(255, 0, 255) );
+					if(XiaZhuScore>0)
+					{
+						m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
+							m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
+					}
+					else
+					{
+						m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
+							m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
+					}
 				}
-			}
-			else
-			{
-				if(ClientGameRecord.lMeShunMenScore>0)
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
-				}
-				else if(ClientGameRecord.lMeZuoJiaoScore>0 && !(ClientGameRecord.wWinner & ID_TIAN_MEN) ||	\
-					ClientGameRecord.lMeQiaoScore>0 && !(ClientGameRecord.wWinner & ID_DAO_MEN))
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3 , 0, RGB(255, 0, 255) );
-				}
-				else
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
-				}
-
-			}
-
-
-			//--
-			if(ClientGameRecord.wWinner & ID_DAO_MEN)
-			{
-				if(ClientGameRecord.lMeDaoMenScore>0)
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
-				}
-				else if(ClientGameRecord.lMeYouJiaoScore>0 && ClientGameRecord.wWinner & ID_TIAN_MEN ||	\
-					ClientGameRecord.lMeQiaoScore>0 && ClientGameRecord.wWinner & ID_SHUN_MEN)
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
-				}
-				else
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2,m_ImageWinFlags.GetWidth()/6, 
-						m_ImageWinFlags.GetHeight(),0, 0, RGB(255, 0, 255) );
-				}
-			}
-			else
-			{
-				if(ClientGameRecord.lMeDaoMenScore>0)
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
-				}
-				else if(ClientGameRecord.lMeYouJiaoScore>0 && !(ClientGameRecord.wWinner & ID_TIAN_MEN) ||	\
-					ClientGameRecord.lMeQiaoScore>0 && !(ClientGameRecord.wWinner & ID_SHUN_MEN))
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3 , 0, RGB(255, 0, 255) );
-				}
-				else
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
-				}
-
 			}
 
-			if(ClientGameRecord.wWinner & ID_TIAN_MEN)
-			{
-				if(ClientGameRecord.lMeTianMenScore>0)
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
-				}
-				else if(ClientGameRecord.lMeYouJiaoScore>0 && ClientGameRecord.wWinner & ID_DAO_MEN ||	\
-					ClientGameRecord.lMeZuoJiaoScore>0 && ClientGameRecord.wWinner & ID_SHUN_MEN)
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
-				}
-				else
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32,m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),0 , 0, RGB(255, 0, 255) );
-				}
-			}
-			else
-			{
-				if(ClientGameRecord.lMeTianMenScore>0)
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
-				}
-				else if(ClientGameRecord.lMeYouJiaoScore>0 && !(ClientGameRecord.wWinner & ID_DAO_MEN) ||	\
-					ClientGameRecord.lMeZuoJiaoScore>0 && !(ClientGameRecord.wWinner & ID_SHUN_MEN))
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
-				}
-				else
-				{
-					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
-						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
-				}
-			}
+			//if(ClientGameRecord.wWinner & ID_SHUN_MEN_PIN)
+			//{
+			//	if(ClientGameRecord.lMeShunMenScore>0)
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6*4, 0, RGB(255, 0, 255) );
+			//	}
+			//	else
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos,m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(), m_ImageWinFlags.GetWidth()/6*5, 0, RGB(255, 0, 255) );
+			//	}
+			//}
+			//else if(ClientGameRecord.wWinner & ID_SHUN_MEN)
+			//{
+			//	if(ClientGameRecord.lMeShunMenScore>0)
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),0 , 0, RGB(255, 0, 255) );
+			//	}
+			//	else
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos,m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(), m_ImageWinFlags.GetWidth()/6, 0, RGB(255, 0, 255) );
+			//	}
+			//}
+			//else
+			//{
+			//	if(ClientGameRecord.lMeShunMenScore>0)
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
+			//	}
+			//	else
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
+			//	}
+			//}
+
+
+			////--
+			//if(ClientGameRecord.wWinner & ID_DAO_MEN)
+			//{
+			//	if(ClientGameRecord.lMeDaoMenScore>0)
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
+			//	}
+			//	else
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2,m_ImageWinFlags.GetWidth()/6, 
+			//			m_ImageWinFlags.GetHeight(),0, 0, RGB(255, 0, 255) );
+			//	}
+			//}
+			//else
+			//{
+			//	if(ClientGameRecord.lMeDaoMenScore>0)
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
+			//	}
+			//	else
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*2, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
+			//	}
+			//}
+
+			//if(ClientGameRecord.wWinner & ID_TIAN_MEN)
+			//{
+			//	if(ClientGameRecord.lMeTianMenScore>0)
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 , 0, RGB(255, 0, 255) );
+			//	}
+			//	else
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32,m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),0 , 0, RGB(255, 0, 255) );
+			//	}
+			//}
+			//else
+			//{
+			//	if(ClientGameRecord.lMeTianMenScore>0)
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
+			//	}
+			//	else
+			//	{
+			//		m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32, m_ImageWinFlags.GetWidth()/6 , 
+			//			m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 2, 0, RGB(255, 0, 255) );
+			//	}
+			
 		}
 		nIndex = (nIndex+1) % MAX_SCORE_HISTORY;
 		nDrawCount++;
