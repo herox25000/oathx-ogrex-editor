@@ -310,6 +310,13 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			CMD_S_StatusFree StatusFree;
 			ZeroMemory(&StatusFree,sizeof(StatusFree));
+			if(m_lAllPlayCount >0)
+			{
+				StatusFree.fShunMen = m_lShunMenWinCount*100.00f/m_lAllPlayCount;
+				StatusFree.fTianMen = m_lTianMenWinCount*100.00f/m_lAllPlayCount;
+				StatusFree.fDaomMen = m_lDaoMenWinCount*100.00f/m_lAllPlayCount;
+			}
+
 			//下注信息
 			StatusFree.lTieScore=m_lTianMenScore;
 			StatusFree.lBankerScore=m_lDaoMenScore;
@@ -359,6 +366,12 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			CMD_S_StatusPlay StatusPlay;
 			ZeroMemory(&StatusPlay,sizeof(StatusPlay));
+			if(m_lAllPlayCount >0)
+			{
+				StatusPlay.fShunMen = m_lShunMenWinCount*100.00f/m_lAllPlayCount;
+				StatusPlay.fTianMen = m_lTianMenWinCount*100.00f/m_lAllPlayCount;
+				StatusPlay.fDaomMen = m_lDaoMenWinCount*100.00f/m_lAllPlayCount;
+			}
 			//下注信息
 			StatusPlay.lTieScore=m_lTianMenScore;
 			StatusPlay.lBankerScore=m_lDaoMenScore;

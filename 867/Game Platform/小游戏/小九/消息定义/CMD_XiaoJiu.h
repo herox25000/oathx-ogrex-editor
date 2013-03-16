@@ -130,6 +130,9 @@ struct CMD_S_StatusFree
 	__int64							lCurrentBankerScore;				//庄家分数
 	__int64							lApplyBankerCondition;				//申请条件
 	__int64							lBankerTreasure;					//庄家金币
+	float							fShunMen;		//顺门获胜的概率
+	float							fTianMen;		//天门获胜的概率
+	float							fDaomMen;		//到门获胜的概率
 };
 
 //游戏状态
@@ -163,6 +166,10 @@ struct CMD_S_StatusPlay
 	__int64							lCurrentBankerScore;				//庄家分数
 	__int64							lApplyBankerCondition;				//申请条件
 	__int64							lBankerTreasure;					//庄家金币
+
+	float							fShunMen;		//顺门获胜的概率
+	float							fTianMen;		//天门获胜的概率
+	float							fDaomMen;		//到门获胜的概率
 };
 
 //游戏开始
