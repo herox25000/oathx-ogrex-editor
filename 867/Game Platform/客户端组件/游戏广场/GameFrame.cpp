@@ -287,38 +287,24 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_BUTTON_1:				//功能按钮
 	case IDC_BT_BUTTON_2:				//功能按钮
-	case IDC_BT_BUTTON_4:				//功能按钮
-	case IDC_BT_BUTTON_5:				//功能按钮
+	//case IDC_BT_BUTTON_4:				//功能按钮
+	//case IDC_BT_BUTTON_5:				//功能按钮
 		{
 			TCHAR chDir[MAX_PATH];
 			GetCurrentDirectory(MAX_PATH, chDir);
-
 			TCHAR chFilePath[MAX_PATH];
 			sprintf(chFilePath, "%s\\BLQ.ini", chDir);
-
 			TCHAR chBrowse[MAX_PATH];
 			if(IDC_BT_BUTTON_1==nCommandID)
 			{
 				::GetPrivateProfileString("Http", "MainPage", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
 				WebBrowse(TEXT(chBrowse),true);
 			}
-
 			if(IDC_BT_BUTTON_2==nCommandID)
-			{
-				::GetPrivateProfileString("Http", "MainSet", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
-				WebBrowse(TEXT(chBrowse),true);
-			}
-			if(IDC_BT_BUTTON_4==nCommandID)
 			{
 				::GetPrivateProfileString("Http", "MainBuy", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
 				WebBrowse(TEXT(chBrowse),true);
 			}
-			if(IDC_BT_BUTTON_5==nCommandID)
-			{
-				::GetPrivateProfileString("Http", "MainLock", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
-				WebBrowse(TEXT(chBrowse),true);
-			}
-
 			return TRUE;
 		}
 	case IDC_BT_BUTTON_3:				//上传头像
@@ -328,13 +314,21 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 			{
 				m_DlgCustomFace.Create(IDD_CUSTOM_FACE, this);
 			}
-
 			//显示窗体
 			m_DlgCustomFace.CenterWindow();
 			m_DlgCustomFace.ShowWindow(SW_SHOW);
 			m_DlgCustomFace.SetActiveWindow();
 			m_DlgCustomFace.SetForegroundWindow();
-
+			return TRUE;
+		}
+	case IDC_BT_BUTTON_4:
+		{
+			::AfxMessageBox("启动银行");
+			return TRUE;
+		}
+	case IDC_BT_BUTTON_5:
+		{
+			::AfxMessageBox("设定本机");
 			return TRUE;
 		}
 	case IDC_BT_PLAZA	:				//大厅按钮
@@ -1119,12 +1113,12 @@ void CGameFrame::RectifyControl(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_BrowerAD,NULL,300,5,250,52,uFlags);
 
 	//导航按钮
-	DeferWindowPos(hDwp,m_btButton1,NULL,nWidth-rcButton.Width()*4-nButtonSpace*4-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btButton2,NULL,nWidth-rcButton.Width()*3-nButtonSpace*3-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btButton3,NULL,nWidth-rcButton.Width()*2-nButtonSpace*2-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btButton4,NULL,nWidth-rcButton.Width()*1-nButtonSpace*1-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton1,NULL,nWidth-rcButton.Width()*5-nButtonSpace*4-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton2,NULL,nWidth-rcButton.Width()*4-nButtonSpace*3-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton3,NULL,nWidth-rcButton.Width()*3-nButtonSpace*2-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btButton4,NULL,nWidth-rcButton.Width()*2-nButtonSpace*1-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btButton5,NULL,nWidth-rcButton.Width()*1-nButtonSpace*0-nEndPos,0,0,0,uFlags|SWP_NOSIZE);
-	m_btButton5.ShowWindow(SW_HIDE);
+	//m_btButton5.ShowWindow(SW_HIDE);
 
 	//获取位置
 	CRect rcButtonRect;
