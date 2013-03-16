@@ -70,6 +70,10 @@
 #define IDB_FRAME_XIAN_TIAN_WANG1       226
 #define IDB_FRAME_ZHUANG_JIA1           227
 #define IDB_FRAME_ZHUANG_TIAN_WANG1     228
+#define IDB_BT_SHENGYIN                 230
+#define IDB_BT_NOSHENGYIN               231
+#define IDB_BT_QUQIAN                   232
+#define IDB_BT_CUNQIAN                  233
 #define IDC_RECORD_LIST                 1056
 
 // Next default values for new objects

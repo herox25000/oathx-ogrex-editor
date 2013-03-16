@@ -20,6 +20,7 @@
 #define IDM_PLACE_JETTON			WM_USER+200							//加住信息
 #define IDM_APPLY_BANKER			WM_USER+201							//申请信息
 #define IDM_CUOPAI					WM_USER+202							
+#define IDM_ONBANK					WM_USER+203					
 
 #define INDEX_BANKER				0									//庄家索引
 #define INDEX_PLAYER1				1									//闲家1索引
@@ -159,7 +160,7 @@ protected:
 	CString							m_strDispatchCardTips;				//发牌提示
 
 	//庄家信息
-protected:
+public:
 	bool							m_bShowChangeBanker;				//轮换庄家
 	WORD							m_wCurrentBankerChairID;			//当前庄家
 	BYTE							m_cbBankerTime;						//做庄次数
@@ -187,7 +188,11 @@ public:
 	CSkinButton						m_btScoreMoveR;						//移动成绩
 
 	CSkinButton						m_btnZiDongCuoPai;						
-	CSkinButton						m_btnShouDongCuoPai;						
+	CSkinButton						m_btnShouDongCuoPai;	
+	CSkinButton						m_btnShengyin;						
+	CSkinButton						m_btnNoShengyin;
+	CSkinButton						m_btnQuqian;						
+	CSkinButton						m_btnCunqian;						
 
 	JettonButton					m_JettonButton[7];
 	BOOL							m_JettonButtonPushDown;
@@ -225,7 +230,6 @@ protected:
 	CSkinImage						m_ImageMeBanker;					//切换庄家
 	CSkinImage						m_ImageChangeBanker;				//切换庄家
 	CSkinImage						m_ImageNoBanker;					//切换庄家
-
 	//结束资源
 protected:
 	CSkinImage						m_ImageGameEnd;						//成绩图片
@@ -236,9 +240,7 @@ protected:
 	CPngImage						m_pngc;			
 	CPngImage						m_pngp;
 
-public:
-	__int64 							m_lKeXiaSocre;						//可下注值
-	__int64 							m_lAllJettonScore;					//已经下注的总值	
+public:	
 	bool							m_bJettonstate;						//是否是下注状态
 	//函数定义
 
@@ -326,14 +328,18 @@ public:
 	void DrawTextString(CDC * pDC, LPCTSTR pszString, COLORREF crText, COLORREF crFrame, int nXPos, int nYPos);
 	//绘画数字
 	void DrawMeJettonNumber(CDC *pDC);
-
+	//数字换化为字符串
+	CString ChangNumber(__int64 iNumber);
+	CString ChangNumber(int iNumber);
+	//计算所有下注总和
+	__int64 CalcAllJetton();
 	//内联函数
 public:
 	//当前筹码
 	inline __int64 GetCurrentJetton() { return m_lCurrentJetton; }
 	//我的位置
 	inline void SetMeChairID(WORD wMeChairID) { m_wMeChairID=wMeChairID; }
-
+	inline WORD GetMeChairID() const {return m_wMeChairID;}
 	//内部函数
 private:
 	//获取区域
@@ -370,7 +376,7 @@ protected:
 	afx_msg void OnScoreMoveR();
 
 	afx_msg void OnCuoPaiModel();
-
+	afx_msg void OnBank();
 	//消息映射
 protected:
 	//定时器消息

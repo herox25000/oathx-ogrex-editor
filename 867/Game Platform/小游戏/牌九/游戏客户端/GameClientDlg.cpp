@@ -14,7 +14,8 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CGameFrameDlg)
 	ON_WM_TIMER()
 	ON_MESSAGE(IDM_PLACE_JETTON,OnPlaceJetton)
 	ON_MESSAGE(IDM_APPLY_BANKER, OnApplyBanker)
-	//ON_MESSAGE(IDM_CUOPAI,OnCuoPai)
+	ON_MESSAGE(IDM_CUOPAI,OnCuoPai)
+	ON_MESSAGE(IDM_ONBANK,OnBank)
 END_MESSAGE_MAP()
 
 //构造函数
@@ -340,8 +341,6 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	KillGameTimer(IDI_PLACE_JETTON);
 	//SetGameTimer(GetMeChairID(),IDI_SHOW_TIME,pGameStart->cbTimeLeave);
 	m_GameClientView.m_bJettonstate=false;
-	m_GameClientView.m_lKeXiaSocre=0;
-	m_GameClientView.m_lAllJettonScore=0;
 	//更新控制
 	UpdateButtonContron();
 	DispatchUserCard(pGameStart->cbTableCardArray[INDEX_BANKER],pGameStart->cbTableCardArray[INDEX_PLAYER1],
@@ -360,8 +359,6 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 
 	//消息处理
 	CMD_S_PlaceJetton * pPlaceJetton=(CMD_S_PlaceJetton *)pBuffer;
-	m_GameClientView.m_lKeXiaSocre = pPlaceJetton->lKeXiaSocre;
-	m_GameClientView.m_lAllJettonScore = pPlaceJetton->lAllJettonScore;
 	//播放声音
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
 
@@ -1143,5 +1140,13 @@ LRESULT CGameClientDlg::OnCuoPai(WPARAM wParam, LPARAM lParam)
 	return true;
 }
 
+LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
+{
+	if ( m_GameClientView.GetMeChairID() == m_GameClientView.m_wCurrentBankerChairID)
+		UserOnBankBT(TRUE);
+	else
+		UserOnBankBT(FALSE);
 
+	return 0;
+}
 

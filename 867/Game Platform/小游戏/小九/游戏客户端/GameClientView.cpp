@@ -646,7 +646,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
 		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 	else 
-		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 0, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 
 
 	//ªÊª≠”√ªß
