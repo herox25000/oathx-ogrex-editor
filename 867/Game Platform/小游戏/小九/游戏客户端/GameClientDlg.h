@@ -11,7 +11,6 @@ class CGameClientDlg : public CGameFrameDlg
 	//限制信息
 protected:
 	__int64							m_lMeMaxScore;						//最大下注
-	__int64							m_lCellScore;						//最大单元分数
 
 	//下注信息
 protected:
@@ -124,6 +123,7 @@ protected:
 	LRESULT OnApplyBanker(WPARAM wParam, LPARAM lParam);
 
 	LRESULT OnCuoPai(WPARAM wParam, LPARAM lParam);
+	LRESULT OnBank(WPARAM wParam, LPARAM lParam);
 
 	DECLARE_MESSAGE_MAP()
 };

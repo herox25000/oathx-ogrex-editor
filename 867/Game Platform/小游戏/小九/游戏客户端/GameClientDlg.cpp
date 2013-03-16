@@ -14,13 +14,13 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CGameFrameDlg)
 	ON_WM_TIMER()
 	ON_MESSAGE(IDM_PLACE_JETTON,OnPlaceJetton)
 	ON_MESSAGE(IDM_APPLY_BANKER, OnApplyBanker)
-	//ON_MESSAGE(IDM_CUOPAI,OnCuoPai)
+	ON_MESSAGE(IDM_CUOPAI,OnCuoPai)
+	ON_MESSAGE(IDM_ONBANK,OnBank)
 END_MESSAGE_MAP()
 
 //构造函数
 CGameClientDlg::CGameClientDlg() : CGameFrameDlg(&m_GameClientView)
 {
-	m_lCellScore=0;
 	//下注信息
 	m_lMeMaxScore=0L;
 	m_lMeTianMenScore=0L;
@@ -223,8 +223,6 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			m_GameClientView.SetMeTieSamePointScore(pStatusFree->lMeTieKingScore);
 
 			m_wCurrentBanker = pStatusFree->wCurrentBankerChairID;
-
-			m_lCellScore=pStatusFree->lCellScore;
 			//设置变量
 			m_lMeMaxScore= pStatusFree->lMeMaxScore ;
 			m_lMeTianMenScore=pStatusFree->lMeTieScore;
@@ -271,8 +269,6 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 
 			//庄家变量
 			m_lApplyBankerCondition = pStatusPlay->lApplyBankerCondition;
-
-			m_lCellScore=pStatusPlay->lCellScore;
 			//设置变量
 			m_lMeMaxScore=pStatusPlay->lMeMaxScore ;
 			m_lMeTianMenScore=pStatusPlay->lMeTieScore;
@@ -342,8 +338,8 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	KillGameTimer(IDI_PLACE_JETTON);
 	//SetGameTimer(GetMeChairID(),IDI_SHOW_TIME,pGameStart->cbTimeLeave);
 	m_GameClientView.m_bJettonstate=false;
-	m_GameClientView.m_lKeXiaSocre=0;
-	m_GameClientView.m_lAllJettonScore=0;
+	m_GameClientView.m_lZhuangScore=pGameStart->lBankerScore;
+	m_GameClientView.m_lKexiaScore=pGameStart->lBankerScore;
 	//更新控制
 	UpdateButtonContron();
 	DispatchUserCard(pGameStart->cbTableCardArray[INDEX_BANKER],pGameStart->cbTableCardArray[INDEX_PLAYER1],
@@ -361,8 +357,8 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 	if (wDataSize!=sizeof(CMD_S_PlaceJetton)) return false;
 	//消息处理
 	CMD_S_PlaceJetton * pPlaceJetton=(CMD_S_PlaceJetton *)pBuffer;
-	m_GameClientView.m_lKeXiaSocre = pPlaceJetton->lKeXiaSocre;
-	m_GameClientView.m_lAllJettonScore = pPlaceJetton->lAllJettonScore;
+	m_GameClientView.m_lZhuangScore = pPlaceJetton->lZhuangSocre;
+	m_GameClientView.m_lKexiaScore = pPlaceJetton->lKexiaSocre;
 	//播放声音
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
 	//加注界面
@@ -380,14 +376,17 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 
 	//消息处理
 	CMD_S_GameEnd * pGameEnd=(CMD_S_GameEnd *)pBuffer;
-
-	m_lCellScore=pGameEnd->lCellScore;
 	//设置状态
 	SetGameStatus(GS_FREE);
 	KillTimer(IDI_DISPATCH_CARD);
 	KillTimer(IDI_SHOW_GAME_RESULT);
 	KillTimer(IDI_CUO_POKER_TIME);
 	m_GameClientView.SetDispatchCardFalg(false);
+
+	//记录各门的获胜概率
+	m_GameClientView.m_fWinCount[0]=pGameEnd->fShunMen;
+	m_GameClientView.m_fWinCount[1]=pGameEnd->fTianMen;
+	m_GameClientView.m_fWinCount[2]=pGameEnd->fDaomMen;
 
 	//更新成绩
 	for ( WORD wUserIndex = 0; wUserIndex < MAX_CHAIR; ++wUserIndex )
@@ -526,9 +525,7 @@ void CGameClientDlg::UpdateButtonContron()
 	{
 		//计算积分
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
-		__int64 lLeaveScore=m_lMeMaxScore-m_lMeTianMenScore-m_lMeDaoMenScore-m_lMeShunMenScore-m_lMeYouJiaoScore-m_lMeZuoJiaoScore-m_lMeQiaoScore;
-
-		//lLeaveScore=min(lLeaveScore, m_lCellScore);
+		__int64 lLeaveScore=m_lMeMaxScore-m_lMeTianMenScore-m_lMeDaoMenScore-m_lMeShunMenScore;
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{
@@ -796,47 +793,40 @@ LRESULT CGameClientDlg::OnPlaceJetton(WPARAM wParam, LPARAM lParam)
 		UpdateButtonContron();
 		return true;
 	}
-
 	//设置变量
 	switch (cbJettonArea)
 	{
-		case ID_SHUN_MEN:
-			{
-				m_lMeShunMenScore += lJettonScore;
-				m_GameClientView.SetMePlayerScore(m_lMeShunMenScore);
-				break;
-			}
-		case ID_TIAN_MEN:
-			{
-				m_lMeTianMenScore += lJettonScore;
-				m_GameClientView.SetMeTieScore(m_lMeTianMenScore);
-				break;
-			}
-		case ID_DAO_MEN:
-			{
-				m_lMeDaoMenScore += lJettonScore;
-				m_GameClientView.SetMeBankerScore(m_lMeDaoMenScore);
-				break;
-			}
+	case ID_SHUN_MEN:
+		{
+			m_lMeShunMenScore += lJettonScore;
+			m_GameClientView.SetMePlayerScore(m_lMeShunMenScore);
+			break;
+		}
+	case ID_TIAN_MEN:
+		{
+			m_lMeTianMenScore += lJettonScore;
+			m_GameClientView.SetMeTieScore(m_lMeTianMenScore);
+			break;
+		}
+	case ID_DAO_MEN:
+		{
+			m_lMeDaoMenScore += lJettonScore;
+			m_GameClientView.SetMeBankerScore(m_lMeDaoMenScore);
+			break;
+		}
 	}
-
 	//变量定义
 	CMD_C_PlaceJetton PlaceJetton;
 	ZeroMemory(&PlaceJetton,sizeof(PlaceJetton));
-
 	//构造变量
 	PlaceJetton.cbJettonArea=cbJettonArea;
 	PlaceJetton.lJettonScore=lJettonScore;
-
 	//发送消息
 	SendData(SUB_C_PLACE_JETTON,&PlaceJetton,sizeof(PlaceJetton));
-
 	//更新按钮
 	UpdateButtonContron();
-
 	//设置状态
 	m_bPlaying = true;
-
 	return 0;
 }
 
@@ -1069,9 +1059,9 @@ void CGameClientDlg::SetDispatchCardTips()
 //推断赢家
 void CGameClientDlg::DeduceWinner(WORD &cbWinner)
 {
+	bool bTongdian=false;
 	cbWinner = 0;
-
-	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER1],2))
+	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER1],2,bTongdian))
 	{
 		cbWinner = (cbWinner & ~ID_SHUN_MEN);
 	}
@@ -1080,7 +1070,7 @@ void CGameClientDlg::DeduceWinner(WORD &cbWinner)
 		cbWinner|=ID_SHUN_MEN;
 	}
 
-	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER2],2))
+	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER2],2,bTongdian))
 	{
 		cbWinner = (cbWinner & ~ID_TIAN_MEN);
 	}
@@ -1088,7 +1078,7 @@ void CGameClientDlg::DeduceWinner(WORD &cbWinner)
 	{
 		cbWinner |=ID_TIAN_MEN;
 	}
-	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER3],2))
+	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER3],2,bTongdian))
 	{
 		cbWinner = (cbWinner & ~ID_DAO_MEN);
 	}
@@ -1129,5 +1119,9 @@ LRESULT CGameClientDlg::OnCuoPai(WPARAM wParam, LPARAM lParam)
 	return true;
 }
 
-
+LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
+{
+	UserOnBankBT();
+	return true;
+}
 

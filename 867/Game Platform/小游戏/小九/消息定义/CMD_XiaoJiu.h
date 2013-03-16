@@ -35,6 +35,9 @@ static void SuperRand()
 #define ID_SHUN_MEN					0x01			//顺门（上门）
 #define ID_TIAN_MEN					0x02			//天门（对门）
 #define ID_DAO_MEN					0x04			//倒门（下门）
+#define ID_SHUN_MEN_PIN				0x08			//顺门平
+#define ID_TIAN_MEN_PIN				0x10			//天门平
+#define ID_DAO_MEN_PIN				0x20			//倒门平
 #define ID_QUAN_SHU					0x40									//全输
 
 //记录信息
@@ -104,8 +107,6 @@ struct CMD_S_StatusFree
 {
 	//全局信息
 	BYTE							cbTimeLeave;						//剩余时间
-	__int64							lCellScore;							//最大单元下注
-
 	//下注信息
 	__int64							lTieScore;							//买平总注
 	__int64							lBankerScore;						//买庄总注
@@ -135,7 +136,6 @@ struct CMD_S_StatusFree
 struct CMD_S_StatusPlay
 {
 	BYTE							cbTimeLeave;						//剩余时间
-	__int64							lCellScore;							//最大单元下注
 	//下注信息
 	__int64							lTieScore;							//买平总注
 	__int64							lBankerScore;						//买庄总注
@@ -185,8 +185,8 @@ struct CMD_S_PlaceJetton
 	WORD							wChairID;							//用户位置
 	BYTE							cbJettonArea;						//筹码区域
 	__int64							lJettonScore;						//加注数目
-	__int64							lKeXiaSocre;						//可下注值
-	__int64							lAllJettonScore;					//已经下注的总值	
+	__int64							lZhuangSocre;						//可下注值
+	__int64							lKexiaSocre;					//已经下注的总值	
 };
 
 //游戏结束
@@ -195,8 +195,6 @@ struct CMD_S_GameEnd
 	//下局信息
 	__int64							lMeMaxScore;						//最大下注
 	BYTE							cbTimeLeave;						//剩余时间
-	__int64							lCellScore;							//最大下注
-
 	//成绩记录
 	BYTE							cbWinner;							//胜利玩家
 	BYTE							cbKingWinner;						//天王胜利
@@ -205,6 +203,9 @@ struct CMD_S_GameEnd
 	__int64							lBankerTotalScore;					//庄家成绩
 	__int64							lBankerScore;						//庄家成绩
 	INT								nBankerTime;						//做庄次数
+	float							fShunMen;		//顺门获胜的概率
+	float							fTianMen;		//天门获胜的概率
+	float							fDaomMen;		//到门获胜的概率
 };
 
 //游戏得分

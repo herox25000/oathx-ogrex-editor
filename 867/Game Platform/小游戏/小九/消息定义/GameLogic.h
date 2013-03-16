@@ -70,7 +70,7 @@ public:
 	}
 	//ÅÅÁÐÆË¿Ë
 	void SortCard(BYTE bCardList[], BYTE bCardCount);
-	bool CompareCard(BYTE bFirstList[], BYTE bNextList[], BYTE bCardCount);
+	bool CompareCard(BYTE bFirstList[], BYTE bNextList[], BYTE bCardCount,bool &bTongdian);
 	BYTE GetMaxColor(BYTE bCardList[]);
 	int GetMaxSingleValue(BYTE bCardList[]);
 	CString GetCardNick(BYTE bCardList[]);
