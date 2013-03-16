@@ -69,6 +69,39 @@ struct tagClientGameRecord
 
 };
 
+enum {
+	JBST_NORMAL,
+	JBST_OVER,
+	JBST_PUSHDOWN,
+	JBST_PUSHUP,
+	JBST_DISABLE,
+};
+
+class JettonButton
+{
+public:
+	JettonButton();
+	virtual ~JettonButton();
+
+	virtual	void					Create(const CRect& rect, UINT uIDResource, HINSTANCE hResourceDLL);
+	virtual	void					SetImageResource(UINT uIDResource, HINSTANCE hResourceDLL);
+
+	virtual	void					SetState(int nState);
+	virtual int						GetState() const;
+	
+	virtual	void					SetClientRect(const CRect& rect);
+	virtual CRect					GetClientRect() const;
+
+	virtual	void					Draw(CDC* pDC);
+
+	virtual	void					Enabled(BOOL bEnabled);
+protected:
+	CSkinImage						m_SkinImage;
+	int								m_nState;
+	CRect							m_SkinRect;
+	
+};
+
 //////////////////////////////////////////////////////////////////////////
 
 //游戏视图
@@ -152,13 +185,13 @@ protected:
 	//控件变量
 public:
 
-	CSkinButton						m_btJetton1000;						//筹码按钮
-	CSkinButton						m_btJetton10000;					//筹码按钮
-	CSkinButton						m_btJetton100000;					//筹码按钮
-	CSkinButton						m_btJetton500000;					//筹码按钮	
-	CSkinButton						m_btJetton1000000;					//筹码按钮	
-	CSkinButton						m_btJetton5000000;					//筹码按钮	
-	CSkinButton						m_btJetton10000000;					//筹码按钮
+	//CSkinButton						m_btJetton1000;						//筹码按钮
+	//CSkinButton						m_btJetton10000;					//筹码按钮
+	//CSkinButton						m_btJetton100000;					//筹码按钮
+	//CSkinButton						m_btJetton500000;					//筹码按钮	
+	//CSkinButton						m_btJetton1000000;					//筹码按钮	
+	//CSkinButton						m_btJetton5000000;					//筹码按钮	
+	//CSkinButton						m_btJetton10000000;					//筹码按钮
 	CSkinButton						m_btApplyBanker;					//申请庄家
 	CSkinButton						m_btCancelBanker;					//取消庄家
 	CSkinButton						m_btScoreMoveL;						//历史记录移动按钮
@@ -170,6 +203,8 @@ public:
 	CSkinButton						m_btnQuqian;						
 	CSkinButton						m_btnCunqian;
 
+	JettonButton					m_JettonButton[7];
+	BOOL							m_JettonButtonPushDown;
 	//控件变量
 public:
 	CApplyUser						m_ApplyUser;						//申请列表
@@ -185,9 +220,6 @@ protected:
 	CSkinImage						m_ImageMeScoreNumber;				//数字视图
 	CSkinImage						m_ImageTimeFlag;					//时间标识
 
-	CSkinImage						m_JettonButtonSkin[6];
-	UINT							m_JettonState;
-	int								m_JettonIndex;
 	//边框资源
 protected:
 	CSkinImage						m_ImageFrameXianJia;				//边框图片
@@ -221,8 +253,8 @@ protected:
 	CPngImage						m_pngp;
 
 public:
-	__int64 							m_lZhuangScore;						//可下注值
-	__int64 							m_lKexiaScore;					//已经下注的总值	
+	__int64 							m_lZhuangScore;						//庄家金
+	__int64 							m_lKexiaScore;						//可下注值
 	bool								m_bJettonstate;						//是否是下注状态
 
 	//函数定义
