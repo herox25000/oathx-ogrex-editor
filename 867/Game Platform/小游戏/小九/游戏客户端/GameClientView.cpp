@@ -259,7 +259,6 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_bSet=false;
 	m_bAutoCard=true;
 	m_bJettonstate=true;
-	m_lZhuangScore=0;
 	m_lKexiaScore=0;
 	m_fWinCount[0]=0.00f;
 	m_fWinCount[1]=0.00f;
@@ -619,6 +618,9 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	CImageHandle HandleJettonView(&m_ImageJettonView);
 	CSize SizeJettonItem(m_ImageJettonView.GetWidth()/JETTON_COUNT,m_ImageJettonView.GetHeight());
 
+	// 所有玩家的下注总和
+	__int64	uAllScoreCount = 0;
+
 	//绘画筹码
 	for (INT i=0;i<3;i++)
 	{
@@ -641,8 +643,10 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 				pJettonInfo->cbJettonIndex*SizeJettonItem.cx,0,RGB(255,0,255));
 		}
 		//绘画数字
-		if (lScoreCount>0L)	
+		if (lScoreCount>0L)
 			DrawNumberString(pDC,lScoreCount,m_PointJetton[i].x,m_PointJetton[i].y);
+
+		uAllScoreCount += lScoreCount;
 	}
 
 	//我的下注
@@ -687,7 +691,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	}
 
 	// 如果是下注状态
-	if(m_bJettonstate && m_lZhuangScore>0)
+	if(m_bJettonstate )
 	{
 		//绘制下注进度条
 		int iStatrX=nWidth/2-130;
@@ -699,19 +703,18 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		//进度条
 		m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,m_pngp.GetWidth(),m_pngp.GetHeight()/2,0,0,m_pngp.GetWidth(),m_pngp.GetHeight()/2);
 		
-		float fProportion	= 0.0f;
-		int nOffset			= m_pngp.GetWidth();
-		if(m_lKexiaScore !=0)
-			fProportion = m_lZhuangScore/m_lKexiaScore;
-		if(fProportion !=0)
-			nOffset = m_pngp.GetWidth()/fProportion;
-
-		m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,nOffset,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,nOffset,m_pngp.GetHeight()/2);
-	
-		//可下注
-		DrawNumberString(pDC,m_lKexiaScore,nWidth/2,iStatrY+10,true);
-		//已经下注
-		DrawNumberString(pDC,m_lZhuangScore-m_lKexiaScore,nWidth/2,iStatrY+60,true);
+		const tagUserData* pBankerInfo = GetUserInfo(m_wCurrentBankerChairID);
+		if (pBankerInfo)
+		{
+			__int64 uCurrntReamtionScore = pBankerInfo->lScore - uAllScoreCount;			
+			float fProportion	= uCurrntReamtionScore*1.0f / pBankerInfo->lScore;
+			int nOffset			= floor(m_pngp.GetWidth()*fProportion);
+			m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,nOffset,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,nOffset,m_pngp.GetHeight()/2);
+			//可下注
+			DrawNumberString(pDC, uCurrntReamtionScore, nWidth/2,iStatrY+10,true);
+			//已经下注
+			DrawNumberString(pDC, uAllScoreCount, nWidth/2,iStatrY+60,true);
+		}
 	}
 
 	for (int i=0; i<7; i++)
@@ -1521,7 +1524,7 @@ void CGameClientView::SetBankerInfo( WORD wChairID, BYTE cbBankerTime, __int64 l
 void CGameClientView::SetBankerTreasure(__int64 lBankerTreasure)
 {
 	m_lBankerTreasure = lBankerTreasure;
-	m_lZhuangScore=lBankerTreasure;
+	//m_lZhuangScore=lBankerTreasure;
 	UpdateGameView(NULL);
 }
 
@@ -2058,3 +2061,27 @@ CString CGameClientView::ChangNumber(int iNumber)
 	}
 	return strNumber;
 }
+
+//计算所有下注总和
+__int64 CGameClientView::CalcAllJetton()
+{
+	__int64 uAllScoreCount=0;
+	//绘画筹码
+	for (INT i=0;i<3;i++)
+	{
+		//变量定义
+		__int64 lScoreCount=0L;
+		__int64 lScoreJetton[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
+		//绘画筹码
+		for (INT_PTR j=0;j<m_JettonInfoArray[i].GetCount();j++)
+		{
+			//获取信息
+			tagJettonInfo * pJettonInfo=&m_JettonInfoArray[i][j];
+			//累计数字
+			ASSERT(pJettonInfo->cbJettonIndex<JETTON_COUNT);
+			lScoreCount+=lScoreJetton[pJettonInfo->cbJettonIndex];
+		}
+		uAllScoreCount += lScoreCount;
+	}
+	return uAllScoreCount;
+};
