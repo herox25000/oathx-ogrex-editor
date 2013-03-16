@@ -209,7 +209,10 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 
 			//消息处理
 			CMD_S_StatusFree * pStatusFree=(CMD_S_StatusFree *)pBuffer;
-
+			//记录各门的获胜概率
+			m_GameClientView.m_fWinCount[0]=pStatusFree->fShunMen;
+			m_GameClientView.m_fWinCount[1]=pStatusFree->fTianMen;
+			m_GameClientView.m_fWinCount[2]=pStatusFree->fDaomMen;
 			//庄家变量
 			m_lApplyBankerCondition = pStatusFree->lApplyBankerCondition;			
 
@@ -244,6 +247,8 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 				m_GameClientView.SetBankerInfo( SwitchViewChairID( pStatusFree->wCurrentBankerChairID ), pStatusFree->cbBankerTime, pStatusFree->lBankerScore );
 			m_GameClientView.SetBankerTreasure(pStatusFree->lBankerTreasure);
 
+			m_GameClientView.m_lKexiaScore = pStatusFree->lCurrentBankerScore-pStatusFree->lTieScore-pStatusFree->lBankerScore-pStatusFree->lPlayerScore;
+
 			//下注界面
 			m_GameClientView.PlaceUserJetton(ID_TIAN_MEN,pStatusFree->lTieScore);
 			m_GameClientView.PlaceUserJetton(ID_DAO_MEN,pStatusFree->lBankerScore);
@@ -271,7 +276,10 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 
 			//消息处理
 			CMD_S_StatusPlay * pStatusPlay=(CMD_S_StatusPlay *)pBuffer;
-
+			//记录各门的获胜概率
+			m_GameClientView.m_fWinCount[0]=pStatusPlay->fShunMen;
+			m_GameClientView.m_fWinCount[1]=pStatusPlay->fTianMen;
+			m_GameClientView.m_fWinCount[2]=pStatusPlay->fDaomMen;
 			//庄家变量
 			m_lApplyBankerCondition = pStatusPlay->lApplyBankerCondition;
 			//设置变量
@@ -319,6 +327,7 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			DispatchUserCard(pStatusPlay->cbTableCardArray[INDEX_BANKER],pStatusPlay->cbTableCardArray[INDEX_PLAYER1],
 				pStatusPlay->cbTableCardArray[INDEX_PLAYER2],pStatusPlay->cbTableCardArray[INDEX_PLAYER3],pStatusPlay->cbTableCardArray[INDEX_PRECARD]);
 
+			m_GameClientView.m_lKexiaScore = pStatusPlay->lCurrentBankerScore-pStatusPlay->lTieScore-pStatusPlay->lBankerScore-pStatusPlay->lPlayerScore;
 			//禁用按钮
 			m_GameClientView.m_btApplyBanker.EnableWindow( FALSE );
 			m_GameClientView.m_btCancelBanker.EnableWindow( FALSE );
@@ -486,6 +495,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	SetGameTimer(GetMeChairID(),IDI_PLACE_JETTON,pGameEnd->cbTimeLeave);
 
 	m_GameClientView.m_bJettonstate=true;
+	m_GameClientView.m_lKexiaScore=pGameEnd->lBankerTreasure;
 	return true;
 }
 
