@@ -2005,7 +2005,7 @@ void CRoomViewItem::RectifyControl(int nWidth, int nHeight)
 
 	//ÊúÏò·¶Î§
 	INT nVorMaxPos=nWidth-nXScreen/4;
-	INT nVorLessPos=nXScreen*2/5;
+	INT nVorLessPos=nXScreen*2/3;
 	m_VorSplitter.SetSplitterRange(nVorLessPos,nVorMaxPos);
 	UINT uControlId = ((!m_bHideUserList)?GetServerViewRes().uBtHideUserList:GetServerViewRes().uBtShowUserList);
 	m_VorSplitter.ShowSplitterButton(uControlId,GetResInstanceHandle());
