@@ -699,13 +699,14 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		//进度条
 		m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,m_pngp.GetWidth(),m_pngp.GetHeight()/2,0,0,m_pngp.GetWidth(),m_pngp.GetHeight()/2);
 		
-		int a=0;
-		int jindu = m_pngp.GetWidth();
-		if(m_lKexiaScore!=0)
-			a = m_lZhuangScore/m_lKexiaScore;
-		if(a!=0)
-			jindu = m_pngp.GetWidth()/a;
-		m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,jindu,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,jindu,m_pngp.GetHeight()/2);
+		float fProportion	= 0.0f;
+		int nOffset			= m_pngp.GetWidth();
+		if(m_lKexiaScore !=0)
+			fProportion = m_lZhuangScore/m_lKexiaScore;
+		if(fProportion !=0)
+			nOffset = m_pngp.GetWidth()/fProportion;
+
+		m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,nOffset,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,nOffset,m_pngp.GetHeight()/2);
 	
 		//可下注
 		DrawNumberString(pDC,m_lKexiaScore,nWidth/2,iStatrY+10,true);
@@ -2038,7 +2039,10 @@ CString CGameClientView::ChangNumber(__int64 iNumber)
 	strNumber.Format("%I64d",iNumber);
 	int len=strNumber.GetLength();
 	for(int index = len-3; index > 0; index -= 3)
-		strNumber.Insert(index, ",");
+	{
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
+	}
 	return strNumber;
 }
 
@@ -2048,6 +2052,9 @@ CString CGameClientView::ChangNumber(int iNumber)
 	strNumber.Format("%d",iNumber);
 	int len=strNumber.GetLength();
 	for(int index = len-3; index > 0; index -= 3)
-		strNumber.Insert(index, ",");
+	{
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
+	}
 	return strNumber;
 }
