@@ -11,9 +11,6 @@
 #define IDB_SCORE_NUMBER                151
 #define IDB_BT_JETTON_1000              152
 #define IDB_BT_JETTON_10000             153
-#define IDB_BT_JETTON_1                 154
-#define IDB_BT_JETTON_10                155
-#define IDB_BT_JETTON_100               156
 #define IDB_BT_JETTON_100000            157
 #define IDB_FRAME_R                     159
 #define IDB_FRAME_L                     160
@@ -31,8 +28,7 @@
 #define IDB_BITMAP2                     180
 #define IDB_BT_CANCEL_BANKER            180
 #define IDB_BITMAP1                     183
-#define IDB_BT_JETTON_500               184
-#define IDB_BT_JETTON_50000             185
+#define IDB_BT_JETTON_10000000          184
 #define IDB_BT_JETTON_500000            186
 #define IDC_SCORE_500                   187
 #define IDC_SCORE_50000                 188
@@ -61,23 +57,19 @@
 #define IDB_BT_CANCEL_APPLY             212
 #define IDB_TIME_FLAG                   213
 #define IDB_ME_SCORE_NUMBER             214
-#define IDB_CARDHAND					220
-
 #define IDB_BT_JETTON_1000000           215
 #define IDB_BT_JETTON_5000000           216
 #define IDC_SCORE_1000000               217
 #define IDC_SCORE_5000000               218
-
-#define IDB_ZiDONGCUOPAI				221
-#define IDB_SHOUDONDCUOPAI				222
-
-#define IDB_FRAME_PING_JIA1              223
-#define IDB_FRAME_TONG_DIAN_PING1        224
+#define IDB_CARDHAND                    220
+#define IDB_ZiDONGCUOPAI                221
+#define IDB_SHOUDONDCUOPAI              222
+#define IDB_FRAME_PING_JIA1             223
+#define IDB_FRAME_TONG_DIAN_PING1       224
 #define IDB_FRAME_XIAN_JIA1             225
-#define IDB_FRAME_XIAN_TIAN_WANG1        226
-#define IDB_FRAME_ZHUANG_JIA1            227
-#define IDB_FRAME_ZHUANG_TIAN_WANG1      228
-
+#define IDB_FRAME_XIAN_TIAN_WANG1       226
+#define IDB_FRAME_ZHUANG_JIA1           227
+#define IDB_FRAME_ZHUANG_TIAN_WANG1     228
 #define IDC_RECORD_LIST                 1056
 
 // Next default values for new objects

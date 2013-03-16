@@ -258,6 +258,9 @@
 				RelativePath=".\Res\BT_JETTON_1000000.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\BT_JETTON_10000000.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\Bt_jetton_500.bmp">
 			</File>
 			<File

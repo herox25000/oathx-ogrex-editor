@@ -44,13 +44,6 @@ BEGIN_MESSAGE_MAP(CGameClientView, CGameFrameView)
 	ON_WM_SETCURSOR()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_RBUTTONDOWN()
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_500000, OnJettonButton500000)
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_1000000, OnJettonButton1000000)
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_5000000, OnJettonButton5000000)
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_100, OnJettonButton100)
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_1000, OnJettonButton1000)
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_10000, OnJettonButton10000)
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_100000, OnJettonButton100000)
 	ON_BN_CLICKED(IDC_APPY_BANKER, OnApplyBanker)
 	ON_BN_CLICKED(IDC_CANCEL_BANKER, OnCancelBanker)
 	ON_BN_CLICKED(IDC_SCORE_MOVE_L, OnScoreMoveL)
@@ -63,6 +56,81 @@ BEGIN_MESSAGE_MAP(CGameClientView, CGameFrameView)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
+
+
+JettonButton::JettonButton() : m_nState(0)
+{
+
+}
+
+JettonButton::~JettonButton()
+{
+
+}
+
+void	JettonButton::Create(const CRect& rect, UINT uIDResource, HINSTANCE hResourceDLL)
+{
+	m_SkinRect	= rect;
+	SetImageResource(uIDResource, hResourceDLL);
+}
+
+void	JettonButton::SetImageResource(UINT uIDResource, HINSTANCE hResourceDLL)
+{
+	m_SkinImage.SetLoadInfo(uIDResource, hResourceDLL);
+}
+
+void	JettonButton::SetState(int nState)
+{
+	m_nState = nState;
+}
+
+int		JettonButton::GetState() const
+{
+	return m_nState;
+}
+
+void	JettonButton::SetClientRect(const CRect& rect)
+{
+	m_SkinRect = rect;
+}
+
+CRect	JettonButton::GetClientRect() const
+{
+	return m_SkinRect;
+}
+
+void	JettonButton::Enabled(BOOL bEnabled)
+{
+	m_nState = bEnabled ? JBST_DISABLE : JBST_NORMAL;
+}
+
+void	JettonButton::Draw(CDC* pDC)
+{
+	CImageHandle skin(&m_SkinImage);
+
+	int nDrawRectFlage = 0;
+	switch( m_nState )
+	{
+	case JBST_NORMAL:
+		nDrawRectFlage = 0;
+		break;
+	case JBST_OVER:
+		nDrawRectFlage = 2;
+		break;
+	case JBST_PUSHDOWN:
+		nDrawRectFlage = 1;
+		break;
+	case JBST_PUSHUP:
+		nDrawRectFlage = 3;
+		break;
+	case JBST_DISABLE:
+		nDrawRectFlage = 4;
+		break;
+	}
+
+	m_SkinImage.AlphaDrawImage(pDC, m_SkinRect.left, m_SkinRect.top, m_SkinRect.right - m_SkinRect.left,
+		m_SkinRect.bottom - m_SkinRect.top, nDrawRectFlage * (m_SkinRect.right - m_SkinRect.left), 0, RGB(255,0, 255));
+}
 
 //构造函数
 CGameClientView::CGameClientView() : CGameFrameView(true,24)
@@ -115,6 +183,7 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_lBankerScore = 0;		
 	m_lBankerTreasure=0;
 
+	m_JettonButtonPushDown	= FALSE;
 
 	//加载位图
 	HINSTANCE hInstance=AfxGetInstanceHandle();
@@ -158,6 +227,25 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	str.Format(TEXT("%s\\Resource\\Games\\PaiJiu\\RES\\PNG_IDB_IDB_TIPP_PNG.png"),szPath);
 	m_pngp.LoadImage(str);
 
+	UINT IDBT_JETTON[]=
+	{ 
+		IDB_BT_JETTON_1000,
+		IDB_BT_JETTON_10000,
+		IDB_BT_JETTON_100000,
+		IDB_BT_JETTON_500000,
+		IDB_BT_JETTON_1000000,
+		IDB_BT_JETTON_5000000,
+		IDB_BT_JETTON_10000000,
+	};
+
+	int x = 300;
+	int y = 530;
+	for (int i=0; i<7; i++)
+	{
+		int dx = x + i * JETTON_WIDTH;
+		m_JettonButton[i].Create(CRect(dx, y, dx + JETTON_WIDTH, y + JETTON_HEIGHT), IDBT_JETTON[i], hInstance);
+	}
+
 	GetMaxTieScore();
 	m_bCanGo=false;
 	m_bSet=false;
@@ -185,15 +273,6 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_GameRecord.ShowWindow(SW_HIDE);
 	
 	m_DrawCard[4].SetPreCard(true);
-
-	//创建按钮
-	m_btJetton100.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_JETTON_BUTTON_100);
-	m_btJetton1000.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_JETTON_BUTTON_1000);
-	m_btJetton10000.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_JETTON_BUTTON_10000);
-	m_btJetton100000.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_JETTON_BUTTON_100000);
-	m_btJetton500000.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_JETTON_BUTTON_500000);	
-	m_btJetton1000000.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_JETTON_BUTTON_1000000);
-	m_btJetton5000000.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_JETTON_BUTTON_5000000);
 	
 	m_btApplyBanker.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_APPY_BANKER);
 	m_btCancelBanker.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_CANCEL_BANKER);
@@ -210,13 +289,6 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//设置按钮
 	HINSTANCE hResInstance=AfxGetInstanceHandle();
-	m_btJetton100.SetButtonImage(IDB_BT_JETTON_100,hResInstance,false);
-	m_btJetton1000.SetButtonImage(IDB_BT_JETTON_1000,hResInstance,false);
-	m_btJetton10000.SetButtonImage(IDB_BT_JETTON_10000,hResInstance,false);
-	m_btJetton100000.SetButtonImage(IDB_BT_JETTON_100000,hResInstance,false);
-	m_btJetton500000.SetButtonImage(IDB_BT_JETTON_500000,hResInstance,false);
-	m_btJetton1000000.SetButtonImage(IDB_BT_JETTON_1000000,hResInstance,false);	
-	m_btJetton5000000.SetButtonImage(IDB_BT_JETTON_5000000,hResInstance,false);
 	
 	m_btApplyBanker.SetButtonImage(IDB_BT_APPLY_BANKER,hResInstance,false);
 	m_btCancelBanker.SetButtonImage(IDB_BT_CANCEL_APPLY,hResInstance,false);
@@ -311,17 +383,13 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 
 	//筹码按钮
 	CRect rcJetton;
-	m_btJetton100.GetWindowRect(&rcJetton);
-	int nYPos = nHeight/2+175;
-	int nXPos = nWidth/2-160+98;
-	int nSpace = 2;
-	DeferWindowPos(hDwp,m_btJetton100,NULL,nXPos,nYPos,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btJetton1000,NULL,nXPos + nSpace  + rcJetton.Width() ,nYPos,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btJetton10000,NULL,nXPos + nSpace * 2 + rcJetton.Width() * 2,nYPos,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btJetton100000,NULL,nXPos + nSpace * 3 + rcJetton.Width() * 3,nYPos,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btJetton500000,NULL,nXPos + nSpace * 4 + rcJetton.Width() * 4,nYPos,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btJetton1000000,NULL,nXPos + nSpace * 5 + rcJetton.Width() * 5,nYPos,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btJetton5000000,NULL,nXPos + nSpace * 6 + rcJetton.Width() * 6,nYPos,0,0,uFlags|SWP_NOSIZE);
+	int nXPos = nWidth / 2 - 205;
+	int nYPos = nHeight / 2 + 176;
+	for (int i=0; i<7; i++)
+	{
+		int dx = nXPos + i * JETTON_WIDTH;
+		m_JettonButton[i].SetClientRect(CRect(dx, nYPos, dx + JETTON_WIDTH, nYPos + JETTON_HEIGHT));
+	}
 
 	//上庄按钮
 	DeferWindowPos(hDwp,m_btApplyBanker,NULL,nWidth/2+273,nHeight/2-337,0,0,uFlags|SWP_NOSIZE);
@@ -689,6 +757,10 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		m_pngp.DrawImage(pDC,iStatrX+m_pngc.GetWidth(),iStatrY+6,jindu,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,jindu,m_pngp.GetHeight()/2);
 	}
 
+	for (int i=0; i<7; i++)
+	{
+		m_JettonButton[i].Draw(pDC);
+	}
 
 	for(int i=0;i<5;i++)
 	{
@@ -1132,37 +1204,6 @@ void CGameClientView::DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, IN
 }
 
 //筹码按钮
-void CGameClientView::OnJettonButton500000()
-{
-	//设置变量
-	m_lCurrentJetton=500000L;
-
-	return;
-}
-void CGameClientView::OnJettonButton1000000()
-{
-	//设置变量
-	m_lCurrentJetton=1000000L;
-
-	return;
-}
-void CGameClientView::OnJettonButton5000000()
-{
-	//设置变量
-	m_lCurrentJetton=5000000L;
-
-	return;
-}
-//筹码按钮
-void CGameClientView::OnJettonButton100()
-{
-	//设置变量
-	m_lCurrentJetton=100L;
-
-	return;
-}
-
-//筹码按钮
 void CGameClientView::OnJettonButton1000()
 {
 	//设置变量
@@ -1186,6 +1227,38 @@ void CGameClientView::OnJettonButton100000()
 	//设置变量
 	//--
 	m_lCurrentJetton=100000L;
+	return;
+}
+
+//筹码按钮
+void CGameClientView::OnJettonButton500000()
+{
+	//设置变量
+	m_lCurrentJetton=500000L;
+
+	return;
+}
+
+void CGameClientView::OnJettonButton1000000()
+{
+	//设置变量
+	m_lCurrentJetton=1000000L;
+
+	return;
+}
+void CGameClientView::OnJettonButton5000000()
+{
+	//设置变量
+	m_lCurrentJetton=5000000L;
+
+	return;
+}
+//筹码按钮
+void CGameClientView::OnJettonButton10000000()
+{
+	//设置变量
+	m_lCurrentJetton=10000000L;
+
 	return;
 }
 
@@ -1294,8 +1367,53 @@ void CGameClientView::OnLButtonDown(UINT nFlags, CPoint Point)
 			}
 		}
 
-		if (cbJettonArea!=0xFF) AfxGetMainWnd()->SendMessage(IDM_PLACE_JETTON, cbJettonArea, (LPARAM)(&m_lCurrentJetton));
+		if (cbJettonArea!=0xFF) 
+			AfxGetMainWnd()->SendMessage(IDM_PLACE_JETTON, cbJettonArea, (LPARAM)(&m_lCurrentJetton));
 	}
+
+	for (int i=0; i<7; i++)
+	{
+		if ( m_JettonButton[i].GetState() != JBST_DISABLE)
+		{
+			CRect rc	= m_JettonButton[i].GetClientRect();
+			if (rc.PtInRect(Point))
+			{
+				m_JettonButton[i].SetState(JBST_PUSHDOWN);
+				m_JettonButtonPushDown = TRUE;
+
+				switch( i )
+				{
+				case 0:
+					OnJettonButton1000();
+					break;
+				case 1:
+					OnJettonButton10000();
+					break;
+				case 2:
+					OnJettonButton100000();
+					break;
+				case 3:
+					OnJettonButton500000();
+					break;
+				case 4:
+					OnJettonButton1000000();
+					break;
+				case 5:
+					OnJettonButton5000000();
+					break;
+				case 6:
+					OnJettonButton10000000();
+					break;
+				}
+			}
+			else
+			{
+				m_JettonButton[i].SetState(JBST_NORMAL);
+			}
+		}
+	}
+
+	UpdateGameView(NULL);
 
 	__super::OnLButtonDown(nFlags,Point);
 }
@@ -1928,6 +2046,17 @@ void CGameClientView::OnLButtonUp(UINT nFlags, CPoint point)
 		ReleaseCapture();
 	}
 
+	m_JettonButtonPushDown = FALSE;
+	for (int i=0; i<7; i++)
+	{
+		if ( m_JettonButton[i].GetState() != JBST_DISABLE )
+		{
+			m_JettonButton[i].SetState(JBST_NORMAL);
+		}
+	}
+
+	UpdateGameView(NULL);
+
 	CGameFrameView::OnLButtonUp(nFlags, point);
 }
 
@@ -1952,6 +2081,27 @@ void CGameClientView::OnMouseMove(UINT nFlags, CPoint point)
 			}
 
 		}
+	}
+
+	if (!m_JettonButtonPushDown)
+	{
+		for (int i=0; i<7; i++)
+		{
+			if ( m_JettonButton[i].GetState() != JBST_DISABLE)
+			{
+				CRect rc	= m_JettonButton[i].GetClientRect();
+				if (rc.PtInRect(point))
+				{
+					m_JettonButton[i].SetState(JBST_OVER);
+				}
+				else
+				{
+					m_JettonButton[i].SetState(JBST_NORMAL);
+				}
+			}
+		}
+
+		UpdateGameView(NULL);
 	}
 
 	CGameFrameView::OnMouseMove(nFlags, point);

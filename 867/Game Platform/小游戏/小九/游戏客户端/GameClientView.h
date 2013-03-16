@@ -184,14 +184,6 @@ protected:
 
 	//控件变量
 public:
-
-	//CSkinButton						m_btJetton1000;						//筹码按钮
-	//CSkinButton						m_btJetton10000;					//筹码按钮
-	//CSkinButton						m_btJetton100000;					//筹码按钮
-	//CSkinButton						m_btJetton500000;					//筹码按钮	
-	//CSkinButton						m_btJetton1000000;					//筹码按钮	
-	//CSkinButton						m_btJetton5000000;					//筹码按钮	
-	//CSkinButton						m_btJetton10000000;					//筹码按钮
 	CSkinButton						m_btApplyBanker;					//申请庄家
 	CSkinButton						m_btCancelBanker;					//取消庄家
 	CSkinButton						m_btScoreMoveL;						//历史记录移动按钮
@@ -366,8 +358,6 @@ private:
 
 	//按钮消息
 protected:
-	//筹码按钮
-	afx_msg void OnJettonButton500();
 	//筹码按钮
 	afx_msg void OnJettonButton50000();
 	//筹码按钮
