@@ -612,7 +612,7 @@ void CGameFrameControl::DrawLeftViewFrame(CDC * pDC)
 	//变量定义
 	HDC hDC=pDC->m_hDC;
 	int nXPos=0,nYPos=0;
-	int nComminutePos=rcClient.Height()*4/8;
+	int nComminutePos=rcClient.Height()*4/6;
 
 	//绘画聊框
 	CRect rcChat;
@@ -641,7 +641,7 @@ void CGameFrameControl::RectifyControl(int nWidth, int nHeight)
 	if ((nWidth==0)||(nHeight==0)) return;
 
 	//变量定义
-	const int nComminutePos=nHeight*4/8;
+	const int nComminutePos=nHeight*4/6;
 	const UINT uFlags=SWP_NOACTIVATE|SWP_NOZORDER|SWP_NOCOPYBITS;
 
 	//移动控件
