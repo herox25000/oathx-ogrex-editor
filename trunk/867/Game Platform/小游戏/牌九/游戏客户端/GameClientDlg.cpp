@@ -123,13 +123,10 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 		m_GameClientView.SetCurrentJetton(0L);
 
 		//禁止按钮
-		m_GameClientView.m_btJetton100.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton1000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton10000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton100000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton500000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton1000000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton5000000.EnableWindow(FALSE);
+		for (int i=0; i<7; i++)
+		{
+			m_GameClientView.m_JettonButton[i].Enabled(TRUE);
+		}
 		//庄家按钮
 		m_GameClientView.m_btApplyBanker.EnableWindow( FALSE );
 		m_GameClientView.m_btCancelBanker.EnableWindow( FALSE );
@@ -534,24 +531,23 @@ void CGameClientDlg::UpdateButtonContron()
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{
-			if (lLeaveScore>=5000000L) m_GameClientView.SetCurrentJetton(5000000L);
+			if (lLeaveScore>=10000000L) m_GameClientView.SetCurrentJetton(10000000L);
+			else if (lLeaveScore>=5000000L) m_GameClientView.SetCurrentJetton(5000000L);
 			else if (lLeaveScore>=1000000L) m_GameClientView.SetCurrentJetton(1000000L);
 			else if (lLeaveScore>=500000L) m_GameClientView.SetCurrentJetton(500000L);
 			else if (lLeaveScore>=100000L) m_GameClientView.SetCurrentJetton(100000L);
 			else if (lLeaveScore>=10000L) m_GameClientView.SetCurrentJetton(10000L);
 			else if (lLeaveScore>=1000L) m_GameClientView.SetCurrentJetton(1000L);
-			else if (lLeaveScore>=100L) m_GameClientView.SetCurrentJetton(100L);
+			
 			else m_GameClientView.SetCurrentJetton(0L);
 		}
 
 		//控制按钮
-		m_GameClientView.m_btJetton100.EnableWindow((lLeaveScore>=100)?TRUE:FALSE);
-		m_GameClientView.m_btJetton1000.EnableWindow((lLeaveScore>=1000)?TRUE:FALSE);
-		m_GameClientView.m_btJetton10000.EnableWindow((lLeaveScore>=10000)?TRUE:FALSE);
-		m_GameClientView.m_btJetton100000.EnableWindow((lLeaveScore>=100000)?TRUE:FALSE);
-		m_GameClientView.m_btJetton500000.EnableWindow((lLeaveScore>=500000)?TRUE:FALSE);
-		m_GameClientView.m_btJetton1000000.EnableWindow((lLeaveScore>=1000000)?TRUE:FALSE);
-		m_GameClientView.m_btJetton5000000.EnableWindow((lLeaveScore>=5000000)?TRUE:FALSE);
+		UINT uFlageScore[] = {1000, 10000, 100000, 500000, 1000000, 5000000, 10000000};
+		for (int i=0; i<7; i++)
+		{
+			m_GameClientView.m_JettonButton[i].Enabled((lLeaveScore>=uFlageScore[i])?FALSE:TRUE);
+		}
 
 	}
 	else
@@ -560,13 +556,10 @@ void CGameClientDlg::UpdateButtonContron()
 		m_GameClientView.SetCurrentJetton(0L);
 
 		//禁止按钮
-		m_GameClientView.m_btJetton100.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton1000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton10000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton100000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton500000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton1000000.EnableWindow(FALSE);
-		m_GameClientView.m_btJetton5000000.EnableWindow(FALSE);
+		for (int i=0; i<7; i++)
+		{
+			m_GameClientView.m_JettonButton[i].Enabled(TRUE);
+		}
 	}
 
 	//申请按钮

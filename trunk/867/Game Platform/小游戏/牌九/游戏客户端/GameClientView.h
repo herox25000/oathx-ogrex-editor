@@ -13,6 +13,8 @@
 
 #define JETTON_COUNT				9									//筹码数目
 #define JETTON_RADII				54									//筹码半径
+#define JETTON_WIDTH				59
+#define JETTON_HEIGHT				51
 
 //消息定义
 #define IDM_PLACE_JETTON			WM_USER+200							//加住信息
@@ -67,6 +69,39 @@ struct tagClientGameRecord
 };
 
 //////////////////////////////////////////////////////////////////////////
+
+
+enum {
+	JBST_NORMAL,
+	JBST_OVER,
+	JBST_PUSHDOWN,
+	JBST_PUSHUP,
+	JBST_DISABLE,
+};
+
+class JettonButton
+{
+public:
+	JettonButton();
+	virtual ~JettonButton();
+
+	virtual	void					Create(const CRect& rect, UINT uIDResource, HINSTANCE hResourceDLL);
+	virtual	void					SetImageResource(UINT uIDResource, HINSTANCE hResourceDLL);
+
+	virtual	void					SetState(int nState);
+	virtual int						GetState() const;
+
+	virtual	void					SetClientRect(const CRect& rect);
+	virtual CRect					GetClientRect() const;
+
+	virtual	void					Draw(CDC* pDC);
+
+	virtual	void					Enabled(BOOL bEnabled);
+protected:
+	CSkinImage						m_SkinImage;
+	int								m_nState;
+	CRect							m_SkinRect;
+};
 
 //游戏视图
 class CGameClientView : public CGameFrameView
@@ -144,15 +179,7 @@ protected:
 	CJettonInfoArray				m_JettonInfoArray[6];				//筹码数组
 
 	//控件变量
-public:
-	CSkinButton						m_btJetton100;						//筹码按钮
-	CSkinButton						m_btJetton1000;						//筹码按钮
-	CSkinButton						m_btJetton10000;					//筹码按钮
-	CSkinButton						m_btJetton100000;					//筹码按钮
-	CSkinButton						m_btJetton500000;					//筹码按钮	
-	CSkinButton						m_btJetton1000000;					//筹码按钮	
-	CSkinButton						m_btJetton5000000;					//筹码按钮	
-	
+public:	
 	CSkinButton						m_btApplyBanker;					//申请庄家
 	CSkinButton						m_btCancelBanker;					//取消庄家
 
@@ -162,6 +189,8 @@ public:
 	CSkinButton						m_btnZiDongCuoPai;						
 	CSkinButton						m_btnShouDongCuoPai;						
 
+	JettonButton					m_JettonButton[7];
+	BOOL							m_JettonButtonPushDown;
 	//控件变量
 public:
 	CApplyUser						m_ApplyUser;						//申请列表
@@ -319,23 +348,18 @@ private:
 	bool DrawAlphaRect(CDC* pDC, LPRECT lpRect, COLORREF clr, FLOAT fAlpha);
 
 	//按钮消息
-protected:
-	//筹码按钮
-	afx_msg void OnJettonButton500();
-	//筹码按钮
-	afx_msg void OnJettonButton50000();
-	//筹码按钮
-	afx_msg void OnJettonButton500000();
-	afx_msg void OnJettonButton1000000();
-	afx_msg void OnJettonButton5000000();
-	//筹码按钮
-	afx_msg void OnJettonButton100();
+protected:	
 	//筹码按钮
 	afx_msg void OnJettonButton1000();
 	//筹码按钮
 	afx_msg void OnJettonButton10000();
 	//筹码按钮
 	afx_msg void OnJettonButton100000();
+	//筹码按钮
+	afx_msg void OnJettonButton500000();
+	afx_msg void OnJettonButton1000000();
+	afx_msg void OnJettonButton5000000();
+	afx_msg void OnJettonButton10000000();
 	//上庄按钮
 	afx_msg void OnApplyBanker();
 	//下庄按钮
