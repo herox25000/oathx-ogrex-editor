@@ -350,7 +350,7 @@ public:
 	inline __int64 GetCurrentJetton() { return m_lCurrentJetton; }
 	//我的位置
 	inline void SetMeChairID(WORD wMeChairID) { m_wMeChairID=wMeChairID; }
-
+	inline WORD GetMeChairID() const {return m_wMeChairID;}
 	//内部函数
 private:
 	//获取区域
