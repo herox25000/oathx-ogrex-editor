@@ -163,7 +163,7 @@ protected:
 	CString							m_strDispatchCardTips;				//发牌提示
 
 	//庄家信息
-protected:
+public:
 	bool							m_bShowChangeBanker;				//轮换庄家
 	WORD							m_wCurrentBankerChairID;			//当前庄家
 	BYTE							m_cbBankerTime;						//做庄次数
@@ -253,7 +253,6 @@ protected:
 	CPngImage						m_pngp;
 
 public:
-	__int64 							m_lZhuangScore;						//庄家金
 	__int64 							m_lKexiaScore;						//可下注值
 	bool								m_bJettonstate;						//是否是下注状态
 
@@ -344,6 +343,8 @@ public:
 	//数字换化为字符串
 	CString ChangNumber(__int64 iNumber);
 	CString ChangNumber(int iNumber);
+	//计算所有下注总和
+	__int64 CalcAllJetton();
 	//内联函数
 public:
 	//当前筹码

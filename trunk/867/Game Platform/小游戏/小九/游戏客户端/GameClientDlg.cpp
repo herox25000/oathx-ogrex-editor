@@ -352,7 +352,7 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	KillGameTimer(IDI_PLACE_JETTON);
 	//SetGameTimer(GetMeChairID(),IDI_SHOW_TIME,pGameStart->cbTimeLeave);
 	m_GameClientView.m_bJettonstate=false;
-	m_GameClientView.m_lZhuangScore=pGameStart->lBankerScore;
+//	m_GameClientView.m_lZhuangScore=pGameStart->lBankerScore;
 	m_GameClientView.m_lKexiaScore=pGameStart->lBankerScore;
 	//更新控制
 	UpdateButtonContron();
@@ -371,7 +371,7 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 	if (wDataSize!=sizeof(CMD_S_PlaceJetton)) return false;
 	//消息处理
 	CMD_S_PlaceJetton * pPlaceJetton=(CMD_S_PlaceJetton *)pBuffer;
-	m_GameClientView.m_lZhuangScore = pPlaceJetton->lZhuangSocre;
+//	m_GameClientView.m_lZhuangScore = pPlaceJetton->lZhuangSocre;
 	m_GameClientView.m_lKexiaScore = pPlaceJetton->lKexiaSocre;
 	//播放声音
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
@@ -539,10 +539,19 @@ void CGameClientDlg::UpdateButtonContron()
 {
 	if ((IsLookonMode()==false)&&(GetGameStatus()==GS_FREE) && m_wCurrentBanker != GetMeChairID() && m_wCurrentBanker != INVALID_CHAIR )
 	{
+		const tagUserData* pBankerInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wCurrentBankerChairID);
+		if(pBankerInfo==NULL)
+			return;
+
+		__int64 uCurrntReamtionScore = m_lBankerScore - m_GameClientView.CalcAllJetton();
 		//计算积分
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
 		__int64 lLeaveScore = min(m_lMeMaxScore-m_lMeTianMenScore-m_lMeDaoMenScore-m_lMeShunMenScore, 
-			m_GameClientView.m_lKexiaScore);
+			uCurrntReamtionScore);
+
+		char szTmp[128];
+		sprintf(szTmp, "%d, %d", lCurrentJetton, uCurrntReamtionScore);
+		OutputDebugString(szTmp);
 
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
