@@ -1148,7 +1148,11 @@ LRESULT CGameClientDlg::OnCuoPai(WPARAM wParam, LPARAM lParam)
 
 LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
 {
-	UserOnBankBT();
-	return true;
+	if ( m_GameClientView.GetMeChairID() == m_GameClientView.m_wCurrentBankerChairID)
+		UserOnBankBT(TRUE);
+	else
+		UserOnBankBT(FALSE);
+
+	return 0;
 }
 
