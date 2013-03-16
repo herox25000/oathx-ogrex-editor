@@ -16,7 +16,7 @@ public:
 	DWORD							m_lGameGold;					//银行数目
 	DWORD							m_lStorageGold;					//存储数目
 	DWORD							m_lInCount;						//输入游戏币
-
+	BOOL							m_bBanker;
 	//控件变量
 protected:
 	CSkinButton						m_btOK;							//确定按钮
@@ -64,6 +64,8 @@ public:
 	bool IsButtonSelected(UINT uButtonID);
 	//选中按钮
 	void SetButtonSelected(UINT uButtonID, bool bSelected);
+	//设置状态
+	void SetButtonAction(BOOL bBanker);
 	//设置组件
 	void SetSendInfo(IClientKernel *pClientKernel,ITCPSocket *pClientSocket,tagUserData *pMeUserDatas);
 	//发送信息
@@ -74,7 +76,10 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 //兑换魅力
-extern "C" PROPERTY_MODULE_CLASS VOID __cdecl ShowBankStorageDlg(IClientKernel *pIClientKernel,ITCPSocket *pClientSocket,tagUserData *pUserData);
+extern "C" PROPERTY_MODULE_CLASS VOID __cdecl ShowBankStorageDlg(IClientKernel *pIClientKernel,
+																 ITCPSocket *pClientSocket,
+																 tagUserData *pUserData,
+																 BOOL bBanker=FALSE);
 
 //////////////////////////////////////////////////////////////////////////
 #endif

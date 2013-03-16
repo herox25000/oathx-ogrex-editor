@@ -7,7 +7,7 @@
 
 //定时器I D
 #define IDI_CHARMVALUE_UPDATE_VIEW		1								//更新界面
-#define TIME_CHARMVALUE_UPDATE_VIEW		200								//更新界面
+#define TIME_CHARMVALUE_UPDATE_VIEW		60								//更新界面
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -30,6 +30,7 @@ CBankStorage::CBankStorage(CWnd* pParent):CSkinDialogEx(IDD_BANK_STORAGE, pParen
 	m_pMeUserData=NULL;
 	m_pIClientKernel=NULL;
 	m_pClientSocket=NULL;
+	m_bBanker = FALSE;
 }
 
 //析构函数
@@ -137,7 +138,27 @@ void CBankStorage::UpdateView()
 {
 	UpdateData(TRUE);
 
-	if(m_pMeUserData==NULL)return;
+	if(m_pMeUserData==NULL)
+		return;
+
+	if ( m_bBanker )
+	{
+		CButton* pStorage = (CButton *)GetDlgItem(IDC_STORAGE);
+		pStorage->EnableWindow(FALSE);
+		SetButtonSelected(IDC_STORAGE, FALSE);
+
+		CButton* pDrawout = (CButton *)GetDlgItem(IDC_DRAWOUT);
+		pDrawout->EnableWindow(TRUE);
+		SetButtonSelected(IDC_DRAWOUT, TRUE);
+	}
+	else
+	{
+		CButton* pStorage = (CButton *)GetDlgItem(IDC_STORAGE);
+		pStorage->EnableWindow(TRUE);
+
+		CButton* pDrawout = (CButton *)GetDlgItem(IDC_DRAWOUT);
+		pDrawout->EnableWindow(TRUE);
+	}
 
 	//设置信息
 	m_lGameGold=((m_pMeUserData->lGameGold<0)?0:m_pMeUserData->lGameGold);
@@ -217,9 +238,15 @@ bool CBankStorage::IsButtonSelected(UINT uButtonID)
 void CBankStorage::SetButtonSelected(UINT uButtonID, bool bSelected)
 {
 	CButton * pButton=(CButton *)GetDlgItem(uButtonID);
-	if (bSelected) pButton->SetCheck(BST_CHECKED);
-	else pButton->SetCheck(BST_UNCHECKED);
-	return;
+	if (bSelected) 
+		pButton->SetCheck(BST_CHECKED);
+	else 
+		pButton->SetCheck(BST_UNCHECKED);
+}
+
+void CBankStorage::SetButtonAction(BOOL bBanker)
+{
+	m_bBanker = bBanker;
 }
 
 //设置信息
@@ -249,13 +276,15 @@ void CBankStorage::SendData(WORD wMainCmdID, WORD wSubCmdID, void * pBuffer, WOR
 //////////////////////////////////////////////////////////////////////////
 
 //兑换魅力
-extern "C" PROPERTY_MODULE_CLASS VOID __cdecl ShowBankStorageDlg(IClientKernel *pIClientKernel,ITCPSocket *pClientSocket,tagUserData *pMeUserData)
+extern "C" PROPERTY_MODULE_CLASS VOID __cdecl ShowBankStorageDlg(IClientKernel *pIClientKernel,ITCPSocket *pClientSocket,
+																 tagUserData *pMeUserData, BOOL bBanke)
 {
 	//兑换窗口
 	CBankStorage BankStorageDlg;
 
 	//设置信息
 	BankStorageDlg.SetSendInfo(pIClientKernel,pClientSocket,pMeUserData);
+	BankStorageDlg.SetButtonAction(bBanke);
 	BankStorageDlg.DoModal();
 
 	return ;

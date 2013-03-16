@@ -727,11 +727,11 @@ void CGameFrameDlg::OnSize(UINT nType, int cx, int cy)
 }
 
 //点击银行按钮
-void CGameFrameDlg::UserOnBankBT()
+void CGameFrameDlg::UserOnBankBT(BOOL bBanker)
 {
 	//获取用户
 	tagUserData *pMeUserData = m_ClientKernelHelper->GetMeUserInfo();
 	//显示银行
-	ShowBankStorageDlg(m_ClientKernelHelper.GetInterface(),NULL,pMeUserData);
+	ShowBankStorageDlg(m_ClientKernelHelper.GetInterface(),NULL,pMeUserData, bBanker);
 }
 //////////////////////////////////////////////////////////////////////////
