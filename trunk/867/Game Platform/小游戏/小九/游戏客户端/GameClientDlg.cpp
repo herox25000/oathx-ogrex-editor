@@ -407,13 +407,12 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	BYTE cbBankerPoint=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
 
 	enOperateResult OperateResult = enOperateResult_NULL;
-	if ( 0 < m_GameClientView.m_lMeCurGameScore ) OperateResult = enOperateResult_Win;
-	else if ( m_GameClientView.m_lMeCurGameScore < 0 ) OperateResult = enOperateResult_Lost;
-	else OperateResult = enOperateResult_NULL;
+	if ( 0 < m_GameClientView.m_lMeCurGameScore ) 
+		OperateResult = enOperateResult_Win;
+	else if ( m_GameClientView.m_lMeCurGameScore < 0 )
+		OperateResult = enOperateResult_Lost;
 
-	WORD wWinnerSide;
-	DeduceWinner(wWinnerSide);
-	m_GameClientView.SetGameHistory(OperateResult, cbPlayerPoint, cbBankerPoint,wWinnerSide);
+	m_GameClientView.SetGameHistory(OperateResult, cbPlayerPoint, cbBankerPoint,pGameEnd->cbWinner);
 
 	//…Ë÷√±‰¡ø
 	m_lMeTianMenScore=0L;

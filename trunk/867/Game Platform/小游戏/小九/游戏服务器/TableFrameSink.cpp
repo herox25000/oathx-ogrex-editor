@@ -445,27 +445,23 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 			{		
 				//获取玩家
 				IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem( m_CurrentBanker.wChairID );
-
 				//重置变量
 				m_cbBankerTimer = 0;
 				m_lBankerWinScore=0;
 				ZeroMemory( &m_CurrentBanker, sizeof( m_CurrentBanker ) );
 				m_bCancelBanker=false;
-				
 				//发送消息
 				SendChangeBankerMsg();
-
 				//删除庄家
-				if ( pServerUserItem ) OnUserApplyBanker( pServerUserItem->GetUserData(), false );
+				if ( pServerUserItem )
+					OnUserApplyBanker( pServerUserItem->GetUserData(), false );
 			}
 
 			//设置时间
 			m_dwJettonTime=(DWORD)time(NULL);
 			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON,TIME_PLACE_JETTON*1000L,1,0L);
-
 			//轮换庄家
 			ChangeBanker();
-
 			//庄家信息
 			if ( m_CurrentBanker.dwUserID != 0 )
 			{
