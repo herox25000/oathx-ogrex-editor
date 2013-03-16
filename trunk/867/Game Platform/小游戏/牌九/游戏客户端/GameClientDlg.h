@@ -124,7 +124,7 @@ protected:
 	LRESULT OnApplyBanker(WPARAM wParam, LPARAM lParam);
 
 	LRESULT OnCuoPai(WPARAM wParam, LPARAM lParam);
-
+	LRESULT OnBank(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 };
 
