@@ -542,10 +542,6 @@ void CGameClientDlg::UpdateButtonContron()
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
 		__int64 lLeaveScore = min(m_lMeMaxScore-m_lMeTianMenScore-m_lMeDaoMenScore-m_lMeShunMenScore, uCurrntReamtionScore);
 
-		char szTmp[128];
-		sprintf(szTmp, "%d, %d, %d, %d, %d", m_lMeMaxScore, m_lMeTianMenScore, m_lMeTianMenScore, m_lMeShunMenScore, uCurrntReamtionScore);
-		OutputDebugString(szTmp);
-
 		//ÉèÖÃ¹â±ê
 		if (lCurrentJetton>lLeaveScore)
 		{
