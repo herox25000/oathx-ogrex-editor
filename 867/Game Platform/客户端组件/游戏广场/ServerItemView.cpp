@@ -491,7 +491,8 @@ bool CServerListManager::UpdateGameOnLineCount(DWORD dwOnLineCount)
 	{
 		CListInside * pListInside=m_PtrArrayInside[0];
 		tagGameInside * pGameInside=pListInside->GetItemInfo();
-		_snprintf(pGameInside->szDisplayName,sizeof(pGameInside->szDisplayName),TEXT("%s [ %ld 人]"),szProductName,dwOnLineCount);
+		//_snprintf(pGameInside->szDisplayName,sizeof(pGameInside->szDisplayName),TEXT("%s [ %ld 人]"),szProductName,dwOnLineCount);
+		_snprintf(pGameInside->szDisplayName,sizeof(pGameInside->szDisplayName),TEXT("%s"),szProductName);
 		m_pIServerListSink->OnListItemUpdate(pListInside);
 		return true;
 	}
@@ -1039,13 +1040,11 @@ LPCTSTR CServerItemView::GetGameItemTitle(CListKind * pListKind, LPTSTR pszTitle
 	{
 		if (pListKind->m_bInstall==true)
 		{
-			//_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ]"),pGameKind->szKindName,pGameKind->dwOnLineCount);
-			_snprintf(pszTitle,wBufferSize,TEXT("%s [ 拥挤 ]"),pGameKind->szKindName);	
+			_snprintf(pszTitle,wBufferSize,TEXT("%s [ %s ]"),pGameKind->szKindName,GetStateRoomOnLineCount(pGameKind->dwOnLineCount));
 		}
 		else
 		{
-			//_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ] （双击下载）"),pGameKind->szKindName,pGameKind->dwOnLineCount);
-			_snprintf(pszTitle,wBufferSize,TEXT("%s [ 拥挤 ] （双击下载）"),pGameKind->szKindName);
+			_snprintf(pszTitle,wBufferSize,TEXT("%s [ %s ] （双击下载）"),pGameKind->szKindName,GetStateRoomOnLineCount(pGameKind->dwOnLineCount));
 		}
 	}
 	else
@@ -1074,8 +1073,7 @@ LPCTSTR CServerItemView::GetGameItemTitle(CListServer * pListServer, LPTSTR pszT
 	tagGameServer * pGameServer=pListServer->GetItemInfo();
 	if (m_bShowOnLineCount==true)
 	{
-		//_snprintf(pszTitle,wBufferSize,TEXT("%s [ %ld ]"),pGameServer->szServerName,pGameServer->dwOnLineCount);
-		_snprintf(pszTitle,wBufferSize,TEXT("%s [ 拥挤 ]"),pGameServer->szServerName);
+		_snprintf(pszTitle,wBufferSize,TEXT("%s [ %s ]"),pGameServer->szServerName,GetStateRoomOnLineCount(pGameServer->dwOnLineCount));
 	}
 	else 
 	{
@@ -1083,6 +1081,16 @@ LPCTSTR CServerItemView::GetGameItemTitle(CListServer * pListServer, LPTSTR pszT
 	}
 
 	return pszTitle;
+}
+
+//得到房间人数状态
+LPCTSTR CServerItemView::GetStateRoomOnLineCount(DWORD dwOnLineCount)
+{
+	if(dwOnLineCount<10 )
+		return TEXT("空闲");
+	else if(dwOnLineCount <70)
+		return TEXT("良好");
+	return TEXT("拥挤");
 }
 
 //////////////////////////////////////////////////////////////////////////

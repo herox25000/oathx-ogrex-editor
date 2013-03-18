@@ -50,6 +50,7 @@ BEGIN_MESSAGE_MAP(CRoomViewItem, CDialog)
 	ON_WM_ERASEBKGND()
 	ON_WM_SHOWWINDOW()
 	ON_MESSAGE(WM_HIT_EXPMESSTION,	OnHitExpression)
+	ON_BN_CLICKED(IDC_TABLERULE,OnBnClickeTableRule)
 	ON_BN_CLICKED(IDC_BANK,	OnBnClickedBank)
 	ON_BN_CLICKED(IDC_AUTO_SIT,	OnBnClickedAutoSit)
 	ON_BN_CLICKED(IDC_FIND_USER, OnBnClickedFindUser)
@@ -232,6 +233,7 @@ void CRoomViewItem::DoDataExchange(CDataExchange * pDX)
 	DDX_Control(pDX, IDC_CHAT_MESSAGE, m_ChatMessage);
 	DDX_Control(pDX, IDC_AUTO_SIT, m_btAutoSit);
 	DDX_Control(pDX, IDC_BANK,m_btBank);
+	DDX_Control(pDX, IDC_TABLERULE,m_btTableRule);
 	DDX_Control(pDX, IDC_FIND_USER, m_btFindUser);
 	DDX_Control(pDX, IDC_CHAT_OBJECT, m_ChatObject);
 	DDX_Control(pDX, IDC_QUIT_ROOM, m_btQuitRoom);
@@ -911,6 +913,15 @@ tagGameKind * __cdecl CRoomViewItem::GetKindInfo()
 	}
 	return NULL;
 }
+void CRoomViewItem::OnBnClickeTableRule()
+{
+	if ( m_cbDistributeMode==DISTRIBUTE_MODE_NO_LOOK )
+	{
+		ShowMessageBox(TEXT("此房间不能使用此功能！"),MB_ICONINFORMATION);
+		return ;
+	}
+	((CGameFrame*)AfxGetMainWnd())->ShowSystemOption();
+}
 
 //银行按钮
 void CRoomViewItem::OnBnClickedBank()
@@ -929,6 +940,12 @@ void CRoomViewItem::OnBnClickedBank()
 //加入按钮
 void CRoomViewItem::OnBnClickedAutoSit()
 {
+	if ( m_cbDistributeMode==DISTRIBUTE_MODE_NO_LOOK )
+	{
+		ShowMessageBox(TEXT("此房间不能使用此功能！"),MB_ICONINFORMATION);
+		return ;
+	}
+
 	//判断状态
 	if (m_ServiceStatus!=ServiceStatus_Serviceing) return;
 
@@ -1497,6 +1514,7 @@ bool CRoomViewItem::UpdateSkinResource()
 	m_VorSplitter.ShowSplitterButton(uControlId,GetResInstanceHandle());
 
 	//设置按钮
+	m_btTableRule.SetButtonImage(GetServerViewRes().uBtBank,hInstance,false);
 	m_btAutoSit.SetButtonImage(GetServerViewRes().uBtAutoJoin,hInstance,false);
 	m_btBank.SetButtonImage(GetServerViewRes().uBtBank,hInstance,false);
 	m_btFindUser.SetButtonImage(GetServerViewRes().uBtSearchUser,hInstance,false);
@@ -2134,6 +2152,7 @@ void CRoomViewItem::RectifyControl(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btAutoSit,NULL,rcVorSplitter.left-rcButton.Width()*2-m_ImageInfoTable.nRBorder-20,5,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btFindUser,NULL,rcVorSplitter.left-rcButton.Width()*3-m_ImageInfoTable.nRBorder-28,5,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btBank,NULL,rcVorSplitter.left-rcButton.Width()*4-m_ImageInfoTable.nRBorder-36,5,rcButton.Width(),rcButton.Height(),uFlags);
+	DeferWindowPos(hDwp,m_btTableRule,NULL,rcVorSplitter.left-rcButton.Width()*5-m_ImageInfoTable.nRBorder-44,5,rcButton.Width(),rcButton.Height(),uFlags);
 
 	EndDeferWindowPos(hDwp);
 

@@ -132,37 +132,38 @@ void CBugleDlg::OnBnClickedExpression()
 //确认消息
 void CBugleDlg::OnBnClickedOk()
 {
-	//获取信息
-	CString strMsg;
-	m_InputChat.GetWindowText(strMsg);
-	if ( strMsg.IsEmpty() )
-	{
-		ShowInformationEx(TEXT("输入内容不能为空！"), 0,MB_ICONINFORMATION,TEXT("系统提示")); 
-		return ;
-	}
-	if ( BUGLE_MAX_CHAR <= strMsg.GetLength() )
-	{ 
-		CString strMsg;
-		strMsg.Format(TEXT("输入内容最多为%d个字符！"), BUGLE_MAX_CHAR);
-		ShowInformationEx(strMsg, 0,MB_ICONINFORMATION,TEXT("系统提示")); 
-		return ;
-	}
+	ShowInformationEx(TEXT("喇叭功能暂时不能使用！"), 0,MB_ICONINFORMATION,TEXT("系统提示")); 
+	////获取信息
+	//CString strMsg;
+	//m_InputChat.GetWindowText(strMsg);
+	//if ( strMsg.IsEmpty() )
+	//{
+	//	ShowInformationEx(TEXT("输入内容不能为空！"), 0,MB_ICONINFORMATION,TEXT("系统提示")); 
+	//	return ;
+	//}
+	//if ( BUGLE_MAX_CHAR <= strMsg.GetLength() )
+	//{ 
+	//	CString strMsg;
+	//	strMsg.Format(TEXT("输入内容最多为%d个字符！"), BUGLE_MAX_CHAR);
+	//	ShowInformationEx(strMsg, 0,MB_ICONINFORMATION,TEXT("系统提示")); 
+	//	return ;
+	//}
 
-	//获取玩家
-	tagUserData const *pMeUserData = m_pMeUserData;
+	////获取玩家
+	//tagUserData const *pMeUserData = m_pMeUserData;
 
-	//设置数据
-	CMD_GF_BugleProperty BugleProperty ;
-	ZeroMemory(&BugleProperty, sizeof(BugleProperty));
-	BugleProperty.cbSendLocation=(m_pIClientKernel!=NULL)?LOCATION_GAME_ROOM:LOCATION_PLAZA_ROOM;
-	lstrcpyn(BugleProperty.szUserName, pMeUserData->szName, CountArray(BugleProperty.szUserName));
-	BugleProperty.crText = m_crChatTX;
-	lstrcpyn(BugleProperty.szContext, strMsg, CountArray(BugleProperty.szContext));
+	////设置数据
+	//CMD_GF_BugleProperty BugleProperty ;
+	//ZeroMemory(&BugleProperty, sizeof(BugleProperty));
+	//BugleProperty.cbSendLocation=(m_pIClientKernel!=NULL)?LOCATION_GAME_ROOM:LOCATION_PLAZA_ROOM;
+	//lstrcpyn(BugleProperty.szUserName, pMeUserData->szName, CountArray(BugleProperty.szUserName));
+	//BugleProperty.crText = m_crChatTX;
+	//lstrcpyn(BugleProperty.szContext, strMsg, CountArray(BugleProperty.szContext));
 
-	//发送消息
-	SendData(MDM_GF_PRESENT, SUB_GF_PROP_BUGLE, &BugleProperty,sizeof(BugleProperty));
+	////发送消息
+	//SendData(MDM_GF_PRESENT, SUB_GF_PROP_BUGLE, &BugleProperty,sizeof(BugleProperty));
 
-	OnOK();
+	//OnOK();
 	return;
 }
 

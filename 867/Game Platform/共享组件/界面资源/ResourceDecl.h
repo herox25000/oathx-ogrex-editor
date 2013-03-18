@@ -668,7 +668,7 @@
 #define BLACK_IDB_GAME_USER_LIST_TM				1839
 #define BLACK_IDB_GAME_USER_LIST_TR				1840
 
-
+#define DEF_IDB_BT_TABLERULE					1841
 #define DEF_IDB_SKIN_PREVIEW            1043  
 #define DEF_IDB_CHAT_GIFT8              1074  
 #define DEF_IDB_CHAT_GIFT6              1078  
@@ -815,6 +815,7 @@
 #define RES_DEF_IDB_TABLE_BR                          "Res\\DEF_RESOURCE\\TABLE_FRAME\\TABLE_BR.bmp"
 #define RES_DEF_IDB_TABLE_BM                          "Res\\DEF_RESOURCE\\TABLE_FRAME\\TABLE_BM.bmp"
 #define RES_DEF_IDB_TABLE_BL                          "Res\\DEF_RESOURCE\\TABLE_FRAME\\TABLE_BL.bmp"
+#define	RES_DEF_IDB_BT_TABLERULE					  "Res\\DEF_RESOURCE\\TABLE_FRAME\\BT_TABLERULE.bmp"
 #define RES_DEF_IDB_BT_AUTO_JOIN                      "Res\\DEF_RESOURCE\\TABLE_FRAME\\BT_AUTO_JOIN.bmp"
 #define RES_DEF_IDB_BT_QUIT_ROOM                      "Res\\DEF_RESOURCE\\TABLE_FRAME\\BT_QUIT_ROOM.bmp"
 #define RES_DEF_IDB_BT_BANK                           "Res\\DEF_RESOURCE\\TABLE_FRAME\\BT_BANK.bmp"

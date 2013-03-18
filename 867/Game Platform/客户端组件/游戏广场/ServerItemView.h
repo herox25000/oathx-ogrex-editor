@@ -398,7 +398,8 @@ public:
 	void ShowOnLineCount(bool bShowOnLineCount);
 	//配置函数
 	bool InitServerItemView(ITreeCtrlSink * pITreeCtrlSink);
-
+	//得到房间人数状态
+	LPCTSTR GetStateRoomOnLineCount(DWORD dwOnLineCount);
 	//通知接口
 public:
 	//展开列表

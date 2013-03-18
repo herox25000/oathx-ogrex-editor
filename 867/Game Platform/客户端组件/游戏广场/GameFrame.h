@@ -11,6 +11,7 @@
 #include "ServerItemView.h"
 #include "UserCompanionList.h"
 #include "DlgCustomFace.h"
+#include "DlgLockComputer.h"
 
 /////////////////////////////////////////////////////////////////////////////
 
@@ -44,7 +45,7 @@ public:
 	CRoomViewItem						* m_pRoomViewItemCreate;		//创建房间
 	CRoomViewItem						* m_pRoomViewItem[MAX_SERVER];	//房间接口
 	CDlgCustomFace						m_DlgCustomFace;				//自定头像
-
+	CDlgLockComputer					m_DlgLockComputer;
 	//控件变量
 public:
 	CWebBrowser							m_BrowerAD;						//浏览窗口

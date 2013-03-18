@@ -17,6 +17,7 @@ struct tagGlobalUserData
 	WORD								wFaceID;						//头像索引
 	BYTE								cbGender;						//用户性别
 	BYTE								cbMember;						//会员等级
+	BYTE								cbMoorMachine;					//账号是否锁定
 	DWORD								dwUserID;						//用户 I D
 	DWORD								dwGameID;						//游戏 I D
 	DWORD								dwExperience;					//用户经验

@@ -177,6 +177,9 @@ BOOL CDlgRegister::OnInitDialog()
 	((CComboBox *)(GetDlgItem(IDC_ACCOUNTS)))->LimitText(NAME_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_PASSWORD)))->LimitText(PASS_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_PASSWORD2)))->LimitText(PASS_LEN-1);
+	((CEdit *)(GetDlgItem(IDC_BANKPASS)))->LimitText(PASS_LEN-1);
+	((CEdit *)(GetDlgItem(IDC_BANKPASS2)))->LimitText(PASS_LEN-1);
+
 	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
 	m_LineRegWeb.ShowWindow(SW_HIDE);
 	m_LineMainPage.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
@@ -273,6 +276,25 @@ void CDlgRegister::OnOK()
 		GetDlgItem(IDC_PASSWORD2)->SetFocus();
 		return;
 	}
+
+	//银行密码
+	GetDlgItemText(IDC_BANKPASS,strBuffer);
+	if (strBuffer.GetLength()<6)
+	{
+		ShowInformation(TEXT("银行密码长度最短为 6 位字符，请重新输入！"),0,MB_ICONQUESTION);
+		GetDlgItem(IDC_BANKPASS)->SetFocus();
+		return;
+	}
+
+	//确认银行密码
+	GetDlgItemText(IDC_BANKPASS2,m_szBankPassword,CountArray(m_szBankPassword));
+	if (lstrcmp(m_szBankPassword,strBuffer)!=0)
+	{
+		ShowInformation(TEXT("两次输入的银行密码不一致，请确认后重新输入！"),0,MB_ICONQUESTION);
+		GetDlgItem(IDC_BANKPASS2)->SetFocus();
+		return;
+	}
+
 
 	//推广员名
 	GetDlgItemText(IDC_SPREADER,strBuffer);
@@ -501,6 +523,8 @@ bool CDlgLogon::SendLogonPacket(ITCPSocket * pIClientSocke)
 			}
 			else
 			{
+				TCHAR szBankPassword[33];
+				CMD5Encrypt::EncryptData(m_szBankPassword,szBankPassword);
 				//构造数据
 				CMD_GP_RegisterAccounts * pRegisterAccounts=(CMD_GP_RegisterAccounts *)cbBuffer;
 				memset(pRegisterAccounts,0,sizeof(CMD_GP_RegisterAccounts));
@@ -508,6 +532,7 @@ bool CDlgLogon::SendLogonPacket(ITCPSocket * pIClientSocke)
 				pRegisterAccounts->cbGender=m_cbGender;
 				pRegisterAccounts->dwPlazaVersion=g_GlobalUnits.GetPlazaVersion();
 				lstrcpyn(pRegisterAccounts->szPassWord,szPassword,CountArray(pRegisterAccounts->szPassWord));
+				lstrcpyn(pRegisterAccounts->szBankPassWord,szBankPassword,CountArray(pRegisterAccounts->szBankPassWord));
 				lstrcpyn(pRegisterAccounts->szSpreader,m_szSpreader,CountArray(pRegisterAccounts->szSpreader));
 				lstrcpyn(pRegisterAccounts->szAccounts,m_szAccounts,CountArray(pRegisterAccounts->szAccounts));
 
@@ -1132,12 +1157,8 @@ void CDlgLogon::OnRegisterAccounts()
 	lstrcpy(m_szSpreader,DlgRegister.m_szSpreader);
 	lstrcpy(m_szAccounts,DlgRegister.m_szAccounts);
 	lstrcpy(m_szPassword,DlgRegister.m_szPassword);
+	lstrcpy(m_szBankPassword,DlgRegister.m_szBankPassword);
 
-	////服务器
-	//CString server_name;
-	//GetDlgItemText(IDC_SERVER,server_name);
-	//if (server_name.IsEmpty()) 
-	//	m_strLogonServer=TEXT("222.186.36.78");
 	//服务器
 	CComboBox* pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);
 	int iCur=pComBoxServer->GetCurSel();

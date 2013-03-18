@@ -400,11 +400,9 @@ bool CDlgCustomFace::ConnectServer()
 	return true;
 }
 
-int g_nUploadCount = 0;
 //·¢ËÍÊý¾Ý
 bool CDlgCustomFace::SendData()
 {
-	g_nUploadCount = 0;
 	//×´Ì¬ÅÐ¶Ï
 	ASSERT(m_enOperateStatus != enOperateStatus_NULL);
 	if ( m_enOperateStatus == enOperateStatus_NULL ) return false;

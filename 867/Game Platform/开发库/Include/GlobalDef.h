@@ -39,6 +39,12 @@
 #define SUB_KN_DETECT_SOCKET			1									//¼ì²âÃüÁî
 #define SUB_KN_SHUT_DOWN_SOCKET			2									//ÖĞ¶ÏÍøÂç
 
+enum enOperateStatus
+{
+	enOperateStatus_NULL,
+	enOperateStatus_Upload,
+	enOperateStatus_Delete
+};
 //ÍøÂçÄÚºË
 struct CMD_Info
 {

@@ -150,6 +150,13 @@ bool __cdecl CPlazaViewItem::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode
 		DlgCustomFace.SendData();
 	}
 
+	//锁机功能
+	CDlgLockComputer &DlgLockComputer = pGameFrame->m_DlgLockComputer;
+	if ( DlgLockComputer.m_hWnd != NULL && DlgLockComputer.IsWindowVisible() )
+	{
+		DlgLockComputer.SendData();
+	}
+
 	//下载判断
 	if ( m_bDownloadConnect )
 	{
@@ -233,6 +240,7 @@ bool CPlazaViewItem::OnSocketMainLogon(CMD_Command Command, void * pData, WORD w
 			CMD_GP_LogonSuccess * pLogonSuccess=(CMD_GP_LogonSuccess *)pData;
 			UserData.wFaceID=pLogonSuccess->wFaceID;
 			UserData.cbGender=pLogonSuccess->cbGender;
+			UserData.cbMoorMachine=pLogonSuccess->cbMoorMachine;
 			UserData.cbMember=pLogonSuccess->cbMember;
 			UserData.dwUserID=pLogonSuccess->dwUserID;
 			UserData.dwGameID=pLogonSuccess->dwGameID;
@@ -555,6 +563,31 @@ bool CPlazaViewItem::OnSocketMainSystem(CMD_Command Command, void * pData, WORD 
 
 			return true;
 		}
+	case SUB_GP_MESSAGE:
+		{
+			//效验参数
+			CMD_GP_Message * pMessage=(CMD_GP_Message *)pData;
+			ASSERT(wDataSize>(sizeof(CMD_GP_Message)-sizeof(pMessage->szContent)));
+			if (wDataSize<=(sizeof(CMD_GP_Message)-sizeof(pMessage->szContent))) return false;
+
+			//消息处理
+			WORD wHeadSize=sizeof(CMD_GP_Message)-sizeof(pMessage->szContent);
+			ASSERT(wDataSize==(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR)));
+			if (wDataSize!=(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR))) return false;
+			pMessage->szContent[pMessage->wMessageLength-1]=0;
+
+			//关闭连接
+			if (pMessage->wMessageType&SMT_INTERMIT_LINE)
+			{
+				m_ClientSocket->CloseSocket();
+			}
+
+			//显示消息
+			if (pMessage->wMessageType&SMT_EJECT)
+				ShowMessageBox(pMessage->szContent,MB_ICONINFORMATION);
+
+			return true;
+		}
 	}
 	return true;
 }
@@ -795,6 +828,27 @@ bool CPlazaViewItem::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD 
 		}
 	case SUB_GP_MODIFY_INDIVIDUAL_RESULT:	//修改结果
 		{
+			return true;
+		}
+	case SUB_GP_LOCKCOMPUTER_RESULT:
+		{
+			ASSERT(sizeof(CMD_GP_LockComputerResult) == wDataSize);
+			if ( sizeof(CMD_GP_LockComputerResult) != wDataSize) 
+				return true;
+		
+			CMD_GP_LockComputerResult *pLockRet = (CMD_GP_LockComputerResult*)pBuffer;
+			//获取信息
+			tagGlobalUserData &GlobalUserData = g_GlobalUnits.GetGolbalUserData();
+			GlobalUserData.cbMoorMachine=pLockRet->cbMoorMachine;
+			//显示消息
+			CGameFrame *pGameFrame = (CGameFrame *)AfxGetMainWnd();
+			CDlgLockComputer &DlgLockComputer = pGameFrame->m_DlgLockComputer;
+			if ( DlgLockComputer.m_hWnd != NULL && DlgLockComputer.IsWindowVisible() )
+			{
+				DlgLockComputer.UpdateControls();
+				DlgLockComputer.ShowMessage(pLockRet->szRetDescribe);
+			}
+
 			return true;
 		}
 	default:
@@ -1190,7 +1244,3 @@ afx_msg void CPlazaViewItem::OnBnClickedBBS()
 {
 	//m_pHtmlBrower->Navigate("http://site7353.s5.idc2.cn/");
 }
-
-//-----------------------------------------------
-//					the end
-//-----------------------------------------------

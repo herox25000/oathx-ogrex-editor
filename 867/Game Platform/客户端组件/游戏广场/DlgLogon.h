@@ -62,7 +62,7 @@ public:
 	TCHAR								m_szSpreader[NAME_LEN];			//电子邮箱
 	TCHAR								m_szAccounts[NAME_LEN];			//游戏帐号
 	TCHAR								m_szPassword[PASS_LEN];			//游戏密码
-
+	TCHAR								m_szBankPassword[PASS_LEN];			//游戏密码
 	//控件变量
 public:
 	CImageList							m_ImageList;
@@ -110,7 +110,7 @@ protected:
 	TCHAR								m_szSpreader[NAME_LEN];			//推广人名
 	TCHAR								m_szAccounts[NAME_LEN];			//游戏帐号
 	TCHAR								m_szPassword[PASS_LEN];			//游戏密码
-
+	TCHAR								m_szBankPassword[PASS_LEN];		//银行密码
 	//位置变量
 protected:
 	INT									m_nFullWidth;					//全部宽度

@@ -287,8 +287,6 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_BUTTON_1:				//功能按钮
 	case IDC_BT_BUTTON_2:				//功能按钮
-	//case IDC_BT_BUTTON_4:				//功能按钮
-	//case IDC_BT_BUTTON_5:				//功能按钮
 		{
 			TCHAR chDir[MAX_PATH];
 			GetCurrentDirectory(MAX_PATH, chDir);
@@ -309,16 +307,18 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_BUTTON_3:				//上传头像
 		{
-			//创建窗体
-			if ( m_DlgCustomFace.m_hWnd == NULL )
-			{
-				m_DlgCustomFace.Create(IDD_CUSTOM_FACE, this);
-			}
-			//显示窗体
-			m_DlgCustomFace.CenterWindow();
-			m_DlgCustomFace.ShowWindow(SW_SHOW);
-			m_DlgCustomFace.SetActiveWindow();
-			m_DlgCustomFace.SetForegroundWindow();
+			////创建窗体
+			//if ( m_DlgCustomFace.m_hWnd == NULL )
+			//{
+			//	m_DlgCustomFace.Create(IDD_CUSTOM_FACE, this);
+			//}
+			//m_DlgLockComputer.UpdateControls();
+			////显示窗体
+			//m_DlgCustomFace.CenterWindow();
+			//m_DlgCustomFace.ShowWindow(SW_SHOW);
+			//m_DlgCustomFace.SetActiveWindow();
+			//m_DlgCustomFace.SetForegroundWindow();
+			ShowMessageBox(TEXT("此功能暂时不能使用！"),MB_ICONQUESTION);
 			return TRUE;
 		}
 	case IDC_BT_BUTTON_4:
@@ -326,9 +326,20 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 			::AfxMessageBox("启动银行");
 			return TRUE;
 		}
-	case IDC_BT_BUTTON_5:
+	case IDC_BT_BUTTON_5: //锁机功能
 		{
-			::AfxMessageBox("设定本机");
+			if(m_DlgGamePlaza.m_ClientSocket.GetInterface() == NULL)
+				return TRUE;
+			//创建窗体
+			if ( m_DlgLockComputer.m_hWnd == NULL )
+			{
+				m_DlgLockComputer.Create(IDD_LOCKCOMPUTER, this);
+			}
+			//显示窗体
+			m_DlgLockComputer.CenterWindow();
+			m_DlgLockComputer.ShowWindow(SW_SHOW);
+			m_DlgLockComputer.SetActiveWindow();
+			m_DlgLockComputer.SetForegroundWindow();
 			return TRUE;
 		}
 	case IDC_BT_PLAZA	:				//大厅按钮
@@ -488,7 +499,7 @@ void CGameFrame::ShowSystemOption()
 		for (int i=0;i<CountArray(m_pRoomViewItem);i++)
 		{
 			if (m_pRoomViewItem[i]==NULL) break;
-			m_pRoomViewItem[i]->SendUserRule();
+				m_pRoomViewItem[i]->SendUserRule();
 		}
 	}
 
@@ -1127,7 +1138,8 @@ void CGameFrame::RectifyControl(int nWidth, int nHeight)
 	//移动控件
 	nYPos = m_ImageInfoFrame.nTBorder-FRAME_EXALTATION-4;
 	CButton * pButton[]={/*&m_btQuitGame,*/&m_btSelfOption,&m_btGlobalOption,&m_btSwitchUser};
-	for (int i=0;i<CountArray(pButton);i++) DeferWindowPos(hDwp,pButton[i]->m_hWnd,NULL,nWidth-(rcButtonRect.Width()+6)*(i+1)-8,nYPos,0,0,uFlags|SWP_NOSIZE);
+	for (int i=0;i<CountArray(pButton);i++)
+		DeferWindowPos(hDwp,pButton[i]->m_hWnd,NULL,nWidth-(rcButtonRect.Width()+6)*(i+1)-8,nYPos,0,0,uFlags|SWP_NOSIZE);
 
 	//结束调整
 	LockWindowUpdate();
