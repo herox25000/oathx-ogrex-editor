@@ -235,7 +235,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 		DispatchTableCard();
 	}
 
-	//ChuLaoQian();
+	ChuLaoQian();
 
 	//变量定义
 	CMD_S_GameStart GameStart;
@@ -903,6 +903,7 @@ bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApp
 		ApplyUserInfo.dwUserID = pUserData->dwUserID;
 		ApplyUserInfo.lUserScore = pUserData->UserScoreInfo.lScore;
 		ApplyUserInfo.wChairID = pUserData->wChairID;
+		ApplyUserInfo.dwUserType = pUserData->cbMasterOrder;
 
 		//插入玩家
 		INT_PTR nUserCount = m_ApplyUserArrary.GetCount();
@@ -1282,31 +1283,62 @@ __int64 CTableFrameSink::GetMaxTieKingScore(WORD wChairID)
 
 void CTableFrameSink::ChuLaoQian()
 {
-	//TCHAR szINI[512];
-	//::GetModulePath(szINI, sizeof(szINI));
-	//SafeStrCat(szINI, "\\Baccarat.ini", sizeof(szINI));
-	//LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-	//LIMIT_VALUE(lWinRate, 1, 10);
+	TCHAR szINI[512];
+	::GetModulePath(szINI, sizeof(szINI));
+	SafeStrCat(szINI, "\\Baccarat.ini", sizeof(szINI));
+	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
+	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
+	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
+	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
+	LIMIT_VALUE(lWinRate, 1, 10);
 
-	////获取玩家
-	//IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem( m_CurrentBanker.wChairID );
-	//if ( pServerUserItem )
-	//{
-	//	tagServerUserData const *pBankerData=pServerUserItem->GetUserData();
-	//	if ( ( pBankerData->dwLaoQian>0 ) && ( rand()%lWinRate==0 ) )
-	//	{
-	//		for (int redo=0; redo<20; redo++)
-	//		{
-	//			OUTPUT("1111111111111");
-	//			if ( PreCalculateBankerWin()<0 )
-	//			{
-	//				DispatchTableCard();
-	//			}
-	//			else
-	//				break;
-	//		}
-	//	}
-	//}
+	//获取玩家
+	if (m_CurrentBanker.dwUserID != 0)
+	{
+		//机器人30%的概率赢钱
+		if ( m_CurrentBanker.dwUserType == 10 )
+		{
+			bool bWin = false;
+			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
+			{
+				for (int redo = 0; redo < 20; redo++)
+				{
+					if ( PreCalculateBankerWin() < 0 )
+					{
+						DispatchTableCard();
+					}
+					else
+					{
+						bWin = true;
+						break;
+					}
+				}
+			}
+			if (false == bWin)
+			{
+				int nRootNum = 10;
+				while(PreCalculateBankerWin() < (-lMaxPerLose) && nRootNum > 0)
+				{
+					DispatchTableCard();
+					nRootNum--;
+				}
+			}
+		}
+		else
+		{
+			//玩家如果做庄
+			if (m_lBankerWinScore >= lPlayerMaxMin)
+			{
+				int nRootNum = 10;
+				while(PreCalculateBankerWin() > 0 && nRootNum > 0)
+				{
+					DispatchTableCard();
+					nRootNum--;
+				}
+			}
+		}
+	}
+
 }
 
 __int64 CTableFrameSink::PreCalculateBankerWin()
@@ -1333,7 +1365,7 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 	__int64 *pUserScore[] = {NULL, m_lUserPlayerScore, m_lUserTieScore, m_lUserBankerScore, m_lUserPlayerKingScore, 
 		m_lUserBankerKingScore, m_lUserTieSamePointScore};
 	//区域倍率
-	BYTE cbMultiple[] = {0, 1, 8, 1, 2, 2, 33};
+	BYTE cbMultiple[] = {0, 1, 8, 1, 2, 2, 32};
 
 	//计算积分
 	for (WORD i=0;i<GAME_PLAYER;i++)
@@ -1363,7 +1395,6 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 				lBankerWinScore += pUserScore[wAreaIndex][i];
 			}
 		}
-
 		//总的分数
 		m_lUserWinScore[i] += lUserLostScore[i];
 	}
@@ -1418,9 +1449,7 @@ void CTableFrameSink::CalculateScore()
 	__int64 *pUserScore[] = {NULL, m_lUserPlayerScore, m_lUserTieScore, m_lUserBankerScore, m_lUserPlayerKingScore, 
 		m_lUserBankerKingScore, m_lUserTieSamePointScore};
 	//区域倍率
-	BYTE cbMultiple[] = {0, 1, 8, 1, 2, 2, 33};
-
-
+	BYTE cbMultiple[] = {0, 1, 8, 1, 2, 2, 32};
 
 	///***************************    ****************************************/
 	//__int64	WinScore[GAME_PLAYER];
@@ -1479,8 +1508,6 @@ void CTableFrameSink::CalculateScore()
 	//	BankerScore = MypUserScore->lScore + MyBankerWinScore;
 	///****************************************************************************************/
 
-
-
 	//计算积分
 	for (WORD i=0;i<GAME_PLAYER;i++)
 	{
@@ -1526,7 +1553,6 @@ void CTableFrameSink::CalculateScore()
 			//m_lUserWinScore[i] -= m_lUserRevenue[i];
 		}
 	}
-
 	//庄家成绩
 	if ( m_CurrentBanker.dwUserID != 0 )
 	{
