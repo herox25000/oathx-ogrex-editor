@@ -175,8 +175,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_pITableFrame->SetGameStatus(GS_PLAYING);
 	//发送扑克
 	DispatchTableCard();
-	CheckCardRight();
-//	ChuLaoQian();
+	ChuLaoQian();
 	//变量定义
 	CMD_S_GameStart GameStart;
 	ZeroMemory(&GameStart,sizeof(GameStart));
@@ -1560,141 +1559,58 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 
 void CTableFrameSink::ChuLaoQian()
 {
-	//TCHAR szINI[512];
-	//::GetModulePath(szINI, sizeof(szINI));
-	//SafeStrCat(szINI, "\\PaiJiu.ini", sizeof(szINI));
-	//LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-	//LIMIT_VALUE(lWinRate, 1, 10);
+	TCHAR szINI[512];
+	::GetModulePath(szINI, sizeof(szINI));
+	SafeStrCat(szINI, "\\PaiJiu.ini", sizeof(szINI));
+	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
+	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
+	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
+	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
+	LIMIT_VALUE(lWinRate, 1, 10);
 
-	////获取玩家
-	//IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem( m_CurrentBanker.wChairID );
-	//if ( pServerUserItem )
-	//{
-	//	tagServerUserData const *pBankerData=pServerUserItem->GetUserData();
-	//	if ( ( pBankerData->dwLaoQian>0 ) && ( rand()%lWinRate==0 ) )
-	//	{
-	//		OUTPUT("111111111111111");
-	//		for (int redo=0; redo<50; redo++)
-	//		{
-	//			if ( PreCalculateBankerWin()<0 )
-	//			{
-	//				DispatchTableCard();
-	//			}
-	//			else
-	//				break;
-	//		}
-	//	}
-	//}
-}
-
-bool CTableFrameSink::CheckCardRight()
-{
-	if ( m_CurrentBanker.dwUserID != 0 )
+	//获取玩家
+	if (m_CurrentBanker.dwUserID != 0)
 	{
-		bool bChangeCard = false;
-		int	 nChangeID = INDEX_BANKER;
-		int nRand = rand() % 100;
-		BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
-		if (m_CurrentBanker.dwUserType == 10)
+		//机器人30%的概率赢钱
+		if ( m_CurrentBanker.dwUserType == 10 )
 		{
-			//机器人（至少营一家）
-			SortCardComp(chCardSort, 4);
-			if (nRand < 12)
+			bool bWin = false;
+			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
 			{
-				if (chCardSort[3] != INDEX_BANKER)
+				for (int redo = 0; redo < 50; redo++)
 				{
-					bChangeCard = true;
-					nChangeID = chCardSort[3];
+					if ( PreCalculateBankerWin() < 0 )
+					{
+						DispatchTableCard();
+					}
+					else
+					{
+						bWin = true;
+						break;
+					}
 				}
 			}
-			else if (nRand < 40)
+			if (false == bWin)
 			{
-				if (chCardSort[2] != INDEX_BANKER)
+				int nRootNum = 30;
+				while(PreCalculateBankerWin() < (-lMaxPerLose) && nRootNum > 0)
 				{
-					bChangeCard = true;
-					nChangeID = chCardSort[2];
-				}
-			}
-			else if (nRand < 85)
-			{
-				if (chCardSort[1] != INDEX_BANKER)
-				{
-					bChangeCard = true;
-					nChangeID = chCardSort[1];
-					return true;
-				}
-			}
-			else
-			{
-				if (chCardSort[0] != INDEX_BANKER)
-				{
-					bChangeCard = true;
-					nChangeID = chCardSort[0];
-					return true;
+					DispatchTableCard();
+					nRootNum--;
 				}
 			}
 		}
 		else
 		{
-			if (nRand < 25)
+			//玩家如果做庄
+			if (m_lBankerWinScore >= lPlayerMaxMin)
 			{
-				if (chCardSort[3] != INDEX_BANKER)
+				int nRootNum = 50;
+				while(PreCalculateBankerWin() > 0 && nRootNum > 0)
 				{
-					bChangeCard = true;
-					nChangeID = chCardSort[3];
+					DispatchTableCard();
+					nRootNum--;
 				}
-			}
-			else if (nRand < 60)
-			{
-				if (chCardSort[2] != INDEX_BANKER)
-				{
-					bChangeCard = true;
-					nChangeID = chCardSort[2];
-				}
-			}
-			else if (nRand < 90)
-			{
-				if (chCardSort[1] != INDEX_BANKER)
-				{
-					bChangeCard = true;
-					nChangeID = chCardSort[1];
-					return true;
-				}
-			}
-			else
-			{
-				if (chCardSort[0] != INDEX_BANKER)
-				{
-					bChangeCard = true;
-					nChangeID = chCardSort[0];
-					return true;
-				}
-			}
-		}
-		if (bChangeCard)
-		{
-			BYTE bFirstCard = m_cbTableCardArray[nChangeID][0];
-			BYTE bNextCard = m_cbTableCardArray[nChangeID][1];
-			m_cbTableCardArray[nChangeID][0] = m_cbTableCardArray[INDEX_BANKER][0];
-			m_cbTableCardArray[nChangeID][1] = m_cbTableCardArray[INDEX_BANKER][1];
-			m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
-			m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
-		}
-	}
-	return true;
-}
-
-void CTableFrameSink::SortCardComp( BYTE chCardComp[], BYTE CardCompCount )
-{
-	for (int i = 0; i < 4; i++)
-	{
-		for ( int j = i + 1; j < 4; j++)
-		{
-			if(!m_GameLogic.CompareCard(m_cbTableCardArray[chCardComp[i]], m_cbTableCardArray[chCardComp[j]],2))
-			{
-				BYTE nIndex = chCardComp[i];
-				chCardComp[i] = chCardComp[j];
-				chCardComp[j] = nIndex; 
 			}
 		}
 	}
