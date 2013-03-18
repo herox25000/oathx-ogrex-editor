@@ -202,9 +202,6 @@ private:
 	void ChuLaoQian();
 	//计算得分
 	__int64	PreCalculateBankerWin();
-	//系统判断AI
-	bool CheckCardRight();
-	void SortCardComp(BYTE chCardComp[], BYTE CardCompCount);
 };
 
 //////////////////////////////////////////////////////////////////////////
