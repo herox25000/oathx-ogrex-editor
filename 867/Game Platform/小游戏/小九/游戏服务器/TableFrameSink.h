@@ -198,12 +198,9 @@ private:
 	//推断赢家
 	void DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner);
 	////出老千
-	//void ChuLaoQian();
+	void ChuLaoQian();
 	////计算得分
-	//__int64	PreCalculateBankerWin();
-	//系统判断AI
-	bool CheckCardRight();
-	void SortCardComp(BYTE chCardComp[], BYTE CardCompCount);
+	__int64	PreCalculateBankerWin();
 };
 
 //////////////////////////////////////////////////////////////////////////
