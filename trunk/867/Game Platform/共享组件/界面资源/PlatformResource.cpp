@@ -298,11 +298,13 @@ bool __cdecl CPlatformResource::GetServerViewImage(tagServerViewImage * ServerVi
 	m_pImageMap->AddImage(DEF_IDB_BT_CLEAN_SCREEN, RES_DEF_IDB_BT_CLEAN_SCREEN);
 
 	//×À×Ó°´Å¥
+	ServerViewImage->uBtTableRule=DEF_IDB_BT_TABLERULE;
 	ServerViewImage->uBtAutoJoin=DEF_IDB_BT_AUTO_JOIN;
 	ServerViewImage->uBtSearchUser=DEF_IDB_BT_SEARCH_USER;
 	ServerViewImage->uBtQuitRoom=DEF_IDB_BT_QUIT_ROOM;
 	ServerViewImage->uBtBank=DEF_IDB_BT_BANK;
 
+	m_pImageMap->AddImage(DEF_IDB_BT_TABLERULE, RES_DEF_IDB_BT_TABLERULE);
 	m_pImageMap->AddImage(DEF_IDB_BT_AUTO_JOIN, RES_DEF_IDB_BT_AUTO_JOIN);
 	m_pImageMap->AddImage(DEF_IDB_BT_SEARCH_USER, RES_DEF_IDB_BT_SEARCH_USER);
 	m_pImageMap->AddImage(DEF_IDB_BT_QUIT_ROOM, RES_DEF_IDB_BT_QUIT_ROOM);

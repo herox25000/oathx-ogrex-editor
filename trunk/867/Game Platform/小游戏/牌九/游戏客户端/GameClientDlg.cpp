@@ -562,22 +562,22 @@ void CGameClientDlg::UpdateButtonContron()
 	//ÉêÇë°´Å¥
 	if ( ! IsLookonMode() )
 	{
-		//×´Ì¬ÅÐ¶Ï
-		if ( GetGameStatus()==GS_FREE ) 
-		{
+		////×´Ì¬ÅÐ¶Ï
+		//if ( GetGameStatus()==GS_FREE ) 
+		//{
+		//	m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
+		//	m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
+		//}
+		//if ( GetGameStatus()==(GS_PLAYING+1) ) 
+		//{
 			m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
 			m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
-		}
-		if ( GetGameStatus()==(GS_PLAYING+1) ) 
-		{
-			m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
-			m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
-		}
-		else
-		{
-			m_GameClientView.m_btCancelBanker.EnableWindow(FALSE);
-			m_GameClientView.m_btApplyBanker.EnableWindow(FALSE);
-		}
+		//}
+		//else
+		//{
+		//	m_GameClientView.m_btCancelBanker.EnableWindow(FALSE);
+		//	m_GameClientView.m_btApplyBanker.EnableWindow(FALSE);
+		//}
 
 		//ÏÔÊ¾ÅÐ¶Ï
 		const tagUserData *pMeUserData = GetUserData( GetMeChairID() );

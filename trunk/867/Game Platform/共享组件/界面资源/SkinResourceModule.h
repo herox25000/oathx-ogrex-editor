@@ -140,10 +140,12 @@ struct tagServerViewImage
 	//UINT							uBtMoreFunction;					//资源标识
 
 	//桌子按钮
+	UINT							uBtTableRule;						//资源标识
 	UINT							uBtAutoJoin;						//资源标识
 	UINT							uBtBank;							//资源标识
 	UINT							uBtSearchUser;						//资源标识
 	UINT							uBtQuitRoom;						//资源标识
+
 	//UINT							uBtViewMode;						//资源标识
 	//UINT							uBtCallMaster;						//资源标识
 	//UINT							uBtGoldManager;						//资源标识

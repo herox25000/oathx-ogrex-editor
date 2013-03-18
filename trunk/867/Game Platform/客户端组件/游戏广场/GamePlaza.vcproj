@@ -143,6 +143,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\DlgIndividualInfo.cpp">
 			</File>
 			<File
+				RelativePath=".\DlgLockComputer.cpp">
+			</File>
+			<File
 				RelativePath=".\DlgLogon.cpp">
 			</File>
 			<File
@@ -221,6 +224,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 			<File
 				RelativePath=".\DlgIndividualInfo.h">
+			</File>
+			<File
+				RelativePath=".\DlgLockComputer.h">
 			</File>
 			<File
 				RelativePath=".\DlgLogon.h">

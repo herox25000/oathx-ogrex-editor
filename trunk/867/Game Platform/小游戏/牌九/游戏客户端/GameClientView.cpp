@@ -395,12 +395,12 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btCancelBanker,NULL,nWidth/2+273,nHeight/2-337,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btScoreMoveL,NULL,nWidth/2-295,nHeight/2+272-10,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btScoreMoveR,NULL,nWidth/2+327,nHeight/2+272-10,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnZiDongCuoPai,NULL,nWidth/2+210,nHeight/2+160,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnShouDongCuoPai,NULL,nWidth/2+210,nHeight/2+160,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnShengyin,NULL,nWidth/2+290,nHeight/2+160,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnNoShengyin,NULL,nWidth/2+290,nHeight/2+160,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnQuqian,NULL,nWidth/2+210,nHeight/2+195,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+290,nHeight/2+195,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btnZiDongCuoPai,NULL,nWidth/2+210,nHeight/2+165,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btnShouDongCuoPai,NULL,nWidth/2+210,nHeight/2+165,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btnShengyin,NULL,nWidth/2+290,nHeight/2+165,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btnNoShengyin,NULL,nWidth/2+290,nHeight/2+165,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btnQuqian,NULL,nWidth/2+210,nHeight/2+200,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+290,nHeight/2+200,0,0,uFlags|SWP_NOSIZE);
 	m_btnCunqian.EnableWindow(FALSE);
 	//结束移动
 	EndDeferWindowPos(hDwp);
@@ -568,17 +568,17 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		if ( m_wMeChairID == m_wCurrentBankerChairID )
 		{
 			CImageHandle ImageHandleBanker(&m_ImageMeBanker);
-			m_ImageMeBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageMeBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 		else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
 		{
 			CImageHandle ImageHandleBanker(&m_ImageChangeBanker);
-			m_ImageChangeBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageChangeBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 		else
 		{
 			CImageHandle ImageHandleBanker(&m_ImageNoBanker);
-			m_ImageNoBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageNoBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 	}
 	//庄家信息																											

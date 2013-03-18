@@ -29,6 +29,7 @@
 #define IDD_OPTION_TABLE_RULE           273
 #define IDD_CUSTOM_FACE                 276
 #define IDD_MODIFY_INDIVIDUAL           277
+#define IDD_LOCKCOMPUTER                318
 #define IDC_CHAT_MESSAGE                1004
 #define IDC_TABLE_PASSWORD              1004
 #define IDC_SERVER                      1005
@@ -118,9 +119,15 @@
 #define IDC_LIMIT_ENTER_ROOM            1087
 #define IDC_ENTER_TABLE_PASSWORD        1087
 #define IDC_DELETE                      1087
+#define IDC_LogonPws                    1088
 #define IDC_WARIMG_MSG                  1089
+#define IDC_LOCKTEXT                    1089
 #define IDC_PLAZA_FACE                  1090
+#define IDC_TABLERULE                   1090
 #define IDC_GAME_FACE                   1091
+#define IDC_BANKPASS                    1091
+#define IDC_EDIT2                       1092
+#define IDC_BANKPASS2                   1092
 #define IDC_RESET_SHALL_CLOSE           1094
 #define IDC_ALLOW_WISPER                1095
 #define IDC_ALLOW_ROOM_CHAT             1096
@@ -137,9 +144,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        318
+#define _APS_NEXT_RESOURCE_VALUE        319
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1088
+#define _APS_NEXT_CONTROL_VALUE         1093
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

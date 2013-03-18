@@ -649,17 +649,17 @@ BOOL CDlgOption::OnInitDialog()
 	m_ButtonBar.ShowWindow(SW_SHOW);
 	m_ButtonBar.InitButtonBar(rcFrame,this);
 
-	//设置标题
-	SetWindowText(TEXT("系统配置"));
 
-	//系统配置
-	tagSystemParameter * pSystemParameter=&m_SystemItem.m_SystemParameter;
-	pSystemParameter->enAcountsRule=g_GlobalOption.m_enAcountsRule;
-	pSystemParameter->enInviteMode=g_GlobalOption.m_InviteMode;
-	pSystemParameter->bShowInOutMessage=g_GlobalOption.m_bShowInOutMessage;
-	pSystemParameter->wBossHotKey=g_GlobalOption.m_wBossHotKey;
-	m_ButtonBar.InsertOptionItem(&m_SystemItem);
-
+	////设置标题
+	//SetWindowText(TEXT("系统配置"));
+	////系统配置
+	//tagSystemParameter * pSystemParameter=&m_SystemItem.m_SystemParameter;
+	//pSystemParameter->enAcountsRule=g_GlobalOption.m_enAcountsRule;
+	//pSystemParameter->enInviteMode=g_GlobalOption.m_InviteMode;
+	//pSystemParameter->bShowInOutMessage=g_GlobalOption.m_bShowInOutMessage;
+	//pSystemParameter->wBossHotKey=g_GlobalOption.m_wBossHotKey;
+	//m_ButtonBar.InsertOptionItem(&m_SystemItem);
+	SetWindowText(TEXT("桌子规则"));
 	//同桌配置
 	if ((m_pGameOption!=NULL)&&(m_pServerOption!=NULL))
 	{

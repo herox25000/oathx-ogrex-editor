@@ -67,7 +67,6 @@ protected:
 	WORD							m_wGameGenre;						//游戏类型
 	DWORD							m_dwVideoAddr;						//视频地址
 	BYTE							m_cbHideUserInfo;					//隐藏信息
-	BYTE							m_cbDistributeMode;					//座位分配模式
 	//辅助变量
 protected:
 	bool							m_bRectifyHor;						//调整标志
@@ -103,7 +102,8 @@ protected:
 protected:
 	DWORD							m_dwChatUserID;						//聊天用户
 	TCHAR							m_szChatName[NAME_LEN];				//聊天用户
-
+public:
+	BYTE							m_cbDistributeMode;					//座位分配模式
 	//聊天控件
 public:
 	CComboBox						m_ChatInput;						//聊天输入
@@ -119,6 +119,7 @@ public:
 
 	//功能控件
 public:
+	CSkinButton						m_btTableRule;						//桌子密码
 	CSkinButton						m_btBank;							//银行按钮
 	CSkinButton						m_btAutoSit;						//加入按钮
 	CSkinButton						m_btFindUser;						//查找按钮
@@ -451,6 +452,8 @@ protected:
 
 	//功能按钮
 protected:
+	//桌子密码
+	afx_msg void OnBnClickeTableRule();
 	//银行按钮
 	afx_msg void OnBnClickedBank();
 	//加入按钮

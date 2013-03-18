@@ -55,6 +55,7 @@ struct CMD_GP_RegisterAccounts
 	TCHAR								szSpreader[NAME_LEN];			//推广人名
 	TCHAR								szAccounts[NAME_LEN];			//登录帐号
 	TCHAR								szPassWord[PASS_LEN];			//登录密码
+	TCHAR								szBankPassWord[PASS_LEN];		//银行密码				
 };
 
 //登陆成功
@@ -63,6 +64,7 @@ struct CMD_GP_LogonSuccess
 	WORD								wFaceID;						//头像索引
 	BYTE								cbGender;						//用户性别
 	BYTE								cbMember;						//会员等级
+	BYTE								cbMoorMachine;					//账号是否锁定
 	DWORD								dwUserID;						//用户 I D
 	DWORD								dwGameID;						//游戏 I D
 	DWORD								dwExperience;					//用户经验
@@ -98,11 +100,23 @@ struct CMD_GP_ListConfig
 
 //////////////////////////////////////////////////////////////////////////
 //系统命令码
-
 #define MDM_GP_SYSTEM					3								//系统命令
-
 #define SUB_GP_VERSION					100								//版本通知
-#define SUB_SP_SYSTEM_MSG				101								//系统消息
+#define SUB_GP_MESSAGE					101								//系统消息
+
+//消息类型
+#define SMT_INFO					0x0001								//信息消息
+#define SMT_EJECT					0x0002								//弹出消息
+#define SMT_GLOBAL					0x0004								//全局消息
+#define SMT_CLOSE_ROOM				0x1000								//关闭房间
+#define SMT_INTERMIT_LINE			0x4000								//中断连接
+//消息数据包
+struct CMD_GP_Message
+{
+	WORD							wMessageType;						//消息类型
+	WORD							wMessageLength;						//消息长度
+	TCHAR							szContent[1024];					//消息内容
+};
 
 //版本通知
 struct CMD_GP_Version
@@ -122,6 +136,9 @@ struct CMD_GP_Version
 #define SUB_GP_CUSTOM_FACE_DELETE		104								//删除头像
 #define SUB_GP_MODIFY_INDIVIDUAL		105								//个人资料
 #define SUB_GP_MODIFY_INDIVIDUAL_RESULT	106								//修改结果
+#define SUB_GP_LOCKCOMPUTER				107								//锁定本机
+#define SUB_GP_LOCKCOMPUTER_RESULT		108								//锁定本机
+
 
 //个人资料
 struct CMD_GP_ModifyIndividual
@@ -188,6 +205,20 @@ struct CMD_GP_ModifyIndividualResult
 {
 	TCHAR							szDescribeMsg[128];					//描述信息
 	bool							bOperateSuccess;					//成功标识
+};
+
+//锁定本机
+struct CMD_GP_LockComputer
+{
+	LONG							lUserID;
+	TCHAR							szPassWord[PASS_LEN];			//登录密码
+};
+
+//锁定本机返回
+struct CMD_GP_LockComputerResult
+{
+	BYTE								cbMoorMachine;					//账号是否锁定							
+	TCHAR								szRetDescribe[128];				//返回消息
 };
 
 //////////////////////////////////////////////////////////////////////////
