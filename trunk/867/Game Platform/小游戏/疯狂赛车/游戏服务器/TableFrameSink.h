@@ -15,6 +15,7 @@ struct tagApplyUserInfo
 	DWORD							dwUserID;							//玩家ID
 	WORD							wChairID;							//椅子号码
 	__int64							lUserScore;							//玩家积分
+	DWORD							dwUserType;							//管理权限	
 };
 
 typedef CArrayTemplate< tagApplyUserInfo > ApplyUserArrary;
