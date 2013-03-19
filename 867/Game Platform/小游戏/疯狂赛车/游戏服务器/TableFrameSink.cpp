@@ -768,6 +768,7 @@ bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApp
 		ApplyUserInfo.dwUserID = pUserData->dwUserID;
 		ApplyUserInfo.lUserScore = pUserData->UserScoreInfo.lScore;
 		ApplyUserInfo.wChairID = pUserData->wChairID;
+		ApplyUserInfo.dwUserType = pUserData->cbMasterOrder;
 
 		//插入玩家
 		INT_PTR nUserCount = m_ApplyUserArrary.GetCount();
@@ -1217,52 +1218,95 @@ void CTableFrameSink::ChuLaoQian()
 {
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
-	SafeStrCat(szINI, "\\Tiger.ini", sizeof(szINI));
+	SafeStrCat(szINI, "\\BumperCar.ini", sizeof(szINI));
 	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
+	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
+	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
+	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
 	LIMIT_VALUE(lWinRate, 1, 10);
 
 	//获取玩家
-	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem( m_CurrentBanker.wChairID );
-	if ( pServerUserItem )
+	if (m_CurrentBanker.dwUserID != 0)
 	{
-		tagServerUserData const *pBankerData=pServerUserItem->GetUserData();
-// 		OUTPUT("pBankerData->dwLaoQian=%d", pBankerData->dwLaoQian);
-		if ( ( pBankerData->dwLaoQian>0 ) && ( rand()%lWinRate==0 ) )
+		//机器人30%的概率赢钱
+		if ( m_CurrentBanker.dwUserType == 10 )
 		{
-			//玩家下注
-			__int64 allUserScore[MAX_ANIMAL_COUNT] =  {
-				m_lAllBigTigerScore*s_Multiple[0],	//大家买大虎总注
-				m_lAllSmlTigerScore*s_Multiple[1],	//大家买小虎总注
-				m_lAllBigBogScore  *s_Multiple[2],		//大家买大狗总注
-				m_lAllSmlBogScore  *s_Multiple[3],		//大家买大狗总注
-				m_lAllBigHorseScore*s_Multiple[4],	//大家买大马总注
-				m_lAllSmlHorseScore*s_Multiple[5],	//大家买小马总注
-				m_lAllBigSnakeScore*s_Multiple[6],	//大家买大蛇总注
-				m_lAllSmlSnakeScore*s_Multiple[7]	//大家买小蛇总注
-			};
-
-			for ( int x=0; x<50; x++ )
+			bool bWin = false;
+			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
 			{
-				BYTE cbAnimal=m_cbAnimalBox%MAX_ANIMAL_COUNT;
-
+				bool bWin = false;
 				//玩家下注
-				__int64 sxWinOrLose=0;
-				for ( BYTE i=0; i<MAX_ANIMAL_COUNT; i++ )
+				__int64 allUserScore[MAX_ANIMAL_COUNT] =  {
+						m_lAllBigTigerScore*s_Multiple[0],	//大家买大虎总注
+						m_lAllSmlTigerScore*s_Multiple[1],	//大家买小虎总注
+						m_lAllBigBogScore  *s_Multiple[2],	//大家买大狗总注
+						m_lAllSmlBogScore  *s_Multiple[3],	//大家买大狗总注
+						m_lAllBigHorseScore*s_Multiple[4],	//大家买大马总注
+						m_lAllSmlHorseScore*s_Multiple[5],	//大家买小马总注
+						m_lAllBigSnakeScore*s_Multiple[6],	//大家买大蛇总注
+						m_lAllSmlSnakeScore*s_Multiple[7]	//大家买小蛇总注
+				};
+				for ( int x = 0; x < 50; x++ )
 				{
-					if ( i==cbAnimal )
-						sxWinOrLose-=allUserScore[i];
-					else
-						sxWinOrLose+=allUserScore[i];
+					BYTE cbAnimal=m_cbAnimalBox%MAX_ANIMAL_COUNT;
+					//玩家下注
+					__int64 sxWinOrLose=0;
+					for ( BYTE i=0; i<MAX_ANIMAL_COUNT; i++ )
+					{
+						if ( i==cbAnimal )
+							sxWinOrLose-=allUserScore[i];
+						else
+							sxWinOrLose+=allUserScore[i];
+					}
+					CString str;
+					str.Format("sxWinOrLose：%I64d",sxWinOrLose);
+					OutputDebugString(str);
+					if ( sxWinOrLose>=0 )
+					{
+						bWin = true;
+						break;
+					}
+					MakeAnimate();
 				}
-				CString str;
-				str.Format("sxWinOrLose：%I64d",sxWinOrLose);
-				OutputDebugString(str);
-
-				if ( sxWinOrLose>=0 )
-					break;
-				MakeAnimate();
+			}
+		}
+		else
+		{
+			//玩家如果做庄
+			if (m_lBankerWinScore >= lPlayerMaxMin)
+			{
+				//玩家下注
+				__int64 allUserScore[MAX_ANIMAL_COUNT] =  {
+						m_lAllBigTigerScore*s_Multiple[0],	//大家买大虎总注
+						m_lAllSmlTigerScore*s_Multiple[1],	//大家买小虎总注
+						m_lAllBigBogScore  *s_Multiple[2],	//大家买大狗总注
+						m_lAllSmlBogScore  *s_Multiple[3],	//大家买大狗总注
+						m_lAllBigHorseScore*s_Multiple[4],	//大家买大马总注
+						m_lAllSmlHorseScore*s_Multiple[5],	//大家买小马总注
+						m_lAllBigSnakeScore*s_Multiple[6],	//大家买大蛇总注
+						m_lAllSmlSnakeScore*s_Multiple[7]	//大家买小蛇总注
+				};
+				for ( int x = 0; x < 50; x++ )
+				{
+					BYTE cbAnimal=m_cbAnimalBox%MAX_ANIMAL_COUNT;
+					//玩家下注
+					__int64 sxWinOrLose=0;
+					for ( BYTE i=0; i<MAX_ANIMAL_COUNT; i++ )
+					{
+						if ( i==cbAnimal )
+							sxWinOrLose-=allUserScore[i];
+						else
+							sxWinOrLose+=allUserScore[i];
+					}
+					if ( sxWinOrLose < 0 )
+					{
+						break;
+					}
+					MakeAnimate();
+				}
 			}
 		}
 	}
+
 }
 
