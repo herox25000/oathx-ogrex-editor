@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../GameBase.h"
-#include "CMD_PaiJiu.h"
+#include "CMD_XiaoJiu.h"
 
 // struct tagJetInfo
 // {
