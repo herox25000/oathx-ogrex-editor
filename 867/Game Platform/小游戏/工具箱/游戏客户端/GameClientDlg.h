@@ -14,7 +14,7 @@ struct tagAstatInfo
 //////////////////////////////////////////////////////////////////////////
 
 //游戏对话框
-class CGameClientDlg : public CSkinDialogEx, public ITCPSocketSink
+class CGameClientDlg : public CDialog, public ITCPSocketSink
 {
 public:
 	//构造函数
