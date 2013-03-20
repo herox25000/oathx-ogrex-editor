@@ -7,7 +7,7 @@
 
 ////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CGameClientDlg, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CGameClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_MODIFY_LOGIN_PASSWORD,OnModifyLoginPassword)
 	ON_BN_CLICKED(IDC_MODIFY_BANK_PASSWORD,OnModifyBankPassword)
 	ON_BN_CLICKED(IDC_MODIFY_NICKNAME,OnModifyNickname)
@@ -37,7 +37,7 @@ CString GetString(__int64 nNumber)
 }
 
 //¹¹Ôìº¯Êý
-CGameClientDlg::CGameClientDlg() : CSkinDialogEx(IDD_GAME_FRAME)
+CGameClientDlg::CGameClientDlg() : CDialog(IDD_GAME_FRAME)
 {
 }
 
