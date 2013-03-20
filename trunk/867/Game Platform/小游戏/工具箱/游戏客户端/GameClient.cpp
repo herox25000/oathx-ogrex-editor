@@ -39,12 +39,12 @@ BOOL CGameClientApp::InitInstance()
 
 	CSkinImage::ms_pImageMap = m_PlatformResourceModule->GetImageMap();
 	//获取资源
-	m_PlatformResourceModule->GetChatExpViewImage(&m_ChatExpViewImage);
+	//m_PlatformResourceModule->GetChatExpViewImage(&m_ChatExpViewImage);
 	m_PlatformResourceModule->GetGameFrameImage(&m_GameFrameImage);
-	m_PlatformResourceModule->GetPropertyViewImage(&m_PropertyViewImage);
-	m_PlatformResourceModule->GetVideoFrameImage(&m_VideoFrameImage);
-	m_PlatformResourceModule->GetPropertyMenuImage(&m_PropertyMenuImage);
-	m_PlatformResourceModule->GetGiftFlashImage(&m_GiftFlashImage);
+	//m_PlatformResourceModule->GetPropertyViewImage(&m_PropertyViewImage);
+	//m_PlatformResourceModule->GetVideoFrameImage(&m_VideoFrameImage);
+	//m_PlatformResourceModule->GetPropertyMenuImage(&m_PropertyMenuImage);
+	//m_PlatformResourceModule->GetGiftFlashImage(&m_GiftFlashImage);
 
 	//加载资源
 	ISkinResource * pISkinResource=(ISkinResource *)m_PlatformResourceModule->GetSkinResource(IID_ISkinResource,

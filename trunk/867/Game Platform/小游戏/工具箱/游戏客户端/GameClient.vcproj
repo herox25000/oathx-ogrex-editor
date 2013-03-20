@@ -92,7 +92,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalOptions="/IGNORE:4089"
-				AdditionalDependencies="../../../开发库/Lib/plugin_common.lib ../../../开发库/Lib/plugin_kernel.lib ../../../开发库/Lib/plugin_ui.lib"
+				AdditionalDependencies="../../../开发库/Lib/plugin_common.lib ../../../开发库/Lib/plugin_kernel.lib ../../../开发库/Lib/plugin_ui.lib ../../../开发库/Lib/plugin_share.lib"
 				OutputFile="../../../运行/Release/ToolBox.exe"
 				LinkIncremental="1"
 				AdditionalLibraryDirectories=""
