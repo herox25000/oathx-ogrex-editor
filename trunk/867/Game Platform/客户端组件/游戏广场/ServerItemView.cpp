@@ -4,7 +4,7 @@
 
 //宏定义
 #define WN_SET_LINE_COLOR				(TV_FIRST+40)		//设置颜色消息
-
+#define TOOLBOX_KINDID					1					// 工具箱唯一ID
 //////////////////////////////////////////////////////////////////////////
 
 BEGIN_MESSAGE_MAP(CServerItemView, CTreeCtrl)
@@ -365,7 +365,7 @@ bool CServerListManager::InsertServerItem(tagGameServer GameServer[], WORD wCoun
 			if ((pListKind==NULL)||(GameServer[i].wKindID!=wKindID))
 			{
 				pListKind=SearchKindItem(GameServer[i].wKindID);
-				ASSERT(pListKind!=NULL);
+				//ASSERT(pListKind!=NULL);
 				if (pListKind==NULL) continue;
 				wKindID=GameServer[i].wKindID;
 				pListParent=pListKind;
@@ -733,8 +733,16 @@ void __cdecl CServerItemView::OnListItemInserted(CListItem * pListItem)
 			InsertInf.item.pszText=szItemTitle;
 			InsertInf.item.iImage=dwImageIndex;
 			InsertInf.item.iSelectedImage=dwImageIndex;
-			pListKind->SetItemData((DWORD_PTR)InsertItem(&InsertInf));
 
+			if ( pGameKind->wTypeID == 1 && pGameKind->wKindID == TOOLBOX_KINDID)
+			{
+
+			}
+			else
+			{
+				pListKind->SetItemData((DWORD_PTR)InsertItem(&InsertInf));
+			}
+			
 			break;
 		}
 	case ItemGenre_Station:		//游戏站点
