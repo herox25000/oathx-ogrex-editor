@@ -124,6 +124,10 @@ bool CTimerEngine::SetTimer(CGameBase *pGame, WORD wTimerID, DWORD dwElapse, DWO
 		}
 	}
  
+	if (pTimerItem == NULL)
+	{
+		pTimerItem=new tagTimerItem;
+	}
  	//设置参数
 	ASSERT(pTimerItem!=NULL);
 	pTimerItem->wTimerID=wTimerID;
@@ -152,10 +156,10 @@ bool CTimerEngine::KillTimer(CGameBase *pGame, WORD wTimerID)
 	{
 		pTimerItem=*iter;
 		ASSERT(pTimerItem!=NULL);
-		if (pTimerItem->wTimerID==wTimerID&&pTimerItem->pGame==pGame) 
+		if (pTimerItem->wTimerID==wTimerID && pTimerItem->pGame==pGame) 
 		{
-			m_TimerItemActive.erase(iter);
 			m_TimerItemFree.push_back(pTimerItem);
+			m_TimerItemActive.erase(iter);
 			if (m_TimerItemActive.size()==0) 
 			{
 				m_dwTimePass=0L;
@@ -265,13 +269,14 @@ void CTimerEngine::OnTimerThreadSink()
 		bool bKillTimer=false;
 		tagTimerItem * pTimerItem=NULL;
 		DWORD dwTimeLeave=-1;
+		CTimerItemPtr::iterator itDel;
 		for(CTimerItemPtr::iterator iter = m_TimerItemActive.begin();
 			iter != m_TimerItemActive.end();)
 		{
 			//效验参数
 			pTimerItem=*iter;
 			ASSERT(pTimerItem!=NULL);
-			ASSERT(pTimerItem->dwTimeLeave>=m_dwTimePass);
+ 			ASSERT(pTimerItem->dwTimeLeave>=m_dwTimePass);
 
 			//定时器处理
 			bKillTimer=false;
@@ -288,7 +293,8 @@ void CTimerEngine::OnTimerThreadSink()
 					if (pTimerItem->dwRepeatTimes==1L)
 					{
 						bKillTimer=true;
-						iter = m_TimerItemActive.erase(iter);
+						itDel = m_TimerItemActive.erase(iter);
+						iter = itDel;
 						m_TimerItemFree.push_back(pTimerItem);
 					}
 					else pTimerItem->dwRepeatTimes--;

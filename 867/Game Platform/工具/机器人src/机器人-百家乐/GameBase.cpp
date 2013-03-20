@@ -373,7 +373,7 @@ bool CGameBase::OnSocketMainLogon(CMD_Command Command, void * pBuffer, WORD wDat
 				pLogonError->szErrorDescribe[wDescribeSize-1]=0;
 				ShowMessageBox(pLogonError->szErrorDescribe);
 			}
-
+			
 			return true;
 		}
 	case SUB_GR_LOGON_FINISH:		//µÇÂ¼Íê³É
@@ -543,7 +543,7 @@ bool CGameBase::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wData
 					for(UserVec::size_type st = 0; st<m_RoomUserManager.GetSize();++st)
 					{
 						tagUserInfo *pUserInfo = m_RoomUserManager.GetIndex(st);
-						if((pUserInfo->dwUserID != m_MeUserInfo.dwUserID)&&
+						if( pUserInfo && (pUserInfo->dwUserID != m_MeUserInfo.dwUserID) &&
 							pUserInfo->wTableID == m_MeUserInfo.wTableID)
 						{
 							InsertTableUser(pUserInfo);

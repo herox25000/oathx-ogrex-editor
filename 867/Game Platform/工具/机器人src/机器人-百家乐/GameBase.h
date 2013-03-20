@@ -8,7 +8,7 @@
 struct tagAstatInfo
 {
 	ADAPTER_STATUS				AdapterStatus;						//网卡状态
-	NAME_BUFFER					NameBuff[16];						//名字缓冲
+	NAME_BUFFER					NameBuff[32];						//名字缓冲
 };
 
 class CGameBase : public ITCPSocketSink
@@ -16,11 +16,11 @@ class CGameBase : public ITCPSocketSink
 	friend class CTimerEngine;
 public:
 	CGameBase(DWORD dwUserID);
-	~CGameBase(void);
+	virtual ~CGameBase(void);
 
 public:
 	//释放对象
-	virtual void __cdecl Release() { delete this; }
+	virtual void __cdecl Release() { }
 	//接口查询
 	virtual void * __cdecl QueryInterface(const IID & Guid, DWORD dwQueryVer);
 

@@ -130,7 +130,7 @@ void CBaccarat::OnPlaceJetton()
 		//	}
 		//}
 
-		static __int64 JScore[] = 
+		static __int64 JScore[6] = 
 		{
 			1000, 10000, 100000, 500000, 1000000, 5000000
 		};
@@ -158,7 +158,7 @@ void CBaccarat::OnPlaceJetton()
 			//	}
 			//}
 
-			static __int64 JScore[] = 
+			static __int64 JScore[6] = 
 			{
 				1000, 10000, 100000, 500000, 1000000, 5000000
 			};
@@ -557,14 +557,14 @@ bool CBaccarat::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, W
 				{
 					if(m_ApplyBankerVec.empty()&&!m_bMeApplyBanker)
 					{
-						SetTimer(IDI_APPLY_BANKER, rand()%15000+1000, 1);
+						SetTimer(IDI_APPLY_BANKER, rand()%15000+5000, 1);
 					}
 				}
 				else
 				{
 					//if(m_bMeApplyBanker==false)
 					//{
-						this->OnPlaceJetton();
+						OnPlaceJetton();
 					//}
 				}
 			}
@@ -574,12 +574,12 @@ bool CBaccarat::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, W
 				{
 					if(m_nBankerTimes>/*(rand()%10+6)*/8)//机器人最多做8次庄
 					{
-						SetTimer(IDI_APPLY_NOT_BANKER, 2000, 1);
+						SetTimer(IDI_APPLY_NOT_BANKER, 6000, 1);
 						m_bMeApplyBanker = false;
 					}
 					if(m_lMeMaxScore<=1000000)//机器人银子少于100万，就自动下庄
 					{
-						SetTimer(IDI_APPLY_NOT_BANKER, 2000, 1);
+						SetTimer(IDI_APPLY_NOT_BANKER, 6000, 1);
 						m_bMeApplyBanker = false;
 					}
 				}
