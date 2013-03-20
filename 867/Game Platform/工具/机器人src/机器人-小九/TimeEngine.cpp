@@ -265,6 +265,7 @@ void CTimerEngine::OnTimerThreadSink()
 		bool bKillTimer=false;
 		tagTimerItem * pTimerItem=NULL;
 		DWORD dwTimeLeave=-1;
+		CTimerItemPtr::iterator itDel;
 		for(CTimerItemPtr::iterator iter = m_TimerItemActive.begin();
 			iter != m_TimerItemActive.end();)
 		{
@@ -288,7 +289,7 @@ void CTimerEngine::OnTimerThreadSink()
 					if (pTimerItem->dwRepeatTimes==1L)
 					{
 						bKillTimer=true;
-						iter = m_TimerItemActive.erase(iter);
+						itDel = m_TimerItemActive.erase(iter);
 						m_TimerItemFree.push_back(pTimerItem);
 					}
 					else pTimerItem->dwRepeatTimes--;
