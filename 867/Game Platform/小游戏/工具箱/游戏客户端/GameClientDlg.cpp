@@ -16,6 +16,7 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CSkinDialogEx)
 	ON_BN_CLICKED(IDC_WITHDRAW,OnBankWithdraw)
 	ON_BN_CLICKED(IDC_TRANSFER_MONEY,OnTransferMoney)
 	ON_BN_CLICKED(IDC_QUERY_TRANSFER_LOG,OnQueryTransferLog)
+	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 CString GetString(__int64 nNumber)
@@ -183,7 +184,7 @@ void CGameClientDlg::SetDlgItemInt64(UINT uID, __int64 value)
 
 void CGameClientDlg::Msg(LPCTSTR lpszText)
 {
-	MessageBox(lpszText, "工具箱", MB_OK|MB_ICONINFORMATION);
+	ShowInformationEx(TEXT(lpszText),0 ,MB_ICONINFORMATION,TEXT("银行消息")) ;
 }
 
 void CGameClientDlg::ShowWaitWindow()
@@ -533,9 +534,7 @@ BOOL CGameClientDlg::OnInitDialog()
 	CWinApp *p=AfxGetApp();
 	LPCTSTR lpszCmdLine=AfxGetApp()->m_lpCmdLine;
 
-	char szTmp[256];
-	strcpy(szTmp, TEXT("--ip 222.186.32.78 --port 11000 --uid test2 --ver 1.0.0.1 --pwd e10adc3949ba59abbe56e057f20f883e"));
-	ParseCommandLine(szTmp, RunCommand, (LPARAM)this);
+	ParseCommandLine(lpszCmdLine, RunCommand, (LPARAM)this);
 
 	DWORD dwServerAddr=strtoul(m_strIP, 0, 16);
 	WORD  wServerPort=(WORD)strtoul(m_strPort, 0, 10);
@@ -1218,5 +1217,10 @@ bool CGameClientDlg::OnSocketSubStatus(CMD_Command Command, void * pBuffer, WORD
 	m_TipDialog.ShowWindow(0);
 
 	return true;
+}
+//重画消息
+void CGameClientDlg::OnPaint()
+{
+	__super::OnPaint();
 }
 

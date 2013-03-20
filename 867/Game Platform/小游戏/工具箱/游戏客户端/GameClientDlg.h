@@ -108,6 +108,8 @@ protected:
 	//用户分数
 	bool OnSocketMainStatus(CMD_Command Command, void * pBuffer, WORD wDataSize);
 
+	//重画消息
+	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
 };
 
