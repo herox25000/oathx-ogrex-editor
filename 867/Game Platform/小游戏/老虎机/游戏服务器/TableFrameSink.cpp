@@ -1233,8 +1233,8 @@ void CTableFrameSink::ChuLaoQian()
 			__int64 allUserScore[MAX_ANIMAL_COUNT] =  {
 				m_lAllBigTigerScore*s_Multiple[0],	//大家买大虎总注
 				m_lAllSmlTigerScore*s_Multiple[1],	//大家买小虎总注
-				m_lAllBigBogScore  *s_Multiple[2],		//大家买大狗总注
-				m_lAllSmlBogScore  *s_Multiple[3],		//大家买大狗总注
+				m_lAllBigBogScore  *s_Multiple[2],	//大家买大狗总注
+				m_lAllSmlBogScore  *s_Multiple[3],	//大家买大狗总注
 				m_lAllBigHorseScore*s_Multiple[4],	//大家买大马总注
 				m_lAllSmlHorseScore*s_Multiple[5],	//大家买小马总注
 				m_lAllBigSnakeScore*s_Multiple[6],	//大家买大蛇总注
