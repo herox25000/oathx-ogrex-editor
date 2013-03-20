@@ -34,9 +34,10 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="../../../运行/_Tiger.exe"
+				AdditionalDependencies="../../../开发库/Lib/plugin_ui_d.lib ../../../开发库/Lib/plugin_framework_d.lib"
+				OutputFile="../../../运行/Debug/BumperCarBattle_D.exe"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../开发库/lib"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				TargetMachine="1"/>
@@ -92,7 +93,7 @@
 				AdditionalDependencies="../../../开发库/Lib/plugin_ui.lib ../../../开发库/Lib/plugin_framework.lib"
 				OutputFile="../../../运行/Release/BumperCarBattle.exe"
 				LinkIncremental="1"
-				AdditionalLibraryDirectories="../../../开发库/lib"
+				AdditionalLibraryDirectories=""
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
 				OptimizeReferences="2"

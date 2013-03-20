@@ -1624,17 +1624,17 @@ void CGameClientView::DrawShowChangeBanker(CDC *pDC, int nWidth, int nHeight)
 		if ( m_wMeChairID == m_wCurrentBankerChairID )
 		{
 			CImageHandle ImageHandleBanker(&m_ImageMeBanker);
-			m_ImageMeBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageMeBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 		else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
 		{
 			CImageHandle ImageHandleBanker(&m_ImageChangeBanker);
-			m_ImageChangeBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageChangeBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 		else
 		{
 			CImageHandle ImageHandleBanker(&m_ImageNoBanker);
-			m_ImageNoBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageNoBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 	}
 }
