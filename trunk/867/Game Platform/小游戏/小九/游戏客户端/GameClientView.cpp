@@ -407,7 +407,6 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btnNoShengyin,NULL,nWidth/2+290,nHeight/2+160,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btnQuqian,NULL,nWidth/2+210,nHeight/2+195,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+290,nHeight/2+195,0,0,uFlags|SWP_NOSIZE);
-	m_btnCunqian.EnableWindow(FALSE);
 	//结束移动
 	EndDeferWindowPos(hDwp);
 
@@ -635,18 +634,18 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	{
 		WORD wUserTimer=GetUserTimer(m_wMeChairID);
 		if (wUserTimer!=0)
-			DrawUserTimer(pDC,nWidth/2-110,50,wUserTimer);
+			DrawUserTimer(pDC,nWidth/2-110,nHeight/2-300,wUserTimer);
 	}
 	//绘制阶段(时钟下面的字)
 	bool bDispatchCard = (0< m_DrawCard[4].GetCardCount() || 0 < m_DrawCard[0].GetCardCount() || 0 < m_DrawCard[1].GetCardCount() || m_DrawCard[2].GetCardCount() || m_DrawCard[3].GetCardCount()) ? true : false;
 	CImageHandle ImageHandleTimeFlag(&m_ImageTimeFlag);
 	int nTimeFlagWidth = m_ImageTimeFlag.GetWidth()/3;
 	if ( bDispatchCard ) 
-		m_ImageTimeFlag.AlphaDrawImage(pDC,nWidth/2-140, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 2 * nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC,nWidth/2-140, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 2 * nTimeFlagWidth, 0,RGB(255,0,255));
 	else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
-		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 	else 
-		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 
 
 	//绘画用户
@@ -1707,8 +1706,9 @@ void CGameClientView::DrawWinFlags(CDC * pDC)
 	}
 
 
-	long posx=200;
-	long posy=605;
+	
+	long posx=m_nWinFlagsExcursionX-110;
+	long posy=m_nWinFlagsExcursionY+13;
 	CString StrwinCount;
 	StrwinCount.Format("%.2f %%",m_fWinCount[0]);
 	CRect StrRect;
@@ -2090,3 +2090,10 @@ __int64 CGameClientView::CalcAllJetton()
 	}
 	return uAllScoreCount;
 };
+
+//设置银行按钮是否可用
+void CGameClientView ::SetBankState(bool state)
+{
+	m_btnCunqian.EnableWindow(state);
+	m_btnQuqian.EnableWindow(state);
+}

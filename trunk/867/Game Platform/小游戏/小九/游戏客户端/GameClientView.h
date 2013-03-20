@@ -336,6 +336,8 @@ public:
 	CString ChangNumber(int iNumber);
 	//计算所有下注总和
 	__int64 CalcAllJetton();
+	//设置银行按钮是否可用
+	void SetBankState(bool state);
 	//内联函数
 public:
 	//当前筹码
@@ -382,6 +384,7 @@ protected:
 	afx_msg void OnScoreMoveR();
 	afx_msg void OnCuoPaiModel();
 	afx_msg void OnBank();
+
 	//消息映射
 protected:
 	//定时器消息

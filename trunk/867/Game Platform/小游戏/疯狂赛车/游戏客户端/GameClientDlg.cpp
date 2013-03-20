@@ -19,6 +19,7 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CGameFrameDlg)
 	ON_WM_TIMER()
 	ON_MESSAGE(IDM_PLACE_JETTON,OnPlaceJetton)
 	ON_MESSAGE(IDM_APPLY_BANKER, OnApplyBanker)
+	ON_MESSAGE(IDM_ONBANK,OnBank)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
@@ -1056,6 +1057,16 @@ bool CGameClientDlg::OnSubGameRecord(const void * pBuffer, WORD wDataSize)
 BYTE CGameClientDlg::DeduceWinner()
 {
 	return s_arJettonArea[m_GameClientView.m_cbAnimalBox%MAX_ANIMAL_COUNT];
+}
+
+LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
+{
+	if ( m_GameClientView.GetMeChairID() == m_GameClientView.m_wCurrentBankerChairID)
+		UserOnBankBT(TRUE);
+	else
+		UserOnBankBT(FALSE);
+
+	return 0;
 }
 
 

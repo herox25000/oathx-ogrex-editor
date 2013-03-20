@@ -116,7 +116,7 @@ protected:
 	LRESULT OnPlaceJetton(WPARAM wParam, LPARAM lParam);
 	//…Í«Îœ˚œ¢
 	LRESULT OnApplyBanker(WPARAM wParam, LPARAM lParam);
-
+	LRESULT OnBank(WPARAM wParam, LPARAM lParam);
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -107,7 +107,7 @@ BEGIN_MESSAGE_MAP(CGameClientView, CGameFrameView)
 	ON_BN_CLICKED(IDC_APPLY_UP, OnApplyUp)
 	ON_BN_CLICKED(IDC_APPLY_DOWN, OnApplyDown)
 	ON_BN_CLICKED(IDC_GET_MONEY, OnGetMoneyFromBank)
-	ON_BN_CLICKED(IDC_STORE_MONEY, OnStoreMoneyToBank)
+	ON_BN_CLICKED(IDC_STORE_MONEY, OnGetMoneyFromBank)
 
 END_MESSAGE_MAP()
 
@@ -1651,12 +1651,12 @@ void CGameClientView::OnApplyDown()
 
 void CGameClientView::OnGetMoneyFromBank()
 {
-
+	AfxGetMainWnd()->SendMessage(IDM_ONBANK,0,0);
 }
 
 void CGameClientView::OnStoreMoneyToBank()
 {
-
+	AfxGetMainWnd()->SendMessage(IDM_ONBANK,0,0);
 }
 
 void CGameClientView::DrawRandAnimal(CDC *pDC, int nWidth, int nHeight)

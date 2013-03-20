@@ -11,7 +11,7 @@
 #define IDB_SCORE_NUMBER                151
 #define IDB_BT_JETTON_1                 152
 #define IDB_BT_JETTON_10                153
-#define IDB_BT_JETTON_100               154
+#define IDB_BT_JETTON_10000000          154
 #define IDB_BT_JETTON_1000              155
 #define IDB_BT_JETTON_10000             156
 #define IDB_BT_JETTON_100000            157
@@ -52,20 +52,24 @@
 #define IDB_BT_CANCEL_APPLY             212
 #define IDB_TIME_FLAG                   213
 #define IDB_ME_SCORE_NUMBER             214
-#define IDC_SCORE_100                   400
+#define IDB_BT_QUQIAN                   232
+#define IDB_BT_CUNQIAN                  233
 #define IDC_SCORE_1000                  401
 #define IDC_SCORE_10000                 402
 #define IDC_SCORE_100000                403
 #define IDC_SCORE_500000                404
 #define IDC_SCORE_1000000               405
 #define IDC_SCORE_5000000               406
+#define IDB_BITMAP3                     818
+#define IDC_CURSOR1                     819
+#define IDC_SCORE_10000000              819
 #define IDC_RECORD_LIST                 1056
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        818
+#define _APS_NEXT_RESOURCE_VALUE        820
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

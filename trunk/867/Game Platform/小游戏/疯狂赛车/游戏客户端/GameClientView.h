@@ -13,7 +13,7 @@
 //消息定义
 #define IDM_PLACE_JETTON			WM_USER+200							//加住信息
 #define IDM_APPLY_BANKER			WM_USER+201							//申请信息
-
+#define IDM_ONBANK					WM_USER+202
 //历史记录
 #define MAX_SCORE_HISTORY			256									//历史个数
 
@@ -93,7 +93,7 @@ protected:
 	BYTE							m_cbPreJettonArea;					//之前区域
 
 	//庄家信息
-protected:
+public:
 	bool							m_bShowChangeBanker;				//轮换庄家
 	WORD							m_wCurrentBankerChairID;			//当前庄家
 	LONG							m_cbBankerTime;						//做庄次数
@@ -260,7 +260,7 @@ public:
 	inline __int64 GetCurrentJetton() { return m_lCurrentJetton; }
 	//我的位置
 	inline void SetMeChairID(WORD wMeChairID) { m_wMeChairID=wMeChairID; }
-
+	inline WORD GetMeChairID() const {return m_wMeChairID;}
 	//内部函数
 private:
 	//获取区域

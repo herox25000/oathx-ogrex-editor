@@ -228,6 +228,9 @@
 				RelativePath=".\Res\BANKER_INFO.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\bitmap3.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\BT_APPLY_BANKER.bmp">
 			</File>
 			<File
@@ -256,6 +259,9 @@
 			</File>
 			<File
 				RelativePath=".\Res\Bt_jetton_1000000.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\BT_JETTON_10000000.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Bt_jetton_500.bmp">
@@ -388,6 +394,9 @@
 			</File>
 			<File
 				RelativePath=".\Res\SCORE_1000000.cur">
+			</File>
+			<File
+				RelativePath=".\Res\SCORE_10000000.cur">
 			</File>
 			<File
 				RelativePath=".\Res\SCORE_10W.cur">
