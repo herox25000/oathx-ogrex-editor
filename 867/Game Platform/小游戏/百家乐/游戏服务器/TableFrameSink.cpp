@@ -718,9 +718,20 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 		return true;
 
 	//庄家判断
-	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) return true;
-	if ( m_CurrentBanker.dwUserID == 0 ) return true;
-
+	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
+		return true;
+	if ( m_CurrentBanker.dwUserID == 0 )
+		return true;
+	//判断玩家是不是点的按钮下注
+	bool illegal=true;
+	__int64 lScoreJetton[7]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
+	for(int i=0;i<7;++i)
+	{
+		if(lJettonScore == lScoreJetton[i])
+			illegal = false;
+	}
+	if(illegal)
+		return true;
 	//变量定义
 	IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
 	__int64 lJettonCount=m_lUserTieScore[wChairID]+m_lUserBankerScore[wChairID]+m_lUserPlayerScore[wChairID]+

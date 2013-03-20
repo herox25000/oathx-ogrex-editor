@@ -156,6 +156,7 @@ IDB_BT_SHENGYIN         BITMAP                  "res\\shengyin.bmp"
 IDB_BT_NOSHENGYIN       BITMAP                  "res\\shengyinNO.bmp"
 IDB_BT_QUQIAN           BITMAP                  "res\\quqian.bmp"
 IDB_BT_CUNQIAN          BITMAP                  "res\\cunqian.bmp"
+
 /////////////////////////////////////////////////////////////////////////////
 //
 // Cursor
@@ -168,8 +169,8 @@ IDC_SCORE_500000        CURSOR                  "res\\SCORE_500000.cur"
 IDC_SCORE_50000         CURSOR                  "res\\SCORE_50000.cur"
 IDC_SCORE_10000         CURSOR                  "res\\SCORE_10000.cur"
 IDC_SCORE_1000          CURSOR                  "res\\SCORE_1000.cur"
-IDC_SCORE_100           CURSOR                  "res\\SCORE_100.cur"
 IDC_SCORE_500           CURSOR                  "res\\SCORE_500.cur"
+IDC_SCORE_10000000      CURSOR                  "res\\SCORE_10000000.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 //

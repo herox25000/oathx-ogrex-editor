@@ -359,12 +359,12 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	m_nWinPointsExcursionX = nWidth/2-353;
 	m_nWinPointsExcursionY = nHeight/2 - 267;	
 
-	m_PointJetton[0].SetPoint(nWidth / 2 - 260 +88-5 ,nHeight / 2 - 230 +90-5);
-	m_PointJetton[1].SetPoint(nWidth / 2 - 260+173 + 88-5,nHeight / 2 - 230+88+90-5);
-	m_PointJetton[2].SetPoint(nWidth / 2 -260+173+171+88-5,nHeight / 2 - 230+90-5);
-	m_PointJetton[3].SetPoint(nWidth / 2 - 260+88-5,nHeight / 2 -230+177+45-5);
-	m_PointJetton[4].SetPoint(nWidth / 2 -260+173+171+88-5,nHeight / 2 -230+177+45-5);
-	m_PointJetton[5].SetPoint(nWidth / 2 - 260+173+88-5,nHeight / 2 -230+45-5);
+	m_PointJetton[0].SetPoint(nWidth / 2 - 260 +88-5 ,nHeight / 2 - 135 +90-5);
+	m_PointJetton[1].SetPoint(nWidth / 2 - 260+173 + 88-5,nHeight / 2 - 135+88+90-5);
+	m_PointJetton[2].SetPoint(nWidth / 2 -260+173+171+88-5,nHeight / 2 - 135+90-5);
+	m_PointJetton[3].SetPoint(nWidth / 2 - 260+88-5,nHeight / 2 -135+177+45-5);
+	m_PointJetton[4].SetPoint(nWidth / 2 -260+173+171+88-5,nHeight / 2 -135+177+45-5);
+	m_PointJetton[5].SetPoint(nWidth / 2 - 260+173+88-5,nHeight / 2 -135+45-5);
 
 	//扑克控件
 	m_DrawCard[0].Init(this,nWidth/2-35,nHeight/2-235-100);
@@ -401,7 +401,6 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btnNoShengyin,NULL,nWidth/2+290,nHeight/2+165,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btnQuqian,NULL,nWidth/2+210,nHeight/2+200,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+290,nHeight/2+200,0,0,uFlags|SWP_NOSIZE);
-	m_btnCunqian.EnableWindow(FALSE);
 	//结束移动
 	EndDeferWindowPos(hDwp);
 
@@ -420,24 +419,23 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 
 	//绘画边框
 	int nXPos=0, nYPos=0;
-	if ( m_lCurrentJetton == 0 ) m_cbPreJettonArea = 255;
+	if ( m_lCurrentJetton == 0 ) 
+		m_cbPreJettonArea = 255;
 	switch ( m_cbPreJettonArea )
 	{
 	case ID_SHUN_MEN:
 		{
 			CImageHandle ImageHandleXianJia(&m_ImageFrameXianJia);
 			nXPos = nWidth / 2 - 260;
-			nYPos = nHeight / 2 - 230;
-
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameXianJia.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			break;
 		}
 	case ID_TIAN_MEN:
 		{
 			CImageHandle ImageHandlePingJia(&m_ImageFramePingJia);
-
 			nXPos = nWidth / 2 - 260+173;
-			nYPos = nHeight / 2 - 230+88;
+			nYPos = nHeight / 2 - 135+88;
 			m_ImageFramePingJia.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			break;
 		}
@@ -445,8 +443,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		{
 			CImageHandle ImageHandleZhuangJia(&m_ImageFrameZhuangJia);
 			nXPos = nWidth / 2 - 260+173+171;
-			nYPos = nHeight / 2 - 230;
-
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameZhuangJia.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			break;
 		}
@@ -454,8 +451,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		{
 			CImageHandle ImageHandleXianTianWang(&m_ImageFrameXianTianWang);
 			nXPos = nWidth / 2 - 260;
-			nYPos = nHeight / 2 - 230+177;
-
+			nYPos = nHeight / 2 - 135+177;
 			m_ImageFrameXianTianWang.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			break;
 		}
@@ -463,8 +459,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		{
 			CImageHandle ImageHandleZhuangTianWang(&m_ImageFrameZhuangTianWang);
 			nXPos = nWidth / 2 -260+173+171;
-			nYPos = nHeight / 2 - 230+177;
-
+			nYPos = nHeight / 2 - 135+177;
 			m_ImageFrameZhuangTianWang.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			break;
 		}
@@ -472,8 +467,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		{
 			CImageHandle ImageHandleTongDianPing(&m_ImageFrameTongDianPing);
 			nXPos = nWidth / 2  - 260+173;
-			nYPos = nHeight / 2 - 230;
-			
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameTongDianPing.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			break;
 		}
@@ -491,69 +485,69 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		{
 				CImageHandle ImageHandleXianJia(&m_ImageFrameXianJia);
 				nXPos = nWidth / 2 - 260;
-				nYPos = nHeight / 2 - 230;
+				nYPos = nHeight / 2 - 135;
 				m_ImageFrameXianJia.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 		}
 		if(m_cbWinnerFlash & ID_TIAN_MEN)
 		{
 			CImageHandle ImageHandlePingJia(&m_ImageFramePingJia);
 			nXPos = nWidth / 2 - 260+173;
-			nYPos = nHeight / 2 - 230+88;
+			nYPos = nHeight / 2 - 135+88;
 			m_ImageFramePingJia.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 		}
 		if(m_cbWinnerFlash & ID_SHUN_MEN && m_cbWinnerFlash & ID_TIAN_MEN)
 		{
 			CImageHandle ImageHandleXianTianWang(&m_ImageFrameXianTianWang);
 			nXPos = nWidth / 2 - 260;
-			nYPos = nHeight / 2 - 230+177;
+			nYPos = nHeight / 2 - 135+177;
 			m_ImageFrameXianTianWang.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 		}
 		if(m_cbWinnerFlash & ID_DAO_MEN)
 		{
 			CImageHandle ImageHandleZhuangJia(&m_ImageFrameZhuangJia);
 			nXPos = nWidth / 2 - 260+173+171;
-			nYPos = nHeight / 2 - 230;
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameZhuangJia.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));				
 		}
 		if(m_cbWinnerFlash & ID_TIAN_MEN && m_cbWinnerFlash & ID_DAO_MEN)
 		{
 			CImageHandle ImageHandleZhuangTianWang(&m_ImageFrameZhuangTianWang);
 			nXPos = nWidth / 2 -260+173+171;
-			nYPos = nHeight / 2 - 230+177;
+			nYPos = nHeight / 2 - 135+177;
 			m_ImageFrameZhuangTianWang.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 		}
 		if(m_cbWinnerFlash & ID_SHUN_MEN && m_cbWinnerFlash & ID_DAO_MEN)
 		{
 			CImageHandle ImageHandleTongDianPing(&m_ImageFrameTongDianPing);
 			nXPos = nWidth / 2  - 260+173;
-			nYPos = nHeight / 2 - 230;
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameTongDianPing.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 		}
 		if(!(m_cbWinnerFlash & ID_SHUN_MEN) && !(m_cbWinnerFlash & ID_TIAN_MEN) && !(m_cbWinnerFlash & ID_DAO_MEN))
 		{
 			CImageHandle ImageHandleXianJia1(&m_ImageFrameXianJia1);
 			nXPos = nWidth / 2 - 260;
-			nYPos = nHeight / 2 - 230;
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameXianJia1.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			CImageHandle ImageHandlePingJia1(&m_ImageFramePingJia1);
 			nXPos = nWidth / 2 - 260+173;
-			nYPos = nHeight / 2 - 230+88;
+			nYPos = nHeight / 2 - 135+88;
 			m_ImageFramePingJia1.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			CImageHandle ImageHandleXianTianWang1(&m_ImageFrameXianTianWang1);
 			nXPos = nWidth / 2 - 260;
-			nYPos = nHeight / 2 - 230+177;
+			nYPos = nHeight / 2 - 135+177;
 			m_ImageFrameXianTianWang1.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			CImageHandle ImageHandleZhuangJia1(&m_ImageFrameZhuangJia1);
 			nXPos = nWidth / 2 - 260+173+171;
-			nYPos = nHeight / 2 - 230;
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameZhuangJia1.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			CImageHandle ImageHandleZhuangTianWang1(&m_ImageFrameZhuangTianWang1);
 			nXPos = nWidth / 2 -260+173+171;
-			nYPos = nHeight / 2 - 230+177;
+			nYPos = nHeight / 2 - 135+177;
 			m_ImageFrameZhuangTianWang1.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 			CImageHandle ImageHandleTongDianPing1(&m_ImageFrameTongDianPing1);
 			nXPos = nWidth / 2  - 260+173;
-			nYPos = nHeight / 2 - 230;
+			nYPos = nHeight / 2 - 135;
 			m_ImageFrameTongDianPing1.AlphaDrawImage(pDC,nXPos, nYPos , RGB(255,0,255));
 		}
 	}
@@ -659,7 +653,6 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	CImageHandle HandleJettonView(&m_ImageJettonView);
 	CSize SizeJettonItem(m_ImageJettonView.GetWidth()/JETTON_COUNT,m_ImageJettonView.GetHeight());
 
-
 	// 所有玩家的下注总和
 	__int64	uAllScoreCount = 0;
 	//绘画筹码
@@ -667,7 +660,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	{
 		//变量定义
 		__int64 lScoreCount=0L;
-		__int64 lScoreJetton[JETTON_COUNT]={100L,500L,1000L,10000L,50000L,100000L,500000L,1000000L,5000000L};
+		__int64 lScoreJetton[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
 
 		//绘画筹码
 		for (INT_PTR j=0;j<m_JettonInfoArray[i].GetCount();j++)
@@ -700,18 +693,18 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	{
 		WORD wUserTimer=GetUserTimer(m_wMeChairID);
 		if (wUserTimer!=0)
-			DrawUserTimer(pDC,nWidth/2-125,50,wUserTimer);
+			DrawUserTimer(pDC,nWidth/2-125,nHeight/2-300,wUserTimer);
 	}
 	//绘制阶段(时钟下面的字)
 	bool bDispatchCard = (0< m_DrawCard[4].GetCardCount() || 0 < m_DrawCard[0].GetCardCount() || 0 < m_DrawCard[1].GetCardCount() || m_DrawCard[2].GetCardCount() || m_DrawCard[3].GetCardCount()) ? true : false;
 	CImageHandle ImageHandleTimeFlag(&m_ImageTimeFlag);
 	int nTimeFlagWidth = m_ImageTimeFlag.GetWidth()/3;
 	if ( bDispatchCard ) 
-		m_ImageTimeFlag.AlphaDrawImage(pDC,nWidth/2-160, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 2 * nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC,nWidth/2-160, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 2 * nTimeFlagWidth, 0,RGB(255,0,255));
 	else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
-		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-160, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-160, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 	else 
-		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-160, 80, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-160, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 
 
 	//绘画用户
@@ -738,7 +731,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	{
 		//绘制下注进度条
 		int iStatrX=nWidth/2-130;
-		int iStatrY=nHeight/2+70;
+		int iStatrY=nHeight/2-230;
 		//当前可下
 		m_pngc.DrawImage(pDC,iStatrX-10,iStatrY,m_pngc.GetWidth(),m_pngc.GetHeight()/2,0,0);
 		//当前总注
@@ -967,7 +960,7 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 
 	//变量定义
 	bool bPlaceJetton=false;
-	__int64 lScoreIndex[JETTON_COUNT]={100L,500L,1000L,10000L,50000L,100000L,500000L,1000000L,5000000L};
+	__int64 lScoreIndex[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
 
 	//边框宽度
 	int nFrameWidth = 0, nFrameHeight = 0;
@@ -977,7 +970,6 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 	case ID_SHUN_MEN:
 		{ 
 			m_lAllPlayerScore += lScoreCount;
-
 			nFrameWidth = 88;
 			nFrameHeight = 90;
 			break;
@@ -999,7 +991,6 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 	case ID_ZUO_JIAO:
 		{ 
 			m_lAllPlayerKingScore += lScoreCount;
-
 			nFrameWidth = 88;
 			nFrameHeight = 45;
 			break;
@@ -1007,7 +998,6 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 	case ID_YOU_JIAO:
 		{ 
 			m_lAllBankerKingScore += lScoreCount;
-
 			nFrameWidth = 88;
 			nFrameHeight = 45;
 			break;
@@ -1015,7 +1005,6 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 	case ID_QIAO:
 		{ 
 			m_lAllTieSamePointScore += lScoreCount;
-
 			nFrameWidth = 88;
 			nFrameHeight = 45;
 			break;
@@ -1114,7 +1103,7 @@ BYTE CGameClientView::GetJettonArea(CPoint MousePoint)
 
 	CRect rcXianJia;
 	rcXianJia.left = nWidth / 2 - 260;
-	rcXianJia.top = nHeight / 2 - 230;
+	rcXianJia.top = nHeight / 2 - 135;
 
 	rcXianJia.right = rcXianJia.left + 177;
 	rcXianJia.bottom = rcXianJia.top + 181;
@@ -1122,28 +1111,28 @@ BYTE CGameClientView::GetJettonArea(CPoint MousePoint)
 
 	CRect rcPingJia;
 	rcPingJia.left = nWidth / 2  - 260+173;
-	rcPingJia.top = nHeight / 2 - 230+88;
+	rcPingJia.top = nHeight / 2 - 135+88;
 	rcPingJia.right = rcPingJia.left + 175;
 	rcPingJia.bottom = rcPingJia.top + 181;
 	if ( rcPingJia.PtInRect(MousePoint) ) return ID_TIAN_MEN;
 
 	CRect rcZhuangJia;
 	rcZhuangJia.left = nWidth / 2 - 260+173+171;
-	rcZhuangJia.top = nHeight / 2 - 230;
+	rcZhuangJia.top = nHeight / 2 - 135;
 	rcZhuangJia.right = rcZhuangJia.left + 177;
 	rcZhuangJia.bottom = rcZhuangJia.top + 181;
 	if ( rcZhuangJia.PtInRect(MousePoint) ) return ID_DAO_MEN;
 
 	CRect rcXianTianWang;
 	rcXianTianWang.left = nWidth / 2 - 260;
-	rcXianTianWang.top = nHeight / 2 - 230+177;
+	rcXianTianWang.top = nHeight / 2 - 135+177;
 	rcXianTianWang.right = rcXianTianWang.left + 177;
 	rcXianTianWang.bottom = rcXianTianWang.top + 92;
 	if ( rcXianTianWang.PtInRect(MousePoint) ) return ID_ZUO_JIAO;	
 
 	CRect rcTongDianPing;
 	rcTongDianPing.left = nWidth / 2  - 260+173;
-	rcTongDianPing.top = nHeight / 2 - 230;
+	rcTongDianPing.top = nHeight / 2 - 135;
 	rcTongDianPing.right = rcTongDianPing.left + 175;
 	rcTongDianPing.bottom = rcTongDianPing.top + 93;
 	if ( rcTongDianPing.PtInRect(MousePoint) ) return ID_QIAO;	
@@ -1151,7 +1140,7 @@ BYTE CGameClientView::GetJettonArea(CPoint MousePoint)
 	CRect rcZhuangTianWang;
 
 	rcZhuangTianWang.left = nWidth / 2 -260+173+171;
-	rcZhuangTianWang.top = nHeight / 2 - 230+177;
+	rcZhuangTianWang.top = nHeight / 2 - 135+177;
 	rcZhuangTianWang.right = rcZhuangTianWang.left + 177;
 	rcZhuangTianWang.bottom = rcZhuangTianWang.top + 92;
 	if ( rcZhuangTianWang.PtInRect(MousePoint) ) return ID_YOU_JIAO;
@@ -1528,9 +1517,9 @@ BOOL CGameClientView::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
 				SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_SCORE_500000)));
 				return TRUE;
 			}
-		case 100:
+		case 10000000:
 			{
-				SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_SCORE_100)));
+				SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_SCORE_10000000)));
 				return TRUE;
 			}
 		case 1000:
@@ -2166,4 +2155,11 @@ __int64 CGameClientView::CalcAllJetton()
 	}
 	return uAllScoreCount;
 };
+
+//设置银行按钮是否可用
+void CGameClientView ::SetBankState(bool state)
+{
+	m_btnCunqian.EnableWindow(state);
+	m_btnQuqian.EnableWindow(state);
+}
 

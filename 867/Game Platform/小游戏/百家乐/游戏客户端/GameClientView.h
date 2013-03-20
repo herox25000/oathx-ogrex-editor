@@ -18,7 +18,7 @@
 //消息定义
 #define IDM_PLACE_JETTON			WM_USER+200							//加住信息
 #define IDM_APPLY_BANKER			WM_USER+201							//申请信息
-
+#define IDM_ONBANK					WM_USER+202
 //索引定义
 #define INDEX_PLAYER				0									//闲家索引
 #define INDEX_BANKER				1									//庄家索引
@@ -108,7 +108,7 @@ protected:
 	CString							m_strDispatchCardTips;				//发牌提示
 
 	//庄家信息
-protected:
+public:
 	bool							m_bShowChangeBanker;				//轮换庄家
 	WORD							m_wCurrentBankerChairID;			//当前庄家
 	BYTE							m_cbBankerTime;						//做庄次数
@@ -130,7 +130,7 @@ protected:
 	//控件变量
 public:
 	HCURSOR							m_AllhCursor[7];
-	CSkinButton						m_btJetton100;						//筹码按钮
+	CSkinButton						m_btJetton10000000;						//筹码按钮
 	CSkinButton						m_btJetton1000;						//筹码按钮
 	CSkinButton						m_btJetton10000;					//筹码按钮
 	CSkinButton						m_btJetton100000;					//筹码按钮
@@ -143,7 +143,8 @@ public:
 
 	CSkinButton						m_btScoreMoveL;						//移动成绩
 	CSkinButton						m_btScoreMoveR;						//移动成绩
-
+	CSkinButton						m_btnQuqian;						
+	CSkinButton						m_btnCunqian;
 	//控件变量
 public:
 	CApplyUser						m_ApplyUser;						//申请列表
@@ -271,7 +272,10 @@ public:
 	inline __int64 GetCurrentJetton() { return m_lCurrentJetton; }
 	//我的位置
 	inline void SetMeChairID(WORD wMeChairID) { m_wMeChairID=wMeChairID; }
+	inline WORD GetMeChairID() const {return m_wMeChairID;}
 
+	//设置银行按钮是否可用
+	void SetBankState(bool state);
 	//内部函数
 private:
 	//获取区域
@@ -288,7 +292,7 @@ private:
 	//按钮消息
 protected:
 	//筹码按钮
-	afx_msg void OnJettonButton100();
+	afx_msg void OnJettonButton10000000();
 	//筹码按钮
 	afx_msg void OnJettonButton1000();
 	//筹码按钮
@@ -309,7 +313,7 @@ protected:
 	afx_msg void OnScoreMoveL();
 	//移动按钮
 	afx_msg void OnScoreMoveR();
-
+	afx_msg void OnBank();
 	//消息映射
 protected:
 	//定时器消息

@@ -15,6 +15,7 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CGameFrameDlg)
 	ON_WM_TIMER()
 	ON_MESSAGE(IDM_PLACE_JETTON,OnPlaceJetton)
 	ON_MESSAGE(IDM_APPLY_BANKER, OnApplyBanker)
+	ON_MESSAGE(IDM_ONBANK,OnBank)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
@@ -122,7 +123,7 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 		m_GameClientView.SetCurrentJetton(0L);
 
 		//禁止按钮
-		m_GameClientView.m_btJetton100.EnableWindow(FALSE);
+		m_GameClientView.m_btJetton10000000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton1000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton10000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton100000.EnableWindow(FALSE);
@@ -347,6 +348,7 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	SetGameStatus(GS_PLAYING);
 	KillGameTimer(IDI_PLACE_JETTON);
 
+	m_GameClientView.SetBankState(false);
 	//更新控制
 	UpdateButtonContron();
 
@@ -465,7 +467,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	if ( m_wCurrentBanker != INVALID_CHAIR )
 		m_GameClientView.SetBankerInfo(SwitchViewChairID(m_wCurrentBanker), pGameEnd->nBankerTime, pGameEnd->lBankerTotalScore);
 
-
+	m_GameClientView.SetBankState(true);
 	//更新控制
 	UpdateButtonContron();
 
@@ -533,18 +535,18 @@ void CGameClientDlg::UpdateButtonContron()
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{
-			if (lLeaveScore>=5000000L) m_GameClientView.SetCurrentJetton(5000000L);
+			if (lLeaveScore>=10000000L)     m_GameClientView.SetCurrentJetton(10000000L);
+			else if (lLeaveScore>=5000000L) m_GameClientView.SetCurrentJetton(5000000L);
 			else if (lLeaveScore>=1000000L) m_GameClientView.SetCurrentJetton(1000000L);
 			else if (lLeaveScore>=500000L)  m_GameClientView.SetCurrentJetton(500000L);
 			else if (lLeaveScore>=100000L)  m_GameClientView.SetCurrentJetton(100000L);
 			else if (lLeaveScore>=10000L)   m_GameClientView.SetCurrentJetton(10000L);
 			else if (lLeaveScore>=1000L)    m_GameClientView.SetCurrentJetton(1000L);
-			else if (lLeaveScore>=100L)     m_GameClientView.SetCurrentJetton(100L);
 			else m_GameClientView.SetCurrentJetton(0L);
 		}
 
 		//控制按钮
-		m_GameClientView.m_btJetton100.EnableWindow((lLeaveScore>=100)?TRUE:FALSE);
+		m_GameClientView.m_btJetton10000000.EnableWindow((lLeaveScore>=10000000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton1000.EnableWindow((lLeaveScore>=1000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton10000.EnableWindow((lLeaveScore>=10000)?TRUE:FALSE);
 		m_GameClientView.m_btJetton100000.EnableWindow((lLeaveScore>=100000)?TRUE:FALSE);
@@ -562,7 +564,7 @@ void CGameClientDlg::UpdateButtonContron()
 		m_GameClientView.SetCurrentJetton(0L);
 
 		//禁止按钮
-		m_GameClientView.m_btJetton100.EnableWindow(FALSE);
+		m_GameClientView.m_btJetton10000000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton1000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton10000.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton100000.EnableWindow(FALSE);
@@ -1180,4 +1182,15 @@ void CGameClientDlg::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 		if ( cbPlayerCount == 8 || cbPlayerCount == 9 ) cbKingWinner = ID_XIAN_TIAN_WANG;
 	}
 }
+
+LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
+{
+	if ( m_GameClientView.GetMeChairID() == m_GameClientView.m_wCurrentBankerChairID)
+		UserOnBankBT(TRUE);
+	else
+		UserOnBankBT(FALSE);
+
+	return 0;
+}
+
 //////////////////////////////////////////////////////////////////////////

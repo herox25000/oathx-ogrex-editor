@@ -58,6 +58,7 @@
 #define IDB_TIME_FLAG                   213
 #define IDB_ME_SCORE_NUMBER             214
 #define IDB_BT_JETTON_1000000           215
+#define IDC_CURSOR1                     215
 #define IDB_BT_JETTON_5000000           216
 #define IDC_SCORE_1000000               217
 #define IDC_SCORE_5000000               218
@@ -75,12 +76,13 @@
 #define IDB_BT_QUQIAN                   232
 #define IDB_BT_CUNQIAN                  233
 #define IDC_RECORD_LIST                 1056
+#define IDC_SCORE_10000000              1056
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        215
+#define _APS_NEXT_RESOURCE_VALUE        216
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101

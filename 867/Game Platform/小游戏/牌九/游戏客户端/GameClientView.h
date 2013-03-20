@@ -11,7 +11,7 @@
 #include "DrawCard.h"
 
 
-#define JETTON_COUNT				9									//筹码数目
+#define JETTON_COUNT				7									//筹码数目
 #define JETTON_RADII				54									//筹码半径
 #define JETTON_WIDTH				59
 #define JETTON_HEIGHT				51
@@ -333,6 +333,8 @@ public:
 	CString ChangNumber(int iNumber);
 	//计算所有下注总和
 	__int64 CalcAllJetton();
+	//设置银行按钮是否可用
+	void SetBankState(bool state);
 	//内联函数
 public:
 	//当前筹码

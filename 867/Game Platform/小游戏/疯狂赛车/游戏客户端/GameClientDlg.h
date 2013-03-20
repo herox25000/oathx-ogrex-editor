@@ -111,6 +111,8 @@ protected:
 	//…Í«Îœ˚œ¢
 	LRESULT OnApplyBanker(WPARAM wParam, LPARAM lParam);
 
+	LRESULT OnBank(WPARAM wParam, LPARAM lParam);
+
 	DECLARE_MESSAGE_MAP()
 };
 

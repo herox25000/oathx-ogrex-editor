@@ -41,8 +41,7 @@
 #include "..\消息定义\CMD_Baccarat.h"
 //#include "MFCApp.h"
 
-#include "..\..\..\开发库\Include\GameFrame.h"
-
+#include "..\..\..\开发库\Include\GameServiceExport.h"
 #ifdef VIDEO_GAME
 #include "..\..\..\开发库\Include\VideoServiceModule.h"
 #endif
