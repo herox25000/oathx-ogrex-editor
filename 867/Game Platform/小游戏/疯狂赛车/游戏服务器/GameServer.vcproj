@@ -36,7 +36,7 @@
 				Name="VCLinkerTool"
 				OutputFile="../../../运行/Debug/BumperCarBattleServer.dll"
 				LinkIncremental="2"
-				AdditionalLibraryDirectories="../../../开发库/lib"
+				AdditionalLibraryDirectories=""
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
