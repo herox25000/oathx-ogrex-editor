@@ -245,12 +245,12 @@ void CDlgLockComputer::UpdateControls()
 	//如果账号锁定
 	if(GlobalUserData.cbMoorMachine != 0)
 	{
-		SetDlgItemText(IDC_LOCKTEXT,"本账号已经使用了锁定功能！！");
+		SetDlgItemText(IDC_LOCKTEXT,"** 本账号已经使用了锁定功能！！");
 		SetDlgItemText(IDOK,"解除锁定");
 	}
 	else//没有锁定
 	{
-		SetDlgItemText(IDC_LOCKTEXT,"本账号还没有锁定！！");
+		SetDlgItemText(IDC_LOCKTEXT,"** 本账号还没有锁定！！");
 		SetDlgItemText(IDOK,"锁定");
 	}
 	//更新界面
@@ -277,13 +277,17 @@ void CDlgLockComputer::OnClose()
 {
 	SetDlgItemText(IDC_LogonPws,TEXT(""));
 	//释放资源
-	if(m_pIClientSocket==NULL)
-		return;
-	m_pIClientSocket->CloseSocket();
+	if(m_pIClientSocket!=NULL)
+		m_pIClientSocket->CloseSocket();
 
 	m_enOperateStatus = enOperateStatus_NULL;
 
 	CDialog::OnClose();
+}
+
+void CDlgLockComputer::OnCancel()
+{
+	CDialog::OnCancel();
 }
 
 //鼠标信息
