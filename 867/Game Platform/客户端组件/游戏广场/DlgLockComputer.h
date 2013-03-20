@@ -59,6 +59,8 @@ protected:
 	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	//显示消息
 	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
+
+	afx_msg void OnCancel();
 	//销毁消息
 	afx_msg void OnClose();
 	//鼠标信息
