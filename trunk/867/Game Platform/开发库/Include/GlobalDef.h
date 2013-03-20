@@ -30,7 +30,7 @@
 //网络数据定义
 #define SOCKET_VER						0x66								//网络版本
 #define SOCKET_BUFFER					8192								//网络缓冲
-#define SOCKET_PACKET					(SOCKET_BUFFER-sizeof(CMD_Head)-2*sizeof(DWORD))
+#define SOCKET_PACKET					(SOCKET_BUFFER-sizeof(NetMessageHead))
 
 /////////////////////////////////////////////////////////////////////////////////////////
 
@@ -45,6 +45,19 @@ enum enOperateStatus
 	enOperateStatus_Upload,
 	enOperateStatus_Delete
 };
+
+// 协议类型头
+struct NetMessageHead
+{					
+	DWORD						wMainCmdID;			//主ID				
+	DWORD						wSubCmdID;			//次ID			
+	DWORD						uMessageSize;		//数据包长度
+	DWORD						bReserve;			//压缩前数据包长度
+	BYTE						cbVersion;			//版本标识
+};
+
+
+
 //网络内核
 struct CMD_Info
 {

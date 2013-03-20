@@ -78,6 +78,14 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "网络服务", "客户端组件\网络
 	ProjectSection(ProjectDependencies) = postProject
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "列表服务", "服务器组件\列表服务\ListService.vcproj", "{877DA7B2-2C4E-40A5-9F28-EC1BFD6DEAAD}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "游戏服务", "服务器组件\游戏服务\GameService.vcproj", "{FEF1A495-AD07-4584-B4FB-044B4E003C3E}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfiguration) = preSolution
 		Debug = Debug
@@ -140,6 +148,14 @@ Global
 		{40C0CCCB-BB89-4198-A607-2410FA125EDC}.Debug.Build.0 = Debug|Win32
 		{40C0CCCB-BB89-4198-A607-2410FA125EDC}.Release.ActiveCfg = Release|Win32
 		{40C0CCCB-BB89-4198-A607-2410FA125EDC}.Release.Build.0 = Release|Win32
+		{877DA7B2-2C4E-40A5-9F28-EC1BFD6DEAAD}.Debug.ActiveCfg = Debug|Win32
+		{877DA7B2-2C4E-40A5-9F28-EC1BFD6DEAAD}.Debug.Build.0 = Debug|Win32
+		{877DA7B2-2C4E-40A5-9F28-EC1BFD6DEAAD}.Release.ActiveCfg = Release|Win32
+		{877DA7B2-2C4E-40A5-9F28-EC1BFD6DEAAD}.Release.Build.0 = Release|Win32
+		{FEF1A495-AD07-4584-B4FB-044B4E003C3E}.Debug.ActiveCfg = Debug|Win32
+		{FEF1A495-AD07-4584-B4FB-044B4E003C3E}.Debug.Build.0 = Debug|Win32
+		{FEF1A495-AD07-4584-B4FB-044B4E003C3E}.Release.ActiveCfg = Release|Win32
+		{FEF1A495-AD07-4584-B4FB-044B4E003C3E}.Release.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 	EndGlobalSection

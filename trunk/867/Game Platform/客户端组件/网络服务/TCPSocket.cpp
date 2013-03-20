@@ -230,21 +230,7 @@ DWORD __cdecl CTCPSocket::Connect(const LPCTSTR szServerIP, WORD wPort)
 //发送函数
 DWORD __cdecl CTCPSocket::SendData(WORD wMainCmdID, WORD wSubCmdID)
 {
-	//效验状态
-	if (m_hSocket==INVALID_SOCKET) return false;
-	if (m_cbSocketStatus!=SOCKET_STATUS_CONNECT) return false;
-
-	//构造数据
-	BYTE cbDataBuffer[SOCKET_BUFFER];
-	CMD_Head * pHead=(CMD_Head *)cbDataBuffer;
-	pHead->CommandInfo.wMainCmdID=wMainCmdID;
-	pHead->CommandInfo.wSubCmdID=wSubCmdID;
-
-	//加密数据
-	WORD wSendSize=EncryptBuffer(cbDataBuffer,sizeof(CMD_Head),sizeof(cbDataBuffer));
-
-	//发送数据
-	return SendDataBuffer(cbDataBuffer,wSendSize);
+	return SendData(wMainCmdID,wSubCmdID,NULL,0);
 }
 
 //发送函数
@@ -253,27 +239,38 @@ DWORD __cdecl CTCPSocket::SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData
 	//效验状态
 	if (m_hSocket==INVALID_SOCKET) return false;
 	if (m_cbSocketStatus!=SOCKET_STATUS_CONNECT) return false;
-
 	//效验大小
 	ASSERT(wDataSize<=SOCKET_PACKET);
 	if (wDataSize>SOCKET_PACKET) return false;
 
-	//构造数据
-	BYTE cbDataBuffer[SOCKET_BUFFER];
-	CMD_Head * pHead=(CMD_Head *)cbDataBuffer;
-	pHead->CommandInfo.wMainCmdID=wMainCmdID;
-	pHead->CommandInfo.wSubCmdID=wSubCmdID;
-	if (wDataSize>0)
+	char bSendBuffer[SOCKET_BUFFER];
+	UINT uSendSize=wDataSize+sizeof(NetMessageHead);
+	NetMessageHead * pNetHead=(NetMessageHead *)bSendBuffer;
+	pNetHead->wMainCmdID=wMainCmdID;
+	pNetHead->wSubCmdID=wSubCmdID;
+	pNetHead->uMessageSize=uSendSize;
+	pNetHead->cbVersion=SOCKET_VER;
+
+	if(pData!=NULL && wDataSize>0)
 	{
-		ASSERT(pData!=NULL);
-		CopyMemory(pHead+1,pData,wDataSize);
+		byte *pByte=(byte*)(pNetHead+1);
+		ULONG  destLen=m_Encrypt.CompressBound(wDataSize);
+		if(m_Encrypt.CompressNetData(pByte,&destLen,(BYTE *)pData,wDataSize))
+		{//压缩成功
+			uSendSize=destLen+sizeof(NetMessageHead);
+			pNetHead->uMessageSize=uSendSize;
+			pNetHead->bReserve=wDataSize;//压缩前的大小
+		}
+		else
+		{//加密
+			::CopyMemory(pByte,pData,wDataSize);
+			m_Encrypt.EncryptNetData(pByte,wDataSize);
+			pNetHead->bReserve=0;//数据未压缩
+		}
 	}
-
-	//加密数据
-	WORD wSendSize=EncryptBuffer(cbDataBuffer,sizeof(CMD_Head)+wDataSize,sizeof(cbDataBuffer));
-
+	m_dwSendPacketCount++;
 	//发送数据
-	return SendDataBuffer(cbDataBuffer,wSendSize);
+	return SendDataBuffer(bSendBuffer,uSendSize);
 }
 
 //关闭连接
@@ -574,41 +571,88 @@ LRESULT CTCPSocket::OnSocketNotifyRead(WPARAM wParam, LPARAM lParam)
 	{
 		//读取数据
 		int iRetCode=recv(m_hSocket,(char *)m_cbRecvBuf+m_wRecvSize,sizeof(m_cbRecvBuf)-m_wRecvSize,0);
-		if (iRetCode==SOCKET_ERROR) throw TEXT("网络连接关闭，读取数据失败");
+		if (iRetCode==SOCKET_ERROR) 
+			throw TEXT("网络连接关闭，读取数据失败");
 		ASSERT(m_dwSendPacketCount>0);
 		m_wRecvSize+=iRetCode;
 		m_dwRecvTickCount=GetTickCount()/1000L;
 
-		//变量定义
+		int nErrPos = 1;
 		WORD wPacketSize=0;
-		BYTE cbDataBuffer[SOCKET_PACKET+sizeof(CMD_Head)];
-		CMD_Head * pHead=(CMD_Head *)m_cbRecvBuf;
-
-		while (m_wRecvSize>=sizeof(CMD_Head))
+		BYTE cbDataBuffer[SOCKET_PACKET+sizeof(NetMessageHead)];
+		do
 		{
-			//效验参数
-			wPacketSize=pHead->CmdInfo.wPacketSize;
-			ASSERT(pHead->CmdInfo.cbVersion==SOCKET_VER);
-			ASSERT(wPacketSize<=(SOCKET_PACKET+sizeof(CMD_Head)));
-			if (pHead->CmdInfo.cbVersion!=SOCKET_VER) throw TEXT("数据包版本错误");
-			if (wPacketSize>(SOCKET_PACKET+sizeof(CMD_Head))) throw TEXT("数据包太大");
-			if (m_wRecvSize<wPacketSize) return 1;
+			NetMessageHead * pNetHead=(NetMessageHead *)m_cbRecvBuf;
+			if ((m_wRecvSize<sizeof(NetMessageHead))||(m_wRecvSize<(int)pNetHead->uMessageSize))
+			{
+				throw TEXT("数据包非法");
+				return 0;
+			}
+			CMD_Command Command;
+			Command.wMainCmdID = pNetHead->wMainCmdID;
+			Command.wSubCmdID = pNetHead->wSubCmdID;
+			UINT uMessageSize=pNetHead->uMessageSize;
+			nErrPos = 2;
+			if (uMessageSize>sizeof(cbDataBuffer)) 
+				throw TEXT("数据包过大");
+			::CopyMemory(cbDataBuffer,m_cbRecvBuf,uMessageSize);
+			m_wRecvSize-=uMessageSize;
+			::MoveMemory(m_cbRecvBuf,m_cbRecvBuf+uMessageSize,(m_wRecvSize)*sizeof(BYTE));
 
-			//拷贝数据
-			m_dwRecvPacketCount++;
-			CopyMemory(cbDataBuffer,m_cbRecvBuf,wPacketSize);
-			m_wRecvSize-=wPacketSize;
-			MoveMemory(m_cbRecvBuf,m_cbRecvBuf+wPacketSize,m_wRecvSize);
+			UINT uHandleSize=uMessageSize-sizeof(NetMessageHead);
+			NetMessageHead * pHandleNetData=(NetMessageHead *)cbDataBuffer;
 
-			//解密数据
-			WORD wRealySize=CrevasseBuffer(cbDataBuffer,wPacketSize);
-			ASSERT(wRealySize>=sizeof(CMD_Head));
+			nErrPos = 3;
+			byte *pDestBuff=NULL;
+			ULONG  destLen=0;
+			if(uHandleSize>0)
+			{
+				byte *pByte=(byte*)(pHandleNetData+1);
+				DWORD  dwSourSize=pHandleNetData->bReserve;
+				if(dwSourSize>=SOCKET_PACKET)
+				{
+					ASSERT(false);
+					return 0;
+				}
 
-			//解释数据
-			WORD wDataSize=wRealySize-sizeof(CMD_Head);
-			void * pDataBuffer=cbDataBuffer+sizeof(CMD_Head);
-			CMD_Command Command=((CMD_Head *)cbDataBuffer)->CommandInfo;
+				if(dwSourSize>0)
+				{/*网络数据解压缩*/
+					pDestBuff=new byte[dwSourSize];
+					if(pDestBuff==NULL)
+					{
+						ASSERT(false);
+						return 0;
+					}
 
+					destLen=dwSourSize;
+					nErrPos = 4;
+					if(m_Encrypt.UnCompressNetData(pDestBuff,&destLen,(BYTE *)pByte,uHandleSize) && dwSourSize==destLen)
+					{//解压成功
+						pHandleNetData->uMessageSize=destLen+sizeof(NetMessageHead);
+						uHandleSize=destLen;
+					}
+					else
+					{
+						delete [] pDestBuff;
+						ASSERT(false);
+						return 0;
+					}
+					nErrPos = 5;
+				}
+				else
+				{//解密
+					m_Encrypt.DecryptNetData(pByte,uHandleSize);
+				}
+				nErrPos = 6;
+			}
+			char *pTempBuff=NULL;
+			if(uHandleSize>0)
+			{
+				if(pDestBuff==NULL)
+					pTempBuff=(char*)(pHandleNetData+1);
+				else
+					pTempBuff=(char*)pDestBuff;
+			}
 			//内核命令
 			if (Command.wMainCmdID==MDM_KN_COMMAND)
 			{
@@ -617,23 +661,25 @@ LRESULT CTCPSocket::OnSocketNotifyRead(WPARAM wParam, LPARAM lParam)
 				case SUB_KN_DETECT_SOCKET:	//网络检测
 					{
 						//发送数据
-						SendData(MDM_KN_COMMAND,SUB_KN_DETECT_SOCKET,pDataBuffer,wDataSize);
+						SendData(MDM_KN_COMMAND,SUB_KN_DETECT_SOCKET,pTempBuff,uHandleSize);
+						delete []pDestBuff;
 						break;
 					}
 				}
+				delete []pDestBuff;
 				continue;
 			}
-
 			//处理数据
-			bool bSuccess=m_pITCPSocketSink->OnEventTCPSocketRead(m_wSocketID,Command,pDataBuffer,wDataSize);
-			if (bSuccess==false) throw TEXT("网络数据包处理失败");
-		};
+			bool bSuccess=m_pITCPSocketSink->OnEventTCPSocketRead(m_wSocketID,Command,pTempBuff,uHandleSize);
+			delete []pDestBuff;
+			if (bSuccess==false) 
+				throw TEXT("网络数据包处理失败");
+		} while (m_wRecvSize>0);
 	}
 	catch (...) 
 	{ 
 		CloseSocket(); 
 	}
-
 	return 1;
 }
 
