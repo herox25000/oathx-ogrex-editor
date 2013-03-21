@@ -33,6 +33,8 @@ BOOL CGameClientApp::InitInstance()
 	//内部初始化
 	InitCommonControls();
 
+	CGameClientDlg dlg;
+	dlg.DoModal();
 	//创建组件
 	if (m_PlatformResourceModule.CreateInstance()==false) 
 		return false;
@@ -51,9 +53,6 @@ BOOL CGameClientApp::InitInstance()
 		VER_ISkinResource);
 	if (CSkinResourceManager::LoadSkinResource(pISkinResource)==false)
 		return false;
-
-	CGameClientDlg dlg;
-	dlg.DoModal();
 
 	return TRUE;
 }
