@@ -1276,7 +1276,6 @@ bool CDataBaseSink::OnClearScoreLocker(DWORD dwContextID, VOID * pData, WORD wDa
 		//Ö´ÐÐ´æ´¢¹ý³Ì
 		m_GameScoreDBAide.ResetParameter();
 		m_GameScoreDBAide.AddParameter(TEXT("@dwServerID"),m_pGameServiceOption->wServerID);
-
 		m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_ClearScoreLocker"),false);
 	}
 	catch (IDataBaseException * pIException)

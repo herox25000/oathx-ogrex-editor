@@ -3842,8 +3842,12 @@ void CAttemperEngineSink::ModifyBankStorageGold(IServerUserItem * pIServerUserIt
 bool CAttemperEngineSink::TellAllUserExitRoom()
 {
 	SendRoomMessage(INVALID_WORD,TEXT("游戏服务器关闭，请退出房间后稍等片刻再进入房间"),SMT_INFO|SMT_EJECT);
-	//投递请求
-	m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_CLEARSCORELOCKER,0,NULL, 0);
+	//如果是金币房就清理被锁定在金币房的玩家
+	if(m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
+	{
+		//投递请求
+		m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_CLEARSCORELOCKER,0,NULL, 0);
+	}
 	return true;
 }
 
