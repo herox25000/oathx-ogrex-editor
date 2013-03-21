@@ -188,6 +188,7 @@ private:
 	void MakeAnimate();
 	//³öÀÏÇ§
 	void ChuLaoQian();
+	__int64 PreCalcScore();
 };
 
 //////////////////////////////////////////////////////////////////////////
