@@ -43,6 +43,7 @@ protected:
 	__int64							m_lBankerWinScore;					//庄家输赢
 	WORD							m_wCurrentBanker;					//当前庄家
 	bool							m_bMeApplyBanker;					//申请标识
+	__int64							m_lBankerTreasure;					//庄家金币
 
 	//控件变量
 protected:
