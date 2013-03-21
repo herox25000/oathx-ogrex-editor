@@ -208,7 +208,7 @@ void __cdecl CGameFrame::OnTreeLeftDBClick(CListItem *pListItem, HTREEITEM hTree
 			CListServer * pListServer=(CListServer *)pListItem;
 			CListKind * pListKind=pListServer->GetListKind();
 			tagGameKind * pGameKind=pListKind->GetItemInfo();
-			if ( pGameKind->wTypeID==1 && pGameKind->wKindID<100 )
+			if ( pGameKind->wKindID<100 )
 			{
 				//启动外部exe程序
 				OpenExternalGame(pListServer);
@@ -323,7 +323,12 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_BUTTON_4:
 		{
-			::AfxMessageBox("启动银行");
+			DWORD dwBankIP = g_GlobalUnits.m_ServerListManager.m_dwToolServerAddr;
+			WORD wBankPort = g_GlobalUnits.m_ServerListManager.m_wToolServerPort;
+			if(dwBankIP !=0 && wBankPort!=0)
+				OpenExternalGame(dwBankIP,wBankPort,g_GlobalUnits.m_ServerListManager.m_szToolName);
+			else
+				ShowMessageBox(TEXT("此功能暂时不能使用！"),MB_ICONQUESTION);
 			return TRUE;
 		}
 	case IDC_BT_BUTTON_5: //锁机功能
@@ -757,6 +762,41 @@ BOOL CGameFrame::OpenExternalGame(CListServer * pListServer)
 	return bSuccess;
 }
 
+//进入外部直连游戏
+BOOL CGameFrame::OpenExternalGame(DWORD dwGameIP,WORD wGamePort,TCHAR szProcessName[MODULE_LEN])
+{
+	//判断状态
+	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+	if ( GlobalUserData.dwUserID==0L )
+	{
+		ShowMessageBox(TEXT("您还没有登录，请先登录游戏广场！"),MB_ICONQUESTION);
+		return FALSE;
+	}
+
+	//构造命令行
+	CString strCommonLine;
+	strCommonLine.Format(TEXT("%s --ip 0x%X --port %d --uid %d --ver 0x%X --pwd %s"),
+		szProcessName,
+		dwGameIP,
+		wGamePort,
+		GlobalUserData.dwUserID,
+		g_GlobalUnits.GetPlazaVersion(),
+		GlobalUserData.szPassWord);
+
+	//启动游戏客户端
+	STARTUPINFO StartInfo;
+	memset(&StartInfo,0,sizeof(StartInfo));
+	StartInfo.cb=sizeof(StartInfo);
+	StartInfo.wShowWindow=SW_SHOWNORMAL;
+
+	memset(&GameProcessInfo,0,sizeof(GameProcessInfo));
+
+	BOOL bSuccess=CreateProcess(NULL,strCommonLine.GetBuffer(),NULL,NULL,FALSE,
+		CREATE_DEFAULT_ERROR_MODE,NULL,NULL,&StartInfo,&GameProcessInfo);
+
+	strCommonLine.ReleaseBuffer();
+	return bSuccess;
+}
 //进入房间
 CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 {

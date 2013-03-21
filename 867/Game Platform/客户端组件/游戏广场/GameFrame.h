@@ -163,6 +163,8 @@ public:
 	CRoomViewItem * CreateRoomViewItem(CListServer * pListServer);
 	//进入外部直连游戏
 	BOOL OpenExternalGame(CListServer * pListServer);
+	//进入外部直连游戏
+	BOOL OpenExternalGame(DWORD dwGameIP,WORD wGamePort,TCHAR szProcessName[MODULE_LEN]);
 	//关闭房间
 	void CloseRoomViewItem(IRoomViewItem * pIRoomViewItem);
 	//关闭房间

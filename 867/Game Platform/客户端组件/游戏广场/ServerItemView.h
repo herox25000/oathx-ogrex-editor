@@ -280,6 +280,11 @@ public:
 //房间列表管理类
 class CServerListManager
 {
+	//工具的IP和端口
+public:
+	WORD								m_wToolServerPort;			
+	DWORD								m_dwToolServerAddr;			
+	TCHAR								m_szToolName[MODULE_LEN];
 	//变量定义
 protected:
 	CListTypeArray					m_PtrArrayType;					//类型指针
