@@ -34,7 +34,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../开发库/Lib/plugin_common_d.lib ../../开发库/Lib/plugin_share_d.lib ../../开发库/Lib/plugin_ui_d.lib ../../开发库/Lib/plugin_channel_d.lib ../../开发库/Lib/plugin_property_d.lib Winmm.lib Zipd.lib"
-				OutputFile="../../运行/Debug/GamePlaza.exe"
+				OutputFile="../../运行/Debug/PLQGame.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(SolutionDir)\objs\$(ProjectName)\$(ConfigurationName)\$(ProjectName).pdb"
@@ -91,7 +91,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../开发库/Lib/plugin_common.lib ../../开发库/Lib/plugin_share.lib ../../开发库/Lib/plugin_ui.lib ../../开发库/Lib/plugin_channel.lib ../../开发库/Lib/plugin_property.lib Zip.lib Winmm.lib"
-				OutputFile="../../运行/Release/GamePlaza.exe"
+				OutputFile="../../运行/Release/PLQGame.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(SolutionDir)\objs\$(ProjectName)\$(ConfigurationName)\$(ProjectName).pdb"
