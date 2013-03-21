@@ -133,6 +133,8 @@ CListServer * CListItem::SearchServerItem(WORD wKindID, WORD wServerID, bool bDe
 CServerListManager::CServerListManager()
 {
 	m_pIServerListSink=NULL;
+	m_dwToolServerAddr = 0;
+	m_wToolServerPort = 0;
 }
 
 //析构函数
@@ -263,18 +265,26 @@ bool CServerListManager::InsertKindItem(tagGameKind GameKind[], WORD wCount)
 
 		for (WORD i=0;i<wCount;i++)
 		{
+			// 如果是工具箱不插入
+			if(GameKind[i].wKindID == TOOLBOX_KINDID)
+			{
+				CopyMemory(m_szToolName,GameKind[i].szProcessName,sizeof(m_szToolName));
+				continue;
+			}
 			//寻找父项
 			if ((pListType==NULL)||(GameKind[i].wTypeID!=wTypeID))
 			{
 				wTypeID=GameKind[i].wTypeID;
 				pListType=SearchTypeItem(wTypeID);
 				ASSERT(pListType!=NULL);
-				if (pListType==NULL) continue;
+				if (pListType==NULL)
+					continue;
 			}
 
 			//查找存在
 			pListKindTemp=pListType->SearchKindItem(GameKind[i].wKindID);
-			if (pListKindTemp!=NULL) continue;
+			if (pListKindTemp!=NULL)
+				continue;
 
 			//插入操作
 			CWinFileInfo WinFileInfo;
@@ -361,6 +371,13 @@ bool CServerListManager::InsertServerItem(tagGameServer GameServer[], WORD wCoun
 
 		for (WORD i=0;i<wCount;i++)
 		{
+			// 如果是工具箱不插入，保存IP和端口
+			if(GameServer[i].wKindID == TOOLBOX_KINDID)
+			{
+				m_wToolServerPort = GameServer[i].wServerPort;
+				m_dwToolServerAddr = GameServer[i].dwServerAddr;
+				continue;
+			}
 			//寻找种类
 			if ((pListKind==NULL)||(GameServer[i].wKindID!=wKindID))
 			{
@@ -733,15 +750,7 @@ void __cdecl CServerItemView::OnListItemInserted(CListItem * pListItem)
 			InsertInf.item.pszText=szItemTitle;
 			InsertInf.item.iImage=dwImageIndex;
 			InsertInf.item.iSelectedImage=dwImageIndex;
-
-			if ( pGameKind->wTypeID == 1 && pGameKind->wKindID == TOOLBOX_KINDID)
-			{
-
-			}
-			else
-			{
-				pListKind->SetItemData((DWORD_PTR)InsertItem(&InsertInf));
-			}
+			pListKind->SetItemData((DWORD_PTR)InsertItem(&InsertInf));
 			
 			break;
 		}

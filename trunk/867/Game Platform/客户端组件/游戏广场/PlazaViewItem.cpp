@@ -429,7 +429,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 	
 	switch (Command.wSubCmdID)
 	{
-	case SUB_GP_LIST_TYPE:			//类型信息
+	case SUB_GP_LIST_TYPE:			//游戏的分类
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(tagGameType)==0);
@@ -442,7 +442,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 
 			return true;
 		}
-	case SUB_GP_LIST_KIND:			//种类消息
+	case SUB_GP_LIST_KIND:			//游戏列表
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(tagGameKind)==0);
@@ -468,7 +468,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 
 			return true;
 		}
-	case SUB_GP_LIST_SERVER:		//服务器房间
+	case SUB_GP_LIST_SERVER:		//服务器房间列表
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(tagGameServer)==0);
@@ -497,7 +497,7 @@ bool CPlazaViewItem::OnSocketMainServerList(CMD_Command Command, void * pData, W
 
 			return true;
 		}
-	case SUB_GP_LIST_CONFIG:		//列表配置
+	case SUB_GP_LIST_CONFIG:		//更新人数
 		{
 			//效验参数
 			ASSERT(wDataSize%sizeof(CMD_GP_ListConfig)==0);
