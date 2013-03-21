@@ -74,6 +74,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="../../../开发库/Include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="2"
@@ -86,6 +87,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../../开发库/Lib/plugin_common.lib ../../../开发库/Lib/plugin_kernel.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
@@ -133,6 +135,9 @@
 				RelativePath=".\RobotManager.cpp">
 			</File>
 			<File
+				RelativePath=".\RobotTimer.cpp">
+			</File>
+			<File
 				RelativePath=".\SmallNine.cpp">
 			</File>
 			<File
@@ -171,6 +176,9 @@
 				RelativePath=".\RobotManager.h">
 			</File>
 			<File
+				RelativePath=".\RobotTimer.h">
+			</File>
+			<File
 				RelativePath=".\SmallNine.h">
 			</File>
 			<File
@@ -197,6 +205,22 @@
 				RelativePath=".\res\SmallNine.rc2">
 			</File>
 		</Filter>
+		<Filter
+			Name="Logic"
+			Filter="">
+			<File
+				RelativePath=".\SmallNineMachine.cpp">
+			</File>
+			<File
+				RelativePath=".\SmallNineMachine.h">
+			</File>
+			<File
+				RelativePath=".\SmallNineMachineFactory.cpp">
+			</File>
+			<File
+				RelativePath=".\SmallNineMachineFactory.h">
+			</File>
+		</Filter>
 		<File
 			RelativePath=".\ReadMe.txt">
 		</File>
@@ -205,5 +229,8 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="SmallNine.rc"/>
 	</Globals>
 </VisualStudioProject>

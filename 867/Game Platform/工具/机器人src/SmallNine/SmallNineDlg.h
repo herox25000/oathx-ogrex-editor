@@ -1,31 +1,38 @@
-// SmallNineDlg.h : 头文件
-//
-
 #pragma once
 
+#include "RobotManager.h"
+#include "RobotTimer.h"
+#include "SmallnineMachine.h"
+#include "afxwin.h"
+#include "afxcmn.h"
 
-// CSmallNineDlg 对话框
+enum
+{
+	IDT_TIMER_UPDATE	= 1,
+	IDT_TIMER_CRATE		= 2
+};
+
 class CSmallNineDlg : public CDialog
 {
-// 构造
 public:
-	CSmallNineDlg(CWnd* pParent = NULL);	// 标准构造函数
+	CSmallNineDlg(CWnd* pParent = NULL);
 
-// 对话框数据
 	enum { IDD = IDD_SMALLNINE_DIALOG };
 
 	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
+	virtual void DoDataExchange(CDataExchange* pDX);
 
-
-// 实现
 protected:
-	HICON m_hIcon;
+	HICON				m_hIcon;
+	double				m_fElapsed;
+	double				m_fLostTime;
+	double				m_fCrateTime;
 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
-	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
+	virtual BOOL		OnInitDialog();
+	afx_msg void		OnSysCommand(UINT nID, LPARAM lParam);
+	afx_msg void		OnPaint();
+	afx_msg HCURSOR		OnQueryDragIcon();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnTimer(UINT nIDEvent);
 };

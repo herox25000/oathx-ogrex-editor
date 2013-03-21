@@ -7,6 +7,7 @@ UserManager::UserManager(void)
 
 UserManager::~UserManager(void)
 {
+	ClearUp();
 }
 
 BOOL		UserManager::AddUser(SUserInfo* pUser)
@@ -79,4 +80,18 @@ BOOL		UserManager::Remove(DWORD dwUserID)
 	}
 
 	return TRUE;
+}
+
+void		UserManager::ClearUp()
+{
+	UserRegister::iterator it = m_UserRegister.begin();
+	while( it != m_UserRegister.end() )
+	{
+		delete it->second; it = m_UserRegister.erase(it);
+	}
+}
+
+int			UserManager::GetCount() const
+{
+	return m_UserRegister.size();
 }
