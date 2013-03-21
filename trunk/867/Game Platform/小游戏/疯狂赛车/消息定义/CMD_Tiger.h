@@ -26,7 +26,7 @@ static void SuperRand()
 #define GAME_NAME					TEXT("疯狂赛车")	//游戏名字
 #define GAME_GENRE					(GAME_GENRE_GOLD)	//游戏类型
 
-#define BANK_CONDITION_MONEY		10000000
+#define BANK_CONDITION_MONEY		20000000
 #define ANIMAL_ROLL_SPEED			50					//虎虎财运旋转速度(毫秒)
 
 //玩家索引

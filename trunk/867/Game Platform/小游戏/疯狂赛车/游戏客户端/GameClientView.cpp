@@ -78,8 +78,8 @@ static ANIMAL_CELL allcell[32]={
 #define IDC_SCORE_MOVE_R			211									//按钮标识
 #define IDC_APPLY_UP				212									//按钮标识
 #define IDC_APPLY_DOWN				213									//按钮标识
-#define IDC_GET_MONEY				212									//按钮标识
-#define IDC_STORE_MONEY				213									//按钮标识
+#define IDC_GET_MONEY				214									//按钮标识
+#define IDC_STORE_MONEY				215									//按钮标识
 
 //庄家信息
 #define BANKER_INFO_LEN				150									//庄家信息

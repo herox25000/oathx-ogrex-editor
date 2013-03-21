@@ -33,7 +33,7 @@ static void SuperRand()
 #define GAME_GENRE					(GAME_GENRE_GOLD|GAME_GENRE_MATCH)	//游戏类型
 
 
-#define BANK_CONDITION_MONEY		1000
+#define BANK_CONDITION_MONEY		20000000
 
 //玩家索引
 #define ID_XIAN_JIA					1									//闲家索引
