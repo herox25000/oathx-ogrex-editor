@@ -28,13 +28,6 @@ class UserManager
 	// user info register tabe
 	typedef std::map<DWORD, SUserInfo*>	UserRegister;
 public:
-	static UserManager&		GetSingleton()
-	{
-		static UserManager	instance;
-		return instance;
-	}
-
-public:
 	UserManager(void);
 	virtual ~UserManager(void);
 
@@ -43,6 +36,8 @@ public:
 	virtual	SUserInfo*		Search(DWORD dwUserID);
 	virtual SUserInfo*		Search(WORD wCharID);
 	virtual BOOL			Remove(DWORD dwUserID);
+	virtual	void			ClearUp();
+	virtual int				GetCount() const;
 protected:
 	UserRegister			m_UserRegister;
 };
