@@ -3409,13 +3409,8 @@ bool CRoomViewItem::OnSocketSubStatus(CMD_Command Command, void * pData, WORD wD
 	//判断自己
 	if (pIUserItem==m_pMeUserItem)
 	{
-		//设置变量
-		if ((wNowTableID==m_wReqTableID)&&(wNowChairID==m_wReqChairID))
-		{
-			m_wReqTableID=INVALID_TABLE;
-			m_wReqChairID=INVALID_CHAIR;
-		}
-
+		m_wReqTableID=INVALID_TABLE;
+		m_wReqChairID=INVALID_CHAIR;
 		//缓冲清理
 		if ((m_wPacketTableID!=INVALID_TABLE)&&((m_wPacketTableID!=wNowTableID)||(m_wPacketChairID!=wNowChairID)))
 		{
@@ -3882,9 +3877,12 @@ void __cdecl CRoomViewItem::OnLButtonHitTable(WORD wTableID, WORD wChairID, bool
 	}
 
 	//动作过虑
-	if (m_ServiceStatus!=ServiceStatus_Serviceing) return;
-	if ((wTableID==m_wReqTableID)&&(wChairID==m_wReqChairID)) return;
-	if ((wTableID==INVALID_TABLE)||(wChairID==INVALID_CHAIR)) return;
+	if (m_ServiceStatus!=ServiceStatus_Serviceing) 
+		return;
+	if ((wTableID==m_wReqTableID)&&(wChairID==m_wReqChairID))
+		return;
+	if ((wTableID==INVALID_TABLE)||(wChairID==INVALID_CHAIR)) 
+		return;
 
 	if ( m_cbDistributeMode==DISTRIBUTE_MODE_NO_LOOK )
 	{
