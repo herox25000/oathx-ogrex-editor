@@ -221,7 +221,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 
 				//写入积分
 				if (m_lUserWinScore[wUserChairID]!=0L) 
-					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], m_lUserRevenue[wUserChairID], ScoreKind);
+					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], 0, ScoreKind);
 
 				//庄家判断
 				if ( m_CurrentBanker.dwUserID == pIServerUserItem->GetUserID() ) 
@@ -1108,14 +1108,6 @@ void CTableFrameSink::CalculateScore()
 
 		//总的分数
 		m_lUserWinScore[i] += lUserLostScore[i];
-
-		//计算税收
-		if ( m_lUserWinScore[i]>0 )
-		{
-			m_lUserRevenue[i]  = m_lUserWinScore[i]*m_pGameServiceOption->wRevenue/1000L;
-			LIMIT_VALUE(m_lUserRevenue[i], 1, 1000);
-			//m_lUserWinScore[i] -= m_lUserRevenue[i];
-		}
 	}
 
 	//庄家成绩
@@ -1123,17 +1115,6 @@ void CTableFrameSink::CalculateScore()
 	{
 		WORD wBankerChairID = m_CurrentBanker.wChairID;
 		m_lUserWinScore[wBankerChairID] = lBankerWinScore;
-
-		//计算税收
-		if ( m_lUserWinScore[wBankerChairID]>0  )
-		{
-			m_lUserRevenue[wBankerChairID]  = m_lUserWinScore[wBankerChairID]*m_pGameServiceOption->wRevenue/1000L;
-
-			LIMIT_VALUE(m_lUserRevenue[wBankerChairID], 1, 1000);
-
-			//m_lUserWinScore[wBankerChairID] -= m_lUserRevenue[wBankerChairID];
-			lBankerWinScore = m_lUserWinScore[wBankerChairID];
-		}
 		//累计积分
 		m_lBankerWinScore += lBankerWinScore;
 	}

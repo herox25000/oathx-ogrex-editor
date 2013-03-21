@@ -102,10 +102,7 @@ bool __cdecl CTableFrameSink::InitTableFrameSink(IUnknownEx * pIUnknownEx)
 	//获取参数
 	m_pGameServiceOption=m_pITableFrame->GetGameServiceOption();
 	ASSERT(m_pGameServiceOption!=NULL);
-
-	//上庄条件
-	if(m_pGameServiceOption != NULL)
-		m_lApplyBankerCondition=m_pGameServiceOption->lCellScore;	
+	
 	return true;
 }
 
@@ -194,7 +191,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				enScoreKind ScoreKind=(m_lUserWinScore[wUserChairID]>=0L)?enScoreKind_Win:enScoreKind_Lost;
 				//写入积分
 				if (m_lUserWinScore[wUserChairID]!=0L)
-					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], m_lUserRevenue[wUserChairID], ScoreKind);
+					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], 0, ScoreKind);
 				//庄家判断
 				if ( m_CurrentBanker.dwUserID == pIServerUserItem->GetUserID() )
 					m_CurrentBanker.lUserScore = pIServerUserItem->GetUserScore()->lScore;
@@ -259,16 +256,13 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			{
 				allZhu=m_lUserTianMenScore[wChairID]+m_lUserDaoMenScore[wChairID]+m_lUserShunMenScore[wChairID];
 			}
-
 			if ( allZhu>0 )
 			{
 				if ( allZhu >pIServerUserItem->GetUserScore()->lScore )
 					allZhu=pIServerUserItem->GetUserScore()->lScore;
-
 				//变量定义
 				tagScoreInfo ScoreInfo;
 				ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
-
 				//设置变量
 				m_pITableFrame->WriteUserScore(pIServerUserItem, -allZhu, 0, enScoreKind_Flee);
 			}
@@ -838,7 +832,6 @@ void CTableFrameSink::SendApplyUser( IServerUserItem *pRcvServerUserItem )
 void CTableFrameSink::ChangeBanker()
 {
 	m_lApplyBankerCondition = BANK_CONDITION_MONEY;
-
 	//递增次数
 	m_cbBankerTimer++;
 
@@ -1213,17 +1206,6 @@ void CTableFrameSink::CalculateScore()
 			lBankerWinScore += m_lUserDaoMenScore[i] ;
 		}
 		m_lUserWinScore[i] += lUserLostScore[i];
-
-		//计算税收
-		if ( m_lUserWinScore[i]>0 )
-		{
-			m_lUserRevenue[i]  = m_lUserWinScore[i]*m_pGameServiceOption->wRevenue/1000L;
-			LIMIT_VALUE(m_lUserRevenue[i], 1, 1000);
-			if(m_lUserWinScore[i] >= m_lUserRevenue[i])
-				m_lUserWinScore[i] -= m_lUserRevenue[i];
-			else
-				m_lUserRevenue[i]=0;
-		}
 	}
 
 	//庄家成绩
@@ -1231,18 +1213,6 @@ void CTableFrameSink::CalculateScore()
 	{
 		WORD wBankerChairID = m_CurrentBanker.wChairID;
 		m_lUserWinScore[wBankerChairID] = lBankerWinScore;
-
-		//计算税收
-		if ( 0 < m_lUserWinScore[wBankerChairID] )
-		{
-			m_lUserRevenue[wBankerChairID]  = m_lUserWinScore[wBankerChairID]*m_pGameServiceOption->wRevenue/1000L;
-			LIMIT_VALUE(m_lUserRevenue[wBankerChairID], 1, 1000);
-			if(m_lUserWinScore[wBankerChairID] > m_lUserRevenue[wBankerChairID])
-				m_lUserWinScore[wBankerChairID] -= m_lUserRevenue[wBankerChairID];
-			else
-				m_lUserRevenue[wBankerChairID] = 0;
-			lBankerWinScore = m_lUserWinScore[wBankerChairID];
-		}
 		IServerUserItem *pBankerUserItem = m_pITableFrame->GetServerUserItem(wBankerChairID);
 		//累计积分
 		m_lBankerWinScore += lBankerWinScore;
@@ -1407,35 +1377,12 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 		}
 		//总的分数
 		m_lUserWinScore[i] += lUserLostScore[i];
-
-		//计算税收
-		if ( m_lUserWinScore[i]>0 )
-		{
-			m_lUserRevenue[i]  = m_lUserWinScore[i]*m_pGameServiceOption->wRevenue/1000L;
-			LIMIT_VALUE(m_lUserRevenue[i], 1, 1000);
-			if(m_lUserWinScore[i] >= m_lUserRevenue[i])
-				m_lUserWinScore[i] -= m_lUserRevenue[i];
-			else
-				m_lUserRevenue[i]=0;
-		}
 	}
 	//庄家成绩
 	if ( m_CurrentBanker.dwUserID != 0 )
 	{
 		WORD wBankerChairID = m_CurrentBanker.wChairID;
 		m_lUserWinScore[wBankerChairID] = lBankerWinScore;
-
-		//计算税收
-		if ( 0 < m_lUserWinScore[wBankerChairID] )
-		{
-			m_lUserRevenue[wBankerChairID]  = m_lUserWinScore[wBankerChairID]*m_pGameServiceOption->wRevenue/1000L;
-			LIMIT_VALUE(m_lUserRevenue[wBankerChairID], 1, 1000);
-			if(m_lUserWinScore[wBankerChairID] > m_lUserRevenue[wBankerChairID])
-				m_lUserWinScore[wBankerChairID] -= m_lUserRevenue[wBankerChairID];
-			else
-				m_lUserRevenue[wBankerChairID] = 0;
-			lBankerWinScore = m_lUserWinScore[wBankerChairID];
-		}
 	}
 	//玩家成绩
 	ZeroMemory(m_lUserWinScore, sizeof(m_lUserWinScore));
