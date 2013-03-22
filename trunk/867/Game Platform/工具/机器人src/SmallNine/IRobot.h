@@ -9,6 +9,13 @@ struct tagAstatInfo
 	NAME_BUFFER				NameBuff[16];						//名字缓冲
 };
 
+enum
+{
+	ROBOT_CREATE,
+	ROBOT_SITDOWN,
+	ROBOT_INVALID,
+};
+
 class IRobot : ITCPSocketSink
 {
 public:
@@ -21,15 +28,19 @@ public:
 	virtual	void			GetClientSerial(tagClientSerial& ClientSerial);
 
 	virtual BOOL			Start(const CString& szIPAdress, WORD wPort, const CString& szPwd);
-	virtual	BOOL			Update(float fElapsed);
 	virtual void			Stop();
 	virtual	void			ShowMessageBox(const CString& szMessage);
 	virtual	void			SitDown();
 	virtual void			AddGameUser(SUserInfo* pUserInfo);
 	virtual	void			SetUserStatus(DWORD dwUserID, BYTE cbUserStatus);
 	virtual	void			ResetGame();
-	virtual	BOOL			GetSitState() const;
 	virtual bool			SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData=NULL, WORD wDataSize=0);
+	
+	virtual	WORD			GetReconnect() const;
+	virtual	WORD			GetState() const;
+	virtual void			SetState(WORD wState);
+	virtual void			SetReqSitDownTime(double fTime);
+	virtual double			GetReqSitDownTime() const;
 public:
 	//释放对象
 	virtual void	__cdecl Release()
@@ -64,18 +75,22 @@ public:
 
 	//游戏状态
 	virtual bool			OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataSize);
+	//周期性更新
+	virtual void			OnUpdate(float fElapsed);
 	//游戏消息
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL, WORD wDataSize=0);
+
 	virtual bool			OnSocket(WORD wMainCmdID, WORD wSubCmdID, void * pBuffer, WORD wDataSize);
 protected:
 	DWORD					m_dwUserID;
 	CString					m_szPwd;
 	CTCPSocketHelper		m_ClientSocket;
 	SUserInfo*				m_pAppUser;
-	UserManager*			m_pRoomManager;
 	UserManager*			m_pGameManager;
-	BOOL					m_bSitState;
+	WORD					m_wState;
 	BYTE					m_bGameStatus;
+	WORD					m_wReconnect;
+	double					m_fReqSitDownTime;
 };
 
 // 机器人创建工厂

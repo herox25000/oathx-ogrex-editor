@@ -35,7 +35,7 @@ public:
 	virtual	SUserInfo*		Search(LPCTSTR lpszName);
 	virtual	SUserInfo*		Search(DWORD dwUserID);
 	virtual SUserInfo*		Search(WORD wCharID);
-	virtual BOOL			Remove(DWORD dwUserID);
+	virtual BOOL			Remove(DWORD dwUserID, BOOL bDestroy=TRUE);
 	virtual	void			ClearUp();
 	virtual int				GetCount() const;
 protected:

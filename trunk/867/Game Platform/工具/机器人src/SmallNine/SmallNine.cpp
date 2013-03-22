@@ -29,7 +29,7 @@ BOOL CSmallNineApp::InitInstance()
 	InitCommonControls();
 
 	CWinApp::InitInstance();
-
+	AfxInitRichEdit2();
 	AfxEnableControlContainer();
 
 

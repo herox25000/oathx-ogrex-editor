@@ -71,12 +71,17 @@ SUserInfo*	UserManager::Search(WORD wCharID)
 	return NULL;
 }
 
-BOOL		UserManager::Remove(DWORD dwUserID)
+BOOL		UserManager::Remove(DWORD dwUserID, BOOL bDestroy)
 {
 	UserRegister::iterator it = m_UserRegister.find(dwUserID);
 	if ( it != m_UserRegister.end() )
 	{
-		delete it->second; m_UserRegister.erase(it);
+		if (bDestroy)
+		{
+			delete it->second;
+		}
+		
+		m_UserRegister.erase(it);
 	}
 
 	return TRUE;

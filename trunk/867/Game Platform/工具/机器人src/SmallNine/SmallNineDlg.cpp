@@ -43,6 +43,11 @@ CSmallNineDlg::CSmallNineDlg(CWnd* pParent /*=NULL*/)
 	m_fLostTime		= 0;
 	m_fCrateTime	= RobotTimer::rdft(1, 3);
 	m_fElapsed		= 0;
+	m_dwStartID		= 0;
+	m_dwEndID		= 0;
+	m_wPort			= 0;
+	
+	memset(&m_AppConfig, 0, sizeof(SBankerConfig));
 
 	RobotManager::GetSingleton().RegisterRobotFactory( 
 		new SmallNineMachineFactory(SMALLNINE_NAME)
@@ -52,6 +57,7 @@ CSmallNineDlg::CSmallNineDlg(CWnd* pParent /*=NULL*/)
 void CSmallNineDlg::DoDataExchange(CDataExchange* pDX)
 {
 	CDialog::DoDataExchange(pDX);
+	DDX_Control(pDX, IDC_RICHEDIT21, m_RichEditTrace);
 }
 
 BEGIN_MESSAGE_MAP(CSmallNineDlg, CDialog)
@@ -60,6 +66,19 @@ BEGIN_MESSAGE_MAP(CSmallNineDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
 	ON_WM_TIMER()
+	ON_BN_CLICKED(IDOK, OnBnClickedOk)
+	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
+	ON_EN_CHANGE(IDC_EDIT6, OnEnChangeEdit6)
+	ON_EN_CHANGE(IDC_EDIT7, OnEnChangeEdit7)
+	ON_EN_CHANGE(IDC_EDIT8, OnEnChangeEdit8)
+	ON_EN_CHANGE(IDC_EDIT9, OnEnChangeEdit9)
+	ON_EN_CHANGE(IDC_EDIT10, OnEnChangeEdit10)
+	ON_EN_CHANGE(IDC_EDIT11, OnEnChangeEdit11)
+	ON_EN_CHANGE(IDC_EDIT12, OnEnChangeEdit12)
+	ON_EN_CHANGE(IDC_EDIT13, OnEnChangeEdit13)
+	ON_EN_CHANGE(IDC_EDIT14, OnEnChangeEdit14)
+	ON_EN_CHANGE(IDC_EDIT15, OnEnChangeEdit15)
+	ON_EN_CHANGE(IDC_EDIT16, OnEnChangeEdit16)
 END_MESSAGE_MAP()
 
 
@@ -85,7 +104,24 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIcon, FALSE);
 
-	SetTimer(IDT_TIMER_UPDATE,  30, NULL);
+	SetDlgItemText(IDC_EDIT1,	"192.168.1.106");
+	SetDlgItemText(IDC_EDIT2,	"11021");
+	SetDlgItemText(IDC_EDIT3,	"e10adc3949ba59abbe56e057f20f883e");
+	SetDlgItemText(IDC_EDIT4,	"100");
+	SetDlgItemText(IDC_EDIT5,	"115");
+	SetDlgItemText(IDC_EDIT6,	"1000000");
+	SetDlgItemText(IDC_EDIT7,	"1");
+	SetDlgItemText(IDC_EDIT8,	"1");
+
+	SetDlgItemText(IDC_EDIT9,	"2");
+	SetDlgItemText(IDC_EDIT10,	"0.5");
+	SetDlgItemText(IDC_EDIT11,	"30000000");
+	SetDlgItemText(IDC_EDIT12,	"10000000");
+
+	SetDlgItemText(IDC_EDIT13,	"2");
+	SetDlgItemText(IDC_EDIT14,	"10");
+	SetDlgItemText(IDC_EDIT15,	"20");
+	SetDlgItemText(IDC_EDIT16,	"40");
 
 	return TRUE;
 }
@@ -135,6 +171,12 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 {
 	switch( nIDEvent )
 	{
+	case IDT_TIMER_RECONNECT:
+		{
+			 RobotManager::GetSingleton().Reconnect(m_ipAddress, m_wPort, m_md5);
+		}
+		break;
+
 	case IDT_TIMER_UPDATE:
 		{
 			double fCurrentTime = RobotTimer::GetSingleton().GetElapsed();
@@ -143,14 +185,14 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 			m_fElapsed			+= fElapsed;
 
 			int nCount = RobotManager::GetSingleton().GetRobotCount();
-			if ( nCount < 5)
+			if ( nCount < (m_dwEndID - m_dwStartID))
 			{
 				if ( m_fElapsed >= m_fCrateTime)
 				{
 					DWORD dwUserID = 0;
 					do 
 					{
-						dwUserID = rand() % 100 + 105;
+						dwUserID = RobotTimer::rdit(m_dwStartID, m_dwEndID);
 						if (NULL == RobotManager::GetSingleton().Search(dwUserID) )
 						{
 							break;
@@ -172,7 +214,7 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 								);
 							if (pMachine)
 							{
-								if (pMachine->Start("222.186.36.78", 11021, "e10adc3949ba59abbe56e057f20f883e"))
+								if (pMachine->Start(m_ipAddress, m_wPort, m_md5))
 								{
 									RobotManager::GetSingleton().AddRobot(pMachine);
 								}
@@ -181,14 +223,19 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 									delete pMachine;
 									pMachine = NULL;
 								}
+
+								m_fCrateTime = RobotTimer::rdft(1, 20);
 							}
 						}
 					}
+
+					m_fElapsed = 0;
 				}
 			}
-			else
+			
+			if (nCount)
 			{
-
+				RobotManager::GetSingleton().Update(fElapsed);
 			}
 
 			m_fLostTime = RobotTimer::GetSingleton().GetElapsed();
@@ -196,4 +243,157 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 	}
 
 	CDialog::OnTimer(nIDEvent);
+}
+
+void CSmallNineDlg::OnBnClickedOk()
+{
+	GetDlgItemText(IDC_EDIT1, m_ipAddress);
+
+	CString buffer;
+	GetDlgItemText(IDC_EDIT2, buffer);
+	m_wPort	= atoi(buffer.GetBuffer());
+
+	GetDlgItemText(IDC_EDIT3, m_md5);
+
+	if (!m_ipAddress.IsEmpty() && !buffer.IsEmpty() && !m_md5.IsEmpty())
+	{
+		GetDlgItemText(IDC_EDIT4, buffer);
+		m_dwStartID = atoi(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT5, buffer);
+		m_dwEndID	= atoi(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT6, buffer);
+		m_AppConfig.nUpBankerScore	= atol(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT7, buffer);
+		m_AppConfig.wUpBankerCount	= atoi(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT8, buffer);
+		m_AppConfig.wUpBankerDeque	= atoi(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT9, buffer);
+		m_AppConfig.fMaxPlaceTime	= atof(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT10, buffer);
+		m_AppConfig.fMinPlaceTime	= atof(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT11, buffer);
+		m_AppConfig.nMaxScore		= _atoi64(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT12, buffer);
+		m_AppConfig.nMinScore		= _atoi64(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT13, buffer);
+		m_AppConfig.nTenMillionRate	= atoi(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT14, buffer);
+		m_AppConfig.nFiveMillionRate= atoi(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT15, buffer);
+		m_AppConfig.nOneMillionRate	= atoi(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT16, buffer);
+		m_AppConfig.nFiveLakhRate	= atoi(buffer.GetBuffer());
+
+		RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+
+		SetTimer(IDT_TIMER_UPDATE, 30,		NULL);
+		SetTimer(IDT_TIMER_RECONNECT, 5000, NULL);
+
+		CTraceService::TraceString("SmallNine Starup",
+			TraceLevel_Normal);
+	}
+	else
+	{
+		AfxMessageBox("error, please set ip and port and password");
+	}
+}
+
+void CSmallNineDlg::OnBnClickedCancel()
+{
+	KillTimer(IDT_TIMER_UPDATE);
+
+	OnCancel();
+}
+
+void CSmallNineDlg::OnEnChangeEdit6()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT6, buffer);
+	m_AppConfig.nUpBankerScore	= atol(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+
+}
+
+void CSmallNineDlg::OnEnChangeEdit7()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT7, buffer);
+	m_AppConfig.wUpBankerCount	= atoi(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit8()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT8, buffer);
+	m_AppConfig.wUpBankerDeque	= atoi(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit9()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT9, buffer);
+	m_AppConfig.fMaxPlaceTime	= atof(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit10()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT10, buffer);
+	m_AppConfig.fMinPlaceTime	= atof(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit11()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT11, buffer);
+	m_AppConfig.nMaxScore		= _atoi64(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit12()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT12, buffer);
+	m_AppConfig.nMinScore		= _atoi64(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit13()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT13, buffer);
+	m_AppConfig.nTenMillionRate	= atoi(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit14()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT14, buffer);
+	m_AppConfig.nFiveMillionRate= atoi(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit15()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT15, buffer);
+	m_AppConfig.nOneMillionRate	= atoi(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit16()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT16, buffer);
+	m_AppConfig.nFiveLakhRate	= atoi(buffer.GetBuffer());
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
