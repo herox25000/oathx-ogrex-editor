@@ -382,7 +382,7 @@ void CPropertyItem::OnBnClickedOk()
 	
 	//判断金额
 	LONG lMePrice = pMeUserData->cbMemberOrder ? lMemberPrice : lNormalPrice;
-	LONG lMeScore = pMeUserData->lInsureScore;
+	__int64 lMeScore = pMeUserData->lInsureScore;
 	if ( lMeScore < lMePrice )
 	{
 		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2) )	
@@ -492,11 +492,11 @@ void CPropertyItem::UpdateView()
 	m_strMemberUserPrice.Format(TEXT("会员用户需支付游戏币：%ld"), lMemberPrice);	
 
 	LONG lMePrice = pMeUserData->cbMemberOrder ? lMemberPrice : lNormalPrice;
-	LONG lMeScore = pMeUserData->lInsureScore;
+	__int64 lMeScore = pMeUserData->lInsureScore;
 	if ( lMeScore < lMePrice )
-		m_strGoldDescribe.Format(TEXT("您的银行存款：%ld，请先存款后再购买！"), lMeScore);
+		m_strGoldDescribe.Format(TEXT("您的银行存款：%I64d，请先存款后再购买！"), lMeScore);
 	else
-        m_strGoldDescribe.Format(TEXT("您的银行存款：%ld，购买道具后，存款剩余：%ld"), lMeScore, lMeScore-lMePrice);
+        m_strGoldDescribe.Format(TEXT("您的银行存款：%I64d，购买道具后，存款剩余：%I64d"), lMeScore, lMeScore-lMePrice);
 
 	//更新变量
 	UpdateData(FALSE);
@@ -893,7 +893,7 @@ void CFlowerSetting::OnBnClickedOk()
 	LONG lMemberPrice = lNormalPrice * CPropertyBar::m_FlowerInfo[m_nFlowerID].cbDiscount / 100;
 
 	LONG lMePrice = pMeUserData->cbMemberOrder ? lMemberPrice : lNormalPrice;
-	LONG lMeScore = pMeUserData->lInsureScore;
+	__int64 lMeScore = pMeUserData->lInsureScore;
 	if ( lMeScore < lMePrice )
 	{
 		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION |MB_YESNO|MB_DEFBUTTON2))	
@@ -972,7 +972,7 @@ void CFlowerSetting::UpdateView()
 	m_strMemberUserPrice.Format(TEXT("会员用户需支付游戏币：%ld"), lMemberPrice);	
 	
 	LONG lMePrice = pMeUserData->cbMemberOrder ? lMemberPrice : lNormalPrice;
-	LONG lMeScore = pMeUserData->lInsureScore;
+	__int64 lMeScore = pMeUserData->lInsureScore;
 	if ( lMeScore < lMePrice )
 		m_strGoldDescribe.Format(TEXT("您的银行存款：%ld，请先存款后再购买！"), lMeScore);
 	else

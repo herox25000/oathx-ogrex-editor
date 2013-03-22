@@ -199,9 +199,9 @@ struct DBR_GR_LogonSuccess
 	BYTE								cbMasterOrder;					//管理等级
 
 	//积分信息
-	LONG								lScore;							//用户分数
-	LONG								lInsureScore;					//存储金币
-	LONG								lGameGold;						//游戏金币
+	__int64								lScore;							//用户分数
+	__int64								lInsureScore;					//存储金币
+	__int64								lGameGold;						//游戏金币
 	LONG								lWinCount;						//胜利盘数
 	LONG								lLostCount;						//失败盘数
 	LONG								lDrawCount;						//和局盘数

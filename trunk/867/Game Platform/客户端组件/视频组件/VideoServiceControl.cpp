@@ -1109,7 +1109,7 @@ VOID CVideoServiceControl::OnBnClickedMore()
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 	//用户积分
-	_snprintf(szBuffer,sizeof(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),m_pUserData->lScore,lPlayCount,dFleeRate);
+	_snprintf(szBuffer,sizeof(szBuffer),TEXT("积分：%I64d  总局数：%ld  逃跑率：%5.2f%%"),m_pUserData->lScore,lPlayCount,dFleeRate);
 	UserInfoMenu.AppendMenu(0,0,szBuffer);
 
 	//获取用户

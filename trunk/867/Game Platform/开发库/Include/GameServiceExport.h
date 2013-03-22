@@ -140,8 +140,8 @@ enum enScoreKind
 //积分信息
 struct tagScoreInfo
 {
-	LONG								lScore;								//游戏积分
-	LONG								lRevenue;							//游戏积分
+	__int64								lScore;								//游戏积分
+	long								lRevenue;							//游戏积分
 	enScoreKind							ScoreKind;							//分数类型
 };
 
@@ -195,7 +195,7 @@ struct tagServerUserData
 	BYTE								cbUserStatus;						//用户状态
 
 	//分数信息
-	LONG								lStorageScore;						//存储积分
+	__int64								lStorageScore;						//存储积分
 	tagUserScore						UserScoreInfo;						//用户分数
 
 	//扩展信息
@@ -445,7 +445,7 @@ public:
 	//工具接口
 public:
 	//划拨银子
-	virtual bool __cdecl TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwUserID_IN, __int64 lMoney)=NULL;
+	virtual bool __cdecl TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwGameID_IN, __int64 lMoney)=NULL;
 	//查询自己的转账记录
 	virtual bool __cdecl QueryTransferLog(IServerUserItem * pIServerUserItem)=NULL;
 	//充值

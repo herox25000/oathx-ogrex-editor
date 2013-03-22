@@ -3063,7 +3063,7 @@ bool CAttemperEngineSink::OnEventFlower(const void * pData, WORD wDataSize, ISer
 		LONG lFlowerPrice = pFlowerInfo->lPrice * pGift->wFlowerCount * (pSendUserData->cbMemberOrder > 0 ? pFlowerInfo->cbDiscount : 100) / 100;
 
 		//获取金币
-		LONG lInsureScore = GetBankStorageGold(pSendIServerUserItem);
+		__int64 lInsureScore = GetBankStorageGold(pSendIServerUserItem);
 
 		//积分判断
 		if ( lFlowerPrice <= lInsureScore )
@@ -3249,7 +3249,7 @@ bool CAttemperEngineSink::OnEventProperty(const void * pData, WORD wDataSize, IS
 	}
 
 	//获取金币
-	LONG lInsureScore = GetBankStorageGold(pIServerUserItem);
+	__int64 lInsureScore = GetBankStorageGold(pIServerUserItem);
 
 	//积分判断
 	if ( lPrice <= lInsureScore )
@@ -3282,7 +3282,7 @@ bool CAttemperEngineSink::OnEventProperty(const void * pData, WORD wDataSize, IS
 	//负分清零
 	if ( nPropertyID == PROP_NEGAGIVE )
 	{
-		LONG lNowScore = pTargetUserData->UserScoreInfo.lScore;
+		__int64 lNowScore = pTargetUserData->UserScoreInfo.lScore;
 		if ( lNowScore < 0)
 		{
 			//变量定义
@@ -3532,7 +3532,7 @@ bool CAttemperEngineSink::OnEventBankDrawoutGold(const void * pData, WORD wDataS
 
 	//类型转换
 	CMD_GF_BankGet *pBankGet= (CMD_GF_BankGet*)pData;
-	LONG lStorageGold = pServerUserData->UserScoreInfo.lInsureScore;
+	__int64 lStorageGold = pServerUserData->UserScoreInfo.lInsureScore;
 
 	//效验数据
 	ASSERT(pBankGet->lGetValue>0 && pBankGet->lGetValue<=lStorageGold);
@@ -3608,7 +3608,7 @@ bool CAttemperEngineSink::OnEventBankStorage(const void * pData, WORD wDataSize,
 
 	//类型转换
 	CMD_GF_BankStorage *pBankStorage= (CMD_GF_BankStorage*)pData;
-	LONG lGameGold = pServerUserData->UserScoreInfo.lGameGold;
+	__int64 lGameGold = pServerUserData->UserScoreInfo.lGameGold;
 
 	//效验数据
 	ASSERT(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lGameGold);
@@ -3818,7 +3818,7 @@ void CAttemperEngineSink::ModifyGameGold(IServerUserItem * pIServerUserItem,LONG
 }
 
 //获取帐款
-LONG CAttemperEngineSink::GetBankStorageGold(IServerUserItem * pIServerUserItem)
+__int64 CAttemperEngineSink::GetBankStorageGold(IServerUserItem * pIServerUserItem)
 {
 	//获取结构
 	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();

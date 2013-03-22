@@ -240,7 +240,7 @@ VOID CUserInfoView::OnPaint()
 			case 6:
 				{
 					//输出信息
-					_sntprintf(szString,CountArray(szString),TEXT("银行存款：%ld"),m_pCurrentUserData->lInsureScore);
+					_sntprintf(szString,CountArray(szString),TEXT("银行存款：%I64d"),m_pCurrentUserData->lInsureScore);
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;
