@@ -165,7 +165,7 @@ void CGameBase::EndServer()
 {
 	if (m_ClientSocket.GetInterface()!=NULL) 
 	{
-		if(m_MeUserInfo.cbUserStatus = US_PLAY)
+		if(m_MeUserInfo.cbUserStatus == US_PLAY)
 		{
 			m_ClientSocket->SendData(MDM_GR_USER,SUB_GR_USER_LEFT_GAME_REQ);
 		}
@@ -478,18 +478,17 @@ bool CGameBase::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wData
 			//处理数据
 			CMD_GR_UserStatus * pUserStatus=(CMD_GR_UserStatus *)pBuffer;
 			tagUserInfo * pUserInfo=m_RoomUserManager.SearchUserByUserID(pUserStatus->dwUserID);
-			ASSERT(pUserInfo!=NULL);
+			//ASSERT(pUserInfo!=NULL);
 			if (pUserInfo==NULL) return true;
 
 			WORD wNowTableID=pUserStatus->wTableID,wLastTableID=pUserInfo->wTableID;
 			WORD wNowChairID=pUserStatus->wChairID,wLastChairID=pUserInfo->wChairID;
 			BYTE cbNowStatus=pUserStatus->cbUserStatus,cbLastStatus=pUserInfo->cbUserStatus;
 
- 
 			//用户离开
-			if (pUserStatus->cbUserStatus==US_NULL)
+			if (pUserStatus->cbUserStatus==US_NULL) 
 			{
-				if(m_MeUserInfo.wTableID != INVALID_TABLE && m_MeUserInfo.wChairID == wLastChairID)
+				if(m_MeUserInfo.wTableID != INVALID_TABLE && m_MeUserInfo.wTableID == wLastTableID)
 				{
 					OnUserStatus(pUserInfo->dwUserID, pUserInfo->cbUserStatus);
 				}
@@ -502,7 +501,6 @@ bool CGameBase::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wData
 						(int)m_MeUserInfo.dwUserID);
 					ShowMessageBox(strMsg);
 				}
-
 				break;
 			}
 
@@ -568,7 +566,7 @@ bool CGameBase::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wData
 			//处理数据
 			CMD_GR_UserScore * pUserScore=(CMD_GR_UserScore *)pBuffer;
 			tagUserInfo * pUserInfo=m_RoomUserManager.SearchUserByUserID(pUserScore->dwUserID);
-			ASSERT(pUserInfo!=NULL);
+			//ASSERT(pUserInfo!=NULL);
 			if (pUserInfo==NULL) return true;
 			
 			m_RoomUserManager.UpdateInfo(pUserScore->dwUserID, pUserScore->UserScore.lScore);

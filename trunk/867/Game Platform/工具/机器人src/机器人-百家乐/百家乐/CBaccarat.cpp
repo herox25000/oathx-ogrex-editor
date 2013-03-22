@@ -47,6 +47,15 @@ CBaccarat::CBaccarat(DWORD dwUserID)
 
 	time_t seed = time(NULL);
 	srand((unsigned)seed);
+
+	TCHAR szINI[512];
+	::GetModulePath(szINI, sizeof(szINI));
+	SafeStrCat(szINI, "\\RM-Baccarat.ini", sizeof(szINI));
+	m_nMaxBankerCount = GetPrivateProfileInt("RobotOption", "MaxBankerTime", 6, szINI);
+	m_nUnBankerForWin = GetPrivateProfileInt("RobotOption", "UnBankerForWin", 20000000, szINI);
+	m_nOfflineForWin = GetPrivateProfileInt("RobotOption", "OfflineForWin", 60000000, szINI);
+	m_nJettonMaxNum = GetPrivateProfileInt("RobotOption", "JettonMaxNum", 10, szINI);
+
 }
 
 CBaccarat::~CBaccarat()
@@ -86,93 +95,9 @@ void CBaccarat::ResetGame()
 
 void CBaccarat::OnPlaceJetton()
 {
-	m_JecVec.clear();
-	for (int i = 0; i < 2; ++i)
-	{
-		BYTE cbJettonArea;
-		//变量定义
-		if (i == 0)
-		{
-			cbJettonArea = ID_ZHUANG_JIA;
-		}
-		else
-		{
-			cbJettonArea = ID_XIAN_JIA;
-		}
-		/*int nType = rand()%2;
-		switch(nType)
-		{
-		case 0:
-		{
-			cbJettonArea=ID_ZHUANG_JIA;
-			break;
-		}
-		case 1:
-		{
-			cbJettonArea=ID_XIAN_JIA;
-			break;
-		}
-		}*/
-
-		//int nType2 = rand()%2;
-		//int nScore = 0;
-		//switch (nType2)
-		//{
-		//case 0:
-		//	{
-		//		nScore = 10000;
-		//		break;
-		//	}
-		//case 1:
-		//	{
-		//		nScore = 100000;
-		//		break;
-		//	}
-		//}
-
-		static __int64 JScore[6] = 
-		{
-			1000, 10000, 100000, 500000, 1000000, 5000000
-		};
-
-		__int64 nScore = JScore[rand() % 6];
-
-		if (m_bSmall)
-		{
-			if(rand()%10==1)
-			{
-				cbJettonArea = ID_PING_JIA;
-			}
-
-			//switch(nType2)
-			//{
-			//case 0:
-			//	{
-			//		nScore = 100;
-			//		break;
-			//	}
-			//case 1:
-			//	{
-			//		nScore = 1000;
-			//		break;
-			//	}
-			//}
-
-			static __int64 JScore[6] = 
-			{
-				1000, 10000, 100000, 500000, 1000000, 5000000
-			};
-
-			__int64 nScore = JScore[rand() % 6];
-		}
-
-		m_JecVec.push_back(tagJetInfo(cbJettonArea, nScore));
-	}
-
-	if (!m_JecVec.empty())
-	{
-		SetTimer(IDI_PLACE_JETTON, rand()%20000+1000, (DWORD)m_JecVec.size());
-	}
+	int nNum = rand() % m_nJettonMaxNum;
+	m_nBeforeJettonScore = m_lMeMaxScore;
+	SetTimer(IDI_PLACE_JETTON, rand()%2000+1000, nNum);
 }
 
 __int64 CBaccarat::GetMaxPlayerScore()
@@ -252,80 +177,111 @@ void CBaccarat::OnTimer(WORD wTimerID)
 				CMD_C_PlaceJetton PlaceJetton;
 				ZeroMemory(&PlaceJetton,sizeof(PlaceJetton));
 
-				if (!m_JecVec.empty())
+				switch(rand()%3)
 				{
-					JecVec::iterator iter = m_JecVec.begin();
-					PlaceJetton.cbJettonArea = (*iter).cbJettonArea;
-					PlaceJetton.lJettonScore = (*iter).lJettonScore;
-					m_JecVec.erase(iter);
-					BOOL bSend=TRUE;
-					switch( PlaceJetton.cbJettonArea )
+				case 0:
+					{
+						PlaceJetton.cbJettonArea = ID_XIAN_JIA;
+						break;
+					}
+				case 1:
+					{
+						PlaceJetton.cbJettonArea = ID_PING_JIA;
+						break;
+					}
+				case 2:
+					{
+						PlaceJetton.cbJettonArea = ID_ZHUANG_JIA;
+						break;
+					}
+				}
+
+				static __int64 JScore[] = 
+				{
+					1000, 10000, 100000, 500000, 1000000, 5000000
+				};
+				int nRand = rand() % 100;
+				__int64 nNowJettonScore = GetNowJettonScore();
+				if (nRand < 40)
+					PlaceJetton.lJettonScore = JScore[0];
+				else if (nRand < 64)
+					PlaceJetton.lJettonScore = JScore[1];
+				else if (nRand < 76)
+					PlaceJetton.lJettonScore = JScore[2];
+				else if (nRand < 86)
+					PlaceJetton.lJettonScore = JScore[3];
+				else if (nRand < 95)
+					PlaceJetton.lJettonScore = JScore[4];
+				else
+					PlaceJetton.lJettonScore = JScore[5];
+
+				BOOL bSend=TRUE;
+				switch( PlaceJetton.cbJettonArea )
+				{
+				case ID_XIAN_JIA:
+					{
+						__int64 lMaxPlayerScore = GetMaxPlayerScore();
+						if ( lMaxPlayerScore < PlaceJetton.lJettonScore )
+							bSend = FALSE ;
+						break;
+					}
+				case ID_PING_JIA:
+					{
+						__int64 lMaxPlayerScore = GetMaxTieScore();
+						if ( lMaxPlayerScore < PlaceJetton.lJettonScore )
+							bSend = FALSE ;
+						break;
+					}
+				case ID_ZHUANG_JIA:
+					{
+						__int64 lMaxPlayerScore = GetMaxBankerScore();
+						if ( lMaxPlayerScore < PlaceJetton.lJettonScore )
+							bSend = FALSE ;
+						break;
+					}
+				}
+
+				if (m_nBeforeJettonScore * 0.1 < nNowJettonScore + PlaceJetton.lJettonScore)
+					bSend = FALSE;
+
+				if(bSend)
+				{
+					switch (PlaceJetton.cbJettonArea)
 					{
 					case ID_XIAN_JIA:
 						{
-							__int64 lMaxPlayerScore = GetMaxPlayerScore();
-							if ( lMaxPlayerScore < PlaceJetton.lJettonScore )
-								bSend = FALSE ;
+							m_lMePlayerScore += PlaceJetton.lJettonScore;
 							break;
 						}
 					case ID_PING_JIA:
 						{
-							__int64 lMaxPlayerScore = GetMaxTieScore();
-							if ( lMaxPlayerScore < PlaceJetton.lJettonScore )
-								bSend = FALSE ;
+							m_lMeTieScore += PlaceJetton.lJettonScore;
 							break;
 						}
 					case ID_ZHUANG_JIA:
 						{
-							__int64 lMaxPlayerScore = GetMaxBankerScore();
-							if ( lMaxPlayerScore < PlaceJetton.lJettonScore )
-								bSend = FALSE ;
+							m_lMeBankerScore += PlaceJetton.lJettonScore;
+							break;
+						}
+					case ID_TONG_DIAN_PING:
+						{
+							m_lMeTieSamePointScore += PlaceJetton.lJettonScore;
+							break;
+						}
+					case ID_XIAN_TIAN_WANG:
+						{
+							m_lMePlayerKingScore += PlaceJetton.lJettonScore;
+							break;
+						}
+					case ID_ZHUANG_TIAN_WANG:
+						{
+							m_lMeBankerKingScore += PlaceJetton.lJettonScore;
 							break;
 						}
 					}
-					if(bSend)
-					{
-						switch (PlaceJetton.cbJettonArea)
-						{
-						case ID_XIAN_JIA:
-							{
-								m_lMePlayerScore += PlaceJetton.lJettonScore;
-								break;
-							}
-						case ID_PING_JIA:
-							{
-								m_lMeTieScore += PlaceJetton.lJettonScore;
-								break;
-							}
-						case ID_ZHUANG_JIA:
-							{
-								m_lMeBankerScore += PlaceJetton.lJettonScore;
-								break;
-							}
-						case ID_TONG_DIAN_PING:
-							{
-								m_lMeTieSamePointScore += PlaceJetton.lJettonScore;
-								break;
-							}
-						case ID_XIAN_TIAN_WANG:
-							{
-								m_lMePlayerKingScore += PlaceJetton.lJettonScore;
-								break;
-							}
-						case ID_ZHUANG_TIAN_WANG:
-							{
-								m_lMeBankerKingScore += PlaceJetton.lJettonScore;
-								break;
-							}
-						}
 
-						SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, &PlaceJetton, sizeof(PlaceJetton));
-					}
+					SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, &PlaceJetton, sizeof(PlaceJetton));
 				}
-			}
-			else
-			{
-				KillTimer(IDI_PLACE_JETTON);
 			}
 			break;
 		}
@@ -545,6 +501,15 @@ bool CBaccarat::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, W
 				return false;
 			}
 
+			if (m_lMeResultCount >= m_nOfflineForWin)
+			{
+				CString strMsg;
+				strMsg.Format("%d 收益超过额定值，自动下线！", m_MeUserInfo.dwUserID);
+				ShowMessageBox(strMsg);
+				EndServer();
+				return false;
+			}
+
 			//状态更新
 			if(m_bMeIsBanker)
 			{
@@ -572,7 +537,7 @@ bool CBaccarat::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, W
 			{
 				if(!m_bMeApplyBanker)
 				{
-					if(m_nBankerTimes>/*(rand()%10+6)*/8)//机器人最多做8次庄
+					if(m_nBankerTimes>m_nMaxBankerCount || m_lBankerScore >= m_nUnBankerForWin)//机器人最多做8次庄
 					{
 						SetTimer(IDI_APPLY_NOT_BANKER, 6000, 1);
 						m_bMeApplyBanker = false;
@@ -681,3 +646,9 @@ bool CBaccarat::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDat
 
 	return false;
 }
+
+__int64 CBaccarat::GetNowJettonScore()
+{
+	return m_lMeTieScore + m_lMeBankerScore + m_lMePlayerScore +m_lMeTieSamePointScore + m_lMeBankerKingScore + m_lMePlayerKingScore;
+}
+

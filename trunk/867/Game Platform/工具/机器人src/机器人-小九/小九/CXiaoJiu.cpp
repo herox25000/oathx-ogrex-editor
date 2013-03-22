@@ -43,6 +43,15 @@ CPaiJiu::CPaiJiu(DWORD dwUserID)
 
 	time_t seed = time(NULL);
 	srand((unsigned)seed);
+
+	TCHAR szINI[512];
+	::GetModulePath(szINI, sizeof(szINI));
+	SafeStrCat(szINI, "\\RM-XiaoJiu.ini", sizeof(szINI));
+	m_nMaxBankerCount = GetPrivateProfileInt("RobotOption", "MaxBankerTime", 6, szINI);
+	m_nUnBankerForWin = GetPrivateProfileInt("RobotOption", "UnBankerForWin", 20000000, szINI);
+	m_nOfflineForWin = GetPrivateProfileInt("RobotOption", "OfflineForWin", 60000000, szINI);
+	m_nJettonMaxNum = GetPrivateProfileInt("RobotOption", "JettonMaxNum", 10, szINI);
+
 }
 
 CPaiJiu::~CPaiJiu()
@@ -82,7 +91,9 @@ void CPaiJiu::ResetGame()
 
 void CPaiJiu::OnPlaceJetton()
 {
-	SetTimer(IDI_PLACE_JETTON, rand()%20000+1000, 1);
+	int nNum = rand() % m_nJettonMaxNum;
+	m_nBeforeJettonScore = m_lMeMaxScore;
+	SetTimer(IDI_PLACE_JETTON, rand()%2000+1000, nNum);
 }
 
 //最大下注
@@ -177,7 +188,7 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 	{
 	case IDI_APPLY_BANKER:
 		{
-			if(m_ApplyBankerVec.size()<4 &&  m_lMeMaxScore >= 5000000&& m_wCurrentBanker == INVALID_CHAIR)
+			if(m_ApplyBankerVec.size()<4 &&  m_lMeMaxScore >= BANK_CONDITION_MONEY && m_wCurrentBanker == INVALID_CHAIR)
 			{
 				m_bMeApplyBanker = true;
 				CMD_C_ApplyBanker ApplyBanker;
@@ -202,6 +213,9 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 		}
 	case IDI_PLACE_JETTON:
 		{	
+			if (m_wCurrentBanker == INVALID_CHAIR)
+				break;
+
 			if(!m_bPlaying)
 			{
 				CMD_C_PlaceJetton PlaceJetton;
@@ -230,31 +244,21 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 				{
 					1000, 10000, 100000, 500000, 1000000, 5000000
 				};
-				
-				PlaceJetton.lJettonScore = JScore[rand() % 6];
-				//switch(rand()%4)
-				//{
-				//case 0:
-				//	{
-				//		PlaceJetton.lJettonScore = 100;
-				//		break;
-				//	}
-				//case 1:
-				//	{
-				//		PlaceJetton.lJettonScore = 1000;
-				//		break;
-				//	}
-				//case 2:
-				//	{
-				//		PlaceJetton.lJettonScore = 10000;
-				//		break;
-				//	}
-				//case 3:
-				//	{
-				//		PlaceJetton.lJettonScore = 100000;
-				//		break;
-				//	}
-				//}
+				int nRand = rand() % 100;
+				__int64 nNowJettonScore = GetNowJettonScore();
+				if (nRand < 40)
+					PlaceJetton.lJettonScore = JScore[0];
+				else if (nRand < 64)
+					PlaceJetton.lJettonScore = JScore[1];
+				else if (nRand < 76)
+					PlaceJetton.lJettonScore = JScore[2];
+				else if (nRand < 86)
+					PlaceJetton.lJettonScore = JScore[3];
+				else if (nRand < 95)
+					PlaceJetton.lJettonScore = JScore[4];
+				else
+					PlaceJetton.lJettonScore = JScore[5];
+
 				BOOL bSend=TRUE;
 				switch( PlaceJetton.cbJettonArea )
 				{
@@ -280,6 +284,12 @@ void CPaiJiu::OnTimer(WORD wTimerID)
 						break;
 					}
 				}
+				float nJettonRate = 0.1f;
+				if (abs((long double)m_nBeforeJettonScore-(long double)m_lBankerTreasure) < 5000000)
+					nJettonRate = 0.3f;
+
+				if (m_nBeforeJettonScore * nJettonRate < nNowJettonScore + PlaceJetton.lJettonScore)
+					bSend = FALSE;
 
 				if(bSend)
 				{
@@ -332,7 +342,7 @@ bool CPaiJiu::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, WOR
 			{
 				if(!m_bMeApplyBanker)
 				{
-					if(m_nBankerTimes>(rand()%10+6))
+					if( m_nBankerTimes > m_nMaxBankerCount  || m_lBankerScore >= m_nUnBankerForWin)
 					{
 						SetTimer(IDI_APPLY_NOT_BANKER, 6000, 1);
 						m_bMeApplyBanker = true;
@@ -463,7 +473,7 @@ bool CPaiJiu::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, WOR
 
 			if(m_bMeIsBanker == false && pChangeBanker->wChairID != INVALID_CHAIR)
 			{
-//				this->OnPlaceJetton();
+				this->OnPlaceJetton();
 			}
 			break;
 		}
@@ -505,6 +515,14 @@ bool CPaiJiu::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, WOR
 			{
 				CString strMsg;
 				strMsg.Format("%d 金钱少于10万，自动下线！", m_MeUserInfo.dwUserID);
+				ShowMessageBox(strMsg);
+				EndServer();
+				return false;
+			}
+			if (m_lMeResultCount >= m_nOfflineForWin && m_wCurrentBanker != m_MeUserInfo.dwUserID)
+			{
+				CString strMsg;
+				strMsg.Format("%d 收益超过额定值，自动下线！", m_MeUserInfo.dwUserID);
 				ShowMessageBox(strMsg);
 				EndServer();
 				return false;
@@ -600,7 +618,6 @@ bool CPaiJiu::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataS
 			m_lBankerScore = pStatusPlay->lBankerKingScore;
 			m_lBankerTreasure = pStatusPlay->lBankerTreasure;
 			//设置变量
-			m_lMeMaxScore=pStatusPlay->lMeMaxScore;
 			m_lMeMaxScore=pStatusPlay->lMeMaxScore ;
 			m_lMeTianMenScore=pStatusPlay->lMeTieScore;
 			m_lMeDaoMenScore=pStatusPlay->lMeBankerScore;
@@ -614,4 +631,9 @@ bool CPaiJiu::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataS
 	}
 
 	return false;
+}
+
+__int64 CPaiJiu::GetNowJettonScore()
+{
+	return m_lMeTianMenScore + m_lMeDaoMenScore + m_lMeShunMenScore +m_lMeQiaoScore + m_lMeYouJiaoScore + m_lMeZuoJiaoScore;
 }
