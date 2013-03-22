@@ -519,6 +519,16 @@ bool CPaiJiu::OnGameMessage(WORD wSubCmdID, const void * pBuffer/* =NULL */, WOR
 				EndServer();
 				return false;
 			}
+
+			if(m_wCurrentBanker == m_MeUserInfo.dwUserID)
+			{
+				if( m_nBankerTimes > m_nMaxBankerCount  || m_lBankerScore >= m_nUnBankerForWin)
+				{
+					SetTimer(IDI_APPLY_NOT_BANKER, 6000, 1);
+					m_bMeApplyBanker = true;
+				}
+			}
+
 			if (m_lMeResultCount >= m_nOfflineForWin && m_wCurrentBanker != m_MeUserInfo.dwUserID)
 			{
 				CString strMsg;
