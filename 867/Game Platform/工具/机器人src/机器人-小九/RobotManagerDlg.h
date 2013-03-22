@@ -54,6 +54,8 @@ public:
 	int								m_nStartID;
 	int								m_nEndID;
 
+	int								m_nRoomMaxRobot;
+
 	CRichEditTrace					m_RichEditTrace;					//事件记录
 
 // 实现

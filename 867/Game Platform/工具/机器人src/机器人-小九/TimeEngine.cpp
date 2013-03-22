@@ -85,7 +85,7 @@ bool CTimerEngine::SetTimer(CGameBase *pGame, WORD wTimerID, DWORD dwElapse, DWO
 	CThreadLock LockHandle(m_CriticalSection);
 
 	//效验参数
-	ASSERT(dwRepeat>0L);
+	//ASSERT(dwRepeat>0L);
 	if (dwRepeat==0) return false;
 	dwElapse=(dwElapse+m_dwTimerSpace-1)/m_dwTimerSpace*m_dwTimerSpace;
 

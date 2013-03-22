@@ -165,6 +165,9 @@ void CRobotManagerDlg::ChangeRobot()
 	m_nEndID = ::GetPrivateProfileInt(strName, "endID", 0, 
 		CString(path)+"\\RM-XiaoJiu.ini");
 
+	m_nRoomMaxRobot = ::GetPrivateProfileInt("RoomOption", "MaxRobotNum", 30, 
+		CString(path)+"\\RM-XiaoJiu.ini");
+
 	m_BaMap.clear();
 
 	Login();	
@@ -201,6 +204,8 @@ BOOL CRobotManagerDlg::Find(DWORD dwID)
 
 void CRobotManagerDlg::Login()
 {
+	if (m_nRoomMaxRobot <= m_BaVec.size())
+		return;
 	if(m_nStartID>0 && m_nEndID>0 && m_nEndID>=m_nStartID)
 	{
 		m_TimerEngine.BeginService();

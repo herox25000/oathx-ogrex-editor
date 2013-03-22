@@ -65,6 +65,15 @@ protected:
 	bool							m_bMeIsBanker;						//自己是不是庄家
 	int								m_nBankerTimes;						//坐庄次数
 	JecVec							m_JecVec;							//下注信息
+
+protected:
+	int								m_nMaxBankerCount;					//最大坐庄次数
+	__int64							m_nUnBankerForWin;					//赢了多少自动下庄
+	__int64							m_nOfflineForWin;					//赢了多少自动离线
+	int								m_nJettonMaxNum;					//最多下注次数
+
+	__int64							m_nBeforeJettonScore;				//下注前金额
+
 private:
 	//游戏状态
 	virtual bool OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataSize);
@@ -82,4 +91,6 @@ private:
 	__int64 GetMaxTieScore();
 
 	__int64 GetMaxBankerScore();
+
+	__int64 GetNowJettonScore();
 };
