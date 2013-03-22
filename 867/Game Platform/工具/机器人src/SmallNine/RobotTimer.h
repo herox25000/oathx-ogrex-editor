@@ -29,6 +29,11 @@ public:
 
 		return Min+(gnSeed >> 16) * (1.0f / 65535.0f) * (Max-Min);
 	}
+
+	static DWORD			rdit(DWORD dwMin, DWORD dwMax)
+	{
+		return rand() % (dwMax - dwMin) + dwMin;
+	}
 public:
 	RobotTimer(void);
 	virtual ~RobotTimer(void);

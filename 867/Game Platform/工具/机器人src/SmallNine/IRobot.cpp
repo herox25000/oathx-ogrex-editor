@@ -1,20 +1,22 @@
 #include "StdAfx.h"
 #include ".\irobot.h"
 
-IRobot::IRobot(DWORD dwUserID) : m_dwUserID(dwUserID), m_pAppUser(NULL), m_pRoomManager(NULL), m_pGameManager(NULL), m_bSitState(FALSE)
+IRobot::IRobot(DWORD dwUserID) : m_dwUserID(dwUserID), m_pAppUser(NULL), m_pGameManager(NULL), m_fReqSitDownTime(0)
 {
-	m_pRoomManager	= new UserManager();
 	m_pGameManager	= new UserManager();
 
 	m_pAppUser		= new SUserInfo();
 	m_pAppUser->dwUserID = dwUserID;
 	m_bGameStatus	= 0;
+	m_wReconnect	= 0;
+	m_wState		= ROBOT_CREATE;
 }
 
 IRobot::~IRobot(void)
 {
-	delete m_pRoomManager;
-	m_pRoomManager = NULL;
+	CString szMessage;
+	szMessage.Format("delete robot [%d]", m_dwUserID);
+	ShowMessageBox(szMessage);
 
 	delete m_pGameManager;
 	m_pGameManager = NULL;
@@ -23,6 +25,21 @@ IRobot::~IRobot(void)
 DWORD			IRobot::GetUserID() const
 {
 	return m_dwUserID;
+}
+
+WORD			IRobot::GetReconnect() const
+{
+	return m_wReconnect;
+}
+
+void			IRobot::SetReqSitDownTime(double fTime)
+{
+	m_fReqSitDownTime = fTime;
+}
+
+double			IRobot::GetReqSitDownTime() const
+{
+	return m_fReqSitDownTime;
 }
 
 //网卡地址
@@ -151,21 +168,28 @@ BOOL			IRobot::Start(const CString& szIPAdress, WORD wPort, const CString& szPwd
 	if (!m_ClientSocket->SetTCPSocketSink(pIUnknown))
 		return false;
 
-	m_szPwd = szPwd;
+	DWORD dwResult = m_ClientSocket->Connect(szIPAdress, wPort);
+	if (!dwResult)
+	{
+		CString szMessage;
+		szMessage.Format("robot[%d] connect to server", m_dwUserID);
+		CTraceService::TraceString(szMessage,
+			TraceLevel_Normal);
 
-	m_ClientSocket->Connect(szIPAdress, wPort);
+		m_szPwd = szPwd;
+	}
 
 	return TRUE;
 }
 
 void			IRobot::ShowMessageBox(const CString& szMessage)
 {
-
+	CTraceService::TraceString(szMessage, TraceLevel_Normal);
 }
 
-BOOL			IRobot::Update(float fElapsed)
+void			IRobot::OnUpdate(float fElapsed)
 {
-	return 0;
+	
 }
 
 void			IRobot::SitDown()
@@ -179,6 +203,12 @@ void			IRobot::SitDown()
 	//发送数据包
 	WORD wSendSize=sizeof(UserSitReq)-sizeof(UserSitReq.szTablePass)+UserSitReq.cbPassLen;
 	m_ClientSocket->SendData(MDM_GR_USER,SUB_GR_USER_SIT_REQ,&UserSitReq,wSendSize);
+
+	m_wReconnect ++;
+	CString szMessage;
+	szMessage.Format("robot[%d] sit down request count %d ", m_dwUserID, m_wReconnect);
+	CTraceService::TraceString(szMessage,
+		TraceLevel_Normal);
 
 	//获取场景
 	CMD_GF_Info Info;
@@ -196,31 +226,17 @@ void			IRobot::AddGameUser(SUserInfo* pUserInfo)
 		tagUserInfo *pGameUserInfo = new tagUserInfo;
 		memcpy(pGameUserInfo, pUserInfo, 
 			sizeof(tagUserInfo));
+
+		m_pGameManager->AddUser(pGameUserInfo);
 	}
 }
 
 void			IRobot::SetUserStatus(DWORD dwUserID, BYTE cbUserStatus)
 {
-	if (cbUserStatus < US_SIT)
+	tagUserInfo *pUserInfo = m_pGameManager->Search(dwUserID);
+	if(pUserInfo)
 	{
-		if (dwUserID == m_dwUserID)
-		{
-			m_pGameManager->ClearUp();
-			
-			ResetGame();
-		}
-		else 
-		{
-			m_pGameManager->Remove(dwUserID);
-		}
-	}
-	else
-	{
-		tagUserInfo *pUserInfo = m_pGameManager->Search(dwUserID);
-		if(pUserInfo)
-		{
-			pUserInfo->cbUserStatus = cbUserStatus;
-		}
+		pUserInfo->cbUserStatus = cbUserStatus;
 	}
 }
 
@@ -229,9 +245,14 @@ void			IRobot::ResetGame()
 
 }
 
-BOOL			IRobot::GetSitState() const
+WORD			IRobot::GetState() const
 {
-	return m_bSitState;
+	return m_wState;
+}
+
+void			IRobot::SetState(WORD wState)
+{
+	m_wState = wState;
 }
 
 void			IRobot::Stop()
@@ -245,7 +266,7 @@ void			IRobot::Stop()
 
 		m_ClientSocket->SendData(MDM_GR_USER, 
 			SUB_GR_USER_STANDUP_REQ);
-		
+
 		m_ClientSocket->CloseSocket();
 	}
 }
@@ -256,7 +277,7 @@ bool __cdecl	IRobot::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 
 	if ( nErrorCode != 0)
 	{
-		szError.Format("连接房间失败，错误ID%d",nErrorCode);
+		szError.Format("Connect room failed, error coid  %d",nErrorCode);
 		ShowMessageBox(szError);
 
 		return 0;
@@ -282,7 +303,7 @@ bool __cdecl	IRobot::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 	Packet.AddPacket(&ClientSerial,sizeof(ClientSerial),DTP_COMPUTER_ID);
 	m_ClientSocket->SendData(MDM_GR_LOGON,SUB_GR_LOGON_USERID,cbBuffer,sizeof(CMD_GR_LogonByUserID)+Packet.GetDataSize());
 
-	szError.Format("机器人用户(UserID)[%i], 开始连接到游戏！", (int)m_dwUserID);
+	szError.Format("Robot(UserID)[%i], Start connect to game", (int)m_dwUserID);
 	ShowMessageBox(szError);
 
 	return true;
@@ -294,17 +315,19 @@ bool __cdecl	IRobot::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutReason)
 	{
 		if ((cbShutReason==SHUT_REASON_REMOTE)||(cbShutReason==SHUT_REASON_TIME_OUT))
 		{
-			ShowMessageBox("由于网络问题，您已经与服务器断开连接，请重新连接");
+			ShowMessageBox("Net Error, Is disconnected");
 		}
 		else
 		{
-			ShowMessageBox("由于网络数据包处理失败，网络中断了");
+			ShowMessageBox("Data packet proc error");
 		}
 	}
 	else
 	{
-		ShowMessageBox("网络连接断开");
+		ShowMessageBox("Is disconnected");
 	}
+
+	SetState(ROBOT_INVALID);
 
 	return true;
 }
@@ -354,7 +377,7 @@ bool			IRobot::OnSocketMainLogon(CMD_Command Command, void* pBuffer, WORD wDataS
 	case SUB_GR_LOGON_SUCCESS:
 		{
 			CString szMessage;
-			szMessage.Format("机器人用户(UserID)[%i], 成功连接到游戏，准备进入游戏桌子！", (int)m_dwUserID);
+			szMessage.Format("Robot(UserID)[%i], Check In Game", (int)m_dwUserID);
 			ShowMessageBox(szMessage);
 
 			SitDown();
@@ -379,6 +402,8 @@ bool			IRobot::OnSocketMainLogon(CMD_Command Command, void* pBuffer, WORD wDataS
 				pLogonError->szErrorDescribe[wDescribeSize-1]=0;
 				ShowMessageBox(pLogonError->szErrorDescribe);
 			}
+
+			SetState(ROBOT_INVALID);
 		}
 		break;
 
@@ -418,7 +443,7 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			//读取基本信息
 			tagUserInfoHead* pUserInfoHead = (tagUserInfoHead *)(pBuffer);
 
-			SUserInfo* pUserInfo = m_pRoomManager->Search(pUserInfoHead->dwUserID);
+			SUserInfo* pUserInfo = m_pGameManager->Search(pUserInfoHead->dwUserID);
 			if (pUserInfo)
 			{
 				pUserInfo->lScore = pUserInfoHead->UserScoreInfo.lScore;
@@ -455,13 +480,15 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 						}
 					}
 				}
-
-				m_pRoomManager->AddUser(pUserInfo);
 				
-				if(pUserInfoHead->dwUserID == m_dwUserID)
+				// 保存自己的信息
+				if (m_dwUserID == pUserInfo->dwUserID)
 				{
 					memcpy(m_pAppUser, pUserInfo, sizeof(SUserInfo));
 				}
+				
+				// 添加到用户管理器
+				m_pGameManager->AddUser(pUserInfo);
 			}
 		}
 		break;
@@ -470,97 +497,49 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 		{
 			if (wDataSize<sizeof(CMD_GR_UserStatus)) 
 				return 0;
-
 			//处理数据
 			CMD_GR_UserStatus* pUserStatus  = (CMD_GR_UserStatus *)pBuffer;
-			tagUserInfo* pUserInfo			= m_pRoomManager->Search(pUserStatus->dwUserID);
-			if (pUserInfo == NULL) 
+			tagUserInfo* pUserInfo			= m_pGameManager->Search(pUserStatus->dwUserID);
+			if (pUserInfo == NULL)
 				return true;
 
 			WORD wNowTableID	=	pUserStatus->wTableID;
-			WORD wLastTableID	=	pUserInfo->wTableID;
-			WORD wNowChairID	=	pUserStatus->wChairID;
-			WORD wLastChairID	=	pUserInfo->wChairID;
 			BYTE cbNowStatus	=	pUserStatus->cbUserStatus;
+			WORD wNowChairID	=	pUserStatus->wChairID;
+
+			WORD wLastTableID	=	pUserInfo->wTableID;			
 			BYTE cbLastStatus	=	pUserInfo->cbUserStatus;
-
-			//用户离开
-			if (pUserStatus->cbUserStatus == US_NULL)
+			WORD wLastChairID	=	pUserInfo->wChairID;
+			
+			if (pUserStatus->cbUserStatus == US_NULL || pUserStatus->cbUserStatus == US_OFFLINE)
 			{
-				if(m_pAppUser->wTableID != INVALID_TABLE && m_pAppUser->wChairID == wLastChairID)
-				{
-					SetUserStatus(pUserInfo->dwUserID, pUserInfo->cbUserStatus);
-				}
-
-				m_pRoomManager->Remove(pUserStatus->dwUserID);
+				SetState(ROBOT_INVALID);
 				
-				if(pUserStatus->dwUserID == m_dwUserID)
-				{
-					CString szMessage;
-					szMessage.Format("%i 离开游戏！", (int)m_dwUserID);
-					ShowMessageBox(szMessage);
-				}
+				// 移除该机器人
+				m_pGameManager->Remove(pUserStatus->dwUserID);
 			}
 			else
 			{
-				////更新状态
+				//更新状态
 				pUserInfo->wTableID		= wNowTableID;
 				pUserInfo->wChairID		= wNowChairID;
 				pUserInfo->cbUserStatus = cbNowStatus;
 
-				//设置新状态
-				if ((wNowTableID != INVALID_TABLE)&&((wNowTableID != wLastTableID)||(wNowChairID != wLastChairID)))
+				if (pUserStatus->cbUserStatus == US_SIT && pUserStatus->dwUserID == m_dwUserID 
+					&& wNowTableID != INVALID_TABLE && ((wNowTableID!=wLastTableID) || (wNowChairID!=wLastChairID)))
 				{
-					//发送用户
-					if ((pUserInfo->dwUserID != m_dwUserID) && (m_pAppUser->wTableID==wNowTableID))
-					{
-						AddGameUser(pUserInfo);
-					}
-				}
+					// 更新当前保存信息
+					memcpy(m_pAppUser, 
+						pUserInfo, sizeof(SUserInfo));
 
-				//判断发送
-				bool bNotifyGame = 0;
-				if (pUserInfo->dwUserID == m_pAppUser->dwUserID) 
-					bNotifyGame = true;
-				else if ((m_pAppUser->wTableID!=INVALID_TABLE)&&(m_pAppUser->wTableID==wNowTableID)) 
-					bNotifyGame = true;
-				else if ((m_pAppUser->wTableID!=INVALID_TABLE)&&(m_pAppUser->wTableID==wLastTableID)) 
-					bNotifyGame = true;
+					// 设置为坐下状态
+					SetState(ROBOT_SITDOWN);
 
-				//发送状态
-				if (bNotifyGame)
-				{
-					SetUserStatus(pUserInfo->dwUserID, pUserInfo->cbUserStatus);
-				}
+					CString szMessage;
+					szMessage.Format("Robot[%i], sit down ok", 
+						(int)m_dwUserID);
 
-				if(pUserStatus->dwUserID == m_dwUserID)
-				{
-					memcpy(m_pAppUser, pUserInfo, sizeof(SUserInfo));
-
-					//启动游戏
-					if ((wNowTableID!=INVALID_TABLE) && ((wNowTableID!=wLastTableID) || (wNowChairID!=wLastChairID)))
-					{
-						AddGameUser(m_pAppUser);
-
-						//InsertTableUser(&m_MeUserInfo);
-						//for(UserVec::size_type st = 0; st<m_RoomUserManager.GetSize();++st)
-						//{
-						//	tagUserInfo *pUserInfo = m_RoomUserManager.GetIndex(st);
-						//	if((pUserInfo->dwUserID != m_MeUserInfo.dwUserID)&&
-						//		pUserInfo->wTableID == m_MeUserInfo.wTableID)
-						//	{
-						//		InsertTableUser(pUserInfo);
-						//	}
-						//}
-
-						CString szMessage;
-						szMessage.Format("机器人用户(UserID)[%i], 进入游戏桌子成功！开始进行游戏操作！", 
-							(int)m_dwUserID);
-
-						ShowMessageBox(szMessage);
-	
-						m_bSitState = TRUE;
-					}
+					ShowMessageBox(szMessage);	
 				}
 			}
 		}
@@ -573,12 +552,6 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 
 			//处理数据
 			CMD_GR_UserScore* pUserScore = (CMD_GR_UserScore *)pBuffer;
-			tagUserInfo* pRoomUser		 = m_pRoomManager->Search(pUserScore->dwUserID);
-			if (pRoomUser) 
-			{
-				pRoomUser->lScore = pUserScore->UserScore.lScore;
-			}
-
 			tagUserInfo* pGameUser		 = m_pGameManager->Search(pUserScore->dwUserID);
 			if (pGameUser) 
 			{
@@ -593,7 +566,7 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			CMD_GR_SitFailed* pSitFailed = (CMD_GR_SitFailed *)pBuffer;
 
 			CString szMessage;
-			szMessage.Format("%i 进入游戏桌子失败：%s, 5秒后自动重试！", (int)m_dwUserID, pSitFailed->szFailedDescribe);
+			szMessage.Format("[%i] %s, 5 ms Reconnect", (int)m_dwUserID, pSitFailed->szFailedDescribe);
 			ShowMessageBox(szMessage);
 		}
 		break;

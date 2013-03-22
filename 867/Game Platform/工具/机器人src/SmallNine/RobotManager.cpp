@@ -20,7 +20,7 @@ RobotManager::~RobotManager(void)
 	}
 }
 
-BOOL			RobotManager::AddRobot(IRobot* pRobot)
+BOOL					RobotManager::AddRobot(IRobot* pRobot)
 {
 	RobotRegister::iterator it = m_RobotRegister.find(pRobot->GetUserID());
 	if ( it == m_RobotRegister.end() )
@@ -34,7 +34,7 @@ BOOL			RobotManager::AddRobot(IRobot* pRobot)
 	return FALSE;
 }
 
-IRobot*			RobotManager::Search(DWORD dwUserID)
+IRobot*					RobotManager::Search(DWORD dwUserID)
 {
 	RobotRegister::iterator it = m_RobotRegister.find(dwUserID);
 	if ( it != m_RobotRegister.end() )
@@ -45,17 +45,88 @@ IRobot*			RobotManager::Search(DWORD dwUserID)
 	return NULL;
 }
 
-int				RobotManager::GetRobotCount() const
+int						RobotManager::GetRobotCount() const
 {
 	return m_RobotRegister.size();
 }
 
-void			RobotManager::Update(float fElapsed)
+void					RobotManager::Update(float fElapsed)
 {
+	RobotRegister::iterator it = m_RobotRegister.begin();
+	while ( it != m_RobotRegister.end() )
+	{
+		WORD wState = it->second->GetState();
+		switch (wState)
+		{
+		case ROBOT_SITDOWN:
+			{
+				// 更新当前进入游戏的机器人
+				it->second->OnUpdate(fElapsed);
 
+				// 移除重连对象
+				RemoveReconnect(
+					it->second);
+			}
+			break;
+
+		case ROBOT_INVALID:
+			{
+				// 优先移除重连对象
+				RemoveReconnect(
+					it->second
+					);
+
+				it->second->Stop(); it->second->Release(); it = m_RobotRegister.erase(it);
+			}
+			break;
+
+		default:
+			{
+				AddReconnect(it->second);
+			}
+			break;
+		}
+
+		++ it;
+	}
 }
 
-void			RobotManager::DestroyRobot(DWORD dwUserID)
+void					RobotManager::AddReconnect(IRobot* pRobot)
+{
+	RobotRegister::iterator it = m_Reconnect.find(pRobot->GetUserID());
+	if ( it == m_Reconnect.end() )
+	{
+		m_Reconnect.insert(
+			RobotRegister::value_type(pRobot->GetUserID(), pRobot)
+			);
+	}
+}
+
+void					RobotManager::RemoveReconnect(IRobot* pRobot)
+{
+	if (m_Reconnect.size() > 0)
+	{
+		RobotRegister::iterator it = m_Reconnect.find(pRobot->GetUserID());
+		if ( it != m_Reconnect.end() )
+		{
+			m_Reconnect.erase(it);
+		}
+	}
+}
+
+void					RobotManager::Reconnect(const CString& ipAddress, WORD wPort, const CString& md5)
+{
+	if (m_Reconnect.size() > 0)
+	{
+		RobotRegister::iterator it = m_Reconnect.begin();
+		if( it != m_Reconnect.end() )
+		{
+			it->second->SitDown();
+		}
+	}
+}
+
+void					RobotManager::DestroyRobot(DWORD dwUserID)
 {
 	RobotRegister::iterator it = m_RobotRegister.find(dwUserID);
 	if ( it != m_RobotRegister.end() )
@@ -64,7 +135,7 @@ void			RobotManager::DestroyRobot(DWORD dwUserID)
 	}
 }
 
-void			RobotManager::RegisterRobotFactory(IRobotFactory* pFactory)
+void					RobotManager::RegisterRobotFactory(IRobotFactory* pFactory)
 {
 	RobotFactoryRegister::iterator it = m_RobotFactoryRegister.find(pFactory->GetTypeName());
 	if ( it == m_RobotFactoryRegister.end() )
@@ -75,7 +146,7 @@ void			RobotManager::RegisterRobotFactory(IRobotFactory* pFactory)
 	}
 }
 
-IRobotFactory*	RobotManager::GetRobotFactory(const CString& szName)
+IRobotFactory*			RobotManager::GetRobotFactory(const CString& szName)
 {
 	RobotFactoryRegister::iterator it = m_RobotFactoryRegister.find(szName);
 	if (it != m_RobotFactoryRegister.end() )
@@ -86,11 +157,21 @@ IRobotFactory*	RobotManager::GetRobotFactory(const CString& szName)
 	return NULL;
 }
 
-void			RobotManager::UnregisterRobotFactory(const CString& szName)
+void					RobotManager::UnregisterRobotFactory(const CString& szName)
 {
 	RobotFactoryRegister::iterator it = m_RobotFactoryRegister.find(szName);
 	if (it != m_RobotFactoryRegister.end() )
 	{
 		delete it->second; m_RobotFactoryRegister.erase(it);
 	}
+}
+
+void					RobotManager::SetBankerConfig(const SBankerConfig& cfg)
+{
+	memcpy(&m_BankerConfig, &cfg, sizeof(SBankerConfig));
+}
+
+const SBankerConfig&	RobotManager::GetBankerConfig() const
+{
+	return m_BankerConfig;
 }
