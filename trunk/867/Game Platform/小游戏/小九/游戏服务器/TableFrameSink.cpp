@@ -232,7 +232,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				if (pIServerUserItem) 
 				{
 					//积分判断
-					if ( pIServerUserItem->GetUserScore()->lScore < m_lApplyBankerCondition )
+					if ( pIServerUserItem->GetUserScore()->lScore < m_lApplyBankerCondition || m_cbBankerTimer >= 20 )
 					{
 						//玩家下庄
 						OnUserApplyBanker( pIServerUserItem->GetUserData(), false );
@@ -266,6 +266,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				//设置变量
 				m_pITableFrame->WriteUserScore(pIServerUserItem, -allZhu, 0, enScoreKind_Flee);
 			}
+
 			return true;
 		}
 	}
@@ -550,7 +551,6 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 		{
 			OnEventGameEnd( wChairID, pIServerUserItem, GER_USER_LEFT);
 		}
-
 		//存在判断
 		for ( INT_PTR nUserIdx = 0; nUserIdx < m_ApplyUserArrary.GetCount(); ++nUserIdx )
 		{
@@ -578,7 +578,6 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 					ZeroMemory( &m_CurrentBanker, sizeof( m_CurrentBanker ) );
 					m_cbBankerTimer=0;
 					m_lBankerWinScore=0;
-
 					//发送消息
 					SendChangeBankerMsg();
 				}

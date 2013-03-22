@@ -138,10 +138,20 @@ BYTE CGameLogic::GetMaxColor(BYTE bCardList[])
 stCardType CGameLogic::GetCardLevel(BYTE bCardList[])//两张牌
 {
 	stCardType sCardType;
-	if(GetCardValue(bCardList[0]) == GetCardValue(bCardList[1]))//对子
+	BYTE nFirstValue = GetCardValue(bCardList[0]);
+	BYTE nSecondValue = GetCardValue(bCardList[1]);
+	if( nFirstValue == nSecondValue )//对子
 	{
 		sCardType.nCardType=CT_DOUBLE;
-		sCardType.nLevel=0;
+		switch (nFirstValue)
+		{
+		case 1:
+			sCardType.nLevel=0;
+			break;
+		default:
+			sCardType.nLevel = 11 - nFirstValue;
+			break;
+		}
 		return sCardType;
 	}
 	sCardType.nCardType=CT_SINGLE;
@@ -250,17 +260,32 @@ bool CGameLogic::CompareCard(BYTE bFirstList[], BYTE bNextList[], BYTE bCardCoun
 	//牌型一样
 	if(sFirstCard.nCardType==sNextCard.nCardType)
 	{
-		BYTE FirstTotalValue=(GetCardLogicValue(bFirstList[0])+GetCardLogicValue(bFirstList[1]))%10;
-		BYTE NextTotalValue=(GetCardLogicValue(bNextList[0])+GetCardLogicValue(bNextList[1]))%10;
-		//同点
-		if(FirstTotalValue==NextTotalValue) 
+		if (sFirstCard.nCardType == CT_DOUBLE)
 		{
-			bTongdian = true;
-			return true;
+			if (sFirstCard.nLevel == sFirstCard.nLevel)
+			{
+				bTongdian = true;
+				return true;
+			}
+			else
+			{
+				return sFirstCard.nLevel < sNextCard.nLevel ? true: false;
+			}
 		}
-		else 
+		else
 		{
-			return FirstTotalValue>NextTotalValue;
+			BYTE FirstTotalValue=(GetCardLogicValue(bFirstList[0])+GetCardLogicValue(bFirstList[1]))%10;
+			BYTE NextTotalValue=(GetCardLogicValue(bNextList[0])+GetCardLogicValue(bNextList[1]))%10;
+			//同点
+			if(FirstTotalValue==NextTotalValue) 
+			{
+				bTongdian = true;
+				return true;
+			}
+			else 
+			{
+				return FirstTotalValue>NextTotalValue;
+			}
 		}
 	}
 	else
