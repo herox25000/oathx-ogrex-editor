@@ -156,7 +156,7 @@ public:
 	//工具接口
 public:	
 	//转账
-	virtual bool __cdecl TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwUserID_IN, __int64 lMoney);
+	virtual bool __cdecl TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwGameID_IN, __int64 lMoney);
 	//查询自己的转账记录
 	virtual bool __cdecl QueryTransferLog(IServerUserItem * pIServerUserItem);
 	//充值

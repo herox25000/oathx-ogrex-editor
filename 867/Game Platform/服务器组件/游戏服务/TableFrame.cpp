@@ -2128,9 +2128,10 @@ WORD __cdecl CTableFrame::GetNowPlayerCount()
 }
 
 //转账
-bool __cdecl CTableFrame::TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwUserID_IN, __int64 lMoney)
+bool __cdecl CTableFrame::TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwGameID_IN, __int64 lMoney)
 {
-	DWORD dwUserID=pIServerUserItem->GetUserID();
+	if(pIServerUserItem==NULL)
+	return false;
 
 	__int64 sfTax=lMoney/100;
 	if ( sfTax<1 )
@@ -2142,8 +2143,8 @@ bool __cdecl CTableFrame::TransferMoney(IServerUserItem * pIServerUserItem, TCHA
 	//写入积分
 	DBR_GR_TransferMoney dbr;
 	memset(&dbr,0,sizeof(DBR_GR_TransferMoney));
-	dbr.dwUserID=dwUserID;
-	dbr.dwUserID_IN=dwUserID_IN;
+	dbr.dwUserID=pIServerUserItem->GetUserID();
+	dbr.dwGameID_IN=dwGameID_IN;
 	CopyMemory(dbr.szAccount_In, szAccount, sizeof(dbr.szAccount_In));
 	CopyMemory(dbr.szAccount_Out, pIServerUserItem->GetAccounts(), sizeof(dbr.szAccount_Out));
 	dbr.dwClientIP=pIServerUserItem->GetClientIP();
@@ -2156,6 +2157,8 @@ bool __cdecl CTableFrame::TransferMoney(IServerUserItem * pIServerUserItem, TCHA
 //查询自己的转账记录
 bool __cdecl CTableFrame::QueryTransferLog(IServerUserItem * pIServerUserItem)
 {
+	if(pIServerUserItem==NULL)
+		return false;
 	DBR_GR_Query_Transfer_Log dbr;
 	memset(&dbr,0,sizeof(DBR_GR_Query_Transfer_Log));
 	dbr.dwUserID=pIServerUserItem->GetUserID();

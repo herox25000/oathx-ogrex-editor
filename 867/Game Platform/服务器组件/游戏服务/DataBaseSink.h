@@ -324,8 +324,8 @@ struct DBR_GR_User_Round_Score
 //转账
 struct DBR_GR_TransferMoney
 {
-	DWORD								dwUserID;						//转出用户 I D
-	DWORD								dwUserID_IN;					//转入的用户 I D
+	DWORD								dwUserID;					//转出用户 I D
+	DWORD								dwGameID_IN;					//转入的用户 I D
 	DWORD								dwClientIP;						//转出的用户IP
 	TCHAR								szAccount_Out[NAME_LEN];		//自己的账户名
 	TCHAR								szAccount_In[NAME_LEN];			//对方的账户名

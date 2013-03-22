@@ -1336,7 +1336,7 @@ bool CDataBaseSink::OnRequestTransferMoney(DWORD dwContextID, VOID * pData, WORD
 		m_GameScoreDBModule->ClearParameters();
 		m_GameScoreDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
 		m_GameScoreDBModule->AddParameter(TEXT("@dwUserID_Out"),adInteger,adParamInput,sizeof(long),_variant_t((long)pTransferMoney->dwUserID));
-		m_GameScoreDBModule->AddParameter(TEXT("@dwUserID_In"),adInteger,adParamInput,sizeof(long),_variant_t((long)pTransferMoney->dwUserID_IN));
+		m_GameScoreDBModule->AddParameter(TEXT("@dwGameID_In"),adInteger,adParamInput,sizeof(long),_variant_t((long)pTransferMoney->dwGameID_IN));
 		m_GameScoreDBModule->AddParameter(TEXT("@Account_Out"),adVarChar, adParamInput,lstrlen(pTransferMoney->szAccount_Out),_variant_t(pTransferMoney->szAccount_Out));
 		m_GameScoreDBModule->AddParameter(TEXT("@Account_In"),adVarChar,adParamInput, lstrlen(pTransferMoney->szAccount_In),_variant_t(pTransferMoney->szAccount_In));
 		m_GameScoreDBModule->AddParameter(TEXT("@MoneyNumber"),adBigInt,adParamInput,sizeof(__int64),_variant_t(pTransferMoney->sfMoneyNumber));
