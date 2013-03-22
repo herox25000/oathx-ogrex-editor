@@ -16,6 +16,7 @@ typedef struct tagBankerConfig
 	WORD							nFiveMillionRate;
 	WORD							nOneMillionRate;
 	WORD							nFiveLakhRate;
+	WORD							nTenLakhRate;
 
 }SBankerConfig;
 

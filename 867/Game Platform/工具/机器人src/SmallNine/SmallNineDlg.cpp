@@ -79,6 +79,9 @@ BEGIN_MESSAGE_MAP(CSmallNineDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT14, OnEnChangeEdit14)
 	ON_EN_CHANGE(IDC_EDIT15, OnEnChangeEdit15)
 	ON_EN_CHANGE(IDC_EDIT16, OnEnChangeEdit16)
+	ON_EN_CHANGE(IDC_EDIT5, OnEnChangeEdit5)
+	ON_EN_CHANGE(IDC_EDIT4, OnEnChangeEdit4)
+	ON_EN_CHANGE(IDC_EDIT17, OnEnChangeEdit17)
 END_MESSAGE_MAP()
 
 
@@ -113,15 +116,16 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT7,	"1");
 	SetDlgItemText(IDC_EDIT8,	"1");
 
-	SetDlgItemText(IDC_EDIT9,	"2");
-	SetDlgItemText(IDC_EDIT10,	"0.5");
+	SetDlgItemText(IDC_EDIT9,	"5");
+	SetDlgItemText(IDC_EDIT10,	"1");
 	SetDlgItemText(IDC_EDIT11,	"30000000");
 	SetDlgItemText(IDC_EDIT12,	"10000000");
 
-	SetDlgItemText(IDC_EDIT13,	"2");
-	SetDlgItemText(IDC_EDIT14,	"10");
-	SetDlgItemText(IDC_EDIT15,	"20");
-	SetDlgItemText(IDC_EDIT16,	"40");
+	SetDlgItemText(IDC_EDIT13,	"1");
+	SetDlgItemText(IDC_EDIT14,	"2");
+	SetDlgItemText(IDC_EDIT15,	"3");
+	SetDlgItemText(IDC_EDIT16,	"5");
+	SetDlgItemText(IDC_EDIT17,	"10");
 
 	return TRUE;
 }
@@ -235,6 +239,10 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 			
 			if (nCount)
 			{
+				CString szMessage;
+				szMessage.Format("%d", nCount);
+				SetDlgItemText(IDC_STATIC_COUNT, szMessage);
+
 				RobotManager::GetSingleton().Update(fElapsed);
 			}
 
@@ -287,6 +295,8 @@ void CSmallNineDlg::OnBnClickedOk()
 		m_AppConfig.nOneMillionRate	= atoi(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT16, buffer);
 		m_AppConfig.nFiveLakhRate	= atoi(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT17, buffer);
+		m_AppConfig.nTenLakhRate	= atoi(buffer.GetBuffer());	
 
 		RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 
@@ -307,6 +317,20 @@ void CSmallNineDlg::OnBnClickedCancel()
 	KillTimer(IDT_TIMER_UPDATE);
 
 	OnCancel();
+}
+
+void CSmallNineDlg::OnEnChangeEdit4()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT4, buffer);
+	m_dwStartID = atoi(buffer.GetBuffer());
+}
+
+void CSmallNineDlg::OnEnChangeEdit5()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT5, buffer);
+	m_dwEndID = atoi(buffer.GetBuffer());
 }
 
 void CSmallNineDlg::OnEnChangeEdit6()
@@ -397,3 +421,14 @@ void CSmallNineDlg::OnEnChangeEdit16()
 	m_AppConfig.nFiveLakhRate	= atoi(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
+
+void CSmallNineDlg::OnEnChangeEdit17()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT17, buffer);
+	m_AppConfig.nTenLakhRate	= atoi(buffer.GetBuffer());	
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+
+
