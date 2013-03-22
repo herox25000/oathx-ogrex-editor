@@ -1,9 +1,11 @@
 #include "StdAfx.h"
 #include ".\bankermanager.h"
+#include "RobotTimer.h"
+#include <algorithm>
 
-BankerManager::BankerManager(void) : m_pUserManager(NULL)
+BankerManager::BankerManager(void) : m_pUserManager(NULL), m_bLockBanker(FALSE)
 {
-	m_pUserManager = new UserManager();
+	m_pUserManager	= new UserManager();
 }
 
 BankerManager::~BankerManager(void)
@@ -28,4 +30,19 @@ void		BankerManager::Remove(DWORD dwUserID)
 SUserInfo*	BankerManager::Search(DWORD dwUserID)
 {
 	return m_pUserManager->Search(dwUserID);
+}
+
+void		BankerManager::Lock()
+{
+	m_bLockBanker = TRUE;
+}
+
+BOOL		BankerManager::IsLock() const
+{
+	return m_bLockBanker;
+}
+
+void		BankerManager::Unlock()
+{
+	m_bLockBanker = FALSE;
 }

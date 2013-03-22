@@ -18,6 +18,9 @@ IRobot::~IRobot(void)
 	szMessage.Format("delete robot [%d]", m_dwUserID);
 	ShowMessageBox(szMessage);
 
+	delete m_pAppUser;
+	m_pAppUser = NULL;
+
 	delete m_pGameManager;
 	m_pGameManager = NULL;
 }

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UserManager.h"
+#include <deque>
 
 class BankerManager
 {
@@ -10,7 +11,6 @@ public:
 		static BankerManager instance;
 		return instance;
 	}
-
 public:
 	BankerManager(void);
 	virtual ~BankerManager(void);
@@ -20,6 +20,11 @@ public:
 	virtual void				Remove(DWORD dwUserID);
 	virtual	SUserInfo*			Search(DWORD dwUserID);
 
+	virtual	void				Lock();
+	virtual BOOL				IsLock() const;
+	virtual	void				Unlock();
 protected:
 	UserManager*				m_pUserManager;
+	BOOL						m_bLockBanker;
+
 };

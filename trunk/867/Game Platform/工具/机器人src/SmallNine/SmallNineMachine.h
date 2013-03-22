@@ -1,12 +1,12 @@
 #pragma once
 
 #include "IRobot.h"
+#include <deque>
 
 class SmallNineMachine : public IRobot
 {
 public:
 	SmallNineMachine(DWORD dwUserID);
-
 	virtual ~SmallNineMachine(void);
 
 	//ÓÎÏ·×´Ì¬
@@ -23,10 +23,11 @@ protected:
 	WORD					m_wCurBanker;
 	double					m_fElapsedTime;
 	double					m_fAddJettonTime;
-	INT64					m_nBankerScore;
 	INT64					m_nMeMaxScore;
 	BOOL					m_bMeBanker;
-	WORD					m_wUpBankerCount;
 	BOOL					m_bAddJetton;
+
+	INT64					m_nBankerScore;
+	WORD					m_wUpBankerCount;
 };
 
