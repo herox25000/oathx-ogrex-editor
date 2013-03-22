@@ -567,12 +567,12 @@ LPCTSTR CUserListView::GetDisplayText(tagUserData * pUserData, WORD wColumnPos)
 		}
 	case DTP_INSURE_SCORE:		//存储金币
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lInsureScore);
+			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%I64d"),pUserData->lInsureScore);
 			return szBuffer;
 		}
 	case DTP_GAME_GOLD:			//游戏金币
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lGameGold);
+			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%I64d"),pUserData->lGameGold);
 			return szBuffer;
 		}
 	case DTP_LOVE_LINESS:		//用户魅力
@@ -597,7 +597,7 @@ LPCTSTR CUserListView::GetDisplayText(tagUserData * pUserData, WORD wColumnPos)
 		}
 	case DTP_USER_SCORE:		//用户积分
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),pUserData->lScore);
+			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%I64d"),pUserData->lScore);
 			return szBuffer;
 		}
 	case DTP_USER_EXPERIENCE:	//用户经验

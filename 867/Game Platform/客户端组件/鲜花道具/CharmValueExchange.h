@@ -14,7 +14,7 @@ class PROPERTY_MODULE_CLASS CCharmValueExchange : public CSkinDialogEx
 public:
 	tagUserData						*m_pMeUserData;					//用户信息
 	DWORD							m_lLoveliness;					//用户魅力
-	DWORD							m_lBankGoldValue;				//银行游戏币
+	__int64							m_lBankGoldValue;				//银行游戏币
 	DWORD							m_lExchangeCharmValue;			//对换魅力
 	CString							m_strExChangeValue;				//对换比率
 

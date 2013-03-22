@@ -251,9 +251,9 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 		LogonSuccess.cbMasterOrder=m_GameScoreDBAide.GetValue_BYTE(TEXT("MasterOrder"));
 
 		//读取游戏信息
-		LogonSuccess.lScore=m_GameScoreDBAide.GetValue_LONG(TEXT("Score"));
-		LogonSuccess.lInsureScore=m_GameScoreDBAide.GetValue_LONG(TEXT("InsureScore"));
-		LogonSuccess.lGameGold=m_GameScoreDBAide.GetValue_LONG(TEXT("GameGold"));
+		LogonSuccess.lScore=m_GameScoreDBAide.GetValue_LONGLONG(TEXT("Score"));
+		LogonSuccess.lInsureScore=m_GameScoreDBAide.GetValue_LONGLONG(TEXT("InsureScore"));
+		LogonSuccess.lGameGold=m_GameScoreDBAide.GetValue_LONGLONG(TEXT("GameGold"));
 		LogonSuccess.lWinCount=m_GameScoreDBAide.GetValue_LONG(TEXT("WinCount"));
 		LogonSuccess.lLostCount=m_GameScoreDBAide.GetValue_LONG(TEXT("LostCount"));
 		LogonSuccess.lDrawCount=m_GameScoreDBAide.GetValue_LONG(TEXT("DrawCount"));

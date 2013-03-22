@@ -1401,12 +1401,12 @@ bool CRoomViewItem::ShowUserInfoMenu(IUserItem * pIUserItem, CPoint Point)
 	//积分信息
 	if (m_wGameGenre==GAME_GENRE_GOLD)
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("游戏币：%ld  逃跑率：%5.2f%%"),pUserData->lScore,dFleeRate);
+		_snprintf(szBuffer,CountArray(szBuffer),TEXT("游戏币：%I64d  逃跑率：%5.2f%%"),pUserData->lScore,dFleeRate);
 			UserInfoMenu.AppendMenu(0,0,szBuffer);
 	}
 	else
 	{
-		_snprintf(szBuffer,CountArray(szBuffer),TEXT("积分：%ld  总局数：%ld  逃跑率：%5.2f%%"),pUserData->lScore,lPlayCount,dFleeRate);
+		_snprintf(szBuffer,CountArray(szBuffer),TEXT("积分：%I64d  总局数：%ld  逃跑率：%5.2f%%"),pUserData->lScore,lPlayCount,dFleeRate);
 			UserInfoMenu.AppendMenu(0,0,szBuffer);
 	}
 
@@ -2380,7 +2380,7 @@ bool CRoomViewItem::CanSitDownTable(WORD wTableID, WORD wChairID, bool bLookon, 
 		//积分效验
 		if (m_pGameOption->m_bLimitScore)
 		{
-			LONG lTableUserScore=pTableUserData->lScore;
+			__int64 lTableUserScore=pTableUserData->lScore;
 			if (lTableUserScore>m_pGameOption->m_lMaxScore)
 			{
 				if (bShowError==true)

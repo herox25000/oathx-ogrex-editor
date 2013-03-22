@@ -586,7 +586,7 @@ bool __cdecl CServerUserItem::EmptyWinLoseScore()
 	//Ð§Ñé×´Ì¬
 	ASSERT(m_bAcitve==true);
 	if (m_bAcitve==false) return false;
-	long lInsureScore = m_ScoreModify.lInsureScore;
+	__int64 lInsureScore = m_ScoreModify.lInsureScore;
 	memset(&m_ScoreModify,0,sizeof(m_ScoreModify));
 	m_ScoreModify.lInsureScore = lInsureScore; 
 	return true;;

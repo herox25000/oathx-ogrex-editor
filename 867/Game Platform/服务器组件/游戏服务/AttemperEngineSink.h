@@ -356,7 +356,7 @@ protected:
 	//修改帐款
 	void ModifyBankStorageGold(IServerUserItem * pIServerUserItem, LONG lStorageCount);
 	//消费金币
-	LONG GetBankStorageGold(IServerUserItem * pIServerUserItem);
+	__int64 GetBankStorageGold(IServerUserItem * pIServerUserItem);
 
 public:
 	//让所有用户退出房间

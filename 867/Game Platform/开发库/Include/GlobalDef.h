@@ -49,8 +49,8 @@ enum enOperateStatus
 // 协议类型头
 struct NetMessageHead
 {					
-	DWORD						wMainCmdID;			//主ID				
-	DWORD						wSubCmdID;			//次ID			
+	WORD						wMainCmdID;			//主ID				
+	WORD						wSubCmdID;			//次ID			
 	DWORD						uMessageSize;		//数据包长度
 	DWORD						bReserve;			//压缩前数据包长度
 	BYTE						cbVersion;			//版本标识
@@ -214,9 +214,9 @@ struct tagLevelItem
 //用户积分信息
 struct tagUserScore
 {
-	LONG								lScore;								//用户分数
-	LONG								lGameGold;							//游戏金币//
-	LONG								lInsureScore;						//存储金币
+	__int64								lScore;								//用户分数
+	__int64								lGameGold;							//游戏金币//
+	__int64								lInsureScore;						//存储金币
 	LONG								lWinCount;							//胜利盘数
 	LONG								lLostCount;							//失败盘数
 	LONG								lDrawCount;							//和局盘数
@@ -286,9 +286,9 @@ struct tagUserData
 	BYTE								cbMasterOrder;						//管理等级
 
 	//用户积分
-	LONG								lInsureScore;						//消费金币
-	LONG								lGameGold;							//游戏金币
-	LONG								lScore;								//用户分数
+	__int64								lInsureScore;						//消费金币
+	__int64								lGameGold;							//游戏金币
+	__int64								lScore;								//用户分数
 	LONG								lWinCount;							//胜利盘数
 	LONG								lLostCount;							//失败盘数
 	LONG								lDrawCount;							//和局盘数

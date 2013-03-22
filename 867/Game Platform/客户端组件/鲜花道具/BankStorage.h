@@ -13,8 +13,8 @@ class PROPERTY_MODULE_CLASS CBankStorage : public CSkinDialogEx
 	//变量定义
 public:
 	tagUserData						*m_pMeUserData;					//用户信息
-	DWORD							m_lGameGold;					//银行数目
-	DWORD							m_lStorageGold;					//存储数目
+	__int64							m_lGameGold;					//银行数目
+	__int64							m_lStorageGold;					//存储数目
 	DWORD							m_lInCount;						//输入游戏币
 	BOOL							m_bBanker;
 	//控件变量
