@@ -1725,7 +1725,7 @@ void CGameClientView::DrawWinFlags(CDC * pDC)
 	StrRect.bottom = StrRect.top + 15;
 	pDC->DrawText(StrwinCount, StrRect, DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE );
 
-	StrwinCount.Format("%.2f %%",m_fWinCount[1]);
+	StrwinCount.Format("%.2f %%",m_fWinCount[2]);
 	StrRect.left = posx;
 	StrRect.top = posy+60;
 	StrRect.right = StrRect.left + 100;
