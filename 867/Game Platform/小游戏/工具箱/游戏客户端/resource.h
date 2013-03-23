@@ -76,6 +76,7 @@
 #define IDC_MODIFY_LOGIN_PASSWORD       1027
 #define IDC_MODIFY_BANK_PASSWORD        1028
 #define IDC_EDIT19                      1029
+#define IDB_DlgBackground				1103
 
 // Next default values for new objects
 // 

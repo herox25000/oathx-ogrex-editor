@@ -58,3 +58,5 @@
 
 #include "CMD_TOOLBOX.h"
 #include "Resource.h"
+
+#include "CGrapDC.h"
