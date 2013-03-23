@@ -21,6 +21,8 @@ public:
 		WORD wDataSize=0);
 
 	virtual	void			ResetGame();
+
+	virtual INT64			GetRandScore();
 protected:
 	WORD					m_wCurBanker;
 	double					m_fElapsedTime;

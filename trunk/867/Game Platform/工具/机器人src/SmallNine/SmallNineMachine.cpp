@@ -31,6 +31,48 @@ void			SmallNineMachine::ResetGame()
 	m_bAddJetton		= FALSE;
 }
 
+INT64			SmallNineMachine::GetRandScore()
+{
+	// »ñÈ¡×¯ÅäÖÃ
+	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();
+
+	// Ëæ»úÑ¹×¡½ð±Ò
+	static __int64 JScore[] = 
+	{
+		1000, 10000, 100000, 500000, 1000000, 5000000, 10000000
+	};
+
+	int nRandRate = rand() % 100;
+	int nCurIndex = 0;
+
+	if (nRandRate>= 0 && nRandRate <= config.nTenMillionRate)
+	{
+		nCurIndex = 6;
+	}
+	else if (nRandRate > config.nTenMillionRate && nRandRate <= config.nFiveMillionRate)
+	{
+		nCurIndex = 5;
+	}
+	else if (nRandRate > config.nFiveMillionRate && nRandRate <= config.nOneMillionRate)
+	{
+		nCurIndex = 4;
+	}
+	else if (nRandRate > config.nOneMillionRate && nRandRate <= config.nFiveLakhRate)
+	{
+		nCurIndex = 3;
+	}
+	else if (nRandRate > config.nFiveLakhRate && nRandRate <= config.nTenLakhRate)
+	{
+		nCurIndex = 2;
+	}
+	else
+	{
+		nCurIndex = rand() % 2;
+	}
+
+	return JScore[nCurIndex];
+}
+
 //ÓÎÏ·×´Ì¬
 bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataSize)
 {
@@ -150,6 +192,7 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 				CString szMessage;
 				szMessage.Format("Robot[%d] request banker", m_dwUserID);
 				ShowMessageBox(szMessage);
+
 				// ÉêÇë×ø×¯
 				CMD_C_ApplyBanker req;
 				req.bApplyBanker =	 true;
@@ -179,42 +222,8 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 			};
 			
 			PlaceJetton.cbJettonArea = cbArea[rand() % 3];
+			PlaceJetton.lJettonScore = GetRandScore();
 
-			// Ëæ»úÑ¹×¡½ð±Ò
-			static __int64 JScore[] = 
-			{
-				1000, 10000, 100000, 500000, 1000000, 5000000, 10000000
-			};
-
-			int nRandRate = rand() % 100;
-			int nCurIndex = 0;
-
-			if (nRandRate>= 0 && nRandRate <= config.nTenMillionRate)
-			{
-				nCurIndex = 6;
-			}
-			else if (nRandRate > config.nTenMillionRate && nRandRate <= config.nFiveMillionRate)
-			{
-				nCurIndex = 5;
-			}
-			else if (nRandRate > config.nFiveMillionRate && nRandRate <= config.nOneMillionRate)
-			{
-				nCurIndex = 4;
-			}
-			else if (nRandRate > config.nOneMillionRate && nRandRate <= config.nFiveLakhRate)
-			{
-				nCurIndex = 3;
-			}
-			else if (nRandRate > config.nFiveLakhRate && nRandRate <= config.nTenLakhRate)
-			{
-				nCurIndex = 2;
-			}
-			else
-			{
-				nCurIndex = rand() % 2;
-			}
-
-			PlaceJetton.lJettonScore = JScore[nCurIndex];
 			if (m_nMeMaxScore >= PlaceJetton.lJettonScore)
 			{
 				SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, &PlaceJetton, sizeof(PlaceJetton));
@@ -262,20 +271,23 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			CMD_S_ApplyBanker* pApplyBanker = (CMD_S_ApplyBanker *)pBuffer;
 
 			tagUserInfo* pUserInfo = m_pGameManager->Search(pApplyBanker->szAccount);
-			if (pUserInfo && !strcmp(pUserInfo->szName, pApplyBanker->szAccount) && pUserInfo->dwUserID == m_dwUserID)
+			if (pUserInfo)
 			{
-				BankerManager::GetSingleton().Unlock();
-
-				if (pApplyBanker->bApplyBanker)
+				if (!strcmp(pUserInfo->szName, m_pAppUser->szName) && pUserInfo->dwUserID == m_dwUserID)
 				{
-					BankerManager::GetSingleton().AddUser(pUserInfo);
-				}
-				else
-				{
-					BankerManager::GetSingleton().Remove(pUserInfo->dwUserID);
-				}
+					if (pApplyBanker->bApplyBanker)
+					{
+						BankerManager::GetSingleton().AddUser(pUserInfo);
+					}
+					else
+					{
+						m_wUpBankerCount = 0;
 
-				m_wUpBankerCount = 0;
+						BankerManager::GetSingleton().Remove(pUserInfo->dwUserID);
+					}
+
+					BankerManager::GetSingleton().Unlock();
+				}
 			}
 		}
 		break;
