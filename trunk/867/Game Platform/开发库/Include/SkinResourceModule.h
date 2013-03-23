@@ -18,9 +18,9 @@
 
 //模块定义
 #ifndef _DEBUG
-	#define SKIN_RESOURCE_DLL_NAME	TEXT("SkinResource.dll")			//组件 DLL 名字
+	#define SKIN_RESOURCE_DLL_NAME	TEXT("plugin_skinResource.dll")			//组件 DLL 名字
 #else
-	#define SKIN_RESOURCE_DLL_NAME	TEXT("SkinResource_d.dll")			//组件 DLL 名字
+	#define SKIN_RESOURCE_DLL_NAME	TEXT("plugin_skinResource_d.dll")			//组件 DLL 名字
 #endif
 
 //////////////////////////////////////////////////////////////////////////
