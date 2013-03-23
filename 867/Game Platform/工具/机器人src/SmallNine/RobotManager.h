@@ -8,7 +8,7 @@ typedef struct tagBankerConfig
 	WORD							wUpBankerCount;
 	WORD							wUpBankerDeque;
 
-	INT64							nMaxScore;
+	INT64							nMaxWinScore;
 	INT64							nMinScore;
 	double							fMaxPlaceTime;
 	double							fMinPlaceTime;
@@ -17,6 +17,7 @@ typedef struct tagBankerConfig
 	WORD							nOneMillionRate;
 	WORD							nFiveLakhRate;
 	WORD							nTenLakhRate;
+	WORD							nPlaceMaxRate;
 
 }SBankerConfig;
 

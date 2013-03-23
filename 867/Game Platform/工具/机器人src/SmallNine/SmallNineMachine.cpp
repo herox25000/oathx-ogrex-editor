@@ -24,6 +24,8 @@ void			SmallNineMachine::ResetGame()
 	m_bAddJetton			= FALSE;
 	m_nApplyBankerCondition	= 0;
 	m_bStart				= FALSE;
+	m_nMePlaceScore			= 0;
+	m_nMeWinScore			= 0;
 }
 
 bool			SmallNineMachine::SendApplyBanker(BOOL bUp)
@@ -202,7 +204,16 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 
 			if (m_nMeMaxScore >= PlaceJetton.lJettonScore)
 			{
-				SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, &PlaceJetton, sizeof(PlaceJetton));
+				WORD nPlaceRate = (m_nMePlaceScore + PlaceJetton.lJettonScore) / m_nMeMaxScore * 100;
+				if (nPlaceRate < config.nPlaceMaxRate)
+				{
+					// 发送押注消息
+					SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, 
+						&PlaceJetton, sizeof(PlaceJetton));
+
+					// 增加自己压的钱
+					m_nMePlaceScore += PlaceJetton.lJettonScore;
+				}
 			}
 
 			m_fAddJettonTime	= RobotTimer::rdit(config.fMinPlaceTime, config.fMaxPlaceTime);
@@ -295,7 +306,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 		break;
 	case SUB_S_GAME_END:		//游戏结束
 		{
-			if (wDataSize!=sizeof(CMD_S_GameEnd)) 
+			if (wDataSize != sizeof(CMD_S_GameEnd)) 
 				return 0;
 
 			//消息处理
@@ -333,6 +344,8 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				SendApplyBanker(TRUE);
 			}
 			
+			// 重置机器人当前压的钱
+			m_nMePlaceScore			= 0;
 
 			if (m_nMeMaxScore <= c.nMinScore)
 			{
@@ -355,7 +368,11 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				return 0;
 
 			//消息处理
-			CMD_S_GameScore* pGameScore = (CMD_S_GameScore *)pBuffer;	
+			CMD_S_GameScore* pGameScore = (CMD_S_GameScore *)pBuffer;
+			if (pGameScore)
+			{
+				m_nMeWinScore += pGameScore->lMeGameScore;
+			}
 		}
 		break;
 	}
