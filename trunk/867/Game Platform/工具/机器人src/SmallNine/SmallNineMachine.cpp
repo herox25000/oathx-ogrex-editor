@@ -6,13 +6,7 @@
 
 SmallNineMachine::SmallNineMachine(DWORD dwUserID) : IRobot(dwUserID)
 {
-	m_wCurBanker		= INVALID_CHAIR;
-	m_bMeBanker			= FALSE;
-	m_nMeMaxScore		= 0;
-	m_wUpBankerCount	= 0;
-	m_fElapsedTime		= 0;
-	m_fAddJettonTime	= RobotTimer::rdft(1, 3);
-	m_bAddJetton		= FALSE;
+	ResetGame();
 }
 
 SmallNineMachine::~SmallNineMachine(void)
@@ -22,13 +16,50 @@ SmallNineMachine::~SmallNineMachine(void)
 
 void			SmallNineMachine::ResetGame()
 {
-	m_wCurBanker		= INVALID_CHAIR;
-	m_bMeBanker			= FALSE;
-	m_nMeMaxScore		= 0;
-	m_wUpBankerCount	= 0;
-	m_fElapsedTime		= 0;
-	m_fAddJettonTime	= RobotTimer::rdft(1, 3);
-	m_bAddJetton		= FALSE;
+	m_wCurBanker			= INVALID_CHAIR;
+	m_bMeBanker				= FALSE;
+	m_nMeMaxScore			= 0;
+	m_wUpBankerCount		= 0;
+	m_fElapsedTime			= 0;
+	m_fAddJettonTime		= RobotTimer::rdft(1, 3);
+	m_bAddJetton			= FALSE;
+	m_nApplyBankerCondition	= 0;
+	m_bStart				= FALSE;
+}
+
+bool			SmallNineMachine::SendApplyBanker(BOOL bUp)
+{
+	if (m_bStart == FALSE)
+		return 0;
+
+	// 获取庄配置
+	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();	
+	// 当前申请坐庄的总人数
+	int nReqBanker				= BankerManager::GetSingleton().GetBankerCount();
+
+	if (bUp)
+	{
+		if (nReqBanker < config.wUpBankerDeque && m_nMeMaxScore >= m_nApplyBankerCondition)
+		{
+			// 申请坐庄
+			CMD_C_ApplyBanker req;
+			req.bApplyBanker	= true;
+
+			//发送消息
+			SendData(MDM_GF_GAME, SUB_C_APPLY_BANKER, &req, sizeof( req ));
+		}
+	}
+	else
+	{
+		// 申请坐庄
+		CMD_C_ApplyBanker req;
+		req.bApplyBanker	= 0;
+
+		//发送消息
+		SendData(MDM_GF_GAME, SUB_C_APPLY_BANKER, &req, sizeof( req ));
+	}
+
+	return true;
 }
 
 INT64			SmallNineMachine::GetRandScore()
@@ -82,18 +113,21 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 		{
 			if (wDataSize != sizeof(CMD_S_StatusFree)) 
 				return 0;
+			
+			m_bStart = TRUE;
 
 			//消息处理
 			CMD_S_StatusFree* pStatusFree=(CMD_S_StatusFree *)pBuffer;
 			if (pStatusFree)
 			{
+				m_nApplyBankerCondition	= pStatusFree->lApplyBankerCondition;
 				// 当前庄积分
-				m_nBankerScore	= pStatusFree->lBankerTreasure;
+				m_nBankerScore			= pStatusFree->lBankerTreasure;
 				// 自己积分
-				m_nMeMaxScore	= pStatusFree->lMeMaxScore;
+				m_nMeMaxScore			= pStatusFree->lMeMaxScore;
 				
 				// 更新当前庄ID
-				m_wCurBanker	= pStatusFree->wCurrentBankerChairID;
+				m_wCurBanker			= pStatusFree->wCurrentBankerChairID;
 				if (m_wCurBanker != INVALID_CHAIR)
 				{
 					tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
@@ -111,16 +145,17 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 			if (wDataSize != sizeof(CMD_S_StatusPlay))
 				return 0;
 
+			m_bStart = TRUE;
+
 			//消息处理
 			CMD_S_StatusPlay* pStatusPlay=(CMD_S_StatusPlay *)pBuffer;
 			if (pStatusPlay)
 			{
-				// 当前庄积分
-				m_nBankerScore	= pStatusPlay->lBankerTreasure;
-				// 自己积分
-				m_nMeMaxScore	= pStatusPlay->lMeMaxScore;
-				// 更新当前庄ID
-				m_wCurBanker	= pStatusPlay->wCurrentBankerChairID;
+				m_nApplyBankerCondition	= pStatusPlay->lApplyBankerCondition;
+				m_nBankerScore			= pStatusPlay->lBankerTreasure;
+				m_nMeMaxScore			= pStatusPlay->lMeMaxScore;
+				m_wCurBanker			= pStatusPlay->wCurrentBankerChairID;
+
 				if (m_wCurBanker != INVALID_CHAIR)
 				{
 					tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
@@ -141,67 +176,6 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 {
 	// 获取庄配置
 	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();	
-	// 当前申请坐庄的总人数
-	int nReqBanker				= BankerManager::GetSingleton().GetBankerCount();
-	if (m_wCurBanker == INVALID_CHAIR || nReqBanker < config.wUpBankerDeque)
-	{
-		// 查询当前自己是否已经在排庄
-		SUserInfo* pUserInfo = BankerManager::GetSingleton().Search(m_dwUserID);
-		if (pUserInfo == NULL && !BankerManager::GetSingleton().IsLock())
-		{
-			if (m_nMeMaxScore >= config.nUpBankerScore)
-			{
-				BankerManager::GetSingleton().Lock();
-
-				// 申请坐庄
-				CMD_C_ApplyBanker req;
-				req.bApplyBanker	= true;
-				
-				//发送消息
-				SendData(MDM_GF_GAME, SUB_C_APPLY_BANKER, &req, sizeof( req ));
-			}
-		}
-	}
-	else
-	{
-		// 检查下庄
-		SUserInfo* pCurBanker	= m_pGameManager->Search(m_wCurBanker);
-		if (pCurBanker->dwUserID == m_dwUserID)
-		{
-			if (m_wUpBankerCount >= config.wUpBankerCount)
-			{
-				BankerManager::GetSingleton().Lock();
-
-				// 申请下庄
-				CMD_C_ApplyBanker req;
-				req.bApplyBanker = 0;
-
-				//发送消息
-				SendData(MDM_GF_GAME, SUB_C_APPLY_BANKER, &req, sizeof( req ));
-			}
-		}
-
-		// 如果当前排庄人数少于配置，那么继续申请坐庄
-		SUserInfo* pUserInfo = BankerManager::GetSingleton().Search(m_dwUserID);
-		if (nReqBanker < config.wUpBankerDeque + 1 && !BankerManager::GetSingleton().IsLock())
-		{
-			if (m_nMeMaxScore >= config.nUpBankerScore)
-			{
-				BankerManager::GetSingleton().Lock();
-
-				CString szMessage;
-				szMessage.Format("Robot[%d] request banker", m_dwUserID);
-				ShowMessageBox(szMessage);
-
-				// 申请坐庄
-				CMD_C_ApplyBanker req;
-				req.bApplyBanker =	 true;
-
-				//发送消息
-				SendData(MDM_GF_GAME, SUB_C_APPLY_BANKER, &req, sizeof( req ));
-			}
-		}
-	}
 
 	// 更新加注信息
 	if ( m_bAddJetton )
@@ -228,6 +202,7 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 			{
 				SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, &PlaceJetton, sizeof(PlaceJetton));
 			}
+
 			m_fAddJettonTime	= RobotTimer::rdit(config.fMinPlaceTime, config.fMaxPlaceTime);
 			m_fElapsedTime		= 0;
 		}
@@ -241,12 +216,33 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 	{
 	case SUB_S_GAME_START:		//游戏开始
 		{
-			if (m_wCurBanker != INVALID_CHAIR)
+			if (m_bStart)
 			{
-				tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
-				if (pUserInfo != NULL && pUserInfo->dwUserID != m_dwUserID)
+				// 获取庄配置
+				const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();	
+				// 当前申请坐庄的总人数
+				int nReqBanker				= BankerManager::GetSingleton().GetBankerCount();
+
+				if (m_wCurBanker != INVALID_CHAIR)
 				{
-					m_bAddJetton = TRUE;
+					tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
+					if (pUserInfo)
+					{
+						if (pUserInfo->dwUserID != m_dwUserID)
+						{
+							m_bAddJetton = TRUE;
+
+							SendApplyBanker(TRUE);
+						}
+					}
+				}
+				else
+				{
+					SUserInfo* pUserInfo = BankerManager::GetSingleton().Search(m_dwUserID);
+					if (!pUserInfo)
+					{
+						SendApplyBanker(TRUE);
+					}
 				}
 			}
 		}
@@ -263,30 +259,21 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			if (wDataSize!=sizeof(CMD_S_ApplyBanker)) 
 				return 0;
 
-			// 获取庄家配置
-			const SBankerConfig& c = RobotManager::GetSingleton().GetBankerConfig();
-
-			CString szMessage;
 			//消息处理
 			CMD_S_ApplyBanker* pApplyBanker = (CMD_S_ApplyBanker *)pBuffer;
 
-			tagUserInfo* pUserInfo = m_pGameManager->Search(pApplyBanker->szAccount);
+			//查找该用户
+			tagUserInfo* pUserInfo = m_pGameManager->Search(
+				pApplyBanker->szAccount);
 			if (pUserInfo)
 			{
-				if (!strcmp(pUserInfo->szName, m_pAppUser->szName) && pUserInfo->dwUserID == m_dwUserID)
+				if (pApplyBanker->bApplyBanker)
 				{
-					if (pApplyBanker->bApplyBanker)
-					{
-						BankerManager::GetSingleton().AddUser(pUserInfo);
-					}
-					else
-					{
-						m_wUpBankerCount = 0;
-
-						BankerManager::GetSingleton().Remove(pUserInfo->dwUserID);
-					}
-
-					BankerManager::GetSingleton().Unlock();
+					BankerManager::GetSingleton().AddUser(pUserInfo);
+				}
+				else
+				{
+					BankerManager::GetSingleton().Remove(pUserInfo->dwUserID);
 				}
 			}
 		}
@@ -297,18 +284,8 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				return 0;
 
 			//消息处理
-			CMD_S_ChangeBanker* pChangeBanker = (CMD_S_ChangeBanker *)pBuffer;
-
-			if (m_wCurBanker != INVALID_CHAIR)
-			{
-				tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
-				if (pUserInfo)
-				{
-					BankerManager::GetSingleton().Remove(pUserInfo->dwUserID);
-				}
-			}
-
-			m_wCurBanker = pChangeBanker->wChairID;
+			CMD_S_ChangeBanker* pChangeBanker	= (CMD_S_ChangeBanker *)pBuffer;
+			m_wCurBanker						= pChangeBanker->wChairID;
 		}
 		break;
 
@@ -323,23 +300,34 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				return 0;
 
 			//消息处理
-			CMD_S_GameEnd* pGameEnd=(CMD_S_GameEnd *)pBuffer;
+			CMD_S_GameEnd* pGameEnd	=(CMD_S_GameEnd *)pBuffer;
+
+			// 更新数据
+			m_nMeMaxScore			= pGameEnd->lMeMaxScore;
+
+			// 获取庄配置
+			const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();	
+			// 当前申请坐庄的总人数
+			int nReqBanker			= BankerManager::GetSingleton().GetBankerCount();
 
 			if (m_wCurBanker != INVALID_CHAIR)
 			{
 				tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
-				if (pUserInfo && pUserInfo->dwUserID == m_dwUserID)
+				if (pUserInfo)
 				{
-					// 增加上庄次数
-					m_wUpBankerCount ++;
+					if (pUserInfo->dwUserID == m_dwUserID)
+					{
+						// 增加上庄次数
+						m_wUpBankerCount ++;
+
+						if (m_wUpBankerCount >= c.wUpBankerCount)
+						{
+							SendApplyBanker(FALSE);
+						}
+					}
 				}
 			}
 
-			// 更新数据
-			m_nMeMaxScore	= pGameEnd->lMeMaxScore;
-
-			// 保护下线
-			const SBankerConfig& c = RobotManager::GetSingleton().GetBankerConfig();
 			if (m_nMeMaxScore <= c.nMinScore)
 			{
 				CString szMessage;

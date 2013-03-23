@@ -41,7 +41,7 @@ CSmallNineDlg::CSmallNineDlg(CWnd* pParent /*=NULL*/)
 {
 	m_hIcon			= AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_fLostTime		= 0;
-	m_fCrateTime	= RobotTimer::rdft(1, 3);
+	m_fCrateTime	= RobotTimer::rdft(1, 5);
 	m_fElapsed		= 0;
 	m_dwStartID		= 0;
 	m_dwEndID		= 0;

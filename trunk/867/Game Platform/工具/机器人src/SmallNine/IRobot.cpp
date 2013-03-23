@@ -21,6 +21,7 @@ IRobot::~IRobot(void)
 	delete m_pAppUser;
 	m_pAppUser = NULL;
 
+	m_pGameManager->ClearUp();
 	delete m_pGameManager;
 	m_pGameManager = NULL;
 }
@@ -376,7 +377,7 @@ bool			IRobot::OnSocketMainLogon(CMD_Command Command, void* pBuffer, WORD wDataS
 	case SUB_GR_LOGON_SUCCESS:
 		{
 			CString szMessage;
-			szMessage.Format("Robot(UserID)[%i], Check In Game", (int)m_dwUserID);
+			szMessage.Format("Robot[%i], Check In Game", (int)m_dwUserID);
 			ShowMessageBox(szMessage);
 
 			SitDown();
@@ -512,7 +513,10 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			
 			if (pUserStatus->cbUserStatus == US_NULL || pUserStatus->cbUserStatus == US_OFFLINE)
 			{
-				SetState(ROBOT_INVALID);
+				if (pUserStatus->dwUserID == m_dwUserID)
+				{
+					SetState(ROBOT_INVALID);
+				}
 				
 				// ÒÆ³ý¸Ã»úÆ÷ÈË
 				m_pGameManager->Remove(pUserStatus->dwUserID);
