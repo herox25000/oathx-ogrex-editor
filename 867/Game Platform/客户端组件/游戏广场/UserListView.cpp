@@ -80,8 +80,10 @@ bool CUserListView::SetColumnDescribe(tagColumnItem ColumnItem[], WORD wColumnCo
 	for (WORD i=0;i<wColumnCount;i++)
 	{
 		m_wDataDescribe[i]=ColumnItem[i].wDataDescribe;
-		if (m_wColumnCount==0) InsertColumn(m_wColumnCount++,ColumnItem[i].szColumnName,LVCFMT_LEFT,ColumnItem[i].wColumnWidth+m_uImageSpace);
-		else InsertColumn(m_wColumnCount++,ColumnItem[i].szColumnName,LVCFMT_LEFT,ColumnItem[i].wColumnWidth);
+		if (m_wColumnCount==0)
+			InsertColumn(m_wColumnCount++,ColumnItem[i].szColumnName,LVCFMT_LEFT,ColumnItem[i].wColumnWidth+m_uImageSpace);
+		else
+			InsertColumn(m_wColumnCount++,ColumnItem[i].szColumnName,LVCFMT_LEFT,ColumnItem[i].wColumnWidth);
 	}
 	SetRedraw(TRUE);
 
@@ -408,12 +410,17 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		{
 			GetSubItemRect(iItem,i,LVIR_ICON,rcSubItem);
 
-			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
-			else pDC->FillSolidRect(&rcSubItem,GetBkColor());
+			if (lpDrawItemStruct->itemState&ODS_FOCUS) 
+				pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
+			else 
+				pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
-			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->SetTextColor(RGB(255,255,255));
-			else if ( 0 < pIUserItem->GetUserData()->cbMemberOrder && DTP_USER_ACCOUNTS== m_wDataDescribe[i]) pDC->SetTextColor(RGB(255,0,0));
-			else pDC->SetTextColor(RGB(0,0,0));
+			if (lpDrawItemStruct->itemState&ODS_FOCUS)
+				pDC->SetTextColor(RGB(255,255,255));
+			else if ( 0 < pIUserItem->GetUserData()->cbMemberOrder /*&& DTP_USER_ACCOUNTS== m_wDataDescribe[i]*/)
+				pDC->SetTextColor(RGB(255,0,0));
+			else
+				pDC->SetTextColor(RGB(0,0,0));
 
 			//绘画标志
 			UINT uImageIndex=GetImageStation(pIUserItem);
@@ -423,8 +430,10 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 			GetSubItemRect(iItem,i,LVIR_LABEL,rcSubItem);
 
-			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
-			else pDC->FillSolidRect(&rcSubItem,GetBkColor());
+			if (lpDrawItemStruct->itemState&ODS_FOCUS)
+				pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
+			else
+				pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
 			rcSubItem.top+=3;
 			pDC->DrawText(szBuffer,lstrlen(szBuffer),&rcSubItem,DT_LEFT|DT_END_ELLIPSIS);
@@ -432,12 +441,17 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		else
 		{		
 			
-			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
-			else pDC->FillSolidRect(&rcSubItem,GetBkColor());
+			if (lpDrawItemStruct->itemState&ODS_FOCUS)
+				pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
+			else
+				pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
-			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->SetTextColor(RGB(255,255,255));
-			else if ( 0 < pIUserItem->GetUserData()->cbMemberOrder /*&& DTP_GAME_ID == m_wDataDescribe[i]*/) pDC->SetTextColor(RGB(255,0,0));
-			else pDC->SetTextColor(RGB(0,0,0));
+			if (lpDrawItemStruct->itemState&ODS_FOCUS)
+				pDC->SetTextColor(RGB(255,255,255));
+			else if ( 0 < pIUserItem->GetUserData()->cbMemberOrder /*&& DTP_GAME_ID == m_wDataDescribe[i]*/)
+				pDC->SetTextColor(RGB(255,0,0));
+			else
+				pDC->SetTextColor(RGB(0,0,0));
 
 			GetItemText(iItem,i,szBuffer,sizeof(szBuffer));
 
@@ -496,9 +510,26 @@ int CALLBACK CUserListView::SortFun(LPARAM lParam1, LPARAM lParam2, LPARAM lPara
 
 	//自己放置顶
 	tagGlobalUserData & GlobalInfo=g_GlobalUnits.GetGolbalUserData();
-	if (pUserData1->dwUserID==GlobalInfo.dwUserID) return -1;
-	if (pUserData2->dwUserID==GlobalInfo.dwUserID) return 1;
-
+	if (pUserData1->dwUserID==GlobalInfo.dwUserID)
+		return -1;
+	if (pUserData2->dwUserID==GlobalInfo.dwUserID) 
+		return 1;
+	//管理员置顶
+	if (pUserData1->cbMasterOrder!=pUserData2->cbMasterOrder)
+	{
+		if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) 
+			return -1;
+		else
+			return 1;
+	}
+	//会员置顶
+	if (pUserData1->cbMemberOrder!=pUserData2->cbMemberOrder)
+	{
+		if (pUserData1->cbMemberOrder>pUserData2->cbMemberOrder)
+			return -1;
+		else
+			return 1;
+	}
 	//对比数据
 	switch (pSortInfo->cbFieldKind)
 	{
@@ -522,8 +553,10 @@ int CALLBACK CUserListView::SortFun(LPARAM lParam1, LPARAM lParam2, LPARAM lPara
 			//管理员置顶
 			if (pUserData1->cbMasterOrder!=pUserData2->cbMasterOrder)
 			{
-				if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) return -1;
-				else return 1;
+				if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) 
+					return -1;
+				else
+					return 1;
 			}
 
 			//好友放置顶
@@ -532,15 +565,19 @@ int CALLBACK CUserListView::SortFun(LPARAM lParam1, LPARAM lParam2, LPARAM lPara
 			if (((cbConnection1==enCompanion_Friend)&&(cbConnection2!=enCompanion_Friend))
 				||((cbConnection1!=enCompanion_Friend)&&(cbConnection2==enCompanion_Friend)))
 			{
-				if (cbConnection1==enCompanion_Friend) return -1;
-				else return 1;
+				if (cbConnection1==enCompanion_Friend)
+					return -1;
+				else 
+					return 1;
 			}
 			
 			//会员置顶
 			if (pUserData1->cbMemberOrder!=pUserData2->cbMemberOrder)
 			{
-				if (pUserData1->cbMemberOrder>pUserData2->cbMemberOrder) return -1;
-				else return 1;
+				if (pUserData1->cbMemberOrder>pUserData2->cbMemberOrder)
+					return -1;
+				else
+					return 1;
 			}
 
 			int iCompRes=strcmp(pUserData1->szName,pUserData2->szName);
