@@ -226,11 +226,7 @@ void			IRobot::AddGameUser(SUserInfo* pUserInfo)
 {
 	if (m_pGameManager)
 	{
-		tagUserInfo *pGameUserInfo = new tagUserInfo;
-		memcpy(pGameUserInfo, pUserInfo, 
-			sizeof(tagUserInfo));
-
-		m_pGameManager->AddUser(pGameUserInfo);
+		m_pGameManager->AddUser(pUserInfo);
 	}
 }
 
@@ -491,7 +487,7 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 				}
 				
 				// 添加到用户管理器
-				m_pGameManager->AddUser(pUserInfo);
+				AddGameUser(pUserInfo);
 			}
 		}
 		break;

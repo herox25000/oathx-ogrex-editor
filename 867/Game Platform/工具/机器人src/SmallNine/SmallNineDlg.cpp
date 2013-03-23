@@ -107,7 +107,7 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIcon, FALSE);
 
-	SetDlgItemText(IDC_EDIT1,	"192.168.1.106");
+	SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
 	SetDlgItemText(IDC_EDIT2,	"11021");
 	SetDlgItemText(IDC_EDIT3,	"e10adc3949ba59abbe56e057f20f883e");
 	SetDlgItemText(IDC_EDIT4,	"100");
