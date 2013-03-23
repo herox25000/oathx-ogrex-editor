@@ -21,10 +21,10 @@ public:
 	virtual	SUserInfo*			Search(DWORD dwUserID);
 
 	virtual	void				Lock();
-	virtual BOOL				IsLock() const;
+	virtual int					GetLockCount() const;
 	virtual	void				Unlock();
 protected:
 	UserManager*				m_pUserManager;
-	BOOL						m_bLockBanker;
+	int							m_wApplyCount;
 
 };

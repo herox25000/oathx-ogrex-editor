@@ -3,7 +3,7 @@
 #include "RobotTimer.h"
 #include <algorithm>
 
-BankerManager::BankerManager(void) : m_pUserManager(NULL), m_bLockBanker(FALSE)
+BankerManager::BankerManager(void) : m_pUserManager(NULL), m_wApplyCount(0)
 {
 	m_pUserManager	= new UserManager();
 }
@@ -34,15 +34,17 @@ SUserInfo*	BankerManager::Search(DWORD dwUserID)
 
 void		BankerManager::Lock()
 {
-	m_bLockBanker = TRUE;
+	m_wApplyCount ++;
 }
 
-BOOL		BankerManager::IsLock() const
+int			BankerManager::GetLockCount() const
 {
-	return m_bLockBanker;
+	return m_wApplyCount;
 }
 
 void		BankerManager::Unlock()
 {
-	m_bLockBanker = FALSE;
+	m_wApplyCount --;
+	if (m_wApplyCount < 0)
+		m_wApplyCount = 0;
 }
