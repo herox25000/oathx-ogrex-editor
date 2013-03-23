@@ -28,7 +28,7 @@ static void SuperRand()
 #define GAME_NAME					TEXT("小九")						//游戏名字
 #define GAME_GENRE					(GAME_GENRE_GOLD|GAME_GENRE_MATCH)	//游戏类型
 
-#define BANK_CONDITION_MONEY		20000000
+#define BANK_CONDITION_MONEY		10000000
 
 //玩家索引
 #define ID_SHUN_MEN					0x01			//顺门（上门）
