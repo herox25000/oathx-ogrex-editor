@@ -175,7 +175,6 @@ INT CHintMsgBox::ShowMessageBox(LPCTSTR pszCaption, LPCTSTR pszString, UINT uTyp
 
 	//ÏÔÊ¾´°¿Ú
 	INT nResult=(INT)DoModal();
-	SetWindowPos(&wndTopMost, 0, 0, 0, 0, SWP_NOMOVE|SWP_NOSIZE);
 
 	return nResult;
 }
