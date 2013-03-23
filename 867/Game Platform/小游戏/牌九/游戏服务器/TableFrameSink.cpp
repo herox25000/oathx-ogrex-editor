@@ -262,7 +262,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				if (pIServerUserItem) 
 				{
 					//积分判断
-					if ( pIServerUserItem->GetUserScore()->lScore < m_lApplyBankerCondition )
+					if ( pIServerUserItem->GetUserScore()->lScore < m_lApplyBankerCondition || m_cbBankerTimer >= 20 )
 					{
 						//玩家下庄
 						OnUserApplyBanker( pIServerUserItem->GetUserData(), false );

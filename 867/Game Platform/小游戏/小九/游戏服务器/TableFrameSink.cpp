@@ -1452,7 +1452,7 @@ void CTableFrameSink::ChuLaoQian()
 	SafeStrCat(szINI, "\\XiaoJiu.ini", sizeof(szINI));
 	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
-	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
+	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 50000000, szINI);
 	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
 	LIMIT_VALUE(lWinRate, 1, 10);
 
