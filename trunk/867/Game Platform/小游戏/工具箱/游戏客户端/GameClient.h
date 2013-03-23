@@ -19,15 +19,6 @@ public:
 public:
 	virtual BOOL InitInstance();
 	virtual int ExitInstance();
-
-protected:
-	CPlatformResourceHelper			m_PlatformResourceModule;			//资源组件
-	tagChatExpViewImage				m_ChatExpViewImage;					//表情资源
-	tagGameFrameImage				m_GameFrameImage;					//框架资源
-	tagPropertyViewImage			m_PropertyViewImage;				//道具资源
-	tagVideoFrameImage				m_VideoFrameImage;					//视频资源
-	tagPropertyMenuImage			m_PropertyMenuImage;				//菜单资源
-	tagGiftFlashImage				m_GiftFlashImage;					//动画资源
 };
 
 extern CGameClientApp theApp;

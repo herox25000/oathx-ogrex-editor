@@ -171,6 +171,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\CGrapDC.h">
+			</File>
+			<File
 				RelativePath=".\GameClient.h">
 			</File>
 			<File
@@ -204,6 +207,31 @@
 			</File>
 			<File
 				RelativePath=".\res\GameClient.rc2">
+			</File>
+			<File
+				RelativePath=".\Res\RedPlace.bmp">
+			</File>
+		</Filter>
+		<Filter
+			Name="bitmapdilaog"
+			Filter="">
+			<File
+				RelativePath=".\BitmapDialog.cpp">
+			</File>
+			<File
+				RelativePath=".\BitmapDialog.h">
+			</File>
+			<File
+				RelativePath=".\dib256.cpp">
+			</File>
+			<File
+				RelativePath=".\dib256.h">
+			</File>
+			<File
+				RelativePath=".\dibpal.cpp">
+			</File>
+			<File
+				RelativePath=".\dibpal.h">
 			</File>
 		</Filter>
 		<File

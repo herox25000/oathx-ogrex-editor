@@ -4,10 +4,11 @@
 #include "CMD_ToolBox.h"
 #include "Encrypt.h"
 #include "GlobalFrame.h"
+#include ".\gameclientdlg.h"
 
 ////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CGameClientDlg, CDialog)
+BEGIN_MESSAGE_MAP(CGameClientDlg, CBitmapDialog)
 	ON_BN_CLICKED(IDC_MODIFY_LOGIN_PASSWORD,OnModifyLoginPassword)
 	ON_BN_CLICKED(IDC_MODIFY_BANK_PASSWORD,OnModifyBankPassword)
 	ON_BN_CLICKED(IDC_MODIFY_NICKNAME,OnModifyNickname)
@@ -17,6 +18,7 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CDialog)
 	ON_BN_CLICKED(IDC_TRANSFER_MONEY,OnTransferMoney)
 	ON_BN_CLICKED(IDC_QUERY_TRANSFER_LOG,OnQueryTransferLog)
 	ON_WM_PAINT()
+	ON_WM_NCPAINT()
 END_MESSAGE_MAP()
 
 CString GetString(__int64 nNumber)
@@ -37,7 +39,7 @@ CString GetString(__int64 nNumber)
 }
 
 //构造函数
-CGameClientDlg::CGameClientDlg() : CDialog(IDD_GAME_FRAME)
+CGameClientDlg::CGameClientDlg() : CBitmapDialog(IDD_GAME_FRAME)
 {
 }
 
@@ -184,7 +186,8 @@ void CGameClientDlg::SetDlgItemInt64(UINT uID, __int64 value)
 
 void CGameClientDlg::Msg(LPCTSTR lpszText)
 {
-	ShowInformationEx(TEXT(lpszText),0 ,MB_ICONINFORMATION,TEXT("银行消息")) ;
+	AfxMessageBox(TEXT(lpszText));
+	//ShowInformationEx(TEXT(lpszText),0 ,MB_ICONINFORMATION,TEXT("银行消息")) ;
 }
 
 void CGameClientDlg::ShowWaitWindow()
@@ -530,6 +533,8 @@ BOOL CGameClientDlg::OnInitDialog()
 		EndDialog(IDOK);
 		return FALSE;
 	}
+
+	SetBitmap(IDB_DlgBackground);
 
 	CWinApp *p=AfxGetApp();
 	LPCTSTR lpszCmdLine=AfxGetApp()->m_lpCmdLine;
@@ -1224,3 +1229,8 @@ void CGameClientDlg::OnPaint()
 	__super::OnPaint();
 }
 
+
+void CGameClientDlg::OnNcPaint()
+{
+
+}

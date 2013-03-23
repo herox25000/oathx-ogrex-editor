@@ -4,6 +4,7 @@
 #include "Resource.h"
 #include "TransDialog.h"
 #include "Nb30.h"
+#include "BitmapDialog.h"
 
 //状态信息
 struct tagAstatInfo
@@ -14,7 +15,7 @@ struct tagAstatInfo
 //////////////////////////////////////////////////////////////////////////
 
 //游戏对话框
-class CGameClientDlg : public CDialog, public ITCPSocketSink
+class CGameClientDlg : public CBitmapDialog, public ITCPSocketSink
 {
 public:
 	//构造函数
@@ -111,6 +112,8 @@ protected:
 	//重画消息
 	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnNcPaint();
 };
 
 //////////////////////////////////////////////////////////////////////////
