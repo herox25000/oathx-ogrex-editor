@@ -5,7 +5,7 @@
 
 #include "WinSock2.h"
 #include "NetworkServiceHead.h"
-#include "..\..\开发库\Include\MyEncrypt.h"
+//#include "..\..\开发库\Include\MyEncrypt.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -14,7 +14,7 @@ class CTCPSocket : public CWnd, public ITCPSocket
 {
 	//加密算法
 protected:
-	MyEncrypt						m_Encrypt;		//加密算法
+//	MyEncrypt						m_Encrypt;		//加密算法
 	//辅助变量
 protected:
 	WORD							m_wSocketID;						//网络标识

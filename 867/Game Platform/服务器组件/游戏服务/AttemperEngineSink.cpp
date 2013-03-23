@@ -2631,8 +2631,10 @@ bool CAttemperEngineSink::SendUserItem(IServerUserItem * pIServerUserItem, DWORD
 	//叠加数据
 	CSendPacketHelper SendPacket(cbBuffer+sizeof(tagUserInfoHead),sizeof(cbBuffer)-sizeof(tagUserInfoHead));
 	SendPacket.AddPacket(pUserData->szAccounts,CountStringBuffer(pUserData->szAccounts),DTP_USER_ACCOUNTS);
-	if (pUserData->szUnderWrite[0]!=0) SendPacket.AddPacket(pUserData->szUnderWrite,CountStringBuffer(pUserData->szUnderWrite),DTP_UNDER_WRITE);
-	if (pUserData->szGroupName[0]!=0) SendPacket.AddPacket(pUserData->szGroupName,CountStringBuffer(pUserData->szGroupName),DTP_USER_GROUP_NAME);
+	if (pUserData->szUnderWrite[0]!=0) 
+		SendPacket.AddPacket(pUserData->szUnderWrite,CountStringBuffer(pUserData->szUnderWrite),DTP_UNDER_WRITE);
+	if (pUserData->szGroupName[0]!=0) 
+		SendPacket.AddPacket(pUserData->szGroupName,CountStringBuffer(pUserData->szGroupName),DTP_USER_GROUP_NAME);
 
 	//发送数据
 	WORD wSendLength=sizeof(tagUserInfoHead)+SendPacket.GetDataSize();
