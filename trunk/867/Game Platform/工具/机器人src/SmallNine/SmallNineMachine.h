@@ -19,6 +19,8 @@ public:
 	//”Œœ∑œ˚œ¢
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL,
 		WORD wDataSize=0);
+
+	virtual	void			ResetGame();
 protected:
 	WORD					m_wCurBanker;
 	double					m_fElapsedTime;

@@ -29,7 +29,7 @@ public:
 
 	virtual BOOL			Start(const CString& szIPAdress, WORD wPort, const CString& szPwd);
 	virtual void			Stop();
-	virtual	void			ShowMessageBox(const CString& szMessage);
+	virtual	void			ShowMessageBox(const CString& szMessage, enTraceLevel lev=TraceLevel_Normal);
 	virtual	void			SitDown();
 	virtual void			AddGameUser(SUserInfo* pUserInfo);
 	virtual	void			SetUserStatus(DWORD dwUserID, BYTE cbUserStatus);

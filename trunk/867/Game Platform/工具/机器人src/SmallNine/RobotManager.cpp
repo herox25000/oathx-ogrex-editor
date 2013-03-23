@@ -121,6 +121,7 @@ void					RobotManager::Reconnect(const CString& ipAddress, WORD wPort, const CSt
 		RobotRegister::iterator it = m_Reconnect.begin();
 		if( it != m_Reconnect.end() )
 		{
+			it->second->ResetGame();
 			it->second->SitDown();
 		}
 	}
