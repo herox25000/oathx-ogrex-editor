@@ -185,9 +185,9 @@ BOOL			IRobot::Start(const CString& szIPAdress, WORD wPort, const CString& szPwd
 	return TRUE;
 }
 
-void			IRobot::ShowMessageBox(const CString& szMessage)
+void			IRobot::ShowMessageBox(const CString& szMessage, enTraceLevel lev)
 {
-	CTraceService::TraceString(szMessage, TraceLevel_Normal);
+	CTraceService::TraceString(szMessage, lev);
 }
 
 void			IRobot::OnUpdate(float fElapsed)

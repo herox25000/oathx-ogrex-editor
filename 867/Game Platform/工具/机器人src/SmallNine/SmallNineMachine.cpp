@@ -20,6 +20,17 @@ SmallNineMachine::~SmallNineMachine(void)
 
 }
 
+void			SmallNineMachine::ResetGame()
+{
+	m_wCurBanker		= INVALID_CHAIR;
+	m_bMeBanker			= FALSE;
+	m_nMeMaxScore		= 0;
+	m_wUpBankerCount	= 0;
+	m_fElapsedTime		= 0;
+	m_fAddJettonTime	= RobotTimer::rdft(1, 3);
+	m_bAddJetton		= FALSE;
+}
+
 //游戏状态
 bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataSize)
 {
@@ -117,6 +128,8 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 		{
 			if (m_wUpBankerCount >= config.wUpBankerCount)
 			{
+				BankerManager::GetSingleton().Lock();
+
 				// 申请下庄
 				CMD_C_ApplyBanker req;
 				req.bApplyBanker = 0;
@@ -247,29 +260,22 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			CString szMessage;
 			//消息处理
 			CMD_S_ApplyBanker* pApplyBanker = (CMD_S_ApplyBanker *)pBuffer;
-			if (pApplyBanker->bApplyBanker)
+
+			tagUserInfo* pUserInfo = m_pGameManager->Search(pApplyBanker->szAccount);
+			if (pUserInfo && !strcmp(pUserInfo->szName, pApplyBanker->szAccount) && pUserInfo->dwUserID == m_dwUserID)
 			{
-				tagUserInfo* pUserInfo = m_pGameManager->Search(m_dwUserID);
-				if (pUserInfo && !strcmp(pUserInfo->szName, pApplyBanker->szAccount))
+				BankerManager::GetSingleton().Unlock();
+
+				if (pApplyBanker->bApplyBanker)
 				{
 					BankerManager::GetSingleton().AddUser(pUserInfo);
-					BankerManager::GetSingleton().Unlock();
 				}
-			}
-			else
-			{
-				tagUserInfo* pUserInfo = m_pGameManager->Search(pApplyBanker->szAccount);
-				if (pUserInfo)
+				else
 				{
-					if (pUserInfo->dwUserID == m_dwUserID)
-					{	
-						m_wUpBankerCount = 0;
-						
-						BankerManager::GetSingleton().Unlock();
-					}
-
 					BankerManager::GetSingleton().Remove(pUserInfo->dwUserID);
 				}
+
+				m_wUpBankerCount = 0;
 			}
 		}
 		break;
@@ -324,6 +330,10 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			const SBankerConfig& c = RobotManager::GetSingleton().GetBankerConfig();
 			if (m_nMeMaxScore <= c.nMinScore)
 			{
+				CString szMessage;
+				szMessage.Format("Robot[%d] 金币少于%I64 自动下线", m_dwUserID, c.nMinScore);
+				ShowMessageBox(szMessage, TraceLevel_Warning);
+
 				SetState(ROBOT_INVALID);
 			}
 		}
