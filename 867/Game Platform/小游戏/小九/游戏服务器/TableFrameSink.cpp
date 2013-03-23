@@ -730,7 +730,19 @@ __int64 CTableFrameSink::AccountPayoffScore()
 bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApplyBanker )
 {
 	//合法判断
-	if ( bApplyBanker && pUserData->UserScoreInfo.lScore < m_lApplyBankerCondition ) return true;
+	if ( bApplyBanker && pUserData->UserScoreInfo.lScore < m_lApplyBankerCondition )
+	{
+		//构造变量
+		CMD_S_ApplyBanker ApplyBanker;
+		CopyMemory( ApplyBanker.szAccount, pUserData->szAccounts, sizeof( ApplyBanker.szAccount ) );
+		ApplyBanker.lScore = pUserData->UserScoreInfo.lScore;
+		ApplyBanker.bApplyBanker = false;
+
+		//发送消息
+		m_pITableFrame->SendTableData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
+		m_pITableFrame->SendLookonData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
+		return true;
+	}
 
 	//保存玩家
 	if ( bApplyBanker )
@@ -1451,9 +1463,9 @@ void CTableFrameSink::ChuLaoQian()
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\XiaoJiu.ini", sizeof(szINI));
 	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
+	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 20000000, szINI);
 	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 50000000, szINI);
-	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
+	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 80000000, szINI);
 	LIMIT_VALUE(lWinRate, 1, 10);
 
 	//获取玩家
