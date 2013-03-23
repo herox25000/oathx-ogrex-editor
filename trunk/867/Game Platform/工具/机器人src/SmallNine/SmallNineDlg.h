@@ -32,7 +32,6 @@ protected:
 	DWORD				m_dwStartID;
 	DWORD				m_dwMaxCount;
 	DWORD				m_dwEndID;
-
 	SBankerConfig		m_AppConfig;
 protected:
 	HICON				m_hIcon;
