@@ -30,7 +30,9 @@ protected:
 	WORD				m_wPort;
 	CString				m_md5;
 	DWORD				m_dwStartID;
+	DWORD				m_dwMaxCount;
 	DWORD				m_dwEndID;
+
 	SBankerConfig		m_AppConfig;
 protected:
 	HICON				m_hIcon;
@@ -61,4 +63,6 @@ public:
 	afx_msg void OnEnChangeEdit5();
 	afx_msg void OnEnChangeEdit4();
 	afx_msg void OnEnChangeEdit17();
+	afx_msg void OnEnChangeEdit18();
+	afx_msg void OnEnChangeEdit19();
 };

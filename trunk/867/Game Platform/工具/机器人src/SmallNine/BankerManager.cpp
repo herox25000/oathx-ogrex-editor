@@ -48,3 +48,8 @@ void		BankerManager::Unlock()
 	if (m_wApplyCount < 0)
 		m_wApplyCount = 0;
 }
+
+void		BankerManager::Clear()
+{
+	m_wApplyCount = 0;
+}

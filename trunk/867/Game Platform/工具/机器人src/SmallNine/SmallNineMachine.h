@@ -37,5 +37,8 @@ protected:
 	INT64					m_nApplyBankerCondition;
 	BOOL					m_bStart;
 	BOOL					m_bApplyBankerSend;
+
+	INT64					m_nMePlaceScore;
+	INT64					m_nMeWinScore;
 };
 
