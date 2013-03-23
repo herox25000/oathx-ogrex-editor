@@ -514,14 +514,14 @@ int CALLBACK CUserListView::SortFun(LPARAM lParam1, LPARAM lParam2, LPARAM lPara
 		return -1;
 	if (pUserData2->dwUserID==GlobalInfo.dwUserID) 
 		return 1;
-	//管理员置顶
-	if (pUserData1->cbMasterOrder!=pUserData2->cbMasterOrder)
-	{
-		if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) 
-			return -1;
-		else
-			return 1;
-	}
+	////管理员置顶
+	//if (pUserData1->cbMasterOrder!=pUserData2->cbMasterOrder)
+	//{
+	//	if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) 
+	//		return -1;
+	//	else
+	//		return 1;
+	//}
 	//会员置顶
 	if (pUserData1->cbMemberOrder!=pUserData2->cbMemberOrder)
 	{
@@ -550,14 +550,14 @@ int CALLBACK CUserListView::SortFun(LPARAM lParam1, LPARAM lParam2, LPARAM lPara
 		}
 	case DTP_USER_ACCOUNTS:
 		{
-			//管理员置顶
-			if (pUserData1->cbMasterOrder!=pUserData2->cbMasterOrder)
-			{
-				if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) 
-					return -1;
-				else
-					return 1;
-			}
+			////管理员置顶
+			//if (pUserData1->cbMasterOrder!=pUserData2->cbMasterOrder)
+			//{
+			//	if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) 
+			//		return -1;
+			//	else
+			//		return 1;
+			//}
 
 			//好友放置顶
 			BYTE cbConnection1=pUserData1->cbCompanion;
