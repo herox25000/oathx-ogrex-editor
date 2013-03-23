@@ -100,6 +100,7 @@ void CBankStorage::OnBnClickedOk()
 		CopyMemory(BankGetGold.szPassword,szPassword,sizeof(BankGetGold.szPassword));
 
 		SendData(MDM_GF_BANK, SUB_GF_BANK_GET, &BankGetGold, sizeof(BankGetGold));
+		OnCancel();
 	}
 	else
 	{
@@ -110,6 +111,7 @@ void CBankStorage::OnBnClickedOk()
 		CopyMemory(BankStorage.szPassword,szPassword,sizeof(BankStorage.szPassword));
 
 		SendData(MDM_GF_BANK, SUB_GF_BANK_STORAGE, &BankStorage, sizeof(BankStorage));
+		OnCancel();
 	}
 
 	return;
