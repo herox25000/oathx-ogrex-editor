@@ -20,6 +20,8 @@ public:
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL,
 		WORD wDataSize=0);
 
+	virtual bool			SendApplyBanker(BOOL bUp);
+
 	virtual	void			ResetGame();
 
 	virtual INT64			GetRandScore();
@@ -33,5 +35,7 @@ protected:
 
 	INT64					m_nBankerScore;
 	WORD					m_wUpBankerCount;
+	INT64					m_nApplyBankerCondition;
+	BOOL					m_bStart;
 };
 

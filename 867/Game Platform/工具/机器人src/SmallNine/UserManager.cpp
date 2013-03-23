@@ -7,7 +7,7 @@ UserManager::UserManager(void)
 
 UserManager::~UserManager(void)
 {
-	ClearUp();
+	
 }
 
 BOOL		UserManager::AddUser(SUserInfo* pUser)
