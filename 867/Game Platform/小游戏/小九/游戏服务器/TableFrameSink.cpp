@@ -346,11 +346,12 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			DWORD dwPassTime=(DWORD)time(NULL)-m_dwJettonTime;
 			StatusFree.cbTimeLeave=(BYTE)(TIME_PLACE_JETTON-__min(dwPassTime,TIME_PLACE_JETTON));
 
+			//发送申请者
+			SendApplyUser(  pIServerUserItem );
+
 			//发送场景
 			bool bSuccess = m_pITableFrame->SendGameScene(pIServerUserItem,&StatusFree,sizeof(StatusFree));
 			
-			//发送申请者
-			SendApplyUser(  pIServerUserItem );
 
 			return bSuccess;
 		}
@@ -738,9 +739,12 @@ bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApp
 		ApplyBanker.lScore = pUserData->UserScoreInfo.lScore;
 		ApplyBanker.bApplyBanker = false;
 
-		//发送消息
-		m_pITableFrame->SendTableData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
-		m_pITableFrame->SendLookonData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
+		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(pUserData->dwUserID);
+		if (pIServerUserItem)
+		{
+			//发送消息
+			m_pITableFrame->SendUserData( pIServerUserItem, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );		
+		}
 		return true;
 	}
 
