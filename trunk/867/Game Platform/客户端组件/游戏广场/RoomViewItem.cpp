@@ -2570,6 +2570,7 @@ bool CRoomViewItem::OnSocketMainUser(CMD_Command Command, void * pData, WORD wDa
 	{
 	case SUB_GR_USER_COME:			//用户进入
 		{
+
 			return OnSocketSubUserCome(Command,pData,wDataSize);
 		}
 	case SUB_GR_USER_STATUS:		//用户状态
@@ -3120,6 +3121,8 @@ bool CRoomViewItem::OnSocketMainGameFrame(CMD_Command Command, void * pData, WOR
 //用户进入
 bool CRoomViewItem::OnSocketSubUserCome(CMD_Command Command, void * pData, WORD wDataSize)
 {
+	try
+	{
 	//效验参数
 	ASSERT(Command.wMainCmdID==MDM_GR_USER);
 	ASSERT(Command.wSubCmdID==SUB_GR_USER_COME);
@@ -3297,6 +3300,13 @@ bool CRoomViewItem::OnSocketSubUserCome(CMD_Command Command, void * pData, WORD 
 	//更新人数
 	DWORD dwOnLineCount=m_ClientUserManager.GetOnLineCount();
 	g_GlobalUnits.m_ServerListManager.UpdateGameServerOnLine(m_pListServer,dwOnLineCount);
+	}
+catch(...)
+{
+#ifdef _DEBUG
+	OutputDebugString("处理SUB_GR_USER_COME 消息异常 \r\n");
+#endif
+}
 
 	return true;
 }

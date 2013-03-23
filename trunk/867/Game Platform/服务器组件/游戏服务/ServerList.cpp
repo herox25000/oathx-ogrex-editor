@@ -314,7 +314,8 @@ bool __cdecl CServerList::SendGameTypeList(DWORD dwSocketID)
 		CopyMemory(m_cbSendBuffer+wSendSize,pGameType,sizeof(tagGameType));
 		wSendSize+=sizeof(tagGameType);
 	}
-	if (wSendSize>0) m_pITCPNetworkEngine->SendData(dwSocketID,MDM_GP_SERVER_LIST,SUB_GP_LIST_TYPE,m_cbSendBuffer,wSendSize);
+	if (wSendSize>0) 
+		m_pITCPNetworkEngine->SendData(dwSocketID,MDM_GP_SERVER_LIST,SUB_GP_LIST_TYPE,m_cbSendBuffer,wSendSize);
 
 	return true;
 }
@@ -450,7 +451,8 @@ bool __cdecl CServerList::SendGameServerList(DWORD dwSocketID, WORD wKindID)
 			wSendSize+=sizeof(tagGameServer);
 		}
 	}
-	if (wSendSize>0) m_pITCPNetworkEngine->SendData(dwSocketID,MDM_GP_SERVER_LIST,SUB_GP_LIST_SERVER,m_cbSendBuffer,wSendSize);
+	if (wSendSize>0)
+		m_pITCPNetworkEngine->SendData(dwSocketID,MDM_GP_SERVER_LIST,SUB_GP_LIST_SERVER,m_cbSendBuffer,wSendSize);
 	m_pITCPNetworkEngine->SendData(dwSocketID,MDM_GP_SERVER_LIST,SUB_GP_LIST_FINISH);
 
 	return true;
