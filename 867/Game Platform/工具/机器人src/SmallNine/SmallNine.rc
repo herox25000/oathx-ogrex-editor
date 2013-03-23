@@ -112,7 +112,8 @@ BEGIN
     EDITTEXT        IDC_EDIT8,269,39,36,15,ES_AUTOHSCROLL | ES_NUMBER
     LTEXT           "Deque£º",IDC_STATIC,239,41,28,12
     CONTROL         "",IDC_RICHEDIT21,"RichEdit20A",ES_MULTILINE | 
-                    ES_AUTOHSCROLL | WS_BORDER | WS_TABSTOP,8,166,304,100
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_BORDER | WS_VSCROLL | 
+                    WS_TABSTOP,8,159,304,107
     GROUPBOX        "Robto Config",IDC_STATIC,7,67,305,89
     RTEXT           "MaxPlaceTime£º",IDC_STATIC,15,93,50,10
     RTEXT           "MinPlaceTime£º",IDC_STATIC,15,80,50,10

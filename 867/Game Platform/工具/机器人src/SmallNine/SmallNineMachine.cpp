@@ -17,7 +17,6 @@ SmallNineMachine::~SmallNineMachine(void)
 void			SmallNineMachine::ResetGame()
 {
 	m_wCurBanker			= INVALID_CHAIR;
-	m_bMeBanker				= FALSE;
 	m_nMeMaxScore			= 0;
 	m_wUpBankerCount		= 0;
 	m_fElapsedTime			= 0;
@@ -39,8 +38,11 @@ bool			SmallNineMachine::SendApplyBanker(BOOL bUp)
 
 	if (bUp)
 	{
-		if (nReqBanker < config.wUpBankerDeque && m_nMeMaxScore >= m_nApplyBankerCondition)
+		int nApplyBankerCount	= BankerManager::GetSingleton().GetLockCount();
+		if ((nReqBanker + nApplyBankerCount) < config.wUpBankerDeque  && m_nMeMaxScore >= m_nApplyBankerCondition)
 		{
+			BankerManager::GetSingleton().Lock();
+
 			// ÉêÇë×ø×¯
 			CMD_C_ApplyBanker req;
 			req.bApplyBanker	= true;
@@ -230,18 +232,10 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 					{
 						if (pUserInfo->dwUserID != m_dwUserID)
 						{
-							m_bAddJetton = TRUE;
-
 							SendApplyBanker(TRUE);
+
+							m_bAddJetton = TRUE;
 						}
-					}
-				}
-				else
-				{
-					SUserInfo* pUserInfo = BankerManager::GetSingleton().Search(m_dwUserID);
-					if (!pUserInfo)
-					{
-						SendApplyBanker(TRUE);
 					}
 				}
 			}
@@ -267,6 +261,11 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				pApplyBanker->szAccount);
 			if (pUserInfo)
 			{
+				if (pUserInfo->dwUserID == m_dwUserID)
+				{
+					BankerManager::GetSingleton().Unlock();
+				}
+			
 				if (pApplyBanker->bApplyBanker)
 				{
 					BankerManager::GetSingleton().AddUser(pUserInfo);
@@ -327,6 +326,13 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 					}
 				}
 			}
+		
+			SUserInfo* pUserInfo = BankerManager::GetSingleton().Search(m_dwUserID);
+			if (!pUserInfo)
+			{
+				SendApplyBanker(TRUE);
+			}
+			
 
 			if (m_nMeMaxScore <= c.nMinScore)
 			{

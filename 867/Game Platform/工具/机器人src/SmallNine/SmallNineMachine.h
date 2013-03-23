@@ -30,12 +30,12 @@ protected:
 	double					m_fElapsedTime;
 	double					m_fAddJettonTime;
 	INT64					m_nMeMaxScore;
-	BOOL					m_bMeBanker;
 	BOOL					m_bAddJetton;
 
 	INT64					m_nBankerScore;
 	WORD					m_wUpBankerCount;
 	INT64					m_nApplyBankerCondition;
 	BOOL					m_bStart;
+	BOOL					m_bApplyBankerSend;
 };
 
