@@ -3,7 +3,7 @@
 
 // CTransDialog ¶Ô»°¿ò
 
-class CTransDialog : public CSkinDialogEx
+class CTransDialog : public CDialog
 {
 	DECLARE_DYNAMIC(CTransDialog)
 
