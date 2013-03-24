@@ -731,22 +731,7 @@ __int64 CTableFrameSink::AccountPayoffScore()
 bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApplyBanker )
 {
 	//合法判断
-	if ( bApplyBanker && pUserData->UserScoreInfo.lScore < m_lApplyBankerCondition )
-	{
-		//构造变量
-		CMD_S_ApplyBanker ApplyBanker;
-		CopyMemory( ApplyBanker.szAccount, pUserData->szAccounts, sizeof( ApplyBanker.szAccount ) );
-		ApplyBanker.lScore = pUserData->UserScoreInfo.lScore;
-		ApplyBanker.bApplyBanker = false;
-
-		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(pUserData->dwUserID);
-		if (pIServerUserItem)
-		{
-			//发送消息
-			m_pITableFrame->SendUserData( pIServerUserItem, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );		
-		}
-		return true;
-	}
+	if ( bApplyBanker && pUserData->UserScoreInfo.lScore < m_lApplyBankerCondition ) return true;
 
 	//保存玩家
 	if ( bApplyBanker )
@@ -1173,6 +1158,9 @@ void CTableFrameSink::CalculateScore()
 				lBankerWinScore -= m_lUserShunMenScore[i];
 			}
 		}
+		else if (ID_SHUN_MEN_PIN & GameScore.cbWinner)
+		{
+		}
 		else
 		{
 			lUserLostScore[i] -=m_lUserShunMenScore[i] ;
@@ -1194,6 +1182,9 @@ void CTableFrameSink::CalculateScore()
 				lBankerWinScore -= m_lUserTianMenScore[i];
 			}
 		}
+		else if (ID_TIAN_MEN_PIN & GameScore.cbWinner)
+		{
+		}
 		else
 		{
 			lUserLostScore[i] -=m_lUserTianMenScore[i] ;
@@ -1214,6 +1205,9 @@ void CTableFrameSink::CalculateScore()
 				m_lUserReturnScore[i] += m_lUserDaoMenScore[i] ;
 				lBankerWinScore -= m_lUserDaoMenScore[i];
 			}
+		}
+		else if (ID_DAO_MEN_PIN & GameScore.cbWinner)
+		{
 		}
 		else
 		{
@@ -1270,25 +1264,8 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 	CMD_S_GameScore GameScore;
 	ZeroMemory(&GameScore,sizeof(GameScore));
 
-	//计算牌点
-	BYTE cbPlayerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_PLAYER1],m_cbCardCount[INDEX_PLAYER1]);
-	BYTE cbBankerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
-
 	//推断玩家
 	DeduceWinner(GameScore.cbWinner, GameScore.cbKingWinner);
-
-	//游戏记录
-	tagServerGameRecord &GameRecord = m_GameRecordArrary[m_nRecordLast];
-	GameRecord.cbBankerCount = cbBankerCount;
-	GameRecord.cbPlayerCount = cbPlayerCount;
-	GameRecord.lBankerScore = m_lDaoMenScore;
-	GameRecord.lPlayerScore = m_lShunMenScore;
-	GameRecord.lTieScore = m_lTianMenScore;
-	GameRecord.wWinner = GameScore.cbWinner;
-
-	//移动下标
-	m_nRecordLast = (m_nRecordLast+1) % MAX_SCORE_HISTORY;
-	if ( m_nRecordLast == m_nRecordFirst ) m_nRecordFirst = (m_nRecordFirst+1) % MAX_SCORE_HISTORY;
 
 	//庄家总量
 	__int64 lBankerWinScore = 0;
@@ -1343,6 +1320,10 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 				lBankerWinScore -= m_lUserShunMenScore[i];
 			}
 		}
+		else if (ID_SHUN_MEN_PIN & GameScore.cbWinner)
+		{
+
+		}
 		else
 		{
 			lUserLostScore[i] -=m_lUserShunMenScore[i] ;
@@ -1364,6 +1345,10 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 				lBankerWinScore -= m_lUserTianMenScore[i];
 			}
 		}
+		else if (ID_TIAN_MEN_PIN & GameScore.cbWinner)
+		{
+
+		}
 		else
 		{
 			lUserLostScore[i] -=m_lUserTianMenScore[i] ;
@@ -1384,6 +1369,10 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 				m_lUserReturnScore[i] += m_lUserDaoMenScore[i] ;
 				lBankerWinScore -= m_lUserDaoMenScore[i];
 			}
+		}
+		else if (ID_DAO_MEN_PIN & GameScore.cbWinner)
+		{
+
 		}
 		else
 		{
@@ -1422,10 +1411,17 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 
 	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER1],2,bTongdian))
 	{	
-		if(bChaoguo && bTongdian)
-			cbWinner|=ID_SHUN_MEN_PIN;
+		if (bTongdian)
+		{
+			if (bChaoguo)
+				cbWinner = (cbWinner & ~ID_SHUN_MEN);
+			else
+				cbWinner = (cbWinner |= ID_SHUN_MEN_PIN);
+		}	
 		else
+		{
 			cbWinner = (cbWinner & ~ID_SHUN_MEN);
+		}
 	}
 	else
 	{
@@ -1434,10 +1430,17 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 
 	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER2],2,bTongdian))
 	{
-		if(bChaoguo && bTongdian)
-			cbWinner|=ID_TIAN_MEN_PIN;
+		if (bTongdian)
+		{
+			if (bChaoguo)
+				cbWinner = (cbWinner & ~ID_TIAN_MEN);
+			else
+				cbWinner |= ID_TIAN_MEN_PIN;
+		}
 		else
+		{
 			cbWinner = (cbWinner & ~ID_TIAN_MEN);
+		}
 	}
 	else
 	{
@@ -1445,10 +1448,17 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 	}
 	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER3],2,bTongdian))
 	{
-		if(bChaoguo && bTongdian)
-			cbWinner|=ID_DAO_MEN_PIN;
+		if(bTongdian)
+		{
+			if (bChaoguo)
+				cbWinner = (cbWinner & ~ID_DAO_MEN);
+			else
+				cbWinner|=ID_DAO_MEN_PIN;
+		}
 		else
+		{
 			cbWinner = (cbWinner & ~ID_DAO_MEN);
+		}
 	}
 	else
 	{

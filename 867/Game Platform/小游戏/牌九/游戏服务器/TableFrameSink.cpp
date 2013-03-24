@@ -1348,25 +1348,8 @@ __int64 CTableFrameSink::PreCalculateBankerWin()
 	CMD_S_GameScore GameScore;
 	ZeroMemory(&GameScore,sizeof(GameScore));
 
-	//计算牌点
-	BYTE cbPlayerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_PLAYER1],m_cbCardCount[INDEX_PLAYER1]);
-	BYTE cbBankerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
-
 	//推断玩家
 	DeduceWinner(GameScore.cbWinner, GameScore.cbKingWinner);
-
-	//游戏记录
-	tagServerGameRecord &GameRecord = m_GameRecordArrary[m_nRecordLast];
-	GameRecord.cbBankerCount = cbBankerCount;
-	GameRecord.cbPlayerCount = cbPlayerCount;
-	GameRecord.lBankerScore = m_lDaoMenScore;
-	GameRecord.lPlayerScore = m_lShunMenScore;
-	GameRecord.lTieScore = m_lTianMenScore;
-	GameRecord.wWinner = GameScore.cbWinner;
-
-	//移动下标
-	m_nRecordLast = (m_nRecordLast+1) % MAX_SCORE_HISTORY;
-	if ( m_nRecordLast == m_nRecordFirst ) m_nRecordFirst = (m_nRecordFirst+1) % MAX_SCORE_HISTORY;
 
 	//庄家总量
 	__int64 lBankerWinScore = 0;

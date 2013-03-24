@@ -1354,9 +1354,6 @@ void CTableFrameSink::ChuLaoQian()
 
 __int64 CTableFrameSink::PreCalculateBankerWin()
 {
-	BYTE cbPlayerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_PLAYER],m_cbCardCount[INDEX_PLAYER]);
-	BYTE cbBankerCount=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
-
 	//ÍÆ¶ÏÍæ¼Ò
 	BYTE cbWinner;
 	BYTE cbKingWinner;

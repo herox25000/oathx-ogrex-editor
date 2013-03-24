@@ -1509,9 +1509,9 @@ void CGameClientView::DrawWinFlags(CDC * pDC)
 
 		if(ClientGameRecord.enOperateFlags == enOperateResult_NULL)
 		{// 自己没有押注的时候
-			int nCount=0;	
 			for(WORD i=ID_SHUN_MEN; i<=ID_DAO_MEN ;i*=2)
 			{
+				int nCount=0;	
 				switch(i)
 				{
 				case ID_SHUN_MEN:
@@ -1539,7 +1539,6 @@ void CGameClientView::DrawWinFlags(CDC * pDC)
 					m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
 						m_ImageWinFlags.GetHeight(),m_ImageWinFlags.GetWidth()/6 * 3, 0, RGB(255, 0, 255) );
 				}
-				nCount++;
 			}
 		}
 		else
@@ -1582,7 +1581,7 @@ void CGameClientView::DrawWinFlags(CDC * pDC)
 					if(XiaZhuScore>0)
 					{
 						m_ImageWinFlags.AlphaDrawImage( pDC, nXPos, nYPos+32*nCount, m_ImageWinFlags.GetWidth()/6 , 
-							m_ImageWinFlags.GetHeight(),0 , 0, RGB(255, 0, 255) );
+							m_ImageWinFlags.GetHeight(), 0 , 0, RGB(255, 0, 255) );
 					}
 					else
 					{
