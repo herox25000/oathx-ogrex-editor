@@ -539,8 +539,6 @@ BOOL CGameClientDlg::OnInitDialog()
 
 	SetBitmap(IDB_DlgBackground);
 	
-	//m_CloseButton.SetIcon(IDI_NO3, (int)BTNST_AUTO_GRAY);
-	//m_CloseButton.DrawBorder(FALSE);
 	m_CloseButton.SetBitmaps(IDB_BITMAP_CLOSE, RGB(0, 0, 0));
 	m_CloseButton.OffsetColor(CButtonST::BTNST_COLOR_BK_IN, 30);
 	m_CloseButton.DrawTransparent(TRUE);
@@ -548,12 +546,12 @@ BOOL CGameClientDlg::OnInitDialog()
 	CWinApp *p=AfxGetApp();
 	LPCTSTR lpszCmdLine=AfxGetApp()->m_lpCmdLine;
 
-	//ParseCommandLine(lpszCmdLine, RunCommand, (LPARAM)this);
+	ParseCommandLine(lpszCmdLine, RunCommand, (LPARAM)this);
 
 	DWORD dwServerAddr=strtoul(m_strIP, 0, 16);
 	WORD  wServerPort=(WORD)strtoul(m_strPort, 0, 10);
 
-	//m_ClientSocket->Connect( dwServerAddr, wServerPort);
+	m_ClientSocket->Connect( dwServerAddr, wServerPort);
 
 	m_TipDialog.Create(IDD_CONNECTING, this);
 	m_TipDialog.ModifyStyleEx(0, WS_EX_WINDOWEDGE|WS_EX_DLGMODALFRAME);
@@ -561,7 +559,7 @@ BOOL CGameClientDlg::OnInitDialog()
 	RECT rect;
 	m_TipDialog.GetWindowRect(&rect);
 	m_TipDialog.SetWindowPos(NULL,0,0,0,0,SWP_NOSIZE|SWP_NOMOVE|SWP_NOZORDER|SWP_FRAMECHANGED);
-	//m_TipDialog.ShowWindow(SW_SHOW);
+	m_TipDialog.ShowWindow(SW_SHOW);
 
 	return TRUE;
 }
