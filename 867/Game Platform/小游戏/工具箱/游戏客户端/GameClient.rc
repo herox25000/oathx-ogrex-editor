@@ -153,10 +153,10 @@ BEGIN
     LTEXT           "取出金额：",IDC_STATIC,202,73,41,8
     LTEXT           "对方的用户名：",IDC_STATIC,14,39,57,8
     PUSHBUTTON      "",IDC_BUTTON2,349,0,20,17
-    LTEXT           "静态",IDC_EDIT11,72,128,80,11
-    LTEXT           "静态",IDC_EDIT12,71,149,81,11
-    LTEXT           "静态",IDC_EDIT13,252,128,103,11
-    LTEXT           "静态",IDC_EDIT14,251,149,104,11
+    LTEXT           "",IDC_EDIT11,72,128,80,11
+    LTEXT           "",IDC_EDIT12,71,149,81,11
+    LTEXT           "",IDC_EDIT13,252,128,103,11
+    LTEXT           "",IDC_EDIT14,251,149,104,11
 END
 
 IDD_CONNECTING DIALOGEX 0, 0, 246, 46
