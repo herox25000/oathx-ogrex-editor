@@ -2,8 +2,6 @@
 #define USER_INFO_VIEW_HEAD_FILE
 
 #pragma once
-
-#include "StdAfx.h"
 #include "GameFrame.h"
 
 //////////////////////////////////////////////////////////////////////////

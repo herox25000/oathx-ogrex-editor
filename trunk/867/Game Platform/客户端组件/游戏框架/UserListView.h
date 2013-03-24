@@ -2,8 +2,8 @@
 #define USER_LIST_VIEW_HEAD_FILE
 
 #pragma once
-
 #include "GameFrame.h"
+#include "ClientKernel.h"
 
 //宏定义
 #define	MAX_COLUMN						32									//最大列数
@@ -18,7 +18,7 @@ public:
 	WORD								m_wGameGenre;						//游戏类型
 	WORD								m_wKindID;							//类型标识
 	CGameRankManagerHelper				m_GameRankManagerHelper;			//游戏等级
-
+	IClientKernel *						m_pIClientKernel;					//内核接口
 	//资源变量
 protected:
 	static CImageList					m_StatusImage;						//状态位图
@@ -28,7 +28,6 @@ protected:
 	BYTE								m_cbAscendSort;						//升序标志
 	WORD								m_wColumnCount;						//列表数目
 	WORD								m_wDataDescribe[MAX_COLUMN];		//数据描述
-
 	//函数定义
 public:
 	//构造函数
@@ -46,7 +45,8 @@ public:
 	bool UpdateUserItem(tagUserData * pUserData);
 	//删除用户
 	bool DeleteUserItem(tagUserData * pUserData);
-
+	//设置内核
+	void SetClientKernel(IClientKernel *pIClientKernel){m_pIClientKernel = pIClientKernel;}
 	//重载函数
 public:
 	//绘画函数
@@ -69,7 +69,7 @@ protected:
 protected:
 	//点击列表
 	afx_msg void OnColumnclick(NMHDR * pNMHDR, LRESULT * pResult);
-
+	bool UpdataUserList();
 	DECLARE_MESSAGE_MAP()
 };
 

@@ -316,7 +316,7 @@ void CGameFrameControl::SetClientKernel(IClientKernel * pIClientKernel)
 {
 	m_pIClientKernel=pIClientKernel;
 	m_UserInfoView.SetClientKernel(m_pIClientKernel);
-
+	m_UserListView.SetClientKernel(m_pIClientKernel);
 	return;
 }
 
