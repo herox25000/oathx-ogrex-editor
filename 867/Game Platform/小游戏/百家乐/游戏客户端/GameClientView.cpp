@@ -526,7 +526,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 
 			//×¯¼Ò×Ü·Ö
 			CString strBankerTotalScore;
-			strBankerTotalScore.Format( "%d", pUserData->lScore );
+			strBankerTotalScore.Format( "%I64d", pUserData->lScore );
 			StrRect.left = nWidth/2-85;
 			StrRect.top = nHeight/2 - 316;
 			StrRect.right = StrRect.left + 190;
