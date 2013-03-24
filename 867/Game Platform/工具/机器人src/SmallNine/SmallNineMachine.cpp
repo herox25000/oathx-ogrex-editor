@@ -4,7 +4,8 @@
 #include "RobotTimer.h"
 #include "BankerManager.h"
 
-SmallNineMachine::SmallNineMachine(DWORD dwUserID) : IRobot(dwUserID)
+SmallNineMachine::SmallNineMachine(DWORD dwUserID) 
+	: IRobot(dwUserID), m_fOnlineTime(0), m_fCurOnlineTime(0)
 {
 	ResetGame();
 }
@@ -23,14 +24,19 @@ void			SmallNineMachine::ResetGame()
 	m_fAddJettonTime		= RobotTimer::rdft(1, 3);
 	m_bAddJetton			= FALSE;
 	m_nApplyBankerCondition	= 0;
-	m_bStart				= FALSE;
+	m_bStart				= 0;
 	m_nMePlaceScore			= 0;
 	m_nMeWinScore			= 0;
 }
 
-bool			SmallNineMachine::SendApplyBanker(BOOL bUp)
+void			SmallNineMachine::SetOnlineTime(double fOnlineTime)
 {
-	if (m_bStart == FALSE)
+	m_fOnlineTime = fOnlineTime;
+}
+
+bool			SmallNineMachine::SendApplyBanker(bool bUp)
+{
+	if (m_bStart == false)
 		return 0;
 
 	// 获取庄配置
@@ -179,10 +185,42 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 void			SmallNineMachine::OnUpdate(float fElapsed)
 {
 	// 获取庄配置
-	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();	
+	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();
+	
+	// 判断机器人当前在线时间
+	m_fCurOnlineTime += fElapsed;
+	if ((m_fCurOnlineTime / 60) >= m_fOnlineTime)
+	{
+		// 检查当前机器人是否是庄
+		if (m_wCurBanker != INVALID_CHAIR)
+		{
+			tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
+			if (pUserInfo)
+			{
+				// 如果自己是庄，但是已到在线时间，那么重新随机在线时间
+				if (pUserInfo->dwUserID == m_dwUserID || BankerManager::GetSingleton().Search(m_dwUserID))
+				{
+					m_fOnlineTime	= RobotTimer::rdft(config.fMinOnlineTime / 2, config.fMaxPlaceTime / 2);
+					m_fCurOnlineTime= 0;
+				}
+				else
+				{
+					// 当前玩家没有下分
+					if (m_nMePlaceScore <= 0)
+					{
+						CString szMessage;
+						szMessage.Format("Robot[%d] Has arrived online time, offline", pUserInfo->dwUserID);
+						ShowMessageBox(szMessage, TraceLevel_Debug);
+
+						SetState(ROBOT_INVALID);
+					}
+				}
+			}
+		}
+	}
 
 	// 更新加注信息
-	if ( m_bAddJetton )
+	if ( m_bAddJetton && m_wCurBanker != INVALID_CHAIR)
 	{
 		m_fElapsedTime		+= fElapsed;
 		
@@ -241,10 +279,13 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 					tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
 					if (pUserInfo)
 					{
+						// 如果当前庄不是自己
 						if (pUserInfo->dwUserID != m_dwUserID)
 						{
-							SendApplyBanker(TRUE);
+							// 强制申请上祖昂
+							SendApplyBanker(true);
 
+							// 设置押注启动
 							m_bAddJetton = TRUE;
 						}
 					}
@@ -277,6 +318,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 					BankerManager::GetSingleton().Unlock();
 				}
 			
+				// 处理上庄队列
 				if (pApplyBanker->bApplyBanker)
 				{
 					BankerManager::GetSingleton().AddUser(pUserInfo);
@@ -330,29 +372,36 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 						// 增加上庄次数
 						m_wUpBankerCount ++;
 
-						if (m_wUpBankerCount >= c.wUpBankerCount)
+						// 如果上庄次数大于了随机值就请求下庄, 默认情况下机器人每次上庄最少都会做两次庄
+						if (m_wUpBankerCount >= RobotTimer::rdit(1, c.wUpBankerCount > 1 ? c.wUpBankerCount : 1))
 						{
-							SendApplyBanker(FALSE);
+							SendApplyBanker(false);
 						}
 					}
 				}
 			}
 		
+			// 每局游戏结束后，查询当前排庄队列中是有自己，若没有则申请上庄
 			SUserInfo* pUserInfo = BankerManager::GetSingleton().Search(m_dwUserID);
 			if (!pUserInfo)
 			{
-				SendApplyBanker(TRUE);
+				SendApplyBanker(true);
 			}
 			
 			// 重置机器人当前压的钱
 			m_nMePlaceScore			= 0;
-
+			
+			// 若机器人的金钱少于最小积分
 			if (m_nMeMaxScore <= c.nMinScore)
 			{
-				CString szMessage;
-				szMessage.Format("Robot[%d] 金币少于%I64 自动下线", m_dwUserID, c.nMinScore);
-				ShowMessageBox(szMessage, TraceLevel_Warning);
+				// 移除排庄队列中的自己
+				BankerManager::GetSingleton().Remove(m_dwUserID);
 
+				CString szMessage;
+				szMessage.Format("Robot[%d] Gold less than %I64 automatic logoff", m_dwUserID, c.nMinScore);
+				ShowMessageBox(szMessage, TraceLevel_Warning);
+				
+				// 设置机器人断线
 				SetState(ROBOT_INVALID);
 			}
 		}

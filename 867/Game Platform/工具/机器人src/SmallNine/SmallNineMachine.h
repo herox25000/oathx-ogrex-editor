@@ -20,13 +20,15 @@ public:
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL,
 		WORD wDataSize=0);
 
-	virtual bool			SendApplyBanker(BOOL bUp);
-
+public:
+	virtual bool			SendApplyBanker(bool bUp);
 	virtual	void			ResetGame();
-
 	virtual INT64			GetRandScore();
+	virtual void			SetOnlineTime(double fOnlineTime);
 protected:
 	WORD					m_wCurBanker;
+	double					m_fOnlineTime;
+	double					m_fCurOnlineTime;
 	double					m_fElapsedTime;
 	double					m_fAddJettonTime;
 	INT64					m_nMeMaxScore;

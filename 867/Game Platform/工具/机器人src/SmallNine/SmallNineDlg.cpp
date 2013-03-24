@@ -84,6 +84,8 @@ BEGIN_MESSAGE_MAP(CSmallNineDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT17, OnEnChangeEdit17)
 	ON_EN_CHANGE(IDC_EDIT18, OnEnChangeEdit18)
 	ON_EN_CHANGE(IDC_EDIT19, OnEnChangeEdit19)
+	ON_EN_CHANGE(IDC_EDIT20, OnEnChangeEdit20)
+	ON_EN_CHANGE(IDC_EDIT21, OnEnChangeEdit21)
 END_MESSAGE_MAP()
 
 
@@ -130,6 +132,10 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT17,	"10");
 	SetDlgItemText(IDC_EDIT18,	"10");
 	SetDlgItemText(IDC_EDIT19,	"20");
+
+	SetDlgItemText(IDC_EDIT20,	"1");
+	SetDlgItemText(IDC_EDIT21,	"3");
+
 	return TRUE;
 }
 
@@ -221,6 +227,9 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 								);
 							if (pMachine)
 							{
+								pMachine->SetOnlineTime(RobotTimer::rdft(m_AppConfig.fMinOnlineTime, 
+									m_AppConfig.fMaxOnlineTime));
+								
 								if (pMachine->Start(m_ipAddress, m_wPort, m_md5))
 								{
 									RobotManager::GetSingleton().AddRobot(pMachine);
@@ -305,6 +314,11 @@ void CSmallNineDlg::OnBnClickedOk()
 		m_AppConfig.nTenLakhRate	= atoi(buffer.GetBuffer());	
 		GetDlgItemText(IDC_EDIT18, buffer);
 		m_AppConfig.nPlaceMaxRate	= atoi(buffer.GetBuffer());	
+
+		GetDlgItemText(IDC_EDIT20, buffer);
+		m_AppConfig.fMinOnlineTime	= atof(buffer.GetBuffer());	
+		GetDlgItemText(IDC_EDIT21, buffer);
+		m_AppConfig.fMaxOnlineTime	= atof(buffer.GetBuffer());	
 
 		RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 
@@ -451,4 +465,20 @@ void CSmallNineDlg::OnEnChangeEdit19()
 	CString buffer;
 	GetDlgItemText(IDC_EDIT19, buffer);
 	m_dwMaxCount= atoi(buffer.GetBuffer());
+}
+
+void CSmallNineDlg::OnEnChangeEdit20()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT20, buffer);
+	m_AppConfig.fMinPlaceTime	= atoi(buffer.GetBuffer());	
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit21()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT21, buffer);
+	m_AppConfig.fMaxOnlineTime	= atoi(buffer.GetBuffer());	
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
