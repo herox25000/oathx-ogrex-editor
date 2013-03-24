@@ -19,6 +19,9 @@ typedef struct tagBankerConfig
 	WORD							nTenLakhRate;
 	WORD							nPlaceMaxRate;
 
+	double							fMinOnlineTime;
+	double							fMaxOnlineTime;
+
 }SBankerConfig;
 
 class RobotManager
