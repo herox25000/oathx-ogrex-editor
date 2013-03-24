@@ -197,6 +197,10 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineRequest(WORD wRequestID, DWORD dwCon
 		{
 			return OnRequestBankTask(dwContextID,pData,wDataSize);
 		}
+	case DBR_GR_QUERYUSERNAME:
+		{
+			return OnRequsetQueryUserName(dwContextID,pData,wDataSize);
+		}
 	}
 
 	return false;
@@ -1607,5 +1611,46 @@ bool CDataBaseSink::OnRequestBankTask(DWORD dwContextID, VOID * pData, WORD wDat
 	}
 	return true;
 }
+
+//查询用户名
+bool CDataBaseSink::OnRequsetQueryUserName(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	try
+	{
+		//效验参数
+		ASSERT(wDataSize==sizeof(DBR_GR_Query_UserName));
+		if (wDataSize!=sizeof(DBR_GR_Query_UserName)) return false;
+		//执行查询
+		DBR_GR_Query_UserName * QuserName=(DBR_GR_Query_UserName *)pData;
+
+		//执行存储过程
+		m_AccountsDBModule->ClearParameters();
+		m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
+		m_AccountsDBModule->AddParameter(TEXT("@dwGameID"),adInteger,adParamInput,sizeof(long),_variant_t((long)QuserName->lGameID));
+		m_AccountsDBModule->ExecuteProcess("GSP_GP_QueryUserName",true);
+		LONG lReturn=m_AccountsDBModule->GetReturnValue();
+		QuserName->lErrorCode=lReturn;
+		if ( lReturn==0 )
+		{
+			m_AccountsDBModule->GetFieldValue(TEXT("UserName"), QuserName->szUserName,sizeof(QuserName->szUserName));
+		}
+		else
+		{
+			m_AccountsDBModule->GetFieldValue(TEXT("@ErrorDescribe"), QuserName->szErrorDescribe, sizeof(QuserName->szErrorDescribe) );
+		}
+
+		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_QUERYUSERNAME_OUT,
+			dwContextID , QuserName, sizeof(DBR_GR_Query_UserName));
+		return true;
+	}
+	catch (IDataBaseException * pIException)
+	{
+		//错误信息
+		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
+		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
+	}
+	return true;
+}
+
 
 //////////////////////////////////////////////////////////////////////////

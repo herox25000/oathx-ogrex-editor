@@ -988,6 +988,10 @@ bool __cdecl CAttemperEngineSink::OnEventDataBase(WORD wRequestID, DWORD dwConte
 		{
 			return OnDBBankTaskOver(dwContextID,pData,wDataSize);
 		}
+	case DBR_GR_QUERYUSERNAME_OUT:
+		{
+			return OnQueryUserNameOver(dwContextID,pData,wDataSize);
+		}
 	}
 
 	return false;
@@ -3987,6 +3991,27 @@ bool CAttemperEngineSink::OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD
 		}
 	}
 	return true;
+}
+
+//
+bool CAttemperEngineSink::OnQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	//发送消息
+	DBR_GR_Query_UserName * pQname=(DBR_GR_Query_UserName *)pData;
+	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pQname->UserID);
+	if (pIServerUserItem==NULL) 
+		return false;
+	//构造消息
+	CMD_GF_QUERY_USERNAME_RET cmd;
+	ZeroMemory(&cmd, sizeof(CMD_GF_BankTask_Out));
+	cmd.lGameID=pQname->lGameID;
+	cmd.lErrorCode=pQname->lErrorCode;
+	lstrcpyn(cmd.UserNmae, pQname->szUserName, CountArray(cmd.UserNmae));
+	lstrcpyn(cmd.szErrorDescribe, pQname->szErrorDescribe, CountArray(cmd.szErrorDescribe));
+
+	//游戏玩家
+	return	this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_QUERY_USERNAME_RET, &cmd, sizeof(CMD_GF_QUERY_USERNAME_RET));
+
 }
 
 

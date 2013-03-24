@@ -44,7 +44,7 @@ struct tagDataBaseSinkParameter
 #define DBR_GR_MODIFY_BANK_PASSWORD		20								//修改银行密码
 #define DBR_GR_MODIFY_NICKNAME   		21								//修改昵称
 #define DBR_GR_BANK_TASK				22								//存取钱操作
-
+#define DBR_GR_QUERYUSERNAME			23
 //数据库输出标识
 #define DBR_GR_LOGON_SUCCESS			100								//登录成功
 #define DBR_GR_LOGON_ERROR				101								//登录失败
@@ -62,7 +62,7 @@ struct tagDataBaseSinkParameter
 #define DBR_GR_MODIFY_BANK_PASSWORD_OUT		115							//修改银行密码
 #define DBR_GR_MODIFY_NICKNAME_OUT   		116							//修改昵称
 #define DBR_GR_BANK_TASK_OUT				117							//存取钱操作
-
+#define DBR_GR_QUERYUSERNAME_OUT			118
 //赠送鲜花
 struct DBR_GR_SendGift
 {
@@ -387,6 +387,16 @@ struct DBR_GR_BankTask
 	LONG								lErrorCode;
 };
 
+//查询用户名
+struct DBR_GR_Query_UserName
+{
+	long			UserID;
+	long			lGameID;
+	TCHAR			szUserName[NAME_LEN];
+	TCHAR			szErrorDescribe[256];
+	LONG			lErrorCode;
+};
+
 //////////////////////////////////////////////////////////////////////////
 
 //数据库引擎钩子
@@ -484,7 +494,8 @@ private:
 	bool OnRequestModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存取钱操作
 	bool OnRequestBankTask(DWORD dwContextID, VOID * pData, WORD wDataSize);
-
+	//查询用户名
+	bool OnRequsetQueryUserName(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存储过程
 protected:
 	//I D 存储过程
