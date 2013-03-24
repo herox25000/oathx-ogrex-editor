@@ -444,7 +444,7 @@ void CGameClientDlg::OnTransferMoney()
 	_snprintf(szText, sizeof(szText), "请再次确认您的转账操作，是否输入正确:\n\n\n账户名：        %s\n金额：          %s两",
 		strUser, GetString(sfMoeny));
 
-	if ( MessageBox(szText, "工具箱",MB_YESNO|MB_ICONINFORMATION)==IDNO)
+	if ( MessageBox(szText, "银行转账",MB_YESNO|MB_ICONINFORMATION)==IDNO)
 		return;
 
 	CMD_Transfer_Money cmd;
