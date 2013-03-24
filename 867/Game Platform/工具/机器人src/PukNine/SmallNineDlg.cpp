@@ -130,7 +130,7 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT9,	"5");
 	SetDlgItemText(IDC_EDIT10,	"1");
 	SetDlgItemText(IDC_EDIT11,	"30000000");
-	SetDlgItemText(IDC_EDIT12,	"10000000");
+	SetDlgItemText(IDC_EDIT12,	"100000");
 
 	SetDlgItemText(IDC_EDIT13,	"1");
 	SetDlgItemText(IDC_EDIT14,	"2");
