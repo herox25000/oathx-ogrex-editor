@@ -961,22 +961,20 @@ bool CGameClientDlg::OnSocketMainFrame(CMD_Command Command, void * pBuffer, WORD
 
 			return true;
 		}
-		//SUB_GF_QUERY_USERNAME_RET   
-		//struct CMD_GF_QUERY_USERNAME_RET
-		//{
-		//	long lGameID；
-		//		char UserNmae[32];
-		//}
 
-	/*case SUB_GF_QUERY_USERNAME_RET:
+	case SUB_GF_QUERY_USERNAME_RET:
 		{
-			//CMD_GF_QUERY_USERNAME_RET * pMessage=(CMD_GF_QUERY_USERNAME_RET *)pBuffer;
-			if (pMessage)
+			CMD_GF_QUERY_USERNAME_RET * pMessage=(CMD_GF_QUERY_USERNAME_RET *)pBuffer;
+			if(pMessage->lErrorCode == 0)
 			{
-				SetDlgItemText(IDC_EDIT17, pMessage->UserName);
+				SetDlgItemText(IDC_EDIT17, pMessage->UserNmae);
+			}
+			else
+			{
+				MessageBox(pMessage->szErrorDescribe);
 			}
 			return true;
-		}*/
+		}
 	}
 	return true;
 }
@@ -1255,12 +1253,6 @@ void CGameClientDlg::OnBnClickedCloseButton()
 // 用户ID改变
 void CGameClientDlg::OnEnChangeUserID()
 {
-//#define		SUB_C_QUERY_USERNAME			16
-//
-//	struct CMS_QueryUserName
-//	{
-//		long lGameID;
-//	};
 	CString	buffer;
 	GetDlgItemText(IDC_EDIT19, buffer);
 
@@ -1268,8 +1260,8 @@ void CGameClientDlg::OnEnChangeUserID()
 	{
 		DWORD dwUserID = atol(buffer.GetBuffer());
 
-		//CMS_QueryUserName qu;
-		//qu.lGameID = dwUserID;
-		//m_ClientSocket->SendData(MDM_GF_FRAME, SUB_C_QUERY_USERNAME, &qu,sizeof(CMS_QueryUserName));
+		CMS_QueryUserName qu;
+		qu.lGameID = dwUserID;
+		m_ClientSocket->SendData(MDM_GF_GAME, SUB_C_QUERY_USERNAME, &qu,sizeof(CMS_QueryUserName));
 	}
 }

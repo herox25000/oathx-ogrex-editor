@@ -119,6 +119,13 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 		{
 			return m_pITableFrame->QueryTransferLog( pIServerUserItem );
 		}
+	case SUB_C_QUERY_USERNAME:
+		{//查询用户名
+			if(wDataSize != sizeof(CMS_QueryUserName)) 
+				return false;
+			CMS_QueryUserName* pQuery = (CMS_QueryUserName *)pDataBuffer;
+			return m_pITableFrame->QueryUserName(pIServerUserItem,pQuery->lGameID);
+		}
 	default:
 		return false;
 	}

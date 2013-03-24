@@ -4,7 +4,7 @@
 
 //公共宏定义-----------------------------------------------------------------------
 #define KIND_ID							1									//游戏 I D
-#define GAME_PLAYER						4									//游戏人数
+#define GAME_PLAYER						100									//游戏人数
 #define GAME_NAME						TEXT("工具箱")						//游戏名字
 #define GAME_GENRE						(GAME_GENRE_GOLD|GAME_GENRE_MATCH)  //游戏类型
 
@@ -18,6 +18,13 @@
 #define		SUB_C_BANK						13
 #define		SUB_C_TRANSFER_MONEY			14
 #define		SUB_C_QUERY_TRANSFER_LOG		15
+#define		SUB_C_QUERY_USERNAME			16
+
+//查询用户名
+struct CMS_QueryUserName
+{
+	long lGameID;
+};
 
 struct CMS_Return
 {
