@@ -147,6 +147,7 @@ struct IPC_JoinInGame
 #define SUB_GF_RESIDUAL_PROPERTY		552								//剩余道具
 #define SUB_GF_PROP_ATTRIBUTE			553								//道具属性
 #define SUB_GF_PROP_BUGLE				554								//喇叭道具
+#define SUB_GF_QUERY_USERNAME_RET		555
 
 //版本信息
 struct CMD_GF_Info
@@ -371,6 +372,13 @@ struct CMD_GF_Transfer_Log_Item
 	__int64								sfTax;
 	SYSTEMTIME							TransTime;
 	TCHAR								szIP[16];
+};
+struct CMD_GF_QUERY_USERNAME_RET
+{
+	long								lGameID;
+	char								UserNmae[NAME_LEN];
+	LONG								lErrorCode;						//是否成功
+	TCHAR								szErrorDescribe[256];			//错误说明
 };
 
 //////////////////////////////////////////////////////////////////////////
