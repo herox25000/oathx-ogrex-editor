@@ -5,6 +5,7 @@
 #include "TransDialog.h"
 #include "Nb30.h"
 #include "BitmapDialog.h"
+#include "BtnST.h"
 
 //状态信息
 struct tagAstatInfo
@@ -35,6 +36,7 @@ public:
 
 	CTransDialog	m_TransDialog;
 	CDialog			m_TipDialog;
+	CButtonST		m_CloseButton;
 public:
 	void		Msg(LPCTSTR lpszText);
 	void		ShowWaitWindow();
@@ -109,11 +111,10 @@ protected:
 	//用户分数
 	bool OnSocketMainStatus(CMD_Command Command, void * pBuffer, WORD wDataSize);
 
-	//重画消息
-	afx_msg void OnPaint();
 	DECLARE_MESSAGE_MAP()
+	afx_msg void OnBnClickedCloseButton();
 public:
-	afx_msg void OnNcPaint();
+	afx_msg void OnEnChangeUserID();
 };
 
 //////////////////////////////////////////////////////////////////////////

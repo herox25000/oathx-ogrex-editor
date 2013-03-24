@@ -136,6 +136,12 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\BCMenu.cpp">
+			</File>
+			<File
+				RelativePath=".\BtnST.cpp">
+			</File>
+			<File
 				RelativePath=".\GameClient.cpp">
 			</File>
 			<File
@@ -171,6 +177,12 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\BCMenu.h">
+			</File>
+			<File
+				RelativePath=".\BtnST.h">
+			</File>
+			<File
 				RelativePath=".\CGrapDC.h">
 			</File>
 			<File
@@ -197,6 +209,9 @@
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 			<File
+				RelativePath=".\Res\CloseBtn.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\GAME_LOGO.bmp">
 			</File>
 			<File
@@ -207,6 +222,9 @@
 			</File>
 			<File
 				RelativePath=".\res\GameClient.rc2">
+			</File>
+			<File
+				RelativePath=".\Res\No.ico">
 			</File>
 			<File
 				RelativePath=".\Res\RedPlace.bmp">
