@@ -72,7 +72,6 @@
 #define IDC_EDIT10                      1019
 #define IDC_WITHDRAW                    1020
 #define IDC_EDIT17                      1021
-#define IDC_EDIT171                     1021
 #define IDC_EDIT11                      1022
 #define IDC_EDIT12                      1023
 #define IDC_EDIT13                      1024
@@ -88,7 +87,7 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        423
+#define _APS_NEXT_RESOURCE_VALUE        424
 #define _APS_NEXT_COMMAND_VALUE         32773
 #define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           104
