@@ -156,7 +156,14 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 
 			//连接规则
 			TCHAR szRuleUrl[256]=TEXT("");
-			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.game867.com/downCenter.php?colm=7&cata=74&content=%d"),pGameKind->wKindID);
+			int nTypeID = 0;
+			if (pGameKind->wTypeID == 1)
+				nTypeID = 74;
+			else if (pGameKind->wTypeID == 2)
+				nTypeID = 9;
+			else if (pGameKind->wTypeID == 3)
+				nTypeID = 8;
+			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.game867.com/downCenter.php?colm=7&cata=%d&content=%d"),nTypeID, pGameKind->wKindID);
 			WebBrowse(szRuleUrl,true);
 
 			return;
