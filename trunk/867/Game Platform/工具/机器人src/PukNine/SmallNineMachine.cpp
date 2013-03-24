@@ -398,18 +398,18 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			m_nMePlaceScore			= 0;
 			
 			// 若机器人的金钱少于最小积分
-//			if (m_nMeMaxScore <= c.nMinScore)
-//			{
-//				// 移除排庄队列中的自己
-//				BankerManager::GetSingleton().Remove(m_dwUserID);
+			if (m_nMeMaxScore <= c.nMinScore)
+			{
+				// 移除排庄队列中的自己
+				BankerManager::GetSingleton().Remove(m_dwUserID);
 
-//				CString szMessage;
-//				szMessage.Format("Robot[%d] Gold less than %I64 automatic logoff", m_dwUserID, c.nMinScore);
-//				ShowMessageBox(szMessage, TraceLevel_Warning);
+				CString szMessage;
+				szMessage.Format("Robot[%d] Gold less than %I64 automatic logoff", m_dwUserID, c.nMinScore);
+				ShowMessageBox(szMessage, TraceLevel_Warning);
 				
 				// 设置机器人断线
-//				SetState(ROBOT_INVALID);
-//			}
+				SetState(ROBOT_INVALID);
+			}
 		}
 		break;
 	case SUB_S_SEND_RECORD:		//游戏记录
