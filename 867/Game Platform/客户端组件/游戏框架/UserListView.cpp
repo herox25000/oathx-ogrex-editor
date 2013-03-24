@@ -333,11 +333,16 @@ int CUserListView::GetImageStation(tagUserData * pUserData)
 
 	//权限对比
 	int nRightExcursion=0;
-	if (CUserRight::IsMatchUser(pUserData->dwUserRight)==true) nRightExcursion=9;
-	else if (pUserData->cbCompanion==enCompanion_Friend) nRightExcursion=1;
-	else if (pUserData->cbCompanion==enCompanion_Detest) nRightExcursion=2;
-	else if (pUserData->cbMasterOrder!=0) nRightExcursion=pUserData->cbMasterOrder+7;
-	else if (pUserData->cbMemberOrder!=0) nRightExcursion=pUserData->cbMemberOrder+2;
+	if (CUserRight::IsMatchUser(pUserData->dwUserRight)==true) 
+		nRightExcursion=9;
+	else if (pUserData->cbCompanion==enCompanion_Friend)
+		nRightExcursion=1;
+	else if (pUserData->cbCompanion==enCompanion_Detest) 
+		nRightExcursion=2;
+	else if (pUserData->cbMasterOrder!=0 && pUserData->cbMasterOrder != 10) 
+		nRightExcursion=pUserData->cbMasterOrder+7;
+	else if (pUserData->cbMemberOrder!=0) 
+		nRightExcursion=pUserData->cbMemberOrder+2;
 
 	//计算偏移
 	return nRightExcursion*6+(cbUserStatus>=US_FREE?(cbUserStatus-US_FREE):0);
