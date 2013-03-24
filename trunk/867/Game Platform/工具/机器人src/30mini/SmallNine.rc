@@ -1,0 +1,263 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\SmallNine.rc2""  // 非 Microsoft Visual C++ 编辑过的资源\r\n"
+    "#include ""afxres.rc""         // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\SmallNine.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "关于 SmallNine"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "SmallNine Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2013",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,16,WS_GROUP
+END
+
+IDD_SMALLNINE_DIALOG DIALOGEX 0, 0, 325, 308
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "Lucky30"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "Start",IDOK,217,279,47,16
+    PUSHBUTTON      "Exit",IDCANCEL,268,279,46,16
+    EDITTEXT        IDC_EDIT1,24,14,73,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,128,15,27,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,187,14,131,12,ES_AUTOHSCROLL
+    LTEXT           "IP",IDC_STATIC,10,16,10,11
+    LTEXT           "Port",IDC_STATIC,104,16,18,11
+    LTEXT           "MD5",IDC_STATIC,163,16,18,12
+    GROUPBOX        "Set Login ID",IDC_STATIC,10,270,204,30
+    LTEXT           "Start ID:",IDC_STATIC,15,285,28,9
+    EDITTEXT        IDC_EDIT4,43,283,28,13,ES_AUTOHSCROLL
+    LTEXT           "End ID:",IDC_STATIC,74,285,25,9
+    EDITTEXT        IDC_EDIT5,100,283,31,13,ES_AUTOHSCROLL
+    GROUPBOX        "Logic",IDC_STATIC,14,30,304,33
+    LTEXT           "UpBankerScore：",IDC_STATIC,12,43,56,11
+    EDITTEXT        IDC_EDIT6,69,40,52,14,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT7,187,40,48,14,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "UpBankerCount：",IDC_STATIC,126,42,58,11
+    EDITTEXT        IDC_EDIT8,269,39,36,15,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "Deque：",IDC_STATIC,239,41,28,12
+    CONTROL         "",IDC_RICHEDIT21,"RichEdit20A",ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_BORDER | WS_VSCROLL | 
+                    WS_TABSTOP,7,180,311,86
+    GROUPBOX        "Robto Config",IDC_STATIC,7,67,311,83
+    RTEXT           "MaxPlaceTime：",IDC_STATIC,15,93,50,10
+    RTEXT           "MinPlaceTime：",IDC_STATIC,15,80,50,10
+    EDITTEXT        IDC_EDIT9,69,92,45,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT10,69,79,45,12,ES_AUTOHSCROLL
+    RTEXT           "MaxWinScore：",IDC_STATIC,15,108,50,10
+    RTEXT           "MinScore：",IDC_STATIC,15,121,50,10
+    EDITTEXT        IDC_EDIT11,69,107,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT12,69,119,45,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT13,174,77,23,12,ES_AUTOHSCROLL | ES_NUMBER
+    EDITTEXT        IDC_EDIT14,174,95,23,12,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "TenMillionRate：",IDC_STATIC,118,80,55,10
+    RTEXT           "FiveMillionRate：",IDC_STATIC,119,95,55,10
+    EDITTEXT        IDC_EDIT15,174,109,23,12,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "OneMillionRate：",IDC_STATIC,119,109,55,10
+    EDITTEXT        IDC_EDIT16,174,121,23,12,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "FiveLakhRate：",IDC_STATIC,119,121,55,10
+    CTEXT           "",IDC_STATIC_COUNT,188,281,21,11
+    EDITTEXT        IDC_EDIT17,174,134,23,12,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "TenLakhRate：",IDC_STATIC,118,136,55,10
+    EDITTEXT        IDC_EDIT18,69,134,45,12,ES_AUTOHSCROLL
+    RTEXT           "PlaceRate：",IDC_STATIC,15,136,49,11
+    EDITTEXT        IDC_EDIT19,151,283,31,13,ES_AUTOHSCROLL
+    LTEXT           "Max:",IDC_STATIC,133,285,14,9
+    RTEXT           "MinOnlineTime：",IDC_STATIC,202,79,56,11
+    RTEXT           "MaxOnlineTime：",IDC_STATIC,202,95,56,11
+    EDITTEXT        IDC_EDIT20,262,77,48,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT21,262,94,48,12,ES_AUTOHSCROLL
+    GROUPBOX        "下注门",IDC_STATIC,7,150,311,28
+    LTEXT           "闲家：",IDC_STATIC,14,163,22,8
+    LTEXT           "平家：",IDC_STATIC,66,163,22,8
+    LTEXT           "庄家：",IDC_STATIC,117,163,22,8
+    LTEXT           "闲天王：",IDC_STATIC,165,163,28,8
+    LTEXT           "庄天王：",IDC_STATIC,218,163,28,8
+    LTEXT           "同点：",IDC_STATIC,272,163,22,8
+    EDITTEXT        IDC_EDIT22,35,160,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT23,86,160,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT24,137,160,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT25,191,160,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT26,244,160,25,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT27,290,160,25,14,ES_AUTOHSCROLL
+    LTEXT           "输多少下庄：",IDC_STATIC,205,111,42,8
+    EDITTEXT        IDC_EDIT28,262,108,48,14,ES_AUTOHSCROLL
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "SmallNine.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "SmallNine.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "翻译", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_SMALLNINE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 318
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 301
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 SmallNine(&A)..."
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\SmallNine.rc2"  // 非 Microsoft Visual C++ 编辑过的资源
+#include "afxres.rc"         // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
