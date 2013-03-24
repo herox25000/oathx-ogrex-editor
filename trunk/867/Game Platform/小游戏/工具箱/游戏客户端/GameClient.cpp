@@ -1,6 +1,7 @@
 #include "Stdafx.h"
 #include "GameClient.h"
 #include "GameClientDlg.h"
+#include ".\gameclient.h"
 
 //应用程序对象
 CGameClientApp theApp;
@@ -46,3 +47,6 @@ int CGameClientApp::ExitInstance()
 }
 
 //////////////////////////////////////////////////////////////////////////
+BEGIN_MESSAGE_MAP(CGameClientApp, CWinApp)
+END_MESSAGE_MAP()
+

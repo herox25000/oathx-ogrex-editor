@@ -17,8 +17,9 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CBitmapDialog)
 	ON_BN_CLICKED(IDC_WITHDRAW,OnBankWithdraw)
 	ON_BN_CLICKED(IDC_TRANSFER_MONEY,OnTransferMoney)
 	ON_BN_CLICKED(IDC_QUERY_TRANSFER_LOG,OnQueryTransferLog)
+	ON_BN_CLICKED(IDC_BUTTON2, OnBnClickedCloseButton)
 	ON_WM_PAINT()
-	ON_WM_NCPAINT()
+	ON_EN_CHANGE(IDC_EDIT19, OnEnChangeUserID)
 END_MESSAGE_MAP()
 
 CString GetString(__int64 nNumber)
@@ -473,6 +474,8 @@ void CGameClientDlg::OnQueryTransferLog()
 void CGameClientDlg::DoDataExchange(CDataExchange * pDX)
 {
 	__super::DoDataExchange(pDX);
+
+	DDX_Control(pDX, IDC_BUTTON2, m_CloseButton);
 }
 
 void __stdcall RunCommand( const char* command, const char* param, LPARAM lParam)
@@ -535,16 +538,22 @@ BOOL CGameClientDlg::OnInitDialog()
 	}
 
 	SetBitmap(IDB_DlgBackground);
+	
+	//m_CloseButton.SetIcon(IDI_NO3, (int)BTNST_AUTO_GRAY);
+	//m_CloseButton.DrawBorder(FALSE);
+	m_CloseButton.SetBitmaps(IDB_BITMAP_CLOSE, RGB(0, 0, 0));
+	m_CloseButton.OffsetColor(CButtonST::BTNST_COLOR_BK_IN, 30);
+	m_CloseButton.DrawTransparent(TRUE);
 
 	CWinApp *p=AfxGetApp();
 	LPCTSTR lpszCmdLine=AfxGetApp()->m_lpCmdLine;
 
-	ParseCommandLine(lpszCmdLine, RunCommand, (LPARAM)this);
+	//ParseCommandLine(lpszCmdLine, RunCommand, (LPARAM)this);
 
 	DWORD dwServerAddr=strtoul(m_strIP, 0, 16);
 	WORD  wServerPort=(WORD)strtoul(m_strPort, 0, 10);
 
-	m_ClientSocket->Connect( dwServerAddr, wServerPort);
+	//m_ClientSocket->Connect( dwServerAddr, wServerPort);
 
 	m_TipDialog.Create(IDD_CONNECTING, this);
 	m_TipDialog.ModifyStyleEx(0, WS_EX_WINDOWEDGE|WS_EX_DLGMODALFRAME);
@@ -552,7 +561,7 @@ BOOL CGameClientDlg::OnInitDialog()
 	RECT rect;
 	m_TipDialog.GetWindowRect(&rect);
 	m_TipDialog.SetWindowPos(NULL,0,0,0,0,SWP_NOSIZE|SWP_NOMOVE|SWP_NOZORDER|SWP_FRAMECHANGED);
-	m_TipDialog.ShowWindow(SW_SHOW);
+	//m_TipDialog.ShowWindow(SW_SHOW);
 
 	return TRUE;
 }
@@ -1223,14 +1232,14 @@ bool CGameClientDlg::OnSocketSubStatus(CMD_Command Command, void * pBuffer, WORD
 
 	return true;
 }
-//重画消息
-void CGameClientDlg::OnPaint()
+
+void CGameClientDlg::OnBnClickedCloseButton()
 {
-	__super::OnPaint();
+	OnCancel();
 }
 
-
-void CGameClientDlg::OnNcPaint()
+// 用户ID改变
+void CGameClientDlg::OnEnChangeUserID()
 {
-
+	
 }

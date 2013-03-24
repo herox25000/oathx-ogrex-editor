@@ -2,6 +2,7 @@
 // Microsoft Visual C++ generated include file.
 // Used by GameClient.rc
 //
+#define IDI_NO3                         5
 #define IDD_CONNECTING                  9
 #define IDR_HTML_MYLISEVIEW             103
 #define IDD_GAME_FRAME                  121
@@ -34,6 +35,9 @@
 #define IDB_CLOG                        408
 #define IDD_DIALOG1                     419
 #define IDD_TRANSFER                    419
+#define IDB_BITMAP1                     421
+#define IDB_BITMAP2                     422
+#define IDB_BITMAP_CLOSE                422
 #define IDB_BT_SEND_CHAT_B              500
 #define IDB_BT_EXPESSION_B              501
 #define IDB_BT_COLOR_SET_B              502
@@ -76,15 +80,16 @@
 #define IDC_MODIFY_LOGIN_PASSWORD       1027
 #define IDC_MODIFY_BANK_PASSWORD        1028
 #define IDC_EDIT19                      1029
-#define IDB_DlgBackground				1103
+#define IDC_BUTTON2                     1033
+#define IDB_DlgBackground               1103
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        420
+#define _APS_NEXT_RESOURCE_VALUE        423
 #define _APS_NEXT_COMMAND_VALUE         32773
-#define _APS_NEXT_CONTROL_VALUE         1033
+#define _APS_NEXT_CONTROL_VALUE         1034
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
