@@ -28,6 +28,7 @@ protected:
 	//组件变量
 protected:
 	CGameFrameDlg						* m_pGameFrameDlg;				//对话框
+public:
 	IClientKernel						* m_pIClientKernel;				//内核接口
 
 	//环绕信息

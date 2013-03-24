@@ -1,7 +1,6 @@
 #include "Stdafx.h"
 #include "Resource.h"
 #include "UserListView.h"
-
 //静态变量
 CImageList		CUserListView::m_StatusImage;						//状态位图
 
@@ -12,6 +11,7 @@ struct tagListSortInfo
 	BYTE					cbAscendSort;						//升序标志
 	WORD					cbFieldKind;						//字段类型
 	CUserListView			* pRoomListCtrl;					//列表指针
+	tagUserData				*pMeUserData;
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -199,7 +199,7 @@ bool CUserListView::InsertUserItem(tagUserData * pUserData)
 
 	//填写资料
 	FillUserListItem(iItem,pUserData);
-
+	UpdataUserList();
 	return true;
 }
 
@@ -222,6 +222,7 @@ bool CUserListView::UpdateUserItem(tagUserData * pUserData)
 		return true;
 	}
 	
+	UpdataUserList();
 	return false;
 }
 
@@ -398,6 +399,22 @@ void CUserListView::FillUserListItem(int iItem, tagUserData * pUserData)
 }
 
 //////////////////////////////////////////////////////////////////////////
+bool CUserListView::UpdataUserList()
+{
+	//构造数据
+	tagListSortInfo SortInfo;
+	int iSubItem=0;
+	SortInfo.cbAscendSort=m_cbAscendSort;
+	SortInfo.pRoomListCtrl=this;
+	SortInfo.nItemIndex=iSubItem;
+	SortInfo.cbFieldKind=m_wDataDescribe[iSubItem];
+	SortInfo.pMeUserData = m_pIClientKernel->GetMeUserInfo();
+	//排列列表
+	SortItems(SortFun,(LPARAM)&SortInfo);
+
+	return true;
+}
+
 
 //点击列消息
 void CUserListView::OnColumnclick(NMHDR * pNMHDR, LRESULT * pResult) 
@@ -411,7 +428,7 @@ void CUserListView::OnColumnclick(NMHDR * pNMHDR, LRESULT * pResult)
 	SortInfo.pRoomListCtrl=this;
 	SortInfo.nItemIndex=iSubItem;
 	SortInfo.cbFieldKind=m_wDataDescribe[iSubItem];
-
+	SortInfo.pMeUserData = m_pIClientKernel->GetMeUserInfo();
 	//排列列表
 	SortItems(SortFun,(LPARAM)&SortInfo);
 	m_cbAscendSort=!m_cbAscendSort;
@@ -430,6 +447,29 @@ int CALLBACK CUserListView::SortFun(LPARAM lParam1, LPARAM lParam2, LPARAM lPara
 	ASSERT(pUserData1!=NULL);
 	ASSERT(pUserData2!=NULL);
 	ASSERT(pSortInfo!=NULL);
+
+	//自己放置顶
+	const tagUserData *pMeUserData = pSortInfo->pMeUserData;
+	if (pUserData1->dwUserID==pMeUserData->dwUserID)
+		return -1;
+	if (pUserData2->dwUserID==pMeUserData->dwUserID) 
+		return 1;
+	//会员置顶
+	if (pUserData1->cbMemberOrder!=pUserData2->cbMemberOrder)
+	{
+		if (pUserData1->cbMemberOrder>pUserData2->cbMemberOrder)
+			return -1;
+		else 
+			return 1;
+	}
+	//分多的排上面
+	if (pUserData1->lScore!=pUserData2->lScore)
+	{
+		if (pUserData1->lScore>pUserData2->lScore)
+			return -1;
+		else 
+			return 1;
+	}
 
 	//对比数据
 	switch (pSortInfo->cbFieldKind)

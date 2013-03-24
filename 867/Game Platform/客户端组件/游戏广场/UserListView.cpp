@@ -490,7 +490,6 @@ void CUserListView::OnColumnclick(NMHDR * pNMHDR, LRESULT * pResult)
 		SortInfo.pRoomListCtrl=this;
 		SortInfo.nItemIndex=iSubItem;
 		SortInfo.cbFieldKind=m_wDataDescribe[iSubItem];
-
 		//排列列表
 		SortItems(SortFun,(LPARAM)&SortInfo);
 		m_cbAscendSort=!m_cbAscendSort;
@@ -519,20 +518,20 @@ int CALLBACK CUserListView::SortFun(LPARAM lParam1, LPARAM lParam2, LPARAM lPara
 		return -1;
 	if (pUserData2->dwUserID==GlobalInfo.dwUserID) 
 		return 1;
-	////管理员置顶
-	//if (pUserData1->cbMasterOrder!=pUserData2->cbMasterOrder)
-	//{
-	//	if (pUserData1->cbMasterOrder>pUserData2->cbMasterOrder) 
-	//		return -1;
-	//	else
-	//		return 1;
-	//}
 	//会员置顶
 	if (pUserData1->cbMemberOrder!=pUserData2->cbMemberOrder)
 	{
 		if (pUserData1->cbMemberOrder>pUserData2->cbMemberOrder)
 			return -1;
 		else
+			return 1;
+	}
+	//分多的排上面
+	if (pUserData1->lScore!=pUserData2->lScore)
+	{
+		if (pUserData1->lScore>pUserData2->lScore)
+			return -1;
+		else 
 			return 1;
 	}
 	//对比数据
