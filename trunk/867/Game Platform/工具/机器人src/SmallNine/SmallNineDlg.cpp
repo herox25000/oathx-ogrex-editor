@@ -86,6 +86,7 @@ BEGIN_MESSAGE_MAP(CSmallNineDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT19, OnEnChangeEdit19)
 	ON_EN_CHANGE(IDC_EDIT20, OnEnChangeEdit20)
 	ON_EN_CHANGE(IDC_EDIT21, OnEnChangeEdit21)
+	ON_EN_CHANGE(IDC_EDIT22, OnEnChangeEdit22)
 END_MESSAGE_MAP()
 
 
@@ -115,13 +116,13 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT2,	"11021");
 	SetDlgItemText(IDC_EDIT3,	"e10adc3949ba59abbe56e057f20f883e");
 	SetDlgItemText(IDC_EDIT4,	"100");
-	SetDlgItemText(IDC_EDIT5,	"115");
-	SetDlgItemText(IDC_EDIT6,	"1000000");
+	SetDlgItemText(IDC_EDIT5,	"200");
+	//SetDlgItemText(IDC_EDIT6,	"1000000");
 	SetDlgItemText(IDC_EDIT7,	"1");
 	SetDlgItemText(IDC_EDIT8,	"1");
 
-	SetDlgItemText(IDC_EDIT9,	"5");
-	SetDlgItemText(IDC_EDIT10,	"1");
+	SetDlgItemText(IDC_EDIT9,	"15");
+	SetDlgItemText(IDC_EDIT10,	"3");
 	SetDlgItemText(IDC_EDIT11,	"30000000");
 	SetDlgItemText(IDC_EDIT12,	"10000000");
 
@@ -133,9 +134,9 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT18,	"10");
 	SetDlgItemText(IDC_EDIT19,	"20");
 
-	SetDlgItemText(IDC_EDIT20,	"1");
-	SetDlgItemText(IDC_EDIT21,	"3");
-
+	SetDlgItemText(IDC_EDIT20,	"30");
+	SetDlgItemText(IDC_EDIT21,	"120");
+	SetDlgItemText(IDC_EDIT22,	"30000000");
 	return TRUE;
 }
 
@@ -286,8 +287,8 @@ void CSmallNineDlg::OnBnClickedOk()
 		GetDlgItemText(IDC_EDIT19, buffer);
 		m_dwMaxCount= atoi(buffer.GetBuffer());
 
-		GetDlgItemText(IDC_EDIT6, buffer);
-		m_AppConfig.nUpBankerScore	= atol(buffer.GetBuffer());
+		//GetDlgItemText(IDC_EDIT6, buffer);
+		//m_AppConfig.nUpBankerScore	= atol(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT7, buffer);
 		m_AppConfig.wUpBankerCount	= atoi(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT8, buffer);
@@ -319,6 +320,8 @@ void CSmallNineDlg::OnBnClickedOk()
 		m_AppConfig.fMinOnlineTime	= atof(buffer.GetBuffer());	
 		GetDlgItemText(IDC_EDIT21, buffer);
 		m_AppConfig.fMaxOnlineTime	= atof(buffer.GetBuffer());	
+		GetDlgItemText(IDC_EDIT22, buffer);
+		m_AppConfig.nUpBankerLoseScore	= _atoi64(buffer.GetBuffer());	
 
 		RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 
@@ -357,10 +360,10 @@ void CSmallNineDlg::OnEnChangeEdit5()
 
 void CSmallNineDlg::OnEnChangeEdit6()
 {
-	CString buffer;
-	GetDlgItemText(IDC_EDIT6, buffer);
-	m_AppConfig.nUpBankerScore	= atol(buffer.GetBuffer());
-	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+	//CString buffer;
+	//GetDlgItemText(IDC_EDIT6, buffer);
+	//m_AppConfig.nUpBankerScore	= atol(buffer.GetBuffer());
+	//RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 
 }
 
@@ -480,5 +483,13 @@ void CSmallNineDlg::OnEnChangeEdit21()
 	CString buffer;
 	GetDlgItemText(IDC_EDIT21, buffer);
 	m_AppConfig.fMaxOnlineTime	= atoi(buffer.GetBuffer());	
+	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnEnChangeEdit22()
+{
+	CString buffer;
+	GetDlgItemText(IDC_EDIT22, buffer);
+	m_AppConfig.nUpBankerLoseScore	= _atoi64(buffer.GetBuffer());	
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }

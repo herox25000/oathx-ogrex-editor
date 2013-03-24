@@ -66,4 +66,5 @@ public:
 	afx_msg void OnEnChangeEdit19();
 	afx_msg void OnEnChangeEdit20();
 	afx_msg void OnEnChangeEdit21();
+	afx_msg void OnEnChangeEdit22();
 };

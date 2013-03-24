@@ -35,6 +35,7 @@ protected:
 	BOOL					m_bAddJetton;
 
 	INT64					m_nBankerScore;
+	INT64					m_nBankerWinScore;	//×¯¼Ò³É¼¨
 	WORD					m_wUpBankerCount;
 	INT64					m_nApplyBankerCondition;
 	BOOL					m_bStart;
