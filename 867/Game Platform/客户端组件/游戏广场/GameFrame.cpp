@@ -156,7 +156,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 
 			//连接规则
 			TCHAR szRuleUrl[256]=TEXT("");
-			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://site7353.s5.idc2.cn"),pGameKind->wKindID);
+			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.game867.com/downCenter.php?colm=7&cata=74&content=%d"),pGameKind->wKindID);
 			WebBrowse(szRuleUrl,true);
 
 			return;
@@ -845,7 +845,7 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 		TCHAR szBuffer[512]=TEXT("");
 		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】还没有安装，现在是否下载？"),pGameKind->szKindName);
 		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
-		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
+		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName, pGameKind->wKindID,true);	
 		return NULL;
 	}
 

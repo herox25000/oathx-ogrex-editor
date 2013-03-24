@@ -180,11 +180,11 @@ BOOL CDlgRegister::OnInitDialog()
 	((CEdit *)(GetDlgItem(IDC_BANKPASS)))->LimitText(PASS_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_BANKPASS2)))->LimitText(PASS_LEN-1);
 
-	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
+	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
 	m_LineRegWeb.ShowWindow(SW_HIDE);
-	m_LineMainPage.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
+	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
 	m_LineMainPage.ShowWindow(SW_HIDE);
-	m_LinePassWord.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
+	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
 	m_LinePassWord.ShowWindow(SW_HIDE);
 
 	//加载头像
@@ -386,7 +386,7 @@ BOOL CDlgLogon::OnInitDialog()
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
-	m_BrowerAD.Navigate(TEXT("http://site7353.s5.idc2.cn/"),NULL,NULL,NULL,NULL);
+	m_BrowerAD.Navigate(TEXT("http://www.game867.com/images/login_Ad.jpg"),NULL,NULL,NULL,NULL);
 	//m_BrowerAD.ShowWindow(SW_HIDE);
 
 	//广告位置
@@ -399,11 +399,11 @@ BOOL CDlgLogon::OnInitDialog()
 	m_TabLogonMode.InsertItem(LOGON_BY_USERID,TEXT("ＩＤ登录"));
 
 	//设置控件
-	m_LineMainPage.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
+	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
 	m_LineMainPage.ShowWindow(SW_HIDE);
-	m_LinePassWord.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
+	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
 	m_LinePassWord.ShowWindow(SW_HIDE);
-	m_LineGetPassWord.SetHyperLinkUrl(TEXT("http://site7353.s5.idc2.cn/"));
+	m_LineGetPassWord.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
 	m_LineGetPassWord.ShowWindow(SW_HIDE);
 	m_LineMainPage.BringWindowToTop();
 	m_LinePassWord.BringWindowToTop();
