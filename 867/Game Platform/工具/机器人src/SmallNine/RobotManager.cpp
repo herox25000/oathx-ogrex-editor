@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 #include ".\robotmanager.h"
 
+#ifndef MAX_SITDOWN
+#define MAX_SITDOWN	10
+#endif
+
 RobotManager::RobotManager(void)
 {
 }
@@ -121,8 +125,16 @@ void					RobotManager::Reconnect(const CString& ipAddress, WORD wPort, const CSt
 		RobotRegister::iterator it = m_Reconnect.begin();
 		if( it != m_Reconnect.end() )
 		{
-			it->second->ResetGame();
-			it->second->SitDown();
+			int nReqCount = it->second->GetReconnect();
+			if (nReqCount < MAX_SITDOWN)
+			{
+				it->second->ResetGame();
+				it->second->SitDown();
+			}
+			else
+			{
+				it->second->SetState(ROBOT_INVALID);
+			}
 		}
 	}
 }

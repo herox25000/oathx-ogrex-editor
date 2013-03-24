@@ -27,6 +27,7 @@ void			SmallNineMachine::ResetGame()
 	m_bStart				= 0;
 	m_nMePlaceScore			= 0;
 	m_nMeWinScore			= 0;
+	m_nBankerWinScore		= 0;
 }
 
 void			SmallNineMachine::SetOnlineTime(double fOnlineTime)
@@ -254,7 +255,7 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 				}
 			}
 
-			m_fAddJettonTime	= RobotTimer::rdit(config.fMinPlaceTime, config.fMaxPlaceTime);
+			m_fAddJettonTime	= RobotTimer::rdft(config.fMinPlaceTime, config.fMaxPlaceTime);
 			m_fElapsedTime		= 0;
 		}
 	}
@@ -284,12 +285,12 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 						{
 							// Ç¿ÖÆÉêÇëÉÏ×æ°º
 							SendApplyBanker(true);
-
-							// ÉèÖÃÑº×¢Æô¶¯
-							m_bAddJetton = TRUE;
 						}
 					}
 				}
+
+				// ÉèÖÃÑº×¢Æô¶¯
+				m_bAddJetton = FALSE;
 			}
 		}
 		break;
@@ -377,6 +378,22 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 						{
 							SendApplyBanker(false);
 						}
+						else if (m_nBankerWinScore > 0)
+						{
+							int nRate = m_nBankerWinScore * 100 / c.nMaxWinScore;
+							if (rand() % 100 < nRate)
+							{
+								SendApplyBanker(false);
+							}
+						}
+						else if (m_nBankerWinScore < 0 && m_nBankerWinScore <= (-c.nUpBankerLoseScore))
+						{
+							SendApplyBanker(false);
+						}
+					}
+					else
+					{
+						m_bAddJetton = TRUE;
 					}
 				}
 			}

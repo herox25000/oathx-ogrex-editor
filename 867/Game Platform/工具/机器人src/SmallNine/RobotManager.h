@@ -4,11 +4,12 @@
 
 typedef struct tagBankerConfig
 {
-	INT64							nUpBankerScore;
+	//INT64							nUpBankerScore;
 	WORD							wUpBankerCount;
 	WORD							wUpBankerDeque;
 
 	INT64							nMaxWinScore;
+	INT64							nUpBankerLoseScore;
 	INT64							nMinScore;
 	double							fMaxPlaceTime;
 	double							fMinPlaceTime;
