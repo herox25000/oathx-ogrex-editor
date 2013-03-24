@@ -287,6 +287,8 @@ private:
 	bool OnDBModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存取钱操作完成
 	bool OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
+	
+	bool OnQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	// 锁定本机
 	bool OnDBLockComputer(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//网络函数

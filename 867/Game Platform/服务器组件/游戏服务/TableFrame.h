@@ -169,8 +169,8 @@ public:
 	virtual bool __cdecl ModifyNickname(IServerUserItem * pIServerUserItem, TCHAR szNickname[NAME_LEN]);
 	//银行操作
 	virtual bool __cdecl BankOperation(IServerUserItem * pIServerUserItem, LONG lBankTask, TCHAR szPassword[PASS_LEN], __int64 lMoneyNumber);
-
-
+	//查询用户名
+	virtual bool __cdecl QueryUserName(IServerUserItem * pIServerUserItem,long lGameID);
 	//执行接口
 public:
 	//坐下动作

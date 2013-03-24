@@ -2236,5 +2236,18 @@ bool __cdecl CTableFrame::BankOperation(IServerUserItem * pIServerUserItem, LONG
 	return  m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_BANK_TASK, 0, &BankTask, sizeof(DBR_GR_BankTask));
 }
 
+//查询用户名
+bool __cdecl CTableFrame::QueryUserName(IServerUserItem * pIServerUserItem,long lGameID)
+{
+	if(lGameID<100000)
+	{
+		SendRoomMessage(pIServerUserItem, "输入的游戏ID不正确！！", SMT_INFO);
+		return false;
+	}
+	DBR_GR_Query_UserName Qname;
+	Qname.UserID = pIServerUserItem->GetUserID();
+	Qname.lGameID = lGameID;
+	return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_QUERYUSERNAME, 0, &Qname, sizeof(Qname));
+}	
 
 //////////////////////////////////////////////////////////////////////////
