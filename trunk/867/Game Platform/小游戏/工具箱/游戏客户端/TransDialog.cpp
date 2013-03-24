@@ -7,9 +7,9 @@
 
 // CTransDialog ¶Ô»°¿ò
 
-IMPLEMENT_DYNAMIC(CTransDialog, CSkinDialogEx)
+IMPLEMENT_DYNAMIC(CTransDialog, CDialog)
 CTransDialog::CTransDialog(CWnd* pParent /*=NULL*/)
-	: CSkinDialogEx(CTransDialog::IDD, pParent)
+	: CDialog(CTransDialog::IDD, pParent)
 {
 }
 
@@ -23,7 +23,7 @@ void CTransDialog::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_LIST1, m_List1);
 }
 
-BEGIN_MESSAGE_MAP(CTransDialog, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CTransDialog, CDialog)
 	ON_NOTIFY(HDN_ITEMCLICK, 0, OnHdnItemclickList1)
 	ON_WM_SIZE()
 END_MESSAGE_MAP()
