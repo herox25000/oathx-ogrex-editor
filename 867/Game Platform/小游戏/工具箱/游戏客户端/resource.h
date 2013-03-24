@@ -72,6 +72,7 @@
 #define IDC_EDIT10                      1019
 #define IDC_WITHDRAW                    1020
 #define IDC_EDIT17                      1021
+#define IDC_EDIT171                     1021
 #define IDC_EDIT11                      1022
 #define IDC_EDIT12                      1023
 #define IDC_EDIT13                      1024
