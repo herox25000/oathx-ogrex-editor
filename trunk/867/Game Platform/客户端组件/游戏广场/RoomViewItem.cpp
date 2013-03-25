@@ -1514,7 +1514,7 @@ bool CRoomViewItem::UpdateSkinResource()
 	m_VorSplitter.ShowSplitterButton(uControlId,GetResInstanceHandle());
 
 	//…Ë÷√∞¥≈•
-	m_btTableRule.SetButtonImage(GetServerViewRes().uBtBank,hInstance,false);
+	m_btTableRule.SetButtonImage(GetServerViewRes().uBtTableRule,hInstance,false);
 	m_btAutoSit.SetButtonImage(GetServerViewRes().uBtAutoJoin,hInstance,false);
 	m_btBank.SetButtonImage(GetServerViewRes().uBtBank,hInstance,false);
 	m_btFindUser.SetButtonImage(GetServerViewRes().uBtSearchUser,hInstance,false);
