@@ -813,7 +813,9 @@ LONG CDataBaseSink::SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD d
 }
 
 //写分存储过程
-LONG CDataBaseSink::SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, LONG lRevenue, tagUserScore & UserScore)
+LONG CDataBaseSink::SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, 
+									 DWORD dwOnLineTimeCount, DWORD dwClientIP, 
+									 __int64 lRevenue, tagUserScore & UserScore)
 {
 	LONG lReturnValue=-1;
 	try
@@ -854,7 +856,10 @@ LONG CDataBaseSink::SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, DWOR
 }
 
 //离开存储过程
-LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, LONG lRevenue, LONG lLoveliness, tagUserScore & UserScore)
+LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount,
+									  DWORD dwOnLineTimeCount, DWORD dwClientIP,
+									  __int64 lRevenue, LONG lLoveliness,
+									  tagUserScore & UserScore)
 {
 	LONG lReturnValue=-1;
 	try

@@ -71,22 +71,6 @@ void __cdecl CGameServiceManager::GetGameServiceAttrib(tagGameServiceAttrib & Ga
 bool __cdecl CGameServiceManager::RectifyServiceOption(tagGameServiceOption * pGameServiceOption)
 {
 	//效验参数
-	ASSERT(pGameServiceOption!=NULL);
-	if (pGameServiceOption==NULL) return false;
-
-	//单元积分
-	pGameServiceOption->lCellScore=__max(1L,pGameServiceOption->lCellScore);
-
-	//积分下限
-	if (pGameServiceOption->wServerType==GAME_GENRE_GOLD)
-	{
-		pGameServiceOption->lLessScore=__max(pGameServiceOption->lCellScore*32L,pGameServiceOption->lLessScore);
-	}
-	//积分上限
-	//if (pGameServiceOption->lRestrictScore!=0L)
-	//{
-	//	pGameServiceOption->lRestrictScore=__max(pGameServiceOption->lRestrictScore,pGameServiceOption->lLessScore);
-	//}
 	return true;
 }
 

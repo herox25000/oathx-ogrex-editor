@@ -34,7 +34,7 @@ protected:
 
 	//分数信息
 protected:
-	LONG							m_lGameTaxScore;					//游戏税收
+	__int64							m_lGameTaxScore;					//游戏税收
 	DWORD							m_dwPlayerID[MAX_CHAIR];			//玩家 I D
 	tagScoreInfo					m_ScoreInfo[MAX_CHAIR];				//游戏积分
 
@@ -149,9 +149,9 @@ public:
 	//写分接口
 public:
 	//写入积分
-	virtual bool __cdecl WriteUserScore(WORD wChairID, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1);
+	virtual bool __cdecl WriteUserScore(WORD wChairID, __int64 lScore, __int64 lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1);
 	//写入积分
-	virtual bool __cdecl WriteUserScore(IServerUserItem * pIServerUserItem, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1);
+	virtual bool __cdecl WriteUserScore(IServerUserItem * pIServerUserItem, __int64 lScore, __int64 lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1);
 
 	//工具接口
 public:	
@@ -227,7 +227,7 @@ public:
 	//发送坐下失败
 	void SendSitFailedPacket(IServerUserItem * pIServerUserItem, LPCTSTR pszFailedDescribe);
 	//立即把分数写数据库(用户信息，税收，是否断线)
-	bool UpdateDBScore(IServerUserItem * pIServerUserItem,LONG	lRevenue);
+	bool UpdateDBScore(IServerUserItem * pIServerUserItem,__int64 lRevenue);
 };
 
 //////////////////////////////////////////////////////////////////////////

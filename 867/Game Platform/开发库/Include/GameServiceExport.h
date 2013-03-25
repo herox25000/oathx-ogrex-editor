@@ -141,7 +141,7 @@ enum enScoreKind
 struct tagScoreInfo
 {
 	__int64								lScore;								//游戏积分
-	long								lRevenue;							//游戏积分
+	__int64								lRevenue;							//游戏积分
 	enScoreKind							ScoreKind;							//分数类型
 };
 
@@ -275,7 +275,7 @@ public:
 	//统计接口
 public:
 	//获取税收
-	virtual LONG __cdecl GetUserRevenue()=NULL;
+	virtual __int64 __cdecl GetUserRevenue()=NULL;
 	//游戏时间
 	virtual DWORD __cdecl GetPlayTimeCount()=NULL;
 	//在线时间
@@ -438,9 +438,9 @@ public:
 	//写分接口
 public:
 	//写入积分
-	virtual bool __cdecl WriteUserScore(WORD wChairID, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1)=NULL;
+	virtual bool __cdecl WriteUserScore(WORD wChairID, __int64 lScore, __int64 lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1)=NULL;
 	//写入积分
-	virtual bool __cdecl WriteUserScore(IServerUserItem * pIServerUserItem, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1)=NULL;
+	virtual bool __cdecl WriteUserScore(IServerUserItem * pIServerUserItem, __int64 lScore, __int64 lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount=-1)=NULL;
 
 	//工具接口
 public:

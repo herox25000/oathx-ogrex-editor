@@ -446,7 +446,6 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 				m_bCancelBanker=false;
 				//发送消息
 				SendChangeBankerMsg();
-				//删除庄家
 				if ( pServerUserItem )
 					OnUserApplyBanker( pServerUserItem->GetUserData(), false );
 			}
@@ -577,6 +576,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 				{
 					//重置变量
 					ZeroMemory( &m_CurrentBanker, sizeof( m_CurrentBanker ) );
+					m_CurrentBanker.dwUserID=0;
 					m_cbBankerTimer=0;
 					m_lBankerWinScore=0;
 					//发送消息
@@ -1137,7 +1137,8 @@ void CTableFrameSink::CalculateScore()
 	for (WORD i=0;i<GAME_PLAYER;i++)
 	{
 		//庄家判断
-		if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == i ) continue;
+		if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == i )
+			continue;
 		//获取用户
 		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(i);
 		if (pIServerUserItem==NULL) continue;
@@ -1518,7 +1519,7 @@ void CTableFrameSink::ChuLaoQian()
 			}
 			else if(m_lBankerWinScore > 0)
 			{
-				int nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
+				__int64 nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
 				int nRand = rand()%100;
 				if (nRand < nLoseRate)
 				{

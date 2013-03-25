@@ -19,7 +19,7 @@ class CServerUserItem : public IServerUserItem
 protected:
 	bool								m_bAcitve;						//激活标志
 	bool								m_bAndroid;						//机器用户
-	LONG								m_lRevenue;						//游戏税收
+	__int64								m_lRevenue;						//游戏税收
 	WORD								m_wServerType;					//游戏类型
 	tagUserRule							m_UserRule;						//用户规则
 	tagUserScore						m_ScoreBorn;					//原本积分
@@ -89,7 +89,7 @@ public:
 	//统计接口
 public:
 	//获取税收
-	virtual LONG __cdecl GetUserRevenue() { return m_lRevenue; }
+	virtual __int64 __cdecl GetUserRevenue() { return m_lRevenue; }
 	//游戏时间
 	virtual DWORD __cdecl GetPlayTimeCount() { return m_dwPlayTimeCount; }
 	//在线时间
