@@ -285,6 +285,9 @@
 				RelativePath=".\Res\CHANGE_BANKER.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\cunqian.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\cursor1.cur">
 			</File>
 			<File
@@ -373,6 +376,9 @@
 			</File>
 			<File
 				RelativePath=".\Res\NO_BANKER.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\quqian.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\SCORE_1.cur">
