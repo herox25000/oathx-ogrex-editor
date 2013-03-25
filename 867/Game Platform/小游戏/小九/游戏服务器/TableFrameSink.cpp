@@ -1485,6 +1485,8 @@ void CTableFrameSink::ChuLaoQian()
 	//获取玩家
 	if (m_CurrentBanker.dwUserID != 0)
 	{
+		BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
+		SortCardComp(chCardSort, 4);
 		//机器人30%的概率赢钱
 		if ( m_CurrentBanker.dwUserType == 10 )
 		{
@@ -1493,14 +1495,14 @@ void CTableFrameSink::ChuLaoQian()
 			{
 				while(PreCalculateBankerWin() < 0)
 				{
-					DispatchTableCard();
+					SwapBankerCard(chCardSort, true);	//DispatchTableCard();
 				}
 			}
 			if (false == bWin)
 			{
 				while(PreCalculateBankerWin() < (-lMaxPerLose))
 				{
-					DispatchTableCard();
+					SwapBankerCard(chCardSort, true);	//DispatchTableCard();
 				}
 			}
 		}
@@ -1511,7 +1513,7 @@ void CTableFrameSink::ChuLaoQian()
 			{
 				while(PreCalculateBankerWin() > 0)
 				{
-					DispatchTableCard();
+					SwapBankerCard(chCardSort, false);		//DispatchTableCard();
 				}
 			}
 			else if(m_lBankerWinScore > 0)
@@ -1522,11 +1524,94 @@ void CTableFrameSink::ChuLaoQian()
 				{
 					while(PreCalculateBankerWin() > 0)
 					{
-						DispatchTableCard();
+						SwapBankerCard(chCardSort, false);
 					}
 				}
 			}
 		}
+	}
+}
+
+void CTableFrameSink::SwapBankerCard( BYTE chCardSort[], bool bWin)
+{
+	int i = 0;
+	for (i = 0; i < 4; i++)
+	{
+		if (chCardSort[i] == INDEX_BANKER)
+			break;
+	}
+	bool bCanSwap = false;
+	BYTE nChangeID = 0;
+	if (bWin)
+	{
+		if ( i > 0 )
+		{
+			nChangeID = chCardSort[i - 1];
+			chCardSort[i - 1] = INDEX_BANKER;
+			chCardSort[i] = nChangeID;
+			bCanSwap = true;
+		}
+	}
+	else
+	{
+		if (i < 4)
+		{
+			nChangeID = chCardSort[i + 1];
+			chCardSort[i + 1] = INDEX_BANKER;
+			chCardSort[i] = nChangeID;
+			bCanSwap = true;
+		}
+	}
+	if (bCanSwap)
+	{
+		BYTE bFirstCard = m_cbTableCardArray[nChangeID][0];
+		BYTE bNextCard = m_cbTableCardArray[nChangeID][1];
+		m_cbTableCardArray[nChangeID][0] = m_cbTableCardArray[INDEX_BANKER][0];
+		m_cbTableCardArray[nChangeID][1] = m_cbTableCardArray[INDEX_BANKER][1];
+		m_cbTableCardArray[INDEX_BANKER][0] = bFirstCard;
+		m_cbTableCardArray[INDEX_BANKER][1] = bNextCard;
+	}
+}
+
+void CTableFrameSink::SortCardComp( BYTE chCardComp[], int nCount )
+{
+	bool bChaoguo=false;
+	//如果下注成功一半 平点位和
+	if (m_lTianMenScore + m_lDaoMenScore + m_lShunMenScore >= m_CurrentBanker.lUserScore / 2)
+	{
+		bChaoguo=true;
+	}
+	for (int i = 0; i < nCount - 1; i++)
+	{
+		for ( int j = i + 1; j < nCount; j++)
+		{
+			bool bTongdian=false;
+			bool bSwap = false;
+			if(m_GameLogic.CompareCard(m_cbTableCardArray[chCardComp[i]], m_cbTableCardArray[chCardComp[j]], 2, bTongdian))
+			{
+				if (bTongdian)
+				{
+					if (chCardComp[i] == 0)
+					{
+						if (bChaoguo)
+							bSwap = false;
+						else
+							bSwap = true;
+					}
+				}
+			}
+			else
+			{
+				bSwap = true;
+			}
+			if (bSwap)
+			{
+				BYTE nIndex = chCardComp[i];
+				chCardComp[i] = chCardComp[j];
+				chCardComp[j] = nIndex; 
+			}
+		}
+		
 	}
 }
 
