@@ -1102,7 +1102,9 @@ bool CAttemperEngineSink::OnDBLogonSuccess(DWORD dwContextID, VOID * pData, WORD
 	ServerUserData.wChairID=INVALID_CHAIR;
 
 	//激活用户
-	pConnectItemInfo->pIServerUserItem=m_ServerUserManager.ActiveUserItem(ServerUserData,pConnectItemInfo->dwClientIP,wIndex,pLogonSuccess->szPassWord,m_pGameServiceOption->wServerType);
+	pConnectItemInfo->pIServerUserItem=m_ServerUserManager.ActiveUserItem(ServerUserData,pConnectItemInfo->dwClientIP,
+		wIndex,pLogonSuccess->szPassWord,
+		pLogonSuccess->szBankPassWord,m_pGameServiceOption->wServerType);
 
 	//发送房间信息
 	SendGameServerInfo(pConnectItemInfo->pIServerUserItem,dwContextID);
@@ -3548,7 +3550,7 @@ bool CAttemperEngineSink::OnEventBankDrawoutGold(const void * pData, WORD wDataS
 	if(!(pBankGet->lGetValue>0 && pBankGet->lGetValue<=lStorageGold))return false;
 
 	//密码效验
-	if (lstrcmp(pIServerUserItem->GetPassword(),pBankGet->szPassword)!=0)
+	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankGet->szPassword)!=0)
 	{
 		if(pServerUserData->wTableID!=INVALID_TABLE)
 			SendGameMessage(dwSocketID,TEXT("密码有误，请查证后再次尝试操作！"),SMT_EJECT);
@@ -3624,7 +3626,7 @@ bool CAttemperEngineSink::OnEventBankStorage(const void * pData, WORD wDataSize,
 	if(!(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lGameGold))return false;
 
 	//密码效验
-	if (lstrcmp(pIServerUserItem->GetPassword(),pBankStorage->szPassword)!=0)
+	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankStorage->szPassword)!=0)
 	{
 		if(pServerUserData->wTableID!=INVALID_TABLE)
 			SendGameMessage(dwSocketID,TEXT("密码有误，请查证后再次尝试操作！"),SMT_EJECT);

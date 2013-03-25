@@ -248,6 +248,7 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 		m_GameScoreDBAide.GetValue_String(TEXT("Accounts"),LogonSuccess.szAccounts,CountArray(LogonSuccess.szAccounts));
 		m_GameScoreDBAide.GetValue_String(TEXT("GroupName"),LogonSuccess.szGroupName,CountArray(LogonSuccess.szGroupName));
 		m_GameScoreDBAide.GetValue_String(TEXT("UnderWrite"),LogonSuccess.szUnderWrite,CountArray(LogonSuccess.szUnderWrite));
+		m_GameScoreDBAide.GetValue_String(TEXT("BankPassWord"),LogonSuccess.szBankPassWord,CountArray(LogonSuccess.szBankPassWord));
 
 		//”√ªß Ù–‘
 		LogonSuccess.cbGender=m_GameScoreDBAide.GetValue_BYTE(TEXT("Gender"));
