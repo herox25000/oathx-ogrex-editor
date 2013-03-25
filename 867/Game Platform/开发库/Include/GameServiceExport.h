@@ -242,8 +242,10 @@ public:
 	virtual WORD __cdecl GetUserIndex()=NULL;
 	//获取地址
 	virtual DWORD __cdecl GetClientIP()=NULL;
-	//获取密码
+	//获取登陆密码
 	virtual LPCTSTR __cdecl GetPassword()=NULL;
+	//获得银行密码
+	virtual LPCTSTR __cdecl GetBankPassword()=NULL;
 	//获取规则
 	virtual const tagUserRule * __cdecl GetUserRule()=NULL;
 	//获取积分
@@ -329,7 +331,9 @@ public:
 	//激活用户
 	virtual bool __cdecl ActiveOffLineUserItem(IServerUserItem * pIServerUserItem, DWORD dwClientIP, WORD wUserIndex)=NULL;
 	//激活用户
-	virtual IServerUserItem * __cdecl ActiveUserItem(tagServerUserData & ServerUserData, DWORD dwClientIP, WORD wUserIndex, TCHAR szPassword[PASS_LEN],WORD wServerType)=NULL;
+	virtual IServerUserItem * __cdecl ActiveUserItem(tagServerUserData & ServerUserData, DWORD dwClientIP,
+		WORD wUserIndex, TCHAR szPassword[PASS_LEN],
+		TCHAR szBankPassword[PASS_LEN],WORD wServerType)=NULL;
 	//删除用户
 	virtual bool __cdecl DeleteUserItem(IServerUserItem * pIServerUserItem)=NULL;
 	//注册断线

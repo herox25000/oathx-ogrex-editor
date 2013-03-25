@@ -33,6 +33,7 @@ protected:
 	DWORD								m_dwLogonTime;					//登录时间
 	DWORD								m_dwPlayTimeCount;				//游戏时间
 	TCHAR								m_szPassword[PASS_LEN];			//用户密码
+	TCHAR								m_szBankPassword[PASS_LEN];		//用户银行密码
 
 	//函数定义
 public:
@@ -58,6 +59,8 @@ public:
 	virtual DWORD __cdecl GetClientIP() { return m_dwClientIP; }
 	//获取密码
 	virtual LPCTSTR __cdecl GetPassword() { return m_szPassword; }
+	//获得银行密码
+	virtual LPCTSTR __cdecl GetBankPassword() { return m_szBankPassword; }
 	//获取规则
 	virtual const tagUserRule * __cdecl GetUserRule() { return &m_UserRule; }
 	//获取积分
@@ -166,7 +169,9 @@ public:
 	//激活用户
 	virtual bool __cdecl ActiveOffLineUserItem(IServerUserItem * pIServerUserItem, DWORD dwClientIP, WORD wUserIndex);
 	//激活用户
-	virtual IServerUserItem * __cdecl ActiveUserItem(tagServerUserData & ServerUserData, DWORD dwClientIP, WORD wUserIndex, TCHAR szPassword[PASS_LEN],WORD wServerType);
+	virtual IServerUserItem * __cdecl ActiveUserItem(tagServerUserData & ServerUserData, DWORD dwClientIP,
+		WORD wUserIndex, TCHAR szPassword[PASS_LEN],
+		TCHAR szBankPassword[PASS_LEN],WORD wServerType);
 	//删除用户
 	virtual bool __cdecl DeleteUserItem(IServerUserItem * pIServerUserItem);
 	//注册断线

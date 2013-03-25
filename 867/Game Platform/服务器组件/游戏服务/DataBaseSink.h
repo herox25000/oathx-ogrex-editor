@@ -190,6 +190,7 @@ struct DBR_GR_LogonSuccess
 	DWORD								dwMasterRight;					//管理权限
 	TCHAR								szAccounts[NAME_LEN];			//登录帐号
 	TCHAR								szPassWord[PASS_LEN];			//登录密码
+	TCHAR								szBankPassWord[PASS_LEN];		//银行密码
 	TCHAR								szGroupName[GROUP_LEN];			//社团名字
 	TCHAR								szUnderWrite[UNDER_WRITE_LEN];	//个性签名
 

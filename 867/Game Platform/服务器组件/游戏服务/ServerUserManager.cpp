@@ -349,7 +349,9 @@ bool __cdecl CServerUserManager::ActiveOffLineUserItem(IServerUserItem * pIServe
 }
 
 //激活用户
-IServerUserItem * __cdecl CServerUserManager::ActiveUserItem(tagServerUserData & ServerUserData, DWORD dwClientIP, WORD wUserIndex, TCHAR szPassword[PASS_LEN],WORD wServerType)
+IServerUserItem * __cdecl CServerUserManager::ActiveUserItem(tagServerUserData & ServerUserData, DWORD dwClientIP,
+															 WORD wUserIndex, TCHAR szPassword[PASS_LEN],
+															 TCHAR szBankPassword[PASS_LEN],WORD wServerType)
 {
 	//获取空闲对象
 	CServerUserItem * pServerUserItem=NULL;
@@ -389,7 +391,7 @@ IServerUserItem * __cdecl CServerUserManager::ActiveUserItem(tagServerUserData &
 	pServerUserItem->SetServerType(wServerType);
 	CopyMemory(&pServerUserItem->m_ServerUserData,&ServerUserData,sizeof(ServerUserData));
 	lstrcpyn(pServerUserItem->m_szPassword,szPassword,CountArray(pServerUserItem->m_szPassword));
-
+	lstrcpyn(pServerUserItem->m_szBankPassword,szBankPassword,CountArray(pServerUserItem->m_szBankPassword));
 	return pServerUserItem;
 }
 
