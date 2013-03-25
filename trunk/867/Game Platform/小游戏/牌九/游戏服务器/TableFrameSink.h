@@ -202,6 +202,9 @@ private:
 	void ChuLaoQian();
 	//º∆À„µ√∑÷
 	__int64	PreCalculateBankerWin();
+
+	void SortCardComp( BYTE chCardComp[], int nCount );
+	void SwapBankerCard( BYTE chCardSort[], bool bWin);
 };
 
 //////////////////////////////////////////////////////////////////////////

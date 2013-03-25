@@ -1312,15 +1312,19 @@ void CTableFrameSink::ChuLaoQian()
 			bool bWin = false;
 			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
 			{
-				while(PreCalculateBankerWin() < 0)
+				int nDispatch = 50;
+				while(PreCalculateBankerWin() < 0 && nDispatch > 0)
 				{
+					nDispatch--;
 					DispatchTableCard();
 				}
 			}
 			if (false == bWin)
 			{
-				while(PreCalculateBankerWin() < (-lMaxPerLose))
+				int nDispatch = 50;
+				while(PreCalculateBankerWin() < (-lMaxPerLose) && nDispatch > 0)
 				{
+					nDispatch--;
 					DispatchTableCard();
 				}
 			}
@@ -1330,8 +1334,10 @@ void CTableFrameSink::ChuLaoQian()
 			//玩家如果做庄
 			if (m_lBankerWinScore >= lPlayerMaxMin)
 			{
-				while(PreCalculateBankerWin() > 0)
+				int nDispatch = 50;
+				while(PreCalculateBankerWin() > 0 && nDispatch > 0)
 				{
+					nDispatch--;
 					DispatchTableCard();
 				}
 			}
@@ -1341,8 +1347,10 @@ void CTableFrameSink::ChuLaoQian()
 				int nRand = rand()%100;
 				if (nRand < nLoseRate)
 				{
-					while(PreCalculateBankerWin() > 0)
+					int nDispatch = 50;
+					while(PreCalculateBankerWin() > 0 && nDispatch > 0)
 					{
+						nDispatch--;
 						DispatchTableCard();
 					}
 				}
