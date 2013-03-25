@@ -2043,6 +2043,8 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 		}
 	case SUB_GR_USER_CHAT:			//聊天消息
 		{
+			return true;
+
 			//效验参数
 			CMD_GR_UserChat * pUserChat=(CMD_GR_UserChat *)pData;
 			ASSERT(wDataSize>=(sizeof(CMD_GR_UserChat)-sizeof(pUserChat->szChatMessage)));
@@ -2086,6 +2088,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 		}
 	case SUB_GR_USER_WISPER:		//私语消息
 		{
+			return true;
 			//效验参数
 			CMD_GR_Wisper * pWisper=(CMD_GR_Wisper *)pData;
 			ASSERT(wDataSize>=(sizeof(CMD_GR_Wisper)-sizeof(pWisper->szChatMessage)));

@@ -225,7 +225,7 @@ struct DBR_GR_WriteUserScore
 	DWORD								dwPlayTimeCount;				//游戏时间
 	DWORD								dwOnlineTimeCount;				//在线时间
 	//积分信息
-	LONG								lRevenue;						//游戏税收
+	__int64								lRevenue;						//游戏税收
 	tagUserScore						ScoreModifyInfo;				//修改积分
 };
 
@@ -240,7 +240,7 @@ struct DBR_GR_LeaveGameServer
 	LONG								lLoveliness;					//用户魅力
 
 	//积分信息
-	LONG								lRevenue;						//游戏税收
+	__int64								lRevenue;						//游戏税收
 	tagUserScore						ScoreModifyInfo;				//修改积分
 };
 
@@ -501,9 +501,9 @@ protected:
 	//I D 存储过程
 	LONG SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD dwClientIP, LPCTSTR pszComputerID);
 	//写分存储过程
-	LONG SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, LONG lRevenue, tagUserScore & UserScore);
+	LONG SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, __int64 lRevenue, tagUserScore & UserScore);
 	//离开存储过程
-	LONG SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, LONG lRevenue, LONG lLoveliness, tagUserScore & UserScore);
+	LONG SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, __int64 lRevenue, LONG lLoveliness, tagUserScore & UserScore);
 	//禁号存储过程
 	LONG SPCongealAccounts(DWORD dwUserID, DWORD dwMasterUserID, DWORD dwClientIP);
 	//权限存储过程

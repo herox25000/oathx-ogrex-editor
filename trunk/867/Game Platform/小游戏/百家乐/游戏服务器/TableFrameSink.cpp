@@ -350,12 +350,12 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			__int64	allZhu=0;
 			if ( pIServerUserItem->GetUserID()==m_CurrentBanker.dwUserID ) //庄家强退
 			{
-				allZhu=m_lTieScore+
-					m_lBankerScore+
-					m_lPlayerScore+
-					m_lTieSamePointScore+
-					m_lBankerKingScore+
-					m_lPlayerKingScore;
+				allZhu=m_lTieScore*9+
+					m_lBankerScore*2+
+					m_lPlayerScore*2+
+					m_lTieSamePointScore*33+
+					m_lBankerKingScore*3+
+					m_lPlayerKingScore*3;
 			}
 			else
 			{
@@ -764,7 +764,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	//合法验证
 	if ( ID_XIAN_JIA == cbJettonArea )
 	{
-		if ( GetMaxPlayerScore(wChairID) < lJettonScore ) return true;
+		if ( GetMaxPlayerScore(wChairID) < lJettonScore )
+			return true;
 
 		//保存下注
 		m_lPlayerScore += lJettonScore;
@@ -772,7 +773,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	}
 	else if ( ID_XIAN_TIAN_WANG == cbJettonArea )
 	{
-		if ( GetMaxPlayerKingScore(wChairID) <lJettonScore ) return true;
+		if ( GetMaxPlayerKingScore(wChairID) <lJettonScore )
+			return true;
 
 		//保存下注
 		m_lPlayerKingScore += lJettonScore;
@@ -780,7 +782,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	}
 	else if ( ID_PING_JIA == cbJettonArea )
 	{
-		if ( GetMaxTieScore(wChairID) <lJettonScore ) return true;
+		if ( GetMaxTieScore(wChairID) <lJettonScore )
+			return true;
 
 		//保存下注
 		m_lTieScore += lJettonScore;
@@ -788,7 +791,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	}
 	else if ( ID_TONG_DIAN_PING == cbJettonArea )
 	{
-		if ( GetMaxTieKingScore(wChairID) <lJettonScore ) return true;
+		if ( GetMaxTieKingScore(wChairID) <lJettonScore ) 
+			return true;
 
 		//保存下注
 		m_lTieSamePointScore += lJettonScore;
@@ -796,7 +800,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	}
 	else if ( ID_ZHUANG_JIA == cbJettonArea )
 	{
-		if ( GetMaxBankerScore(wChairID) <lJettonScore ) return true;
+		if ( GetMaxBankerScore(wChairID) <lJettonScore )
+			return true;
 
 		//保存下注
 		m_lBankerScore += lJettonScore;
@@ -804,7 +809,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	}
 	else if ( ID_ZHUANG_TIAN_WANG == cbJettonArea )
 	{
-		if ( GetMaxBankerKingScore(wChairID) <lJettonScore ) return true;
+		if ( GetMaxBankerKingScore(wChairID) <lJettonScore ) 
+			return true;
 
 		//保存下注
 		m_lBankerKingScore += lJettonScore;
@@ -1465,7 +1471,7 @@ void CTableFrameSink::CalculateScore()
 	__int64 *pUserScore[] = {NULL, m_lUserPlayerScore, m_lUserTieScore, m_lUserBankerScore, m_lUserPlayerKingScore, 
 		m_lUserBankerKingScore, m_lUserTieSamePointScore};
 	//区域倍率
-	BYTE cbMultiple[] = {0, 1, 8, 1, 2, 2, 32};
+	BYTE cbMultiple[] = {0,1, 8, 1, 2, 2, 32};
 
 	///***************************    ****************************************/
 	//__int64	WinScore[GAME_PLAYER];

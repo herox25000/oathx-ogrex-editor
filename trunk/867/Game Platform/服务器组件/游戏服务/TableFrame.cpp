@@ -899,6 +899,7 @@ bool __cdecl CTableFrame::OnEventSocketFrame(WORD wSubCmdID, const void * pDataB
 			}
 		case SUB_GF_USER_CHAT:	//用户聊天
 			{
+				return true;
 				//效验参数
 				CMD_GF_UserChat * pUserChat=(CMD_GF_UserChat *)pDataBuffer;
 				ASSERT(wDataSize>=(sizeof(CMD_GF_UserChat)-sizeof(pUserChat->szChatMessage)));
@@ -1652,7 +1653,7 @@ bool __cdecl CTableFrame::ConcludeGame()
 }
 
 //写入积分
-bool __cdecl CTableFrame::WriteUserScore(WORD wChairID, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount)
+bool __cdecl CTableFrame::WriteUserScore(WORD wChairID, __int64 lScore, __int64 lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount)
 {
 	//效验参数
 	ASSERT(wChairID<m_wChairCount);
@@ -1672,7 +1673,7 @@ bool __cdecl CTableFrame::WriteUserScore(WORD wChairID, LONG lScore, LONG lReven
 }
 
 //写入积分
-bool __cdecl CTableFrame::WriteUserScore(IServerUserItem * pIServerUserItem, LONG lScore, LONG lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount)
+bool __cdecl CTableFrame::WriteUserScore(IServerUserItem * pIServerUserItem, __int64 lScore, __int64 lRevenue, enScoreKind ScoreKind, LONG lPlayTimeCount)
 {
 	//效验参数
 	ASSERT(pIServerUserItem!=NULL);
@@ -1832,7 +1833,7 @@ bool __cdecl CTableFrame::WriteUserScore(IServerUserItem * pIServerUserItem, LON
 
 
 //立即把分数写数据库(用户信息，税收，是否断线)
-bool CTableFrame::UpdateDBScore(IServerUserItem * pIServerUserItem,LONG	lRevenue)
+bool CTableFrame::UpdateDBScore(IServerUserItem * pIServerUserItem,__int64	lRevenue)
 {
 	//效验参数
 	ASSERT (pIServerUserItem!=NULL);

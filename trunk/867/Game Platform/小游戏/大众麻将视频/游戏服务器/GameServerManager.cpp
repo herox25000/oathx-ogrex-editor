@@ -71,29 +71,29 @@ void __cdecl CGameServiceManager::GetGameServiceAttrib(tagGameServiceAttrib & Ga
 //参数修改
 bool __cdecl CGameServiceManager::RectifyServiceOption(tagGameServiceOption * pGameServiceOption)
 {
-	//效验参数
-	ASSERT(pGameServiceOption!=NULL);
-	if (pGameServiceOption==NULL) return false;
+	////效验参数
+	//ASSERT(pGameServiceOption!=NULL);
+	//if (pGameServiceOption==NULL) return false;
 
-	//单元积分
-	pGameServiceOption->lCellScore=__max(1L,pGameServiceOption->lCellScore);
+	////单元积分
+	//pGameServiceOption->lCellScore=__max(1L,pGameServiceOption->lCellScore);
 
-	//积分下限
-	if (pGameServiceOption->wServerType==GAME_GENRE_GOLD)
-	{
-		pGameServiceOption->lLessScore=__max(pGameServiceOption->lCellScore*48L,pGameServiceOption->lLessScore);
-	}
+	////积分下限
+	//if (pGameServiceOption->wServerType==GAME_GENRE_GOLD)
+	//{
+	//	pGameServiceOption->lLessScore=__max(pGameServiceOption->lCellScore*48L,pGameServiceOption->lLessScore);
+	//}
 
-	//积分上限
-	if (pGameServiceOption->lRestrictScore!=0L)
-	{
-		pGameServiceOption->lRestrictScore=__max(pGameServiceOption->lRestrictScore,pGameServiceOption->lLessScore);
-	}
-	//金币房间
-	if (pGameServiceOption->wServerType&GAME_GENRE_GOLD)
-	{
-		pGameServiceOption->lLessScore=__max(pGameServiceOption->lCellScore*20L,pGameServiceOption->lLessScore);
-	}
+	////积分上限
+	//if (pGameServiceOption->lRestrictScore!=0L)
+	//{
+	//	pGameServiceOption->lRestrictScore=__max(pGameServiceOption->lRestrictScore,pGameServiceOption->lLessScore);
+	//}
+	////金币房间
+	//if (pGameServiceOption->wServerType&GAME_GENRE_GOLD)
+	//{
+	//	pGameServiceOption->lLessScore=__max(pGameServiceOption->lCellScore*20L,pGameServiceOption->lLessScore);
+	//}
 
 	return true;
 }
