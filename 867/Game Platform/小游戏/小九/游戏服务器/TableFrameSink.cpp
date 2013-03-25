@@ -1414,9 +1414,9 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 		if (bTongdian)
 		{
 			if (bChaoguo)
-				cbWinner = (cbWinner & ~ID_SHUN_MEN);
-			else
 				cbWinner = (cbWinner |= ID_SHUN_MEN_PIN);
+			else
+				cbWinner = (cbWinner & ~ID_SHUN_MEN);
 		}	
 		else
 		{
@@ -1433,9 +1433,9 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 		if (bTongdian)
 		{
 			if (bChaoguo)
-				cbWinner = (cbWinner & ~ID_TIAN_MEN);
-			else
 				cbWinner |= ID_TIAN_MEN_PIN;
+			else
+				cbWinner = (cbWinner & ~ID_TIAN_MEN);
 		}
 		else
 		{
@@ -1451,9 +1451,9 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 		if(bTongdian)
 		{
 			if (bChaoguo)
-				cbWinner = (cbWinner & ~ID_DAO_MEN);
+				cbWinner |= ID_DAO_MEN_PIN;
 			else
-				cbWinner|=ID_DAO_MEN_PIN;
+				cbWinner = (cbWinner & ~ID_DAO_MEN);
 		}
 		else
 		{
