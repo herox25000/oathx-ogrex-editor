@@ -276,7 +276,7 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	//³ïÂë°´Å¥
 	CRect rcJetton;
 	m_btJetton10000000.GetWindowRect(&rcJetton);
-	int nXPos = nWidth/2-330;
+	int nXPos = nWidth/2-300;
 	int nYPos = nHeight/2+145;
 	int nSpace = 2;
 	DeferWindowPos(hDwp,m_btJetton1000,NULL,nXPos,nYPos,0,0,uFlags|SWP_NOSIZE);
