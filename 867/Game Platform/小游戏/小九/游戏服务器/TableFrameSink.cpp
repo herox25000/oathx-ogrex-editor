@@ -1492,7 +1492,8 @@ void CTableFrameSink::ChuLaoQian()
 		if ( m_CurrentBanker.dwUserType == 10 )
 		{
 			bool bWin = false;
-			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
+			int nRnd = rand() % 100;
+			if ( nRnd <= lWinRate * 10 || m_lBankerWinScore <= (-lMaxLose) )
 			{
 				while(PreCalculateBankerWin() < 0)
 				{
