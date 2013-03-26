@@ -151,7 +151,7 @@ BOOL CGameFrameControl::OnInitDialog()
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
-	//m_BrowerAD.Navigate(TEXT("www.baidu.com/AD/GameFrameAD.asp"),NULL,NULL,NULL,NULL);
+	//m_BrowerAD.Navigate(TEXT("www.game867.com"),NULL,NULL,NULL,NULL);
 
 	//加载资源
 	UpdateSkinResource();

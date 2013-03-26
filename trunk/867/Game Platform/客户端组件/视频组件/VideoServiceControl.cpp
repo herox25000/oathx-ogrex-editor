@@ -767,6 +767,9 @@ BOOL CVideoServiceControl::OnCommand(WPARAM wParam, LPARAM lParam)
 
 	if ( IDM_UM_FLOWER <= uCmd && uCmd <= IDM_UM_FLOWER + FLOWER_COUNT )
 	{
+		ShowInformation(TEXT("此功能暂时还没开放！"),0,MB_ICONINFORMATION);
+		return FALSE;
+
 		//索引转换
 		UINT uBaseCmd = IDM_UM_FLOWER;
 		UINT uFlowerIdx = uCmd - uBaseCmd;

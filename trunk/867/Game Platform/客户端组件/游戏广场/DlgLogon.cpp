@@ -1138,7 +1138,7 @@ void CDlgLogon::OnTcnSelchangeLogonType(NMHDR * pNMHDR, LRESULT * pResult)
 void CDlgLogon::OnRegisterAccounts()
 {
 //#ifndef _DEBUG
-//	ShellExecute(NULL,TEXT("open"),TEXT("http://site7353.s5.idc2.cn//service/viewrule.jsp"),NULL,NULL,SW_SHOWDEFAULT);
+//	ShellExecute(NULL,TEXT("open"),TEXT("www.game867.com"),NULL,NULL,SW_SHOWDEFAULT);
 //	return;
 //#endif
 
