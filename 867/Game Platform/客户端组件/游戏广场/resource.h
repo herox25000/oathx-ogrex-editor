@@ -3,6 +3,7 @@
 // Used by GamePlaza.rc
 //
 #define IDD_GAME_PLAZA                  102
+#define IDD_DLGBANK                     104
 #define IDD_SHORT_MESSAGE               110
 #define IDD_FIND_USER                   111
 #define IDD_MANAGER_RIGHT               115
@@ -30,6 +31,7 @@
 #define IDD_CUSTOM_FACE                 276
 #define IDD_MODIFY_INDIVIDUAL           277
 #define IDD_LOCKCOMPUTER                318
+#define IDD_BANK_DIALOG                 320
 #define IDC_CHAT_MESSAGE                1004
 #define IDC_TABLE_PASSWORD              1004
 #define IDC_SERVER                      1005
@@ -128,13 +130,25 @@
 #define IDC_BANKPASS                    1091
 #define IDC_EDIT2                       1092
 #define IDC_BANKPASS2                   1092
+#define IDC_TAB_BANK                    1093
 #define IDC_RESET_SHALL_CLOSE           1094
 #define IDC_ALLOW_WISPER                1095
+#define IDC_EDIT3                       1095
 #define IDC_ALLOW_ROOM_CHAT             1096
+#define IDC_EDIT4                       1096
 #define IDC_ALLOW_ENTER_GAME            1097
+#define IDC_BANK_TEXT                   1097
 #define IDC_ALLOW_GAME_CHAT             1098
 #define IDC_BOSS_HOTKEY                 1098
+#define IDC_EDIT1                       1098
 #define IDC_ALLOW_ENTER_ROOM            1099
+#define IDC_BACNK_BTNOK                 1099
+#define IDC_BANK_PLYNAME                1100
+#define IDC_BANK_PLYNICK                1101
+#define IDC_BUTTON1                     1102
+#define IDC_BANK_BTNALL                 1102
+#define IDC_EDIT5                       2011
+#define IDC_EDIT6                       2012
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32776
@@ -144,9 +158,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        319
+#define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1093
-#define _APS_NEXT_SYMED_VALUE           104
+#define _APS_NEXT_CONTROL_VALUE         1103
+#define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
