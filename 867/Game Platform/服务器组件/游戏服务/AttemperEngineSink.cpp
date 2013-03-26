@@ -2549,9 +2549,10 @@ bool CAttemperEngineSink::OnSocketPresent(WORD wSubCmdID, VOID * pData, WORD wDa
 	{
 	case SUB_GF_FLOWER:					//鲜花事件
 		{
-			CMD_GF_Gift * pTemp=(CMD_GF_Gift *)pData;
-			m_cbSendLocation = pTemp->cbSendLocation;
-			bReturnValue = OnEventFlower(pData,wDataSize,pIServerUserItem);
+			//CMD_GF_Gift * pTemp=(CMD_GF_Gift *)pData;
+			//m_cbSendLocation = pTemp->cbSendLocation;
+			//bReturnValue = OnEventFlower(pData,wDataSize,pIServerUserItem);
+			bReturnValue = true;
 			break;
 		}
 	case SUB_GF_PROPERTY:				//道具事件
@@ -2563,9 +2564,9 @@ bool CAttemperEngineSink::OnSocketPresent(WORD wSubCmdID, VOID * pData, WORD wDa
 		}
 	case SUB_GF_EXCHANGE_CHARM:			//兑换事件
 		{
-			CMD_GF_ExchangeCharm *pTemp = (CMD_GF_ExchangeCharm*)pData;
-			m_cbSendLocation = pTemp->cbSendLocation;
-			bReturnValue = OnEventExchangeCharm(pData,wDataSize,pIServerUserItem);
+			//CMD_GF_ExchangeCharm *pTemp = (CMD_GF_ExchangeCharm*)pData;
+			//m_cbSendLocation = pTemp->cbSendLocation;
+			//bReturnValue = OnEventExchangeCharm(pData,wDataSize,pIServerUserItem);
 			break;
 		}
 	case SUB_GF_PROP_BUGLE:				//喇叭事件

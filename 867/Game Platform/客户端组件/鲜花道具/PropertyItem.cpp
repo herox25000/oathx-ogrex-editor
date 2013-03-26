@@ -387,7 +387,7 @@ void CPropertyItem::OnBnClickedOk()
 	{
 		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2) )	
 		{
-			ShellExecute(NULL,TEXT("open"),TEXT("www.baidu.com"),NULL,NULL,SW_SHOWDEFAULT);
+			ShellExecute(NULL,TEXT("open"),TEXT("www.game867.com"),NULL,NULL,SW_SHOWDEFAULT);
 		}
 		
 		return;
@@ -832,6 +832,10 @@ void CFlowerSetting::SetFlowerID(int nFlowerID)
 //按钮消息
 void CFlowerSetting::OnBnClickedOk()
 {
+	ShowInformation(TEXT("此功能暂时还没开放！"),0,MB_ICONINFORMATION);
+	return ;
+
+
 	//合法判断
 	if ( m_nFlowerCount <= 0 || m_nFlowerCount > MAX_FLOWER_COUNT )
 	{
@@ -898,7 +902,7 @@ void CFlowerSetting::OnBnClickedOk()
 	{
 		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION |MB_YESNO|MB_DEFBUTTON2))	
 		{
-			ShellExecute(NULL,TEXT("open"),TEXT("www.baidu.com"),NULL,NULL,SW_SHOWDEFAULT);
+			ShellExecute(NULL,TEXT("open"),TEXT("www.game867.com"),NULL,NULL,SW_SHOWDEFAULT);
 		}
 
 		return;

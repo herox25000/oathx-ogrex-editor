@@ -144,7 +144,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 			CListInside * pListInside=(CListInside *)pListItem;
 			tagGameInside * pGameInside=pListInside->GetItemInfo();
 
-		//	WebBrowse(TEXT("http://site7353.s5.idc2.cn/"),false);
+		//	WebBrowse(TEXT("www.game867.com"),false);
 
 			return;
 		}
@@ -1282,7 +1282,7 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,IDC_BROWER_AD,NULL);
-	//m_BrowerAD.Navigate(TEXT("http://site7353.s5.idc2.cn//AD/GamePlazaAD.asp"),NULL,NULL,NULL,NULL);
+	//m_BrowerAD.Navigate(TEXT("www.game867.com"),NULL,NULL,NULL,NULL);
 	m_BrowerAD.ShowWindow(SW_HIDE);
 
 	//拆分条控件
