@@ -8,6 +8,7 @@ SmallNineMachine::SmallNineMachine(DWORD dwUserID)
 	: IRobot(dwUserID), m_fOnlineTime(0), m_fCurOnlineTime(0)
 {
 	ResetGame();
+	srand(time(NULL));
 }
 
 SmallNineMachine::~SmallNineMachine(void)
@@ -73,10 +74,36 @@ bool			SmallNineMachine::SendApplyBanker(bool bUp)
 	return true;
 }
 
-INT64			SmallNineMachine::GetRandScore()
+INT64			SmallNineMachine::GetRandScore(__int64 nLeftJettonScore)
 {
 	// 获取庄配置
 	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();
+
+	float nTenMillionRate = 0, nFiveMillionRate = 0, nOneMillionRate = 0, nFiveLakhRate = 0, nTenLakhRate = 0, nOneW = 0, nOneQ = 0;
+
+	if (nLeftJettonScore >= 10000000)
+		nTenMillionRate = 10000000.0 / nLeftJettonScore * 100;
+	if (nLeftJettonScore >= 5000000)
+		nFiveMillionRate = 5000000.0 / nLeftJettonScore * 100;
+	if (nLeftJettonScore >= 1000000)
+		nOneMillionRate = 1000000.0 / nLeftJettonScore * 100;
+	if (nLeftJettonScore >= 500000)
+		nFiveLakhRate = 500000.0 / nLeftJettonScore * 100;
+	if (nLeftJettonScore >= 100000)
+		nTenLakhRate = 100000.0 / nLeftJettonScore * 100;
+	if (nLeftJettonScore >= 10000)
+		nOneW = 10000.0 / nLeftJettonScore * 100;
+	if (nLeftJettonScore >= 1000)
+		nOneQ = 1000.0 / nLeftJettonScore * 100;
+
+	float nTotal = nTenMillionRate + nFiveMillionRate + nOneMillionRate + nFiveLakhRate + nTenLakhRate + nOneW + nOneQ;
+	nTenMillionRate = nTenMillionRate / nTotal * 100;
+	nFiveMillionRate = nFiveMillionRate / nTotal * 100;
+	nFiveLakhRate = nFiveLakhRate / nTotal * 100;
+	nOneMillionRate = nOneMillionRate / nTotal * 100;
+	nTenLakhRate = nTenLakhRate / nTotal * 100;
+	nOneW = nOneW / nTotal * 100;
+	nOneQ = nOneQ / nTotal * 100;
 
 	// 随机压住金币
 	static __int64 JScore[] = 
@@ -84,34 +111,21 @@ INT64			SmallNineMachine::GetRandScore()
 		1000, 10000, 100000, 500000, 1000000, 5000000, 10000000
 	};
 
-	int nRandRate = rand() % 100;
+	float JettonRate[] = { nTenMillionRate, nFiveMillionRate, nFiveLakhRate, nOneMillionRate, nTenLakhRate, nOneW, nOneQ };
+
+	float nRandRate = RobotTimer::rdft(0, 100);
 	int nCurIndex = 0;
 
-	if (nRandRate>= 0 && nRandRate <= config.nTenMillionRate)
+	float nFlase = 0;
+	for (int i = 0; i < 7; i++)
 	{
-		nCurIndex = 6;
+		if (nRandRate < nFlase + JettonRate[i])
+		{
+			nCurIndex = 6 - i;
+			break;
+		}
+		nFlase += JettonRate[i];
 	}
-	else if (nRandRate > config.nTenMillionRate && nRandRate <= config.nFiveMillionRate)
-	{
-		nCurIndex = 5;
-	}
-	else if (nRandRate > config.nFiveMillionRate && nRandRate <= config.nOneMillionRate)
-	{
-		nCurIndex = 4;
-	}
-	else if (nRandRate > config.nOneMillionRate && nRandRate <= config.nFiveLakhRate)
-	{
-		nCurIndex = 3;
-	}
-	else if (nRandRate > config.nFiveLakhRate && nRandRate <= config.nTenLakhRate)
-	{
-		nCurIndex = 2;
-	}
-	else
-	{
-		nCurIndex = rand() % 2;
-	}
-
 	return JScore[nCurIndex];
 }
 
@@ -131,6 +145,7 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 			CMD_S_StatusFree* pStatusFree=(CMD_S_StatusFree *)pBuffer;
 			if (pStatusFree)
 			{
+				m_nJettonTime			= pStatusFree->cbTimeLeave;
 				m_nApplyBankerCondition	= pStatusFree->lApplyBankerCondition;
 				// 当前庄积分
 				m_nBankerScore			= pStatusFree->lBankerTreasure;
@@ -162,6 +177,7 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 			CMD_S_StatusPlay* pStatusPlay=(CMD_S_StatusPlay *)pBuffer;
 			if (pStatusPlay)
 			{
+				m_nJettonTime			= pStatusPlay->cbTimeLeave;
 				m_nApplyBankerCondition	= pStatusPlay->lApplyBankerCondition;
 				m_nBankerScore			= pStatusPlay->lBankerTreasure;
 				m_nMeMaxScore			= pStatusPlay->lMeMaxScore;
@@ -223,41 +239,51 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 	// 更新加注信息
 	if ( m_bAddJetton && m_wCurBanker != INVALID_CHAIR)
 	{
-		m_fElapsedTime		+= fElapsed;
-		
-		// 已经到压注条件
-		if (m_fElapsedTime >= m_fAddJettonTime)
+		int nPlaceRand = m_nJettonTime * 100 / MAX_PLACE_JETTON_TIME;
+		if (nPlaceRand < 10)
+			return;
+		int nRnd = rand() % 100;
+		m_nJettonTime -= fElapsed;
+		if (nRnd < nPlaceRand)
 		{
-			CMD_C_PlaceJetton PlaceJetton;
-			ZeroMemory(&PlaceJetton,sizeof(PlaceJetton));
-
-			// 随机压注门
-			static BYTE cbArea[] = {
-				ID_SHUN_MEN,
-				ID_TIAN_MEN,
-				ID_DAO_MEN,
-			};
-			
-			PlaceJetton.cbJettonArea = cbArea[rand() % 3];
-			PlaceJetton.lJettonScore = GetRandScore();
-
-			if (m_nMeMaxScore >= PlaceJetton.lJettonScore)
+			m_fElapsedTime		+= fElapsed;
+			// 已经到压注条件
+			if (m_fElapsedTime >= m_fAddJettonTime)
 			{
-				WORD nPlaceRate = (m_nMePlaceScore + PlaceJetton.lJettonScore) / m_nMeMaxScore * 100;
-				if (nPlaceRate < config.nPlaceMaxRate)
-				{
-					// 发送押注消息
-					SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, 
-						&PlaceJetton, sizeof(PlaceJetton));
+				CMD_C_PlaceJetton PlaceJetton;
+				ZeroMemory(&PlaceJetton,sizeof(PlaceJetton));
 
-					// 增加自己压的钱
-					m_nMePlaceScore += PlaceJetton.lJettonScore;
+				// 随机压注门
+				static BYTE cbArea[] = {
+					ID_SHUN_MEN,
+					ID_TIAN_MEN,
+					ID_DAO_MEN,
+				};
+				
+				PlaceJetton.cbJettonArea = cbArea[rand() % 3];
+				__int64 nLeftScore = m_nMeMaxScore * config.nPlaceMaxRate / 100 - m_nMePlaceScore;
+				PlaceJetton.lJettonScore = GetRandScore(nLeftScore);
+
+				if (m_nMeMaxScore >= PlaceJetton.lJettonScore)
+				{
+					WORD nPlaceRate = (m_nMePlaceScore + PlaceJetton.lJettonScore) / m_nMeMaxScore * 100;
+					if (nPlaceRate < config.nPlaceMaxRate)
+					{
+						// 发送押注消息
+						SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, 
+							&PlaceJetton, sizeof(PlaceJetton));
+
+						// 增加自己压的钱
+						m_nMePlaceScore += PlaceJetton.lJettonScore;
+					}
 				}
+
+				m_fAddJettonTime	= RobotTimer::rdft(config.fMinPlaceTime, config.fMaxPlaceTime);
+				m_fElapsedTime		= 0;
 			}
 
-			m_fAddJettonTime	= RobotTimer::rdft(config.fMinPlaceTime, config.fMaxPlaceTime);
-			m_fElapsedTime		= 0;
 		}
+
 	}
 }
 
@@ -356,6 +382,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			CMD_S_GameEnd* pGameEnd	=(CMD_S_GameEnd *)pBuffer;
 
 			// 更新数据
+			m_nJettonTime			= pGameEnd->cbTimeLeave;
 			m_nMeMaxScore			= pGameEnd->lMeMaxScore;
 
 			// 获取庄配置
