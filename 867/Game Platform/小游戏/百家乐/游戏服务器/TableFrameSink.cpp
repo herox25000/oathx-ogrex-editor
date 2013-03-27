@@ -1304,7 +1304,7 @@ void CTableFrameSink::ChuLaoQian()
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\Baccarat.ini", sizeof(szINI));
 	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
+// 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
 	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
 	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
 	LIMIT_VALUE(lWinRate, 1, 10);
@@ -1318,49 +1318,49 @@ void CTableFrameSink::ChuLaoQian()
 			bool bWin = false;
 			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
 			{
-				int nDispatch = 50;
+				int nDispatch = 30;
 				while(PreCalculateBankerWin() < 0 && nDispatch > 0)
 				{
 					nDispatch--;
 					DispatchTableCard();
 				}
 			}
-			if (false == bWin)
-			{
-				int nDispatch = 50;
-				while(PreCalculateBankerWin() < (-lMaxPerLose) && nDispatch > 0)
-				{
-					nDispatch--;
-					DispatchTableCard();
-				}
-			}
+// 			if (false == bWin)
+// 			{
+// 				int nDispatch = 30;
+// 				while(PreCalculateBankerWin() < (-lMaxPerLose) && nDispatch > 0)
+// 				{
+// 					nDispatch--;
+// 					DispatchTableCard();
+// 				}
+// 			}
 		}
 		else
 		{
 			//玩家如果做庄
 			if (m_lBankerWinScore >= lPlayerMaxMin)
 			{
-				int nDispatch = 50;
+				int nDispatch = 30;
 				while(PreCalculateBankerWin() > 0 && nDispatch > 0)
 				{
 					nDispatch--;
 					DispatchTableCard();
 				}
 			}
-			else if(m_lBankerWinScore > 0)
-			{
-				int nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
-				int nRand = rand()%100;
-				if (nRand < nLoseRate)
-				{
-					int nDispatch = 50;
-					while(PreCalculateBankerWin() > 0 && nDispatch > 0)
-					{
-						nDispatch--;
-						DispatchTableCard();
-					}
-				}
-			}
+// 			else if(m_lBankerWinScore > 0)
+// 			{
+// 				int nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
+// 				int nRand = rand()%100;
+// 				if (nRand < nLoseRate)
+// 				{
+// 					int nDispatch = 50;
+// 					while(PreCalculateBankerWin() > 0 && nDispatch > 0)
+// 					{
+// 						nDispatch--;
+// 						DispatchTableCard();
+// 					}
+// 				}
+// 			}
 		}
 	}
 
