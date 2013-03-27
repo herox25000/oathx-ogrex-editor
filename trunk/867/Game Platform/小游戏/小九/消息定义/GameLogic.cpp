@@ -143,15 +143,10 @@ stCardType CGameLogic::GetCardLevel(BYTE bCardList[])//两张牌
 	if( nFirstValue == nSecondValue )//对子
 	{
 		sCardType.nCardType=CT_DOUBLE;
-		switch (nFirstValue)
-		{
-		case 1:
-			sCardType.nLevel=0;
-			break;
-		default:
-			sCardType.nLevel = 11 - nFirstValue;
-			break;
-		}
+		if (nFirstValue == 1)
+			sCardType.nLevel = 0;
+		else
+			sCardType.nLevel = 11-nFirstValue;
 		return sCardType;
 	}
 	sCardType.nCardType=CT_SINGLE;
