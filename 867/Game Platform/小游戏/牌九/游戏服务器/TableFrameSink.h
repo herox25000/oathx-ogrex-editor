@@ -198,8 +198,7 @@ private:
     void CalculateScore();
 	//推断赢家
 	void DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner);
-	//出老千
-	void ChuLaoQian();
+	void RobotAI();
 	//计算得分
 	__int64	PreCalculateBankerWin();
 

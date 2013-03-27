@@ -147,7 +147,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_lAllPlayCount++;
 	//发送扑克
 	DispatchTableCard();
-	ChuLaoQian();
+	RobotAI();
 	//变量定义
 	CMD_S_GameStart GameStart;
 	ZeroMemory(&GameStart,sizeof(GameStart));
@@ -1472,26 +1472,24 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 }
 
 
-void CTableFrameSink::ChuLaoQian()
+void CTableFrameSink::RobotAI()
 {
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\XiaoJiu.ini", sizeof(szINI));
 	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 20000000, szINI);
+// 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 20000000, szINI);
 	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 50000000, szINI);
 	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 80000000, szINI);
 	LIMIT_VALUE(lWinRate, 1, 10);
 
-	//获取玩家
 	if (m_CurrentBanker.dwUserID != 0)
 	{
 		BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
 		SortCardComp(chCardSort, 4);
-		//机器人30%的概率赢钱
 		if ( m_CurrentBanker.dwUserType == 10 )
 		{
-			bool bWin = false;
+// 			bool bWin = false;
 			int nRnd = rand() % 100;
 			if ( nRnd <= lWinRate * 10 || m_lBankerWinScore <= (-lMaxLose) )
 			{
@@ -1500,17 +1498,16 @@ void CTableFrameSink::ChuLaoQian()
 					SwapBankerCard(chCardSort, true);	//DispatchTableCard();
 				}
 			}
-			if (false == bWin)
-			{
-				while(PreCalculateBankerWin() < (-lMaxPerLose))
-				{
-					SwapBankerCard(chCardSort, true);	//DispatchTableCard();
-				}
-			}
+// 			if (false == bWin)
+// 			{
+// 				while(PreCalculateBankerWin() < (-lMaxPerLose))
+// 				{
+// 					SwapBankerCard(chCardSort, true);	//DispatchTableCard();
+// 				}
+// 			}
 		}
 		else
 		{
-			//玩家如果做庄
 			if (m_lBankerWinScore >= lPlayerMaxMin)
 			{
 				while(PreCalculateBankerWin() > 0)
@@ -1518,18 +1515,18 @@ void CTableFrameSink::ChuLaoQian()
 					SwapBankerCard(chCardSort, false);		//DispatchTableCard();
 				}
 			}
-			else if(m_lBankerWinScore > 0)
-			{
-				__int64 nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
-				int nRand = rand()%100;
-				if (nRand < nLoseRate)
-				{
-					while(PreCalculateBankerWin() > 0)
-					{
-						SwapBankerCard(chCardSort, false);
-					}
-				}
-			}
+// 			else if(m_lBankerWinScore > 0)
+// 			{
+// 				__int64 nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
+// 				int nRand = rand()%100;
+// 				if (nRand < nLoseRate)
+// 				{
+// 					while(PreCalculateBankerWin() > 0)
+// 					{
+// 						SwapBankerCard(chCardSort, false);
+// 					}
+// 				}
+// 			}
 		}
 	}
 }
