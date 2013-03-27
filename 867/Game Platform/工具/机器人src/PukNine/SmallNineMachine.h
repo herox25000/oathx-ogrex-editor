@@ -3,6 +3,8 @@
 #include "IRobot.h"
 #include <deque>
 
+#define MAX_PLACE_JETTON_TIME		25	
+
 class SmallNineMachine : public IRobot
 {
 public:
@@ -23,7 +25,7 @@ public:
 public:
 	virtual bool			SendApplyBanker(bool bUp);
 	virtual	void			ResetGame();
-	virtual INT64			GetRandScore();
+	virtual INT64			GetRandScore(__int64 nLeftJettonScore);
 	virtual void			SetOnlineTime(double fOnlineTime);
 	virtual BYTE			GetRandArea();
 protected:
@@ -44,5 +46,8 @@ protected:
 
 	INT64					m_nMePlaceScore;
 	INT64					m_nMeWinScore;
+
+protected:
+	float					m_nJettonTime;		//ÏÂ×¢Ê±¼ä
 };
 
