@@ -239,10 +239,13 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 	// 更新加注信息
 	if ( m_bAddJetton && m_wCurBanker != INVALID_CHAIR)
 	{
-		int nPlaceRand = m_nJettonTime * 100 / MAX_PLACE_JETTON_TIME;
+		float nPlaceRand = m_nJettonTime * 100 / MAX_PLACE_JETTON_TIME;
 		if (nPlaceRand < 10)
+		{
+			m_bAddJetton = FALSE;
 			return;
-		int nRnd = rand() % 100;
+		}
+		float nRnd = RobotTimer::rdft(0, 100);
 		m_nJettonTime -= fElapsed;
 		if (nRnd < nPlaceRand)
 		{
