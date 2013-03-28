@@ -87,14 +87,14 @@ struct CMD_S_StatusPlay
 	//BYTE								bAddScore;							//加注标志
 
 	//加注信息
-	LONG								lCellScore;							//单元下注
-	LONG								lTurnMaxScore;						//最大下注
-	LONG								lTurnLessScore;						//最小下注
-	LONG								lCellMaxScore;						//最大下注
-	LONG								lAddLessScore;						//加最小注
-	LONG								lTableScore[GAME_PLAYER];			//下注数目
-	LONG								lTotalScore[GAME_PLAYER];			//累计下注
-	LONG								lCenterScore;						//中心筹码
+	__int64								lCellScore;							//单元下注
+	__int64								lTurnMaxScore;						//最大下注
+	__int64								lTurnLessScore;						//最小下注
+	__int64								lCellMaxScore;						//最大下注
+	__int64								lAddLessScore;						//加最小注
+	__int64								lTableScore[GAME_PLAYER];			//下注数目
+	__int64								lTotalScore[GAME_PLAYER];			//累计下注
+	__int64								lCenterScore;						//中心筹码
 
 	//状态信息
 	WORD								wDUser;								//D玩家
@@ -113,10 +113,10 @@ struct CMD_S_GameStart
 	WORD				 				wCurrentUser;						//当前玩家
 	WORD								wDUser;								//D玩家
 	WORD								wMaxChipInUser;						//大盲注玩家	
-	LONG								lCellScore;							//单元下注
-	LONG								lTurnMaxScore;						//最大下注
-	LONG								lTurnLessScore;						//最小下注
-	LONG								lAddLessScore;						//加最小注
+	__int64								lCellScore;							//单元下注
+	__int64								lTurnMaxScore;						//最大下注
+	__int64								lTurnLessScore;						//最小下注
+	__int64								lAddLessScore;						//加最小注
 	BYTE								cbCardData[GAME_PLAYER][MAX_COUNT];	//用户扑克
 	BYTE								cbAllData[GAME_PLAYER][MAX_COUNT];	//用户扑克
 };
@@ -126,10 +126,10 @@ struct CMD_S_AddScore
 {
 	WORD								wCurrentUser;						//当前用户
 	WORD								wAddScoreUser;						//加注用户
-	LONG								lAddScoreCount;						//加注数目
-	LONG								lTurnLessScore;						//最少加注
-	LONG								lTurnMaxScore;						//最大下注
-	LONG								lAddLessScore;						//加最小注
+	__int64								lAddScoreCount;						//加注数目
+	__int64								lTurnLessScore;						//最少加注
+	__int64								lTurnMaxScore;						//最大下注
+	__int64								lAddLessScore;						//加最小注
 	BYTE								cbShowHand[GAME_PLAYER];			//梭哈用户
 };
 
@@ -137,7 +137,7 @@ struct CMD_S_AddScore
 struct CMD_S_GiveUp
 {
 	WORD								wGiveUpUser;						//放弃用户
-	LONG								lLost;								//输掉金币	
+	__int64								lLost;								//输掉金币	
 };
 
 //发牌数据包
@@ -153,8 +153,8 @@ struct CMD_S_SendCard
 struct CMD_S_GameEnd
 {
 	BYTE								cbTotalEnd;							//强退标志
-	LONG								lGameTax[GAME_PLAYER];				//游戏税收
-	LONG								lGameScore[GAME_PLAYER];			//游戏得分
+	__int64								lGameTax[GAME_PLAYER];				//游戏税收
+	__int64								lGameScore[GAME_PLAYER];			//游戏得分
 	BYTE								cbCardData[GAME_PLAYER][MAX_COUNT];	//用户扑克
 	BYTE								cbLastCenterCardData[GAME_PLAYER][MAX_CENTERCOUNT];//最后扑克
 };
@@ -181,7 +181,7 @@ struct CMD_S_OpenCard
 //用户加注
 struct CMD_C_AddScore
 {
-	LONG								lScore;								//加注数目
+	__int64								lScore;								//加注数目
 };
 
 ////用户坐下

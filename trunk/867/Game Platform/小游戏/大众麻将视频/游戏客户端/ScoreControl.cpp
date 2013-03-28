@@ -205,7 +205,7 @@ void CScoreControl::OnPaint()
 	{
 		//变量定义
 		TCHAR szUserScore[16]=TEXT("");
-		_sntprintf(szUserScore,CountArray(szUserScore),TEXT("%d"),m_ScoreInfo.lGameScore[i]);
+		_sntprintf(szUserScore,CountArray(szUserScore),TEXT("%I64d"),m_ScoreInfo.lGameScore[i]);
 
 		//位置计算
 		CRect rcName(29,165+i*30,132,165+(i+1)*30);

@@ -15,9 +15,9 @@ class CGoldView
 {
 	//变量定义
 public:
-	LONG								m_lGold;						//筹码数目
-	LONG								m_lMaxLayer;					//最大层数
-	LONG								m_lGoldCount[7];	 			//筹码数目
+	__int64								m_lGold;						//筹码数目
+	__int64								m_lMaxLayer;					//最大层数
+	__int64								m_lGoldCount[7];	 			//筹码数目
 
 	//辅助变量
 protected:
@@ -35,17 +35,17 @@ public:
 	//功能函数
 public:
 	//设置筹码
-	void SetGold(LONG lGold);
+	void SetGold(__int64 lGold);
 	//获取筹码
-	LONG GetGold() { return m_lGold; };
+	__int64 GetGold() { return m_lGold; };
 	//设置层数
-	void SetMaxGoldLayer(LONG lMaxLayer);
+	void SetMaxGoldLayer(__int64 lMaxLayer);
 	//获取层数
-	LONG GetMaxGoldLayer(){return m_lMaxLayer;}
+	__int64 GetMaxGoldLayer(){return m_lMaxLayer;}
 	//绘画筹码
 	void DrawGoldView(CDC * pDC, int nXPos, int nYPos, bool bCount,bool bCenter=false,BYTE bDUser=0);
 	//整性变字符
-	LPCTSTR GetGlodString(LONG lGold, TCHAR szString[]);
+	LPCTSTR GetGlodString(__int64 lGold, TCHAR szString[]);
 
 	//内部函数
 private:

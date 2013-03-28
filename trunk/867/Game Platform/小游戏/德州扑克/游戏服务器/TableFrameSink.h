@@ -22,16 +22,16 @@ protected:
 
 	//加注信息
 protected:
-	LONG							m_lCellScore;							//单元下注
-	LONG							m_lTurnLessScore;						//最小下注
-	LONG							m_lAddLessScore;						//加最小注
-	LONG							m_lTurnMaxScore;						//最大下注
-	LONG							m_lBalanceScore;						//平衡下注
+	__int64							m_lCellScore;							//单元下注
+	__int64							m_lTurnLessScore;						//最小下注
+	__int64							m_lAddLessScore;						//加最小注
+	__int64							m_lTurnMaxScore;						//最大下注
+	__int64							m_lBalanceScore;						//平衡下注
 	WORD							m_wOperaCount;							//操作次数
 	BYTE							m_cbBalanceCount;						//平衡次数
-	LONG							m_lTableScore[GAME_PLAYER];				//桌面下注
-	LONG							m_lTotalScore[GAME_PLAYER];				//累计下注
-	LONG							m_lUserMaxScore[GAME_PLAYER];			//最大下注
+	__int64							m_lTableScore[GAME_PLAYER];				//桌面下注
+	__int64							m_lTotalScore[GAME_PLAYER];				//累计下注
+	__int64							m_lUserMaxScore[GAME_PLAYER];			//最大下注
 	BYTE							m_cbShowHand[GAME_PLAYER];				//梭哈用户
 
 	//税收变量
@@ -113,7 +113,7 @@ protected:
 	//放弃事件
 	bool OnUserGiveUp(WORD wChairID);
 	//加注事件
-	bool OnUserAddScore(WORD wChairID, LONG lScore, bool bGiveUp);
+	bool OnUserAddScore(WORD wChairID, __int64 lScore, bool bGiveUp);
 
 	//事件接口
 public:

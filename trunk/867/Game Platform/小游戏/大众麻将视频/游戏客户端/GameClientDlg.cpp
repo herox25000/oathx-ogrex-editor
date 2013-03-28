@@ -1233,9 +1233,9 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 		ScoreInfo.lGameScore[i]=pGameEnd->lGameScore[i];
 		lstrcpyn(ScoreInfo.szUserName[i],pUserData->szName,CountArray(ScoreInfo.szUserName[i]));
 		if(pGameEnd->lGameScore[i]>0)
-			strTemp.Format("%s: %+ld\n",pUserData->szName,pGameEnd->lGameScore[i]);
+			strTemp.Format("%s: %I64d\n",pUserData->szName,pGameEnd->lGameScore[i]);
 		else
-			strTemp.Format("%s: %ld\n",pUserData->szName,pGameEnd->lGameScore[i]);
+			strTemp.Format("%s: %I64d\n",pUserData->szName,pGameEnd->lGameScore[i]);
 		strEnd += strTemp;
 
 		//ºúÅÆÆË¿Ë
@@ -1289,7 +1289,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 
 	//²¥·ÅÉùÒô
 	//²¥·ÅÉùÒô
-	LONG lScore=pGameEnd->lGameScore[GetMeChairID()];
+	__int64 lScore=pGameEnd->lGameScore[GetMeChairID()];
 	if (lScore>0L)
 	{
 			PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WIN"));

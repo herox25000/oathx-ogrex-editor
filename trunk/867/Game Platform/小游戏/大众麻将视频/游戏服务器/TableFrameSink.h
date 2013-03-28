@@ -25,7 +25,7 @@ class CTableFrameSink : public ITableFrameSink, public ITableUserAction
 protected:
 	WORD							m_wSiceCount;							//骰子点数
 	WORD							m_wBankerUser;							//庄家用户
-	LONG							m_lGameScore[GAME_PLAYER];				//游戏得分
+	__int64							m_lGameScore[GAME_PLAYER];				//游戏得分
 	BYTE							m_cbCardIndex[GAME_PLAYER][MAX_INDEX];	//用户扑克
 	bool							m_bTrustee[4];							//是否托管
 

@@ -471,14 +471,15 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			}
 
 			//统计分数
-			LONG lScore = 0,lRevenue = 0;
+			__int64 lScore = 0,lRevenue = 0;
 			enScoreKind nScoreKind ;
 			WORD wWinner = INVALID_CHAIR;
 			for (WORD i = 0;i<GAME_PLAYER;i++)
 			{
 				if(m_cbPlayStatus[i]==FALSE)
 				{
-					if(m_lTotalScore[i] > 0L)GameEnd.lGameScore[i]-=m_lTotalScore[i];
+					if(m_lTotalScore[i] > 0L)
+						GameEnd.lGameScore[i]-=m_lTotalScore[i];
 					continue;
 				}
 
@@ -498,10 +499,11 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				//}
 
 				//总下注数目
-				LONG lAllScore = 0L;
+				__int64 lAllScore = 0L;
 				for (WORD j = 0;j<GAME_PLAYER;j++)
 				{
-					if(wWinner==j)continue;
+					if(wWinner==j)
+						continue;
 					lAllScore += m_lTotalScore[j];
 				}
 				ASSERT(lAllScore>=0);
@@ -582,7 +584,7 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//CopyMemory(StatusPlay.bShowHand,m_cbShowHand,sizeof(m_cbShowHand));
 
 			//总下注数目
-			LONG lAllScore = 0L;
+			__int64 lAllScore = 0L;
 			for (WORD j = 0;j<GAME_PLAYER;j++)
 			{
 				lAllScore += m_lTotalScore[j];
@@ -731,7 +733,7 @@ bool CTableFrameSink::OnUserGiveUp(WORD wChairID)
 }
 
 //加注事件 
-bool CTableFrameSink::OnUserAddScore(WORD wChairID, LONG lScore, bool bGiveUp)
+bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore, bool bGiveUp)
 {
 	//校验用户
 	ASSERT(m_wCurrentUser==wChairID);
@@ -815,10 +817,11 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, LONG lScore, bool bGiveUp)
 		m_lTurnMaxScore = m_lUserMaxScore[m_wCurrentUser]-m_lTotalScore[m_wCurrentUser];
 		if(m_lTotalScore[m_wCurrentUser]==m_lCellScore)
 		{
-			LONG bTemp = (m_lBalanceScore==m_lCellScore*2)?(m_lCellScore*2):((m_lBalanceScore-m_lCellScore*2)*2);
+			__int64 bTemp = (m_lBalanceScore==m_lCellScore*2)?(m_lCellScore*2):((m_lBalanceScore-m_lCellScore*2)*2);
 			m_lAddLessScore = m_lCellScore+bTemp;
 		}
-		else m_lAddLessScore = (m_lBalanceScore==0)?(2*m_lCellScore):(__max((m_lBalanceScore-m_lTableScore[m_wCurrentUser])*2,2L*m_lCellScore));
+		else
+			m_lAddLessScore = (m_lBalanceScore==0)?(2*m_lCellScore):(__max((m_lBalanceScore-m_lTableScore[m_wCurrentUser])*2,2L*m_lCellScore));
 
 		//构造数据
 		CMD_S_AddScore AddScore;
