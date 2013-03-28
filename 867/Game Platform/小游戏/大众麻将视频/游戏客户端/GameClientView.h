@@ -89,9 +89,9 @@ public:
 	CControlWnd						m_ControlWnd;						//控制窗口
 	CScoreControl					m_ScoreControl;						//积分控件
 	
-	//视频组件
-private:
-	CVideoServiceControl 			m_DlgVedioService[4];				//视频窗口
+//	//视频组件
+//private:
+//	CVideoServiceControl 			m_DlgVedioService[4];				//视频窗口
 
 	//函数定义
 public:
