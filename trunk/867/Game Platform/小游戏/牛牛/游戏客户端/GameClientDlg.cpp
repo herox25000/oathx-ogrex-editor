@@ -361,7 +361,8 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 				m_wViewChairID[i]=SwitchViewChairID(i);
 
 				//桌面筹码
-				if(m_lTableScore[i]>0L)m_GameClientView.SetUserTableScore(m_wViewChairID[i],m_lTableScore[i]);
+				if(m_lTableScore[i]>0L)
+					m_GameClientView.SetUserTableScore(m_wViewChairID[i],m_lTableScore[i]);
 				
 				//获取用户
 				const tagUserData * pUserData=GetUserData(i);
@@ -377,9 +378,9 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			//设置筹码
 			if (!IsLookonMode() && pStatusScore->lTurnMaxScore>0L && m_lTableScore[GetMeChairID()]==0L)
 			{
-				LONG lUserMaxScore[GAME_PLAYER];
+				__int64 lUserMaxScore[GAME_PLAYER];
 				ZeroMemory(lUserMaxScore,sizeof(lUserMaxScore));
-				LONG lTemp=m_lTurnMaxScore;
+				__int64 lTemp=m_lTurnMaxScore;
 				for (WORD i=0;i<GAME_PLAYER;i++)
 				{
 					if(i>0)lTemp/=2;
@@ -611,9 +612,9 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	//设置筹码
 	if (!IsLookonMode() && pGameStart->lTurnMaxScore>0)
 	{
-		LONG lUserMaxScore[GAME_PLAYER];
+		__int64 lUserMaxScore[GAME_PLAYER];
 		ZeroMemory(lUserMaxScore,sizeof(lUserMaxScore));
-		LONG lTemp=m_lTurnMaxScore;
+		__int64 lTemp=m_lTurnMaxScore;
 		for (WORD i=0;i<GAME_PLAYER;i++)
 		{
 			if(i>0)lTemp/=2;
@@ -825,8 +826,10 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 		if (pGameEnd->lGameScore[i]!=0L || i==m_wBankerUser)
 		{
 			m_GameClientView.m_ScoreView.SetGameTax(pGameEnd->lGameTax[i],i);
-			if (m_szAccounts[i][0]=='#') m_GameClientView.m_ScoreView.SetGameScore(i,TEXT("已离开"),pGameEnd->lGameScore[i]);
-			else m_GameClientView.m_ScoreView.SetGameScore(i,m_szAccounts[i],pGameEnd->lGameScore[i]);
+			if (m_szAccounts[i][0]=='#')
+				m_GameClientView.m_ScoreView.SetGameScore(i,TEXT("已离开"),pGameEnd->lGameScore[i]);
+			else
+				m_GameClientView.m_ScoreView.SetGameScore(i,m_szAccounts[i],pGameEnd->lGameScore[i]);
 		}
 	}
 	m_GameClientView.m_ScoreView.ShowWindow(SW_SHOW);
@@ -915,7 +918,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 }
 
 //更新控制
-void CGameClientDlg::UpdateScoreControl(LONG lScore[],BOOL bShow)
+void CGameClientDlg::UpdateScoreControl(__int64 lScore[],BOOL bShow)
 {
 	if(lScore!=NULL)
 	{
@@ -923,7 +926,7 @@ void CGameClientDlg::UpdateScoreControl(LONG lScore[],BOOL bShow)
 		ZeroMemory(tsz,sizeof(tsz));
 		for(BYTE i=0;i<GAME_PLAYER;i++)
 		{
-			sprintf(tsz[i],"%d",lScore[i]);
+			sprintf(tsz[i],"%I64d",lScore[i]);
 		}
 		m_GameClientView.m_btOneScore.SetWindowText(tsz[0]);
 		m_GameClientView.m_btTwoScore.SetWindowText(tsz[1]);
@@ -1002,8 +1005,9 @@ LRESULT	CGameClientDlg::OnAddScore(WPARAM wParam, LPARAM lParam)
 	WORD wMeChairID=GetMeChairID();
 
 	BYTE bTemp=(BYTE)wParam;
-	LONG lCurrentScore=0;
-	if(bTemp==1)lCurrentScore=__max(m_lTurnMaxScore/8,1L);
+	__int64 lCurrentScore=0;
+	if(bTemp==1)
+		lCurrentScore=__max(m_lTurnMaxScore/8,1L);
 	else if(bTemp==2)lCurrentScore=__max(m_lTurnMaxScore/4,1L);
 	else if(bTemp==3)lCurrentScore=__max(m_lTurnMaxScore/2,1L);
 	else if(bTemp==4)lCurrentScore=__max(m_lTurnMaxScore,1L);
