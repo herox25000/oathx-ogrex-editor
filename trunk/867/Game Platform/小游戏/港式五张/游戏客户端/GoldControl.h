@@ -12,7 +12,7 @@ class CGoldControl : public CWnd
 {
 	//变量定义
 protected:
-	LONG								m_lCellScore;					//单元注
+	__int64								m_lCellScore;					//单元注
 	LONG								m_lTimes;						//倍数
 
 	//位置变量
@@ -42,7 +42,7 @@ public:
 	//功能函数
 public:
 	//设置筹码
-	void SetCellScore(LONG lCellSocre);
+	void SetCellScore(__int64 lCellSocre);
 	//设置位置
 	void SetBenchmarkPos(int nXPos, int nYPos);
 	//设置倍数

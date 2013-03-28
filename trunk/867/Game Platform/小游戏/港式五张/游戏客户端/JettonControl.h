@@ -31,8 +31,8 @@ class CJettonControl
 {
 	//变量定义
 protected:
-	LONG							m_lScore;							//筹码数目
-	LONG							m_lDrawScore;						//
+	__int64							m_lScore;							//筹码数目
+	__int64							m_lDrawScore;						//
 	CPoint							m_BenchmarkPos;						//基准位置
 	enDrawMode						m_DrawMode;							//绘画模式
 
@@ -58,11 +58,11 @@ public:
 	//功能函数
 public:
 	//获取筹码
-	LONG GetScore() { return m_lScore; }
+	__int64 GetScore() { return m_lScore; }
 	//设置筹码
-	VOID SetScore(LONG lScore);
+	VOID SetScore(__int64 lScore);
 	//加注
-	void AddScore(LONG lScore);
+	void AddScore(__int64 lScore);
 	//设置绘画模式
 	void SetDrawMode( enDrawMode DrawMode );
 

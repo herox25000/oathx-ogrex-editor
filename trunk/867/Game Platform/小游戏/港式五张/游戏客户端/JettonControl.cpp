@@ -50,7 +50,7 @@ VOID CJettonControl::DrawJettonControl(CDC * pDC)
 	if( enDrawMode_Layer == m_DrawMode )
 	{
 		//变量定义
-		LONG lScore=m_lScore;
+		__int64 lScore=m_lScore;
 		LONG lScoreArray[]={1L,5L,10L,50L,100L,500L,1000L,5000L,10000L,50000L,100000L,500000L,1000000L,5000000L};
 
 		//计算筹码
@@ -110,7 +110,7 @@ VOID CJettonControl::SetBenchmarkPos(INT nXPos, INT nYPos)
 }
 
 //设置筹码
-VOID CJettonControl::SetScore(LONG lScore)
+VOID CJettonControl::SetScore(__int64 lScore)
 {
 	if( m_lScore != lScore )
 	{
@@ -120,7 +120,7 @@ VOID CJettonControl::SetScore(LONG lScore)
 }
 
 //添加筹码
-void CJettonControl::AddScore(LONG lScore)
+void CJettonControl::AddScore(__int64 lScore)
 {
 	m_lScore += lScore;
 	RectifyControl();
@@ -133,7 +133,7 @@ void CJettonControl::RectifyControl()
 	if( m_lScore == 0 || enDrawMode_Rand == m_DrawMode && 
 		m_lDrawScore != m_lScore )
 	{
-		LONG lDrawScore;
+		__int64 lDrawScore;
 		if( m_lDrawScore > m_lScore )
 		{
 			lDrawScore = m_lScore;

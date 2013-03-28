@@ -38,8 +38,8 @@ class CGameClientView : public CGameFrameView
 {
 	//数据变量
 protected:
-	LONG							m_lTableScore[GAME_PLAYER];			//下注数目
-	LONG							m_lCellScore;						//单元注
+	__int64							m_lTableScore[GAME_PLAYER];			//下注数目
+	__int64							m_lCellScore;						//单元注
 
 	//动画变量
 protected:
@@ -107,9 +107,9 @@ public:
 	//发送扑克
 	void DispatchUserCard(WORD wChairID, BYTE cbCardData);
 	//设置下注
-	void SetUserTableScore(WORD wChairID, LONG lTableScore);
+	void SetUserTableScore(WORD wChairID, __int64 lTableScore);
 	//设置单元注
-	void SetCellScore( LONG lCellScore );
+	void SetCellScore( __int64 lCellScore );
 
 	//辅助函数
 protected:

@@ -274,7 +274,7 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			}
 
 			//设置界面
-			LONG lTableScore=0L;
+			__int64 lTableScore=0L;
 			for (WORD i=0;i<GAME_PLAYER;i++)
 			{
 				//设置位置
@@ -336,7 +336,7 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	m_wCurrentUser=pGameStart->wCurrentUser;
 
 	//设置变量
-	LONG lTableScore=0L;
+	__int64 lTableScore=0L;
 	for (WORD i=0;i<GAME_PLAYER;i++)
 	{
 		//获取用户
@@ -446,9 +446,9 @@ bool CGameClientDlg::OnSubAddScore(const void * pBuffer, WORD wDataSize)
 		{
 			//获取积分
 			const tagUserData * pUserData=(tagUserData *)GetUserData(wAddScoreUser);
-			LONG lTableScore=m_lTableScore[wAddScoreUser*2+1];
-			LONG lTurnAddScore=m_lTableScore[wAddScoreUser*2];
-			LONG lShowHandScore=pUserData->lScore-lTableScore;
+			__int64 lTableScore=m_lTableScore[wAddScoreUser*2+1];
+			__int64 lTurnAddScore=m_lTableScore[wAddScoreUser*2];
+			__int64 lShowHandScore=pUserData->lScore-lTableScore;
 
 			//播放声音
 			if ((pAddScore->lAddScoreCount-lTurnAddScore)==0L) PlayGameSound(AfxGetInstanceHandle(),TEXT("NO_ADD"));
@@ -592,8 +592,10 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 		//设置信息
 		if (pGameEnd->lGameScore[i]!=0L)
 		{
-			if (m_szAccounts[i][0]==0) m_GameClientView.m_ScoreView.SetGameScore(i,TEXT("已离开"),pGameEnd->lGameScore[i]);
-			else m_GameClientView.m_ScoreView.SetGameScore(i,m_szAccounts[i],pGameEnd->lGameScore[i]);
+			if (m_szAccounts[i][0]==0) 
+				m_GameClientView.m_ScoreView.SetGameScore(i,TEXT("已离开"),pGameEnd->lGameScore[i]);
+			else 
+				m_GameClientView.m_ScoreView.SetGameScore(i,m_szAccounts[i],pGameEnd->lGameScore[i]);
 			//扣税
 			m_GameClientView.m_ScoreView.SetGameTax(i,pGameEnd->lGameTax[i]);
 			if (pGameEnd->cbCardData[i]!=0)
@@ -669,15 +671,15 @@ void CGameClientDlg::UpdateScoreControl()
 	//变量定义
 	WORD wMeChairID=GetMeChairID();
 	BYTE cbCardCount=(BYTE)m_GameClientView.m_CardControl[2].GetCardCount();
-	LONG lDrawAddScore=m_lTableScore[wMeChairID*2]+m_lTableScore[wMeChairID*2+1];
+	__int64 lDrawAddScore=m_lTableScore[wMeChairID*2]+m_lTableScore[wMeChairID*2+1];
 
 	//梭哈金币
 	const tagUserData * pUserData=GetUserData(wMeChairID);
-	LONG lMaxLeaveScore=pUserData->lScore-lDrawAddScore;
-	LONG lUserLessScore=__min(lMaxLeaveScore,__max(m_lTurnLessScore-lDrawAddScore,0L));
+	__int64 lMaxLeaveScore=pUserData->lScore-lDrawAddScore;
+	__int64 lUserLessScore=__min(lMaxLeaveScore,__max(m_lTurnLessScore-lDrawAddScore,0L));
 
 	//下注按钮
-	LONG lLeaveScore=__max(m_lTurnMaxScore-lDrawAddScore,0L);
+	__int64 lLeaveScore=__max(m_lTurnMaxScore-lDrawAddScore,0L);
 	m_GameClientView.m_btAddScore.ShowWindow(SW_SHOW);
 	m_GameClientView.m_btAddScore.EnableWindow(((m_bShowHand==false)&&(m_bAddScore==false)&&(lLeaveScore>0))?TRUE:FALSE);
 
@@ -743,7 +745,7 @@ LRESULT CGameClientDlg::OnFollow(WPARAM wParam, LPARAM lParam)
 {
 	//获取筹码
 	WORD wMeChairID=GetMeChairID();
-	LONG lCurrentScore=m_lTurnLessScore-m_lTableScore[wMeChairID*2+1];
+	__int64 lCurrentScore=m_lTurnLessScore-m_lTableScore[wMeChairID*2+1];
 
 	//加注设置
 	m_bAddScore=true;
@@ -779,7 +781,7 @@ LRESULT	CGameClientDlg::OnAddScore(WPARAM wParam, LPARAM lParam)
 
 	//获取筹码
 	WORD wMeChairID=GetMeChairID();
-	LONG lCurrentScore=m_lTurnLessScore-m_lTableScore[wMeChairID*2+1]+m_lCellScore*(lParam);
+	__int64 lCurrentScore=m_lTurnLessScore-m_lTableScore[wMeChairID*2+1]+m_lCellScore*(lParam);
 
 	//加注设置
 	m_bAddScore=true;
@@ -818,9 +820,9 @@ LRESULT CGameClientDlg::OnShowHand(WPARAM wParam, LPARAM lParam)
 	if( cbCardCount < 3 || m_wCurrentUser!=wMeChairID ) return 0;
 
 	//金币统计
-	LONG lTurnAddScore=m_lTableScore[wMeChairID*2];
-	LONG lCurrentScore=pUserData->lScore-m_lTableScore[wMeChairID*2+1];
-	LONG lDrawAddScore=m_lTableScore[wMeChairID*2]+m_lTableScore[wMeChairID*2+1];
+	__int64 lTurnAddScore=m_lTableScore[wMeChairID*2];
+	__int64 lCurrentScore=pUserData->lScore-m_lTableScore[wMeChairID*2+1];
+	__int64 lDrawAddScore=m_lTableScore[wMeChairID*2]+m_lTableScore[wMeChairID*2+1];
 
 	//加注设置
 	m_bAddScore=true;
