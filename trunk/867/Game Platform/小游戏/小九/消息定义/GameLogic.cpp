@@ -257,7 +257,7 @@ bool CGameLogic::CompareCard(BYTE bFirstList[], BYTE bNextList[], BYTE bCardCoun
 	{
 		if (sFirstCard.nCardType == CT_DOUBLE)
 		{
-			if (sFirstCard.nLevel == sFirstCard.nLevel)
+			if (sFirstCard.nLevel == sNextCard.nLevel)
 			{
 				bTongdian = true;
 				return true;
