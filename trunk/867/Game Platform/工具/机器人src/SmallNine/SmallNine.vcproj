@@ -135,6 +135,9 @@
 				RelativePath=".\IRobot.cpp">
 			</File>
 			<File
+				RelativePath=".\RobotDialog.cpp">
+			</File>
+			<File
 				RelativePath=".\RobotManager.cpp">
 			</File>
 			<File
@@ -177,6 +180,9 @@
 			</File>
 			<File
 				RelativePath=".\Resource.h">
+			</File>
+			<File
+				RelativePath=".\RobotDialog.h">
 			</File>
 			<File
 				RelativePath=".\RobotManager.h">

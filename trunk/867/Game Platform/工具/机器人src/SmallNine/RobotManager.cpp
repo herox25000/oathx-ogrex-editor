@@ -49,6 +49,24 @@ IRobot*					RobotManager::Search(DWORD dwUserID)
 	return NULL;
 }
 
+IRobot*					RobotManager::SearchRobotByGameID(DWORD dwGameID)
+{
+	RobotRegister::iterator it = m_RobotRegister.begin();
+	while( it != m_RobotRegister.end() )
+	{
+		tagUserInfo* pUserInfo = it->second->GetUserInfo();
+		if (pUserInfo->dwGameID == dwGameID)
+		{
+			return it->second;
+		}
+
+		it ++;
+	}
+
+	return NULL;
+}
+
+
 int						RobotManager::GetRobotCount() const
 {
 	return m_RobotRegister.size();

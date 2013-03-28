@@ -9,6 +9,7 @@ typedef struct tagUserInfo
 	TCHAR		szName[32];		//玩家名称
 	BOOL		bIsRobot;		//是不是机器人
 	INT64		lScore;			//用户积分
+	DWORD		dwGameID;
 
 	tagUserInfo()
 	{

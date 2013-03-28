@@ -217,8 +217,9 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 				// 如果自己是庄，但是已到在线时间，那么重新随机在线时间
 				if (pUserInfo->dwUserID == m_dwUserID || BankerManager::GetSingleton().Search(m_dwUserID))
 				{
-					m_fOnlineTime	= RobotTimer::rdft(config.fMinOnlineTime / 2, config.fMaxPlaceTime / 2);
-					m_fCurOnlineTime= 0;
+					double dMidNewTime	= config.fMaxPlaceTime / 2;
+					m_fOnlineTime		= RobotTimer::rdft(config.fMinOnlineTime, dMidNewTime >= config.fMinOnlineTime ? dMidNewTime : config.fMinOnlineTime + 5);
+					m_fCurOnlineTime	= 0;
 				}
 				else
 				{
@@ -245,6 +246,7 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 			m_bAddJetton = FALSE;
 			return;
 		}
+
 		float nRnd = RobotTimer::rdft(0, 100);
 		m_nJettonTime -= fElapsed;
 		if (nRnd < nPlaceRand)
