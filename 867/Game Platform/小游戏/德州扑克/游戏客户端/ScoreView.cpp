@@ -153,13 +153,13 @@ void CScoreView::ResetScore()
 }
 
 //设置税收
-void CScoreView::SetGameTax(LONG lGameTax)
+void CScoreView::SetGameTax(__int64 lGameTax)
 {	
 	return;
 }
 
 //设置积分
-void CScoreView::SetGameScore(WORD wChairID,  LONG lScore)
+void CScoreView::SetGameScore(WORD wChairID,  __int64 lScore)
 {
 	//设置变量
 	if (wChairID<GAME_PLAYER)

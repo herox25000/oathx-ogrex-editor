@@ -22,14 +22,14 @@ protected:
 
 	//加注信息
 protected:
-	LONG							m_lCellScore;						//单元下注
-	LONG							m_lTurnLessScore;					//最小下注
-	LONG							m_lTurnMaxScore;					//最大下注
-	LONG							m_lAddLessScore;					//加最小注
-	LONG							m_lTableScore[GAME_PLAYER];			//下注数目
-	LONG							m_lTotalScore[GAME_PLAYER];			//累计下注
-	LONG							m_lCenterScore;						//中心筹码
-	LONG							m_lBalanceScore;					//平衡筹码
+	__int64							m_lCellScore;						//单元下注
+	__int64							m_lTurnLessScore;					//最小下注
+	__int64							m_lTurnMaxScore;					//最大下注
+	__int64							m_lAddLessScore;					//加最小注
+	__int64							m_lTableScore[GAME_PLAYER];			//下注数目
+	__int64							m_lTotalScore[GAME_PLAYER];			//累计下注
+	__int64							m_lCenterScore;						//中心筹码
+	__int64							m_lBalanceScore;					//平衡筹码
 
 	//状态变量
 protected:

@@ -15,7 +15,7 @@ class CScoreView : public CDialog
 {
 	//变量定义
 protected:
-	LONG							m_lGameScore;						//游戏得分
+	__int64							m_lGameScore;						//游戏得分
 	int								m_bTimes;							//倒计时间
 	bool							m_bStart;							//开始标志
 
@@ -44,9 +44,9 @@ public:
 	//重置积分
 	void ResetScore();
 	//设置税收
-	void SetGameTax(LONG lGameTax);
+	void SetGameTax(__int64 lGameTax);
 	//设置积分
-	void SetGameScore(WORD wChairID, LONG lScore);
+	void SetGameScore(WORD wChairID, __int64 lScore);
 	//开始时间
 	void SetStartTimes(bool bStart = true);
 	//显示时间

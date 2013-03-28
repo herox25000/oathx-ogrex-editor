@@ -43,7 +43,7 @@ struct tagJettonStatus
 	CPoint							ptFrom;								//出发位置
 	CPoint							ptDest;								//目的位置
 	CPoint							ptCourse;							//过程位置
-	LONG							lGold;								//筹码数目
+	__int64							lGold;								//筹码数目
 
 	//移动形式
 	INT								iMoveType;							//移动形式
@@ -90,11 +90,11 @@ protected:
 	//数据变量
 protected:
 	BYTE							m_bShowUser;						//显示标志
-	LONG							m_lTableScore[GAME_PLAYER];			//桌面下注
-	LONG							m_lTotalScore[GAME_PLAYER];			//总下注
-	LONG							m_lCenterScore;						//中心筹码
-	LONG							m_lTurnLessScore;					//最小下注
-	LONG							m_lTurnMaxScore;					//最大下注
+	__int64							m_lTableScore[GAME_PLAYER];			//桌面下注
+	__int64							m_lTotalScore[GAME_PLAYER];			//总下注
+	__int64							m_lCenterScore;						//中心筹码
+	__int64							m_lTurnLessScore;					//最小下注
+	__int64							m_lTurnMaxScore;					//最大下注
 
 	//界面变量
 protected:
@@ -195,13 +195,13 @@ public:
 	//设置标示
 	void SetDFlag(WORD wDUser);
 	//设置下注
-	void SetUserTableScore(WORD wChairID, LONG lTableScore);
+	void SetUserTableScore(WORD wChairID, __int64 lTableScore);
 	//中心筹码
-	void SetCenterScore(LONG lCenterScore);
+	void SetCenterScore(__int64 lCenterScore);
 	//设置总筹码
-	void SetTotalScore(WORD wChairID, LONG lTotalScore);
+	void SetTotalScore(WORD wChairID, __int64 lTotalScore);
 	//筹码信息
-	void SetTitleInfo(LONG lTurnLessScore, LONG lTurnMaxScore);
+	void SetTitleInfo(__int64 lTurnLessScore, __int64 lTurnMaxScore);
 	//设置结束
 	void SetGameEndStart();
 	//设置结束
@@ -209,7 +209,7 @@ public:
 	//设置结束
 	void SetCenterCount(){m_bCenterCount=0;}
 	//移动筹码
-	void DrawMoveAnte( WORD wViewChairID, int iMoveType, LONG lTableScore );
+	void DrawMoveAnte( WORD wViewChairID, int iMoveType, __int64 lTableScore );
 	//移动扑克
 	void DrawMoveCard( WORD wViewChairID, int iMoveType, BYTE bCard );
 	//移动筹码
@@ -217,7 +217,7 @@ public:
 	//移动筹码
 	bool MoveCard();
 	//整性变字符
-	LPCTSTR GetGlodString(LONG lGold, TCHAR szString[]);
+	LPCTSTR GetGlodString(__int64 lGold, TCHAR szString[]);
 	//物理位置
 	void SetUserPost(WORD wPhysicsPost,WORD wViewPost);
 	//动画标志

@@ -33,7 +33,7 @@ CGoldView::~CGoldView()
 }
 
 //设置筹码
-void CGoldView::SetGold(LONG lGold)
+void CGoldView::SetGold(__int64 lGold)
 {
 	if (m_lGold!=lGold)
 	{
@@ -44,7 +44,7 @@ void CGoldView::SetGold(LONG lGold)
 }
 
 //设置层数
-void CGoldView::SetMaxGoldLayer(LONG lMaxLayer)
+void CGoldView::SetMaxGoldLayer(__int64 lMaxLayer)
 {
 	if (m_lMaxLayer!=lMaxLayer)
 	{
@@ -161,7 +161,7 @@ void CGoldView::DrawGoldView(CDC * pDC, int nXPos, int nYPos, bool bCount,bool b
 void CGoldView::RectifyGoldLayer()
 {
 	//变量定义
-	LONG lBasicGold[]={1000L,500L,100L,50L,10L,5L,1L},lGold=(LONG)m_lGold;
+	__int64 lBasicGold[]={1000L,500L,100L,50L,10L,5L,1L},lGold=(LONG)m_lGold;
 	memset(m_lGoldCount,0,sizeof(m_lGoldCount));
 
 	//调整筹码层
@@ -182,9 +182,9 @@ void CGoldView::RectifyGoldLayer()
 }
 
 //整性变字符
-LPCTSTR CGoldView::GetGlodString(LONG lGold, TCHAR szString[])
+LPCTSTR CGoldView::GetGlodString(__int64 lGold, TCHAR szString[])
 {
-	LONG lTemp=(LONG)lGold; 
+	__int64 lTemp=(__int64)lGold; 
 	if(lGold<0L) return szString;
 
 	//处理小数点

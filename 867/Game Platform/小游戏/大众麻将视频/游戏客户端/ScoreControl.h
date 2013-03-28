@@ -22,7 +22,7 @@ struct tagScoreInfo
 	//积分信息
 	WORD							wProvideUser;							//供应用户
 	BYTE							cbProvideCard;							//供应扑克
-	LONG							lGameScore[GAME_PLAYER];				//游戏积分
+	__int64							lGameScore[GAME_PLAYER];				//游戏积分
 
 	//胡牌结果
 	DWORD							dwChiHuKind[GAME_PLAYER];				//胡牌类型

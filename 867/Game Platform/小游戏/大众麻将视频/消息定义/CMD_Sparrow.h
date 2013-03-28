@@ -145,7 +145,7 @@ struct CMD_S_GameEnd
 	DWORD							dwChiHuRight[GAME_PLAYER];			//胡牌类型
 
 	//积分信息
-	LONG						lGameScore[GAME_PLAYER];			//游戏积分
+	__int64						lGameScore[GAME_PLAYER];			//游戏积分
 
 	//扑克信息
 	BYTE							cbCardCount[GAME_PLAYER];			//扑克数目

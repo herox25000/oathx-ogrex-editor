@@ -732,11 +732,12 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			CRect rcName1(m_ptName[wUserId].x,m_ptName[wUserId].y+20,m_ptName[wUserId].x+108,m_ptName[wUserId].y+50);
 			pDC->SetTextColor(RGB(255,255,4));
 			TCHAR szBuffer[128]=TEXT("");
-			LONG lLeaveScore=pUserData->lScore - ((m_lTotalScore[wUserId]>0)?m_lTotalScore[wUserId]:0L);
-			if(lLeaveScore<0)lLeaveScore=pUserData->lScore;
+			__int64 lLeaveScore=pUserData->lScore - ((m_lTotalScore[wUserId]>0)?m_lTotalScore[wUserId]:0L);
+			if(lLeaveScore<0)
+				lLeaveScore=pUserData->lScore;
 
 			//加千数点
-			LONG lTempCount = lLeaveScore;
+			__int64 lTempCount = lLeaveScore;
 			GetGlodString(lTempCount,szBuffer);
 
 			pDC->DrawText(szBuffer,lstrlen(szBuffer),&rcName1,DT_CENTER|DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
@@ -932,7 +933,7 @@ void CGameClientView::SetDFlag(WORD wDUser)
 }
 
 //设置下注
-void CGameClientView::SetUserTableScore(WORD wChairID, LONG lTableScore)
+void CGameClientView::SetUserTableScore(WORD wChairID, __int64 lTableScore)
 {
 	//设置数据
 	if (wChairID!=INVALID_CHAIR) 
@@ -956,7 +957,7 @@ void CGameClientView::SetUserTableScore(WORD wChairID, LONG lTableScore)
 }
 
 //设置总筹码
-void CGameClientView::SetTotalScore(WORD wChairID, LONG lTotalScore)
+void CGameClientView::SetTotalScore(WORD wChairID, __int64 lTotalScore)
 {
 	ASSERT(wChairID>=0 && wChairID <GAME_PLAYER);
 	m_lTotalScore[wChairID] = lTotalScore;
@@ -968,7 +969,7 @@ void CGameClientView::SetTotalScore(WORD wChairID, LONG lTotalScore)
 }
 
 //筹码信息
-void CGameClientView::SetTitleInfo(LONG lTurnLessScore, LONG lTurnMaxScore)
+void CGameClientView::SetTitleInfo(__int64 lTurnLessScore, __int64 lTurnMaxScore)
 {
 	//设置变量
 	m_lTurnLessScore = lTurnLessScore;
@@ -981,7 +982,7 @@ void CGameClientView::SetTitleInfo(LONG lTurnLessScore, LONG lTurnMaxScore)
 }
 
 //中心筹码
-void CGameClientView::SetCenterScore(LONG lCenterScore)
+void CGameClientView::SetCenterScore(__int64 lCenterScore)
 {
 	//设置数据
 	m_lCenterScore = lCenterScore;
@@ -1008,7 +1009,7 @@ void CGameClientView::SetGameEndEnd()
 }
 
 //绘制动画, 0: 底注动画, 1: 加注动画, 2: 加注合并到底注, 3: 赢家收筹码
-void CGameClientView::DrawMoveAnte( WORD wViewChairID, int iMoveType,LONG lTableScore)
+void CGameClientView::DrawMoveAnte( WORD wViewChairID, int iMoveType,__int64 lTableScore)
 {
 	//动画步数
 	int nAnimeStep = 60;		
@@ -1313,9 +1314,9 @@ bool CGameClientView::MoveCard()
 }
 
 //整性变字符
-LPCTSTR CGameClientView::GetGlodString(LONG lGold, TCHAR szString[])
+LPCTSTR CGameClientView::GetGlodString(__int64 lGold, TCHAR szString[])
 {
-	LONG lTemp=(LONG)lGold; 
+	__int64 lTemp=(__int64)lGold; 
 	if(lGold<0L) return szString;
 
 	//处理小数点
