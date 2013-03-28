@@ -128,16 +128,16 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//托管按钮
 	m_btStusteeControl.Create(TEXT(""),WS_CHILD|WS_DISABLED|WS_VISIBLE,rcCreate,this,IDC_TRUSTEE_CONTROL);
 	m_btStusteeControl.SetButtonImage(IDB_BT_START_TRUSTEE,AfxGetInstanceHandle(),false);
-	//创建视频
-	for (WORD i=0;i<4;i++)
-	{
-		//创建视频
-		m_DlgVedioService[i].Create(NULL,NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,300+i);
-		m_DlgVedioService[i].InitVideoService(i==2,true);
+	////创建视频
+	//for (WORD i=0;i<4;i++)
+	//{
+	//	//创建视频
+	//	m_DlgVedioService[i].Create(NULL,NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,300+i);
+	//	m_DlgVedioService[i].InitVideoService(i==2,true);
 
-		//设置视频
-		g_VedioServiceManager.SetVideoServiceControl(i,&m_DlgVedioService[i]);
-	}
+	//	//设置视频
+	//	g_VedioServiceManager.SetVideoServiceControl(i,&m_DlgVedioService[i]);
+	//}
 
 	SetTimer(IDI_DISC_EFFECT,250,NULL);
 
@@ -346,13 +346,13 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_ScoreControl,NULL,(nWidth-rcScoreControl.Width())/2,(nHeight-rcScoreControl.Height())*2/5,0,0,uFlags);
 
 	//视频窗口
-	CRect rcAVDlg;
-	m_DlgVedioService[0].GetWindowRect(&rcAVDlg);
-	DeferWindowPos(hDwp,m_DlgVedioService[1],NULL,nWidth-m_nXBorder-5-rcAVDlg.Width(),nHeight/2+30,0,0,uFlags);
-	DeferWindowPos(hDwp,m_DlgVedioService[3],NULL,m_nXBorder+5,nHeight/2+30,0,0,uFlags);
-	DeferWindowPos(hDwp,m_DlgVedioService[0],NULL,nWidth-m_nXBorder-5-rcAVDlg.Width(),5,0,0,uFlags);
-	m_DlgVedioService[2].GetWindowRect(&rcAVDlg);
-	DeferWindowPos(hDwp,m_DlgVedioService[2],NULL,m_nXBorder+5,nHeight-m_nYBorder-3-rcAVDlg.Height(),0,0,uFlags);
+	//CRect rcAVDlg;
+	//m_DlgVedioService[0].GetWindowRect(&rcAVDlg);
+	//DeferWindowPos(hDwp,m_DlgVedioService[1],NULL,nWidth-m_nXBorder-5-rcAVDlg.Width(),nHeight/2+30,0,0,uFlags);
+	//DeferWindowPos(hDwp,m_DlgVedioService[3],NULL,m_nXBorder+5,nHeight/2+30,0,0,uFlags);
+	//DeferWindowPos(hDwp,m_DlgVedioService[0],NULL,nWidth-m_nXBorder-5-rcAVDlg.Width(),5,0,0,uFlags);
+	//m_DlgVedioService[2].GetWindowRect(&rcAVDlg);
+	//DeferWindowPos(hDwp,m_DlgVedioService[2],NULL,m_nXBorder+5,nHeight-m_nYBorder-3-rcAVDlg.Height(),0,0,uFlags);
 
 	//结束移动
 	EndDeferWindowPos(hDwp);
