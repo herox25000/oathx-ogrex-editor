@@ -285,7 +285,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			}
 
 			//计算总注
-			LONG lWinnerScore=0L;
+			__int64 lWinnerScore=0L;
 			for (WORD i=0;i<m_wPlayerCount;i++) 
 			{
 				if(i==wWinner)continue;
@@ -293,10 +293,10 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				lWinnerScore+=m_lTableScore[i];
 			}
 
-			//处理税收
-			LONG lRevenue=(LONG)m_pGameServiceOption->wRevenue;
-			GameEnd.lGameTax=lWinnerScore/100*lRevenue;
-			GameEnd.lGameScore[wWinner]=lWinnerScore-GameEnd.lGameTax;
+			////处理税收
+			//__int64 lRevenue=(LONG)m_pGameServiceOption->wRevenue;
+			//GameEnd.lGameTax=lWinnerScore/100*lRevenue;
+			//GameEnd.lGameScore[wWinner]=lWinnerScore-GameEnd.lGameTax;
 
 			CopyMemory(GameEnd.cbCardData,m_cbHandCardData,sizeof(m_cbHandCardData));
 
@@ -318,7 +318,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			{
 				//修改积分
 				//写入积分
-				m_pITableFrame->WriteUserScore(wWinner,GameEnd.lGameScore[wWinner],GameEnd.lGameTax,enScoreKind_Win);
+				m_pITableFrame->WriteUserScore(wWinner,GameEnd.lGameScore[wWinner],0,enScoreKind_Win);
 			}
 
 			if(wChairID==GAME_PLAYER)
@@ -366,7 +366,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			WORD wWinner=m_wBankerUser;
 
 			//计算分数
-			LONG lWinnerScore=0L;
+			__int64 lWinnerScore=0L;
 			for (WORD i=0;i<m_wPlayerCount;i++) 
 			{
 				if(i==wWinner)continue;
@@ -374,10 +374,10 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				GameEnd.lGameScore[i]=-m_lTableScore[i];
 			}
 
-			//处理税收
-			LONG lRevenue=(LONG)m_pGameServiceOption->wRevenue;
-			GameEnd.lGameTax=lWinnerScore/100*lRevenue;
-			GameEnd.lGameScore[wWinner]=lWinnerScore-GameEnd.lGameTax;
+			////处理税收
+			//LONG lRevenue=(LONG)m_pGameServiceOption->wRevenue;
+			//GameEnd.lGameTax=lWinnerScore/100*lRevenue;
+			//GameEnd.lGameScore[wWinner]=lWinnerScore-GameEnd.lGameTax;
 
 			//开牌结束
 			GameEnd.wEndState=1;
@@ -409,9 +409,9 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//写入积分
 			for (WORD i=0;i<m_wPlayerCount;i++)if(m_cbPlayStatus[i]==TRUE)
 			{
-				LONG lRevenueValue = ((i==wWinner)?(GameEnd.lGameTax):(0L));
+				__int64 lRevenueValue = ((i==wWinner)?(GameEnd.lGameTax):(0L));
 				enScoreKind nScoreKind = ((i==wWinner)?(enScoreKind_Win):(enScoreKind_Lost));
-				m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],lRevenueValue,nScoreKind);
+				m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,nScoreKind);
 			}
 
 			if(wChairID==GAME_PLAYER)
@@ -586,7 +586,8 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 			if (m_cbPlayStatus[pUserData->wChairID]==FALSE) return false;
 
 			//当前状态
-			if(pAddScore->wState>0)m_lCompareCount=pAddScore->lScore;
+			if(pAddScore->wState>0)
+				m_lCompareCount=pAddScore->lScore;
 
 			//消息处理
 			return OnUserAddScore(pUserData->wChairID,pAddScore->lScore,false,((pAddScore->wState>0)?true:false));
@@ -856,7 +857,7 @@ bool CTableFrameSink::OnUserOpenCard(WORD wUserID)
 }
 
 //加注事件
-bool CTableFrameSink::OnUserAddScore(WORD wChairID, LONG lScore, bool bGiveUp, bool bCompareCard)
+bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore, bool bGiveUp, bool bCompareCard)
 {
 	if (bGiveUp==false)				//设置数据
 	{
@@ -873,7 +874,7 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, LONG lScore, bool bGiveUp, b
 		//当前倍数					bGiveUp过滤了lScore为0
 		LONG lTimes=(m_bMingZhu[wChairID] || bCompareCard)?2:1;
 		if(m_bMingZhu[wChairID] && bCompareCard)lTimes=4;
-		LONG lTemp=lScore/m_lCellScore/lTimes;
+		__int64 lTemp=lScore/m_lCellScore/lTimes;
 		ASSERT(m_lCurrentTimes<=lTemp && m_lCurrentTimes<=m_lMaxCellScore/m_lCellScore);
 		if(!(m_lCurrentTimes<=lTemp && m_lCurrentTimes<=m_lMaxCellScore/m_lCellScore))return false;
 		m_lCurrentTimes = lTemp;

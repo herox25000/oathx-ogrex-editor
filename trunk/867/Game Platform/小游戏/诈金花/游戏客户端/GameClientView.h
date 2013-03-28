@@ -51,11 +51,11 @@ class CGameClientView : public CGameFrameView
 	//数据变量
 protected:
 	WORD							m_wBankerUser;						//庄家用户
-	LONG							m_lMaxCellScore;					//最大下注
-	LONG							m_lCellScore;						//最少下注
-	LONG							m_lTableScore[GAME_PLAYER];			//下注数目
-	LONG							m_lCurrentScore[GAME_PLAYER];		//当前数目
-	LONG							m_lStopUpdataScore[GAME_PLAYER];	//保持数目
+	__int64							m_lMaxCellScore;					//最大下注
+	__int64							m_lCellScore;						//最少下注
+	__int64							m_lTableScore[GAME_PLAYER];			//下注数目
+	__int64							m_lCurrentScore[GAME_PLAYER];		//当前数目
+	__int64							m_lStopUpdataScore[GAME_PLAYER];	//保持数目
 	bool							m_bInvest;							//等待下注
 	bool							m_bCompareCard;						//选比标志
 	WORD							m_wWaitUserChoice;					//等待标志
@@ -160,13 +160,13 @@ private:
 	//功能函数
 public:
 	//设置下注
-	void SetUserTableScore(WORD wChairID, LONG lTableScore,LONG lCurrentScore);
+	void SetUserTableScore(WORD wChairID, __int64 lTableScore,__int64 lCurrentScore);
 	//等待选择
 	void SetWaitUserChoice(WORD wChoice);
 	//庄家标志
 	void SetBankerUser(WORD wBankerUse);
 	//左上信息
-	void SetScoreInfo(LONG lMaxCellScore,LONG lCellScore);
+	void SetScoreInfo(__int64 lMaxCellScore,__int64 lCellScore);
 	//选比标志
 	void SetCompareCard(bool bCompareCard,BOOL bCompareUser[]);
 	//停止更新

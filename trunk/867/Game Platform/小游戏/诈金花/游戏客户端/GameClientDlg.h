@@ -23,7 +23,7 @@ protected:
 protected:
 	TCHAR							m_szAccounts[GAME_PLAYER][NAME_LEN];	//玩家名字
 	BYTE							m_cbPlayStatus[GAME_PLAYER];			//游戏状态
-	LONG							m_lTableScore[GAME_PLAYER];				//下注数目
+	__int64							m_lTableScore[GAME_PLAYER];				//下注数目
 
 	//扑克变量
 protected:
@@ -31,11 +31,11 @@ protected:
 
 	//下注信息
 protected:
-	LONG							m_lMaxScore;							//封顶数目
-	LONG							m_lMaxCellScore;						//单元上限
-	LONG							m_lCellScore;							//单元下注
-	LONG							m_lCurrentTimes;						//当前倍数
-	LONG							m_lUserMaxScore;						//最大分数
+	__int64							m_lMaxScore;							//封顶数目
+	__int64							m_lMaxCellScore;						//单元上限
+	__int64							m_lCellScore;							//单元下注
+	__int64							m_lCurrentTimes;						//当前倍数
+	__int64							m_lUserMaxScore;						//最大分数
 	bool							m_bMingZhu[GAME_PLAYER];				//看牌动作
 
 	//输牌用户

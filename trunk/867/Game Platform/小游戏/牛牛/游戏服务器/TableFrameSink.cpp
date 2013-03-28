@@ -268,7 +268,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				if(m_bPlayStatus[i]==FALSE)
 					continue;
 				enScoreKind nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
-				m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],GameEnd.lGameTax[i],nScoreKind);
+				m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,nScoreKind);
 			}
 
 			//库存统计
@@ -375,7 +375,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					{
 						if(m_bPlayStatus[i]==FALSE && i!=m_wBankerUser)continue;
 						enScoreKind nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
-						m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],GameEnd.lGameTax[i],nScoreKind);
+						m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,nScoreKind);
 					}
 
 					//获取用户
@@ -454,9 +454,9 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 						if(Zero!=m_wPlayerCount)
 						{
 							//修改积分
-							__int64 lRevenue = GameEnd.lGameTax[m_wBankerUser];
+							//__int64 lRevenue = GameEnd.lGameTax[m_wBankerUser];
 							__int64 lScore=GameEnd.lGameScore[m_wBankerUser];
-							m_pITableFrame->WriteUserScore(m_wBankerUser,lScore,lRevenue,enScoreKind_Win);
+							m_pITableFrame->WriteUserScore(m_wBankerUser,lScore,0,enScoreKind_Win);
 
 							//获取用户
 							IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(wChairID);

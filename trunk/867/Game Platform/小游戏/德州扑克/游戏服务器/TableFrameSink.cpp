@@ -407,17 +407,17 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//扣税变量
 			WORD wRevenue=m_pGameServiceOption->wRevenue;
 
-			//统计用户分数(税收)
-			for(WORD i=0;i<m_wPlayerCount;i++)
-			{
-				GameEnd.lGameScore[i]=lUserScore[i];
-				ASSERT(lUserScore[i]+m_lTotalScore[i]>=0L);
-				if(GameEnd.lGameScore[i]>0L)
-				{
-					GameEnd.lGameTax[i]=GameEnd.lGameScore[i]*wRevenue/100L;
-					GameEnd.lGameScore[i]-=GameEnd.lGameTax[i];
-				}
-			}
+			////统计用户分数(税收)
+			//for(WORD i=0;i<m_wPlayerCount;i++)
+			//{
+			//	GameEnd.lGameScore[i]=lUserScore[i];
+			//	ASSERT(lUserScore[i]+m_lTotalScore[i]>=0L);
+			//	if(GameEnd.lGameScore[i]>0L)
+			//	{
+			//		GameEnd.lGameTax[i]=GameEnd.lGameScore[i]*wRevenue/100L;
+			//		GameEnd.lGameScore[i]-=GameEnd.lGameTax[i];
+			//	}
+			//}
 
 			////统计用户分数
 			//for(WORD i=0;i<m_wPlayerCount;i++)
@@ -442,7 +442,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					else nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
 
 					//写入积分
-					m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],GameEnd.lGameTax[i],nScoreKind);
+					m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,nScoreKind);
 				}
 			}
 
@@ -509,20 +509,20 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				ASSERT(lAllScore>=0);
 				GameEnd.lGameScore[i] = lAllScore;
 
-				//统计税收
-				if(GameEnd.lGameScore[i]>0L)
-				{
-					//扣税变量
-					WORD wRevenue=m_pGameServiceOption->wRevenue;
-					GameEnd.lGameTax[i]=GameEnd.lGameScore[i]*wRevenue/100L;
-					GameEnd.lGameScore[i]-=GameEnd.lGameTax[i];
-				}
+				////统计税收
+				//if(GameEnd.lGameScore[i]>0L)
+				//{
+				//	//扣税变量
+				//	WORD wRevenue=m_pGameServiceOption->wRevenue;
+				//	GameEnd.lGameTax[i]=GameEnd.lGameScore[i]*wRevenue/100L;
+				//	GameEnd.lGameScore[i]-=GameEnd.lGameTax[i];
+				//}
 
 				//构造扑克
 				CopyMemory(GameEnd.cbCardData,m_cbHandCardData,sizeof(m_cbHandCardData));
 
 				lScore=GameEnd.lGameScore[i];
-				lRevenue= GameEnd.lGameTax[i];
+				//lRevenue= GameEnd.lGameTax[i];
 				nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
 			}
 
@@ -533,7 +533,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//写入积分
 			if(wWinner<GAME_PLAYER)
 			{
-				m_pITableFrame->WriteUserScore(wWinner,lScore,lRevenue,nScoreKind);
+				m_pITableFrame->WriteUserScore(wWinner,lScore,0,nScoreKind);
 			}
 			else TraceMessage("//写入积分ffff");
 

@@ -498,7 +498,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 
 				//用户金币
 				TCHAR szBuffer[64]=TEXT("");
-				LONG lLeaveScore=pUserData->lScore-((m_ScoreView.IsWindowVisible()==TRUE)?(0):(m_lTableScore[i]));//;
+				__int64 lLeaveScore=pUserData->lScore-((m_ScoreView.IsWindowVisible()==TRUE)?(0):(m_lTableScore[i]));//;
 				if(m_lStopUpdataScore[i]>0)lLeaveScore=m_lStopUpdataScore[i]-m_lTableScore[i];
 				_snprintf(szBuffer,sizeof(szBuffer),TEXT("￥%ld"),lLeaveScore);
 				DrawTextString(pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),m_ptFace[i].x+10,m_ptFace[i].y+48);
@@ -522,19 +522,20 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		}
 
 		//计算总注
-		LONG lTableScore=0L;
-		for (WORD i=0;i<GAME_PLAYER;i++) lTableScore+=m_lTableScore[i];
+		__int64 lTableScore=0L;
+		for (WORD i=0;i<GAME_PLAYER;i++) 
+			lTableScore+=m_lTableScore[i];
 
 		//总注信息
 		if (lTableScore>0L)
 		{	
 			CImageHandle ImageHandle3(&m_ImageNumber);
 			int iCount=0;
-			LONG lCell[11];
+			__int64 lCell[11];
 			ZeroMemory(lCell,sizeof(lCell));
 			while(lTableScore>0L)
 			{
-				LONG lScore=lTableScore%10;
+				__int64 lScore=lTableScore%10;
 				lCell[iCount++] = lScore;
 				lTableScore=lTableScore/10;
 			}
@@ -561,7 +562,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			//绘画判断
 			//m_lCurrentScore[i] = 100000;
 			if (m_lCurrentScore[i]==0L) continue;
-			LONG lTemp=m_lCurrentScore[i];
+			__int64 lTemp=m_lCurrentScore[i];
 			LONG lTimes[]={10,20,50,100,200,500,1000,2000,5000,10000,20000,50000,100000,200000,500000};
 			for (BYTE k=CountArray(lTimes)-1;;k--)
 			{
@@ -828,7 +829,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 }
 
 //设置下注
-void CGameClientView::SetUserTableScore(WORD wChairID, LONG lTableScore,LONG lCurrentScore)
+void CGameClientView::SetUserTableScore(WORD wChairID, __int64 lTableScore,__int64 lCurrentScore)
 {
 	//设置数据
 	if (wChairID!=INVALID_CHAIR) 
@@ -889,7 +890,7 @@ void CGameClientView::SetBankerUser(WORD wBankerUser)
 //}
 
 //左上信息
-void CGameClientView::SetScoreInfo(LONG lTurnMaxScore,LONG lTurnLessScore)
+void CGameClientView::SetScoreInfo(__int64 lTurnMaxScore,__int64 lTurnLessScore)
 {
 	m_lMaxCellScore=lTurnMaxScore;
 	m_lCellScore=lTurnLessScore;

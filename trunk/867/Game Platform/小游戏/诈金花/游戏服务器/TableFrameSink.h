@@ -21,7 +21,7 @@ protected:
 	//用户状态
 protected:
 	BYTE							m_cbPlayStatus[GAME_PLAYER];			//游戏状态
-	LONG							m_lCompareCount;						//比牌状态
+	__int64							m_lCompareCount;						//比牌状态
 	bool							m_bGameEnd;								//结束状态
 	CMD_S_GameEnd					m_StGameEnd;							//结束数据
 
@@ -32,11 +32,11 @@ protected:
 
 	//下注信息
 protected:
-	LONG							m_lTableScore[GAME_PLAYER];				//下注数目
-	LONG							m_lUserMaxScore[GAME_PLAYER];			//最大下注
-	LONG							m_lMaxCellScore;						//单元上限
-	LONG							m_lCellScore;							//单元下注
-	LONG							m_lCurrentTimes;						//当前倍数
+	__int64							m_lTableScore[GAME_PLAYER];				//下注数目
+	__int64							m_lUserMaxScore[GAME_PLAYER];			//最大下注
+	__int64							m_lMaxCellScore;						//单元上限
+	__int64							m_lCellScore;							//单元下注
+	__int64							m_lCurrentTimes;						//当前倍数
 	bool							m_bMingZhu[GAME_PLAYER];				//看明下注
 
 	//组件变量
@@ -109,7 +109,7 @@ protected:
 	//开牌事件
 	bool OnUserOpenCard(WORD wUserID);
 	//加注事件
-	bool OnUserAddScore(WORD wChairID, LONG lScore, bool bGiveUp, bool bCompareUser);
+	bool OnUserAddScore(WORD wChairID, __int64 lScore, bool bGiveUp, bool bCompareUser);
 
 };
 

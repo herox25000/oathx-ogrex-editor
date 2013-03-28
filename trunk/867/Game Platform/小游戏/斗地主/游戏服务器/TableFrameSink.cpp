@@ -313,23 +313,23 @@ bool __cdecl CTableFrameSink::OnEventGameEnd( WORD wChairID, IServerUserItem * p
 				//胜利类型
 				ScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
 
-				//计算税收
-				if (m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
-				{
-					if (GameEnd.lGameScore[i]>=100L)
-					{
-						//计算税收
-						GameEnd.lGameTax+= (GameEnd.lGameScore[i]*m_pGameServiceOption->wRevenue/100L);
-						lRevenue = (GameEnd.lGameScore[i]*m_pGameServiceOption->wRevenue/100L);
+				////计算税收
+				//if (m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
+				//{
+				//	if (GameEnd.lGameScore[i]>=100L)
+				//	{
+				//		//计算税收
+				//		GameEnd.lGameTax+= (GameEnd.lGameScore[i]*m_pGameServiceOption->wRevenue/100L);
+				//		lRevenue = (GameEnd.lGameScore[i]*m_pGameServiceOption->wRevenue/100L);
 
-						//积分调整
-						lScore=lScore-lRevenue;
-						GameEnd.lGameScore[i]=GameEnd.lGameScore[i]-lRevenue;
-					}
-				}
+				//		//积分调整
+				//		lScore=lScore-lRevenue;
+				//		GameEnd.lGameScore[i]=GameEnd.lGameScore[i]-lRevenue;
+				//	}
+				//}
 			
 				//修改分数
-				m_pITableFrame->WriteUserScore(i,lScore,lRevenue,ScoreKind);
+				m_pITableFrame->WriteUserScore(i,lScore,0,ScoreKind);
 
 				//历史积分
 				m_HistoryScore.OnEventUserScore(i,GameEnd.lGameScore[i]);
@@ -407,7 +407,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd( WORD wChairID, IServerUserItem * p
 				}
 
 				//写入积分
-				m_pITableFrame->WriteUserScore(i,lScore,lRevenue,ScoreKind);
+				m_pITableFrame->WriteUserScore(i,lScore,0,ScoreKind);
 				//历史积分
 				m_HistoryScore.OnEventUserScore(i,GameEnd.lGameScore[i]);
 			}

@@ -188,7 +188,7 @@ protected:
 	//用户时钟
 	VOID DrawUserClock(CDC * pDC, INT nXPos, INT nYPos, WORD wClockCount);
 	//用户等级
-	TCHAR *GetLevelDescribe(LONG lUserScore,TCHAR tcUserInfo[32]);
+	TCHAR *GetLevelDescribe(__int64 lUserScore,TCHAR tcUserInfo[32]);
 	
 	//按钮消息
 protected:

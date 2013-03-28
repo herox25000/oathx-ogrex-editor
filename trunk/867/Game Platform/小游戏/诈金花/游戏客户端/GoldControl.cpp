@@ -53,7 +53,7 @@ CGoldControl::~CGoldControl()
 }
 
 //设置筹码
-void CGoldControl::SetGoldCount(LONG lCellSocre)
+void CGoldControl::SetGoldCount(__int64 lCellSocre)
 {
 	if(lCellSocre>0L)
 	{
@@ -72,7 +72,7 @@ void CGoldControl::SetGoldCount(LONG lCellSocre)
 }
 
 //设置金币
-void CGoldControl::SetGold(LONG lGold)
+void CGoldControl::SetGold(__int64 lGold)
 {
 	//调整参数
 	if (lGold>m_lMaxGold)m_lMaxGold= lGold;
@@ -94,7 +94,7 @@ void CGoldControl::SetGold(LONG lGold)
 }
 
 //最少单元
-void CGoldControl::SetMinGold(LONG lMinGold)
+void CGoldControl::SetMinGold(__int64 lMinGold)
 {
 	ASSERT(lMinGold%10==0);
 
@@ -108,7 +108,7 @@ void CGoldControl::SetMinGold(LONG lMinGold)
 }
 
 //设置用户最高下注数
-void CGoldControl::SetMaxGold(LONG lMaxGold)
+void CGoldControl::SetMaxGold(__int64 lMaxGold)
 {
 	//效验改变
 	if (m_lMaxGold==lMaxGold) return;
@@ -194,11 +194,11 @@ void CGoldControl::OnPaint()
 	int nXExcursion=ClientRect.Width()/2+20;
 
 	//绘画数字
-	LONG lGold=m_lAllGold;
+	__int64 lGold=m_lAllGold;
 	int iCount=0;
 	while (lGold>0)
 	{
-		LONG lTemp=lGold%10;
+		__int64 lTemp=lGold%10;
 		m_ImageNumber.AlphaDrawImage(&BackFaceDC,nXExcursion-m_ImageNumber.GetWidth()/10*(iCount++),5,
 			m_ImageNumber.GetWidth()/10,m_ImageNumber.GetHeight(),
 			m_ImageNumber.GetWidth()/10*lTemp,0,RGB(255,0,255));
@@ -228,13 +228,13 @@ void CGoldControl::OnLButtonUp(UINT nFlags, CPoint point)
 
 	//计算限制
 	ASSERT((iCellPos>=0)&&(iCellPos<=3));
-	LONG lAddGold=m_lGoldCount[iCellPos-1];
+	__int64 lAddGold=m_lGoldCount[iCellPos-1];
 	if ((GetGold()+lAddGold)>m_lMaxGold) return;
 
 	//重新设置
 	m_lAllGold=GetGold()+lAddGold;
 
-	LONG lGold=m_lAllGold;
+	__int64 lGold=m_lAllGold;
 	int nIndex=0;
 	while (lGold>0L)
 	{
