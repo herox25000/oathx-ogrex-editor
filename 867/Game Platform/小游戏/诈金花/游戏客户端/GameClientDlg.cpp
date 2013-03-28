@@ -495,7 +495,8 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			for (WORD i=0;i<GAME_PLAYER;i++)
 			{
 				m_GameClientView.m_CardControl[i].SetDisplayHead(false);
-				if(m_lTableScore[i]>0L)m_GameClientView.SetUserTableScore(m_wViewChairID[i],m_lTableScore[i],m_lTableScore[i]);
+				if(m_lTableScore[i]>0L)
+					m_GameClientView.SetUserTableScore(m_wViewChairID[i],m_lTableScore[i],m_lTableScore[i]);
 
 				//获取用户
 				const tagUserData * pUserData=GetUserData(i);
@@ -646,7 +647,7 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	m_GameClientView.m_GoldControl.SetGoldCount(m_lCellScore);
 
 	//设置变量
-	LONG lTableScore=0L;
+	__int64 lTableScore=0L;
 	for (WORD i=0;i<GAME_PLAYER;i++)
 	{
 		m_wLostUserID[i]=INVALID_CHAIR;
@@ -1254,7 +1255,7 @@ LRESULT CGameClientDlg::OnConfirmScore(WPARAM wParam, LPARAM lParam)
 	KillGameTimer(IDI_USER_ADD_SCORE);
 
 	//获取筹码
-	LONG lCurrentScore=(wTemp==0)?(m_GameClientView.m_GoldControl.GetGold()):(m_lCellScore*m_lCurrentTimes);
+	__int64 lCurrentScore=(wTemp==0)?(m_GameClientView.m_GoldControl.GetGold()):(m_lCellScore*m_lCurrentTimes);
 	WORD wMeChairID=GetMeChairID();
  
 	//明注加倍
@@ -1333,7 +1334,7 @@ LRESULT	CGameClientDlg::OnCompareCard(WPARAM wParam, LPARAM lParam)
 
 	//判断明注
 	WORD wMeChairID=GetMeChairID();
-	LONG lCurrentScore=(m_bMingZhu[wMeChairID])?(m_lCurrentTimes*m_lCellScore*4):(m_lCurrentTimes*m_lCellScore*2);
+	__int64 lCurrentScore=(m_bMingZhu[wMeChairID])?(m_lCurrentTimes*m_lCellScore*4):(m_lCurrentTimes*m_lCellScore*2);
 	m_lTableScore[wMeChairID]+=lCurrentScore;
 	m_GameClientView.SetUserTableScore(m_wViewChairID[wMeChairID],m_lTableScore[wMeChairID],lCurrentScore);
 
@@ -1458,7 +1459,7 @@ LRESULT	CGameClientDlg::OnOpenCard(WPARAM wParam, LPARAM lParam)
 
 	//判断明注
 	WORD wMeChairID=GetMeChairID();
-	LONG lCurrentScore=(m_bMingZhu[wMeChairID])?(m_lCurrentTimes*m_lCellScore*4):(m_lCurrentTimes*m_lCellScore*2);
+	__int64 lCurrentScore=(m_bMingZhu[wMeChairID])?(m_lCurrentTimes*m_lCellScore*4):(m_lCurrentTimes*m_lCellScore*2);
 	m_lTableScore[wMeChairID]+=lCurrentScore;
 	m_GameClientView.SetUserTableScore(m_wViewChairID[wMeChairID],m_lTableScore[wMeChairID],lCurrentScore);
 

@@ -186,15 +186,15 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					if(wChairID!=INVALID_CHAIR)nScoreKind=(lScore>=0L)?enScoreKind_Win:enScoreKind_Lost;
 					else nScoreKind= enScoreKind_Draw;
 
-					//处理税收
-					LONG lRevenue=(LONG)m_pGameServiceOption->wRevenue;
-					lRevenue=lScore/1000*lRevenue;
-					lScore-=lRevenue;
+					////处理税收
+					//LONG lRevenue=(LONG)m_pGameServiceOption->wRevenue;
+					//lRevenue=lScore/1000*lRevenue;
+					//lScore-=lRevenue;
 
 					GameEnd.lGameScore[i]=lScore/*-m_pITableFrame->AccountRevenue(ScoreInfoArray[i].lScore)*/;
 
 					//写入积分
-					m_pITableFrame->WriteUserScore(i,lScore,lRevenue,nScoreKind);
+					m_pITableFrame->WriteUserScore(i,lScore,0,nScoreKind);
 				}
 
 				//发送数据
@@ -317,15 +317,15 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					if(i==wChairID) nScoreKind=enScoreKind_Flee;
 					else nScoreKind=enScoreKind_Win;
 
-					//处理税收
-					LONG lRevenue=(LONG)m_pGameServiceOption->wRevenue;
-					lRevenue=lScore/1000*lRevenue;
-					lScore-=lRevenue;
+					////处理税收
+					//LONG lRevenue=(LONG)m_pGameServiceOption->wRevenue;
+					//lRevenue=lScore/1000*lRevenue;
+					//lScore-=lRevenue;
 
 					GameEnd.lGameScore[i]=lScore/*-m_pITableFrame->AccountRevenue(ScoreInfoArray[i].lScore)*/;
 
 					//写入积分
-					m_pITableFrame->WriteUserScore(i,lScore,lRevenue,nScoreKind);
+					m_pITableFrame->WriteUserScore(i,lScore,0,nScoreKind);
 				}
 
 				//发送数据

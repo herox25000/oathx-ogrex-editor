@@ -548,7 +548,7 @@ VOID CGameClientView::DrawUserClock(CDC * pDC, INT nXPos, INT nYPos, WORD wClock
 }
 
 //用户等级
-TCHAR *CGameClientView::GetLevelDescribe(LONG lUserScore,TCHAR tcUserInfo[32])
+TCHAR *CGameClientView::GetLevelDescribe(__int64 lUserScore,TCHAR tcUserInfo[32])
 {
 	WORD wSize = sizeof(tcUserInfo)*LEN_ACCOUNTS;
 	if(lUserScore<30) _sntprintf(tcUserInfo,wSize,TEXT("三级棋童"));

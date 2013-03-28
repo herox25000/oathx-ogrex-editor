@@ -327,17 +327,17 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 
 			//胜者得分
 			GameEnd.lGameScore[wWinerUser]=lWinnerScore;
-			//扣税
-			__int64 lRevenue = 0L;
-			if( m_pGameServiceOption->wServerType == GAME_GENRE_GOLD )
-			{
-				if( GameEnd.lGameScore[wWinerUser] >= 100L )
-				{
-					lRevenue = GameEnd.lGameScore[wWinerUser]*m_pGameServiceOption->wRevenue/100L;
-					GameEnd.lGameScore[wWinerUser] -= lRevenue;
-					GameEnd.lGameTax[wWinerUser] = lRevenue;
-				}
-			}
+			////扣税
+			//__int64 lRevenue = 0L;
+			//if( m_pGameServiceOption->wServerType == GAME_GENRE_GOLD )
+			//{
+			//	if( GameEnd.lGameScore[wWinerUser] >= 100L )
+			//	{
+			//		lRevenue = GameEnd.lGameScore[wWinerUser]*m_pGameServiceOption->wRevenue/100L;
+			//		GameEnd.lGameScore[wWinerUser] -= lRevenue;
+			//		GameEnd.lGameTax[wWinerUser] = lRevenue;
+			//	}
+			//}
 
 			//发送信息
 			m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
@@ -352,7 +352,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					if( GameEnd.lGameScore[i] == 0 ) ScoreKind = enScoreKind_Draw;
 					else if( GameEnd.lGameScore[i] > 0 ) ScoreKind = enScoreKind_Win;
 					else ScoreKind = enScoreKind_Lost;
-					m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],GameEnd.lGameTax[i],ScoreKind);
+					m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,ScoreKind);
 				}
 			}
 			

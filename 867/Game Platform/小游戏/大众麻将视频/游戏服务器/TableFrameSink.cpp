@@ -349,7 +349,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			for (WORD i=0;i<GAME_PLAYER;i++)
 			{
 				//写入积分
-				m_pITableFrame->WriteUserScore(i,ScoreInfoArray[i].lScore,ScoreInfoArray[i].lRevenue,ScoreInfoArray[i].ScoreKind);
+				m_pITableFrame->WriteUserScore(i,ScoreInfoArray[i].lScore,0,ScoreInfoArray[i].ScoreKind);
 			}
 			//结束游戏
 			m_pITableFrame->ConcludeGame();

@@ -37,17 +37,17 @@
 //游戏状态
 struct CMD_S_StatusFree
 {
-	LONG								lCellScore;							//基础积分
+	__int64								lCellScore;							//基础积分
 };
 
 //游戏状态
 struct CMD_S_StatusPlay
 {
 	//加注信息
-	LONG								lMaxCellScore;						//单元上限
-	LONG								lCellScore;							//单元下注
-	LONG								lCurrentTimes;						//当前倍数
-	LONG								lUserMaxScore;						//用户分数上限
+	__int64								lMaxCellScore;						//单元上限
+	__int64								lCellScore;							//单元下注
+	__int64								lCurrentTimes;						//当前倍数
+	__int64								lUserMaxScore;						//用户分数上限
 
 	//状态信息
 	WORD								wBankerUser;						//庄家用户
@@ -67,10 +67,10 @@ struct CMD_S_StatusPlay
 struct CMD_S_GameStart
 {
 	//下注信息
-	LONG								lMaxScore;							//最大下注
-	LONG								lCellScore;							//单元下注
-	LONG								lCurrentTimes;						//当前倍数
-	LONG								lUserMaxScore;						//分数上限
+	__int64								lMaxScore;							//最大下注
+	__int64								lCellScore;							//单元下注
+	__int64								lCurrentTimes;						//当前倍数
+	__int64								lUserMaxScore;						//分数上限
 
 	//用户信息
 	WORD								wBankerUser;						//庄家用户
@@ -83,8 +83,8 @@ struct CMD_S_AddScore
 	WORD								wCurrentUser;						//当前用户
 	WORD								wAddScoreUser;						//加注用户
 	WORD								wCompareState;						//比牌状态
-	LONG								lAddScoreCount;						//加注数目
-	LONG								lCurrentTimes;						//当前倍数
+	__int64								lAddScoreCount;						//加注数目
+	__int64								lCurrentTimes;						//当前倍数
 };
 
 //用户放弃
@@ -117,8 +117,8 @@ struct CMD_S_OpenCard
 //游戏结束
 struct CMD_S_GameEnd
 {
-	LONG								lGameTax;							//游戏税收
-	LONG								lGameScore[GAME_PLAYER];			//游戏得分
+	__int64								lGameTax;							//游戏税收
+	__int64								lGameScore[GAME_PLAYER];			//游戏得分
 	BYTE								cbCardData[GAME_PLAYER][3];			//用户扑克
 	WORD								wCompareUser[GAME_PLAYER][4];		//比牌用户
 	WORD								wEndState;							//结束状态
@@ -150,7 +150,7 @@ struct CMD_S_WaitCompare
 //用户加注
 struct CMD_C_AddScore
 {
-	LONG								lScore;								//加注数目
+	__int64								lScore;								//加注数目
 	WORD								wState;								//当前状态
 };
 
