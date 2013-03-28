@@ -25,7 +25,7 @@ CGameServiceManager::CGameServiceManager(void)
 //	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("LandVD.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
 //	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("LandVDServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
 //#else
-	lstrcpyn(m_GameServiceAttrib.szDataBaseName,szTreasureDB,CountArray(m_GameServiceAttrib.szDataBaseName));	
+	lstrcpyn(m_GameServiceAttrib.szDataBaseName,"QPLandDB",CountArray(m_GameServiceAttrib.szDataBaseName));	
 	lstrcpyn(m_GameServiceAttrib.szClientModuleName,TEXT("Land.EXE"),CountArray(m_GameServiceAttrib.szClientModuleName));
 	lstrcpyn(m_GameServiceAttrib.szServerModuleName,TEXT("LandServer.DLL"),CountArray(m_GameServiceAttrib.szServerModuleName));
 //#endif
