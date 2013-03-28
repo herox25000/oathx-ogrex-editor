@@ -46,6 +46,11 @@ double			IRobot::GetReqSitDownTime() const
 	return m_fReqSitDownTime;
 }
 
+SUserInfo*		IRobot::GetUserInfo() const
+{
+	return m_pAppUser;
+}
+
 //网卡地址
 WORD			IRobot::GetMACAddress(BYTE cbMacBuffer[], WORD wBufferSize)
 {
@@ -303,7 +308,7 @@ bool __cdecl	IRobot::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 	Packet.AddPacket(&ClientSerial,sizeof(ClientSerial),DTP_COMPUTER_ID);
 	m_ClientSocket->SendData(MDM_GR_LOGON,SUB_GR_LOGON_USERID,cbBuffer,sizeof(CMD_GR_LogonByUserID)+Packet.GetDataSize());
 
-	szError.Format("Robot(UserID)[%i], Start connect to game", (int)m_dwUserID);
+	szError.Format("Robot[%i], Start connect to game", (int)m_dwUserID);
 	ShowMessageBox(szError);
 
 	return true;
@@ -456,6 +461,7 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 				pUserInfo->wTableID		= pUserInfoHead->wTableID;
 				pUserInfo->wChairID		= pUserInfoHead->wChairID;
 				pUserInfo->cbUserStatus	= pUserInfoHead->cbUserStatus;
+				pUserInfo->dwGameID		= pUserInfoHead->dwGameID;
 
 				//读取扩展信息
 				void* pDataBuffer		= NULL;

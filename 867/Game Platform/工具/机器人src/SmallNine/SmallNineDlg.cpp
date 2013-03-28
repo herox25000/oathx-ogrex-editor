@@ -87,6 +87,7 @@ BEGIN_MESSAGE_MAP(CSmallNineDlg, CDialog)
 	ON_EN_CHANGE(IDC_EDIT20, OnEnChangeEdit20)
 	ON_EN_CHANGE(IDC_EDIT21, OnEnChangeEdit21)
 	ON_EN_CHANGE(IDC_EDIT22, OnEnChangeEdit22)
+	ON_BN_CLICKED(IDC_BUTTON1, OnBnClickedRobot)
 END_MESSAGE_MAP()
 
 
@@ -111,6 +112,8 @@ BOOL CSmallNineDlg::OnInitDialog()
 
 	SetIcon(m_hIcon, TRUE);
 	SetIcon(m_hIcon, FALSE);
+
+	m_RobotDialog.Create(IDD_DIALOG_ROBOT, this);
 
 	SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
 	SetDlgItemText(IDC_EDIT2,	"11021");
@@ -492,4 +495,13 @@ void CSmallNineDlg::OnEnChangeEdit22()
 	GetDlgItemText(IDC_EDIT22, buffer);
 	m_AppConfig.nUpBankerLoseScore	= _atoi64(buffer.GetBuffer());	
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
+}
+
+void CSmallNineDlg::OnBnClickedRobot()
+{
+	CRect rc;
+	GetClientRect(&rc);
+
+	m_RobotDialog.SetWindowPos(NULL, rc.Width() / 2 , rc.Height() / 2 , 0, 0, SWP_NOSIZE);
+	m_RobotDialog.ShowWindow(SW_SHOW);
 }
