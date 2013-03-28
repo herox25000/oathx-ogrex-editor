@@ -1409,12 +1409,6 @@ void CTableFrameSink::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 	{
 		bChaoguo=true;
 	}
-
-	m_cbTableCardArray[INDEX_BANKER][0] = 0x01;
-	m_cbTableCardArray[INDEX_BANKER][1] = 0x11;
-
-	m_cbTableCardArray[INDEX_PLAYER1][0] = 0x04;
-	m_cbTableCardArray[INDEX_PLAYER1][1] = 0x14;
 	if(m_GameLogic.CompareCard(m_cbTableCardArray[INDEX_BANKER],m_cbTableCardArray[INDEX_PLAYER1],2,bTongdian))
 	{	
 		if (bTongdian)
