@@ -332,7 +332,7 @@ struct DBR_GR_TransferMoney
 	TCHAR								szAccount_In[NAME_LEN];			//对方的账户名
 	__int64								sfMoneyNumber;					//存取金额
 	__int64								sfTax;							//扣税
-	__int64								sfLeftMoney;					//存取金额
+	__int64								sfLeftMoney;					//剩余金额
 	LONG								lErrorCode;						//返回代码
 	TCHAR								szErrorDescribe[256];			//错误提示
 };
@@ -391,7 +391,7 @@ struct DBR_GR_BankTask
 //查询用户名
 struct DBR_GR_Query_UserName
 {
-	long			UserID;
+	DWORD			dwSocketID;
 	long			lGameID;
 	TCHAR			szUserName[NAME_LEN];
 	TCHAR			szErrorDescribe[256];

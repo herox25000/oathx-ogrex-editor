@@ -646,6 +646,22 @@ bool CAttemperEngineSink::SendGameMessage(DWORD dwSocketID, LPCTSTR lpszMessage,
 	return true;
 }
 
+//发送工具消息
+bool CAttemperEngineSink::SendToolBoxMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType)
+{
+	//构造数据包
+	CMD_GF_Message Message;
+	Message.wMessageType=wMessageType;
+	lstrcpyn(Message.szContent,lpszMessage,CountArray(Message.szContent));
+	Message.wMessageLength=CountStringBuffer(Message.szContent);
+
+	//发送数据
+	WORD wSendSize=sizeof(Message)-sizeof(Message.szContent)+Message.wMessageLength*sizeof(TCHAR);
+	m_pITCPNetworkEngine->SendData(dwSocketID,MDM_TOOLBOX,SUB_TOOLBOX_MESSAGE,&Message,wSendSize);
+
+	return true;
+}
+
 //发送道具消息
 bool CAttemperEngineSink::SendProMessage(IServerUserItem * pIServerUserItem, LPCTSTR lpszMessage, WORD wMessageType)
 {
@@ -990,7 +1006,7 @@ bool __cdecl CAttemperEngineSink::OnEventDataBase(WORD wRequestID, DWORD dwConte
 		}
 	case DBR_GR_QUERYUSERNAME_OUT:
 		{
-			return OnQueryUserNameOver(dwContextID,pData,wDataSize);
+			return OnDBQueryUserNameOver(dwContextID,pData,wDataSize);
 		}
 	}
 
@@ -1463,6 +1479,11 @@ bool CAttemperEngineSink::OnEventTCPNetworkRead(CMD_Command Command, VOID * pDat
 		{
 			return OnSocketBank(Command.wSubCmdID,pData,wDataSize,dwSocketID);
 		}
+	case MDM_TOOLBOX:  //工具箱操作
+		{
+			return OnSocketToolBox(Command.wSubCmdID,pData,wDataSize,dwSocketID);
+		}
+
 	}
 
 	return false;
@@ -2604,6 +2625,24 @@ bool CAttemperEngineSink::OnSocketBank(WORD wSubCmdID, VOID * pData, WORD wDataS
 		}
 	}
 
+	return false;
+}
+
+// 工具箱操作
+bool CAttemperEngineSink::OnSocketToolBox(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	//消息处理
+	switch ( wSubCmdID )
+	{	
+	case SUB_TOOLBOX_QUERYUSERNAME:
+		return OnEventQuerUserName(pData,wDataSize,dwSocketID);
+	case SUB_TOOLBOX_BANKOPERATING:
+		return OnEventBankOperation(pData,wDataSize,dwSocketID);
+	case SUB_TOOLBOX_TRANSFERMONEY:
+		return OnEventTransferMoney(pData,wDataSize,dwSocketID);
+	case SUB_TOOLBOX_TRANSFERMONEY_LOG:
+		return OnEventTransferMoneyLog(pData,wDataSize,dwSocketID);
+	}
 	return false;
 }
 
@@ -3863,26 +3902,7 @@ bool CAttemperEngineSink::TellAllUserExitRoom()
 	return true;
 }
 
-//转账返回
-bool CAttemperEngineSink::OnDBTransferMoneyOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//发送消息
-	DBR_GR_TransferMoney* pTransferMoney=(DBR_GR_TransferMoney*)pData;
-	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pTransferMoney->dwUserID);
-	if ( pIServerUserItem )
-	{
-		CMD_GF_Transfer_Money cmd;
-		ZeroMemory(&cmd, sizeof(CMD_GF_Transfer_Money));
-		cmd.sfLeftMoney=pTransferMoney->sfLeftMoney;
-		cmd.sfMoneyNumber=pTransferMoney->sfMoneyNumber;
-		cmd.sfTax=pTransferMoney->sfTax;
-		cmd.lErrorCode=pTransferMoney->lErrorCode;
-		CopyMemory(cmd.szErrorDescribe, pTransferMoney->szErrorDescribe, sizeof(cmd.szErrorDescribe));
-		this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_TRANSFER_MONEY, &cmd, sizeof(CMD_GF_Transfer_Money));
-	}
 
-	return true;
-}
 
 
 //转账记录查询完成
@@ -3966,18 +3986,115 @@ bool CAttemperEngineSink::OnDBModifyNickname(DWORD dwContextID, VOID * pData, WO
 	return true;
 }
 
+
+
+//socket响应 查询用户名
+bool CAttemperEngineSink::OnEventQuerUserName(const void * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	ASSERT( sizeof(CMD_TOOLBOX_QueryUserName) == wDataSize );
+	if ( sizeof(CMD_TOOLBOX_QueryUserName) != wDataSize ) 
+		return false;
+	CMD_TOOLBOX_QueryUserName *pQuery = (CMD_TOOLBOX_QueryUserName*)pData;
+	DBR_GR_Query_UserName Qname;
+	Qname.dwSocketID = dwSocketID;
+	Qname.lGameID = pQuery->lGameID;
+	return m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_QUERYUSERNAME, 0, &Qname, sizeof(Qname));
+}
+
+//socket响应 转账
+bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	ASSERT( sizeof(CMD_TOOLBOX_TransferMoney) == wDataSize );
+	if ( sizeof(CMD_TOOLBOX_TransferMoney) != wDataSize ) 
+		return false;
+
+	//获取用户
+	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
+	if(pIServerUserItem==NULL)
+		return false;
+	CMD_TOOLBOX_TransferMoney *pTrans = (CMD_TOOLBOX_TransferMoney*)pData;
+	//密码效验
+	if (lstrcmp(pIServerUserItem->GetBankPassword(),pTrans->szPassword)!=0)
+	{
+		SendToolBoxMessage(dwSocketID,TEXT("银行密码输入错误！"),SMT_EJECT);
+		return true;
+	}
+
+	//组装结构
+	DBR_GR_TransferMoney dbr;
+	memset(&dbr,0,sizeof(DBR_GR_TransferMoney));
+	dbr.dwUserID=pIServerUserItem->GetUserID();
+	CopyMemory(dbr.szAccount_Out, pIServerUserItem->GetAccounts(), sizeof(dbr.szAccount_Out));
+	dbr.dwGameID_IN=pTrans->dwGameID;
+	CopyMemory(dbr.szAccount_In, pTrans->szAccount, sizeof(dbr.szAccount_In));
+	dbr.dwClientIP=pIServerUserItem->GetClientIP();
+	dbr.sfMoneyNumber=pTrans->sfMoneyNumber;
+	dbr.sfTax=0;
+	return m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_TRANSFER_MONEY,0,&dbr, sizeof(dbr));
+}
+
+//socket响应 查询转账记录
+bool CAttemperEngineSink::OnEventTransferMoneyLog(const void * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	return true;
+}
+
+
+//socket响应 银行操作
+bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	ASSERT( sizeof(CMD_TOOLBOX_BankTask) == wDataSize );
+	if ( sizeof(CMD_TOOLBOX_BankTask) != wDataSize ) 
+		return false;
+	//获取用户
+	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
+	if(pIServerUserItem==NULL)
+		return false;
+	CMD_TOOLBOX_BankTask *pBankTask = (CMD_TOOLBOX_BankTask*)pData;
+	//密码效验
+	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankTask->szPassword)!=0)
+	{
+		SendToolBoxMessage(dwSocketID,TEXT("银行密码输入错误！"),SMT_EJECT);
+		return true;
+	}
+
+	DBR_GR_BankTask BankTask;
+	ZeroMemory(&BankTask,sizeof(DBR_GR_BankTask));
+	CopyMemory(BankTask.szPassword, pBankTask->szPassword, sizeof(BankTask.szPassword));
+	BankTask.dwUserID			=pIServerUserItem->GetUserID();
+	BankTask.lBankTask			=pBankTask->lBankTask;
+	BankTask.lMoneyNumber		=pBankTask->lMoneyNumber;
+	return  m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_BANK_TASK, 0, &BankTask, sizeof(DBR_GR_BankTask));
+}
+
+
+//数据库返回
+bool CAttemperEngineSink::OnDBQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	//发送消息
+	DBR_GR_Query_UserName * pQname=(DBR_GR_Query_UserName *)pData;
+	//构造消息
+	CMD_TOOLBOX_QueryUserName_Ret cmd;
+	ZeroMemory(&cmd, sizeof(CMD_TOOLBOX_QueryUserName_Ret));
+	cmd.lGameID=pQname->lGameID;
+	cmd.lErrorCode=pQname->lErrorCode;
+	lstrcpyn(cmd.UserNmae, pQname->szUserName, CountArray(cmd.UserNmae));
+	lstrcpyn(cmd.szErrorDescribe, pQname->szErrorDescribe, CountArray(cmd.szErrorDescribe));
+	//游戏玩家
+	return m_pITCPNetworkEngine->SendData(pQname->dwSocketID, MDM_TOOLBOX, SUB_TOOLBOX_QUERYUSERNAME, &cmd, sizeof(cmd));
+}
+
 //存取钱操作完成
 bool CAttemperEngineSink::OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
 	//发送消息
 	DBR_GR_BankTask * pBankTask=(DBR_GR_BankTask *)pData;
-
 	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pBankTask->dwUserID);
 	if (pIServerUserItem==NULL) return false;
 
 	//构造消息
-	CMD_GF_BankTask_Out cmd;
-	ZeroMemory(&cmd, sizeof(CMD_GF_BankTask_Out));
+	CMD_TOOLBOX_BankTask_Ret cmd;
+	ZeroMemory(&cmd, sizeof(CMD_TOOLBOX_BankTask_Ret));
 	cmd.lBankTask=pBankTask->lBankTask;
 	cmd.lMoneyNumber=pBankTask->lMoneyNumber;
 	cmd.lMoneyInBank=pBankTask->lMoneyInBank;
@@ -3986,39 +4103,37 @@ bool CAttemperEngineSink::OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD
 	lstrcpyn(cmd.szErrorDescribe, pBankTask->szErrorDescribe, CountArray(cmd.szErrorDescribe));
 
 	//游戏玩家
-	this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_BANK, &cmd, sizeof(CMD_GF_BankTask_Out));
-
-	if ( m_pGameServiceOption->wServerType==GAME_GENRE_GOLD )
+	this->SendData(pIServerUserItem, MDM_TOOLBOX, SUB_TOOLBOX_BANKOPERATING, &cmd, sizeof(CMD_TOOLBOX_BankTask_Ret));
+	if ( pBankTask->lErrorCode==0)
 	{
-		if ( pBankTask->lErrorCode==0 && pBankTask->lBankTask!=BANKTASK_QUERY )
+		pIServerUserItem->WriteBaseScore(pBankTask->lNewScore,pBankTask->lMoneyInBank);
+		SendUserScore(pIServerUserItem);
+	}
+	return true;
+}
+
+//转账返回
+bool CAttemperEngineSink::OnDBTransferMoneyOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	//发送消息
+	DBR_GR_TransferMoney* pTransferMoney=(DBR_GR_TransferMoney*)pData;
+	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pTransferMoney->dwUserID);
+	if ( pIServerUserItem )
+	{
+		CMD_TOOLBOX_TransferMoney_Ret cmd;
+		ZeroMemory(&cmd, sizeof(CMD_TOOLBOX_TransferMoney_Ret));
+		cmd.sfLeftMoney=pTransferMoney->sfLeftMoney;
+		cmd.sfMoneyNumber=pTransferMoney->sfMoneyNumber;
+		cmd.sfTax=pTransferMoney->sfTax;
+		cmd.lErrorCode=pTransferMoney->lErrorCode;
+		CopyMemory(cmd.szErrorDescribe, pTransferMoney->szErrorDescribe, sizeof(cmd.szErrorDescribe));
+		this->SendData(pIServerUserItem, MDM_TOOLBOX, SUB_TOOLBOX_TRANSFERMONEY, &cmd, sizeof(CMD_TOOLBOX_TransferMoney_Ret));
+		if ( pTransferMoney->lErrorCode==0)
 		{
-			pIServerUserItem->WriteBaseScore(pBankTask->lNewScore);
+			pIServerUserItem->WriteBaseScore(pTransferMoney->sfLeftMoney);
 			SendUserScore(pIServerUserItem);
 		}
 	}
 	return true;
 }
-
-//
-bool CAttemperEngineSink::OnQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//发送消息
-	DBR_GR_Query_UserName * pQname=(DBR_GR_Query_UserName *)pData;
-	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pQname->UserID);
-	if (pIServerUserItem==NULL) 
-		return false;
-	//构造消息
-	CMD_GF_QUERY_USERNAME_RET cmd;
-	ZeroMemory(&cmd, sizeof(CMD_GF_BankTask_Out));
-	cmd.lGameID=pQname->lGameID;
-	cmd.lErrorCode=pQname->lErrorCode;
-	lstrcpyn(cmd.UserNmae, pQname->szUserName, CountArray(cmd.UserNmae));
-	lstrcpyn(cmd.szErrorDescribe, pQname->szErrorDescribe, CountArray(cmd.szErrorDescribe));
-
-	//游戏玩家
-	return	this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_QUERY_USERNAME_RET, &cmd, sizeof(CMD_GF_QUERY_USERNAME_RET));
-
-}
-
-
 //////////////////////////////////////////////////////////////////////////

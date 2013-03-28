@@ -595,13 +595,15 @@ bool __cdecl CServerUserItem::EmptyWinLoseScore()
 }
 
 //修改积分
-bool __cdecl CServerUserItem::WriteBaseScore(__int64 lNewScore)
+bool __cdecl CServerUserItem::WriteBaseScore(__int64 lNewScore,__int64 lNemBankScore)
 {
 	//效验参数
 	ASSERT(m_bAcitve==true);
 	if (m_bAcitve==false) return false;
-	//用户经验
-	m_ServerUserData.UserScoreInfo.lScore=lNewScore;
+	if(lNewScore != -1)
+		m_ServerUserData.UserScoreInfo.lScore=lNewScore;
+	if(lNemBankScore != -1)
+		m_ServerUserData.UserScoreInfo.lInsureScore = lNemBankScore;
 	return true;
 }
 
