@@ -368,8 +368,8 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			DrawTextString(pDC,pUserData->szName,RGB(255,255,255),RGB(0,0,0),m_ptName[i].x,m_ptName[i].y);
 
 			//用户金币
-			LONG lLeaveScore=pUserData->lScore-((pUserData->cbUserStatus==US_PLAY)?m_lTableScore[i]:0);
-			_snprintf(szBuffer,CountArray(szBuffer),TEXT("%ld"),lLeaveScore);
+			__int64 lLeaveScore=pUserData->lScore-((pUserData->cbUserStatus==US_PLAY)?m_lTableScore[i]:0);
+			_snprintf(szBuffer,CountArray(szBuffer),TEXT("%I64d"),lLeaveScore);
 			DrawTextString(pDC,szBuffer,RGB(255,255,255),RGB(0,0,0),m_ptName[i].x,m_ptName[i].y+16);
 			//当前下注
 			if( m_lTableScore[i] > 0L )
@@ -389,7 +389,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		//玩家筹码
 		m_PlayerJeton[i].DrawJettonControl(pDC);
 		//筹码数字
-		LONG lJetonScore = m_PlayerJeton[i].GetScore();
+		__int64 lJetonScore = m_PlayerJeton[i].GetScore();
 		if( lJetonScore > 0L )
 		{
 			CPoint pt = m_PlayerJeton[i].GetBenchmarkPos();
@@ -429,7 +429,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		INT nYPos = nHeight/2-325;
 		int nCellCount = 0;
 		BYTE byCell[10];
-		LONG lCellScore = m_lCellScore;
+		__int64 lCellScore = m_lCellScore;
 		while( lCellScore > 0L )
 		{
 			byCell[nCellCount++] = (BYTE)(lCellScore-lCellScore/10*10);
@@ -444,7 +444,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		}
 	}
 	//计算总注
-	LONG lTableScore=0L;
+	__int64 lTableScore=0L;
 	//注:包括正在下注在内
 	for( i = 0; i < GAME_PLAYER; i++ )
 		lTableScore += m_PlayerJeton[i].GetScore();
@@ -552,10 +552,11 @@ void CGameClientView::DispatchUserCard(WORD wChairID, BYTE cbCardData)
 }
 
 //设置下注
-void CGameClientView::SetUserTableScore(WORD wChairID, LONG lTableScore)
+void CGameClientView::SetUserTableScore(WORD wChairID, __int64 lTableScore)
 {
 	//设置数据
-	if (wChairID!=INVALID_CHAIR) m_lTableScore[wChairID]=lTableScore;
+	if (wChairID!=INVALID_CHAIR) 
+		m_lTableScore[wChairID]=lTableScore;
 	else ZeroMemory(m_lTableScore,sizeof(m_lTableScore));
 
 	//更新界面
@@ -676,7 +677,7 @@ void CGameClientView::DrawTextString(CDC * pDC, LPCTSTR pszString, COLORREF crTe
 }
 
 //设置单元注
-void CGameClientView::SetCellScore( LONG lCellScore )
+void CGameClientView::SetCellScore( __int64 lCellScore )
 {
 	if( m_lCellScore == lCellScore ) return;
 	m_lCellScore = lCellScore;

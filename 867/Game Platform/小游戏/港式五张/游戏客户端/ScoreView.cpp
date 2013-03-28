@@ -138,7 +138,7 @@ void CScoreView::ResetScore()
 }
 
 //设置税收
-void CScoreView::SetGameTax(WORD wChairID,LONG lGameTax)
+void CScoreView::SetGameTax(WORD wChairID,__int64 lGameTax)
 {
 	if( wChairID == INVALID_CHAIR )
 	{
@@ -159,7 +159,7 @@ void CScoreView::SetGameTax(WORD wChairID,LONG lGameTax)
 }
 
 //设置积分
-void CScoreView::SetGameScore(WORD wChairID, LPCTSTR pszUserName, LONG lScore)
+void CScoreView::SetGameScore(WORD wChairID, LPCTSTR pszUserName, __int64 lScore)
 {
 	if (wChairID<CountArray(m_lScore))
 	{

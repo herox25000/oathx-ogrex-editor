@@ -20,11 +20,11 @@ protected:
 
 	//加注信息
 protected:
-	LONG							m_lMaxScore;							//最大下注
-	LONG							m_lCellScore;							//单元下注
-	LONG							m_lTurnMaxScore;						//最大下注
-	LONG							m_lTurnLessScore;						//最小下注
-	LONG							m_lTableScore[GAME_PLAYER*2];			//下注数目
+	__int64							m_lMaxScore;							//最大下注
+	__int64							m_lCellScore;							//单元下注
+	__int64							m_lTurnMaxScore;						//最大下注
+	__int64							m_lTurnLessScore;						//最小下注
+	__int64							m_lTableScore[GAME_PLAYER*2];			//下注数目
 
 	//状态变量
 protected:

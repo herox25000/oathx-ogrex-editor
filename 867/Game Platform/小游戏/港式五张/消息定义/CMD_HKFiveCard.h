@@ -39,10 +39,10 @@ struct CMD_S_StatusPlay
 	BYTE								bAddScore;							//加注标志
 
 	//加注信息
-	LONG								lMaxScore;							//最大下注
-	LONG								lCellScore;							//单元下注
-	LONG								lTurnMaxScore;						//最大下注
-	LONG								lTurnLessScore;						//最小下注
+	__int64								lMaxScore;							//最大下注
+	__int64								lCellScore;							//单元下注
+	__int64								lTurnMaxScore;						//最大下注
+	__int64								lTurnLessScore;						//最小下注
 
 	//状态信息
 	WORD				 				wCurrentUser;						//当前玩家
@@ -58,10 +58,10 @@ struct CMD_S_StatusPlay
 struct CMD_S_GameStart
 {
 	//下注信息
-	LONG								lMaxScore;							//最大下注
-	LONG								lCellScore;							//单元下注
-	LONG								lTurnMaxScore;						//最大下注
-	LONG								lTurnLessScore;						//最小下注
+	__int64								lMaxScore;							//最大下注
+	__int64								lCellScore;							//单元下注
+	__int64								lTurnMaxScore;						//最大下注
+	__int64								lTurnLessScore;						//最小下注
 
 	//用户信息
 	WORD				 				wCurrentUser;						//当前玩家
@@ -76,8 +76,8 @@ struct CMD_S_AddScore
 {
 	WORD								wCurrentUser;						//当前用户
 	WORD								wAddScoreUser;						//加注用户
-	LONG								lAddScoreCount;						//加注数目
-	LONG								lTurnLessScore;						//最少加注
+	__int64								lAddScoreCount;						//加注数目
+	__int64								lTurnLessScore;						//最少加注
 };
 
 //用户放弃
@@ -91,8 +91,8 @@ struct CMD_S_SendCard
 {
 	WORD								wCurrentUser;						//当前用户
 	WORD								wLastMostUser;						//上次最大用户
-	LONG								lTurnMaxScore;						//最大下注
-	LONG								lTurnLessScore;						//最小下注
+	__int64								lTurnMaxScore;						//最大下注
+	__int64								lTurnLessScore;						//最小下注
 	BYTE								cbSendCardCount;					//发牌数目
 	BYTE								cbCardData[GAME_PLAYER][2];			//用户扑克
 };
@@ -100,8 +100,8 @@ struct CMD_S_SendCard
 //游戏结束
 struct CMD_S_GameEnd
 {
-	LONG								lGameTax[GAME_PLAYER];				//游戏税收
-	LONG								lGameScore[GAME_PLAYER];			//游戏得分
+	__int64								lGameTax[GAME_PLAYER];				//游戏税收
+	__int64								lGameScore[GAME_PLAYER];			//游戏得分
 	BYTE								cbCardData[GAME_PLAYER];			//用户扑克
 };
 
@@ -136,7 +136,7 @@ struct CMD_S_ScoreOption
 //用户加注
 struct CMD_C_AddScore
 {
-	LONG								lScore;								//加注数目
+	__int64								lScore;								//加注数目
 };
 
 //获取胜者

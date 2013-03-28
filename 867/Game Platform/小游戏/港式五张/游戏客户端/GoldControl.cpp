@@ -50,7 +50,7 @@ CGoldControl::~CGoldControl()
 }
 
 //设置单元注
-void CGoldControl::SetCellScore(LONG lCellScore)
+void CGoldControl::SetCellScore(__int64 lCellScore)
 {
 	m_lCellScore = lCellScore;
 	Invalidate(FALSE);
@@ -124,7 +124,7 @@ void CGoldControl::OnPaint()
 	m_ImageBack.BitBlt(BackFaceDC,0,0);
 
 	//绘画单元注
-	LONG lCellScore = m_lCellScore;
+	__int64 lCellScore = m_lCellScore;
 	BYTE byCell[10],byCellCount = 0;
 	do
 	{

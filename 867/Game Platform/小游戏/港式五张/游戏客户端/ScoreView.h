@@ -13,8 +13,8 @@ class CScoreView : public CWnd
 {
 	//变量定义
 protected:
-	LONG							m_lGameTax[GAME_PLAYER];			//游戏税收
-	LONG							m_lScore[GAME_PLAYER];				//游戏得分
+	__int64							m_lGameTax[GAME_PLAYER];			//游戏税收
+	__int64							m_lScore[GAME_PLAYER];				//游戏得分
 	TCHAR							m_szUserName[GAME_PLAYER][NAME_LEN];//用户名字
 
 	//资源变量
@@ -34,9 +34,9 @@ public:
 	//重置积分
 	void ResetScore();
 	//设置税收
-	void SetGameTax(WORD wChairID,LONG lGameTax);
+	void SetGameTax(WORD wChairID,__int64 lGameTax);
 	//设置积分
-	void SetGameScore(WORD wChairID, LPCTSTR pszUserName, LONG lScore);
+	void SetGameScore(WORD wChairID, LPCTSTR pszUserName, __int64 lScore);
 
 	//消息函数
 protected:
