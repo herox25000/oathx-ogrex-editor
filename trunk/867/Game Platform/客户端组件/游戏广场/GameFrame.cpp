@@ -330,12 +330,19 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_BUTTON_4:
 		{
-			DWORD dwBankIP = g_GlobalUnits.m_ServerListManager.m_dwToolServerAddr;
-			WORD wBankPort = g_GlobalUnits.m_ServerListManager.m_wToolServerPort;
-			if(dwBankIP !=0 && wBankPort!=0)
-				OpenExternalGame(dwBankIP,wBankPort,g_GlobalUnits.m_ServerListManager.m_szToolName);
-			else
-				ShowMessageBox(TEXT("此功能暂时不能使用！"),MB_ICONQUESTION);
+			if(m_DlgGamePlaza.m_ClientSocket.GetInterface() == NULL)
+				return TRUE;
+			//创建窗体
+			if ( m_DlgBank.m_hWnd == NULL )
+			{
+				m_DlgBank.Create(IDD_BANK_DIALOG, this);
+			}
+			//显示窗体
+			m_DlgBank.CenterWindow();
+			m_DlgBank.ShowWindow(SW_SHOW);
+			m_DlgBank.SetActiveWindow();
+			m_DlgBank.SetForegroundWindow();
+
 			return TRUE;
 		}
 	case IDC_BT_BUTTON_5: //锁机功能

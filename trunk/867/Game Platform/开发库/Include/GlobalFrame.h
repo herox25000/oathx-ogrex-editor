@@ -288,22 +288,58 @@ struct CMD_GF_ResidualProperty
 	DWORD								dwResidualTime[PROPERTY_COUNT];	//剩余时间
 };
 
+#define	MDM_TOOLBOX						110				//工具
+#define SUB_TOOLBOX_QUERYUSERNAME		1				//查询用户名
+#define SUB_TOOLBOX_BANKOPERATING		2				//银行操作
+#define SUB_TOOLBOX_TRANSFERMONEY		3				//转账
+#define SUB_TOOLBOX_TRANSFERMONEY_LOG	4				//转账日志
+#define SUB_TOOLBOX_MESSAGE				5				//消息
 
 
-#define BANKTASK_QUERY			0
-#define BANKTASK_DEPOSIT		1
-#define BANKTASK_WITHDRAW		2
-
-//银行
-struct CMD_GF_BankTask
+//查询用户名
+struct CMD_TOOLBOX_QueryUserName
 {
-	LONG								lBankTask;						//打算进行的操作
-	TCHAR								szPassword[PASS_LEN];			//密码
-	__int64								lMoneyNumber;					//打算操作的钱的数目
+	long lGameID;
+};
+
+//查询用户名返回
+struct CMD_TOOLBOX_QueryUserName_Ret
+{
+	long								lGameID;
+	char								UserNmae[NAME_LEN];
+	LONG								lErrorCode;						//是否成功
+	TCHAR								szErrorDescribe[256];			//错误说明
+};
+
+//转账
+struct CMD_TOOLBOX_TransferMoney
+{
+	__int64								sfMoneyNumber;
+	DWORD								dwGameID;						//对方的ID号
+	TCHAR								szAccount[NAME_LEN];			//对方用户名
+	TCHAR								szPassword[PASS_LEN];			//用户密码
+};
+
+//转账返回
+struct CMD_TOOLBOX_TransferMoney_Ret
+{
+	LONG								lErrorCode;						//是否成功
+	__int64								sfMoneyNumber;					//自己口袋里剩余的银子
+	__int64								sfLeftMoney;					//自己口袋里剩余的银子
+	__int64								sfTax;							//税收
+	TCHAR								szErrorDescribe[256];			//错误说明
 };
 
 //银行
-struct CMD_GF_BankTask_Out
+struct CMD_TOOLBOX_BankTask
+{
+	LONG								lBankTask;						//打算进行的操作
+	__int64								lMoneyNumber;					//打算操作的钱的数目
+	TCHAR								szPassword[PASS_LEN];			//用户密码
+};
+
+//银行
+struct CMD_TOOLBOX_BankTask_Ret
 {
 	LONG								lBankTask;						//进行的操作
 	__int64								lMoneyNumber;					//实际操作的钱的数目
@@ -312,6 +348,27 @@ struct CMD_GF_BankTask_Out
 	LONG								lErrorCode;						//
 	TCHAR								szErrorDescribe[256];			//错误说明
 };
+
+
+struct CMD_GF_Transfer_Log_Out
+{
+	DWORD								dwUserID;						//用户 I D
+	WORD								wTableID;						//桌子ID
+};
+
+struct CMD_GF_Transfer_Log_Item
+{
+	DWORD								dwUserID;						//用户 I D
+	TCHAR								szOutAccount[NAME_LEN];
+	TCHAR								szInAccount[NAME_LEN];
+	WORD								wTableID;						//桌子ID
+	__int64								sfMoney;
+	__int64								sfTax;
+	SYSTEMTIME							TransTime;
+	TCHAR								szIP[16];
+};
+
+
 
 //修改昵称返回结构体
 struct CMD_GF_Modify_Login_Pwd
@@ -336,15 +393,7 @@ struct CMD_GF_Modify_Nickname
 	TCHAR								szErrorDescribe[256];			//错误说明
 };
 
-//修改昵称返回结构体
-struct CMD_GF_Transfer_Money
-{
-	LONG								lErrorCode;						//是否成功
-	__int64								sfMoneyNumber;					//自己口袋里剩余的银子
-	__int64								sfLeftMoney;					//自己口袋里剩余的银子
-	__int64								sfTax;							//税收
-	TCHAR								szErrorDescribe[256];			//错误说明
-};
+
 
 //修改昵称返回结构体
 struct CMD_GF_Common
@@ -356,30 +405,7 @@ struct CMD_GF_Common
 };
 
 
-struct CMD_GF_Transfer_Log_Out
-{
-	DWORD								dwUserID;						//用户 I D
-	WORD								wTableID;						//桌子ID
-};
 
-struct CMD_GF_Transfer_Log_Item
-{
-	DWORD								dwUserID;						//用户 I D
-	TCHAR								szOutAccount[NAME_LEN];
-	TCHAR								szInAccount[NAME_LEN];
-	WORD								wTableID;						//桌子ID
-	__int64								sfMoney;
-	__int64								sfTax;
-	SYSTEMTIME							TransTime;
-	TCHAR								szIP[16];
-};
-struct CMD_GF_QUERY_USERNAME_RET
-{
-	long								lGameID;
-	char								UserNmae[NAME_LEN];
-	LONG								lErrorCode;						//是否成功
-	TCHAR								szErrorDescribe[256];			//错误说明
-};
 
 //////////////////////////////////////////////////////////////////////////
 #endif

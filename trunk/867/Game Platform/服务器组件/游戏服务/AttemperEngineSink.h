@@ -207,6 +207,9 @@ public:
 	bool SendRoomMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType);
 	//发送游戏消息
 	bool SendGameMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType);
+	//发送工具消息
+	bool SendToolBoxMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType);
+
 	//发送道具消息
 	bool SendProMessage(IServerUserItem * pIServerUserItem, LPCTSTR lpszMessage, WORD wMessageType);
 	//发送房间消息
@@ -287,8 +290,8 @@ private:
 	bool OnDBModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存取钱操作完成
 	bool OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	
-	bool OnQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
+	//数据库查询用户名返回
+	bool OnDBQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	// 锁定本机
 	bool OnDBLockComputer(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//网络函数
@@ -310,6 +313,20 @@ private:
 	//银行消息处理
 	bool OnSocketBank(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID);
 
+	// 工具箱操作
+	bool OnSocketToolBox(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID);
+
+//socket 响应函数
+private:
+	//查询用户名
+	bool OnEventQuerUserName(const void * pData, WORD wDataSize, DWORD dwSocketID);
+	//转账
+	bool OnEventTransferMoney(const void * pData, WORD wDataSize, DWORD dwSocketID);
+	//查询转账记录
+	bool OnEventTransferMoneyLog(const void * pData, WORD wDataSize, DWORD dwSocketID);
+	//银行操作
+	bool OnEventBankOperation(const void * pData, WORD wDataSize, DWORD dwSocketID);
+	
 	//辅助函数
 private:
 	//发送失败

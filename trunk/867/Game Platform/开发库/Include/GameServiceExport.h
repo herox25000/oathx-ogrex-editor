@@ -300,7 +300,7 @@ public:
 	//清空用户当前输赢分数
 	virtual bool __cdecl EmptyWinLoseScore()=NULL;
 	//修改基本原始积分
-	virtual bool __cdecl WriteBaseScore(__int64 lNewScore)=NULL;
+	virtual bool __cdecl WriteBaseScore(__int64 lNewScore=-1,__int64 lNemBankScore=-1)=NULL;
 	//功能接口
 public:
 	//控制状态

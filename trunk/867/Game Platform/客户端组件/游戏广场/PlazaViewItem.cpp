@@ -142,8 +142,8 @@ bool __cdecl CPlazaViewItem::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode
 		g_GlobalAttemper.ShowStatusMessage(TEXT("正在验证用户登录信息..."),this);
 	}
 
-	//自定义头像
 	CGameFrame *pGameFrame = (CGameFrame *)AfxGetMainWnd() ;
+	//自定义头像
 	CDlgCustomFace &DlgCustomFace = pGameFrame->m_DlgCustomFace;
 	if ( DlgCustomFace.m_hWnd != NULL && DlgCustomFace.IsWindowVisible() )
 	{
@@ -216,11 +216,10 @@ bool __cdecl CPlazaViewItem::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutRea
 	//自定义头像
 	CGameFrame *pGameFrame = (CGameFrame *)AfxGetMainWnd() ;
 	CDlgCustomFace &DlgCustomFace = pGameFrame->m_DlgCustomFace;
-	if ( DlgCustomFace.m_hWnd != NULL ) DlgCustomFace.SetStatus(enOperateStatus_NULL);
-
+	if ( DlgCustomFace.m_hWnd != NULL ) 
+		DlgCustomFace.SetStatus(enOperateStatus_NULL);
 	//释放内存
 	if ( m_CustomFace.pFaceData != NULL ) m_CustomFace.Clear();
-
 	return true;
 }
 

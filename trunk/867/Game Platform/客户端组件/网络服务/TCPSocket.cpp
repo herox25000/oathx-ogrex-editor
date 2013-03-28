@@ -320,8 +320,14 @@ void __cdecl CTCPSocket::CloseSocket()
 	if ((bClose==true)&&(m_pITCPSocketSink!=NULL))
 	{
 		ASSERT(m_pITCPSocketSink!=NULL);
-		try { m_pITCPSocketSink->OnEventTCPSocketShut(m_wSocketID,SHUT_REASON_NORMAL); }
-		catch (...) {}
+		try 
+		{
+			m_pITCPSocketSink->OnEventTCPSocketShut(m_wSocketID,SHUT_REASON_NORMAL);
+		}
+		catch (...)
+		{
+
+		}
 	}
 
 	//»Ö¸´Êý¾Ý

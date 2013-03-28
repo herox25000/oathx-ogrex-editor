@@ -2131,41 +2131,43 @@ WORD __cdecl CTableFrame::GetNowPlayerCount()
 //转账
 bool __cdecl CTableFrame::TransferMoney(IServerUserItem * pIServerUserItem, TCHAR szAccount[NAME_LEN], DWORD dwGameID_IN, __int64 lMoney)
 {
-	if(pIServerUserItem==NULL)
-	return false;
+	//if(pIServerUserItem==NULL)
+	//return false;
 
-	__int64 sfTax=lMoney/100;
-	if ( sfTax<1 )
-		sfTax=1;
+	//__int64 sfTax=lMoney/100;
+	//if ( sfTax<1 )
+	//	sfTax=1;
 
-	tagScoreInfo ScoreInfo;
-	ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
+	//tagScoreInfo ScoreInfo;
+	//ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
 
-	//写入积分
-	DBR_GR_TransferMoney dbr;
-	memset(&dbr,0,sizeof(DBR_GR_TransferMoney));
-	dbr.dwUserID=pIServerUserItem->GetUserID();
-	dbr.dwGameID_IN=dwGameID_IN;
-	CopyMemory(dbr.szAccount_In, szAccount, sizeof(dbr.szAccount_In));
-	CopyMemory(dbr.szAccount_Out, pIServerUserItem->GetAccounts(), sizeof(dbr.szAccount_Out));
-	dbr.dwClientIP=pIServerUserItem->GetClientIP();
-	dbr.sfMoneyNumber=lMoney;
-	dbr.sfTax=sfTax;
+	////写入积分
+	//DBR_GR_TransferMoney dbr;
+	//memset(&dbr,0,sizeof(DBR_GR_TransferMoney));
+	//dbr.dwUserID=pIServerUserItem->GetUserID();
+	//dbr.dwGameID_IN=dwGameID_IN;
+	//CopyMemory(dbr.szAccount_In, szAccount, sizeof(dbr.szAccount_In));
+	//CopyMemory(dbr.szAccount_Out, pIServerUserItem->GetAccounts(), sizeof(dbr.szAccount_Out));
+	//dbr.dwClientIP=pIServerUserItem->GetClientIP();
+	//dbr.sfMoneyNumber=lMoney;
+	//dbr.sfTax=sfTax;
 
-	return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_TRANSFER_MONEY,0,&dbr, sizeof(dbr));
+	//return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_TRANSFER_MONEY,0,&dbr, sizeof(dbr));
+	return true;
 }
 
 //查询自己的转账记录
 bool __cdecl CTableFrame::QueryTransferLog(IServerUserItem * pIServerUserItem)
 {
-	if(pIServerUserItem==NULL)
-		return false;
-	DBR_GR_Query_Transfer_Log dbr;
-	memset(&dbr,0,sizeof(DBR_GR_Query_Transfer_Log));
-	dbr.dwUserID=pIServerUserItem->GetUserID();
-	dbr.wTableID=pIServerUserItem->GetTableID();
-	return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_QUERY_TRANSFER_LOG, 0, &dbr, sizeof(DBR_GR_Query_Transfer_Log));
+	//if(pIServerUserItem==NULL)
+	//	return false;
+	//DBR_GR_Query_Transfer_Log dbr;
+	//memset(&dbr,0,sizeof(DBR_GR_Query_Transfer_Log));
+	//dbr.dwUserID=pIServerUserItem->GetUserID();
+	//dbr.wTableID=pIServerUserItem->GetTableID();
+	//return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_QUERY_TRANSFER_LOG, 0, &dbr, sizeof(DBR_GR_Query_Transfer_Log));
 
+	return true;
 }
 //充值
 bool __cdecl CTableFrame::FillMoney(IServerUserItem * pIServerUserItem,
@@ -2177,31 +2179,32 @@ bool __cdecl CTableFrame::FillMoney(IServerUserItem * pIServerUserItem,
 bool __cdecl CTableFrame::ModifyLoginPassword(IServerUserItem * pIServerUserItem,
 											  TCHAR szOLDPassword[PASS_LEN], TCHAR szNEWPassword[PASS_LEN])
 {
-	ASSERT(pIServerUserItem!=NULL);
+	//ASSERT(pIServerUserItem!=NULL);
 
-	//写入积分
-	DBR_GR_ModifyLoginPassword dbr;
-	memset(&dbr,0,sizeof(DBR_GR_ModifyLoginPassword));
-	dbr.dwUserID=pIServerUserItem->GetUserID();
-	CopyMemory(dbr.szOLDPassword, szOLDPassword, sizeof(dbr.szOLDPassword));
-	CopyMemory(dbr.szNEWPassword, szNEWPassword, sizeof(dbr.szNEWPassword));
+	////写入积分
+	//DBR_GR_ModifyLoginPassword dbr;
+	//memset(&dbr,0,sizeof(DBR_GR_ModifyLoginPassword));
+	//dbr.dwUserID=pIServerUserItem->GetUserID();
+	//CopyMemory(dbr.szOLDPassword, szOLDPassword, sizeof(dbr.szOLDPassword));
+	//CopyMemory(dbr.szNEWPassword, szNEWPassword, sizeof(dbr.szNEWPassword));
 
-	return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_MODIFY_LOGIN_PASSWOR, 0, &dbr, sizeof(dbr));
+	//return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_MODIFY_LOGIN_PASSWOR, 0, &dbr, sizeof(dbr));
 		return true;
 }
 
 //修改银行密码
 bool __cdecl CTableFrame::ModifyBankPassword(IServerUserItem * pIServerUserItem, TCHAR szOLDPassword[PASS_LEN], TCHAR szNEWPassword[PASS_LEN])
 {
-	ASSERT(pIServerUserItem!=NULL);
-	//写入积分
-	DBR_GR_ModifyBankPassword dbr;
-	memset(&dbr,0,sizeof(DBR_GR_ModifyBankPassword));
-	dbr.dwUserID=pIServerUserItem->GetUserID();
-	CopyMemory(dbr.szOLDPassword, szOLDPassword, sizeof(dbr.szOLDPassword));
-	CopyMemory(dbr.szNEWPassword, szNEWPassword, sizeof(dbr.szNEWPassword));
+	//ASSERT(pIServerUserItem!=NULL);
+	////写入积分
+	//DBR_GR_ModifyBankPassword dbr;
+	//memset(&dbr,0,sizeof(DBR_GR_ModifyBankPassword));
+	//dbr.dwUserID=pIServerUserItem->GetUserID();
+	//CopyMemory(dbr.szOLDPassword, szOLDPassword, sizeof(dbr.szOLDPassword));
+	//CopyMemory(dbr.szNEWPassword, szNEWPassword, sizeof(dbr.szNEWPassword));
 
-	return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_MODIFY_BANK_PASSWORD, 0, &dbr, sizeof(dbr));
+	//return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_MODIFY_BANK_PASSWORD, 0, &dbr, sizeof(dbr));
+	return true;
 }
 
 //修改昵称
@@ -2223,32 +2226,25 @@ bool __cdecl CTableFrame::ModifyNickname(IServerUserItem * pIServerUserItem, TCH
 bool __cdecl CTableFrame::BankOperation(IServerUserItem * pIServerUserItem, LONG lBankTask,
 										TCHAR szPassword[PASS_LEN], __int64 lMoneyNumber)
 {
-	//解除锁定
-	DBR_GR_BankTask BankTask;
-	ZeroMemory(&BankTask,sizeof(DBR_GR_BankTask));
-	CopyMemory(BankTask.szPassword, szPassword, sizeof(BankTask.szPassword));
-	BankTask.dwUserID			=pIServerUserItem->GetUserID();
-	BankTask.lBankTask			=lBankTask;
-	BankTask.lMoneyNumber		=lMoneyNumber;
+	////解除锁定
+	//DBR_GR_BankTask BankTask;
+	//ZeroMemory(&BankTask,sizeof(DBR_GR_BankTask));
+	//CopyMemory(BankTask.szPassword, szPassword, sizeof(BankTask.szPassword));
+	//BankTask.dwUserID			=pIServerUserItem->GetUserID();
+	//BankTask.lBankTask			=lBankTask;
+	//BankTask.lMoneyNumber		=lMoneyNumber;
 
-	LPCTSTR pszMessage=TEXT("服务器正在处理您的银行操作任务......");
-	SendRoomMessage(pIServerUserItem, pszMessage, SMT_INFO);
+	//LPCTSTR pszMessage=TEXT("服务器正在处理您的银行操作任务......");
+	//SendRoomMessage(pIServerUserItem, pszMessage, SMT_INFO);
 
-	return  m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_BANK_TASK, 0, &BankTask, sizeof(DBR_GR_BankTask));
+	//return  m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_BANK_TASK, 0, &BankTask, sizeof(DBR_GR_BankTask));
+	return true;
 }
 
 //查询用户名
 bool __cdecl CTableFrame::QueryUserName(IServerUserItem * pIServerUserItem,long lGameID)
 {
-	if(lGameID<100000)
-	{
-		SendRoomMessage(pIServerUserItem, "输入的游戏ID不正确！！", SMT_INFO);
-		return false;
-	}
-	DBR_GR_Query_UserName Qname;
-	Qname.UserID = pIServerUserItem->GetUserID();
-	Qname.lGameID = lGameID;
-	return m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_QUERYUSERNAME, 0, &Qname, sizeof(Qname));
+	return true;
 }	
 
 //////////////////////////////////////////////////////////////////////////

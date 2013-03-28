@@ -117,7 +117,7 @@ public:
 	//清空用户当前输赢分数
 	virtual bool __cdecl EmptyWinLoseScore();
 	//修改积分
-	bool __cdecl WriteBaseScore(__int64 lNewScore);
+	bool __cdecl WriteBaseScore(__int64 lNewScore=-1,__int64 lNemBankScore=-1);
 	//控制用户
 public:
 	//控制状态

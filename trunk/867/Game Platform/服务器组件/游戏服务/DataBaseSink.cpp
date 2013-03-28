@@ -1332,8 +1332,8 @@ bool CDataBaseSink::OnRequestTransferMoney(DWORD dwContextID, VOID * pData, WORD
 	try
 	{
 		ASSERT(wDataSize==sizeof(DBR_GR_TransferMoney));
-		if (wDataSize!=sizeof(DBR_GR_TransferMoney)) return false;
-
+		if (wDataSize!=sizeof(DBR_GR_TransferMoney))
+			return false;
 		//执行查询
 		DBR_GR_TransferMoney * pTransferMoney=(DBR_GR_TransferMoney *)pData;
 
@@ -1350,10 +1350,8 @@ bool CDataBaseSink::OnRequestTransferMoney(DWORD dwContextID, VOID * pData, WORD
 		m_GameScoreDBModule->AddParameter(TEXT("@Account_Out"),adVarChar, adParamInput,lstrlen(pTransferMoney->szAccount_Out),_variant_t(pTransferMoney->szAccount_Out));
 		m_GameScoreDBModule->AddParameter(TEXT("@Account_In"),adVarChar,adParamInput, lstrlen(pTransferMoney->szAccount_In),_variant_t(pTransferMoney->szAccount_In));
 		m_GameScoreDBModule->AddParameter(TEXT("@MoneyNumber"),adBigInt,adParamInput,sizeof(__int64),_variant_t(pTransferMoney->sfMoneyNumber));
-		m_GameScoreDBModule->AddParameter(TEXT("@Tax"),adBigInt,adParamInput,sizeof(__int64),_variant_t(pTransferMoney->sfTax));
 		m_GameScoreDBModule->AddParameter(TEXT("@strClientIP"),adVarChar,adParamInput,lstrlen(szClientIP),_variant_t(szClientIP));
 		m_GameScoreDBModule->ExecuteProcess("GSP_GR_TransferMoney",true);
-
 		//结果判断
 		LONG lReturnCode=m_GameScoreDBModule->GetReturnValue();
 		pTransferMoney->lErrorCode=lReturnCode;
@@ -1368,6 +1366,7 @@ bool CDataBaseSink::OnRequestTransferMoney(DWORD dwContextID, VOID * pData, WORD
 		{
 			m_GameScoreDBModule->GetFieldValue(TEXT("MoneyNumber"), pTransferMoney->sfMoneyNumber);
 			m_GameScoreDBModule->GetFieldValue(TEXT("Score_Out"), pTransferMoney->sfLeftMoney);
+			m_GameScoreDBModule->GetFieldValue(TEXT("Tax"), pTransferMoney->sfTax);
 		}
 
 		//发送信息
