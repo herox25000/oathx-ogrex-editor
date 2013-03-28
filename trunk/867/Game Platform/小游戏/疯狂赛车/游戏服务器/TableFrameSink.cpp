@@ -1241,7 +1241,7 @@ void CTableFrameSink::ChuLaoQian()
 			}
 			else if(m_lBankerWinScore > 0)
 			{
-				int nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
+				__int64 nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
 				int nRand = rand()%100;
 				if (nRand < nLoseRate)
 				{
