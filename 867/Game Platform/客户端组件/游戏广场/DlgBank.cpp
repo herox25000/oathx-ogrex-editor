@@ -141,7 +141,8 @@ BOOL CDlgBank::OnInitDialog()
 	m_TabBank.SetCurSel(BANK_DLG_SAVE);
 	OnTcnSelchange(NULL, NULL);
 
-	ConnectToServer();
+	if(!ConnectToServer())
+		OnCancel();
 	return TRUE; 
 }
 
