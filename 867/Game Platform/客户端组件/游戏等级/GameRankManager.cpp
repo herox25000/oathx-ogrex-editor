@@ -225,22 +225,22 @@ LPCTSTR CGameRankManager::GetDefaultLevel(LONGLONG lScore)
 	//等级名称
 	static LPCTSTR pszLevelName[]=	
 	{		
-		TEXT("务农"),TEXT("佃户"),TEXT("雇工"),TEXT("作坊主"),			
-			TEXT("农场主"),TEXT("地主"),TEXT("大地主"),TEXT("财主"),			
-			TEXT("富翁"),TEXT("大富翁"),TEXT("小财神"),TEXT("大财神"),			
-			TEXT("赌棍"),TEXT("赌侠"),TEXT("赌王"),TEXT("赌圣"),			
-			TEXT("赌神"),TEXT("职业赌神")	
+		TEXT("务农"),TEXT("佃户"),TEXT("雇工"),TEXT("作坊主"),TEXT("农场主"),
+			TEXT("地主"),TEXT("大地主"),TEXT("财主"),TEXT("富翁"),TEXT("大富翁"),
+			TEXT("小财神"),TEXT("大财神"),TEXT("赌棍"),TEXT("赌侠"),TEXT("赌王"),
+			TEXT("赌圣"),TEXT("赌神"),TEXT("职业赌神")	
 	};
 
 	//效验数据	
 	ASSERT(CountArray(pszLevelName)==(CountArray(lLevelScore)));	
 
+	int count = CountArray(lLevelScore);
 	//获取等级	
-	for (INT i=0;i<CountArray(lLevelScore);i++)	
-	{		
-		if (lScore>=lLevelScore[CountArray(lLevelScore)-i-1]) return pszLevelName[i];	
+	for (int i=count-1;i>=0;--i)
+	{
+		if (lScore>=lLevelScore[i]) 
+			return pszLevelName[i];	
 	}	
-	
 	return pszLevelName[0];
 }
 
