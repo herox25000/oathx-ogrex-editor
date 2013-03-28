@@ -3,12 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //公共宏定义
-#ifdef VIDEO_GAME
-#define KIND_ID						502									//游戏 I D
-#else
-#define KIND_ID						200									//游戏 I D
-#endif
-
+#define KIND_ID						303									//游戏 I D
 #define GAME_PLAYER					3									//游戏人数
 #define GAME_NAME					TEXT("斗地主")						//游戏名字
 
