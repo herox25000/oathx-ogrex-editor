@@ -90,9 +90,9 @@ bool __cdecl CAndroidUserItemSink::OnEventTimer(UINT nTimerID)
 	case IDI_USER_ADD_SCORE:	//加注定时
 		{
 			//可下注筹码
-			LONG lUserMaxScore[GAME_PLAYER];
+			__int64 lUserMaxScore[GAME_PLAYER];
 			ZeroMemory(lUserMaxScore,sizeof(lUserMaxScore));
-			LONG lTemp=m_lTurnMaxScore;
+			__int64 lTemp=m_lTurnMaxScore;
 			for (WORD i=0;i<GAME_PLAYER;i++)
 			{
 				if(i>0)lTemp/=2;

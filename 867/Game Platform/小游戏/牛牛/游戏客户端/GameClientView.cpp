@@ -493,8 +493,8 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 
 			//用户金币
 			TCHAR szBuffer[64]=TEXT("");
-			LONG lLeaveScore=pUserData->lScore-m_lTableScore[i];
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("￥%ld"),lLeaveScore);
+			__int64 lLeaveScore=pUserData->lScore-m_lTableScore[i];
+			_snprintf(szBuffer,sizeof(szBuffer),TEXT("￥%I64d"),lLeaveScore);
 			int TempX=0;
 			int TempY=0;
 			if(i%2==1)
@@ -862,10 +862,11 @@ void CGameClientView::DispatchUserCard(WORD wChairID, BYTE cbCardData)
 }
 
 //设置下注
-void CGameClientView::SetUserTableScore(WORD wChairID, LONG lTableScore)
+void CGameClientView::SetUserTableScore(WORD wChairID, __int64 lTableScore)
 {
 	//设置数据
-	if (wChairID!=INVALID_CHAIR) m_lTableScore[wChairID]=lTableScore;
+	if (wChairID!=INVALID_CHAIR)
+		m_lTableScore[wChairID]=lTableScore;
 	else 
 	{
 		//ZeroMemory(m_tcBuffer,sizeof(m_tcBuffer));

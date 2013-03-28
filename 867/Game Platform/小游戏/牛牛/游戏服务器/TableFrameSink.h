@@ -16,14 +16,14 @@ protected:
 	WORD							m_wBankerUser;							//庄家用户
 	WORD							m_wFisrtCallUser;						//始叫用户
 	WORD							m_wCurrentUser;							//当前用户
-	LONG							m_lExitScore;							//强退分数
+	__int64							m_lExitScore;							//强退分数
 
 	//用户数据
 protected:
 	BYTE							m_bPlayStatus[GAME_PLAYER];				//游戏状态
 	BYTE							m_bCallStatus[GAME_PLAYER];				//叫庄状态
 	BYTE							m_bOxCard[GAME_PLAYER];					//牛牛数据
-	LONG							m_lTableScore[GAME_PLAYER];				//下注数目
+	__int64							m_lTableScore[GAME_PLAYER];				//下注数目
 
 	//扑克变量
 protected:
@@ -31,11 +31,11 @@ protected:
 
 	//下注信息
 protected:
-	LONG							m_lTurnMaxScore[GAME_PLAYER];			//最大下注
+	__int64							m_lTurnMaxScore[GAME_PLAYER];			//最大下注
 
 	//AI变量
 protected:
-	LONG							m_lStockScore;							//总输赢分
+	__int64							m_lStockScore;							//总输赢分
 
 	//组件变量
 protected:
@@ -101,7 +101,7 @@ protected:
 	//叫庄事件
 	bool OnUserCallBanker(WORD wChairID, BYTE bBanker);
 	//加注事件
-	bool OnUserAddScore(WORD wChairID, LONG lScore);
+	bool OnUserAddScore(WORD wChairID, __int64 lScore);
 	//摊牌事件
 	bool OnUserOpenCard(WORD wChairID, BYTE bOx);
 

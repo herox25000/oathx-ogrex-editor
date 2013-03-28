@@ -47,7 +47,7 @@ class CGameClientView : public CGameFrameView
 	//数据变量
 protected:
 	WORD							m_wBankerUser;						//庄家用户
-	LONG							m_lTableScore[GAME_PLAYER];			//下注数目
+	__int64							m_lTableScore[GAME_PLAYER];			//下注数目
 	BYTE							m_bOxValue[GAME_PLAYER];			//牛牛数据
 	BYTE							m_bOpenCardUser[GAME_PLAYER];		//摊牌用户
 	BYTE							m_bCallUser;						//等待叫庄
@@ -153,7 +153,7 @@ public:
 	//发送扑克
 	void DispatchUserCard(WORD wChairID, BYTE cbCardData);
 	//设置下注
-	void SetUserTableScore(WORD wChairID, LONG lTableScore);
+	void SetUserTableScore(WORD wChairID, __int64 lTableScore);
 	//庄家标志
 	void SetBankerUser(WORD wBankerUser);
 	//等待叫庄

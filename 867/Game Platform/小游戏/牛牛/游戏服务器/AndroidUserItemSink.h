@@ -13,7 +13,7 @@ class CAndroidUserItemSink : public IAndroidUserItemSink
 {
 	//加注信息
 protected:
-	LONG							m_lTurnMaxScore;						//最大下注
+	__int64							m_lTurnMaxScore;						//最大下注
 
 	//用户扑克
 protected:

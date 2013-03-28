@@ -21,8 +21,8 @@ protected:
 
 	//加注信息
 protected:
-	LONG							m_lTurnMaxScore;						//最大下注
-	LONG							m_lTableScore[GAME_PLAYER];				//下注数目
+	__int64							m_lTurnMaxScore;						//最大下注
+	__int64							m_lTableScore[GAME_PLAYER];				//下注数目
 
 	//状态变量
 protected:
@@ -88,7 +88,7 @@ protected:
 	//辅助函数
 protected:
 	//更新控制
-	void UpdateScoreControl(LONG lScore[],BOOL bShow);
+	void UpdateScoreControl(__int64 lScore[],BOOL bShow);
 
 	//消息映射
 protected:
