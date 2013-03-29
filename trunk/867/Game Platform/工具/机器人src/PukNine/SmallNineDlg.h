@@ -5,6 +5,7 @@
 #include "SmallnineMachine.h"
 #include "afxwin.h"
 #include "afxcmn.h"
+#include "RobotDialog.h"
 
 enum
 {
@@ -36,7 +37,7 @@ protected:
 protected:
 	HICON				m_hIcon;
 	CRichEditTrace		m_RichEditTrace;
-
+	CRobotDialog		m_RobotDialog;
 protected:
 	virtual BOOL		OnInitDialog();
 	afx_msg void		OnSysCommand(UINT nID, LPARAM lParam);
@@ -73,4 +74,5 @@ public:
 	afx_msg void OnEnChangeEdit26();
 	afx_msg void OnEnChangeEdit27();
 	afx_msg void OnEnChangeEdit28();
+	afx_msg void OnBnClickedButton1();
 };
