@@ -1,6 +1,10 @@
 #include "StdAfx.h"
 #include ".\robotmanager.h"
 
+#ifndef MAX_SITDOWN
+#define MAX_SITDOWN	10
+#endif
+
 RobotManager::RobotManager(void)
 {
 }
@@ -44,6 +48,24 @@ IRobot*					RobotManager::Search(DWORD dwUserID)
 
 	return NULL;
 }
+
+IRobot*					RobotManager::SearchRobotByGameID(DWORD dwGameID)
+{
+	RobotRegister::iterator it = m_RobotRegister.begin();
+	while( it != m_RobotRegister.end() )
+	{
+		tagUserInfo* pUserInfo = it->second->GetUserInfo();
+		if (pUserInfo->dwGameID == dwGameID)
+		{
+			return it->second;
+		}
+
+		it ++;
+	}
+
+	return NULL;
+}
+
 
 int						RobotManager::GetRobotCount() const
 {
@@ -121,8 +143,16 @@ void					RobotManager::Reconnect(const CString& ipAddress, WORD wPort, const CSt
 		RobotRegister::iterator it = m_Reconnect.begin();
 		if( it != m_Reconnect.end() )
 		{
-			it->second->ResetGame();
-			it->second->SitDown();
+			int nReqCount = it->second->GetReconnect();
+			if (nReqCount < MAX_SITDOWN)
+			{
+				it->second->ResetGame();
+				it->second->SitDown();
+			}
+			else
+			{
+				it->second->SetState(ROBOT_INVALID);
+			}
 		}
 	}
 }
