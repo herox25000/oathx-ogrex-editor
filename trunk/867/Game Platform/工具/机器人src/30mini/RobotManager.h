@@ -50,6 +50,8 @@ public:
 
 	virtual	BOOL					AddRobot(IRobot* pRobot);
 	virtual	IRobot*					Search(DWORD dwUserID);
+	virtual IRobot*					SearchRobotByGameID(DWORD dwGameID);
+
 	virtual void					DestroyRobot(DWORD dwUserID);
 	virtual int						GetRobotCount() const;
 public:

@@ -41,6 +41,7 @@ public:
 	virtual void			SetState(WORD wState);
 	virtual void			SetReqSitDownTime(double fTime);
 	virtual double			GetReqSitDownTime() const;
+	virtual SUserInfo*		GetUserInfo() const;
 public:
 	// Õ∑≈∂‘œÛ
 	virtual void	__cdecl Release()
