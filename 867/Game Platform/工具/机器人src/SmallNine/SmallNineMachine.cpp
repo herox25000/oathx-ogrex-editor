@@ -447,7 +447,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				BankerManager::GetSingleton().Remove(m_dwUserID);
 
 				CString szMessage;
-				szMessage.Format("Robot[%d] Gold less than %I64 automatic logoff", m_dwUserID, c.nMinScore);
+				szMessage.Format("Robot[%d] Gold less than %I64d automatic logoff", m_dwUserID, c.nMinScore);
 				ShowMessageBox(szMessage, TraceLevel_Warning);
 				
 				// 设置机器人断线
