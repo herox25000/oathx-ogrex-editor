@@ -114,6 +114,7 @@ public:
 
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//Ïú»ÙÏûÏ¢
 	afx_msg void OnClose();
 	afx_msg void OnCancel();

@@ -130,6 +130,20 @@ BEGIN_MESSAGE_MAP(CDlgBank, CSkinDialogEx)
 	ON_EN_CHANGE(IDC_EDIT1, OnEnUserIDChange)
 END_MESSAGE_MAP()
 
+BOOL CDlgBank::PreTranslateMessage(MSG* pMsg)
+{
+	if(pMsg->message == WM_KEYDOWN) 
+	{
+		if(pMsg->wParam == VK_RETURN)
+		{
+			OnButtonOK();
+			return TRUE;
+		}
+	}
+
+	return __super::PreTranslateMessage(pMsg);
+}
+
 //初始化函数
 BOOL CDlgBank::OnInitDialog()
 {
@@ -452,7 +466,7 @@ bool CDlgBank::OnTransferMoney(void * pData, WORD wDataSize)
 	if (pTransRet->lErrorCode==0)
 	{
 		TCHAR szText[256];
-		_snprintf(szText, sizeof(szText), "转账操作成功: 转账%s金币，税收%s金币，您的口袋余额%s金币", 
+		_snprintf(szText, sizeof(szText), "转账操作成功: 转账%s金币，税收%s金币", 
 			GetString(pTransRet->sfMoneyNumber), GetString(pTransRet->sfTax), GetString(pTransRet->sfLeftMoney));
 		ShowMessageBox(szText);
 	}
@@ -697,18 +711,19 @@ void CDlgBank::PtnGoldOK()
 	_snprintf(szText, sizeof(szText), "请再次确认您的转账操作，是否输入正确:\
 		\n\n\n转入游戏ID： %d\n转入账户名： %s\n      金额： %s金币",
 		dwGameID,strUserName, GetString(sfMoeny));
-	ShowMessageBox(szText);
+	if (IDYES == ShowInformationEx(szText,0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1,TEXT("银行")))
+	{
+		//密码验证
+		TCHAR szTempPassword[PASS_LEN]=TEXT("");
+		CopyMemory(szTempPassword,szPassword,sizeof(szTempPassword));
+		CMD5Encrypt::EncryptData(szTempPassword,szPassword);
 
-	//密码验证
-	TCHAR szTempPassword[PASS_LEN]=TEXT("");
-	CopyMemory(szTempPassword,szPassword,sizeof(szTempPassword));
-	CMD5Encrypt::EncryptData(szTempPassword,szPassword);
-
-	CMD_TOOLBOX_TransferMoney cmd;
-	memset(&cmd, 0, sizeof(CMD_TOOLBOX_TransferMoney));
-	cmd.sfMoneyNumber=sfMoeny;
-	cmd.dwGameID=dwGameID;
-	CopyMemory(cmd.szAccount,strUserName,sizeof(cmd.szAccount));
-	CopyMemory(cmd.szPassword,szPassword,sizeof(cmd.szPassword));
-	m_BankSocket->SendData(MDM_TOOLBOX, SUB_TOOLBOX_TRANSFERMONEY, &cmd, sizeof(cmd));
+		CMD_TOOLBOX_TransferMoney cmd;
+		memset(&cmd, 0, sizeof(CMD_TOOLBOX_TransferMoney));
+		cmd.sfMoneyNumber=sfMoeny;
+		cmd.dwGameID=dwGameID;
+		CopyMemory(cmd.szAccount,strUserName,sizeof(cmd.szAccount));
+		CopyMemory(cmd.szPassword,szPassword,sizeof(cmd.szPassword));
+		m_BankSocket->SendData(MDM_TOOLBOX, SUB_TOOLBOX_TRANSFERMONEY, &cmd, sizeof(cmd));
+	}
 }
