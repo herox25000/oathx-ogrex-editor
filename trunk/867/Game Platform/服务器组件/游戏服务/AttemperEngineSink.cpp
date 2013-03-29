@@ -4130,7 +4130,7 @@ bool CAttemperEngineSink::OnDBTransferMoneyOver(DWORD dwContextID, VOID * pData,
 		this->SendData(pIServerUserItem, MDM_TOOLBOX, SUB_TOOLBOX_TRANSFERMONEY, &cmd, sizeof(CMD_TOOLBOX_TransferMoney_Ret));
 		if ( pTransferMoney->lErrorCode==0)
 		{
-			pIServerUserItem->WriteBaseScore(pTransferMoney->sfLeftMoney);
+			pIServerUserItem->WriteBaseScore(-1,pTransferMoney->sfLeftMoney);
 			SendUserScore(pIServerUserItem);
 		}
 	}
