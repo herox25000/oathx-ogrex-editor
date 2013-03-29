@@ -33,6 +33,7 @@ public:
 		OPT_SAVE=0,	// ´æÈë
 		OPT_GET,	// È¡³ö
 		OPT_PTN,	// ÔùËÍ
+		OPT_PWD,
 	};	
 	enum BANKTASK
 	{

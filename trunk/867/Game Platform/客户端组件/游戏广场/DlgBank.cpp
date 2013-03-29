@@ -99,6 +99,7 @@ void CTabCtrlBank::OnPaint()
 #define BANK_DLG_SAVE	0
 #define BANK_DLG_GET	1
 #define BANK_DLG_PTN	2
+#define BANK_DLG_PWD	3
 
 //////////////////////////////////////////////////////////////////////////
 CDlgBank::CDlgBank() : CSkinDialogEx(IDD_BANK_DIALOG)
@@ -152,6 +153,7 @@ BOOL CDlgBank::OnInitDialog()
 	m_TabBank.InsertItem(BANK_DLG_SAVE,TEXT("´æÇ®"));
 	m_TabBank.InsertItem(BANK_DLG_GET,TEXT("È¡Ç®"));
 	m_TabBank.InsertItem(BANK_DLG_PTN,TEXT("ÔùËÍ"));
+	m_TabBank.InsertItem(BANK_DLG_PWD,TEXT("±£ÏÕ¹ñ"));
 	m_TabBank.SetCurSel(BANK_DLG_SAVE);
 	OnTcnSelchange(NULL, NULL);
 
@@ -514,6 +516,28 @@ void CDlgBank::OnTcnSelchange(NMHDR * pNMHDR, LRESULT * pResult)
 			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
 
+			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_HIDE);
+			
+			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_SHOW);
+
 			SetOptType(OPT_SAVE);
 		}
 		break;
@@ -528,6 +552,28 @@ void CDlgBank::OnTcnSelchange(NMHDR * pNMHDR, LRESULT * pResult)
 
 			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
+	
+			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_SHOW);
 
 			SetOptType(OPT_GET);
 		}
@@ -540,11 +586,68 @@ void CDlgBank::OnTcnSelchange(NMHDR * pNMHDR, LRESULT * pResult)
 
 			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_SHOW);
-
+			
 			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_SHOW);
 	
 			SetOptType(OPT_PTN);
+		}
+		break;
+	case BANK_DLG_PWD:
+		{
+			m_TabBank.SetCurSel(BANK_DLG_PWD);
+
+			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_SHOW);
+
+			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_HIDE);
+
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_HIDE);
+
+			SetOptType(OPT_PWD);
 		}
 		break;
 	}
