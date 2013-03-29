@@ -2182,8 +2182,8 @@ bool __cdecl CTableFrame::ModifyLoginPassword(IServerUserItem * pIServerUserItem
 	//ASSERT(pIServerUserItem!=NULL);
 
 	////写入积分
-	//DBR_GR_ModifyLoginPassword dbr;
-	//memset(&dbr,0,sizeof(DBR_GR_ModifyLoginPassword));
+	//DBR_GR_ModifyPassword dbr;
+	//memset(&dbr,0,sizeof(DBR_GR_ModifyPassword));
 	//dbr.dwUserID=pIServerUserItem->GetUserID();
 	//CopyMemory(dbr.szOLDPassword, szOLDPassword, sizeof(dbr.szOLDPassword));
 	//CopyMemory(dbr.szNEWPassword, szNEWPassword, sizeof(dbr.szNEWPassword));
@@ -2197,8 +2197,8 @@ bool __cdecl CTableFrame::ModifyBankPassword(IServerUserItem * pIServerUserItem,
 {
 	//ASSERT(pIServerUserItem!=NULL);
 	////写入积分
-	//DBR_GR_ModifyBankPassword dbr;
-	//memset(&dbr,0,sizeof(DBR_GR_ModifyBankPassword));
+	//DBR_GR_ModifyPassword dbr;
+	//memset(&dbr,0,sizeof(DBR_GR_ModifyPassword));
 	//dbr.dwUserID=pIServerUserItem->GetUserID();
 	//CopyMemory(dbr.szOLDPassword, szOLDPassword, sizeof(dbr.szOLDPassword));
 	//CopyMemory(dbr.szNEWPassword, szNEWPassword, sizeof(dbr.szNEWPassword));

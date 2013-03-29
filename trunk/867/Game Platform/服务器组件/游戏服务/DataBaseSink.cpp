@@ -1446,11 +1446,11 @@ bool CDataBaseSink::OnRequestModifyLoginPassword(DWORD dwContextID, VOID * pData
 	try
 	{
 		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_ModifyLoginPassword));
-		if (wDataSize!=sizeof(DBR_GR_ModifyLoginPassword)) return false;
+		ASSERT(wDataSize==sizeof(DBR_GR_ModifyPassword));
+		if (wDataSize!=sizeof(DBR_GR_ModifyPassword)) return false;
 
 		//执行查询
-		DBR_GR_ModifyLoginPassword * pDBR=(DBR_GR_ModifyLoginPassword *)pData;
+		DBR_GR_ModifyPassword * pDBR=(DBR_GR_ModifyPassword *)pData;
 
 		//执行查询
 		m_AccountsDBModule->ClearParameters();
@@ -1473,7 +1473,7 @@ bool CDataBaseSink::OnRequestModifyLoginPassword(DWORD dwContextID, VOID * pData
 		pDBR->lErrorCode=lReturnCode;
 
 		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_MODIFY_LOGIN_PASSWORD_OUT, 
-			dwContextID, pDBR, sizeof(DBR_GR_ModifyLoginPassword));
+			dwContextID, pDBR, sizeof(DBR_GR_ModifyPassword));
 	}
 	catch (IDataBaseException * pIException)
 	{
@@ -1490,11 +1490,11 @@ bool CDataBaseSink::OnRequestModifyBankPassword(DWORD dwContextID, VOID * pData,
 	try
 	{
 		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_ModifyBankPassword));
-		if (wDataSize!=sizeof(DBR_GR_ModifyBankPassword)) return false;
+		ASSERT(wDataSize==sizeof(DBR_GR_ModifyPassword));
+		if (wDataSize!=sizeof(DBR_GR_ModifyPassword)) return false;
 
 		//执行查询
-		DBR_GR_ModifyBankPassword * pDBR=(DBR_GR_ModifyBankPassword *)pData;
+		DBR_GR_ModifyPassword * pDBR=(DBR_GR_ModifyPassword *)pData;
 
 		//执行查询
 		m_AccountsDBModule->ClearParameters();
@@ -1517,7 +1517,7 @@ bool CDataBaseSink::OnRequestModifyBankPassword(DWORD dwContextID, VOID * pData,
 		pDBR->lErrorCode=lReturnCode;
 
 		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_MODIFY_BANK_PASSWORD_OUT, 
-			dwContextID, pDBR, sizeof(DBR_GR_ModifyBankPassword));
+			dwContextID, pDBR, sizeof(DBR_GR_ModifyPassword));
 	}
 	catch (IDataBaseException * pIException)
 	{

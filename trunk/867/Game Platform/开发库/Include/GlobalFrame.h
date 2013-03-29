@@ -288,12 +288,14 @@ struct CMD_GF_ResidualProperty
 	DWORD								dwResidualTime[PROPERTY_COUNT];	//剩余时间
 };
 
-#define	MDM_TOOLBOX						110				//工具
-#define SUB_TOOLBOX_QUERYUSERNAME		1				//查询用户名
-#define SUB_TOOLBOX_BANKOPERATING		2				//银行操作
-#define SUB_TOOLBOX_TRANSFERMONEY		3				//转账
-#define SUB_TOOLBOX_TRANSFERMONEY_LOG	4				//转账日志
-#define SUB_TOOLBOX_MESSAGE				5				//消息
+#define	MDM_TOOLBOX							110				//工具
+#define SUB_TOOLBOX_QUERYUSERNAME			1				//查询用户名
+#define SUB_TOOLBOX_BANKOPERATING			2				//银行操作
+#define SUB_TOOLBOX_TRANSFERMONEY			3				//转账
+#define SUB_TOOLBOX_TRANSFERMONEY_LOG		4				//转账日志
+#define SUB_TOOLBOX_TMODIFYLOGINPASSWORD	5				//修改登录密码
+#define SUB_TOOLBOX_TMODIFYBANKPASSWORD		6				//修改银行密码
+#define SUB_TOOLBOX_MESSAGE					7				//消息
 
 
 //查询用户名
@@ -349,6 +351,12 @@ struct CMD_TOOLBOX_BankTask_Ret
 	TCHAR								szErrorDescribe[256];			//错误说明
 };
 
+//修改密码
+struct CMD_TOOLBOX_ModifyPassword
+{
+	TCHAR								szOLDPassword[PASS_LEN];			//旧密码
+	TCHAR								szNEWPassword[PASS_LEN];			//新密码
+};
 
 struct CMD_GF_Transfer_Log_Out
 {
@@ -368,23 +376,6 @@ struct CMD_GF_Transfer_Log_Item
 	TCHAR								szIP[16];
 };
 
-
-
-//修改昵称返回结构体
-struct CMD_GF_Modify_Login_Pwd
-{
-	LONG								lErrorCode;						//是否成功
-	TCHAR								szErrorDescribe[256];			//错误说明
-};
-
-
-//修改昵称返回结构体
-struct CMD_GF_Modify_Bank_Pwd
-{
-	LONG								lErrorCode;						//是否成功
-	TCHAR								szErrorDescribe[256];			//新昵称
-};
-
 //修改昵称返回结构体
 struct CMD_GF_Modify_Nickname
 {
@@ -392,19 +383,6 @@ struct CMD_GF_Modify_Nickname
 	TCHAR								szNickname[NAME_LEN];			//新昵称
 	TCHAR								szErrorDescribe[256];			//错误说明
 };
-
-
-
-//修改昵称返回结构体
-struct CMD_GF_Common
-{
-	__int64								sfCostMoney;					//花费掉的银子
-	__int64								sfLeftMoney;					//自己的最新的银子
-	LONG								lErrorCode;						//是否成功
-	TCHAR								szErrorDescribe[256];			//错误说明
-};
-
-
 
 
 //////////////////////////////////////////////////////////////////////////

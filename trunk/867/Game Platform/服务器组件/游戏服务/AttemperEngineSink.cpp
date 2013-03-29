@@ -989,12 +989,9 @@ bool __cdecl CAttemperEngineSink::OnEventDataBase(WORD wRequestID, DWORD dwConte
 			return OnDBTransferLogItem(dwContextID,pData,wDataSize);
 		}
 	case DBR_GR_MODIFY_LOGIN_PASSWORD_OUT:		//修改登录密码完成
-		{
-			return OnDBModifyLoginPassword(dwContextID,pData,wDataSize);
-		}
 	case DBR_GR_MODIFY_BANK_PASSWORD_OUT:		//修改银行密码完成
 		{
-			return OnDBModifyBankPassword(dwContextID,pData,wDataSize);
+			return OnDBModifyPassword(dwContextID,pData,wDataSize);
 		}
 	case DBR_GR_MODIFY_NICKNAME_OUT:		//修改昵称完成
 		{
@@ -2642,6 +2639,10 @@ bool CAttemperEngineSink::OnSocketToolBox(WORD wSubCmdID, VOID * pData, WORD wDa
 		return OnEventTransferMoney(pData,wDataSize,dwSocketID);
 	case SUB_TOOLBOX_TRANSFERMONEY_LOG:
 		return OnEventTransferMoneyLog(pData,wDataSize,dwSocketID);
+	case SUB_TOOLBOX_TMODIFYLOGINPASSWORD:
+		return OnEventModifyLoginPassword(pData,wDataSize,dwSocketID);
+	case  SUB_TOOLBOX_TMODIFYBANKPASSWORD:
+		return OnEventModifyBankPassword(pData,wDataSize,dwSocketID);
 	}
 	return false;
 }
@@ -3932,57 +3933,21 @@ bool CAttemperEngineSink::OnDBTransferLogItem(DWORD dwContextID, VOID * pData, W
 }
 
 
-//修改登录密码完成
-bool CAttemperEngineSink::OnDBModifyLoginPassword(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//发送消息
-	DBR_GR_ModifyLoginPassword* pDBR=(DBR_GR_ModifyLoginPassword*)pData;
-	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pDBR->dwUserID);
-	if ( pIServerUserItem )
-	{
-		CMD_GF_Modify_Login_Pwd cmd;
-		ZeroMemory(&cmd, sizeof(CMD_GF_Modify_Login_Pwd));
-		cmd.lErrorCode=pDBR->lErrorCode;
-		CopyMemory(cmd.szErrorDescribe, pDBR->szErrorDescribe, sizeof(cmd.szErrorDescribe));
-		this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_MODIFY_LOGIN_PWD, &cmd, sizeof(CMD_GF_Modify_Login_Pwd));
-	}
-
-	return true;
-}
-
-//修改银行密码完成
-bool CAttemperEngineSink::OnDBModifyBankPassword(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//发送消息
-	DBR_GR_ModifyBankPassword* pDBR=(DBR_GR_ModifyBankPassword*)pData;
-	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pDBR->dwUserID);
-	if ( pIServerUserItem )
-	{
-		CMD_GF_Modify_Bank_Pwd cmd;
-		ZeroMemory(&cmd, sizeof(CMD_GF_Modify_Bank_Pwd));
-		cmd.lErrorCode=pDBR->lErrorCode;
-		CopyMemory(cmd.szErrorDescribe, pDBR->szErrorDescribe, sizeof(cmd.szErrorDescribe));
-		this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_MODIFY_BANK_PWD, &cmd, sizeof(CMD_GF_Modify_Bank_Pwd));
-	}
-
-	return true;
-}
-
 //修改昵称
 bool CAttemperEngineSink::OnDBModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
-	//发送消息
-	DBR_GR_Modify_Nickname* pDBR=(DBR_GR_Modify_Nickname*)pData;
-	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pDBR->dwUserID);
-	if ( pIServerUserItem )
-	{
-		CMD_GF_Modify_Nickname cmd;
-		ZeroMemory(&cmd, sizeof(CMD_GF_Modify_Nickname));
-		cmd.lErrorCode=pDBR->lErrorCode;
-		CopyMemory(cmd.szNickname, pDBR->szNickname, sizeof(cmd.szNickname));
-		CopyMemory(cmd.szErrorDescribe, pDBR->szErrorDescribe, sizeof(cmd.szErrorDescribe));
-		this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_MODIFY_NICKNAME, &cmd, sizeof(cmd));
-	}
+	////发送消息
+	//DBR_GR_Modify_Nickname* pDBR=(DBR_GR_Modify_Nickname*)pData;
+	//IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pDBR->dwUserID);
+	//if ( pIServerUserItem )
+	//{
+	//	CMD_GF_Modify_Nickname cmd;
+	//	ZeroMemory(&cmd, sizeof(CMD_GF_Modify_Nickname));
+	//	cmd.lErrorCode=pDBR->lErrorCode;
+	//	CopyMemory(cmd.szNickname, pDBR->szNickname, sizeof(cmd.szNickname));
+	//	CopyMemory(cmd.szErrorDescribe, pDBR->szErrorDescribe, sizeof(cmd.szErrorDescribe));
+	//	this->SendData(pIServerUserItem, MDM_GF_FRAME, SUB_GF_MODIFY_NICKNAME, &cmd, sizeof(cmd));
+	//}
 	return true;
 }
 
@@ -4067,6 +4032,44 @@ bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSiz
 	return  m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_BANK_TASK, 0, &BankTask, sizeof(DBR_GR_BankTask));
 }
 
+//socket 响应 修改登录密码
+bool CAttemperEngineSink::OnEventModifyLoginPassword(const void * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	ASSERT( sizeof(CMD_TOOLBOX_ModifyPassword) == wDataSize );
+	if ( sizeof(CMD_TOOLBOX_ModifyPassword) != wDataSize ) 
+		return false;
+	//获取用户
+	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
+	if(pIServerUserItem==NULL)
+		return false;
+	CMD_TOOLBOX_ModifyPassword *pModify = (CMD_TOOLBOX_ModifyPassword*)pData;
+
+	DBR_GR_ModifyPassword dbr;
+	memset(&dbr,0,sizeof(DBR_GR_ModifyPassword));
+	dbr.dwUserID=pIServerUserItem->GetUserID();
+	CopyMemory(dbr.szOLDPassword, pModify->szOLDPassword, sizeof(dbr.szOLDPassword));
+	CopyMemory(dbr.szNEWPassword, pModify->szNEWPassword, sizeof(dbr.szNEWPassword));
+	return m_pIDataBaseEngine->PostDataBaseRequest( DBR_GR_MODIFY_LOGIN_PASSWOR, 0, &dbr, sizeof(dbr));
+}
+
+//socket 响应 修改银行密码
+bool CAttemperEngineSink::OnEventModifyBankPassword(const void * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	ASSERT( sizeof(CMD_TOOLBOX_ModifyPassword) == wDataSize );
+	if ( sizeof(CMD_TOOLBOX_ModifyPassword) != wDataSize ) 
+		return false;
+	//获取用户
+	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
+	if(pIServerUserItem==NULL)
+		return false;
+	CMD_TOOLBOX_ModifyPassword *pModify = (CMD_TOOLBOX_ModifyPassword*)pData;
+	DBR_GR_ModifyPassword dbr;
+	memset(&dbr,0,sizeof(DBR_GR_ModifyPassword));
+	dbr.dwUserID=pIServerUserItem->GetUserID();
+	CopyMemory(dbr.szOLDPassword, pModify->szOLDPassword, sizeof(dbr.szOLDPassword));
+	CopyMemory(dbr.szNEWPassword, pModify->szNEWPassword, sizeof(dbr.szNEWPassword));
+	return m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_MODIFY_BANK_PASSWORD, 0, &dbr, sizeof(dbr));
+}
 
 //数据库返回
 bool CAttemperEngineSink::OnDBQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
@@ -4136,4 +4139,26 @@ bool CAttemperEngineSink::OnDBTransferMoneyOver(DWORD dwContextID, VOID * pData,
 	}
 	return true;
 }
+//修改密码完成
+bool CAttemperEngineSink::OnDBModifyPassword(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	//发送消息
+	DBR_GR_ModifyPassword* pDBR=(DBR_GR_ModifyPassword*)pData;
+	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pDBR->dwUserID);
+	if ( pIServerUserItem )
+	{
+		//发送数据
+		WORD wIndex=pIServerUserItem->GetUserIndex();
+		tagConnectItemInfo * pConnectItemInfo=GetBindParameter(wIndex);
+		DWORD dwSocketID=pConnectItemInfo->dwSocketID;
+		if(pDBR->lErrorCode == 0)
+			SendToolBoxMessage(dwSocketID,"修改成功！请及时重新登录，不然部分功能不可用！",SMT_EJECT);
+		else
+			SendToolBoxMessage(dwSocketID,pDBR->szErrorDescribe,SMT_EJECT);
+	}
+	return true;
+}
+
+
+
 //////////////////////////////////////////////////////////////////////////
