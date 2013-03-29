@@ -140,23 +140,16 @@
 #define IDC_BANKGOLD                    1106
 #define IDC_BANK_TEXT                   1107
 #define IDC_ALLOW_GAME_CHAT             1108
+#define IDC_EDIT5                       1108
 #define IDC_BOSS_HOTKEY                 1109
+#define IDC_BANKPW_TEXT                 1109
 #define IDC_EDIT1                       1110
 #define IDC_ALLOW_ENTER_ROOM            1111
+#define IDC_EDIT6                       1111
 #define IDC_BACNK_BTNOK                 1112
 #define IDC_BANK_PLYNAME                1113
 #define IDC_BANK_PLYNICK                1114
 #define IDC_BANK_BTNALL                 1115
-#define IDC_STATIC1                     1117
-#define IDC_STATIC2                     1118
-#define IDC_STATIC3                     1119
-#define IDC_STATIC4                     1120
-#define IDC_EDIT5                       1121
-#define IDC_EDIT6                       1122
-#define IDC_EDIT7                       1123
-#define IDC_STATIC5                     1124
-#define IDC_STATIC6                     1125
-#define IDC_STATIC7                     1126
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32776
@@ -168,7 +161,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1127
+#define _APS_NEXT_CONTROL_VALUE         1112
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif
