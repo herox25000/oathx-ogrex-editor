@@ -1476,11 +1476,11 @@ void CTableFrameSink::RobotAI()
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\XiaoJiu.ini", sizeof(szINI));
-	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-// 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 20000000, szINI);
+	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 15, szINI);
+//  __int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
 	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 50000000, szINI);
 	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 80000000, szINI);
-	LIMIT_VALUE(lWinRate, 1, 10);
+	LIMIT_VALUE(lWinRate, 1, 100);
 
 	if (m_CurrentBanker.dwUserID != 0)
 	{
@@ -1488,16 +1488,16 @@ void CTableFrameSink::RobotAI()
 		SortCardComp(chCardSort, 4);
 		if ( m_CurrentBanker.dwUserType == 10 )
 		{
-// 			bool bWin = false;
+ 			bool bWin = false;
 			int nRnd = rand() % 100;
-			if ( nRnd <= lWinRate * 10 || m_lBankerWinScore <= (-lMaxLose) )
+			if ( nRnd <= lWinRate || ( lMaxLose > 0 && m_lBankerWinScore <= (-lMaxLose) ) )
 			{
 				while(PreCalculateBankerWin() < 0)
 				{
 					SwapBankerCard(chCardSort, true);	//DispatchTableCard();
 				}
 			}
-// 			if (false == bWin)
+// 			if (false == bWin && lMaxPerLose > 0)
 // 			{
 // 				while(PreCalculateBankerWin() < (-lMaxPerLose))
 // 				{
