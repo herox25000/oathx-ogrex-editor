@@ -345,18 +345,8 @@ struct DBR_GR_Query_Transfer_Log
 	LONG								lErrorCode;						//返回代码
 };
 
-//修改登录密码
-struct DBR_GR_ModifyLoginPassword
-{
-	DWORD								dwUserID;						//用户 I D
-	LONG								lErrorCode;						//返回代码
-	TCHAR								szOLDPassword[PASS_LEN];		//旧密码
-	TCHAR								szNEWPassword[PASS_LEN];		//新密码
-	TCHAR								szErrorDescribe[256];			//错误提示
-};
-
-//修改银行密码
-struct DBR_GR_ModifyBankPassword
+//修改密码
+struct DBR_GR_ModifyPassword
 {
 	DWORD								dwUserID;						//用户 I D
 	LONG								lErrorCode;						//返回代码

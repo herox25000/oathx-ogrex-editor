@@ -283,9 +283,7 @@ private:
 	//转账记录返回
 	bool OnDBTransferLogItem(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//修改密码
-	bool OnDBModifyLoginPassword(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//修改银行密码 
-	bool OnDBModifyBankPassword(DWORD dwContextID, VOID * pData, WORD wDataSize);
+	bool OnDBModifyPassword(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//修改昵称
 	bool OnDBModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存取钱操作完成
@@ -326,7 +324,10 @@ private:
 	bool OnEventTransferMoneyLog(const void * pData, WORD wDataSize, DWORD dwSocketID);
 	//银行操作
 	bool OnEventBankOperation(const void * pData, WORD wDataSize, DWORD dwSocketID);
-	
+	//socket 响应 修改登录密码
+	bool OnEventModifyLoginPassword(const void * pData, WORD wDataSize, DWORD dwSocketID);
+	//socket 响应 修改银行密码
+	bool OnEventModifyBankPassword(const void * pData, WORD wDataSize, DWORD dwSocketID);
 	//辅助函数
 private:
 	//发送失败

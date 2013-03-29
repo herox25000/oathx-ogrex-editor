@@ -95,11 +95,6 @@ void CTabCtrlBank::OnPaint()
 }
 
 
-//////////////////////////////////////////////////////////////////////////
-#define BANK_DLG_SAVE	0
-#define BANK_DLG_GET	1
-#define BANK_DLG_PTN	2
-#define BANK_DLG_PWD	3
 
 //////////////////////////////////////////////////////////////////////////
 CDlgBank::CDlgBank() : CSkinDialogEx(IDD_BANK_DIALOG)
@@ -153,7 +148,8 @@ BOOL CDlgBank::OnInitDialog()
 	m_TabBank.InsertItem(BANK_DLG_SAVE,TEXT("存钱"));
 	m_TabBank.InsertItem(BANK_DLG_GET,TEXT("取钱"));
 	m_TabBank.InsertItem(BANK_DLG_PTN,TEXT("赠送"));
-	m_TabBank.InsertItem(BANK_DLG_PWD,TEXT("保险柜"));
+	m_TabBank.InsertItem(BANK_DLG_MODIFYBANKPW,TEXT("修改银行密码"));
+	m_TabBank.InsertItem(BANK_DLG_MODIFYLOGINPW,TEXT("修改登录密码"));
 	m_TabBank.SetCurSel(BANK_DLG_SAVE);
 	OnTcnSelchange(NULL, NULL);
 
@@ -507,147 +503,87 @@ void CDlgBank::OnTcnSelchange(NMHDR * pNMHDR, LRESULT * pResult)
 	case BANK_DLG_SAVE:
 		{
 			m_TabBank.SetCurSel(BANK_DLG_SAVE);
-
 			SetDlgItemText(IDC_BANK_TEXT,TEXT("存入数目："));
-
+			SetDlgItemText(IDC_BANKPW_TEXT,TEXT("银行密码："));
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_HIDE);
-
 			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
-
 			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
-
 			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_HIDE);
-			
-			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_HIDE);
-
-			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_SHOW);
-
 			SetOptType(OPT_SAVE);
 		}
 		break;
 	case BANK_DLG_GET:
 		{
 			m_TabBank.SetCurSel(BANK_DLG_GET);
-
 			SetDlgItemText(IDC_BANK_TEXT,TEXT("取出数目："));
-
+			SetDlgItemText(IDC_BANKPW_TEXT,TEXT("银行密码："));
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_HIDE);
-
 			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
-	
-			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_HIDE);
-
 			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_HIDE);
-
-			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_SHOW);
-
+			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
 			SetOptType(OPT_GET);
 		}
 		break;
 	case BANK_DLG_PTN:
 		{
 			m_TabBank.SetCurSel(BANK_DLG_PTN);
-
+			SetDlgItemText(IDC_BANK_PLYNAME,TEXT("赠送玩家ID："));
 			SetDlgItemText(IDC_BANK_TEXT,TEXT("赠送数目："));
-
+			SetDlgItemText(IDC_BANKPW_TEXT,TEXT("银行密码："));
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_SHOW);
-			
 			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_HIDE);
-
 			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_HIDE);
-
-			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_SHOW);
-	
+			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_HIDE);
 			SetOptType(OPT_PTN);
 		}
 		break;
-	case BANK_DLG_PWD:
+	case BANK_DLG_MODIFYLOGINPW:
 		{
-			m_TabBank.SetCurSel(BANK_DLG_PWD);
-
-			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_HIDE);
+			m_TabBank.SetCurSel(BANK_DLG_MODIFYLOGINPW);
+			SetDlgItemText(IDC_BANK_PLYNAME,TEXT("旧密码："));
+			SetDlgItemText(IDC_BANK_TEXT,TEXT("新密码："));
+			SetDlgItemText(IDC_BANKPW_TEXT,TEXT("确认新密码："));
+			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_HIDE);
-
+			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
 			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
-
 			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_HIDE);
-
+			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_SHOW);
 			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_EDIT7)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_STATIC1)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC2)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC3)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_STATIC4)->ShowWindow(SW_HIDE);
-
-			GetDlgItem(IDC_STATIC5)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC6)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_STATIC7)->ShowWindow(SW_SHOW);
-
-			GetDlgItem(IDC_GAMEGOLD)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_BANKGOLD)->ShowWindow(SW_HIDE);
-
+		}
+		break;
+	case BANK_DLG_MODIFYBANKPW:
+		{
+			m_TabBank.SetCurSel(BANK_DLG_MODIFYBANKPW);
+			SetDlgItemText(IDC_BANK_PLYNAME,TEXT("旧密码："));
+			SetDlgItemText(IDC_BANK_TEXT,TEXT("新密码："));
+			SetDlgItemText(IDC_BANKPW_TEXT,TEXT("确认新密码："));
 			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_BANK_TEXT)->ShowWindow(SW_HIDE);
-
-			SetOptType(OPT_PWD);
+			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_HIDE);
+			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_SHOW);
+			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_SHOW);
 		}
 		break;
 	}
@@ -679,13 +615,22 @@ void CDlgBank::OnButtonOK()
 	case BANK_DLG_PTN:
 		PtnGoldOK();
 		break;
+	case BANK_DLG_MODIFYLOGINPW:
+		ModifyLoginPWOK();
+		break;
+	case BANK_DLG_MODIFYBANKPW:
+		ModifyBankPWOK();
+		break;
 	}
 }
 
 // 全部
 void CDlgBank::OnButtonAll()
 {
-	SetDlgItemText(IDC_EDIT3,m_strGameGold);
+	if(m_TabBank.GetCurSel() == BANK_DLG_SAVE)
+		SetDlgItemText(IDC_EDIT3,m_strGameGold);
+	else
+		SetDlgItemText(IDC_EDIT3,m_strBankGold);
 	UpdateData(FALSE);
 }
 
@@ -829,4 +774,64 @@ void CDlgBank::PtnGoldOK()
 		CopyMemory(cmd.szPassword,szPassword,sizeof(cmd.szPassword));
 		m_BankSocket->SendData(MDM_TOOLBOX, SUB_TOOLBOX_TRANSFERMONEY, &cmd, sizeof(cmd));
 	}
+}
+
+//修改登录密码确定
+void CDlgBank::ModifyLoginPWOK()
+{
+	CString strNewPW1;
+	CString strNewPW2;
+	CString strOldPW;
+	GetDlgItemText(IDC_EDIT5, strOldPW);
+	GetDlgItemText(IDC_EDIT6, strNewPW1);
+	GetDlgItemText(IDC_EDIT4, strNewPW2);
+	strOldPW.Trim();
+	strNewPW1.Trim();
+	strNewPW2.Trim();
+	if (strOldPW.IsEmpty() || strNewPW1.IsEmpty() || strNewPW2.IsEmpty())
+	{
+		ShowMessageBox("密码不能为空！");
+		return;
+	}
+	if (strNewPW1!=strNewPW2)
+	{
+		ShowMessageBox("两个新银行密码不一致！");
+		return;
+	}
+
+	CMD_TOOLBOX_ModifyPassword cmd;
+	memset(&cmd, 0, sizeof(CMD_TOOLBOX_ModifyPassword));
+	CMD5Encrypt::EncryptData(strOldPW, cmd.szOLDPassword);
+	CMD5Encrypt::EncryptData(strNewPW2, cmd.szNEWPassword);
+	m_BankSocket->SendData(MDM_TOOLBOX,SUB_TOOLBOX_TMODIFYLOGINPASSWORD, &cmd, sizeof(cmd));
+
+}
+//修改银行密码OK
+void CDlgBank::ModifyBankPWOK()
+{
+	CString strNewPW1;
+	CString strNewPW2;
+	CString strOldPW;
+	GetDlgItemText(IDC_EDIT5, strOldPW);
+	GetDlgItemText(IDC_EDIT6, strNewPW1);
+	GetDlgItemText(IDC_EDIT4, strNewPW2);
+	strOldPW.Trim();
+	strNewPW1.Trim();
+	strNewPW2.Trim();
+	if (strOldPW.IsEmpty() || strNewPW1.IsEmpty() || strNewPW2.IsEmpty())
+	{
+		ShowMessageBox("密码不能为空！");
+		return;
+	}
+	if (strNewPW1!=strNewPW2)
+	{
+		ShowMessageBox("两个新银行密码不一致！");
+		return;
+	}
+
+	CMD_TOOLBOX_ModifyPassword cmd;
+	memset(&cmd, 0, sizeof(CMD_TOOLBOX_ModifyPassword));
+	CMD5Encrypt::EncryptData(strOldPW, cmd.szOLDPassword);
+	CMD5Encrypt::EncryptData(strNewPW2, cmd.szNEWPassword);
+	m_BankSocket->SendData(MDM_TOOLBOX,SUB_TOOLBOX_TMODIFYBANKPASSWORD, &cmd, sizeof(cmd));
 }
