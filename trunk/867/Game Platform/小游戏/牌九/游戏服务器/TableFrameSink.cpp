@@ -1520,11 +1520,11 @@ void CTableFrameSink::RobotAI()
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\PaiJiu.ini", sizeof(szINI));
-	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
+	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 18, szINI);
 // 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
 	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
 	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
-	LIMIT_VALUE(lWinRate, 1, 10);
+	LIMIT_VALUE(lWinRate, 1, 100);
 
 	//»ñÈ¡Íæ¼Ò
 	if (m_CurrentBanker.dwUserID != 0)
@@ -1536,7 +1536,7 @@ void CTableFrameSink::RobotAI()
 		if ( m_CurrentBanker.dwUserType == 10 )
 		{
 // 			bool bWin = false;
-			if ( rand() <= lWinRate * 10 || m_lBankerWinScore <= (-lMaxLose) )
+			if ( rand() <= lWinRate || (lMaxLose > 0 && m_lBankerWinScore <= (-lMaxLose)) )
 			{
 				while(PreCalculateBankerWin() < 0)
 				{

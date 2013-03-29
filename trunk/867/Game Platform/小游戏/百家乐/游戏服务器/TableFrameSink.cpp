@@ -1303,11 +1303,11 @@ void CTableFrameSink::ChuLaoQian()
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\Baccarat.ini", sizeof(szINI));
-	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
+	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 18, szINI);
 // 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
 	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
 	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
-	LIMIT_VALUE(lWinRate, 1, 10);
+	LIMIT_VALUE(lWinRate, 1, 100);
 
 	//»ñÈ¡Íæ¼Ò
 	if (m_CurrentBanker.dwUserID != 0)
@@ -1316,7 +1316,8 @@ void CTableFrameSink::ChuLaoQian()
 		if ( m_CurrentBanker.dwUserType == 10 )
 		{
 			bool bWin = false;
-			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
+			int nRnd = rand();
+			if ( nRnd <= lWinRate || (lMaxLose > 0 && m_lBankerWinScore <= (-lMaxLose)) )
 			{
 				int nDispatch = 30;
 				while(PreCalculateBankerWin() < 0 && nDispatch > 0)

@@ -151,7 +151,7 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\服务器组件\Rel
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
-				OutputFile="../../../运行/Debug/OxServer.dll"
+				OutputFile="../../../运行/release/OxServer.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=""
 				GenerateDebugInformation="TRUE"
