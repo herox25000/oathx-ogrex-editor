@@ -370,6 +370,14 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			//消息处理
 			CMD_S_ChangeBanker* pChangeBanker	= (CMD_S_ChangeBanker *)pBuffer;
 			m_wCurBanker						= pChangeBanker->wChairID;
+			if (m_wCurBanker != INVALID_CHAIR)
+			{
+				tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
+				if (pUserInfo && pUserInfo->dwUserID != m_dwUserID)
+				{
+					m_bAddJetton = TRUE;
+				}
+			}
 		}
 		break;
 
