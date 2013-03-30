@@ -304,12 +304,12 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 						{
 							// 强制申请上祖昂
 							SendApplyBanker(true);
-
-							// 设置押注启动
-							m_bAddJetton = TRUE;
 						}
 					}
 				}
+
+				// 设置押注启动
+				m_bAddJetton = FALSE;
 			}
 		}
 		break;
@@ -419,6 +419,10 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 						{
 							SendApplyBanker(false);
 						}
+					}
+					else
+					{
+						m_bAddJetton = TRUE;
 					}
 				}
 			}
