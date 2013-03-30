@@ -12,7 +12,7 @@ SmallNineMachine::SmallNineMachine(DWORD dwUserID)
 
 SmallNineMachine::~SmallNineMachine(void)
 {
-
+	BankerManager::GetSingleton().Remove(m_dwUserID);
 }
 
 void			SmallNineMachine::ResetGame()
