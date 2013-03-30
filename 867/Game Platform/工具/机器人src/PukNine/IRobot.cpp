@@ -260,6 +260,11 @@ void			IRobot::SetState(WORD wState)
 	m_wState = wState;
 }
 
+WORD			IRobot::GetSocketState()
+{
+	return m_ClientSocket->GetSocketStatus();
+}
+
 void			IRobot::Stop()
 {
 	if (m_ClientSocket.GetInterface() != NULL) 
@@ -519,13 +524,13 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			
 			if (pUserStatus->cbUserStatus == US_NULL || pUserStatus->cbUserStatus == US_OFFLINE)
 			{
+				// 移除该机器人
+				m_pGameManager->Remove(pUserStatus->dwUserID);
+
 				if (pUserStatus->dwUserID == m_dwUserID)
 				{
 					SetState(ROBOT_INVALID);
 				}
-				
-				// 移除该机器人
-				m_pGameManager->Remove(pUserStatus->dwUserID);
 			}
 			else
 			{
