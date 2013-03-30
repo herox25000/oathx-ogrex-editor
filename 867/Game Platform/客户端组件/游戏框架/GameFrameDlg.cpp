@@ -654,9 +654,13 @@ void CGameFrameDlg::OnCancel()
 		if (pUserData!=NULL)
 		{
 			int iRet=ShowInformation(TEXT("你正在游戏中，强行退出将被扣分，确实要强退吗？"),0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
-			if (iRet!=IDYES) return;
+			if (iRet!=IDYES)
+				return;
 		}
 	}
+
+	if (IDYES != ShowInformation(TEXT("你确定要退出游戏吗?"),0,MB_ICONQUESTION|MB_YESNO))
+		return;
 
 	//保存配置
 	g_GlobalOption.SaveOptionParameter();
