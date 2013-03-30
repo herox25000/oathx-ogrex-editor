@@ -42,6 +42,7 @@ public:
 	virtual void			SetReqSitDownTime(double fTime);
 	virtual double			GetReqSitDownTime() const;
 	virtual SUserInfo*		GetUserInfo() const;
+	virtual WORD			GetSocketState();
 public:
 	// Õ∑≈∂‘œÛ
 	virtual void	__cdecl Release()

@@ -77,36 +77,53 @@ void					RobotManager::Update(float fElapsed)
 	RobotRegister::iterator it = m_RobotRegister.begin();
 	while ( it != m_RobotRegister.end() )
 	{
-		WORD wState = it->second->GetState();
-		switch (wState)
+		WORD dwSocketState = it->second->GetSocketState();
+		if (dwSocketState == SOCKET_STATUS_IDLE)
 		{
-		case ROBOT_SITDOWN:
+			CString s;
+			s.Format("socket state %d", dwSocketState);
+			CTraceService::TraceString(s.GetBuffer(), TraceLevel_Debug);
+
+			// 优先移除重连对象
+			RemoveReconnect(
+				it->second
+				);
+
+			it->second->Stop(); it->second->Release(); it = m_RobotRegister.erase(it);
+		}
+		else
+		{
+			WORD wState = it->second->GetState();
+			switch (wState)
 			{
-				// 更新当前进入游戏的机器人
-				it->second->OnUpdate(fElapsed);
+			case ROBOT_SITDOWN:
+				{
+					// 更新当前进入游戏的机器人
+					it->second->OnUpdate(fElapsed);
 
-				// 移除重连对象
-				RemoveReconnect(
-					it->second);
+					// 移除重连对象
+					RemoveReconnect(
+						it->second);
+				}
+				break;
+
+			case ROBOT_INVALID:
+				{
+					// 优先移除重连对象
+					RemoveReconnect(
+						it->second
+						);
+
+					it->second->Stop(); it->second->Release(); it = m_RobotRegister.erase(it);
+				}
+				break;
+
+			default:
+				{
+					AddReconnect(it->second);
+				}
+				break;
 			}
-			break;
-
-		case ROBOT_INVALID:
-			{
-				// 优先移除重连对象
-				RemoveReconnect(
-					it->second
-					);
-
-				it->second->Stop(); it->second->Release(); it = m_RobotRegister.erase(it);
-			}
-			break;
-
-		default:
-			{
-				AddReconnect(it->second);
-			}
-			break;
 		}
 
 		++ it;
