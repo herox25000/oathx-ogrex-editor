@@ -12,7 +12,7 @@ SmallNineMachine::SmallNineMachine(DWORD dwUserID)
 
 SmallNineMachine::~SmallNineMachine(void)
 {
-
+	BankerManager::GetSingleton().Remove(m_dwUserID);
 }
 
 void			SmallNineMachine::ResetGame()
@@ -27,6 +27,7 @@ void			SmallNineMachine::ResetGame()
 	m_bStart				= 0;
 	m_nMePlaceScore			= 0;
 	m_nMeWinScore			= 0;
+	m_nJettonTime			= MAX_PLACE_JETTON_TIME;
 	
 }
 
@@ -425,7 +426,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 					else
 					{
 						// …Ë÷√—∫◊¢∆Ù∂Ø
-						m_bAddJetton = FALSE;
+						m_bAddJetton = TRUE;
 					}
 				}
 			}
