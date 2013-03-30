@@ -177,9 +177,10 @@ int CDlgBank::ShowMessageBox(LPCTSTR pszMessage)
 }
 __int64 CDlgBank::GetDlgItemInt64(UINT uID)
 {
-	TCHAR szText[256];
-	GetDlgItemText(uID, szText, sizeof(szText));
-	return _atoi64(szText);
+	CString buffer;
+	GetDlgItemText(uID, buffer);
+	buffer.Remove(',');
+	return _atoi64(buffer.GetBuffer());
 };
 
 void CDlgBank::SetDlgItemInt64(UINT uID, __int64 value)
