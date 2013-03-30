@@ -117,7 +117,7 @@ BOOL CSmallNineDlg::OnInitDialog()
 
 	SetDlgItemText(IDC_EDIT1,	"125.90.64.21");
 	SetDlgItemText(IDC_EDIT2,	"11021");
-	SetDlgItemText(IDC_EDIT3,	"e10adc3949ba59abbe56e057f20f883e");
+	SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
 	SetDlgItemText(IDC_EDIT4,	"100");
 	SetDlgItemText(IDC_EDIT5,	"200");
 	//SetDlgItemText(IDC_EDIT6,	"1000000");
@@ -333,6 +333,8 @@ void CSmallNineDlg::OnBnClickedOk()
 
 		CTraceService::TraceString("SmallNine Starup",
 			TraceLevel_Normal);
+
+		GetDlgItem(IDOK)->EnableWindow(FALSE);
 	}
 	else
 	{
