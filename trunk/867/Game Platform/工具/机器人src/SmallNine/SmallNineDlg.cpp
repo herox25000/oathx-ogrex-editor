@@ -115,7 +115,7 @@ BOOL CSmallNineDlg::OnInitDialog()
 
 	m_RobotDialog.Create(IDD_DIALOG_ROBOT, this);
 
-	SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
+	SetDlgItemText(IDC_EDIT1,	"125.90.64.21");
 	SetDlgItemText(IDC_EDIT2,	"11021");
 	SetDlgItemText(IDC_EDIT3,	"e10adc3949ba59abbe56e057f20f883e");
 	SetDlgItemText(IDC_EDIT4,	"100");
