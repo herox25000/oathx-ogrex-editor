@@ -13,7 +13,7 @@ SmallNineMachine::SmallNineMachine(DWORD dwUserID)
 
 SmallNineMachine::~SmallNineMachine(void)
 {
-
+	BankerManager::GetSingleton().Remove(m_dwUserID);
 }
 
 void			SmallNineMachine::ResetGame()
@@ -215,7 +215,7 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 			if (pUserInfo)
 			{
 				// 如果自己是庄，但是已到在线时间，那么重新随机在线时间
-				if (pUserInfo->dwUserID == m_dwUserID || BankerManager::GetSingleton().Search(m_dwUserID))
+				if (pUserInfo->dwUserID == m_dwUserID)
 				{
 					double dMidNewTime	= config.fMaxPlaceTime / 2;
 					m_fOnlineTime		= RobotTimer::rdft(config.fMinOnlineTime, dMidNewTime >= config.fMinOnlineTime ? dMidNewTime : config.fMinOnlineTime + 5);
@@ -234,6 +234,14 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 					}
 				}
 			}
+		}
+		else
+		{
+			CString szMessage;
+			szMessage.Format("Robot[%d] Has arrived online time, offline", m_dwUserID);
+			ShowMessageBox(szMessage, TraceLevel_Debug);
+
+			SetState(ROBOT_INVALID);
 		}
 	}
 
