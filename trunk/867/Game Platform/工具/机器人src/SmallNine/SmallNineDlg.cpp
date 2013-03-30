@@ -206,22 +206,11 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 			{
 				if ( m_fElapsed >= m_fCrateTime)
 				{
-					DWORD dwUserID = 0;
-					do 
-					{
-						dwUserID = RobotTimer::rdit(m_dwStartID, m_dwEndID);
-						if (NULL == RobotManager::GetSingleton().Search(dwUserID) )
-						{
-							break;
-						}
-						else
-						{
-							dwUserID = 0;
-						}
+					// 随机机器人ID
+					DWORD dwUserID	= RobotTimer::rdit(m_dwStartID, m_dwEndID);
 
-					} while (TRUE);
-
-					if (dwUserID)
+					// 如果该机器人不存在，那么创建该机器人
+					if (NULL == RobotManager::GetSingleton().Search(dwUserID))
 					{
 						IRobotFactory* pFactory = RobotManager::GetSingleton().GetRobotFactory(SMALLNINE_NAME);
 						if (pFactory)
@@ -233,7 +222,7 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 							{
 								pMachine->SetOnlineTime(RobotTimer::rdft(m_AppConfig.fMinOnlineTime, 
 									m_AppConfig.fMaxOnlineTime));
-								
+
 								if (pMachine->Start(m_ipAddress, m_wPort, m_md5))
 								{
 									RobotManager::GetSingleton().AddRobot(pMachine);
