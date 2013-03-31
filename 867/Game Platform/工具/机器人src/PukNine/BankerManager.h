@@ -19,6 +19,14 @@ public:
 	virtual int					GetBankerCount() const;
 	virtual void				Remove(DWORD dwUserID);
 	virtual	SUserInfo*			Search(DWORD dwUserID);
+
+	virtual	void				Lock();
+	virtual int					GetLockCount() const;
+	virtual	void				Unlock();
+
+	virtual	void				Clear();
 protected:
 	UserManager*				m_pUserManager;
+	int							m_wApplyCount;
+
 };

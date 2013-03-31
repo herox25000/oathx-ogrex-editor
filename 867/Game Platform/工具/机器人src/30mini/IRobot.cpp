@@ -247,7 +247,7 @@ void			IRobot::SetUserStatus(DWORD dwUserID, BYTE cbUserStatus)
 
 void			IRobot::ResetGame()
 {
-	m_nApplyBankerCount = 0;
+	
 }
 
 WORD			IRobot::GetState() const
@@ -263,23 +263,6 @@ void			IRobot::SetState(WORD wState)
 WORD			IRobot::GetSocketState()
 {
 	return m_ClientSocket->GetSocketStatus();
-}
-
-void			IRobot::Lock()
-{
-	m_nApplyBankerCount ++;
-}
-
-int				IRobot::GetLockCount() const
-{
-	return m_nApplyBankerCount;
-}
-
-void			IRobot::Unlock()
-{
-	m_nApplyBankerCount --;
-	if (m_nApplyBankerCount <= 0)
-		m_nApplyBankerCount = 0;
 }
 
 void			IRobot::Stop()
