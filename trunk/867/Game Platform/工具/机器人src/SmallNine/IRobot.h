@@ -43,6 +43,9 @@ public:
 	virtual double			GetReqSitDownTime() const;
 	virtual SUserInfo*		GetUserInfo() const;
 	virtual WORD			GetSocketState();
+	virtual void			Lock();
+	virtual int				GetLockCount() const;
+	virtual void			Unlock();
 public:
 	//释放对象
 	virtual void	__cdecl Release()
@@ -93,6 +96,7 @@ protected:
 	BYTE					m_bGameStatus;
 	WORD					m_wReconnect;
 	double					m_fReqSitDownTime;
+	int						m_nApplyBankerCount;
 };
 
 // 机器人创建工厂
