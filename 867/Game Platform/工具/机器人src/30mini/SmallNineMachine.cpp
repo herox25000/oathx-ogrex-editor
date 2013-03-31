@@ -12,6 +12,9 @@ SmallNineMachine::SmallNineMachine(DWORD dwUserID)
 
 SmallNineMachine::~SmallNineMachine(void)
 {
+	if (m_bApplyBankerSend)
+		BankerManager::GetSingleton().Unlock();
+
 	BankerManager::GetSingleton().Remove(m_dwUserID);
 }
 
@@ -27,6 +30,8 @@ void			SmallNineMachine::ResetGame()
 	m_bStart				= 0;
 	m_nMePlaceScore			= 0;
 	m_nMeWinScore			= 0;
+	m_bApplyBankerSend		= FALSE;
+	m_nJettonTime			= MAX_PLACE_JETTON_TIME;
 }
 
 void			SmallNineMachine::SetOnlineTime(double fOnlineTime)
@@ -50,6 +55,7 @@ bool			SmallNineMachine::SendApplyBanker(bool bUp)
 		if ((nReqBanker + nApplyBankerCount) < config.wUpBankerDeque  && m_nMeMaxScore >= m_nApplyBankerCondition)
 		{
 			BankerManager::GetSingleton().Lock();
+			m_bApplyBankerSend = TRUE;
 
 			// 申请坐庄
 			CMD_C_ApplyBanker req;
@@ -344,6 +350,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				if (pUserInfo->dwUserID == m_dwUserID)
 				{
 					BankerManager::GetSingleton().Unlock();
+					m_bApplyBankerSend = FALSE;
 				}
 			
 				// 处理上庄队列
