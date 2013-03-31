@@ -46,10 +46,10 @@ bool			SmallNineMachine::SendApplyBanker(bool bUp)
 
 	if (bUp)
 	{
-		int nApplyBankerCount	= BankerManager::GetSingleton().GetLockCount();
+		int nApplyBankerCount	= GetLockCount();
 		if ((nReqBanker + nApplyBankerCount) < config.wUpBankerDeque  && m_nMeMaxScore >= m_nApplyBankerCondition)
 		{
-			BankerManager::GetSingleton().Lock();
+			Lock();
 
 			// 申请坐庄
 			CMD_C_ApplyBanker req;
@@ -343,7 +343,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			{
 				if (pUserInfo->dwUserID == m_dwUserID)
 				{
-					BankerManager::GetSingleton().Unlock();
+					Unlock();
 				}
 			
 				// 处理上庄队列
