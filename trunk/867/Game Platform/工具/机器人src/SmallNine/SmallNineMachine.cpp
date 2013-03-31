@@ -437,7 +437,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 						{
 							SendApplyBanker(false);
 						}
-						else if (m_nBankerWinScore > 0)
+						if (m_nBankerWinScore > 0)
 						{
 							if (m_nBankerWinScore > c.nMaxWinScore)
 							{
