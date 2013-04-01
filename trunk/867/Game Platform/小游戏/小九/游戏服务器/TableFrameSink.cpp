@@ -1267,15 +1267,26 @@ void CTableFrameSink::CalculateScore()
 		IServerUserItem *pIServerUserItem = m_pITableFrame->GetServerUserItem(wUserIndex);
 		if ( pIServerUserItem == NULL ) continue;
 		//我的下注
-		GameScore.lMeTieScore=m_lUserTianMenScore[wUserIndex];
-		GameScore.lMeBankerScore=m_lUserDaoMenScore[wUserIndex];
-		GameScore.lMePlayerScore=m_lUserShunMenScore[wUserIndex];
+		if (FindUserLeft(pIServerUserItem->GetUserID()) == false)
+		{
+			GameScore.lMeTieScore=m_lUserTianMenScore[wUserIndex];
+			GameScore.lMeBankerScore=m_lUserDaoMenScore[wUserIndex];
+			GameScore.lMePlayerScore=m_lUserShunMenScore[wUserIndex];
+			GameScore.lMeGameScore=m_lUserWinScore[wUserIndex];
+			GameScore.lMeReturnScore = m_lUserReturnScore[wUserIndex];
+		}
+		else
+		{
+			GameScore.lMeTieScore=0;
+			GameScore.lMeBankerScore=0;
+			GameScore.lMePlayerScore=0;
+			GameScore.lMeGameScore=0;
+			GameScore.lMeReturnScore = 0;
+		}
 		GameScore.lMeTieKingScore = 0;
 		GameScore.lMeBankerKingScore = 0;
 		GameScore.lMePlayerKingScore = 0;
 		//发送消息
-		GameScore.lMeGameScore=m_lUserWinScore[wUserIndex];
-		GameScore.lMeReturnScore = m_lUserReturnScore[wUserIndex];
 		m_pITableFrame->SendTableData(wUserIndex,SUB_S_GAME_SCORE,&GameScore,sizeof(GameScore));
 		m_pITableFrame->SendLookonData(wUserIndex,SUB_S_GAME_SCORE,&GameScore,sizeof(GameScore));
 	}
