@@ -490,9 +490,6 @@ void CSmallNineDlg::OnEnChangeEdit22()
 
 void CSmallNineDlg::OnBnClickedRobot()
 {
-	CRect rc;
-	GetClientRect(&rc);
-
-	m_RobotDialog.SetWindowPos(NULL, rc.Width() / 2 , rc.Height() / 2 , 0, 0, SWP_NOSIZE);
+	m_RobotDialog.CenterWindow();
 	m_RobotDialog.ShowWindow(SW_SHOW);
 }
