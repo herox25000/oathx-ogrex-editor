@@ -353,12 +353,24 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//下注信息
 			if (pIServerUserItem->GetUserStatus()!=US_LOOKON)
 			{
-				StatusFree.lMeTieScore=m_lUserTianMenScore[wChiarID];
-				StatusFree.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
-				StatusFree.lMePlayerScore=m_lUserShunMenScore[wChiarID];
-				StatusFree.lMeTieKingScore = m_lUserQiaoScore[wChiarID];
-				StatusFree.lMeBankerKingScore = m_lUserYouJiaoScore[wChiarID];
-				StatusFree.lMePlayerKingScore = m_lUserZuoJiaoScore[wChiarID];
+				if (!FindUserLeft(pIServerUserItem->GetUserID()))
+				{
+					StatusFree.lMeTieScore=m_lUserTianMenScore[wChiarID];
+					StatusFree.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
+					StatusFree.lMePlayerScore=m_lUserShunMenScore[wChiarID];
+					StatusFree.lMeTieKingScore = m_lUserQiaoScore[wChiarID];
+					StatusFree.lMeBankerKingScore = m_lUserYouJiaoScore[wChiarID];
+					StatusFree.lMePlayerKingScore = m_lUserZuoJiaoScore[wChiarID];
+				}
+				else
+				{
+					StatusFree.lMeTieScore=0;
+					StatusFree.lMeBankerScore=0;
+					StatusFree.lMePlayerScore=0;
+					StatusFree.lMeTieKingScore = 0;
+					StatusFree.lMeBankerKingScore = 0;
+					StatusFree.lMePlayerKingScore = 0;
+				}
 				StatusFree.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
 			}
 	
@@ -405,12 +417,24 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//下注信息
 			if (pIServerUserItem->GetUserStatus()!=US_LOOKON)
 			{
-				StatusPlay.lMeTieScore=m_lUserTianMenScore[wChiarID];
-				StatusPlay.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
-				StatusPlay.lMePlayerScore=m_lUserShunMenScore[wChiarID];
-				StatusPlay.lMeTieKingScore = m_lUserQiaoScore[wChiarID];
-				StatusPlay.lMeBankerKingScore = m_lUserYouJiaoScore[wChiarID];
-				StatusPlay.lMePlayerKingScore = m_lUserZuoJiaoScore[wChiarID];
+				if (!FindUserLeft(pIServerUserItem->GetUserID()) == false)
+				{
+					StatusPlay.lMeTieScore=m_lUserTianMenScore[wChiarID];
+					StatusPlay.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
+					StatusPlay.lMePlayerScore=m_lUserShunMenScore[wChiarID];
+					StatusPlay.lMeTieKingScore = m_lUserQiaoScore[wChiarID];
+					StatusPlay.lMeBankerKingScore = m_lUserYouJiaoScore[wChiarID];
+					StatusPlay.lMePlayerKingScore = m_lUserZuoJiaoScore[wChiarID];
+				}
+				else
+				{
+					StatusPlay.lMeTieScore=0;
+					StatusPlay.lMeBankerScore=0;
+					StatusPlay.lMePlayerScore=0;
+					StatusPlay.lMeTieKingScore = 0;
+					StatusPlay.lMeBankerKingScore = 0;
+					StatusPlay.lMePlayerKingScore = 0;
+				}
 				StatusPlay.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
 			}
 
@@ -1328,17 +1352,30 @@ void CTableFrameSink::CalculateScore()
 		IServerUserItem *pIServerUserItem = m_pITableFrame->GetServerUserItem(wUserIndex);
 		if ( pIServerUserItem == NULL ) continue;
 
-		//我的下注
-		GameScore.lMeTieScore=m_lUserTianMenScore[wUserIndex];
-		GameScore.lMeBankerScore=m_lUserDaoMenScore[wUserIndex];
-		GameScore.lMePlayerScore=m_lUserShunMenScore[wUserIndex];
-		GameScore.lMeTieKingScore = m_lUserQiaoScore[wUserIndex];
-		GameScore.lMeBankerKingScore = m_lUserYouJiaoScore[wUserIndex];
-		GameScore.lMePlayerKingScore = m_lUserZuoJiaoScore[wUserIndex];
-
+		if (FindUserLeft(pIServerUserItem->GetUserID()) == false)
+		{
+			//我的下注
+			GameScore.lMeTieScore=m_lUserTianMenScore[wUserIndex];
+			GameScore.lMeBankerScore=m_lUserDaoMenScore[wUserIndex];
+			GameScore.lMePlayerScore=m_lUserShunMenScore[wUserIndex];
+			GameScore.lMeTieKingScore = m_lUserQiaoScore[wUserIndex];
+			GameScore.lMeBankerKingScore = m_lUserYouJiaoScore[wUserIndex];
+			GameScore.lMePlayerKingScore = m_lUserZuoJiaoScore[wUserIndex];
+			GameScore.lMeGameScore=m_lUserWinScore[wUserIndex];
+			GameScore.lMeReturnScore = m_lUserReturnScore[wUserIndex];
+		}
+		else
+		{
+			GameScore.lMeTieScore=0;
+			GameScore.lMeBankerScore=0;
+			GameScore.lMePlayerScore=0;
+			GameScore.lMeTieKingScore = 0;
+			GameScore.lMeBankerKingScore = 0;
+			GameScore.lMePlayerKingScore = 0;
+			GameScore.lMeGameScore=0;
+			GameScore.lMeReturnScore = 0;
+		}
 		//发送消息
-		GameScore.lMeGameScore=m_lUserWinScore[wUserIndex];
-		GameScore.lMeReturnScore = m_lUserReturnScore[wUserIndex];
 		m_pITableFrame->SendTableData(wUserIndex,SUB_S_GAME_SCORE,&GameScore,sizeof(GameScore));
 		m_pITableFrame->SendLookonData(wUserIndex,SUB_S_GAME_SCORE,&GameScore,sizeof(GameScore));
 	}
