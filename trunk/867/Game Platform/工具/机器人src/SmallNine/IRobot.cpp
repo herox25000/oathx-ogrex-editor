@@ -594,6 +594,11 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			tagUserInfo* pGameUser		 = m_pGameManager->Search(pUserScore->dwUserID);
 			if (pGameUser) 
 			{
+				if (pUserScore->dwUserID == m_dwUserID)
+				{
+					m_pAppUser->lScore = pUserScore->UserScore.lScore;
+				}
+
 				pGameUser->lScore = pUserScore->UserScore.lScore;
 			}
 		}
@@ -741,6 +746,10 @@ bool			IRobot::OnSocketToolBox(CMD_Command Command, void* pBuffer, WORD wDataSiz
 			CMD_TOOLBOX_BankTask_Ret* pBankRet = (CMD_TOOLBOX_BankTask_Ret*)pBuffer;
 			if (pBankRet->lErrorCode==0)
 			{
+				CString szMessage;
+				szMessage.Format("操作金钱 %I64d", pBankRet->lMoneyNumber);
+				ShowMessageBox(szMessage, TraceLevel_Debug);
+
 				MessageBox(NULL, "操作成功！", NULL, NULL);
 			}
 			else
