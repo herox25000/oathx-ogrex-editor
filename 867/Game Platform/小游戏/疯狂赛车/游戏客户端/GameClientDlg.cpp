@@ -690,19 +690,19 @@ void CGameClientDlg::OnTimer(UINT nIDEvent)
 			__int64 cbNew=0;
 			if ( dwSub < halfhalf )
 			{
-				cbNew=(dwSub*dwSub*dwSub)*(m_GameClientView.m_cbAnimalBox/2)/(halfhalf*halfhalf*halfhalf);
+				cbNew=(dwSub*dwSub*dwSub)*(m_GameClientView.m_cbAnimalBox/3)/(halfhalf*halfhalf*halfhalf);
 			}
-			else if (dwSub >= halfhalf && dwSub < m_lTotalTime - halfhalf)
+			else if (dwSub >= halfhalf && dwSub < half)
 			{
-				__int64 unOver=(m_lTotalTime - halfhalf - dwSub);
-				cbNew = m_GameClientView.m_cbAnimalBox*3/4;
-				cbNew -= (unOver*unOver*unOver)*(m_GameClientView.m_cbAnimalBox/4)/(half*half*half);
+				__int64 unOver=(half - dwSub);
+				cbNew=m_GameClientView.m_cbAnimalBox * 2 / 3;
+				cbNew -= (unOver*unOver*unOver)*(m_GameClientView.m_cbAnimalBox/3)/(half*half*half);
 			}
-			else if ( dwSub >= (m_lTotalTime - halfhalf) && dwSub <= m_lTotalTime)
+			else if ( dwSub >= half && dwSub <= m_lTotalTime)
 			{
 				__int64 unOver = (m_lTotalTime-dwSub);
 				cbNew = m_GameClientView.m_cbAnimalBox;
-				cbNew -= (unOver*unOver*unOver)*(m_GameClientView.m_cbAnimalBox/4)/(halfhalf*halfhalf*halfhalf);
+				cbNew -= (unOver*unOver*unOver)*(m_GameClientView.m_cbAnimalBox/3)/(half*half*half);
 			}
 			else
 				cbNew=m_GameClientView.m_cbAnimalBox;
