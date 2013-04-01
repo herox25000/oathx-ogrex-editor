@@ -84,6 +84,8 @@ protected:
 	static const WORD				m_wPlayerCount;						//游戏人数
 	static const enStartMode		m_GameStartMode;					//开始模式
 
+	std::map<DWORD, __int64>		m_vForseLeave;						//强退列表	
+
 	//函数定义
 public:
 	//构造函数
@@ -198,6 +200,9 @@ private:
 	void	DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner);
 	//推断赢家
 	void    MakeJettonString(WORD wChairID, TCHAR szJetton[MAX_DB_JETTON_LEN]);
+
+	void AddUserLeft(DWORD nUserID, __int64 allZhu);
+	bool FindUserLeft(DWORD nUserID);
 };
 
 //////////////////////////////////////////////////////////////////////////

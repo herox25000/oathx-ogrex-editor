@@ -281,7 +281,10 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				MakeJettonString(wUserChairID, szJetton);//推断赢家
 				//写入积分
 				if (m_lUserWinScore[wUserChairID]!=0L) 
-					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], 0, ScoreKind);
+				{
+					if (!FindUserLeft(pIServerUserItem->GetUserID()))
+						m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], 0, ScoreKind);
+				}
 			
 				//庄家判断
 				if ( m_CurrentBanker.dwUserID == pIServerUserItem->GetUserID() ) 
@@ -338,7 +341,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					}
 				}
 			}
-
+			m_vForseLeave.clear();
 			//结束游戏
 			m_pITableFrame->ConcludeGame();
 
@@ -381,6 +384,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				MakeJettonString(wChairID, szJetton);//推断赢家
 				m_pITableFrame->WriteUserScore(pIServerUserItem, -allZhu, 0, enScoreKind_Flee);
 			}
+			AddUserLeft(pIServerUserItem->GetUserID(), allZhu);
 			return true;
 		}
 	}
@@ -1672,6 +1676,24 @@ void CTableFrameSink::MakeJettonString(WORD wChairID, TCHAR szJetton[MAX_DB_JETT
 		m_lUserTieSamePointScore[wChairID],
 		m_lUserBankerKingScore[wChairID],
 		m_lUserPlayerKingScore[wChairID]);
+}
+
+void CTableFrameSink::AddUserLeft( DWORD nUserID, __int64 allZhu )
+{
+	bool bPush = true;
+	if (m_vForseLeave.find(nUserID) == m_vForseLeave.end())
+	{
+		m_vForseLeave.insert(std::make_pair(nUserID, allZhu));
+	}
+	else
+	{
+		m_vForseLeave[nUserID] += allZhu;
+	}
+}
+
+bool CTableFrameSink::FindUserLeft( DWORD nUserID )
+{
+	return m_vForseLeave.find(nUserID) != m_vForseLeave.end(); 
 }
 
 //////////////////////////////////////////////////////////////////////////
