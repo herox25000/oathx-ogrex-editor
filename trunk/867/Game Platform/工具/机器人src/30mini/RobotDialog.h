@@ -20,4 +20,7 @@ public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnEnChangeEdit1();
 	afx_msg void OnBnClickedButton3();
+	afx_msg void OnEnChangeEdit4();
+	afx_msg void OnBnClickedButtonSave();
+	afx_msg void OnBnClickedButtonGet();
 };

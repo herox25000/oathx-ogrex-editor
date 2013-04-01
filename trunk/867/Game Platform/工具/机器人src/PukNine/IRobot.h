@@ -43,6 +43,8 @@ public:
 	virtual double			GetReqSitDownTime() const;
 	virtual SUserInfo*		GetUserInfo() const;
 	virtual WORD			GetSocketState();
+	virtual void			BankSaveScore(INT64 nScore);
+	virtual void			BankGetScore(INT64 nScore);
 public:
 	//释放对象
 	virtual void	__cdecl Release()
@@ -71,7 +73,8 @@ public:
 	virtual bool			OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSize);
 	//游戏消息
 	virtual bool			OnSocketMainGameFrame(CMD_Command Command, void* pBuffer, WORD wDataSize);
-
+	//银行消息
+	virtual bool			OnSocketToolBox(CMD_Command Command, void* pBuffer, WORD wDataSize);
 	//主通信
 	virtual bool			OnMainSocket(WORD wMainCmdID, WORD wSubCmdID, void * pBuffer, WORD wDataSize);
 
