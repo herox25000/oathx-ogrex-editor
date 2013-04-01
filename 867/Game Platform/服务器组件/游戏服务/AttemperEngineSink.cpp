@@ -2608,21 +2608,27 @@ bool CAttemperEngineSink::OnSocketBank(WORD wSubCmdID, VOID * pData, WORD wDataS
 	//获取用户
 	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
 	if (pIServerUserItem==NULL) return false;
+	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
+	if(pServerUserData->wTableID!=INVALID_TABLE)
+		SendGameMessage(dwSocketID,TEXT("此功能暂时不能使用!"),SMT_INFO|SMT_EJECT);
+	else
+		SendRoomMessage(dwSocketID,TEXT("此功能暂时不能使用!"),SMT_INFO|SMT_EJECT);
+	return true;
 
-	//消息处理
-	switch ( wSubCmdID )
-	{
-	case SUB_GF_BANK_GET:					//提取事件
-		{
-			return OnEventBankDrawoutGold(pData,wDataSize,dwSocketID);
-		}
-	case SUB_GF_BANK_STORAGE:				//存储事件
-		{
-			return OnEventBankStorage(pData,wDataSize,dwSocketID);
-		}
-	}
+	////消息处理
+	//switch ( wSubCmdID )
+	//{
+	//case SUB_GF_BANK_GET:					//提取事件
+	//	{
+	//		return OnEventBankDrawoutGold(pData,wDataSize,dwSocketID);
+	//	}
+	//case SUB_GF_BANK_STORAGE:				//存储事件
+	//	{
+	//		return OnEventBankStorage(pData,wDataSize,dwSocketID);
+	//	}
+	//}
 
-	return false;
+	//return false;
 }
 
 // 工具箱操作
@@ -3436,35 +3442,35 @@ bool CAttemperEngineSink::OnEventProperty(const void * pData, WORD wDataSize, IS
 bool CAttemperEngineSink::OnEventExchangeCharm(const void * pData, WORD wDataSize, IServerUserItem * pIServerUserItem)
 {
 	//参数验证
-	ASSERT( sizeof(CMD_GF_ExchangeCharm) == wDataSize );
-	if ( sizeof(CMD_GF_ExchangeCharm) != wDataSize ) return false;
+	//ASSERT( sizeof(CMD_GF_ExchangeCharm) == wDataSize );
+	//if ( sizeof(CMD_GF_ExchangeCharm) != wDataSize ) return false;
 
-	CMD_GF_ExchangeCharm *pExchangeLoveliness = (CMD_GF_ExchangeCharm*)pData;
+	//CMD_GF_ExchangeCharm *pExchangeLoveliness = (CMD_GF_ExchangeCharm*)pData;
 
-	//合法验证
-	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
-	if ( pServerUserData->lLoveliness< pExchangeLoveliness->lLoveliness ) return false;
-	if ( pExchangeLoveliness->lGoldValue != pExchangeLoveliness->lLoveliness * CHARM_EXCHANGE_RATE ) return false;
+	////合法验证
+	//tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
+	//if ( pServerUserData->lLoveliness< pExchangeLoveliness->lLoveliness ) return false;
+	//if ( pExchangeLoveliness->lGoldValue != pExchangeLoveliness->lLoveliness * CHARM_EXCHANGE_RATE ) return false;
 
-	//修改魅力
-	pServerUserData->lLoveliness -= pExchangeLoveliness->lLoveliness;
+	////修改魅力
+	//pServerUserData->lLoveliness -= pExchangeLoveliness->lLoveliness;
 
-	//修改帐款
-	ModifyBankStorageGold(pIServerUserItem, pExchangeLoveliness->lLoveliness * CHARM_EXCHANGE_RATE);
+	////修改帐款
+	//ModifyBankStorageGold(pIServerUserItem, pExchangeLoveliness->lLoveliness * CHARM_EXCHANGE_RATE);
 
-	//系统消息
-	TCHAR szMessage[] = TEXT("恭喜你，兑换成功");
-	SendProMessage(pIServerUserItem, szMessage, SMT_EJECT|SMT_INFO);
+	////系统消息
+	//TCHAR szMessage[] = TEXT("恭喜你，兑换成功");
+	//SendProMessage(pIServerUserItem, szMessage, SMT_EJECT|SMT_INFO);
 
-	//数据库通知
-	DBR_GR_ExchangeLoveliness ExchangeLoveliness;
-	ZeroMemory(&ExchangeLoveliness, sizeof(ExchangeLoveliness));
-	ExchangeLoveliness.dwUserID = pServerUserData->dwUserID;
-	ExchangeLoveliness.lLoveliness = pExchangeLoveliness->lLoveliness;
-	ExchangeLoveliness.lGoldValue = pExchangeLoveliness->lGoldValue;
-	ExchangeLoveliness.dwClientIP = pIServerUserItem->GetClientIP();
+	////数据库通知
+	//DBR_GR_ExchangeLoveliness ExchangeLoveliness;
+	//ZeroMemory(&ExchangeLoveliness, sizeof(ExchangeLoveliness));
+	//ExchangeLoveliness.dwUserID = pServerUserData->dwUserID;
+	//ExchangeLoveliness.lLoveliness = pExchangeLoveliness->lLoveliness;
+	//ExchangeLoveliness.lGoldValue = pExchangeLoveliness->lGoldValue;
+	//ExchangeLoveliness.dwClientIP = pIServerUserItem->GetClientIP();
 
-	m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_EXCHANGE_CHARM,0,&ExchangeLoveliness, sizeof(ExchangeLoveliness));
+	//m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_EXCHANGE_CHARM,0,&ExchangeLoveliness, sizeof(ExchangeLoveliness));
 
 	return true;
 }
@@ -3472,77 +3478,77 @@ bool CAttemperEngineSink::OnEventExchangeCharm(const void * pData, WORD wDataSiz
 //喇叭事件
 bool CAttemperEngineSink::OnEventBugle(const void * pData, WORD wDataSize, IServerUserItem * pIServerUserItem)
 {
-	//参数验证
-	ASSERT( sizeof(CMD_GF_BugleProperty) == wDataSize );
-	if ( sizeof(CMD_GF_BugleProperty) != wDataSize ) return false;
+	////参数验证
+	//ASSERT( sizeof(CMD_GF_BugleProperty) == wDataSize );
+	//if ( sizeof(CMD_GF_BugleProperty) != wDataSize ) return false;
 
-	//类型转换
-	CMD_GF_BugleProperty *pBugleProperty = (CMD_GF_BugleProperty*)pData;
+	////类型转换
+	//CMD_GF_BugleProperty *pBugleProperty = (CMD_GF_BugleProperty*)pData;
 
-	//获取玩家
-	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
+	////获取玩家
+	//tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
 
-	//数目判断
-	if ( pServerUserData->PropertyInfo[PROP_BUGLE].dwPropCount <= pServerUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount )
-	{
-		//获取信息
-		tagPropertyInfo *pPropertyAttribute = NULL;
-		for ( WORD wIndex = 0; wIndex < m_PropertyAttributeArrary.GetCount(); ++wIndex )
-		{
-			tagPropertyInfo *pTmpPropertyAttribute = &m_PropertyAttributeArrary[wIndex];
-			if ( pTmpPropertyAttribute != NULL && pTmpPropertyAttribute->bNullity == false && pTmpPropertyAttribute->nPropertyID == PROP_BUGLE )
-			{
-				pPropertyAttribute = pTmpPropertyAttribute;
-				break;
-			}
-		}
+	////数目判断
+	//if ( pServerUserData->PropertyInfo[PROP_BUGLE].dwPropCount <= pServerUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount )
+	//{
+	//	//获取信息
+	//	tagPropertyInfo *pPropertyAttribute = NULL;
+	//	for ( WORD wIndex = 0; wIndex < m_PropertyAttributeArrary.GetCount(); ++wIndex )
+	//	{
+	//		tagPropertyInfo *pTmpPropertyAttribute = &m_PropertyAttributeArrary[wIndex];
+	//		if ( pTmpPropertyAttribute != NULL && pTmpPropertyAttribute->bNullity == false && pTmpPropertyAttribute->nPropertyID == PROP_BUGLE )
+	//		{
+	//			pPropertyAttribute = pTmpPropertyAttribute;
+	//			break;
+	//		}
+	//	}
 
-		//合法判断
-		ASSERT(pPropertyAttribute != NULL);
-		if ( pPropertyAttribute == NULL )
-		{
-			SendProMessage(pIServerUserItem, TEXT("购买失败，道具加载错误！"), SMT_EJECT|SMT_INFO);
-			return true;
-		}
+	//	//合法判断
+	//	ASSERT(pPropertyAttribute != NULL);
+	//	if ( pPropertyAttribute == NULL )
+	//	{
+	//		SendProMessage(pIServerUserItem, TEXT("购买失败，道具加载错误！"), SMT_EJECT|SMT_INFO);
+	//		return true;
+	//	}
 
-		//设置数据
-		CMD_GF_Property PropertyHeadInfo;
-		ZeroMemory(&PropertyHeadInfo, sizeof(PropertyHeadInfo));
-		PropertyHeadInfo.cbSendLocation = pBugleProperty->cbSendLocation;
-		PropertyHeadInfo.nPropertyID = PROP_BUGLE;
-		PropertyHeadInfo.dwSourceUserID = pServerUserData->dwUserID;
-		PropertyHeadInfo.dwTargetUserID = pServerUserData->dwUserID;
-		PropertyHeadInfo.dwPachurseCount = 1;
-		PropertyHeadInfo.dwOnceCount = pPropertyAttribute->dwPropCount1;
+	//	//设置数据
+	//	CMD_GF_Property PropertyHeadInfo;
+	//	ZeroMemory(&PropertyHeadInfo, sizeof(PropertyHeadInfo));
+	//	PropertyHeadInfo.cbSendLocation = pBugleProperty->cbSendLocation;
+	//	PropertyHeadInfo.nPropertyID = PROP_BUGLE;
+	//	PropertyHeadInfo.dwSourceUserID = pServerUserData->dwUserID;
+	//	PropertyHeadInfo.dwTargetUserID = pServerUserData->dwUserID;
+	//	PropertyHeadInfo.dwPachurseCount = 1;
+	//	PropertyHeadInfo.dwOnceCount = pPropertyAttribute->dwPropCount1;
 
-		//购买喇叭
-		OnEventProperty(&PropertyHeadInfo,sizeof(PropertyHeadInfo),pIServerUserItem);
+	//	//购买喇叭
+	//	OnEventProperty(&PropertyHeadInfo,sizeof(PropertyHeadInfo),pIServerUserItem);
 
-		//购买成功
-		tagServerUserData *pTargetUserData = pIServerUserItem->GetUserData();
-		if(pTargetUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount == 0
-			&& pTargetUserData->PropertyInfo[PROP_BUGLE].dwPropCount==pPropertyAttribute->dwPropCount1)
-		{
-			//递增数目
-			pServerUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount++;
+	//	//购买成功
+	//	tagServerUserData *pTargetUserData = pIServerUserItem->GetUserData();
+	//	if(pTargetUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount == 0
+	//		&& pTargetUserData->PropertyInfo[PROP_BUGLE].dwPropCount==pPropertyAttribute->dwPropCount1)
+	//	{
+	//		//递增数目
+	//		pServerUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount++;
 
-			//发送数目
-			SendResidualProperty(pIServerUserItem);
-		}
-		else return true;
-	}
-	else
-	{
-		//递增数目
-		pServerUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount++;
+	//		//发送数目
+	//		SendResidualProperty(pIServerUserItem);
+	//	}
+	//	else return true;
+	//}
+	//else
+	//{
+	//	//递增数目
+	//	pServerUserData->PropertyInfo[PROP_BUGLE].dwConsumedCount++;
 
-		//发送数目
-		SendResidualProperty(pIServerUserItem);
-	}
+	//	//发送数目
+	//	SendResidualProperty(pIServerUserItem);
+	//}
 
-	//发送数据
-	m_pITCPNetworkEngine->SendDataBatch(MDM_GF_PRESENT,SUB_GF_PROP_BUGLE,pBugleProperty,wDataSize);
-	m_AndroidUserManager.SendDataToClient(MDM_GF_PRESENT,SUB_GF_PROP_BUGLE,pBugleProperty,wDataSize);
+	////发送数据
+	//m_pITCPNetworkEngine->SendDataBatch(MDM_GF_PRESENT,SUB_GF_PROP_BUGLE,pBugleProperty,wDataSize);
+	//m_AndroidUserManager.SendDataToClient(MDM_GF_PRESENT,SUB_GF_PROP_BUGLE,pBugleProperty,wDataSize);
 
 	return true;
 }
@@ -3969,6 +3975,12 @@ bool CAttemperEngineSink::OnEventQuerUserName(const void * pData, WORD wDataSize
 //socket响应 转账
 bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSize, DWORD dwSocketID)
 {
+	if (m_pGameServiceOption->wServerType!=GAME_GENRE_GOLD)
+	{
+		SendToolBoxMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT);
+		return true;
+	}
+
 	ASSERT( sizeof(CMD_TOOLBOX_TransferMoney) == wDataSize );
 	if ( sizeof(CMD_TOOLBOX_TransferMoney) != wDataSize ) 
 		return false;
@@ -3977,6 +3989,12 @@ bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSiz
 	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
 	if(pIServerUserItem==NULL)
 		return false;
+	if(pIServerUserItem->GetUserData()->cbUserStatus==US_PLAY )
+	{
+		SendToolBoxMessage(dwSocketID,TEXT("请在游戏结束后操作！"),SMT_EJECT);
+		return true;
+	}
+
 	CMD_TOOLBOX_TransferMoney *pTrans = (CMD_TOOLBOX_TransferMoney*)pData;
 	//密码效验
 	if (lstrcmp(pIServerUserItem->GetBankPassword(),pTrans->szPassword)!=0)
@@ -4008,6 +4026,12 @@ bool CAttemperEngineSink::OnEventTransferMoneyLog(const void * pData, WORD wData
 //socket响应 银行操作
 bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSize, DWORD dwSocketID)
 {
+	if (m_pGameServiceOption->wServerType!=GAME_GENRE_GOLD)
+	{
+		SendToolBoxMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT);
+		return true;
+	}
+
 	ASSERT( sizeof(CMD_TOOLBOX_BankTask) == wDataSize );
 	if ( sizeof(CMD_TOOLBOX_BankTask) != wDataSize ) 
 		return false;
@@ -4015,6 +4039,11 @@ bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSiz
 	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
 	if(pIServerUserItem==NULL)
 		return false;
+	if(pIServerUserItem->GetUserData()->cbUserStatus==US_PLAY )
+	{
+		SendToolBoxMessage(dwSocketID,TEXT("请在游戏结束后操作！"),SMT_EJECT);
+		return true;
+	}
 	CMD_TOOLBOX_BankTask *pBankTask = (CMD_TOOLBOX_BankTask*)pData;
 	//密码效验
 	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankTask->szPassword)!=0)
