@@ -633,7 +633,7 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	//庄家判断
 	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
 		return true;
-	if ( m_CurrentBanker.dwUserID == 0 || m_CurrentBanker.wChairID == INVALID_CHAIR)
+	if ( m_CurrentBanker.dwUserID == 0 )
 		return true;
 	//判断玩家是不是点的按钮下注
 	bool illegal=true;
