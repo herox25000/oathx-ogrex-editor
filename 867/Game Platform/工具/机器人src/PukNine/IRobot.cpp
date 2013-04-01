@@ -746,8 +746,19 @@ bool			IRobot::OnSocketToolBox(CMD_Command Command, void* pBuffer, WORD wDataSiz
 			CMD_TOOLBOX_BankTask_Ret* pBankRet = (CMD_TOOLBOX_BankTask_Ret*)pBuffer;
 			if (pBankRet->lErrorCode==0)
 			{
+				CString Text;
+				
+				if (pBankRet->lBankTask == 1)
+				{
+					Text = "存入";
+				}
+				else if (pBankRet->lBankTask == 2)
+				{
+					Text = "取出";
+				}
+
 				CString szMessage;
-				szMessage.Format("操作金钱 %I64d", pBankRet->lMoneyNumber);
+				szMessage.Format("[%d][%d]%s操作金钱 %I64d", m_dwUserID, m_pAppUser->dwGameID, Text.GetBuffer(), pBankRet->lMoneyNumber);
 				ShowMessageBox(szMessage, TraceLevel_Debug);
 
 				MessageBox(NULL, "操作成功！", NULL, NULL);
