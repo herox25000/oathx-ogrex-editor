@@ -265,6 +265,26 @@ WORD			IRobot::GetSocketState()
 	return m_ClientSocket->GetSocketStatus();
 }
 
+void			IRobot::BankSaveScore(INT64 nScore)
+{
+	CMD_TOOLBOX_BankTask BankTask;
+	memset(&BankTask, 0, sizeof(CMD_TOOLBOX_BankTask));
+	BankTask.lMoneyNumber	= nScore;
+	BankTask.lBankTask		= 1;
+	CopyMemory(BankTask.szPassword,m_szPwd.GetBuffer(),sizeof(BankTask.szPassword));
+	m_ClientSocket->SendData(MDM_TOOLBOX, SUB_TOOLBOX_BANKOPERATING, &BankTask, sizeof(BankTask));
+}
+
+void			IRobot::BankGetScore(INT64 nScore)
+{
+	CMD_TOOLBOX_BankTask BankTask;
+	memset(&BankTask, 0, sizeof(CMD_TOOLBOX_BankTask));
+	BankTask.lMoneyNumber	= nScore;
+	BankTask.lBankTask		= 2;
+	CopyMemory(BankTask.szPassword,m_szPwd.GetBuffer(),sizeof(BankTask.szPassword));
+	m_ClientSocket->SendData(MDM_TOOLBOX, SUB_TOOLBOX_BANKOPERATING, &BankTask, sizeof(BankTask));
+}
+
 void			IRobot::Stop()
 {
 	if (m_ClientSocket.GetInterface() != NULL) 
@@ -375,6 +395,11 @@ bool __cdecl	IRobot::OnEventTCPSocketRead(WORD wSocketID, CMD_Command Command, V
 		{
 			return OnSocketMainGameFrame(Command,pBuffer,wDataSize);
 		}
+	case MDM_TOOLBOX:
+		{
+			return OnSocketToolBox(Command, pBuffer, wDataSize);
+		}
+		break;
 	}
 
 	return true;
@@ -702,6 +727,45 @@ bool			IRobot::OnMainSocket(WORD wMainCmdID, WORD wSubCmdID, void * pBuffer, WOR
 	}
 
 	return 0;
+}
+
+bool			IRobot::OnSocketToolBox(CMD_Command Command, void* pBuffer, WORD wDataSize)
+{
+	switch(Command.wSubCmdID)
+	{
+	case SUB_TOOLBOX_BANKOPERATING: //银行操作完成
+		{
+			if (wDataSize<sizeof(CMD_TOOLBOX_BankTask_Ret))
+				return 0;
+
+			CMD_TOOLBOX_BankTask_Ret* pBankRet = (CMD_TOOLBOX_BankTask_Ret*)pBuffer;
+			if (pBankRet->lErrorCode==0)
+			{
+				MessageBox(NULL, "操作成功！", NULL, NULL);
+			}
+			else
+			{
+				MessageBox(NULL, pBankRet->szErrorDescribe, NULL, NULL);
+			}
+		}
+		break;
+	case SUB_TOOLBOX_MESSAGE:
+		{
+			//效验参数
+			CMD_GR_Message * pMessage=(CMD_GR_Message *)pBuffer;
+			if (wDataSize<=(sizeof(CMD_GR_Message)-sizeof(pMessage->szContent)))
+				return 0;
+			//消息处理
+			WORD wHeadSize=sizeof(CMD_GR_Message)-sizeof(pMessage->szContent);
+			if (wDataSize!=(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR))) 
+				return 0;
+			pMessage->szContent[pMessage->wMessageLength-1]=0;
+			MessageBox(NULL, pMessage->szContent, NULL, NULL);
+		}
+		break;
+	}
+
+	return true;
 }
 
 bool			IRobot::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataSize)
