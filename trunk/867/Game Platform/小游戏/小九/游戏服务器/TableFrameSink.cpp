@@ -329,9 +329,18 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//下注信息
 			if (pIServerUserItem->GetUserStatus()!=US_LOOKON)
 			{
-				StatusFree.lMeTieScore=m_lUserTianMenScore[wChiarID];
-				StatusFree.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
-				StatusFree.lMePlayerScore=m_lUserShunMenScore[wChiarID];
+				if (!FindUserLeft(pIServerUserItem->GetUserID()))
+				{
+					StatusFree.lMeTieScore=m_lUserTianMenScore[wChiarID];
+					StatusFree.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
+					StatusFree.lMePlayerScore=m_lUserShunMenScore[wChiarID];
+				}
+				else
+				{
+					StatusFree.lMeTieScore = 0;
+					StatusFree.lMeBankerScore = 0;
+					StatusFree.lMePlayerScore = 0;
+				}
 				StatusFree.lMeTieKingScore = 0;
 				StatusFree.lMeBankerKingScore = 0;
 				StatusFree.lMePlayerKingScore = 0;
@@ -386,9 +395,18 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//下注信息
 			if (pIServerUserItem->GetUserStatus()!=US_LOOKON)
 			{
-				StatusPlay.lMeTieScore=m_lUserTianMenScore[wChiarID];
-				StatusPlay.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
-				StatusPlay.lMePlayerScore=m_lUserShunMenScore[wChiarID];
+				if (!FindUserLeft(pIServerUserItem->GetUserID()))
+				{
+					StatusPlay.lMeTieScore=m_lUserTianMenScore[wChiarID];
+					StatusPlay.lMeBankerScore=m_lUserDaoMenScore[wChiarID];
+					StatusPlay.lMePlayerScore=m_lUserShunMenScore[wChiarID];
+				}
+				else
+				{
+					StatusPlay.lMeTieScore = 0;
+					StatusPlay.lMeBankerScore = 0;
+					StatusPlay.lMePlayerScore = 0;
+				}
 				StatusPlay.lMeTieKingScore = 0;
 				StatusPlay.lMeBankerKingScore = 0;
 				StatusPlay.lMePlayerKingScore = 0;
