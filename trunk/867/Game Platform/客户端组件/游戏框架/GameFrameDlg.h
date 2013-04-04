@@ -41,7 +41,7 @@ protected:
 	CSkinSplitter					m_VorSplitter;						//拆分控件
 	CGameFrameView					* m_pGameFrameView;					//视图指针
 	CGameFrameControl				* m_pGameFrameControl;				//控制视图
-	CFrameDlgBank					m_DlgBank;
+	CFrameDlgBank					m_DlgFramBank;
 	//内核变量
 private:
 	CClientKernelSink				* m_pKernelSink;					//钩子接口

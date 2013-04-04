@@ -1214,7 +1214,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	}
 
 	//变量定义
-	tagScoreInfo ScoreInfo;
+	GametagScoreInfo ScoreInfo;
 	tagWeaveInfo WeaveInfo;
 	ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
 	ZeroMemory(&WeaveInfo,sizeof(WeaveInfo));

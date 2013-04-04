@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //积分信息
-struct tagScoreInfo
+struct gametagScoreInfo
 {
 	//积分信息
 	LONGLONG						lGameScore[GAME_PLAYER];				//游戏积分
@@ -28,7 +28,7 @@ class CScoreControl : public CWnd
 {
 	//状态变量
 protected:
-	tagScoreInfo					m_GameScoreInfo;					//积分信息
+	gametagScoreInfo					m_GameScoreInfo;					//积分信息
 
 	//资源变量
 protected:
@@ -47,7 +47,7 @@ public:
 	//复位数据
 	VOID RestorationData();
 	//设置积分
-	VOID SetScoreInfo(const tagScoreInfo & ScoreInfo);
+	VOID SetScoreInfo(const gametagScoreInfo & ScoreInfo);
 
 	//消息映射
 protected:

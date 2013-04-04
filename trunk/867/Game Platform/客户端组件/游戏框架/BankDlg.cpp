@@ -51,6 +51,7 @@ BOOL CFrameDlgBank::PreTranslateMessage(MSG* pMsg)
 BOOL CFrameDlgBank::OnInitDialog()
 {
 	__super::OnInitDialog();
+	SetWindowText(TEXT("银行"));
 	UpdateView();
 	return TRUE; 
 }
@@ -58,12 +59,14 @@ BOOL CFrameDlgBank::OnInitDialog()
 //销毁消息
 void CFrameDlgBank::OnClose()
 {
-	DestroyWindow();
+	//DestroyWindow();
+	CDialog::OnClose();
 }
 
 void CFrameDlgBank:: OnCancel()
 {
-	DestroyWindow();
+	//DestroyWindow();
+	CDialog::OnCancel();
 }
 //显示消息
 int CFrameDlgBank::ShowMessageBox(LPCTSTR pszMessage)
