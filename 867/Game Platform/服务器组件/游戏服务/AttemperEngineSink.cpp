@@ -646,22 +646,6 @@ bool CAttemperEngineSink::SendGameMessage(DWORD dwSocketID, LPCTSTR lpszMessage,
 	return true;
 }
 
-//发送工具消息
-bool CAttemperEngineSink::SendToolBoxMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType)
-{
-	//构造数据包
-	CMD_GF_Message Message;
-	Message.wMessageType=wMessageType;
-	lstrcpyn(Message.szContent,lpszMessage,CountArray(Message.szContent));
-	Message.wMessageLength=CountStringBuffer(Message.szContent);
-
-	//发送数据
-	WORD wSendSize=sizeof(Message)-sizeof(Message.szContent)+Message.wMessageLength*sizeof(TCHAR);
-	m_pITCPNetworkEngine->SendData(dwSocketID,MDM_TOOLBOX,SUB_TOOLBOX_MESSAGE,&Message,wSendSize);
-
-	return true;
-}
-
 //发送道具消息
 bool CAttemperEngineSink::SendProMessage(IServerUserItem * pIServerUserItem, LPCTSTR lpszMessage, WORD wMessageType)
 {
@@ -3614,7 +3598,7 @@ bool CAttemperEngineSink::OnEventBankDrawoutGold(const void * pData, WORD wDataS
 	if(pServerUserData->wTableID!=INVALID_TABLE)
 		SendGameMessage(dwSocketID,TEXT("提取成功!"),SMT_EJECT);
 	else
-	SendRoomMessage(dwSocketID,TEXT("提取成功!"),SMT_EJECT);
+		SendRoomMessage(dwSocketID,TEXT("提取成功!"),SMT_EJECT);
 
 	//变量定义
 	DBR_GR_BankDrawoutGold BankDrawoutGold;
@@ -3977,7 +3961,7 @@ bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSiz
 {
 	if (m_pGameServiceOption->wServerType!=GAME_GENRE_GOLD)
 	{
-		SendToolBoxMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT);
+		SendRoomMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT|SMT_INFO);
 		return true;
 	}
 
@@ -3991,7 +3975,7 @@ bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSiz
 		return false;
 	if(pIServerUserItem->GetUserData()->cbUserStatus==US_PLAY )
 	{
-		SendToolBoxMessage(dwSocketID,TEXT("请在游戏结束后操作！"),SMT_EJECT);
+		SendRoomMessage(dwSocketID,TEXT("请在游戏结束后操作！"),SMT_EJECT|SMT_INFO);
 		return true;
 	}
 
@@ -3999,7 +3983,7 @@ bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSiz
 	//密码效验
 	if (lstrcmp(pIServerUserItem->GetBankPassword(),pTrans->szPassword)!=0)
 	{
-		SendToolBoxMessage(dwSocketID,TEXT("银行密码输入错误！"),SMT_EJECT);
+		SendRoomMessage(dwSocketID,TEXT("银行密码输入错误！"),SMT_EJECT|SMT_INFO);
 		return true;
 	}
 
@@ -4026,12 +4010,6 @@ bool CAttemperEngineSink::OnEventTransferMoneyLog(const void * pData, WORD wData
 //socket响应 银行操作
 bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSize, DWORD dwSocketID)
 {
-	if (m_pGameServiceOption->wServerType!=GAME_GENRE_GOLD)
-	{
-		SendToolBoxMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT);
-		return true;
-	}
-
 	ASSERT( sizeof(CMD_TOOLBOX_BankTask) == wDataSize );
 	if ( sizeof(CMD_TOOLBOX_BankTask) != wDataSize ) 
 		return false;
@@ -4039,17 +4017,36 @@ bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSiz
 	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
 	if(pIServerUserItem==NULL)
 		return false;
-	if(pIServerUserItem->GetUserData()->cbUserStatus==US_PLAY )
+	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
+
+	if (m_pGameServiceOption->wServerType!=GAME_GENRE_GOLD)
 	{
-		SendToolBoxMessage(dwSocketID,TEXT("请在游戏结束后操作！"),SMT_EJECT);
+		if(pServerUserData->wTableID==INVALID_TABLE)
+			SendRoomMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT|SMT_INFO);
+		else
+			SendGameMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT|SMT_INFO);
 		return true;
 	}
+
 	CMD_TOOLBOX_BankTask *pBankTask = (CMD_TOOLBOX_BankTask*)pData;
 	//密码效验
 	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankTask->szPassword)!=0)
 	{
-		SendToolBoxMessage(dwSocketID,TEXT("银行密码输入错误！"),SMT_EJECT);
+		if(pServerUserData->wTableID==INVALID_TABLE)
+			SendRoomMessage(dwSocketID,TEXT("银行密码输入错误！"),SMT_EJECT);
+		else
+			SendGameMessage(dwSocketID,TEXT("银行密码输入错误！"),SMT_EJECT);
 		return true;
+	}
+
+	//如果是取钱操作，游戏中不能进行
+	if(pBankTask->lBankTask == BANKTASK_DEPOSIT)
+	{
+		if(pServerUserData->wTableID!=INVALID_TABLE)
+		{
+			SendGameMessage(pIServerUserItem,"游戏中不能存钱！",SMT_INFO|SMT_EJECT);
+			return true;
+		}
 	}
 
 	DBR_GR_BankTask BankTask;
@@ -4122,24 +4119,26 @@ bool CAttemperEngineSink::OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD
 	//发送消息
 	DBR_GR_BankTask * pBankTask=(DBR_GR_BankTask *)pData;
 	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pBankTask->dwUserID);
-	if (pIServerUserItem==NULL) return false;
-
-	//构造消息
-	CMD_TOOLBOX_BankTask_Ret cmd;
-	ZeroMemory(&cmd, sizeof(CMD_TOOLBOX_BankTask_Ret));
-	cmd.lBankTask=pBankTask->lBankTask;
-	cmd.lMoneyNumber=pBankTask->lMoneyNumber;
-	cmd.lMoneyInBank=pBankTask->lMoneyInBank;
-	cmd.lNewScore=pBankTask->lNewScore;
-	cmd.lErrorCode=pBankTask->lErrorCode;
-	lstrcpyn(cmd.szErrorDescribe, pBankTask->szErrorDescribe, CountArray(cmd.szErrorDescribe));
-
-	//游戏玩家
-	this->SendData(pIServerUserItem, MDM_TOOLBOX, SUB_TOOLBOX_BANKOPERATING, &cmd, sizeof(CMD_TOOLBOX_BankTask_Ret));
+	if (pIServerUserItem==NULL)
+		return false;
+	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
+	if(pServerUserData == NULL)
+		return false;
 	if ( pBankTask->lErrorCode==0)
 	{
 		pIServerUserItem->WriteBaseScore(pBankTask->lNewScore,pBankTask->lMoneyInBank);
 		SendUserScore(pIServerUserItem);
+		if(pServerUserData->wTableID == INVALID_TABLE)
+			SendRoomMessage(pIServerUserItem,"操作成功",SMT_EJECT|SMT_INFO);
+		else
+			SendGameMessage(pIServerUserItem,"操作成功",SMT_EJECT|SMT_INFO);
+	}
+	else
+	{
+		if(pServerUserData->wTableID == INVALID_TABLE)
+			SendRoomMessage(pIServerUserItem,pBankTask->szErrorDescribe,SMT_EJECT|SMT_INFO);
+		else
+			SendGameMessage(pIServerUserItem,pBankTask->szErrorDescribe,SMT_EJECT|SMT_INFO);
 	}
 	return true;
 }
@@ -4176,14 +4175,25 @@ bool CAttemperEngineSink::OnDBModifyPassword(DWORD dwContextID, VOID * pData, WO
 	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pDBR->dwUserID);
 	if ( pIServerUserItem )
 	{
+		tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
 		//发送数据
 		WORD wIndex=pIServerUserItem->GetUserIndex();
 		tagConnectItemInfo * pConnectItemInfo=GetBindParameter(wIndex);
 		DWORD dwSocketID=pConnectItemInfo->dwSocketID;
 		if(pDBR->lErrorCode == 0)
-			SendToolBoxMessage(dwSocketID,"修改成功！请及时重新登录，不然部分功能不可用！",SMT_EJECT);
+		{
+			if(pServerUserData->wTableID != INVALID_TABLE)
+				SendGameMessage(dwSocketID,"修改成功！请及时重新登录，不然部分功能不可用！",SMT_EJECT|SMT_INFO);
+			else
+				SendRoomMessage(dwSocketID,"修改成功！请及时重新登录，不然部分功能不可用！",SMT_EJECT|SMT_INFO);
+		}
 		else
-			SendToolBoxMessage(dwSocketID,pDBR->szErrorDescribe,SMT_EJECT);
+		{	
+			if(pServerUserData->wTableID != INVALID_TABLE)
+				SendGameMessage(pIServerUserItem,pDBR->szErrorDescribe,SMT_EJECT|SMT_INFO);
+			else
+				SendRoomMessage(pIServerUserItem,pDBR->szErrorDescribe,SMT_EJECT|SMT_INFO);
+		}	
 	}
 	return true;
 }

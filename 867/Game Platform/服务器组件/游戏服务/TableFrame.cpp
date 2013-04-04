@@ -2226,17 +2226,13 @@ bool __cdecl CTableFrame::ModifyNickname(IServerUserItem * pIServerUserItem, TCH
 bool __cdecl CTableFrame::BankOperation(IServerUserItem * pIServerUserItem, LONG lBankTask,
 										TCHAR szPassword[PASS_LEN], __int64 lMoneyNumber)
 {
-	////解除锁定
+	//解除锁定
 	//DBR_GR_BankTask BankTask;
 	//ZeroMemory(&BankTask,sizeof(DBR_GR_BankTask));
 	//CopyMemory(BankTask.szPassword, szPassword, sizeof(BankTask.szPassword));
 	//BankTask.dwUserID			=pIServerUserItem->GetUserID();
 	//BankTask.lBankTask			=lBankTask;
 	//BankTask.lMoneyNumber		=lMoneyNumber;
-
-	//LPCTSTR pszMessage=TEXT("服务器正在处理您的银行操作任务......");
-	//SendRoomMessage(pIServerUserItem, pszMessage, SMT_INFO);
-
 	//return  m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_BANK_TASK, 0, &BankTask, sizeof(DBR_GR_BankTask));
 	return true;
 }

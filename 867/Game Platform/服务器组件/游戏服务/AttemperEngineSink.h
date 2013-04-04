@@ -207,9 +207,6 @@ public:
 	bool SendRoomMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType);
 	//发送游戏消息
 	bool SendGameMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType);
-	//发送工具消息
-	bool SendToolBoxMessage(DWORD dwSocketID, LPCTSTR lpszMessage, WORD wMessageType);
-
 	//发送道具消息
 	bool SendProMessage(IServerUserItem * pIServerUserItem, LPCTSTR lpszMessage, WORD wMessageType);
 	//发送房间消息
