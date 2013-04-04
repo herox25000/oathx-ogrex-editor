@@ -225,8 +225,13 @@ struct DBR_GR_WriteUserScore
 	DWORD								dwClientIP;						//连接地址
 	DWORD								dwPlayTimeCount;				//游戏时间
 	DWORD								dwOnlineTimeCount;				//在线时间
-	//积分信息
 	__int64								lRevenue;						//游戏税收
+	WORD								wTableID;						//桌子ID
+	WORD								wKindID;						//游戏id
+	WORD								wServerID;						//房间id
+	DWORD								dwGameRound;					//游戏回合ID
+	TCHAR								szQuitType[128];				//退出类型(输，赢，逃跑，和)
+	TCHAR								szJetton[128];					//押注信息
 	tagUserScore						ScoreModifyInfo;				//修改积分
 };
 
@@ -491,8 +496,6 @@ private:
 protected:
 	//I D 存储过程
 	LONG SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD dwClientIP, LPCTSTR pszComputerID);
-	//写分存储过程
-	LONG SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, __int64 lRevenue, tagUserScore & UserScore);
 	//离开存储过程
 	LONG SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount, DWORD dwOnLineTimeCount, DWORD dwClientIP, __int64 lRevenue, LONG lLoveliness, tagUserScore & UserScore);
 	//禁号存储过程
