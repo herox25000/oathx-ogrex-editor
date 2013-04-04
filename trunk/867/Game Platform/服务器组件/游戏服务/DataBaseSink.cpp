@@ -169,10 +169,10 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineRequest(WORD wRequestID, DWORD dwCon
 		{
 			return OnClearScoreLocker(dwContextID,pData,wDataSize);
 		}
-	case DBR_GR_USER_ROUND_SCORE:			//每局记录存储
-		{
-			return OnRequestRoundScore(dwContextID,pData,wDataSize);
-		}
+	//case DBR_GR_USER_ROUND_SCORE:			//每局记录存储
+	//	{
+	//		return OnRequestRoundScore(dwContextID,pData,wDataSize);
+	//	}
 	case DBR_GR_TRANSFER_MONEY:		//转账
 		{
 			return OnRequestTransferMoney(dwContextID,pData,wDataSize);
@@ -327,16 +327,38 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 //写分请求
 bool CDataBaseSink::OnRequestWriteUserScore(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
+	//效验参数
+	ASSERT(wDataSize==sizeof(DBR_GR_WriteUserScore));
+	if (wDataSize!=sizeof(DBR_GR_WriteUserScore)) return false;
+	//执行查询
+	DBR_GR_WriteUserScore * pWriteUserScore=(DBR_GR_WriteUserScore *)pData;
 	try
 	{
-		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_WriteUserScore));
-		if (wDataSize!=sizeof(DBR_GR_WriteUserScore)) return false;
+		//转化地址
+		TCHAR szClientIP[16]=TEXT("");
+		BYTE * pClientIP=(BYTE *)&pWriteUserScore->dwClientIP;
+		_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
 
-		//执行查询
-		DBR_GR_WriteUserScore * pWriteUserScore=(DBR_GR_WriteUserScore *)pData;
-		LONG lReturnValue=SPWriteUserScore(pWriteUserScore->dwUserID,pWriteUserScore->dwPlayTimeCount,pWriteUserScore->dwOnlineTimeCount,
-			pWriteUserScore->dwClientIP,pWriteUserScore->lRevenue,pWriteUserScore->ScoreModifyInfo);
+		//执行存储过程
+		m_GameScoreDBAide.ResetParameter();
+		m_GameScoreDBAide.AddParameter(TEXT("@dwUserID"),pWriteUserScore->dwUserID);
+		m_GameScoreDBAide.AddParameter(TEXT("@lScore"),pWriteUserScore->ScoreModifyInfo.lScore);
+		m_GameScoreDBAide.AddParameter(TEXT("@lRevenue"),pWriteUserScore->lRevenue);
+		m_GameScoreDBAide.AddParameter(TEXT("@lWinCount"),pWriteUserScore->ScoreModifyInfo.lWinCount);
+		m_GameScoreDBAide.AddParameter(TEXT("@lLostCount"),pWriteUserScore->ScoreModifyInfo.lLostCount);
+		m_GameScoreDBAide.AddParameter(TEXT("@lDrawCount"),pWriteUserScore->ScoreModifyInfo.lDrawCount);
+		m_GameScoreDBAide.AddParameter(TEXT("@lFleeCount"),pWriteUserScore->ScoreModifyInfo.lFleeCount);
+		m_GameScoreDBAide.AddParameter(TEXT("@lExperience"),pWriteUserScore->ScoreModifyInfo.lExperience);
+		m_GameScoreDBAide.AddParameter(TEXT("@dwPlayTimeCount"),pWriteUserScore->dwPlayTimeCount);
+		m_GameScoreDBAide.AddParameter(TEXT("@dwOnLineTimeCount"),pWriteUserScore->dwOnlineTimeCount);
+		m_GameScoreDBAide.AddParameter(TEXT("@wKindID"),pWriteUserScore->wKindID);
+		m_GameScoreDBAide.AddParameter(TEXT("@wServerID"),pWriteUserScore->wServerID);
+		m_GameScoreDBAide.AddParameter(TEXT("@strClientIP"),szClientIP);
+		m_GameScoreDBAide.AddParameter(TEXT("@dwTableID"),pWriteUserScore->wTableID);
+		m_GameScoreDBAide.AddParameter(TEXT("@dwGameRound"),pWriteUserScore->dwGameRound);
+		m_GameScoreDBAide.AddParameter(TEXT("@szQuitType"),pWriteUserScore->szQuitType);
+		m_GameScoreDBAide.AddParameter(TEXT("@szJetton"),pWriteUserScore->szJetton);
+		m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_WriteGameScore"),false);
 	}
 	catch (IDataBaseException * pIException)
 	{
@@ -344,7 +366,6 @@ bool CDataBaseSink::OnRequestWriteUserScore(DWORD dwContextID, VOID * pData, WOR
 		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
 		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
 	}
-
 	return true;
 }
 
@@ -813,48 +834,6 @@ LONG CDataBaseSink::SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD d
 	return lReturnValue;
 }
 
-//写分存储过程
-LONG CDataBaseSink::SPWriteUserScore(DWORD dwUserID, DWORD dwPlayTimeCount, 
-									 DWORD dwOnLineTimeCount, DWORD dwClientIP, 
-									 __int64 lRevenue, tagUserScore & UserScore)
-{
-	LONG lReturnValue=-1;
-	try
-	{
-		//效验参数
-		ASSERT(dwUserID!=0L);
-
-		//转化地址
-		TCHAR szClientIP[16]=TEXT("");
-		BYTE * pClientIP=(BYTE *)&dwClientIP;
-		_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
-
-		//执行存储过程
-		m_GameScoreDBAide.ResetParameter();
-		m_GameScoreDBAide.AddParameter(TEXT("@dwUserID"),dwUserID);
-		m_GameScoreDBAide.AddParameter(TEXT("@lScore"),UserScore.lScore);
-		m_GameScoreDBAide.AddParameter(TEXT("@lRevenue"),lRevenue);
-		m_GameScoreDBAide.AddParameter(TEXT("@lWinCount"),UserScore.lWinCount);
-		m_GameScoreDBAide.AddParameter(TEXT("@lLostCount"),UserScore.lLostCount);
-		m_GameScoreDBAide.AddParameter(TEXT("@lDrawCount"),UserScore.lDrawCount);
-		m_GameScoreDBAide.AddParameter(TEXT("@lFleeCount"),UserScore.lFleeCount);
-		m_GameScoreDBAide.AddParameter(TEXT("@lExperience"),UserScore.lExperience);
-		m_GameScoreDBAide.AddParameter(TEXT("@dwPlayTimeCount"),dwPlayTimeCount);
-		m_GameScoreDBAide.AddParameter(TEXT("@dwOnLineTimeCount"),dwOnLineTimeCount);
-		m_GameScoreDBAide.AddParameter(TEXT("@wKindID"),m_pGameServiceAttrib->wKindID);
-		m_GameScoreDBAide.AddParameter(TEXT("@wServerID"),m_pGameServiceOption->wServerID);
-		m_GameScoreDBAide.AddParameter(TEXT("@strClientIP"),szClientIP);
-
-		lReturnValue =m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_WriteGameScore"),false);
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
-	return lReturnValue;
-}
 
 //离开存储过程
 LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount,
@@ -1300,29 +1279,29 @@ bool CDataBaseSink::OnClearScoreLocker(DWORD dwContextID, VOID * pData, WORD wDa
 //每局记录存储
 bool CDataBaseSink::OnRequestRoundScore(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
-	try
-	{
-		ASSERT(wDataSize==sizeof(DBR_GR_User_Round_Score));
-		if (wDataSize!=sizeof(DBR_GR_User_Round_Score)) return false;
-		DBR_GR_User_Round_Score* pRoundScore=(DBR_GR_User_Round_Score*)pData;
-		//执行存储过程
-		m_GameScoreDBAide.ResetParameter();
-		m_GameScoreDBAide.AddParameter(TEXT("@dwUserID"),pRoundScore->dwUserID);
-		m_GameScoreDBAide.AddParameter(TEXT("@dwGameID"),pRoundScore->wGameID);
-		m_GameScoreDBAide.AddParameter(TEXT("@dwTableID"),pRoundScore->wTableID);
-		m_GameScoreDBAide.AddParameter(TEXT("@dwGameRound"),pRoundScore->dwGameRound);
-		m_GameScoreDBAide.AddParameter(TEXT("@lScore"),pRoundScore->sfScore);
-		m_GameScoreDBAide.AddParameter(TEXT("@lRevenue"),pRoundScore->sfRevenue);
-		m_GameScoreDBAide.AddParameter(TEXT("@szQuitType"),pRoundScore->szQuitType);
-		m_GameScoreDBAide.AddParameter(TEXT("@szJetton"),pRoundScore->szJetton);
-		m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_Round_Score"),false);
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
+	//try
+	//{
+	//	ASSERT(wDataSize==sizeof(DBR_GR_User_Round_Score));
+	//	if (wDataSize!=sizeof(DBR_GR_User_Round_Score)) return false;
+	//	DBR_GR_User_Round_Score* pRoundScore=(DBR_GR_User_Round_Score*)pData;
+	//	//执行存储过程
+	//	m_GameScoreDBAide.ResetParameter();
+	//	m_GameScoreDBAide.AddParameter(TEXT("@dwUserID"),pRoundScore->dwUserID);
+	//	m_GameScoreDBAide.AddParameter(TEXT("@dwGameID"),pRoundScore->wGameID);
+	//	m_GameScoreDBAide.AddParameter(TEXT("@dwTableID"),pRoundScore->wTableID);
+	//	m_GameScoreDBAide.AddParameter(TEXT("@dwGameRound"),pRoundScore->dwGameRound);
+	//	m_GameScoreDBAide.AddParameter(TEXT("@lScore"),pRoundScore->sfScore);
+	//	m_GameScoreDBAide.AddParameter(TEXT("@lRevenue"),pRoundScore->sfRevenue);
+	//	m_GameScoreDBAide.AddParameter(TEXT("@szQuitType"),pRoundScore->szQuitType);
+	//	m_GameScoreDBAide.AddParameter(TEXT("@szJetton"),pRoundScore->szJetton);
+	//	m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_Round_Score"),false);
+	//}
+	//catch (IDataBaseException * pIException)
+	//{
+	//	//错误信息
+	//	LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
+	//	CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
+	//}
 	return true;
 
 }

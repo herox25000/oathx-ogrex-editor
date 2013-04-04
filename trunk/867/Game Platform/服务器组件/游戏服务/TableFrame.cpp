@@ -1776,57 +1776,40 @@ bool __cdecl CTableFrame::WriteUserScore(IServerUserItem * pIServerUserItem, __i
 	//发送信息
 	m_pIGameServiceFrame->SendUserScore(pIServerUserItem);
 
-	//如果是金币房间  每局都要写记录
+	//立即更新数据库信息
+	DBR_GR_WriteUserScore WriteUserScore;
+	memset(&WriteUserScore,0 , sizeof(DBR_GR_WriteUserScore));
+	WriteUserScore.dwUserID=pIServerUserItem->GetUserID();
+	WriteUserScore.dwClientIP=pIServerUserItem->GetClientIP();
+	WriteUserScore.dwPlayTimeCount=0;
+	WriteUserScore.dwOnlineTimeCount=0;
+	WriteUserScore.lRevenue=lRevenue;
+	pIServerUserItem->GetUserModifyScoreInfo(WriteUserScore.ScoreModifyInfo);
+	//如果是金币房间 
 	if(m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
 	{
-		//写入每局的记录
-		DBR_GR_User_Round_Score RoundScore;
-		ZeroMemory(&RoundScore, sizeof(DBR_GR_User_Round_Score));
-		RoundScore.dwUserID			= pIServerUserItem->GetUserID();
-		RoundScore.wTableID			= m_wTableID;
-		RoundScore.wGameID          = m_pGameServiceOption->wKindID;
-		RoundScore.dwGameRound		= m_dwGameRound;
-		RoundScore.sfScore			= lScore;
-		RoundScore.sfRevenue		= lRevenue;
+		WriteUserScore.wTableID			= m_wTableID;
+		WriteUserScore.wKindID          = m_pGameServiceOption->wKindID;
+		WriteUserScore.wServerID        = m_pGameServiceOption->wServerID;
+		WriteUserScore.dwGameRound		= m_dwGameRound;
 		if(ScoreKind==enScoreKind_Win)
-			lstrcpyn(RoundScore.szQuitType, "赢", sizeof(RoundScore.szQuitType));
+			lstrcpyn(WriteUserScore.szQuitType, "赢", sizeof(WriteUserScore.szQuitType));
 		else if(ScoreKind==enScoreKind_Lost)
-			lstrcpyn(RoundScore.szQuitType, "输", sizeof(RoundScore.szQuitType));
+			lstrcpyn(WriteUserScore.szQuitType, "输", sizeof(WriteUserScore.szQuitType));
 		else if(ScoreKind==enScoreKind_Draw)
-			lstrcpyn(RoundScore.szQuitType, "和", sizeof(RoundScore.szQuitType));
+			lstrcpyn(WriteUserScore.szQuitType, "和", sizeof(WriteUserScore.szQuitType));
 		else if(ScoreKind==enScoreKind_Flee)
-			lstrcpyn(RoundScore.szQuitType, "逃跑", sizeof(RoundScore.szQuitType));
+			lstrcpyn(WriteUserScore.szQuitType, "逃跑", sizeof(WriteUserScore.szQuitType));
 		else if(ScoreKind==enScoreKind_Service)
-			lstrcpyn(RoundScore.szQuitType, "服务", sizeof(RoundScore.szQuitType));
+			lstrcpyn(WriteUserScore.szQuitType, "服务", sizeof(WriteUserScore.szQuitType));
 		else if(ScoreKind==enScoreKind_Present)
-			lstrcpyn(RoundScore.szQuitType, "赠送", sizeof(RoundScore.szQuitType));
+			lstrcpyn(WriteUserScore.szQuitType, "赠送", sizeof(WriteUserScore.szQuitType));
 		else
-			lstrcpyn(RoundScore.szQuitType, "小游戏服务器写入输赢类型错误", sizeof(RoundScore.szQuitType));
-
-		//if ( pszJetton )
-		lstrcpyn(RoundScore.szJetton, "empty", sizeof(RoundScore.szJetton));
-
-		m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_USER_ROUND_SCORE, 0, &RoundScore, sizeof(DBR_GR_User_Round_Score));
+			lstrcpyn(WriteUserScore.szQuitType, "小游戏服务器写入输赢类型错误", sizeof(WriteUserScore.szQuitType));
+		lstrcpyn(WriteUserScore.szJetton, "empty", sizeof(WriteUserScore.szJetton));
 	}
-	//立即更新数据库信息
-	UpdateDBScore(pIServerUserItem,lRevenue);
-
-	////存储积分
-	//if ((m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)&&(m_pGameServiceOption->lRestrictScore>0L))
-	//{
-	//	//还原积分
-	//	tagServerUserData * pServerUserData=pIServerUserItem->GetUserData();
-	//	pServerUserData->UserScoreInfo.lScore+=pServerUserData->lStorageScore;
-	//	pServerUserData->lStorageScore=0L;
-
-	//	//存储积分
-	//	if (pServerUserData->UserScoreInfo.lScore>m_pGameServiceOption->lRestrictScore)
-	//	{
-	//		LONG lUserScore=pServerUserData->UserScoreInfo.lScore;
-	//		pServerUserData->UserScoreInfo.lScore=m_pGameServiceOption->lRestrictScore;
-	//		pServerUserData->lStorageScore=lUserScore-m_pGameServiceOption->lRestrictScore;
-	//	}
-	//}
+	m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_WRITE_GAME_SCORE,0,&WriteUserScore, sizeof(DBR_GR_WriteUserScore));
+	pIServerUserItem->EmptyWinLoseScore();
 
 	return true;
 }
@@ -1838,20 +1821,6 @@ bool CTableFrame::UpdateDBScore(IServerUserItem * pIServerUserItem,__int64	lReve
 	//效验参数
 	ASSERT (pIServerUserItem!=NULL);
 	if ( pIServerUserItem==NULL ) return false;
-
-	//写入积分
-	DBR_GR_WriteUserScore WriteUserScore;
-	memset(&WriteUserScore,0 , sizeof(DBR_GR_WriteUserScore));
-	WriteUserScore.dwUserID=pIServerUserItem->GetUserID();
-	WriteUserScore.dwClientIP=pIServerUserItem->GetClientIP();
-	WriteUserScore.dwPlayTimeCount=0;
-	WriteUserScore.dwOnlineTimeCount=0;
-	WriteUserScore.lRevenue=lRevenue;
-	pIServerUserItem->GetUserModifyScoreInfo(WriteUserScore.ScoreModifyInfo);
-
-	m_pIGameServiceFrame->PostDataBaseRequest(DBR_GR_WRITE_GAME_SCORE,0,&WriteUserScore, sizeof(DBR_GR_WriteUserScore));
-
-	pIServerUserItem->EmptyWinLoseScore();
 
 	return true;
 }
