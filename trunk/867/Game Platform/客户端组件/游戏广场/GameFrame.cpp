@@ -328,20 +328,36 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 			ShowMessageBox(TEXT("此功能暂时不能使用！"),MB_ICONQUESTION);
 			return TRUE;
 		}
-	case IDC_BT_BUTTON_4:
+	case IDC_BT_BUTTON_4: // 银行功能
 		{
-			if(m_DlgGamePlaza.m_ClientSocket.GetInterface() == NULL)
-				return TRUE;
-			//创建窗体
-			if ( m_DlgBank.m_hWnd == NULL )
+			//////创建窗体
+			//if ( m_DlgBank.m_hWnd == NULL )
+			//{
+			//	m_DlgBank.Create(IDD_BANK_DIALOG, this);
+			//}
+			////显示窗体
+			//m_DlgBank.CenterWindow();
+			//m_DlgBank.ShowWindow(SW_SHOW);
+			//m_DlgBank.SetActiveWindow();
+			//m_DlgBank.SetForegroundWindow();
+
+
+			bool bSuccess = false; 
+			if(m_pRoomViewItem[0] == NULL)
 			{
-				m_DlgBank.Create(IDD_BANK_DIALOG, this);
+				bSuccess = m_DlgBank.ConnectToServer();
 			}
-			//显示窗体
-			m_DlgBank.CenterWindow();
-			m_DlgBank.ShowWindow(SW_SHOW);
-			m_DlgBank.SetActiveWindow();
-			m_DlgBank.SetForegroundWindow();
+			else
+			{
+				const tagUserData* MeData = m_pRoomViewItem[0]->GetMeUserInfo();
+				if(MeData == NULL)
+					return TRUE;
+				bSuccess = m_DlgBank.SetClientSocket(m_pRoomViewItem[0]->m_ClientSocket.GetInterface());
+				m_DlgBank.UpdataUserScore(MeData->lScore,MeData->lInsureScore);
+			}
+			if(!bSuccess)
+				return TRUE;
+			m_DlgBank.DoModal();
 
 			return TRUE;
 		}
@@ -987,7 +1003,8 @@ void CGameFrame::CloseRoomViewItem(IRoomViewItem * pIRoomViewItem)
 			}
 		}
 	}
-	else m_pRoomViewItemCreate=NULL;
+	else
+		m_pRoomViewItemCreate=NULL;
 
 	//关闭房间
 	pIRoomViewItem->CloseRoomViewItem();

@@ -138,6 +138,24 @@ BEGIN
     PUSHBUTTON      "",IDC_BUGLE,80,288,12,12
 END
 
+IDD_DLG_BANK DIALOGEX 0, 0, 237, 126
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    EDITTEXT        IDC_EDIT_GOLD,74,67,102,14,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "金额：",IDC_STATIC,43,68,25,8
+    EDITTEXT        IDC_EDIT_BANKPW,74,88,102,14,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    RTEXT           "银行密码：",IDC_STATIC,27,90,41,8
+    PUSHBUTTON      "确定",IDC_BT_OK,89,107,50,14
+    GROUPBOX        "",IDC_STATIC,23,20,195,42
+    RTEXT           "银行：",IDC_STATIC,35,48,25,8
+    RTEXT           "金币：",IDC_STATIC,35,31,25,8
+    LTEXT           "...",IDC_STATIC_GOLD,67,32,121,8
+    LTEXT           "...",IDC_STATIC_BANKGOLD,67,47,126,8
+    PUSHBUTTON      "全部",IDC_BT_ALL,184,67,36,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -158,6 +176,13 @@ BEGIN
     BEGIN
         RIGHTMARGIN, 425
         BOTTOMMARGIN, 302
+    END
+
+    IDD_DLG_BANK, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 234
+        BOTTOMMARGIN, 124
     END
 END
 #endif    // APSTUDIO_INVOKED

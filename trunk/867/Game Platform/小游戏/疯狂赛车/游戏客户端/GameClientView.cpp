@@ -242,7 +242,7 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btApplyDown.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_APPLY_DOWN);
 
 	m_btGetMoney.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_GET_MONEY);
-	m_btStoreMoney.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_STORE_MONEY);
+//	m_btStoreMoney.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_STORE_MONEY);
 
 	//设置按钮
 	HINSTANCE hResInstance=AfxGetInstanceHandle();
@@ -263,7 +263,7 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btScoreMoveR.SetButtonImage(IDB_BT_SCORE_MOVE_R,hResInstance,false);
 
 	m_btGetMoney.SetButtonImage(IDB_GET_MONEY, hResInstance, false);
-	m_btStoreMoney.SetButtonImage(IDB_STORE_MONEY, hResInstance, false);
+//	m_btStoreMoney.SetButtonImage(IDB_STORE_MONEY, hResInstance, false);
 
 	return 0;
 }
@@ -367,7 +367,7 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btScoreMoveL,NULL,nWidth/2-186,nHeight/2+318,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btScoreMoveR,NULL,nWidth/2+165,nHeight/2+318,0,0,uFlags|SWP_NOSIZE);
 
-	DeferWindowPos(hDwp,m_btStoreMoney,NULL,nWidth/2+202,nYPos-2,0,0,uFlags|SWP_NOSIZE);
+	//DeferWindowPos(hDwp,m_btStoreMoney,NULL,nWidth/2+202,nYPos-2,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btGetMoney,NULL,nWidth/2+202,nYPos+43,0,0,uFlags|SWP_NOSIZE);
 
 	//结束移动
@@ -1681,5 +1681,13 @@ void CGameClientView::DrawRandAnimal(CDC *pDC, int nWidth, int nHeight)
 		SizeImage.cy);
 }
 
+//计算所有下注总和
+__int64 CGameClientView::CalcAllJetton()
+{
+	__int64 uAllScoreCount=0;
+	uAllScoreCount=m_lAllBigTigerScore+m_lAllSmlTigerScore+m_lAllBigBogScore
+		+m_lAllSmlBogScore+m_lAllBigHorseScore+m_lAllSmlHorseScore+m_lAllBigSnakeScore+m_lAllSmlSnakeScore;
+	return uAllScoreCount;
+}
 //////////////////////////////////////////////////////////////////////////
 

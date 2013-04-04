@@ -5,7 +5,7 @@
 
 #include "GameFrame.h"
 #include "GameFrameView.h"
-
+#include "BankDlg.h"
 //类说明
 class CGameFrameControl;
 class CClientKernelSink;
@@ -41,7 +41,7 @@ protected:
 	CSkinSplitter					m_VorSplitter;						//拆分控件
 	CGameFrameView					* m_pGameFrameView;					//视图指针
 	CGameFrameControl				* m_pGameFrameControl;				//控制视图
-
+	CFrameDlgBank					m_DlgBank;
 	//内核变量
 private:
 	CClientKernelSink				* m_pKernelSink;					//钩子接口
@@ -82,7 +82,8 @@ private:
 	virtual bool OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wDataSize)=NULL;
 	//游戏场景
 	virtual bool OnGameSceneMessage(BYTE cbGameStatus, bool bLookonOther, const void * pBuffer, WORD wDataSize)=NULL;
-
+	//刷新界面
+	virtual bool UpdateView()=NULL;
 	//特殊继承
 private:
 	//调整界面
@@ -134,7 +135,7 @@ public:
 	//播放声音
 	bool PlayGameSound(HINSTANCE hInstance, LPCTSTR pszSoundName);
 	//点击银行按钮
-	void UserOnBankBT(BOOL bBanker);
+	void UserOnBankBT(BYTE Type);
 
 
 	//消息函数

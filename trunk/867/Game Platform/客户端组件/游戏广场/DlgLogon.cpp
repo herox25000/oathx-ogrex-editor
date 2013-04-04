@@ -160,9 +160,9 @@ void CDlgRegister::DoDataExchange(CDataExchange * pDX)
 	DDX_Control(pDX, IDOK, m_btLogon);
 	DDX_Control(pDX, IDCANCEL, m_btCancel);
 	DDX_Control(pDX, IDC_USER_FACE, m_FaceSelect);
-	DDX_Control(pDX, IDC_REG_WEB, m_LineRegWeb);
-	DDX_Control(pDX, IDC_MAIN_PAGE, m_LineMainPage);
-	DDX_Control(pDX, IDC_PASSWORD_PROTECT, m_LinePassWord);
+	//DDX_Control(pDX, IDC_REG_WEB, m_LineRegWeb);
+	//DDX_Control(pDX, IDC_MAIN_PAGE, m_LineMainPage);
+	//DDX_Control(pDX, IDC_PASSWORD_PROTECT, m_LinePassWord);
 }
 
 //初始化函数
@@ -180,12 +180,12 @@ BOOL CDlgRegister::OnInitDialog()
 	((CEdit *)(GetDlgItem(IDC_BANKPASS)))->LimitText(PASS_LEN-1);
 	((CEdit *)(GetDlgItem(IDC_BANKPASS2)))->LimitText(PASS_LEN-1);
 
-	m_LineRegWeb.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
-	m_LineRegWeb.ShowWindow(SW_HIDE);
-	m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
-	m_LineMainPage.ShowWindow(SW_HIDE);
-	m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
-	m_LinePassWord.ShowWindow(SW_HIDE);
+	//m_LineRegWeb.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
+	//m_LineRegWeb.ShowWindow(SW_HIDE);
+	//m_LineMainPage.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
+	//m_LineMainPage.ShowWindow(SW_HIDE);
+	//m_LinePassWord.SetHyperLinkUrl(TEXT("http://www.game867.com/"));
+	//m_LinePassWord.ShowWindow(SW_HIDE);
 
 	//加载头像
 	g_GlobalUnits.m_UserFaceRes->FillImageList(m_ImageList);
@@ -294,6 +294,26 @@ void CDlgRegister::OnOK()
 		GetDlgItem(IDC_BANKPASS2)->SetFocus();
 		return;
 	}
+
+	//身份证
+	GetDlgItemText(IDC_EDIT_SFZ,strBuffer);
+	if (strBuffer.GetLength()!=18)
+	{
+		ShowInformation(TEXT("请输入正确的身份证号码！"),0,MB_ICONQUESTION);
+		GetDlgItem(IDC_EDIT_SFZ)->SetFocus();
+		return;
+	}
+	lstrcpyn(m_szSFZ,strBuffer,CountArray(m_szSFZ));
+
+	//电话号码
+	GetDlgItemText(IDC_EDIT_PHONE,strBuffer);
+	if (strBuffer.GetLength()<8)
+	{
+		ShowInformation(TEXT("请输入正确的电话号码！"),0,MB_ICONQUESTION);
+		GetDlgItem(IDC_EDIT_PHONE)->SetFocus();
+		return;
+	}
+	lstrcpyn(m_szPhone,strBuffer,CountArray(m_szPhone));
 
 
 	//推广员名
@@ -535,6 +555,8 @@ bool CDlgLogon::SendLogonPacket(ITCPSocket * pIClientSocke)
 				lstrcpyn(pRegisterAccounts->szBankPassWord,szBankPassword,CountArray(pRegisterAccounts->szBankPassWord));
 				lstrcpyn(pRegisterAccounts->szSpreader,m_szSpreader,CountArray(pRegisterAccounts->szSpreader));
 				lstrcpyn(pRegisterAccounts->szAccounts,m_szAccounts,CountArray(pRegisterAccounts->szAccounts));
+				lstrcpyn(pRegisterAccounts->szSFZ,m_szSFZ,CountArray(pRegisterAccounts->szSFZ));
+				lstrcpyn(pRegisterAccounts->szPhone,m_szPhone,CountArray(pRegisterAccounts->szPhone));
 
 				//机器序列号
 				tagClientSerial ClientSerial;
@@ -1158,6 +1180,9 @@ void CDlgLogon::OnRegisterAccounts()
 	lstrcpy(m_szAccounts,DlgRegister.m_szAccounts);
 	lstrcpy(m_szPassword,DlgRegister.m_szPassword);
 	lstrcpy(m_szBankPassword,DlgRegister.m_szBankPassword);
+	lstrcpy(m_szSFZ,DlgRegister.m_szSFZ);
+	lstrcpy(m_szPhone,DlgRegister.m_szPhone);
+
 
 	//服务器
 	CComboBox* pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);

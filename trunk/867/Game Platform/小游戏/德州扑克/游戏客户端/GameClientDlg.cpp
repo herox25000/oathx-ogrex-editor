@@ -993,6 +993,13 @@ LRESULT CGameClientDlg::OnOpenCard(WPARAM wParam,LPARAM lParam)
 	return 0;
 }
 
+//刷新下
+bool CGameClientDlg::UpdateView()
+{
+	return true;
+}
+
+
 //游戏开始
 bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 {

@@ -606,6 +606,12 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 	return false;
 }
 
+//刷新下
+bool CGameClientDlg::UpdateView()
+{
+	return true;
+}
+
 //游戏开始
 bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 {

@@ -63,6 +63,12 @@ struct tagServerGameRecord
 #define SUB_S_PLACE_JETTON_FAIL		107									//下注失败
 #define SUB_S_GAME_SCORE			108									//发送积分
 
+//////////////////////////////////////////////////////////////////////////
+//客户端命令结构
+#define SUB_C_PLACE_JETTON			1									//用户下注
+#define SUB_C_APPLY_BANKER			2									//申请庄家
+
+
 //失败结构
 struct CMD_S_PlaceJettonFail
 {
@@ -241,11 +247,6 @@ struct CMD_S_GameScore
 	__int64							lMeBankerKingScore;					//庄天王注
 };
 
-//////////////////////////////////////////////////////////////////////////
-//客户端命令结构
-
-#define SUB_C_PLACE_JETTON			1									//用户下注
-#define SUB_C_APPLY_BANKER			2									//申请庄家
 
 //用户下注
 struct CMD_C_PlaceJetton

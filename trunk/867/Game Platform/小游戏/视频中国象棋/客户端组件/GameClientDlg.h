@@ -78,7 +78,8 @@ public:
 	virtual bool  OnGameMessage(WORD wSubCmdID,const VOID * pData, WORD wDataSize);
 	//游戏场景
 	virtual bool  OnGameSceneMessage(BYTE cbGameStatus, bool bLookonOther,const VOID * pData, WORD wDataSize);
-
+	//刷新下
+	virtual bool UpdateView();
 //	//用户事件
 //public:
 //	//用户进入

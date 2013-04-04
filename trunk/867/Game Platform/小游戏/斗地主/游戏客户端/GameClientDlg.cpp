@@ -720,6 +720,13 @@ bool CGameClientDlg::OnSubLandScore(const void * pBuffer, WORD wDataSize)
 	return true;
 }
 
+//刷新下
+bool CGameClientDlg::UpdateView()
+{
+	return true;
+}
+
+
 //游戏开始
 bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 {

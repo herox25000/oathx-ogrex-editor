@@ -96,7 +96,7 @@ protected:
 	int								m_nRecordLast;						//最后记录
 
 	//状态变量
-protected:
+public:
 	WORD							m_wMeChairID;						//我的位置
 	BYTE							m_cbWinnerSide;						//胜利玩家
 	BYTE							m_cbWinnerFlash;					//胜利玩家
@@ -144,7 +144,7 @@ public:
 	CSkinButton						m_btScoreMoveL;						//移动成绩
 	CSkinButton						m_btScoreMoveR;						//移动成绩
 	CSkinButton						m_btnQuqian;						
-	CSkinButton						m_btnCunqian;
+//	CSkinButton						m_btnCunqian;
 	//控件变量
 public:
 	CApplyUser						m_ApplyUser;						//申请列表
@@ -238,7 +238,7 @@ public:
 	void SetDispatchCardTips(CString const &strTips) { m_strDispatchCardTips = strTips; UpdateGameView(NULL);};
 
 	//计算限制
-protected:
+public:
 	//最大下注
 	__int64 GetMaxPlayerScore();
 	//最大下注
@@ -251,8 +251,8 @@ protected:
 	__int64 GetMaxTieScore();
 	//最大下注
 	__int64 GetMaxTieKingScore();
-
-
+	//计算所有下注总和
+	__int64 CalcAllJetton();
 	//界面函数
 public:
 	//清理筹码
@@ -273,9 +273,6 @@ public:
 	//我的位置
 	inline void SetMeChairID(WORD wMeChairID) { m_wMeChairID=wMeChairID; }
 	inline WORD GetMeChairID() const {return m_wMeChairID;}
-
-	//设置银行按钮是否可用
-	void SetBankState(bool state);
 	//内部函数
 private:
 	//获取区域

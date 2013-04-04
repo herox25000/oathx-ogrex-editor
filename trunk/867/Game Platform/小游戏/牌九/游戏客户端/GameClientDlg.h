@@ -83,7 +83,8 @@ private:
 	virtual bool OnGameSceneMessage(BYTE cbGameStatus, bool bLookonOther, const void * pBuffer, WORD wDataSize);
 	//取消消息
 	virtual void OnCancel();
-
+	//刷新下
+	virtual bool UpdateView();
 	//消息处理
 protected:
 	//游戏开始

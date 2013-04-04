@@ -55,7 +55,9 @@ struct CMD_GP_RegisterAccounts
 	TCHAR								szSpreader[NAME_LEN];			//推广人名
 	TCHAR								szAccounts[NAME_LEN];			//登录帐号
 	TCHAR								szPassWord[PASS_LEN];			//登录密码
-	TCHAR								szBankPassWord[PASS_LEN];		//银行密码				
+	TCHAR								szBankPassWord[PASS_LEN];		//银行密码		
+	TCHAR								szSFZ[PASS_LEN];		//身份证
+	TCHAR								szPhone[PASS_LEN];		//电话	
 };
 
 //登陆成功
