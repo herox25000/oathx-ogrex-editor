@@ -2,7 +2,6 @@
 #include "GameOption.h"
 #include "GameClient.h"
 #include "GameClientDlg.h"
-#include ".\gameclientdlg.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -596,6 +595,7 @@ bool CGameClientDlg::OnSubCallBanker(const void * pBuffer, WORD wDataSize)
 
 	return true;
 }
+
 //Ë¢ÐÂÏÂ
 bool CGameClientDlg::UpdateView()
 {

@@ -46,7 +46,7 @@ VOID CScoreControl::RestorationData()
 }
 
 //设置积分
-VOID CScoreControl::SetScoreInfo(const tagScoreInfo & ScoreInfo)
+VOID CScoreControl::SetScoreInfo(const gametagScoreInfo & ScoreInfo)
 {
 	//设置变量
 	m_GameScoreInfo=ScoreInfo;

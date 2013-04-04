@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //积分信息
-struct tagScoreInfo
+struct GametagScoreInfo
 {
 	//胡牌扑克
 	BYTE							cbCardCount;							//扑克数目
@@ -45,7 +45,7 @@ class CScoreControl : public CWnd
 {
 	//变量定义
 protected:
-	tagScoreInfo					m_ScoreInfo;							//积分信息
+	GametagScoreInfo					m_ScoreInfo;							//积分信息
 
 	//控件变量
 protected:
@@ -71,7 +71,7 @@ public:
 	//复位数据
 	void RestorationData();
 	//设置积分
-	void SetScoreInfo(const tagScoreInfo & ScoreInfo, const tagWeaveInfo & WeaveInfo);
+	void SetScoreInfo(const GametagScoreInfo & ScoreInfo, const tagWeaveInfo & WeaveInfo);
 
 	//按钮消息
 protected:

@@ -838,7 +838,7 @@ bool CGameClientDlg::OnSubGameEnd(const VOID * pData, WORD wDataSize)
 	m_wCurrentUser=INVALID_CHAIR;
 
 	//变量定义
-	tagScoreInfo ScoreInfo;
+	gametagScoreInfo ScoreInfo;
 	ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
 
 	//结束原因

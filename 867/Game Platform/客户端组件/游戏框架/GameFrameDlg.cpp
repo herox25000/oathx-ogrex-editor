@@ -183,8 +183,8 @@ void __cdecl CGameFrameDlg::OnEventUserScore(tagUserData * pUserData, WORD wChai
 	tagUserData* Medata = m_ClientKernelHelper->GetMeUserInfo();
 	if(Medata==NULL)
 		return;
-	if(pUserData->dwUserID == Medata->dwUserID && m_DlgBank.m_hWnd!=NULL)
-		m_DlgBank.UpdateView();
+	if(pUserData->dwUserID == Medata->dwUserID && m_DlgFramBank.m_hWnd!=NULL)
+		m_DlgFramBank.UpdateView();
 
 	UpdateView();
 	return;
@@ -616,7 +616,7 @@ BOOL CGameFrameDlg::OnInitDialog()
 	m_pGameFrameControl->SetClientKernel(m_ClientKernelHelper.GetInterface());
 	if (InitGameFrame()==false) throw TEXT("游戏框架初始化失败");
 	
-	m_DlgBank.SetClientKernel(m_ClientKernelHelper.GetInterface());
+	m_DlgFramBank.SetClientKernel(m_ClientKernelHelper.GetInterface());
 	//加载资源
 	UpdateSkinResource();
 
@@ -745,18 +745,8 @@ void CGameFrameDlg::UserOnBankBT(BYTE Type)
 	if(Type!=2)
 		ShowInformation(TEXT("游戏中只能使用取钱功能！"),0,MB_ICONINFORMATION);
 
-	m_DlgBank.DestroyWindow();
-	//创建窗体
-	if ( m_DlgBank.m_hWnd == NULL )
-	{
-		m_DlgBank.Create(IDD_DLG_BANK, this);
-	}
-	//显示窗体
-	m_DlgBank.CenterWindow();
-	m_DlgBank.ShowWindow(SW_SHOW);
-	m_DlgBank.SetActiveWindow();
-	m_DlgBank.SetForegroundWindow();
-	m_DlgBank.SetBankType(Type);
+	m_DlgFramBank.DoModal();
+	m_DlgFramBank.SetBankType(Type);
 
 }
 //////////////////////////////////////////////////////////////////////////

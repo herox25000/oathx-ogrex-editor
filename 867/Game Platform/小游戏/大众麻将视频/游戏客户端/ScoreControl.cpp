@@ -61,7 +61,7 @@ void CScoreControl::RestorationData()
 }
 
 //设置积分
-void CScoreControl::SetScoreInfo(const tagScoreInfo & ScoreInfo, const tagWeaveInfo & WeaveInfo)
+void CScoreControl::SetScoreInfo(const GametagScoreInfo & ScoreInfo, const tagWeaveInfo & WeaveInfo)
 {
 	//设置变量
 	m_ScoreInfo=ScoreInfo;
