@@ -73,7 +73,8 @@ private:
 	virtual bool OnGameSceneMessage(BYTE cbGameStatus, bool bLookonOther, const void * pBuffer, WORD wDataSize);
 	//框架消息
 	virtual bool OnFrameMessage(WORD wSubCmdID, const void * pBuffer, WORD wDataSize);
-
+	//刷新下
+	virtual bool UpdateView();
 	//消息处理
 protected:
 	//游戏开始

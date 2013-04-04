@@ -147,7 +147,9 @@
 #define IDC_ALLOW_ENTER_ROOM            1111
 #define IDC_EDIT6                       1111
 #define IDC_BACNK_BTNOK                 1112
+#define IDC_EDIT_SFZ                    1112
 #define IDC_BANK_PLYNAME                1113
+#define IDC_EDIT_PHONE                  1113
 #define IDC_BANK_PLYNICK                1114
 #define IDC_BANK_BTNALL                 1115
 #define IDM_LOGON_PLAZA                 32772
@@ -161,7 +163,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        324
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1112
+#define _APS_NEXT_CONTROL_VALUE         1114
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

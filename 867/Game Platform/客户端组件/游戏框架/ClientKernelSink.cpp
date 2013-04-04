@@ -335,11 +335,10 @@ void __cdecl CClientKernelSink::OnEventUserScore(tagUserData * pUserData, WORD w
 {
 	//设置界面
 	m_GameFrameDlg.m_pGameFrameControl->UpdateUserItem(pUserData);
-	if (bLookonUser==false) m_GameFrameDlg.m_pGameFrameView->UpdateGameView(NULL);
-
+	if (bLookonUser==false)
+		m_GameFrameDlg.m_pGameFrameView->UpdateGameView(NULL);
 	//事件通知
 	m_GameFrameDlg.OnEventUserScore(pUserData,wChairID,bLookonUser);
-
 	return;
 }
 

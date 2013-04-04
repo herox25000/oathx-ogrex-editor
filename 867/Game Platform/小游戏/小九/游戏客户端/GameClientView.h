@@ -152,7 +152,7 @@ protected:
 	int								m_nRecordLast;						//最后记录
 
 	//状态变量
-protected:
+public:
 	WORD							m_wMeChairID;						//我的位置
 	WORD							m_cbWinnerSide;						//胜利玩家
 	WORD							m_cbWinnerFlash;					//胜利玩家
@@ -193,7 +193,7 @@ public:
 	CSkinButton						m_btnShengyin;						
 	CSkinButton						m_btnNoShengyin;
 	CSkinButton						m_btnQuqian;						
-	CSkinButton						m_btnCunqian;
+//	CSkinButton						m_btnCunqian;
 
 	JettonButton					m_JettonButton[7];
 	BOOL							m_JettonButtonPushDown;
@@ -336,8 +336,6 @@ public:
 	CString ChangNumber(int iNumber);
 	//计算所有下注总和
 	__int64 CalcAllJetton();
-	//设置银行按钮是否可用
-	void SetBankState(bool state);
 	//内联函数
 public:
 	//当前筹码

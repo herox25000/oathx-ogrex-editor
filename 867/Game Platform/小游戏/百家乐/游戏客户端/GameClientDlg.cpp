@@ -65,7 +65,6 @@ bool CGameClientDlg::InitGameFrame()
 {
 	//设置标题
 	SetWindowText(TEXT("百家乐"));
-
 	//设置图标
 	HICON hIcon=LoadIcon(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_MAINFRAME));
 	SetIcon(hIcon,TRUE);
@@ -334,6 +333,13 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 	return false;
 }
 
+//刷新下
+bool CGameClientDlg::UpdateView()
+{
+	UpdateButtonContron();
+	return true;
+}
+
 //游戏开始
 bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 {
@@ -347,8 +353,6 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	//设置状态
 	SetGameStatus(GS_PLAYING);
 	KillGameTimer(IDI_PLACE_JETTON);
-
-	m_GameClientView.SetBankState(false);
 	//更新控制
 	UpdateButtonContron();
 
@@ -466,8 +470,6 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	//庄家信息
 	if ( m_wCurrentBanker != INVALID_CHAIR )
 		m_GameClientView.SetBankerInfo(SwitchViewChairID(m_wCurrentBanker), pGameEnd->nBankerTime, pGameEnd->lBankerTotalScore);
-
-	m_GameClientView.SetBankState(true);
 	//更新控制
 	UpdateButtonContron();
 
@@ -525,13 +527,20 @@ void CGameClientDlg::UpdateButtonContron()
 {
 	if ((IsLookonMode()==false)&&(GetGameStatus()==GS_FREE) && m_wCurrentBanker != GetMeChairID() && m_wCurrentBanker != INVALID_CHAIR )
 	{
-
+		//得到庄家信息
+		const tagUserData* pBankerInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wCurrentBankerChairID);
+		if(pBankerInfo==NULL)
+			return;
+		//得到自己信息
+		const tagUserData* pMeInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wMeChairID);
+		if(pMeInfo == NULL)
+			return;
+		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.CalcAllJetton();
+		__int64 lLeaveScore=pMeInfo->lScore-m_lMeTieScore-m_lMeBankerScore-
+			m_lMePlayerScore-m_lMeBankerKingScore-m_lMePlayerKingScore-m_lMeTieSamePointScore;
+		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore);
 		//计算积分
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
-		__int64 lLeaveScore=m_lMeMaxScore-m_lMeTieScore-m_lMeBankerScore-
-			m_lMePlayerScore-m_lMeBankerKingScore-m_lMePlayerKingScore-m_lMeTieSamePointScore;
-
-		//lLeaveScore=min(lLeaveScore, m_lCellScore);
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{
@@ -1185,11 +1194,7 @@ void CGameClientDlg::DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner)
 
 LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
 {
-	if ( m_GameClientView.GetMeChairID() == m_GameClientView.m_wCurrentBankerChairID)
-		UserOnBankBT(TRUE);
-	else
-		UserOnBankBT(FALSE);
-
+	UserOnBankBT(2);
 	return 0;
 }
 

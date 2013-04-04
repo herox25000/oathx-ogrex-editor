@@ -152,10 +152,7 @@ BOOL CDlgBank::OnInitDialog()
 	m_TabBank.InsertItem(BANK_DLG_MODIFYLOGINPW,TEXT("修改登录密码"));
 	m_TabBank.SetCurSel(BANK_DLG_SAVE);
 	OnTcnSelchange(NULL, NULL);
-
-	if(!ConnectToServer())
-		OnCancel();
-	return TRUE; 
+	return FALSE; 
 }
 
 //销毁消息
@@ -166,8 +163,9 @@ void CDlgBank::OnClose()
 
 void CDlgBank:: OnCancel()
 {
-	m_BankSocket->CloseSocket();
-	DestroyWindow();
+	if(m_BankSocketHelper.GetInterface()!=NULL)
+		m_BankSocketHelper->CloseSocket();
+	CDialog::OnCancel();
 }
 //显示消息
 int CDlgBank::ShowMessageBox(LPCTSTR pszMessage)
@@ -207,22 +205,38 @@ CString CDlgBank::GetString(__int64 nNumber)
 	return strTemp;
 }
 
+//更新用户的分数
+void CDlgBank::UpdataUserScore(__int64 Score,__int64 BankScore)
+{
+	m_strGameGold = GetString(Score);
+	m_strBankGold = GetString(BankScore);
+}
+
+//设置socket指针
+bool CDlgBank::SetClientSocket(ITCPSocket* Socket)
+{
+	if(Socket == NULL)
+		return false;
+	m_BankSocket=Socket;
+	return true;
+}
+
 //socket 连接
 bool __cdecl CDlgBank::ConnectToServer()
 {
 	//创建组件
-	if (m_BankSocket.GetInterface()==NULL)
+	if (m_BankSocketHelper.GetInterface()==NULL)
 	{
 		//初始化内核
 		IUnknownEx * pIUnknownEx=QUERY_ME_INTERFACE(IUnknownEx);
 		try 
 		{
 			IUnknownEx * pIUnknownEx=(IUnknownEx *)QueryInterface(IID_IUnknownEx,VER_IUnknownEx);
-			if (m_BankSocket.CreateInstance()==false) 
+			if (m_BankSocketHelper.CreateInstance()==false) 
 			{
 				throw TEXT("网络组件创建失败");
 			}
-			if (m_BankSocket->SetTCPSocketSink(pIUnknownEx)==false) 
+			if (m_BankSocketHelper->SetTCPSocketSink(pIUnknownEx)==false) 
 			{
 				throw TEXT("网络组件回调接口设置失败");
 			}
@@ -233,6 +247,8 @@ bool __cdecl CDlgBank::ConnectToServer()
 			return false;
 		}
 	}
+
+	m_BankSocket=m_BankSocketHelper.GetInterface();
 
 	DWORD dwBankIP = g_GlobalUnits.m_ServerListManager.m_dwToolServerAddr;
 	WORD wBankPort = g_GlobalUnits.m_ServerListManager.m_wToolServerPort;
@@ -249,7 +265,6 @@ bool __cdecl CDlgBank::ConnectToServer()
 }
 
 //接口查询
-
 void * __cdecl CDlgBank::QueryInterface(const IID & Guid, DWORD dwQueryVer)
 {
 	QUERYINTERFACE(ITCPSocketSink,Guid,dwQueryVer);
@@ -264,7 +279,7 @@ bool __cdecl CDlgBank::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 	//错误处理
 	if (nErrorCode!=0)
 	{
-		ShowMessageBox("抱歉，此功能暂时不能使用！");
+		ShowMessageBox("抱歉，连接服务器失败，此功能暂时不能使用！");
 		return false;
 	}
 
@@ -288,6 +303,8 @@ bool __cdecl CDlgBank::OnEventTCPSocketRead(WORD wSocketID, CMD_Command Command,
 		return OnSocketMainUser(Command,pData,wDataSize);
 	case MDM_TOOLBOX:				
 		return OnSocketToolBox(Command,pData,wDataSize);
+	case MDM_GR_SYSTEM:
+		return OnSystemMessage(Command,pData,wDataSize);
 	}
 	return true;
 }
@@ -343,18 +360,28 @@ bool CDlgBank::OnSocketMainLogon(CMD_Command Command, void * pBuffer, WORD wData
 }
 
 //系统消息
-bool CDlgBank::OnSystemMessage(void * pData, WORD wDataSize)
+bool CDlgBank::OnSystemMessage(CMD_Command Command,void * pData, WORD wDataSize)
 {
-	//效验参数
-	CMD_GR_Message * pMessage=(CMD_GR_Message *)pData;
-	ASSERT(wDataSize>(sizeof(CMD_GR_Message)-sizeof(pMessage->szContent)));
-	if (wDataSize<=(sizeof(CMD_GR_Message)-sizeof(pMessage->szContent))) return false;
-	//消息处理
-	WORD wHeadSize=sizeof(CMD_GR_Message)-sizeof(pMessage->szContent);
-	ASSERT(wDataSize==(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR)));
-	if (wDataSize!=(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR))) return false;
-	pMessage->szContent[pMessage->wMessageLength-1]=0;
-	ShowMessageBox(pMessage->szContent);
+	ASSERT(Command.wMainCmdID==MDM_GR_SYSTEM);
+	switch (Command.wSubCmdID)
+	{
+	case SUB_GR_MESSAGE:		//系统消息
+		{
+			//效验参数
+			CMD_GR_Message * pMessage=(CMD_GR_Message *)pData;
+			ASSERT(wDataSize>(sizeof(CMD_GR_Message)-sizeof(pMessage->szContent)));
+			if (wDataSize<=(sizeof(CMD_GR_Message)-sizeof(pMessage->szContent))) return false;
+
+			//消息处理
+			WORD wHeadSize=sizeof(CMD_GR_Message)-sizeof(pMessage->szContent);
+			ASSERT(wDataSize==(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR)));
+			if (wDataSize!=(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR))) return false;
+			pMessage->szContent[pMessage->wMessageLength-1]=0;
+			if (pMessage->wMessageType&SMT_EJECT)
+				ShowMessageBox(pMessage->szContent);
+			return true;
+		}
+	}
 	return true;
 }
 
@@ -425,12 +452,8 @@ bool CDlgBank::OnSocketToolBox(CMD_Command Command, void * pData, WORD wDataSize
 	{
 	case SUB_TOOLBOX_QUERYUSERNAME:  //查询用户名返回
 		return OnQueryUserName(pData,wDataSize);
-	case SUB_TOOLBOX_BANKOPERATING: //银行操作完成
-		return OnBankTask(pData,wDataSize);
 	case SUB_TOOLBOX_TRANSFERMONEY: //转账
 		return OnTransferMoney(pData,wDataSize);
-	case SUB_TOOLBOX_MESSAGE:
-		return OnSystemMessage(pData,wDataSize);
 	}
 
 	return true;
@@ -476,24 +499,6 @@ bool CDlgBank::OnTransferMoney(void * pData, WORD wDataSize)
 
 	return true;
 }
-//银行操作完成处理
-bool CDlgBank::OnBankTask(void * pData, WORD wDataSize)
-{
-	ASSERT(wDataSize>=sizeof(CMD_TOOLBOX_BankTask_Ret));
-	if (wDataSize<sizeof(CMD_TOOLBOX_BankTask_Ret))
-		return false;
-	CMD_TOOLBOX_BankTask_Ret* pBankRet = (CMD_TOOLBOX_BankTask_Ret*)pData;
-	if (pBankRet->lErrorCode==0)
-	{
-		ShowMessageBox("操作成功！");
-	}
-	else
-	{
-		ShowMessageBox(pBankRet->szErrorDescribe);
-	}
-	return true;
-}
-
 
 
 //类型改变

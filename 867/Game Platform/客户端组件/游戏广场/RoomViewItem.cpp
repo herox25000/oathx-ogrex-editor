@@ -2429,6 +2429,16 @@ bool __cdecl CRoomViewItem::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 //网络读取消息
 bool __cdecl CRoomViewItem::OnEventTCPSocketRead(WORD wSocketID, CMD_Command Command, VOID * pData, WORD wDataSize)
 {
+	//先处理银行消息
+	if(MDM_GR_SYSTEM != Command.wMainCmdID)
+	{
+		CGameFrame *pGameFrame = (CGameFrame *)AfxGetMainWnd();
+		if(pGameFrame->m_DlgBank.m_hWnd != NULL )
+		{
+			pGameFrame->m_DlgBank.OnEventTCPSocketRead(wSocketID,Command,pData,wDataSize);
+		}
+	}
+
 	switch (Command.wMainCmdID)
 	{
 	case MDM_GR_LOGON:			//登录消息

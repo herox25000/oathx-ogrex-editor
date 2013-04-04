@@ -62,16 +62,19 @@ public:
 	TCHAR								m_szSpreader[NAME_LEN];			//电子邮箱
 	TCHAR								m_szAccounts[NAME_LEN];			//游戏帐号
 	TCHAR								m_szPassword[PASS_LEN];			//游戏密码
-	TCHAR								m_szBankPassword[PASS_LEN];			//游戏密码
+	TCHAR								m_szBankPassword[PASS_LEN];		//银行密码
+	TCHAR								m_szSFZ[PASS_LEN];				//身份证号码
+	TCHAR								m_szPhone[PASS_LEN];			//电话号码
+
 	//控件变量
 public:
 	CImageList							m_ImageList;
 	CComboBoxEx							m_FaceSelect;
 	CSkinButton							m_btLogon;						//登录按钮
 	CSkinButton							m_btCancel;						//取消按钮
-	CSkinHyperLink						m_LineRegWeb;					//网站注册
-	CSkinHyperLink						m_LineMainPage;					//游戏主页
-	CSkinHyperLink						m_LinePassWord;					//密码保护
+	//CSkinHyperLink						m_LineRegWeb;					//网站注册
+	//CSkinHyperLink						m_LineMainPage;					//游戏主页
+	//CSkinHyperLink						m_LinePassWord;					//密码保护
 
 	//函数定义
 public:
@@ -111,6 +114,9 @@ protected:
 	TCHAR								m_szAccounts[NAME_LEN];			//游戏帐号
 	TCHAR								m_szPassword[PASS_LEN];			//游戏密码
 	TCHAR								m_szBankPassword[PASS_LEN];		//银行密码
+	TCHAR								m_szSFZ[PASS_LEN];		//身份证
+	TCHAR								m_szPhone[PASS_LEN];		//电话
+
 	//位置变量
 protected:
 	INT									m_nFullWidth;					//全部宽度

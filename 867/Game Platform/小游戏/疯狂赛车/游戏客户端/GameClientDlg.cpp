@@ -356,6 +356,14 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 	return false;
 }
 
+//刷新下
+bool CGameClientDlg::UpdateView()
+{
+	UpdateButtonContron();
+	return true;
+}
+
+
 //游戏开始
 bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 {
@@ -556,9 +564,17 @@ void CGameClientDlg::UpdateButtonContron()
 {
 	if ((IsLookonMode()==false)&&(GetGameStatus()==GS_FREE) && m_wCurrentBanker != GetMeChairID() && m_wCurrentBanker != INVALID_CHAIR )
 	{
+		//得到庄家信息
+		const tagUserData* pBankerInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wCurrentBankerChairID);
+		if(pBankerInfo==NULL)
+			return;
+		//得到自己信息
+		const tagUserData* pMeInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wMeChairID);
+		if(pMeInfo == NULL)
+			return;
 		//计算积分
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
-		__int64 lLeaveScore=m_lMeMaxScore;
+		__int64 lLeaveScore=pMeInfo->lScore;
 
 		lLeaveScore-=m_lMeBigTigerScore;					//我买大虎总注
 		lLeaveScore-=m_lMeSmlTigerScore;					//我买小虎总注
@@ -568,7 +584,9 @@ void CGameClientDlg::UpdateButtonContron()
 		lLeaveScore-=m_lMeSmlHorseScore;					//我买小马总注
 		lLeaveScore-=m_lMeBigSnakeScore;					//我买大蛇总注
 		lLeaveScore-=m_lMeSmlSnakeScore;					//我买小蛇总注
-
+		
+		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.CalcAllJetton();
+		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore);
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{
@@ -642,17 +660,6 @@ void CGameClientDlg::UpdateButtonContron()
 			m_GameClientView.m_btCancelBanker.ShowWindow(SW_HIDE);
 			m_GameClientView.m_btApplyBanker.ShowWindow(SW_SHOW);
 		}
-	}
-
-	if ( m_wCurrentBanker != GetMeChairID() )
-	{
-		m_GameClientView.m_btGetMoney.EnableWindow(TRUE);
-		m_GameClientView.m_btStoreMoney.EnableWindow(TRUE);
-	}
-	else
-	{
-		m_GameClientView.m_btGetMoney.EnableWindow(TRUE);
-		m_GameClientView.m_btStoreMoney.EnableWindow(FALSE);
 	}
 
 	return;
@@ -1061,11 +1068,7 @@ BYTE CGameClientDlg::DeduceWinner()
 
 LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
 {
-	if ( m_GameClientView.GetMeChairID() == m_GameClientView.m_wCurrentBankerChairID)
-		UserOnBankBT(TRUE);
-	else
-		UserOnBankBT(FALSE);
-
+	UserOnBankBT(2);
 	return 0;
 }
 

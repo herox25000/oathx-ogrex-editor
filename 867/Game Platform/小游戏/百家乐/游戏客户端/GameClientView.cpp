@@ -176,7 +176,7 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btScoreMoveL.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_SCORE_MOVE_L);
 	m_btScoreMoveR.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_SCORE_MOVE_R);
 	m_btnQuqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
-	m_btnCunqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
+	//m_btnCunqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
 	//设置按钮
 	HINSTANCE hResInstance=AfxGetInstanceHandle();
 	m_btJetton10000000.SetButtonImage(IDB_BT_JETTON_10000000,hResInstance,false);
@@ -193,7 +193,7 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btScoreMoveL.SetButtonImage(IDB_BT_SCORE_MOVE_L,hResInstance,false);
 	m_btScoreMoveR.SetButtonImage(IDB_BT_SCORE_MOVE_R,hResInstance,false);
 	m_btnQuqian.SetButtonImage(IDB_BT_QUQIAN,hResInstance,false);
-	m_btnCunqian.SetButtonImage(IDB_BT_CUNQIAN,hResInstance,false);
+	//m_btnCunqian.SetButtonImage(IDB_BT_CUNQIAN,hResInstance,false);
 	return 0;
 }
 
@@ -293,8 +293,8 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 
 	DeferWindowPos(hDwp,m_btScoreMoveL,NULL,nWidth/2-203,nHeight/2+272,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btScoreMoveR,NULL,nWidth/2+302,nHeight/2+270,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnQuqian,NULL,nWidth/2+210,nHeight/2+170,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+290,nHeight/2+170,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btnQuqian,NULL,nWidth/2+290,nHeight/2+170,0,0,uFlags|SWP_NOSIZE);
+//	DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+210,nHeight/2+170,0,0,uFlags|SWP_NOSIZE);
 	//结束移动
 	EndDeferWindowPos(hDwp);
 
@@ -1748,8 +1748,11 @@ __int64 CGameClientView::GetMaxPlayerScore()
 	//其他区域
 	__int64 lOtherAreaScore = m_lAllTieScore + m_lAllTieSamePointScore + m_lAllBankerScore + m_lAllBankerKingScore;
 
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//最大下注
-	__int64 lMaxPlayerScore = lOtherAreaScore + m_lBankerTreasure;
+	__int64 lMaxPlayerScore = lOtherAreaScore + pBankData->lScore;
 	lMaxPlayerScore -= (m_lAllPlayerScore + m_lAllPlayerKingScore*2);
 
 	return lMaxPlayerScore;
@@ -1758,13 +1761,16 @@ __int64 CGameClientView::GetMaxPlayerScore()
 //最大下注
 __int64 CGameClientView::GetMaxPlayerKingScore()
 {
-	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) return 0;
+	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) 
+		return 0;
 
 	//其他区域
 	__int64 lOtherAreaScore = m_lAllTieScore + m_lAllTieSamePointScore + m_lAllBankerScore + m_lAllBankerKingScore;
-
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//最大下注
-	__int64 lMaxPlayerScore = lOtherAreaScore + m_lBankerTreasure;
+	__int64 lMaxPlayerScore = lOtherAreaScore + pBankData->lScore;
 	lMaxPlayerScore -= (m_lAllPlayerScore + m_lAllPlayerKingScore*2);
 	lMaxPlayerScore = min(lMaxPlayerScore/2, lMaxPlayerScore);
 
@@ -1774,13 +1780,17 @@ __int64 CGameClientView::GetMaxPlayerKingScore()
 //最大下注
 __int64 CGameClientView::GetMaxBankerScore()
 {
-	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) return 0;
+	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) 
+		return 0;
 
 	//其他区域
 	__int64 lOtherAreaScore = m_lAllTieScore + m_lAllPlayerScore + m_lAllTieSamePointScore + m_lAllPlayerKingScore;
 
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//最大下注
-	__int64 lMaxPlayerScore = lOtherAreaScore + m_lBankerTreasure;
+	__int64 lMaxPlayerScore = lOtherAreaScore + pBankData->lScore;
 	lMaxPlayerScore -= (m_lAllBankerScore + m_lAllBankerKingScore*2);
 
 	return lMaxPlayerScore;
@@ -1793,9 +1803,11 @@ __int64 CGameClientView::GetMaxBankerKingScore()
 
 	//其他区域
 	__int64 lOtherAreaScore = m_lAllTieScore + m_lAllPlayerScore + m_lAllTieSamePointScore + m_lAllPlayerKingScore;
-
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//最大下注
-	__int64 lMaxPlayerScore = lOtherAreaScore + m_lBankerTreasure;
+	__int64 lMaxPlayerScore = lOtherAreaScore + pBankData->lScore;
 	lMaxPlayerScore -= (m_lAllBankerScore + m_lAllBankerKingScore*2);
 	lMaxPlayerScore = min(lMaxPlayerScore/2, lMaxPlayerScore);
 
@@ -1810,8 +1822,11 @@ __int64 CGameClientView::GetMaxTieScore()
 	//返回积分
 	__int64 lReturnScore = m_lAllTieSamePointScore * 33 + m_lAllTieScore * 8;
 
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//可下积分
-	__int64 lMaxTieScore = (m_lBankerTreasure - lReturnScore)/8;
+	__int64 lMaxTieScore = (pBankData->lScore - lReturnScore)/8;
 
 	return lMaxTieScore;
 }
@@ -1819,13 +1834,17 @@ __int64 CGameClientView::GetMaxTieScore()
 //最大下注
 __int64 CGameClientView::GetMaxTieKingScore()
 {
-	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) return 0;
+	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) 
+		return 0;
 
 	//返回积分
 	__int64 lReturnScore = m_lAllTieSamePointScore * 33 + m_lAllTieScore * 8;
 
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//可下积分
-	__int64 lMaxTieScore =( m_lBankerTreasure - lReturnScore )/33;
+	__int64 lMaxTieScore =( pBankData->lScore - lReturnScore )/33;
 
 	return lMaxTieScore;
 }
@@ -1857,15 +1876,16 @@ void CGameClientView::DrawMeJettonNumber(CDC *pDC)
 	if ( 0 < m_lMeTieSamePointScore ) DrawNumberString(pDC,m_lMeTieSamePointScore,m_PointJetton[5].x,m_PointJetton[5].y+25, true);
 }
 
+//计算所有下注总和
+__int64 CGameClientView::CalcAllJetton()
+{
+	__int64 uAllScoreCount=0;
+	uAllScoreCount=m_lAllTieScore+m_lAllBankerScore+m_lAllPlayerScore+m_lAllTieSamePointScore+m_lAllBankerKingScore+m_lAllPlayerKingScore;
+	return uAllScoreCount;
+}
 void CGameClientView:: OnBank()
 {
 	AfxGetMainWnd()->SendMessage(IDM_ONBANK,0,0);
-}
-//设置银行按钮是否可用
-void CGameClientView ::SetBankState(bool state)
-{
-	m_btnCunqian.EnableWindow(state);
-	m_btnQuqian.EnableWindow(state);
 }
 //////////////////////////////////////////////////////////////////////////
 

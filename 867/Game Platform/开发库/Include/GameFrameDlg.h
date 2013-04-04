@@ -82,7 +82,8 @@ private:
 	virtual bool OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wDataSize)=NULL;
 	//游戏场景
 	virtual bool OnGameSceneMessage(BYTE cbGameStatus, bool bLookonOther, const void * pBuffer, WORD wDataSize)=NULL;
-
+	//刷新界面
+	virtual bool UpdateView()=NULL;
 	//特殊继承
 private:
 	//调整界面

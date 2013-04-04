@@ -328,6 +328,13 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 	return false;
 }
 
+//刷新下
+bool CGameClientDlg::UpdateView()
+{
+	UpdateButtonContron();
+	return true;
+}
+
 //游戏开始
 bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 {
@@ -341,7 +348,6 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	KillGameTimer(IDI_PLACE_JETTON);
 	//SetGameTimer(GetMeChairID(),IDI_SHOW_TIME,pGameStart->cbTimeLeave);
 	m_GameClientView.m_bJettonstate=false;
-	m_GameClientView.SetBankState(false);
 	//更新控制
 	UpdateButtonContron();
 	DispatchUserCard(pGameStart->cbTableCardArray[INDEX_BANKER],pGameStart->cbTableCardArray[INDEX_PLAYER1],
@@ -455,7 +461,6 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	if ( m_wCurrentBanker != INVALID_CHAIR )
 		m_GameClientView.SetBankerInfo(SwitchViewChairID(m_wCurrentBanker), pGameEnd->nBankerTime, pGameEnd->lBankerTotalScore);
 
-	m_GameClientView.SetBankState(true);
 	//更新控制
 	UpdateButtonContron();
 
@@ -522,11 +527,19 @@ void CGameClientDlg::UpdateButtonContron()
 {
 	if ((IsLookonMode()==false)&&(GetGameStatus()==GS_FREE) && m_wCurrentBanker != GetMeChairID() && m_wCurrentBanker != INVALID_CHAIR )
 	{
+		//得到庄家信息
+		const tagUserData* pBankerInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wCurrentBankerChairID);
+		if(pBankerInfo==NULL)
+			return;
+		//得到自己信息
+		const tagUserData* pMeInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wMeChairID);
+		if(pMeInfo == NULL)
+			return;
 		//计算积分
+		__int64 lLeaveScore=pMeInfo->lScore-m_lMeTianMenScore-m_lMeDaoMenScore-m_lMeShunMenScore-m_lMeYouJiaoScore-m_lMeZuoJiaoScore-m_lMeQiaoScore;
+		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.CalcAllJetton();
+		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore);
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
-		__int64 lLeaveScore=m_lMeMaxScore-m_lMeTianMenScore-m_lMeDaoMenScore-m_lMeShunMenScore-m_lMeYouJiaoScore-m_lMeZuoJiaoScore-m_lMeQiaoScore;
-
-		//lLeaveScore=min(lLeaveScore, m_lCellScore);
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{
@@ -1144,11 +1157,7 @@ LRESULT CGameClientDlg::OnCuoPai(WPARAM wParam, LPARAM lParam)
 
 LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
 {
-	if ( m_GameClientView.GetMeChairID() == m_GameClientView.m_wCurrentBankerChairID)
-		UserOnBankBT(TRUE);
-	else
-		UserOnBankBT(FALSE);
-
+	UserOnBankBT(2);
 	return 0;
 }
 

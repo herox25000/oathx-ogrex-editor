@@ -292,7 +292,7 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btnShengyin.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_SHENGYIN);
 	m_btnNoShengyin.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_SHENGYIN);
 	m_btnQuqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
-	m_btnCunqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
+//	m_btnCunqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
 
 	//设置按钮
 	HINSTANCE hResInstance=AfxGetInstanceHandle();
@@ -306,7 +306,7 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btnShengyin.SetButtonImage(IDB_BT_SHENGYIN,hResInstance,false);
 	m_btnNoShengyin.SetButtonImage(IDB_BT_NOSHENGYIN,hResInstance,false);
 	m_btnQuqian.SetButtonImage(IDB_BT_QUQIAN,hResInstance,false);
-	m_btnCunqian.SetButtonImage(IDB_BT_CUNQIAN,hResInstance,false);
+	//m_btnCunqian.SetButtonImage(IDB_BT_CUNQIAN,hResInstance,false);
 		
 
 	return 0;
@@ -406,7 +406,7 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btnShengyin,NULL,nWidth/2+290,nHeight/2+160,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btnNoShengyin,NULL,nWidth/2+290,nHeight/2+160,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btnQuqian,NULL,nWidth/2+210,nHeight/2+195,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+290,nHeight/2+195,0,0,uFlags|SWP_NOSIZE);
+	//DeferWindowPos(hDwp,m_btnCunqian,NULL,nWidth/2+290,nHeight/2+195,0,0,uFlags|SWP_NOSIZE);
 	//结束移动
 	EndDeferWindowPos(hDwp);
 
@@ -1839,7 +1839,8 @@ bool CGameClientView::DrawAlphaRect(CDC* pDC, LPRECT lpRect, COLORREF clr, FLOAT
 //最大下注
 __int64 CGameClientView::GetMaxPlayerScore()
 {
-	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) return 0;
+	if ( m_wCurrentBankerChairID == INVALID_CHAIR )
+		return 0;
 
 	//其他区域
 	__int64 lAllAreaScore = m_lAllTieScore + 
@@ -1848,9 +1849,11 @@ __int64 CGameClientView::GetMaxPlayerScore()
 		m_lAllBankerKingScore+
 		m_lAllPlayerScore+
 		m_lAllPlayerKingScore;
-
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//最大下注
-	__int64 lMaxPlayerScore =m_lBankerTreasure-lAllAreaScore;
+	__int64 lMaxPlayerScore =pBankData->lScore-lAllAreaScore;
 
 	return lMaxPlayerScore;
 }
@@ -1876,9 +1879,11 @@ __int64 CGameClientView::GetMaxBankerScore()
 	//其他区域
 	__int64 lAllAreaScore = m_lAllTieScore + m_lAllTieSamePointScore + m_lAllBankerScore + m_lAllBankerKingScore+m_lAllPlayerScore+m_lAllPlayerKingScore;
 
-
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
 	//最大下注
-	__int64 lMaxPlayerScore =m_lBankerTreasure-lAllAreaScore;
+	__int64 lMaxPlayerScore =pBankData->lScore-lAllAreaScore;
 
 	return lMaxPlayerScore;
 }
@@ -1902,11 +1907,11 @@ __int64 CGameClientView::GetMaxTieScore()
 	if ( m_wCurrentBankerChairID == INVALID_CHAIR ) return 0;
 
 	__int64 lAllAreaScore = m_lAllTieScore + m_lAllTieSamePointScore + m_lAllBankerScore + m_lAllBankerKingScore+m_lAllPlayerScore+m_lAllPlayerKingScore;
-	__int64 lMaxPlayerScore =m_lBankerTreasure-lAllAreaScore;
-
-	__int64 lMaxTieScore = lMaxPlayerScore;
-
-	return lMaxTieScore;
+	const tagUserData* pBankData = GetUserInfo(m_wCurrentBankerChairID);
+	if(pBankData == NULL)
+		return 0;
+	__int64 lMaxPlayerScore =pBankData->lScore-lAllAreaScore;
+	return lMaxPlayerScore;
 }
 //
 ////最大下注
@@ -2090,9 +2095,3 @@ __int64 CGameClientView::CalcAllJetton()
 	return uAllScoreCount;
 };
 
-//设置银行按钮是否可用
-void CGameClientView ::SetBankState(bool state)
-{
-	m_btnCunqian.EnableWindow(state);
-	m_btnQuqian.EnableWindow(state);
-}

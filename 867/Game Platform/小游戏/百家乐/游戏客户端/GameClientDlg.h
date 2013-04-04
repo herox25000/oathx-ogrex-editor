@@ -75,6 +75,8 @@ private:
 	virtual bool OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wDataSize);
 	//游戏场景
 	virtual bool OnGameSceneMessage(BYTE cbGameStatus, bool bLookonOther, const void * pBuffer, WORD wDataSize);
+	//刷新下
+	virtual bool UpdateView();
 	//取消消息
 	virtual void OnCancel();
 
@@ -98,7 +100,7 @@ protected:
 	bool OnSubGameScore(const void * pBuffer, WORD wDataSize);
 
 	//功能函数
-protected:
+public:
 	//更新控制
 	void UpdateButtonContron();
 	//派发扑克

@@ -332,6 +332,13 @@ struct CMD_TOOLBOX_TransferMoney_Ret
 	TCHAR								szErrorDescribe[256];			//错误说明
 };
 
+enum BANKTASK
+{
+	BANKTASK_QUERY=0, //查询银行金币
+	BANKTASK_DEPOSIT=1, //存钱
+	BANKTASK_WITHDRAW=2,//取钱
+};
+
 //银行
 struct CMD_TOOLBOX_BankTask
 {

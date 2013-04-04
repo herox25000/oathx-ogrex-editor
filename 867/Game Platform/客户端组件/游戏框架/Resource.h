@@ -24,22 +24,30 @@
 #define IDC_LOOKON                      8005
 #define IDC_BUTTON1                     8006
 #define IDC_CONTROL                     8006
-#define IDC_BANK						8007
+#define IDC_BT_OK                       8006
+#define IDC_BANK                        8007
+#define IDC_EDIT_GOLD                   8007
+#define IDC_EDIT_BANKPW                 8008
+#define IDC_STATIC_GOLD                 8009
 #define IDC_EXCHANGE_CHARM_VALUE        8010
+#define IDC_STATIC_BANKGOLD             8010
 #define IDD_FRAME_CONTROL               8011
+#define IDC_BUTTON2                     8011
+#define IDC_BT_ALL                      8011
 #define IDB_USER_STATUS                 8012
 #define IDC_CHARM_VALUE                 8013
 #define IDC_GOLD_VALUE                  8014
 #define IDC_EXCHANGE_GOLD_VALUE         8015
 #define IDC_REMAIN_CHARM_VALUE          8016
+#define IDD_DLG_BANK                    8110
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        8110
+#define _APS_NEXT_RESOURCE_VALUE        8111
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         8007
+#define _APS_NEXT_CONTROL_VALUE         8012
 #define _APS_NEXT_SYMED_VALUE           8000
 #endif
 #endif

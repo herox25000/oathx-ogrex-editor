@@ -19,7 +19,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 };
 
-class CDlgBank : public CSkinDialogEx,ITCPSocketSink
+class CDlgBank : public CSkinDialogEx,ITCPSocketSink 
 {
 public:
 	CDlgBank();
@@ -43,17 +43,12 @@ public:
 		OPT_GET,	// 取出
 		OPT_PTN,	// 赠送
 	};	
-	enum BANKTASK
-	{
-		BANKTASK_QUERY=0,
-		BANKTASK_DEPOSIT=1,
-		BANKTASK_WITHDRAW=2,
-	};
 	// 获取操作类似
 	WORD					GetOptType() const;
 	void					SetOptType(WORD wType);
 protected:
-	CTCPSocketHelper		m_BankSocket;						//网络连接
+	CTCPSocketHelper		m_BankSocketHelper;					//网络连接
+	ITCPSocket*				m_BankSocket;						//网络连接
 	CTabCtrlBank			m_TabBank;
 	CSkinButton				m_btOK;								//确定按钮
 	CSkinButton				m_btAll;							//全部按钮
@@ -79,6 +74,8 @@ public:
 
 	//消息函数
 public:
+	//设置socket指针
+	bool SetClientSocket(ITCPSocket* Socket);
 	//socket 连接
 	bool __cdecl ConnectToServer();
 	//发送登陆函数
@@ -96,16 +93,18 @@ private:
 	bool OnSocketSubUserCome(CMD_Command Command, void * pData, WORD wDataSize);
 	//用户分数
 	bool OnSocketSubScore(CMD_Command Command, void * pData, WORD wDataSize);
+	//系统消息
+	bool OnSystemMessage( CMD_Command Command,void * pData, WORD wDataSize);
 	//查询用户名
 	bool OnQueryUserName(void * pData, WORD wDataSize);
 	//转账完成处理
 	bool OnTransferMoney(void * pData, WORD wDataSize);
 	//银行操作完成处理
 	bool OnBankTask(void * pData, WORD wDataSize);
-	//系统消息
-	bool OnSystemMessage( void * pData, WORD wDataSize);
 	//功能函数
 public:
+	//更新用户的分数
+	void UpdataUserScore(__int64 Score,__int64 BankScore);
 	//显示消息
 	int ShowMessageBox(LPCTSTR pszMessage);
 	//将64位数字显示为带逗号金币

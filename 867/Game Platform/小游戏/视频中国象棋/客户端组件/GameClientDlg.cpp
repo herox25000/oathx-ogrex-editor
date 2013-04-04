@@ -495,7 +495,11 @@ bool CGameClientDlg::PerformMoveChess(BYTE cbXSourcePos, BYTE cbYSourcePos, BYTE
 
 	return true;
 }
-
+//刷新下
+bool CGameClientDlg::UpdateView()
+{
+	return true;
+}
 //游戏开始
 bool CGameClientDlg::OnSubGameStart(const VOID * pData, WORD wDataSize)
 {

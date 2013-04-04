@@ -62,7 +62,7 @@ protected:
 	__int64							m_lMeSmlSnakeScore;					//我买小蛇总注
 
 	//全体下注
-protected:
+public:
 	__int64							m_lAllBigTigerScore;				//买大虎总注
 	__int64							m_lAllSmlTigerScore;				//买小虎总注
 	__int64							m_lAllBigBogScore;					//买大狗总注
@@ -85,7 +85,7 @@ protected:
 	int								m_nRecordLast;						//最后记录
 
 	//状态变量
-protected:
+public:
 	WORD							m_wMeChairID;						//我的位置
 	BYTE							m_cbWinnerSide;						//胜利玩家
 	BYTE							m_cbWinnerFlash;					//胜利玩家
@@ -134,7 +134,7 @@ public:
 	CSkinButton						m_btApplyDown;						//下拉庄家列表
 
 	CSkinButton						m_btGetMoney;						//取款按钮
-	CSkinButton						m_btStoreMoney;						//存款按钮
+	//CSkinButton						m_btStoreMoney;						//存款按钮
 
 	//控件变量
 public:
@@ -183,6 +183,8 @@ private:
 
 	//功能函数
 public:
+	//计算所有下注总和
+	__int64 CalcAllJetton();
 	//设置信息
 	void SetMeMaxScore(__int64 lMeMaxScore);
 	//设置信息
