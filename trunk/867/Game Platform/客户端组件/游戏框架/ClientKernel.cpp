@@ -810,7 +810,7 @@ bool CClientKernel::OnIPCUser(const IPC_Head * pHead, const void * pIPCBuffer, W
 			UserData.lLoveliness=pUserInfoHead->lLoveliness;
 			UserData.dwMasterRight=pUserInfoHead->dwMasterRight;
 			UserData.lScore=pUserInfoHead->UserScoreInfo.lScore;
-			UserData.lGameGold=pUserInfoHead->UserScoreInfo.lGameGold;
+			//UserData.lGameGold=pUserInfoHead->UserScoreInfo.lGameGold;
 			UserData.lInsureScore=pUserInfoHead->UserScoreInfo.lInsureScore;
 			UserData.lWinCount=pUserInfoHead->UserScoreInfo.lWinCount;
 			UserData.lLostCount=pUserInfoHead->UserScoreInfo.lLostCount;
@@ -878,7 +878,6 @@ bool CClientKernel::OnIPCUser(const IPC_Head * pHead, const void * pIPCBuffer, W
 					}
 				}
 			}
-
 			//增加用户
 			ActiveUserItem(&UserData);
 
@@ -1148,7 +1147,7 @@ bool CClientKernel::UpdateUserItem(DWORD dwUserID, const tagUserScore * pUserSco
 
 	//设置数据
 	pUserData->lScore=pUserScore->lScore;
-	pUserData->lGameGold=pUserScore->lGameGold;
+	//pUserData->lGameGold=pUserScore->lGameGold;
 	pUserData->lInsureScore=pUserScore->lInsureScore;
 	pUserData->lWinCount=pUserScore->lWinCount;
 	pUserData->lLostCount=pUserScore->lLostCount;

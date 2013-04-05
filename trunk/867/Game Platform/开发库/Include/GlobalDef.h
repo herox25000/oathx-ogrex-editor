@@ -215,7 +215,7 @@ struct tagLevelItem
 struct tagUserScore
 {
 	__int64								lScore;								//用户分数
-	__int64								lGameGold;							//游戏金币//
+	//__int64								lGameGold;							//游戏金币//
 	__int64								lInsureScore;						//存储金币
 	LONG								lWinCount;							//胜利盘数
 	LONG								lLostCount;							//失败盘数
@@ -258,8 +258,6 @@ struct tagUserInfoHead
 	tagUserScore						UserScoreInfo;						//积分信息
 
 	//扩展信息
-	//LONG								lInsureScore;						//消费金币
-	//LONG								lGameGold;							//游戏金币
 	DWORD								dwCustomFaceVer;					//上传头像
 	DWORD								dwPropResidualTime[PROPERTY_COUNT];	//道具时间
 };
@@ -287,7 +285,7 @@ struct tagUserData
 
 	//用户积分
 	__int64								lInsureScore;						//消费金币
-	__int64								lGameGold;							//游戏金币
+	//__int64								lGameGold;							//游戏金币
 	__int64								lScore;								//用户分数
 	LONG								lWinCount;							//胜利盘数
 	LONG								lLostCount;							//失败盘数

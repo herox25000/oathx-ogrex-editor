@@ -258,7 +258,7 @@ bool CDataBaseSink::OnRequestLogon(DWORD dwContextID, VOID * pData, WORD wDataSi
 		//读取游戏信息
 		LogonSuccess.lScore=m_GameScoreDBAide.GetValue_LONGLONG(TEXT("Score"));
 		LogonSuccess.lInsureScore=m_GameScoreDBAide.GetValue_LONGLONG(TEXT("InsureScore"));
-		LogonSuccess.lGameGold=m_GameScoreDBAide.GetValue_LONGLONG(TEXT("GameGold"));
+		//LogonSuccess.lGameGold=m_GameScoreDBAide.GetValue_LONGLONG(TEXT("GameGold"));
 		LogonSuccess.lWinCount=m_GameScoreDBAide.GetValue_LONG(TEXT("WinCount"));
 		LogonSuccess.lLostCount=m_GameScoreDBAide.GetValue_LONG(TEXT("LostCount"));
 		LogonSuccess.lDrawCount=m_GameScoreDBAide.GetValue_LONG(TEXT("DrawCount"));
@@ -857,7 +857,7 @@ LONG CDataBaseSink::SPLeaveGameServer(DWORD dwUserID, DWORD dwPlayTimeCount,
 		m_GameScoreDBAide.ResetParameter();
 		m_GameScoreDBAide.AddParameter(TEXT("@dwUserID"),dwUserID);
 		m_GameScoreDBAide.AddParameter(TEXT("@lScore"),UserScore.lScore);
-		m_GameScoreDBAide.AddParameter(TEXT("@lGameGold"),UserScore.lGameGold);
+		m_GameScoreDBAide.AddParameter(TEXT("@lGameGold"),UserScore.lScore);
 		m_GameScoreDBAide.AddParameter(TEXT("@lInsureScore"),UserScore.lInsureScore);
 		m_GameScoreDBAide.AddParameter(TEXT("@lLoveliness"),lLoveliness);
 		m_GameScoreDBAide.AddParameter(TEXT("@lRevenue"),lRevenue);

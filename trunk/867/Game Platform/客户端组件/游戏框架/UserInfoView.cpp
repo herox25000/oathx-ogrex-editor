@@ -203,9 +203,9 @@ VOID CUserInfoView::OnPaint()
 				{
 					//输出信息
 					if ( pGameAttribute->wGameGenre == GAME_GENRE_GOLD )
-						_sntprintf(szString,CountArray(szString),TEXT("游戏币：%ld"),m_pCurrentUserData->lScore);
+						_sntprintf(szString,CountArray(szString),TEXT("游戏币：%I64d"),m_pCurrentUserData->lScore);
 					else
-						_sntprintf(szString,CountArray(szString),TEXT("积分：%ld"),m_pCurrentUserData->lScore);
+						_sntprintf(szString,CountArray(szString),TEXT("积分：%I64d"),m_pCurrentUserData->lScore);
 					BufferDC.DrawText(szString,lstrlen(szString),&rcString,DT_VCENTER|DT_SINGLELINE|DT_END_ELLIPSIS);
 
 					break;

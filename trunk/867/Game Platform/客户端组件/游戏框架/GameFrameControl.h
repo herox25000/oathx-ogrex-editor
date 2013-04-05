@@ -62,7 +62,7 @@ public:
 	CSkinButton							m_btGameRule;					//游戏规则
 	CSkinButton							m_btGameOption;					//游戏设置
 //	CSkinButton							m_btGameQuit;					//游戏退出
-	CSkinButton							m_btBank;						//银行按钮
+//	CSkinButton							m_btBank;						//银行按钮
 
 	//控件变量
 public:
@@ -157,8 +157,6 @@ protected:
 	afx_msg void OnBnClickedRule();
 	//游戏退出
 	afx_msg void OnBnClickedQuit();
-	//银行
-	afx_msg void OnBnClickedBank();
 	//游戏声音
 	afx_msg void OnBnClickedSound();
 	//游戏旁观

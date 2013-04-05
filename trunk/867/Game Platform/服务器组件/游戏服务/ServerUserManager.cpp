@@ -150,11 +150,11 @@ bool __cdecl CServerUserItem::WriteScore(tagScoreInfo & ScoreInfo, DWORD dwPlayT
 	m_lRevenue+=ScoreInfo.lRevenue;
 	m_ScoreModify.lScore+=ScoreInfo.lScore;
 	m_ServerUserData.UserScoreInfo.lScore+=ScoreInfo.lScore;
-	if(m_wServerType==GAME_GENRE_GOLD)
-	{
-		m_ScoreModify.lGameGold+=ScoreInfo.lScore;
-		m_ServerUserData.UserScoreInfo.lGameGold+=ScoreInfo.lScore;
-	}
+	//if(m_wServerType==GAME_GENRE_GOLD)
+	//{
+	//	m_ScoreModify.lScore+=ScoreInfo.lScore;
+	//	m_ServerUserData.UserScoreInfo.lScore+=ScoreInfo.lScore;
+	//}
 
 	//”√ªß Ù–‘
 	if ((ScoreInfo.ScoreKind!=enScoreKind_Service)&&(ScoreInfo.ScoreKind!=enScoreKind_Present))

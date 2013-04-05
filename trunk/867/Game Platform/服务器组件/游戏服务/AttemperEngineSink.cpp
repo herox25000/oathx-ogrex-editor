@@ -741,6 +741,7 @@ bool __cdecl CAttemperEngineSink::OnEventTimer(DWORD dwTimerID, WPARAM wBindPara
 
 				return true;
 			}
+
 		case IDI_SEND_SYSTEM_MESSAGE:		//系统消息
 			{
 				//获取目录
@@ -890,6 +891,8 @@ bool __cdecl CAttemperEngineSink::OnEventTimer(DWORD dwTimerID, WPARAM wBindPara
 
 				return true;
 			}
+
+
 		}
 
 		return false;
@@ -1091,7 +1094,7 @@ bool CAttemperEngineSink::OnDBLogonSuccess(DWORD dwContextID, VOID * pData, WORD
 
 	//消费金币
 	ServerUserData.UserScoreInfo.lInsureScore=pLogonSuccess->lInsureScore;
-	ServerUserData.UserScoreInfo.lGameGold=pLogonSuccess->lGameGold;
+	ServerUserData.UserScoreInfo.lScore=pLogonSuccess->lScore;
 
 	//状态信息
 	ServerUserData.cbUserStatus=US_FREE;
@@ -3650,11 +3653,11 @@ bool CAttemperEngineSink::OnEventBankStorage(const void * pData, WORD wDataSize,
 
 	//类型转换
 	CMD_GF_BankStorage *pBankStorage= (CMD_GF_BankStorage*)pData;
-	__int64 lGameGold = pServerUserData->UserScoreInfo.lGameGold;
+	__int64 lScore = pServerUserData->UserScoreInfo.lScore;
 
 	//效验数据
-	ASSERT(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lGameGold);
-	if(!(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lGameGold))return false;
+	ASSERT(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lScore);
+	if(!(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lScore))return false;
 
 	//密码效验
 	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankStorage->szPassword)!=0)
@@ -3789,7 +3792,7 @@ bool CAttemperEngineSink::IsPropertyUseRight(INT nPropertyID,IServerUserItem *pI
 }
 
 //修改金币
-void CAttemperEngineSink::ModifyGameGold(IServerUserItem * pIServerUserItem,LONG lGameGold)
+void CAttemperEngineSink::ModifyGameGold(IServerUserItem * pIServerUserItem,LONG lScore)
 {
 	//用户信息
 	ASSERT(pIServerUserItem!=NULL);
@@ -3797,20 +3800,15 @@ void CAttemperEngineSink::ModifyGameGold(IServerUserItem * pIServerUserItem,LONG
 	tagUserScore *pScoreModify = pIServerUserItem->GetUserScoreModifyInfo();
 
 	//修改金币
-	pServerUserData->UserScoreInfo.lGameGold += lGameGold;
-	pScoreModify->lGameGold +=lGameGold;
+	pServerUserData->UserScoreInfo.lScore += lScore;
+	pScoreModify->lScore +=lScore;
 
 	//金币房间
 	if(m_pGameServiceOption->wServerType == GAME_GENRE_GOLD)
 	{
-		pServerUserData->UserScoreInfo.lScore += lGameGold;
-		pScoreModify->lScore +=lGameGold;
-
 		//重新设置
 		pServerUserData->UserScoreInfo.lScore += pServerUserData->lStorageScore;
 		pServerUserData->lStorageScore=0L;
-		ASSERT(pServerUserData->UserScoreInfo.lGameGold==pServerUserData->UserScoreInfo.lScore);
-
 		//存储积分
 		if ( m_pGameServiceOption->lRestrictScore>0L && pServerUserData->UserScoreInfo.lScore>m_pGameServiceOption->lRestrictScore )
 		{
