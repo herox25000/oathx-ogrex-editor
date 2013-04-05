@@ -120,7 +120,7 @@ public:
 	//功能控件
 public:
 	CSkinButton						m_btTableRule;						//桌子密码
-	CSkinButton						m_btBank;							//银行按钮
+//	CSkinButton						m_btBank;							//银行按钮
 	CSkinButton						m_btAutoSit;						//加入按钮
 	CSkinButton						m_btFindUser;						//查找按钮
 	CSkinButton						m_btQuitRoom;						//退出按钮
@@ -454,8 +454,6 @@ protected:
 protected:
 	//桌子密码
 	afx_msg void OnBnClickeTableRule();
-	//银行按钮
-	afx_msg void OnBnClickedBank();
 	//加入按钮
 	afx_msg void OnBnClickedAutoSit();
 	//查找按钮

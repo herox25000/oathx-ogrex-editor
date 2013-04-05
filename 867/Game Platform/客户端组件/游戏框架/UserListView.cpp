@@ -625,7 +625,7 @@ LPCTSTR CUserListView::GetDisplayText(tagUserData * pUserData, WORD wColumnPos)
 		}
 	case DTP_GAME_GOLD:			//游戏金币
 		{
-			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%I64d"),pUserData->lGameGold);
+			_snprintf(szBuffer,sizeof(szBuffer),TEXT("%I64d"),pUserData->lScore);
 			return szBuffer;
 		}
 	case DTP_LOVE_LINESS:		//用户魅力

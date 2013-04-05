@@ -978,9 +978,9 @@ void CFlowerSetting::UpdateView()
 	LONG lMePrice = pMeUserData->cbMemberOrder ? lMemberPrice : lNormalPrice;
 	__int64 lMeScore = pMeUserData->lInsureScore;
 	if ( lMeScore < lMePrice )
-		m_strGoldDescribe.Format(TEXT("您的银行存款：%ld，请先存款后再购买！"), lMeScore);
+		m_strGoldDescribe.Format(TEXT("您的银行存款：%I64d，请先存款后再购买！"), lMeScore);
 	else
-		m_strGoldDescribe.Format(TEXT("您的银行存款：%ld，购买道具后，存款剩余：%ld"), lMeScore, lMeScore-lMePrice);
+		m_strGoldDescribe.Format(TEXT("您的银行存款：%I64d，购买道具后，存款剩余：%ld"), lMeScore, lMeScore-lMePrice);
 
 	//更新变量
 	UpdateData(FALSE);

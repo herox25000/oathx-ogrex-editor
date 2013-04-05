@@ -63,6 +63,7 @@ struct tagDataBaseSinkParameter
 #define DBR_GR_MODIFY_NICKNAME_OUT   		116							//修改昵称
 #define DBR_GR_BANK_TASK_OUT				117							//存取钱操作
 #define DBR_GR_QUERYUSERNAME_OUT			118
+
 //赠送鲜花
 struct DBR_GR_SendGift
 {
@@ -202,7 +203,7 @@ struct DBR_GR_LogonSuccess
 	//积分信息
 	__int64								lScore;							//用户分数
 	__int64								lInsureScore;					//存储金币
-	__int64								lGameGold;						//游戏金币
+//	__int64								lGameGold;						//游戏金币
 	LONG								lWinCount;						//胜利盘数
 	LONG								lLostCount;						//失败盘数
 	LONG								lDrawCount;						//和局盘数

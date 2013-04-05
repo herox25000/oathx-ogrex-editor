@@ -369,7 +369,7 @@ protected:
 	//使用权限
 	bool IsPropertyUseRight(INT nPropertyID,IServerUserItem *pIServerUserItem,IServerUserItem *pTargetUserItem);
 	//修改金币
-	void ModifyGameGold(IServerUserItem * pIServerUserItem,LONG lGameGold);
+	void ModifyGameGold(IServerUserItem * pIServerUserItem,LONG lScore);
 	//修改帐款
 	void ModifyBankStorageGold(IServerUserItem * pIServerUserItem, LONG lStorageCount);
 	//消费金币

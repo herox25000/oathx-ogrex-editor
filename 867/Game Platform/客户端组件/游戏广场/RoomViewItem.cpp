@@ -51,7 +51,6 @@ BEGIN_MESSAGE_MAP(CRoomViewItem, CDialog)
 	ON_WM_SHOWWINDOW()
 	ON_MESSAGE(WM_HIT_EXPMESSTION,	OnHitExpression)
 	ON_BN_CLICKED(IDC_TABLERULE,OnBnClickeTableRule)
-	ON_BN_CLICKED(IDC_BANK,	OnBnClickedBank)
 	ON_BN_CLICKED(IDC_AUTO_SIT,	OnBnClickedAutoSit)
 	ON_BN_CLICKED(IDC_FIND_USER, OnBnClickedFindUser)
 	ON_BN_CLICKED(IDC_QUIT_ROOM,	OnBnClickedQuitRoom)
@@ -232,7 +231,7 @@ void CRoomViewItem::DoDataExchange(CDataExchange * pDX)
 	DDX_Control(pDX, IDC_VOR_SPLITER, m_VorSplitter);
 	DDX_Control(pDX, IDC_CHAT_MESSAGE, m_ChatMessage);
 	DDX_Control(pDX, IDC_AUTO_SIT, m_btAutoSit);
-	DDX_Control(pDX, IDC_BANK,m_btBank);
+	//DDX_Control(pDX, IDC_BANK,m_btBank);
 	DDX_Control(pDX, IDC_TABLERULE,m_btTableRule);
 	DDX_Control(pDX, IDC_FIND_USER, m_btFindUser);
 	DDX_Control(pDX, IDC_CHAT_OBJECT, m_ChatObject);
@@ -923,19 +922,7 @@ void CRoomViewItem::OnBnClickeTableRule()
 	((CGameFrame*)AfxGetMainWnd())->ShowSystemOption();
 }
 
-//银行按钮
-void CRoomViewItem::OnBnClickedBank()
-{
-	//获取用户
-	tagGlobalUserData &GlobalUserData = g_GlobalUnits.GetGolbalUserData();
-	IUserItem *pMeUserItem = m_ClientUserManager.SearchUserByUserID(GlobalUserData.dwUserID);
-	tagUserData *pMeUserData = pMeUserItem->GetUserData();
 
-	//显示银行
-	ShowBankStorageDlg(NULL,m_ClientSocket.GetInterface(),pMeUserData);
-
-	return;
-}
 
 //加入按钮
 void CRoomViewItem::OnBnClickedAutoSit()
@@ -1516,7 +1503,7 @@ bool CRoomViewItem::UpdateSkinResource()
 	//设置按钮
 	m_btTableRule.SetButtonImage(GetServerViewRes().uBtTableRule,hInstance,false);
 	m_btAutoSit.SetButtonImage(GetServerViewRes().uBtAutoJoin,hInstance,false);
-	m_btBank.SetButtonImage(GetServerViewRes().uBtBank,hInstance,false);
+	//m_btBank.SetButtonImage(GetServerViewRes().uBtBank,hInstance,false);
 	m_btFindUser.SetButtonImage(GetServerViewRes().uBtSearchUser,hInstance,false);
 	m_btQuitRoom.SetButtonImage(GetServerViewRes().uBtQuitRoom,hInstance,false);
 	//m_btPhrase.SetButtonImage(GetServerViewRes().uBtCleanScreen,hInstance,false);
@@ -2151,8 +2138,8 @@ void CRoomViewItem::RectifyControl(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btQuitRoom,NULL,rcVorSplitter.left-rcButton.Width()-m_ImageInfoTable.nRBorder-12,5,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btAutoSit,NULL,rcVorSplitter.left-rcButton.Width()*2-m_ImageInfoTable.nRBorder-20,5,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btFindUser,NULL,rcVorSplitter.left-rcButton.Width()*3-m_ImageInfoTable.nRBorder-28,5,rcButton.Width(),rcButton.Height(),uFlags);
-	DeferWindowPos(hDwp,m_btBank,NULL,rcVorSplitter.left-rcButton.Width()*4-m_ImageInfoTable.nRBorder-36,5,rcButton.Width(),rcButton.Height(),uFlags);
-	DeferWindowPos(hDwp,m_btTableRule,NULL,rcVorSplitter.left-rcButton.Width()*5-m_ImageInfoTable.nRBorder-44,5,rcButton.Width(),rcButton.Height(),uFlags);
+//	DeferWindowPos(hDwp,m_btBank,NULL,rcVorSplitter.left-rcButton.Width()*4-m_ImageInfoTable.nRBorder-36,5,rcButton.Width(),rcButton.Height(),uFlags);
+	DeferWindowPos(hDwp,m_btTableRule,NULL,rcVorSplitter.left-rcButton.Width()*4-m_ImageInfoTable.nRBorder-36,5,rcButton.Width(),rcButton.Height(),uFlags);
 
 	EndDeferWindowPos(hDwp);
 
@@ -2215,7 +2202,7 @@ bool CRoomViewItem::SendTableUser(IUserItem * pIUserItem, CIPCSendCopyData * pSe
 	pUserInfoHead->cbMemberOrder=pUserData->cbMemberOrder;
 	pUserInfoHead->cbMasterOrder=pUserData->cbMasterOrder;
 	pUserInfoHead->UserScoreInfo.lScore=pUserData->lScore;
-	pUserInfoHead->UserScoreInfo.lGameGold=pUserData->lGameGold;
+	//pUserInfoHead->UserScoreInfo.lGameGold=pUserData->lGameGold;
 	pUserInfoHead->UserScoreInfo.lInsureScore=pUserData->lInsureScore;
 	pUserInfoHead->UserScoreInfo.lWinCount=pUserData->lWinCount;
 	pUserInfoHead->UserScoreInfo.lLostCount=pUserData->lLostCount;
@@ -3151,7 +3138,6 @@ bool CRoomViewItem::OnSocketSubUserCome(CMD_Command Command, void * pData, WORD 
 	UserData.cbUserStatus=pUserInfoHead->cbUserStatus;
 	UserData.dwUserRight=pUserInfoHead->dwUserRight;
 	UserData.dwMasterRight=pUserInfoHead->dwMasterRight;
-	//UserData.lInsureScore = pUserInfoHead->lInsureScore;
 
 	//管理判断
 	if ((pUserInfoHead->dwUserID==g_GlobalUnits.GetGolbalUserData().dwUserID)&&(pUserInfoHead->cbMasterOrder>=2))
@@ -3171,7 +3157,7 @@ bool CRoomViewItem::OnSocketSubUserCome(CMD_Command Command, void * pData, WORD 
 		UserData.dwGroupID=pUserInfoHead->dwGroupID;
 		UserData.lLoveliness=pUserInfoHead->lLoveliness;
 		UserData.lScore=pUserInfoHead->UserScoreInfo.lScore;
-		UserData.lGameGold=pUserInfoHead->UserScoreInfo.lGameGold;
+		//UserData.lGameGold=pUserInfoHead->UserScoreInfo.lGameGold;
 		UserData.lInsureScore=pUserInfoHead->UserScoreInfo.lInsureScore;
 		UserData.lWinCount=pUserInfoHead->UserScoreInfo.lWinCount;
 		UserData.lLostCount=pUserInfoHead->UserScoreInfo.lLostCount;
@@ -3245,10 +3231,12 @@ bool CRoomViewItem::OnSocketSubUserCome(CMD_Command Command, void * pData, WORD 
 	{
 		const tagCompanionItem * pCompanionItem=NULL;
 		pCompanionItem=g_GlobalUnits.m_CompanionManager->SearchCompanionItem(UserData.dwUserID);
-		if (pCompanionItem!=NULL) UserData.cbCompanion=pCompanionItem->Companion;
+		if (pCompanionItem!=NULL) 
+			UserData.cbCompanion=pCompanionItem->Companion;
 		pIUserItem=m_ClientUserManager.ActiveUserItem(UserData);
 	}
-	else OnUserItemUpdate(pIUserItem);
+	else 
+		OnUserItemUpdate(pIUserItem);
 
 	//加入用户信息
 	ASSERT(pIUserItem!=NULL);
@@ -3470,7 +3458,8 @@ bool CRoomViewItem::OnSocketSubScore(CMD_Command Command, void * pData, WORD wDa
 		//更新分数
 		tagUserData * pUserData=pIUserItem->GetUserData();
 		pUserData->lLoveliness = pUserScore->lLoveliness;
-		pUserData->lGameGold = pUserScore->UserScore.lGameGold;
+		//pUserData->lGameGold = pUserScore->UserScore.lGameGold;
+		pUserData->lScore = pUserScore->UserScore.lScore;
 		pUserData->lInsureScore = pUserScore->UserScore.lInsureScore;
 		m_ClientUserManager.UpdateUserItemScore(pIUserItem,&pUserScore->UserScore);
 

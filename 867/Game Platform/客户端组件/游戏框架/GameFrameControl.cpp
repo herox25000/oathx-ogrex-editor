@@ -26,7 +26,6 @@ BEGIN_MESSAGE_MAP(CGameFrameControl, CDialog)
 	ON_WM_SIZE()
 	ON_WM_PAINT()
 	ON_WM_ERASEBKGND()
-	ON_BN_CLICKED(IDC_BANK, OnBnClickedBank)
 	ON_BN_CLICKED(IDC_SOUND, OnBnClickedSound)
 	ON_BN_CLICKED(IDC_LOOKON, OnBnClickedLookon)
 	ON_BN_CLICKED(IDC_GAME_RULE, OnBnClickedRule)
@@ -131,7 +130,7 @@ void CGameFrameControl::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SOUND, m_btSound);
 	DDX_Control(pDX, IDC_LOOKON, m_btLookOn);
 	DDX_Control(pDX, IDC_GAME_RULE, m_btGameRule);
-	DDX_Control(pDX, IDC_BANK, m_btBank);
+	//DDX_Control(pDX, IDC_BANK, m_btBank);
 	//DDX_Control(pDX, IDC_GAME_QUIT, m_btGameQuit);
 	DDX_Control(pDX, IDC_GAME_OPTION, m_btGameOption);
 	DDX_Control(pDX, IDC_CHAT_OBJECT, m_ChatObject);
@@ -371,7 +370,7 @@ bool CGameFrameControl::UpdateSkinResource()
 	m_btGameRule.SetButtonImage(GameFrameImage.uBtGameRule,hInstance,false);
 	//m_btGameQuit.SetButtonImage(IDB_BT_GAME_QUIT,hInstance,false);
 	m_btGameOption.SetButtonImage(GameFrameImage.uBtGameOption,hInstance,false);
-	m_btBank.SetButtonImage(GameFrameImage.uBtBank,hInstance,false);
+	//m_btBank.SetButtonImage(GameFrameImage.uBtBank,hInstance,false);
 	return true;
 }
 
@@ -463,15 +462,6 @@ void CGameFrameControl::OnBnClickedSound()
 	}
 
 	return;
-}
-
-//银行按钮
-void CGameFrameControl::OnBnClickedBank()
-{
-	//获取用户
-	tagUserData *pMeUserData = m_pIClientKernel->GetMeUserInfo();
-	//显示银行
-	ShowBankStorageDlg(m_pIClientKernel,NULL,pMeUserData);
 }
 
 //游戏旁观
@@ -681,12 +671,12 @@ void CGameFrameControl::RectifyControl(int nWidth, int nHeight)
 	//功能按钮
 	m_btSound.GetWindowRect(&rcButton);
 	int nBeginPos=5,nEndPos=nWidth-3;
-	int nButtonSpace=(nEndPos-nBeginPos-5*rcButton.Width())/4,nYPosButton=nComminutePos+5;
+	int nButtonSpace=(nEndPos-nBeginPos-4*rcButton.Width())/4,nYPosButton=nComminutePos+5;
 	DeferWindowPos(hDwp,m_btSound,NULL,nBeginPos,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btLookOn,NULL,nBeginPos+nButtonSpace+rcButton.Width(),nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btGameRule,NULL,nBeginPos+nButtonSpace*2+rcButton.Width()*2,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btGameOption,NULL,nBeginPos+nButtonSpace*3+rcButton.Width()*3,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
-	DeferWindowPos(hDwp,m_btBank,NULL,nBeginPos+nButtonSpace*4+rcButton.Width()*4,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
+	//DeferWindowPos(hDwp,m_btBank,NULL,nBeginPos+nButtonSpace*4+rcButton.Width()*4,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
 
 	//DeferWindowPos(hDwp,m_btGameQuit,NULL,nBeginPos+nButtonSpace*4+rcButton.Width()*4,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
 	//m_btGameQuit.ShowWindow(SW_HIDE);

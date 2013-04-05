@@ -55,7 +55,7 @@ void CBankStorage::OnBnClickedOk()
 	if (IsButtonSelected(IDC_DRAWOUT) && (m_lInCount <= 0 || m_lInCount > m_lStorageGold ))
 	{
 		CString strMessage;
-		if(m_lStorageGold>0)strMessage.Format(TEXT("你输入的游戏币值必须在1和%ld之间"), m_lStorageGold);
+		if(m_lStorageGold>0)strMessage.Format(TEXT("你输入的游戏币值必须在1和%I64d之间"), m_lStorageGold);
 		else strMessage.Format(TEXT("你的存储游戏币数目为0,不能进行提取操作!"));
 		ShowInformationEx(strMessage,0 ,MB_ICONINFORMATION,TEXT("系统消息")) ;
 
@@ -68,7 +68,7 @@ void CBankStorage::OnBnClickedOk()
 	if (IsButtonSelected(IDC_STORAGE) && (m_lInCount <= 0 || m_lInCount > m_lGameGold ))
 	{
 		CString strMessage;
-		if(m_lGameGold>0)strMessage.Format(TEXT("你输入的游戏币值必须在1和%ld之间"),m_lGameGold );
+		if(m_lGameGold>0)strMessage.Format(TEXT("你输入的游戏币值必须在1和%I64d之间"),m_lGameGold );
 		else strMessage.Format(TEXT("你的当前游戏币数目为0,不能进行存储操作!"));
 		ShowInformationEx(strMessage,0 ,MB_ICONINFORMATION,TEXT("系统消息")) ;
 
@@ -163,7 +163,7 @@ void CBankStorage::UpdateView()
 	}
 
 	//设置信息
-	m_lGameGold=((m_pMeUserData->lGameGold<0)?0:m_pMeUserData->lGameGold);
+	m_lGameGold=((m_pMeUserData->lScore<0)?0:m_pMeUserData->lScore);
 	m_lStorageGold=m_pMeUserData->lInsureScore;
 
 	UpdateData(FALSE);
