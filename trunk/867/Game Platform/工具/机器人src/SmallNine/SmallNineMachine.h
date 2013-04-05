@@ -21,7 +21,7 @@ public:
 	//游戏消息
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL,
 		WORD wDataSize=0);
-
+	virtual bool			OnBanker();
 public:
 	virtual bool			SendApplyBanker(bool bUp);
 	virtual	void			ResetGame();
@@ -37,7 +37,6 @@ protected:
 	BOOL					m_bAddJetton;
 
 	INT64					m_nBankerScore;
-	INT64					m_nBankerWinScore;	//庄家成绩
 	WORD					m_wUpBankerCount;
 	INT64					m_nApplyBankerCondition;
 	BOOL					m_bStart;
@@ -45,6 +44,7 @@ protected:
 
 	INT64					m_nMePlaceScore;
 	INT64					m_nMeWinScore;
+	INT64					m_BankerTotalScore;
 
 //////////////////////////////////////////////////////////////////////////
 protected:

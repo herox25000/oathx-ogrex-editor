@@ -106,7 +106,6 @@ void					RobotManager::Update(float fElapsed)
 						it->second);
 				}
 				break;
-
 			case ROBOT_INVALID:
 				{
 					// 优先移除重连对象

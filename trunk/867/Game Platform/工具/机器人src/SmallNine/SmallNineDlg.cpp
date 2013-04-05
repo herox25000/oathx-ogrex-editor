@@ -129,10 +129,10 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT11,	"50000000");
 	SetDlgItemText(IDC_EDIT12,	"100000");
 
-	SetDlgItemText(IDC_EDIT13,	"1");
-	SetDlgItemText(IDC_EDIT14,	"2");
-	SetDlgItemText(IDC_EDIT15,	"3");
-	SetDlgItemText(IDC_EDIT16,	"5");
+	SetDlgItemText(IDC_EDIT13,	"20000000");
+	SetDlgItemText(IDC_EDIT14,	"10000000");
+	SetDlgItemText(IDC_EDIT15,	"20000000");
+	SetDlgItemText(IDC_EDIT16,	"10000000");
 	SetDlgItemText(IDC_EDIT17,	"10");
 	SetDlgItemText(IDC_EDIT18,	"10");
 	SetDlgItemText(IDC_EDIT19,	"20");
@@ -296,13 +296,13 @@ void CSmallNineDlg::OnBnClickedOk()
 		m_AppConfig.nMinScore		= _atoi64(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT13, buffer);
-		m_AppConfig.nTenMillionRate	= atoi(buffer.GetBuffer());
+		m_AppConfig.nSaveMax		= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT14, buffer);
-		m_AppConfig.nFiveMillionRate= atoi(buffer.GetBuffer());
+		m_AppConfig.nSaveScore		= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT15, buffer);
-		m_AppConfig.nOneMillionRate	= atoi(buffer.GetBuffer());
+		m_AppConfig.nGetMax			= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT16, buffer);
-		m_AppConfig.nFiveLakhRate	= atoi(buffer.GetBuffer());
+		m_AppConfig.nGetScore		= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT17, buffer);
 		m_AppConfig.nTenLakhRate	= atoi(buffer.GetBuffer());	
 		GetDlgItemText(IDC_EDIT18, buffer);
@@ -413,7 +413,7 @@ void CSmallNineDlg::OnEnChangeEdit13()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT13, buffer);
-	m_AppConfig.nTenMillionRate	= atoi(buffer.GetBuffer());
+	m_AppConfig.nSaveMax	= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -421,7 +421,7 @@ void CSmallNineDlg::OnEnChangeEdit14()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT14, buffer);
-	m_AppConfig.nFiveMillionRate= atoi(buffer.GetBuffer());
+	m_AppConfig.nSaveScore = _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -429,7 +429,7 @@ void CSmallNineDlg::OnEnChangeEdit15()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT15, buffer);
-	m_AppConfig.nOneMillionRate	= atoi(buffer.GetBuffer());
+	m_AppConfig.nGetMax		= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -437,7 +437,7 @@ void CSmallNineDlg::OnEnChangeEdit16()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT16, buffer);
-	m_AppConfig.nFiveLakhRate	= atoi(buffer.GetBuffer());
+	m_AppConfig.nGetScore	= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
