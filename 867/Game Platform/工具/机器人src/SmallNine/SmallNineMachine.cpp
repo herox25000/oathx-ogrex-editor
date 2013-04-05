@@ -33,7 +33,6 @@ void			SmallNineMachine::ResetGame()
 	m_bStart				= 0;
 	m_nMePlaceScore			= 0;
 	m_nMeWinScore			= 0;
-	m_nBankerWinScore		= 0;
 	m_bApplyBankerSend		= FALSE;
 	m_nJettonTime			= MAX_PLACE_JETTON_TIME;
 }
@@ -457,22 +456,22 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 							SendApplyBanker(false);
 						}
 
-						if (m_nBankerWinScore > 0)
+						if (pGameEnd->lBankerTotalScore > 0)
 						{
-							if (m_nBankerWinScore > c.nMaxWinScore)
+							if (pGameEnd->lBankerTotalScore > c.nMaxWinScore)
 							{
 								SendApplyBanker(false);
 							}
 							else
 							{
-								int nRate = m_nBankerWinScore * 100 / c.nMaxWinScore;
+								int nRate = pGameEnd->lBankerTotalScore * 100 / c.nMaxWinScore;
 								if (rand() % 100 < nRate)
 								{
 									SendApplyBanker(false);
 								}
 							}
 						}
-						else if (m_nBankerWinScore < 0 && m_nBankerWinScore <= (-c.nUpBankerLoseScore))
+						else if (pGameEnd->lBankerTotalScore < 0 && pGameEnd->lBankerTotalScore <= (-c.nUpBankerLoseScore))
 						{
 							SendApplyBanker(false);
 						}
@@ -490,15 +489,20 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			// 重置机器人当前压的钱
 			m_nMePlaceScore	= 0;
 			m_bAddJetton	= FALSE;
-			
+
+			if (m_nMeWinScore >= c.nSaveMax)
+			{
+				SitUp();
+			}
+
 			// 若机器人的金钱少于最小积分
 			if (m_nMeMaxScore <= c.nMinScore)
 			{
 				// 移除排庄队列中的自己
-				BankerManager::GetSingleton().Remove(m_dwUserID);
+				BankGetScore(c.nGetScore);
 
 				CString szMessage;
-				szMessage.Format("Robot[%d] Gold less than %I64d automatic logoff", m_dwUserID, c.nMinScore);
+				szMessage.Format("Robot[%d] get score %I64d", m_dwUserID, c.nGetScore);
 				ShowMessageBox(szMessage, TraceLevel_Warning);
 				
 				// 设置机器人断线
@@ -520,11 +524,20 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			CMD_S_GameScore* pGameScore = (CMD_S_GameScore *)pBuffer;
 			if (pGameScore)
 			{
-				m_nMeWinScore += pGameScore->lMeGameScore;
+				m_nMeWinScore		+= pGameScore->lMeGameScore;
 			}
 		}
 		break;
 	}
 	return true;
+}
+
+bool		SmallNineMachine::OnBanker()
+{
+	// 获取庄配置
+	const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();	
+	BankSaveScore(c.nSaveScore);
+
+	return __super::OnBanker();
 }
 

@@ -230,6 +230,10 @@ void			IRobot::SitDown()
 
 void			IRobot::SitUp()
 {
+	CString szMessage;
+	szMessage.Format("Robot[%d] request sit up", m_dwUserID);
+
+	ShowMessageBox(szMessage, TraceLevel_Debug);
 	m_ClientSocket->SendData(MDM_GR_USER,SUB_GR_USER_STANDUP_REQ);
 }
 
@@ -389,6 +393,24 @@ bool __cdecl	IRobot::OnEventTCPSocketRead(WORD wSocketID, CMD_Command Command, V
 		}
 	case MDM_GR_SYSTEM:			//系统消息
 		{
+			switch(Command.wSubCmdID)
+			{
+			case SUB_GR_MESSAGE:
+				{
+					//效验参数
+					CMD_GR_Message * pMessage = (CMD_GR_Message *)pBuffer;
+					if (wDataSize<=(sizeof(CMD_GR_Message)-sizeof(pMessage->szContent)))
+						return 0;
+					//消息处理
+					WORD wHeadSize=sizeof(CMD_GR_Message)-sizeof(pMessage->szContent);
+					if (wDataSize!=(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR))) 
+						return 0;
+					pMessage->szContent[pMessage->wMessageLength-1]=0;
+					ShowMessageBox(pMessage->szContent, TraceLevel_Debug);
+				}
+				break;
+			}
+
 			return true;
 		}
 	case MDM_GR_SERVER_INFO:	//房间信息
@@ -420,7 +442,7 @@ bool			IRobot::OnSocketMainLogon(CMD_Command Command, void* pBuffer, WORD wDataS
 			szMessage.Format("Robot[%i], Check In Game", (int)m_dwUserID);
 			ShowMessageBox(szMessage);
 
-			SitDown();
+			//SitDown();
 		}
 		break;
 
@@ -564,7 +586,7 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			}
 			else
 			{
-				if (pUserStatus->cbUserStatus == US_FREE)
+				if (pUserStatus->cbUserStatus == US_FREE && pUserStatus->dwUserID == m_dwUserID)
 				{
 					OnBanker();
 				}
@@ -574,21 +596,28 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 				pUserInfo->wChairID		= wNowChairID;
 				pUserInfo->cbUserStatus = cbNowStatus;
 
-				if (pUserStatus->cbUserStatus == US_SIT && pUserStatus->dwUserID == m_dwUserID 
-					&& wNowTableID != INVALID_TABLE && ((wNowTableID!=wLastTableID) || (wNowChairID!=wLastChairID)))
+				if (pUserStatus->dwUserID == m_dwUserID && 
+					wNowTableID != INVALID_TABLE && ((wNowTableID!=wLastTableID) || (wNowChairID!=wLastChairID)))
 				{
-					// 更新当前保存信息
-					memcpy(m_pAppUser, 
-						pUserInfo, sizeof(SUserInfo));
+					switch( pUserStatus->cbUserStatus )
+					{
+					case US_SIT:
+						{
+							// 更新当前保存信息
+							memcpy(m_pAppUser, 
+								pUserInfo, sizeof(SUserInfo));
 
-					// 设置为坐下状态
-					SetState(ROBOT_SITDOWN);
+							// 设置为坐下状态
+							SetState(ROBOT_SITDOWN);
 
-					CString szMessage;
-					szMessage.Format("Robot[%i], sit down ok", 
-						(int)m_dwUserID);
+							CString szMessage;
+							szMessage.Format("Robot[%i], sit down ok", 
+								(int)m_dwUserID);
 
-					ShowMessageBox(szMessage);	
+							ShowMessageBox(szMessage);
+						}
+						break;
+					}
 				}
 			}
 		}
@@ -808,5 +837,7 @@ bool			IRobot::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wDataSiz
 
 bool			IRobot::OnBanker()
 {
+	SetState(ROBOT_SITUP);
+
 	return true;
 }
