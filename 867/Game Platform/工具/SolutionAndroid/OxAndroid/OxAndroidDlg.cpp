@@ -2,7 +2,8 @@
 #include "OxAndroid.h"
 #include "OxAndroidDlg.h"
 #include "AndroidTimer.h"
-#include "AndroidManager.h"
+#include ".\oxandroiddlg.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -39,10 +40,10 @@ END_MESSAGE_MAP()
 COxAndroidDlg::COxAndroidDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(COxAndroidDlg::IDD, pParent)
 {
-	m_hIcon			= AfxGetApp()->LoadIcon(IDR_MAINFRAME);
-	m_fElapsed		= 0;
-	m_fLostTime		= 0;
-	
+	m_hIcon				= AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_fElapsed			= 0;
+	m_fLostTime			= 0;
+	m_pAndroidManager	= NULL;
 }
 
 void COxAndroidDlg::DoDataExchange(CDataExchange* pDX)
@@ -131,8 +132,12 @@ HCURSOR COxAndroidDlg::OnQueryDragIcon()
 
 void COxAndroidDlg::OnBnClickedOk()
 {
-	m_pOx4Factory	= new O2::Ox4Factory(0);
-	new O2::AndroidManager(100, 200, 60, "192.168.1.106", 12061, "d746e3733dff946b0db30eb3fb0069c4", m_pOx4Factory);
+	if (m_pAndroidManager == NULL)
+	{
+		m_pOx4Factory		= new O2::Ox4Factory(0);
+		m_pAndroidManager	= new O2::AndroidManager(100, 200, 1, "192.168.1.106", 12061, "d746e3733dff946b0db30eb3fb0069c4", m_pOx4Factory);
+	}
+	
 	SetTimer(IDT_ANDROID_UPDATE, 30, NULL);
 }
 
@@ -153,4 +158,12 @@ void COxAndroidDlg::OnTimer(UINT nIDEvent)
 	}
 
 	CDialog::OnTimer(nIDEvent);
+}
+
+void COxAndroidDlg::OnCancel()
+{
+	delete m_pOx4Factory;
+	delete m_pAndroidManager;
+
+	CDialog::OnCancel();
 }
