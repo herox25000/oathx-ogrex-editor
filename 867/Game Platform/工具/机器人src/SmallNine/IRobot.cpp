@@ -228,6 +228,11 @@ void			IRobot::SitDown()
 	m_ClientSocket->SendData(MDM_GF_FRAME,SUB_GF_INFO,&Info,sizeof(Info));
 }
 
+void			IRobot::SitUp()
+{
+	m_ClientSocket->SendData(MDM_GR_USER,SUB_GR_USER_STANDUP_REQ);
+}
+
 void			IRobot::AddGameUser(SUserInfo* pUserInfo)
 {
 	if (m_pGameManager)
@@ -559,6 +564,11 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			}
 			else
 			{
+				if (pUserStatus->cbUserStatus == US_FREE)
+				{
+					OnBanker();
+				}
+
 				//更新状态
 				pUserInfo->wTableID		= wNowTableID;
 				pUserInfo->wChairID		= wNowChairID;
@@ -760,12 +770,10 @@ bool			IRobot::OnSocketToolBox(CMD_Command Command, void* pBuffer, WORD wDataSiz
 				CString szMessage;
 				szMessage.Format("[%d][%d]%s操作金钱 %I64d", m_dwUserID, m_pAppUser->dwGameID, Text.GetBuffer(), pBankRet->lMoneyNumber);
 				ShowMessageBox(szMessage, TraceLevel_Debug);
-
-				MessageBox(NULL, "操作成功！", NULL, NULL);
 			}
 			else
 			{
-				MessageBox(NULL, pBankRet->szErrorDescribe, NULL, NULL);
+				ShowMessageBox(pBankRet->szErrorDescribe, TraceLevel_Exception);
 			}
 		}
 		break;
@@ -780,7 +788,7 @@ bool			IRobot::OnSocketToolBox(CMD_Command Command, void* pBuffer, WORD wDataSiz
 			if (wDataSize!=(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR))) 
 				return 0;
 			pMessage->szContent[pMessage->wMessageLength-1]=0;
-			MessageBox(NULL, pMessage->szContent, NULL, NULL);
+			ShowMessageBox(pMessage->szContent, TraceLevel_Exception);
 		}
 		break;
 	}
@@ -794,6 +802,11 @@ bool			IRobot::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wData
 }
 
 bool			IRobot::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wDataSize)
+{
+	return true;
+}
+
+bool			IRobot::OnBanker()
 {
 	return true;
 }
