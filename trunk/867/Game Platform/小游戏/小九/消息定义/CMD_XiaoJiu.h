@@ -62,6 +62,8 @@ struct tagServerGameRecord
 #define SUB_S_SEND_RECORD			106									//游戏记录
 #define SUB_S_PLACE_JETTON_FAIL		107									//下注失败
 #define SUB_S_GAME_SCORE			108									//发送积分
+#define SUB_S_JETTON_CHANGE			109									//下注数改变
+#define SUB_S_StartJetton			110									//开始下注
 
 //////////////////////////////////////////////////////////////////////////
 //客户端命令结构
@@ -191,6 +193,12 @@ struct CMD_S_GameStart
 	BYTE							cbTimeLeave;						//剩余时间
 };
 
+//开始下注
+struct CMD_S_JettonStart
+{
+	BYTE							cbTimeLeave;						//剩余时间
+};
+
 //用户下注
 struct CMD_S_PlaceJetton
 {
@@ -247,6 +255,18 @@ struct CMD_S_GameScore
 	__int64							lMeBankerKingScore;					//庄天王注
 };
 
+//押注玩家强退信息改变
+struct CMD_S_JettonChange
+{
+	__int64							lTianMenScore;							//扣除天门
+	__int64							lDaoMenScore;							//扣除倒门
+	__int64							lShunMenScore;							//扣除顺门
+	__int64							lZhuangSocre;							//
+	__int64							lKexiaSocre;							//已经下注的总值	
+};
+
+//////////////////////////////////////////////////////////////////////////
+//客户端命令结构
 
 //用户下注
 struct CMD_C_PlaceJetton
