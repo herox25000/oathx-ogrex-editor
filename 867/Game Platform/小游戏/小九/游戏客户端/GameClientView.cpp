@@ -184,6 +184,9 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 
 	m_JettonButtonPushDown	= FALSE;
 
+	m_nJettonScoreDec[0] = 0;
+	m_nJettonScoreDec[1] = 0;
+	m_nJettonScoreDec[2] = 0;
 
 	//加载位图
 	HINSTANCE hInstance=AfxGetInstanceHandle();
@@ -252,7 +255,7 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_bCanGo=false;
 	m_bSet=false;
 	m_bAutoCard=true;
-	m_bJettonstate=true;
+	m_bstate=0;
 	m_fWinCount[0]=0.00f;
 	m_fWinCount[1]=0.00f;
 	m_fWinCount[2]=0.00f;
@@ -611,7 +614,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 
 			//累计数字
 			ASSERT(pJettonInfo->cbJettonIndex<JETTON_COUNT);
-			lScoreCount+=lScoreJetton[pJettonInfo->cbJettonIndex];
+			lScoreCount += lScoreJetton[pJettonInfo->cbJettonIndex];
 
 			//绘画界面
 			m_ImageJettonView.AlphaDrawImage(pDC,pJettonInfo->nXPos+m_PointJetton[i].x-SizeJettonItem.cx/2-30,
@@ -622,7 +625,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		if (lScoreCount>0L)
 			DrawNumberString(pDC,lScoreCount,m_PointJetton[i].x,m_PointJetton[i].y);
 
-		uAllScoreCount += lScoreCount;
+		uAllScoreCount += (lScoreCount - m_nJettonScoreDec[i]);
 	}
 
 	//我的下注
@@ -637,15 +640,15 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			DrawUserTimer(pDC,nWidth/2-110,nHeight/2-300,wUserTimer);
 	}
 	//绘制阶段(时钟下面的字)
-	bool bDispatchCard = (0< m_DrawCard[4].GetCardCount() || 0 < m_DrawCard[0].GetCardCount() || 0 < m_DrawCard[1].GetCardCount() || m_DrawCard[2].GetCardCount() || m_DrawCard[3].GetCardCount()) ? true : false;
+//	bool bDispatchCard = (0< m_DrawCard[4].GetCardCount() || 0 < m_DrawCard[0].GetCardCount() || 0 < m_DrawCard[1].GetCardCount() || m_DrawCard[2].GetCardCount() || m_DrawCard[3].GetCardCount()) ? true : false;
 	CImageHandle ImageHandleTimeFlag(&m_ImageTimeFlag);
 	int nTimeFlagWidth = m_ImageTimeFlag.GetWidth()/3;
-	if ( bDispatchCard ) 
+	if ( m_bstate == Status_DisCard ) 
 		m_ImageTimeFlag.AlphaDrawImage(pDC,nWidth/2-140, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 2 * nTimeFlagWidth, 0,RGB(255,0,255));
-	else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
+	else if ( m_bstate == Status_Jetton )
 		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 	else 
-		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-140, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 0, 0,RGB(255,0,255));
 
 
 	//绘画用户
@@ -667,7 +670,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	}
 
 	// 如果是下注状态
-	if(m_bJettonstate )
+	if(m_bstate == Status_Jetton)
 	{
 		//绘制下注进度条
 		int iStatrX=nWidth/2-130;
@@ -679,17 +682,20 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		//进度条
 		m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,m_pngp.GetWidth(),m_pngp.GetHeight()/2,0,0,m_pngp.GetWidth(),m_pngp.GetHeight()/2);
 		
-		const tagUserData* pBankerInfo = GetUserInfo(m_wCurrentBankerChairID);
-		if (pBankerInfo)
+		if (m_wCurrentBankerChairID < MAX_CHAIR)
 		{
-			__int64 uCurrntReamtionScore = pBankerInfo->lScore - uAllScoreCount;			
-			float fProportion	= uCurrntReamtionScore*1.0f / pBankerInfo->lScore;
-			int nOffset			= floor(m_pngp.GetWidth()*fProportion);
-			m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,nOffset,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,nOffset,m_pngp.GetHeight()/2);
-			//可下注
-			DrawNumberString(pDC, uCurrntReamtionScore, nWidth/2,iStatrY+10,true);
-			//已经下注
-			DrawNumberString(pDC, uAllScoreCount, nWidth/2,iStatrY+60,true);
+			const tagUserData* pBankerInfo = GetUserInfo(m_wCurrentBankerChairID);
+			if (pBankerInfo)
+			{
+				__int64 uCurrntReamtionScore = pBankerInfo->lScore - uAllScoreCount;			
+				float fProportion	= uCurrntReamtionScore*1.0f / pBankerInfo->lScore;
+				int nOffset			= floor(m_pngp.GetWidth()*fProportion);
+				m_pngp.DrawImage(pDC,iStatrX,iStatrY+15,nOffset,m_pngp.GetHeight()/2,0,m_pngp.GetHeight()/2,nOffset,m_pngp.GetHeight()/2);
+				//可下注
+				DrawNumberString(pDC, uCurrntReamtionScore, nWidth/2,iStatrY+10,true);
+				//已经下注
+				DrawNumberString(pDC, uAllScoreCount, nWidth/2,iStatrY+60,true);
+			}
 		}
 	}
 
@@ -2088,10 +2094,56 @@ __int64 CGameClientView::CalcAllJetton()
 			tagJettonInfo * pJettonInfo=&m_JettonInfoArray[i][j];
 			//累计数字
 			ASSERT(pJettonInfo->cbJettonIndex<JETTON_COUNT);
-			lScoreCount+=lScoreJetton[pJettonInfo->cbJettonIndex];
+			lScoreCount += lScoreJetton[pJettonInfo->cbJettonIndex];
 		}
-		uAllScoreCount += lScoreCount;
+		uAllScoreCount += (lScoreCount - m_nJettonScoreDec[i]);
 	}
 	return uAllScoreCount;
 };
 
+void CGameClientView::RemoveUserJetton( BYTE cbViewIndex, __int64 lScoreCount )
+{
+	//效验参数
+	ASSERT(cbViewIndex<=ID_DAO_MEN);
+	if (cbViewIndex>ID_DAO_MEN) return;
+
+	//变量定义
+	bool bPlaceJetton=false;
+	__int64 lScoreIndex[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
+
+	switch ( cbViewIndex )
+	{
+	case ID_SHUN_MEN:
+		{ 
+			m_lAllPlayerScore -= lScoreCount;
+			break;
+		}
+	case ID_TIAN_MEN:
+		{
+			m_lAllTieScore -= lScoreCount;
+			break;
+		}
+	case ID_DAO_MEN:
+		{ 
+			m_lAllBankerScore -= lScoreCount;
+			break;
+		}
+	}
+	int nIndex=0;
+	switch(cbViewIndex)
+	{
+	case ID_SHUN_MEN:
+		nIndex=1;
+		break;
+	case ID_TIAN_MEN:
+		nIndex=2;
+		break;
+	case ID_DAO_MEN:
+		nIndex=3;
+		break;
+	}
+	m_nJettonScoreDec[nIndex - 1] = lScoreCount;
+	//更新界面
+	UpdateGameView(NULL);
+	return;
+}

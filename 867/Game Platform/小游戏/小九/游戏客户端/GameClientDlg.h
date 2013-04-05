@@ -102,6 +102,10 @@ protected:
 	bool OnSubGameRecord(const void * pBuffer, WORD wDataSize);
 	//游戏积分
 	bool OnSubGameScore(const void * pBuffer, WORD wDataSize);
+	//押注信息改变 
+	bool OnSubJettonChange(const void * pBuffer, WORD wDataSize);
+	//开始押注
+	bool OnStartJetton(const void * pBuffer, WORD wDataSize);
 
 	//功能函数
 protected:
