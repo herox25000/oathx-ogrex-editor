@@ -142,6 +142,37 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 {
 	switch (cbGameStation)
 	{
+	case GS_FREE + 1:
+		{
+			if (wDataSize != sizeof(CMD_S_StatusFree)) 
+				return 0;
+
+			m_bStart = TRUE;
+
+			//消息处理
+			CMD_S_StatusFree* pStatusFree=(CMD_S_StatusFree *)pBuffer;
+			if (pStatusFree)
+			{
+				m_nJettonTime			= pStatusFree->cbTimeLeave;
+				m_nApplyBankerCondition	= pStatusFree->lApplyBankerCondition;
+				// 当前庄积分
+				m_nBankerScore			= pStatusFree->lBankerTreasure;
+				// 自己积分
+				m_nMeMaxScore			= pStatusFree->lMeMaxScore;
+
+				// 更新当前庄ID
+				m_wCurBanker			= pStatusFree->wCurrentBankerChairID;
+				if (m_wCurBanker != INVALID_CHAIR)
+				{
+					tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
+					if (pUserInfo != NULL && pUserInfo->dwUserID != m_dwUserID)
+					{
+						m_bAddJetton = TRUE;
+					}
+				}
+			}
+		}
+		return true;
 	case GS_FREE:			//空闲状态
 		{
 			if (wDataSize != sizeof(CMD_S_StatusFree)) 
@@ -153,7 +184,7 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 			CMD_S_StatusFree* pStatusFree=(CMD_S_StatusFree *)pBuffer;
 			if (pStatusFree)
 			{
-				m_nJettonTime			= pStatusFree->cbTimeLeave;
+				m_nJettonTime			= 0;
 				m_nApplyBankerCondition	= pStatusFree->lApplyBankerCondition;
 				// 当前庄积分
 				m_nBankerScore			= pStatusFree->lBankerTreasure;
@@ -167,11 +198,10 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 					tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
 					if (pUserInfo != NULL && pUserInfo->dwUserID != m_dwUserID)
 					{
-						m_bAddJetton = TRUE;
+						m_bAddJetton = FALSE;
 					}
 				}
 			}
-
 		}
 		return true;
 	case GS_PLAYING:		//游戏状态
@@ -183,23 +213,15 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 
 			//消息处理
 			CMD_S_StatusPlay* pStatusPlay=(CMD_S_StatusPlay *)pBuffer;
-			if (pStatusPlay)
-			{
-				m_nJettonTime			= pStatusPlay->cbTimeLeave;
-				m_nApplyBankerCondition	= pStatusPlay->lApplyBankerCondition;
-				m_nBankerScore			= pStatusPlay->lBankerTreasure;
-				m_nMeMaxScore			= pStatusPlay->lMeMaxScore;
-				m_wCurBanker			= pStatusPlay->wCurrentBankerChairID;
 
-				if (m_wCurBanker != INVALID_CHAIR)
-				{
-					tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
-					if (pUserInfo != NULL && pUserInfo->dwUserID != m_dwUserID)
-					{
-						m_bAddJetton = TRUE;
-					}
-				}
-			}
+			m_nJettonTime			= pStatusPlay->cbTimeLeave;
+			m_nApplyBankerCondition	= pStatusPlay->lApplyBankerCondition;
+			m_nBankerScore			= pStatusPlay->lBankerTreasure;
+			m_nMeMaxScore			= pStatusPlay->lMeMaxScore;
+			m_wCurBanker			= pStatusPlay->wCurrentBankerChairID;
+
+			m_bAddJetton = FALSE;
+			
 		}
 		return true;
 	}
@@ -228,7 +250,7 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 				if (pUserInfo->dwUserID == m_dwUserID)
 				{
 					double dMidNewTime	= config.fMaxPlaceTime / 2;
-					m_fOnlineTime		= RobotTimer::rdft(config.fMinOnlineTime, dMidNewTime >= config.fMinOnlineTime ? dMidNewTime : config.fMinOnlineTime + 5);
+					m_fOnlineTime		= RobotTimer::rdit(config.fMinOnlineTime, dMidNewTime >= config.fMinOnlineTime ? dMidNewTime : config.fMinOnlineTime + 5);
 					m_fCurOnlineTime	= 0;
 				}
 				else
@@ -304,9 +326,7 @@ void			SmallNineMachine::OnUpdate(float fElapsed)
 				m_fAddJettonTime	= RobotTimer::rdft(config.fMinPlaceTime, config.fMaxPlaceTime);
 				m_fElapsedTime		= 0;
 			}
-
 		}
-
 	}
 }
 
@@ -389,20 +409,19 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			//消息处理
 			CMD_S_ChangeBanker* pChangeBanker	= (CMD_S_ChangeBanker *)pBuffer;
 			m_wCurBanker						= pChangeBanker->wChairID;
-			if (m_wCurBanker != INVALID_CHAIR)
-			{
-				tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
-				if (pUserInfo && pUserInfo->dwUserID != m_dwUserID)
-				{
-					m_bAddJetton = TRUE;
-				}
-			}
 		}
 		break;
 
 	case SUB_S_CHANGE_USER_SCORE://更新积分
 		{
 			
+		}
+		break;
+	case SUB_S_StartJetton:
+		{
+			CMD_S_JettonStart* pJettonStart = (CMD_S_JettonStart*)(pBuffer);
+			m_nJettonTime	= pJettonStart->cbTimeLeave;
+			m_bAddJetton	= TRUE;
 		}
 		break;
 	case SUB_S_GAME_END:		//游戏结束
@@ -414,7 +433,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			CMD_S_GameEnd* pGameEnd	=(CMD_S_GameEnd *)pBuffer;
 
 			// 更新数据
-			m_nJettonTime			= pGameEnd->cbTimeLeave;
+			m_nJettonTime			= 0;
 			m_nMeMaxScore			= pGameEnd->lMeMaxScore;
 
 			// 获取庄配置
@@ -437,6 +456,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 						{
 							SendApplyBanker(false);
 						}
+
 						if (m_nBankerWinScore > 0)
 						{
 							if (m_nBankerWinScore > c.nMaxWinScore)
@@ -457,13 +477,9 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 							SendApplyBanker(false);
 						}
 					}
-					else
-					{
-						m_bAddJetton = TRUE;
-					}
 				}
 			}
-		
+
 			// 每局游戏结束后，查询当前排庄队列中是有自己，若没有则申请上庄
 			SUserInfo* pUserInfo = BankerManager::GetSingleton().Search(m_dwUserID);
 			if (!pUserInfo)
@@ -472,7 +488,8 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			}
 			
 			// 重置机器人当前压的钱
-			m_nMePlaceScore			= 0;
+			m_nMePlaceScore	= 0;
+			m_bAddJetton	= FALSE;
 			
 			// 若机器人的金钱少于最小积分
 			if (m_nMeMaxScore <= c.nMinScore)

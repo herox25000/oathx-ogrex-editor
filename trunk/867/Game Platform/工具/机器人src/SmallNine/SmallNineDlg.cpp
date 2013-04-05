@@ -115,7 +115,7 @@ BOOL CSmallNineDlg::OnInitDialog()
 
 	m_RobotDialog.Create(IDD_DIALOG_ROBOT, this);
 
-	SetDlgItemText(IDC_EDIT1,	"125.90.64.21");
+	SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
 	SetDlgItemText(IDC_EDIT2,	"11021");
 	SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
 	SetDlgItemText(IDC_EDIT4,	"10");
@@ -220,7 +220,7 @@ void	CSmallNineDlg::OnTimer(UINT nIDEvent)
 								);
 							if (pMachine)
 							{
-								pMachine->SetOnlineTime(RobotTimer::rdft(m_AppConfig.fMinOnlineTime, 
+								pMachine->SetOnlineTime(RobotTimer::rdit(m_AppConfig.fMinOnlineTime, 
 									m_AppConfig.fMaxOnlineTime));
 
 								if (pMachine->Start(m_ipAddress, m_wPort, m_md5))
