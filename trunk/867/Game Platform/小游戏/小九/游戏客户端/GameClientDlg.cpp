@@ -5,6 +5,7 @@
 
 //时间标识
 #define IDI_PLACE_JETTON			100									//下注时间
+#define IDI_TIME_FREE				101									//空闲时间
 #define IDI_DISPATCH_CARD			301									//发牌时间
 #define IDI_SHOW_GAME_RESULT		302									//显示结果
 #define IDI_SHOW_TIME				303
@@ -180,6 +181,14 @@ bool CGameClientDlg::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wD
 		{
 			return OnSubGameScore(pBuffer, wDataSize);
 		}
+	case SUB_S_JETTON_CHANGE:	//押注信息改变
+		{
+			return OnSubJettonChange(pBuffer, wDataSize);
+		}
+	case SUB_S_StartJetton:		//开始押注
+		{
+			return OnStartJetton(pBuffer, wDataSize);
+		}
 	}
 
 	//错误断言
@@ -249,13 +258,76 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 
 			//更新控制
 			UpdateButtonContron();
+			m_GameClientView.m_bstate = Status_Free;
+
+			//播放声音
+			//PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
+
+			//设置时间
+			SetGameTimer(GetMeChairID(), IDI_TIME_FREE, pStatusFree->cbTimeLeave);
+
+			return true;
+		}
+	case GS_FREE + 1:
+		{
+			//效验数据
+			ASSERT(wDataSize==sizeof(CMD_S_StatusFree));
+			if (wDataSize!=sizeof(CMD_S_StatusFree)) return false;
+
+			//消息处理
+			CMD_S_StatusFree * pStatusFree=(CMD_S_StatusFree *)pBuffer;
+			//记录各门的获胜概率
+			m_GameClientView.m_fWinCount[0]=pStatusFree->fShunMen;
+			m_GameClientView.m_fWinCount[1]=pStatusFree->fTianMen;
+			m_GameClientView.m_fWinCount[2]=pStatusFree->fDaomMen;
+			//庄家变量
+			m_lApplyBankerCondition = pStatusFree->lApplyBankerCondition;			
+
+			//设置位置
+			WORD wMeChairID=GetMeChairID();
+			m_GameClientView.SetMeChairID(SwitchViewChairID(wMeChairID));
+			m_GameClientView.SetHistoryScore(m_wDrawCount,m_lMeResultCount);
+
+			//玩家下注
+			m_GameClientView.SetMeMaxScore(pStatusFree->lMeMaxScore);
+			m_GameClientView.SetMeTieScore(pStatusFree->lMeTieScore);
+			m_GameClientView.SetMeBankerScore(pStatusFree->lMeBankerScore);
+			m_GameClientView.SetMePlayerScore(pStatusFree->lMePlayerScore);
+			m_GameClientView.SetMeBankerKingScore(pStatusFree->lMeBankerKingScore);
+			m_GameClientView.SetMePlayerKingScore(pStatusFree->lMePlayerKingScore);
+			m_GameClientView.SetMeTieSamePointScore(pStatusFree->lMeTieKingScore);
+
+			m_wCurrentBanker = pStatusFree->wCurrentBankerChairID;
+			//设置变量
+			m_lMeMaxScore= pStatusFree->lMeMaxScore ;
+			m_lMeTianMenScore=pStatusFree->lMeTieScore;
+			m_lMeDaoMenScore=pStatusFree->lMeBankerScore;
+			m_lMeShunMenScore=pStatusFree->lMePlayerScore;
+			m_lMeQiaoScore = pStatusFree->lMeTieKingScore;
+			m_lMeYouJiaoScore = pStatusFree->lMeBankerKingScore;
+			m_lMeZuoJiaoScore = pStatusFree->lMePlayerKingScore;
+
+			//庄家信息
+			if ( pStatusFree->wCurrentBankerChairID == INVALID_CHAIR )
+				m_GameClientView.SetBankerInfo( INVALID_CHAIR, pStatusFree->cbBankerTime, pStatusFree->lBankerScore );
+			else
+				m_GameClientView.SetBankerInfo( SwitchViewChairID( pStatusFree->wCurrentBankerChairID ), pStatusFree->cbBankerTime, pStatusFree->lBankerScore );
+			m_GameClientView.SetBankerTreasure(pStatusFree->lBankerTreasure);
+
+			//下注界面
+			m_GameClientView.PlaceUserJetton(ID_TIAN_MEN,pStatusFree->lTieScore);
+			m_GameClientView.PlaceUserJetton(ID_DAO_MEN,pStatusFree->lBankerScore);
+			m_GameClientView.PlaceUserJetton(ID_SHUN_MEN,pStatusFree->lPlayerScore);
+
+			//更新控制
+			UpdateButtonContron();
+			m_GameClientView.m_bstate = Status_Jetton;
 
 			//播放声音
 			PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
 
 			//设置时间
-			SetGameTimer(GetMeChairID(),IDI_PLACE_JETTON,pStatusFree->cbTimeLeave);
-
+			SetGameTimer(GetMeChairID(), IDI_PLACE_JETTON, pStatusFree->cbTimeLeave);
 			return true;
 		}
 	case GS_PLAYING:		//游戏状态
@@ -311,8 +383,10 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			//m_GameClientView.PlaceUserJetton(ID_ZUO_JIAO,pStatusPlay->lPlayerKingScore);
 			//m_GameClientView.PlaceUserJetton(ID_YOU_JIAO,pStatusPlay->lBankerKingScore);
 			//m_GameClientView.PlaceUserJetton(ID_QIAO,pStatusPlay->lTieSamePointScore);
+
 			//播放声音
 			PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
+			m_GameClientView.m_bstate = Status_DisCard;
 
 			DispatchUserCard(pStatusPlay->cbTableCardArray[INDEX_BANKER],pStatusPlay->cbTableCardArray[INDEX_PLAYER1],
 				pStatusPlay->cbTableCardArray[INDEX_PLAYER2],pStatusPlay->cbTableCardArray[INDEX_PLAYER3],pStatusPlay->cbTableCardArray[INDEX_PRECARD]);
@@ -346,7 +420,7 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	SetGameStatus(GS_PLAYING);
 	KillGameTimer(IDI_PLACE_JETTON);
 	//SetGameTimer(GetMeChairID(),IDI_SHOW_TIME,pGameStart->cbTimeLeave);
-	m_GameClientView.m_bJettonstate=false;
+	m_GameClientView.m_bstate = Status_DisCard;
 
 	//更新控制
 	UpdateButtonContron();
@@ -479,14 +553,19 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	{
 		m_GameClientView.m_DrawCard[i].SetTuiPai(false);
 	}
+
+	m_GameClientView.m_nJettonScoreDec[0] = 0;
+	m_GameClientView.m_nJettonScoreDec[1] = 0;
+	m_GameClientView.m_nJettonScoreDec[2] = 0;
+
 	//播放声音
-	PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
+	//PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
 
 	KillTimer(IDI_SHOW_GAME_RESULT);
 	//设置时间
-	SetGameTimer(GetMeChairID(),IDI_PLACE_JETTON,pGameEnd->cbTimeLeave);
+	SetGameTimer(GetMeChairID(), IDI_TIME_FREE, pGameEnd->cbTimeLeave);
 
-	m_GameClientView.m_bJettonstate=true;
+	m_GameClientView.m_bstate = Status_Free;
 	
 	return true;
 }
@@ -529,7 +608,7 @@ bool CGameClientDlg::OnSubGameScore(const void * pBuffer, WORD wDataSize)
 //更新控制
 void CGameClientDlg::UpdateButtonContron()
 {
-	if ((IsLookonMode()==false)&&(GetGameStatus()==GS_FREE) && m_wCurrentBanker != GetMeChairID() && m_wCurrentBanker != INVALID_CHAIR )
+	if ((IsLookonMode()==false)&&(GetGameStatus()==(GS_FREE + 1)) && m_wCurrentBanker != GetMeChairID() && m_wCurrentBanker != INVALID_CHAIR )
 	{
 		//得到庄家信息
 		const tagUserData* pBankerInfo = m_GameClientView.GetUserInfo(m_GameClientView.m_wCurrentBankerChairID);
@@ -598,6 +677,7 @@ void CGameClientDlg::UpdateButtonContron()
 		//}
 
 		//显示判断
+
 		const tagUserData *pMeUserData = GetUserData( GetMeChairID() );
 		if ( m_bMeApplyBanker )
 		{
@@ -607,7 +687,6 @@ void CGameClientDlg::UpdateButtonContron()
 			bool bMeBanker = pMeUserData->wChairID == m_wCurrentBanker ? true : false;
 			if ( bMeBanker ) m_GameClientView.m_btCancelBanker.SetButtonImage(IDB_BT_CANCEL_BANKER,AfxGetInstanceHandle(),false);
 			else m_GameClientView.m_btCancelBanker.SetButtonImage(IDB_BT_CANCEL_APPLY,AfxGetInstanceHandle(),false);
-
 		}
 		else if ( m_lApplyBankerCondition <= pMeUserData->lScore )
 		{
@@ -1138,5 +1217,42 @@ LRESULT CGameClientDlg::OnBank(WPARAM wParam, LPARAM lParam)
 {
 	UserOnBankBT(2);
 	return 0;
+}
+
+bool CGameClientDlg::OnSubJettonChange( const void * pBuffer, WORD wDataSize )
+{
+	//效验数据
+	ASSERT(wDataSize==sizeof(CMD_S_JettonChange));
+	if (wDataSize!=sizeof(CMD_S_JettonChange)) return false;
+	//消息处理
+	CMD_S_JettonChange * pPlaceJettonChange = (CMD_S_JettonChange *)pBuffer;
+
+	if (pPlaceJettonChange->lShunMenScore > 0)
+		m_GameClientView.RemoveUserJetton(ID_SHUN_MEN, pPlaceJettonChange->lShunMenScore);
+	if (pPlaceJettonChange->lTianMenScore > 0)
+		m_GameClientView.RemoveUserJetton(ID_TIAN_MEN, pPlaceJettonChange->lTianMenScore);
+	if (pPlaceJettonChange->lDaoMenScore > 0)
+		m_GameClientView.RemoveUserJetton(ID_DAO_MEN, pPlaceJettonChange->lDaoMenScore);
+
+	return true;
+}
+
+bool CGameClientDlg::OnStartJetton( const void * pBuffer, WORD wDataSize )
+{
+	ASSERT(wDataSize==sizeof(CMD_S_JettonStart));
+	if (wDataSize!=sizeof(CMD_S_JettonStart)) return false;
+	//消息处理
+	CMD_S_JettonStart * pStartJetton = (CMD_S_JettonStart *)pBuffer;
+	//设置状态
+	SetGameStatus(GS_FREE + 1);
+	KillGameTimer(IDI_TIME_FREE);
+	//设置时间
+	SetGameTimer(GetMeChairID(), IDI_PLACE_JETTON, pStartJetton->cbTimeLeave);
+	m_GameClientView.m_bstate = Status_Jetton;
+	//更新控制
+	UpdateButtonContron();
+	//播放声音
+	PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
+	return true;
 }
 

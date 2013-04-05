@@ -31,6 +31,10 @@
 //历史记录
 #define MAX_SCORE_HISTORY			256									//历史个数
 
+#define Status_DisCard				1
+#define Status_Free					2
+#define Status_Jetton				3
+
 //////////////////////////////////////////////////////////////////////////
 //结构定义
 
@@ -245,7 +249,8 @@ protected:
 	CPngImage						m_pngp;
 
 public:
-	bool							m_bJettonstate;						//是否是下注状态
+	BYTE							m_bstate;							//当前游戏状态
+	__int64							m_nJettonScoreDec[3];
 
 	//函数定义
 public:
@@ -336,6 +341,8 @@ public:
 	CString ChangNumber(int iNumber);
 	//计算所有下注总和
 	__int64 CalcAllJetton();
+	//删除筹码
+	void RemoveUserJetton(BYTE cbViewIndex, __int64 lScoreCount);
 	//内联函数
 public:
 	//当前筹码
