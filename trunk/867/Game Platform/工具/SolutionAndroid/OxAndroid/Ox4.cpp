@@ -155,7 +155,7 @@ namespace O2
 			{
 				if (m_wStaus == STATUS_SITDOWN)
 				{
-					SendData(MDM_GF_FRAME,SUB_GF_USER_READY);
+					SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
 				}
 			}
 			break;
