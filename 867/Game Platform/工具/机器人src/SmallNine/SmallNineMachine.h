@@ -21,7 +21,7 @@ public:
 	//游戏消息
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL,
 		WORD wDataSize=0);
-	virtual bool			OnBanker();
+
 public:
 	virtual bool			SendApplyBanker(bool bUp);
 	virtual	void			ResetGame();
@@ -39,13 +39,15 @@ protected:
 	INT64					m_nBankerScore;
 	WORD					m_wUpBankerCount;
 	INT64					m_nApplyBankerCondition;
+	INT64					m_nBankerWinScore;
 	BOOL					m_bStart;
 	BOOL					m_bApplyBankerSend;
 
 	INT64					m_nMePlaceScore;
 	INT64					m_nMeWinScore;
-	INT64					m_BankerTotalScore;
 
+	INT64					m_nGetMaxScore;
+	INT64					m_nSaveMaxScore;
 //////////////////////////////////////////////////////////////////////////
 protected:
 	float					m_nJettonTime;		//下注时间
