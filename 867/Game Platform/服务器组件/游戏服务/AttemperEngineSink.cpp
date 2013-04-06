@@ -3957,12 +3957,6 @@ bool CAttemperEngineSink::OnEventQuerUserName(const void * pData, WORD wDataSize
 //socket响应 转账
 bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSize, DWORD dwSocketID)
 {
-	if (m_pGameServiceOption->wServerType!=GAME_GENRE_GOLD)
-	{
-		SendRoomMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT|SMT_INFO);
-		return true;
-	}
-
 	ASSERT( sizeof(CMD_TOOLBOX_TransferMoney) == wDataSize );
 	if ( sizeof(CMD_TOOLBOX_TransferMoney) != wDataSize ) 
 		return false;
@@ -3971,9 +3965,13 @@ bool CAttemperEngineSink::OnEventTransferMoney(const void * pData, WORD wDataSiz
 	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
 	if(pIServerUserItem==NULL)
 		return false;
-	if(pIServerUserItem->GetUserData()->cbUserStatus==US_PLAY )
+	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
+	if (m_pGameServiceOption->wServerType!=GAME_GENRE_GOLD)
 	{
-		SendRoomMessage(dwSocketID,TEXT("请在游戏结束后操作！"),SMT_EJECT|SMT_INFO);
+		if(pServerUserData->wTableID==INVALID_TABLE)
+			SendRoomMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT|SMT_INFO);
+		else
+			SendGameMessage(dwSocketID,TEXT("请在金币房间进行此操作！"),SMT_EJECT|SMT_INFO);
 		return true;
 	}
 
@@ -4037,7 +4035,7 @@ bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSiz
 		return true;
 	}
 
-	//如果是取钱操作，游戏中不能进行
+	//如果是存钱操作，游戏中不能进行
 	if(pBankTask->lBankTask == BANKTASK_DEPOSIT)
 	{
 		if(pServerUserData->wTableID!=INVALID_TABLE)
@@ -4122,6 +4120,17 @@ bool CAttemperEngineSink::OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD
 	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
 	if(pServerUserData == NULL)
 		return false;
+
+	CMD_TOOLBOX_BankTask_Ret cmd;
+	ZeroMemory(&cmd, sizeof(CMD_TOOLBOX_BankTask_Ret));
+	cmd.lBankTask=pBankTask->lBankTask;
+	cmd.lMoneyNumber=pBankTask->lMoneyNumber;
+	cmd.lMoneyInBank=pBankTask->lMoneyInBank;
+	cmd.lNewScore=pBankTask->lNewScore;
+	cmd.lErrorCode=pBankTask->lErrorCode;
+	lstrcpyn(cmd.szErrorDescribe, pBankTask->szErrorDescribe, CountArray(cmd.szErrorDescribe));
+	SendData(pIServerUserItem, MDM_TOOLBOX, SUB_TOOLBOX_BANKOPERATING, &cmd, sizeof(CMD_TOOLBOX_BankTask_Ret));
+
 	if ( pBankTask->lErrorCode==0)
 	{
 		pIServerUserItem->WriteBaseScore(pBankTask->lNewScore,pBankTask->lMoneyInBank);

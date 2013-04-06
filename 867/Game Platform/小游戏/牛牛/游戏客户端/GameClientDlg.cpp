@@ -25,7 +25,6 @@
 #define TIME_USER_START_GAME		30									//开始定时器
 #define TIME_USER_ADD_SCORE			30									//放弃定时器
 #define TIME_USER_OPEN_CARD			30									//摊牌定时器
-
 #endif
 
 //////////////////////////////////////////////////////////////////////////
