@@ -32,8 +32,10 @@ public:
 
 	static DWORD			rdit(DWORD dwMin, DWORD dwMax)
 	{
-		DWORD dwValue = dwMax - dwMin;
-		return rand() % (dwValue > 0 ? dwValue : 1) + dwMin;
+		if (dwMin > dwMax)
+			return dwMax;
+
+		return rand() % (dwMax - dwMin) + dwMin;
 	}
 public:
 	RobotTimer(void);

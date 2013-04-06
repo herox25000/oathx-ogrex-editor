@@ -32,6 +32,9 @@ public:
 
 	static DWORD			rdit(DWORD dwMin, DWORD dwMax)
 	{
+		if (dwMin > dwMax)
+			return dwMax;
+
 		return rand() % (dwMax - dwMin) + dwMin;
 	}
 public:

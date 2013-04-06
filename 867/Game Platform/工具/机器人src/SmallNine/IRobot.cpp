@@ -586,6 +586,11 @@ bool			IRobot::OnSocketMainUser(CMD_Command Command, void* pBuffer, WORD wDataSi
 			}
 			else
 			{
+				if (pUserStatus->cbUserStatus == US_FREE && pUserStatus->dwUserID == m_dwUserID)
+				{
+					OnBanker();
+				}
+
 				//¸üÐÂ×´Ì¬
 				pUserInfo->wTableID		= wNowTableID;
 				pUserInfo->wChairID		= wNowChairID;
@@ -827,5 +832,12 @@ bool			IRobot::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wData
 
 bool			IRobot::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wDataSize)
 {
+	return true;
+}
+
+bool			IRobot::OnBanker()
+{
+	SetState(ROBOT_SITUP);
+
 	return true;
 }

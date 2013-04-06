@@ -426,10 +426,9 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				{
 					// 获取庄配置
 					const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();
-					if (m_nBankerWinScore > 0)
+					if (m_nBankerWinScore > c.nMaxWinScore)
 					{
-						BankSaveScore(m_nBankerWinScore);
-						m_nBankerWinScore = 0;
+						SitUp();
 					}
 				}
 			}
@@ -559,5 +558,15 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 		break;
 	}
 	return true;
+}
+
+bool	SmallNineMachine::OnBanker()
+{
+	// 获取庄配置
+	const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();
+	INT64 nSaveScore = RobotTimer::rdit(m_nSaveMaxScore, c.nMaxSaveScore);
+	BankSaveScore(nSaveScore);
+
+	return __super::OnBanker();
 }
 

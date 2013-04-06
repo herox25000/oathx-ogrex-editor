@@ -13,6 +13,7 @@ enum
 {
 	ROBOT_CREATE,
 	ROBOT_SITDOWN,
+	ROBOT_SITUP,
 	ROBOT_INVALID,
 };
 
@@ -31,6 +32,7 @@ public:
 	virtual void			Stop();
 	virtual	void			ShowMessageBox(const CString& szMessage, enTraceLevel lev=TraceLevel_Normal);
 	virtual	void			SitDown();
+	virtual void			SitUp();
 	virtual void			AddGameUser(SUserInfo* pUserInfo);
 	virtual	void			SetUserStatus(DWORD dwUserID, BYTE cbUserStatus);
 	virtual	void			ResetGame();
@@ -86,6 +88,7 @@ public:
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL, WORD wDataSize=0);
 
 	virtual bool			OnSocket(WORD wMainCmdID, WORD wSubCmdID, void * pBuffer, WORD wDataSize);
+	virtual bool			OnBanker();
 protected:
 	DWORD					m_dwUserID;
 	CString					m_szPwd;

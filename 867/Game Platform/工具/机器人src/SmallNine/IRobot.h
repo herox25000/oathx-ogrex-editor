@@ -88,6 +88,7 @@ public:
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL, WORD wDataSize=0);
 
 	virtual bool			OnSocket(WORD wMainCmdID, WORD wSubCmdID, void * pBuffer, WORD wDataSize);
+	virtual bool			OnBanker();
 protected:
 	DWORD					m_dwUserID;
 	CString					m_szPwd;
