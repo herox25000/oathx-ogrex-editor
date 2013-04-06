@@ -26,6 +26,10 @@
 //历史记录
 #define MAX_SCORE_HISTORY			256									//历史个数
 
+#define Status_DisCard				1
+#define Status_Free					2
+#define Status_Jetton				3
+
 //////////////////////////////////////////////////////////////////////////
 //结构定义
 
@@ -181,6 +185,9 @@ protected:
 	CSkinImage						m_ImageGamePoint;					//点数图片
 	CSkinImage						m_ImageCard;						//图片资源
 
+public:
+	BYTE							m_bstate;							//当前游戏状态
+	__int64							m_nJettonScoreDec[6];
 
 	//函数定义
 public:
@@ -265,6 +272,8 @@ public:
 	void DrawTextString(CDC * pDC, LPCTSTR pszString, COLORREF crText, COLORREF crFrame, int nXPos, int nYPos);
 	//绘画数字
 	void DrawMeJettonNumber(CDC *pDC);
+	//删除筹码
+	void RemoveUserJetton(BYTE cbViewIndex, __int64 lScoreCount);
 
 	//内联函数
 public:

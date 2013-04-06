@@ -100,6 +100,13 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_lBankerScore = 0;		
 	m_lBankerTreasure=0;
 
+	m_nJettonScoreDec[0] = 0;
+	m_nJettonScoreDec[1] = 0;
+	m_nJettonScoreDec[2] = 0;
+	m_nJettonScoreDec[3] = 0;
+	m_nJettonScoreDec[4] = 0;
+	m_nJettonScoreDec[5] = 0;
+
 	//加载位图
 	HINSTANCE hInstance=AfxGetInstanceHandle();
 	m_ImageViewFill.SetLoadInfo(IDB_VIEW_FILL,hInstance);
@@ -127,7 +134,7 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_ImageTimeFlag.SetLoadInfo(IDB_TIME_FLAG, hInstance);
 
 	GetMaxTieScore();
-
+	m_bstate=0;
 
 	return;
 }
@@ -614,6 +621,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		}
 
 		//绘画数字
+		lScoreCount -= m_nJettonScoreDec[i];
 		if (lScoreCount>0L)	DrawNumberString(pDC,lScoreCount,m_PointJetton[i].x,m_PointJetton[i].y);
 	}
 
@@ -631,12 +639,12 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	bool bDispatchCard = (0 < m_CardControl[0].GetCardCount() || 0 < m_CardControl[1].GetCardCount() ) ? true : false;
 	CImageHandle ImageHandleTimeFlag(&m_ImageTimeFlag);
 	int nTimeFlagWidth = m_ImageTimeFlag.GetWidth()/3;
-	if ( bDispatchCard ) 
+	if ( m_bstate == Status_DisCard ) 
 		m_ImageTimeFlag.AlphaDrawImage(pDC,nWidth/2+40, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 2 * nTimeFlagWidth, 0,RGB(255,0,255));
-	else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
+	else if ( m_bstate == Status_Jetton )
 		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2+40, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
 	else 
-		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2+40, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0,RGB(255,0,255));
+		m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2+40, nHeight/2-270, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 0, 0,RGB(255,0,255));
 
 
 	//绘画用户
@@ -1887,5 +1895,54 @@ void CGameClientView:: OnBank()
 {
 	AfxGetMainWnd()->SendMessage(IDM_ONBANK,0,0);
 }
-//////////////////////////////////////////////////////////////////////////
 
+void CGameClientView::RemoveUserJetton( BYTE cbViewIndex, __int64 lScoreCount )
+{
+	//效验参数
+	ASSERT(cbViewIndex<=ID_TONG_DIAN_PING);
+	if (cbViewIndex>ID_TONG_DIAN_PING) return;
+
+	//变量定义
+	bool bPlaceJetton=false;
+	__int64 lScoreIndex[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
+
+	switch ( cbViewIndex )
+	{
+	case ID_XIAN_JIA:
+		{ 
+			m_lAllPlayerScore -= lScoreCount;
+			break;
+		}
+	case ID_PING_JIA:
+		{
+			m_lAllTieScore -= lScoreCount;
+			break;
+		}
+	case ID_ZHUANG_JIA:
+		{ 
+			m_lAllBankerScore -= lScoreCount;
+			break;
+		}
+	case ID_XIAN_TIAN_WANG:
+		{ 
+			m_lAllPlayerKingScore -= lScoreCount;
+			break;
+		}
+	case ID_ZHUANG_TIAN_WANG:
+		{ 
+			m_lAllBankerKingScore -= lScoreCount;
+			break;
+		}
+	case ID_TONG_DIAN_PING:
+		{ 
+			m_lAllTieSamePointScore -= lScoreCount;
+			break;
+		}
+	}
+	m_nJettonScoreDec[cbViewIndex - 1] = lScoreCount;
+	//更新界面
+	UpdateGameView(NULL);
+	return;
+}
+
+//////////////////////////////////////////////////////////////////////////

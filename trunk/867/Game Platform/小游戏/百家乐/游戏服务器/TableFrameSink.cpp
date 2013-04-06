@@ -20,6 +20,7 @@
 #else
 #define TIME_PLACE_JETTON			25									//下注时间
 #endif
+#define TIME_FREE					10									//空闲时间
 
 //结束时间
 #define IDI_GAME_END				2									//结束时间
@@ -28,6 +29,7 @@
 #else
 #define TIME_GAME_END				13									//结束时间
 #endif
+#define IDI_GAME_FREE				3									//空闲阶段
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -162,6 +164,8 @@ bool __cdecl CTableFrameSink::InitTableFrameSink(IUnknownEx * pIUnknownEx)
 	m_pGameServiceOption=m_pITableFrame->GetGameServiceOption();
 	ASSERT(m_pGameServiceOption!=NULL);
 
+	m_pITableFrame->SetGameStatus(GS_FREE);
+
 	return true;
 }
 
@@ -282,8 +286,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				//写入积分
 				if (m_lUserWinScore[wUserChairID]!=0L) 
 				{
-					if (!FindUserLeft(pIServerUserItem->GetUserID()))
-						m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], 0, ScoreKind);
+					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], 0, ScoreKind);
 				}
 			
 				//庄家判断
@@ -292,7 +295,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			}
 
 			//发送积分
-			GameEnd.cbTimeLeave=TIME_PLACE_JETTON;	//剩余时间
+			GameEnd.cbTimeLeave=TIME_FREE;	//剩余时间
 			if ( m_CurrentBanker.dwUserID != 0 ) 
 				GameEnd.lBankerTreasure = m_CurrentBanker.lUserScore;//庄家金币
 			for ( WORD wUserIndex = 0; wUserIndex < GAME_PLAYER; ++wUserIndex )
@@ -341,7 +344,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					}
 				}
 			}
-			m_vForseLeave.clear();
+			m_pITableFrame->SetGameStatus(GS_FREE);
 			//结束游戏
 			m_pITableFrame->ConcludeGame();
 
@@ -362,12 +365,19 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			}
 			else
 			{
-				allZhu=m_lUserTieScore[wChairID]+
-					m_lUserBankerScore[wChairID]+
-					m_lUserPlayerScore[wChairID]+
-					m_lUserTieSamePointScore[wChairID]+
-					m_lUserBankerKingScore[wChairID]+
-					m_lUserPlayerKingScore[wChairID];
+				if (m_pITableFrame->GetGameStatus() == GS_FREE + 1)
+				{
+					JettonChangeByUserLeft( wChairID, pIServerUserItem);
+				}
+				else
+				{
+					allZhu=m_lUserTieScore[wChairID]+
+						m_lUserBankerScore[wChairID]+
+						m_lUserPlayerScore[wChairID]+
+						m_lUserTieSamePointScore[wChairID]+
+						m_lUserBankerKingScore[wChairID]+
+						m_lUserPlayerKingScore[wChairID];
+				}
 			}
 
 			if ( allZhu>0 )
@@ -384,7 +394,6 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				MakeJettonString(wChairID, szJetton);//推断赢家
 				m_pITableFrame->WriteUserScore(pIServerUserItem, -allZhu, 0, enScoreKind_Flee);
 			}
-			AddUserLeft(pIServerUserItem->GetUserID(), allZhu);
 			return true;
 		}
 	}
@@ -436,24 +445,12 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//下注信息
 			if (pIServerUserItem->GetUserStatus()!=US_LOOKON)
 			{
-				if (FindUserLeft(pIServerUserItem->GetUserID()) == false)
-				{
-					StatusFree.lMeTieScore=m_lUserTieScore[wChiarID];
-					StatusFree.lMeBankerScore=m_lUserBankerScore[wChiarID];
-					StatusFree.lMePlayerScore=m_lUserPlayerScore[wChiarID];
-					StatusFree.lMeTieKingScore = m_lUserTieSamePointScore[wChiarID];
-					StatusFree.lMeBankerKingScore = m_lUserBankerKingScore[wChiarID];
-					StatusFree.lMePlayerKingScore = m_lUserPlayerKingScore[wChiarID];
-				}
-				else
-				{
-					StatusFree.lMeTieScore=0;
-					StatusFree.lMeBankerScore=0;
-					StatusFree.lMePlayerScore=0;
-					StatusFree.lMeTieKingScore = 0;
-					StatusFree.lMeBankerKingScore = 0;
-					StatusFree.lMePlayerKingScore = 0;
-				}
+				StatusFree.lMeTieScore=m_lUserTieScore[wChiarID];
+				StatusFree.lMeBankerScore=m_lUserBankerScore[wChiarID];
+				StatusFree.lMePlayerScore=m_lUserPlayerScore[wChiarID];
+				StatusFree.lMeTieKingScore = m_lUserTieSamePointScore[wChiarID];
+				StatusFree.lMeBankerKingScore = m_lUserBankerKingScore[wChiarID];
+				StatusFree.lMePlayerKingScore = m_lUserPlayerKingScore[wChiarID];
 				StatusFree.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
 			}
 
@@ -468,7 +465,7 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			
 			//全局信息
 			DWORD dwPassTime=(DWORD)time(NULL)-m_dwJettonTime;
-			StatusFree.cbTimeLeave=(BYTE)(TIME_PLACE_JETTON-__min(dwPassTime,TIME_PLACE_JETTON));
+			StatusFree.cbTimeLeave=(BYTE)(TIME_FREE-__min(dwPassTime,TIME_FREE));
 
 			//发送场景
 			bool bSuccess = m_pITableFrame->SendGameScene(pIServerUserItem,&StatusFree,sizeof(StatusFree));
@@ -476,6 +473,71 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//发送申请者
 			SendApplyUser(  pIServerUserItem );
 
+			return bSuccess;
+		}
+	case GS_FREE + 1:
+		{
+			WORD wBufferSize=0;
+			BYTE cbBuffer[SOCKET_PACKAGE];
+			int nIndex = m_nRecordFirst;
+			while ( nIndex != m_nRecordLast )
+			{
+				if ((wBufferSize+sizeof(tagServerGameRecord))>sizeof(cbBuffer))
+				{
+					m_pITableFrame->SendUserData(pIServerUserItem,SUB_S_SEND_RECORD,cbBuffer,wBufferSize);
+					wBufferSize=0;
+				}
+				CopyMemory(cbBuffer+wBufferSize,&m_GameRecordArrary[nIndex],sizeof(tagServerGameRecord));
+				wBufferSize+=sizeof(tagServerGameRecord);
+
+				nIndex = (nIndex+1) % MAX_SCORE_HISTORY;
+			}
+			if (wBufferSize>0) m_pITableFrame->SendUserData(pIServerUserItem,SUB_S_SEND_RECORD,cbBuffer,wBufferSize);
+
+			//构造数据
+			CMD_S_StatusFree StatusFree;
+			ZeroMemory(&StatusFree,sizeof(StatusFree));
+
+			StatusFree.lCellScore=m_pGameServiceOption->lCellScore;
+			//下注信息
+			StatusFree.lTieScore=m_lTieScore;
+			StatusFree.lBankerScore=m_lBankerScore;
+			StatusFree.lPlayerScore=m_lPlayerScore;
+			StatusFree.lTieSamePointScore = m_lTieSamePointScore;
+			StatusFree.lBankerKingScore = m_lBankerKingScore;
+			StatusFree.lPlayerKingScore = m_lPlayerKingScore;
+
+			//庄家信息
+			StatusFree.lApplyBankerCondition = m_lApplyBankerCondition;
+
+			//下注信息
+			if (pIServerUserItem->GetUserStatus()!=US_LOOKON)
+			{
+				StatusFree.lMeTieScore=m_lUserTieScore[wChiarID];
+				StatusFree.lMeBankerScore=m_lUserBankerScore[wChiarID];
+				StatusFree.lMePlayerScore=m_lUserPlayerScore[wChiarID];
+				StatusFree.lMeTieKingScore = m_lUserTieSamePointScore[wChiarID];
+				StatusFree.lMeBankerKingScore = m_lUserBankerKingScore[wChiarID];
+				StatusFree.lMePlayerKingScore = m_lUserPlayerKingScore[wChiarID];
+				StatusFree.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
+			}
+
+			if ( m_CurrentBanker.dwUserID != 0 ) 
+			{
+				StatusFree.cbBankerTime = m_cbBankerTimer;
+				StatusFree.lCurrentBankerScore = m_lBankerWinScore;
+				StatusFree.wCurrentBankerChairID = m_CurrentBanker.wChairID;
+				StatusFree.lBankerTreasure = m_CurrentBanker.lUserScore;
+			}
+			else StatusFree.wCurrentBankerChairID = INVALID_CHAIR;
+
+			//全局信息
+			DWORD dwPassTime=(DWORD)time(NULL)-m_dwJettonTime;
+			StatusFree.cbTimeLeave=(BYTE)(TIME_PLACE_JETTON-__min(dwPassTime,TIME_FREE));
+			//发送场景
+			bool bSuccess = m_pITableFrame->SendGameScene(pIServerUserItem,&StatusFree,sizeof(StatusFree));
+			//发送申请者
+			SendApplyUser(  pIServerUserItem );
 			return bSuccess;
 		}
 	case GS_PLAYING:		//游戏状态
@@ -499,24 +561,12 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//下注信息
 			if (pIServerUserItem->GetUserStatus()!=US_LOOKON)
 			{
-				if (FindUserLeft(pIServerUserItem->GetUserID()) == false)
-				{
-					StatusPlay.lMeTieScore=m_lUserTieScore[wChiarID];
-					StatusPlay.lMeBankerScore=m_lUserBankerScore[wChiarID];
-					StatusPlay.lMePlayerScore=m_lUserPlayerScore[wChiarID];
-					StatusPlay.lMeTieKingScore = m_lUserTieSamePointScore[wChiarID];
-					StatusPlay.lMeBankerKingScore = m_lUserBankerKingScore[wChiarID];
-					StatusPlay.lMePlayerKingScore = m_lUserPlayerKingScore[wChiarID];	
-				}
-				else
-				{
-					StatusPlay.lMeTieScore=0;
-					StatusPlay.lMeBankerScore=0;
-					StatusPlay.lMePlayerScore=0;
-					StatusPlay.lMeTieKingScore = 0;
-					StatusPlay.lMeBankerKingScore = 0;
-					StatusPlay.lMePlayerKingScore = 0;
-				}
+				StatusPlay.lMeTieScore=m_lUserTieScore[wChiarID];
+				StatusPlay.lMeBankerScore=m_lUserBankerScore[wChiarID];
+				StatusPlay.lMePlayerScore=m_lUserPlayerScore[wChiarID];
+				StatusPlay.lMeTieKingScore = m_lUserTieSamePointScore[wChiarID];
+				StatusPlay.lMeBankerKingScore = m_lUserBankerKingScore[wChiarID];
+				StatusPlay.lMePlayerKingScore = m_lUserPlayerKingScore[wChiarID];	
 				StatusPlay.lMeMaxScore=pIServerUserItem->GetUserScore()->lScore;
 			}
 
@@ -549,6 +599,12 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 {
 	switch (wTimerID)
 	{
+	case IDI_GAME_FREE:
+		{
+			OnEventStartPlaceJetton();
+			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON, TIME_PLACE_JETTON*1000,1,0L);
+			return true;
+		}
 	case IDI_PLACE_JETTON:		//下注时间
 		{
 			//开始游戏
@@ -585,7 +641,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 
 			//设置时间
 			m_dwJettonTime=(DWORD)time(NULL);
-			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON,TIME_PLACE_JETTON*1000L,1,0L);
+			m_pITableFrame->SetGameTimer(IDI_GAME_FREE,TIME_FREE*1000L,1,0L);
 
 			//轮换庄家
 			ChangeBanker();
@@ -670,7 +726,7 @@ bool __cdecl CTableFrameSink::OnActionUserSitDown(WORD wChairID, IServerUserItem
 	if ((bLookonUser==false)&&(m_dwJettonTime==0L))
 	{
 		m_dwJettonTime=(DWORD)time(NULL);
-		m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON,TIME_PLACE_JETTON*1000L,1,0L);
+		m_pITableFrame->SetGameTimer(IDI_GAME_FREE, TIME_FREE*1000L,1,0L);
 	}
 
 	return true;
@@ -682,7 +738,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 	//记录成绩
 	if ( bLookonUser==false )
 	{
-		if ( m_pITableFrame->GetGameStatus() != GS_PLAYING )
+		if ( m_pITableFrame->GetGameStatus() != GS_FREE )
 		{
 			OnEventGameEnd( wChairID, pIServerUserItem, GER_USER_LEFT);
 		}
@@ -725,6 +781,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 		if ( wNowCount<=0 )
 		{
 			m_dwJettonTime=0;
+			m_pITableFrame->KillGameTimer( IDI_GAME_FREE );
 			m_pITableFrame->KillGameTimer( IDI_PLACE_JETTON );
 		}
 	}
@@ -741,8 +798,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 		return false;
 
 	//效验状态
-	ASSERT(m_pITableFrame->GetGameStatus()==GS_FREE);
-	if (m_pITableFrame->GetGameStatus()!=GS_FREE) 
+	ASSERT(m_pITableFrame->GetGameStatus()==GS_FREE + 1);
+	if (m_pITableFrame->GetGameStatus()!=GS_FREE + 1) 
 		return true;
 
 	//庄家判断
@@ -963,8 +1020,6 @@ bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApp
 		//发送消息
 		m_pITableFrame->SendTableData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
 		m_pITableFrame->SendLookonData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
-
-		return true;
 	}
 	else	//取消申请
 	{
@@ -995,15 +1050,52 @@ bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApp
 				m_pITableFrame->SendTableData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
 				m_pITableFrame->SendLookonData(INVALID_CHAIR, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
 
-				return true;
+				break;
 			}
 		}
-
-		return true;
 	}
-
+	if ( m_pITableFrame->GetGameStatus() == GS_FREE )
+	{
+		if ( m_bCancelBanker && m_CurrentBanker.dwUserID != 0 )
+		{		
+			//获取玩家
+			IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem( m_CurrentBanker.wChairID );
+			//重置变量
+			m_cbBankerTimer = 0;
+			m_lBankerWinScore=0;
+			ZeroMemory( &m_CurrentBanker, sizeof( m_CurrentBanker ) );
+			m_bCancelBanker=false;
+			//发送消息
+			SendChangeBankerMsg();
+			if ( pServerUserItem )
+				OnUserApplyBanker( pServerUserItem->GetUserData(), false );
+		}
+		if (m_CurrentBanker.dwUserID == 0)
+		{
+			//轮换庄家
+			ChangeBanker();
+			//庄家信息
+			if ( m_CurrentBanker.dwUserID != 0 )
+			{
+				CMD_S_ChangeUserScore ChangeUserScore;
+				ZeroMemory( &ChangeUserScore, sizeof( ChangeUserScore ) );
+				ChangeUserScore.wCurrentBankerChairID = m_CurrentBanker.wChairID;
+				ChangeUserScore.lCurrentBankerScore = m_lBankerWinScore;
+				ChangeUserScore.cbBankerTime = m_cbBankerTimer;
+				ChangeUserScore.lScore = m_CurrentBanker.lUserScore;
+				ChangeUserScore.wChairID = m_CurrentBanker.wChairID;
+				m_pITableFrame->SendTableData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+				m_pITableFrame->SendLookonData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+			}
+			//切换判断
+			if ( m_cbBankerTimer == 0 )
+			{
+				//发送消息
+				SendChangeBankerMsg();
+			}
+		}
+	}
 	return true;
-
 }
 
 //发送庄家
@@ -1343,9 +1435,10 @@ void CTableFrameSink::ChuLaoQian()
 		//机器人30%的概率赢钱
 		if ( m_CurrentBanker.dwUserType == 10 )
 		{
+			int nRobotWin = rand()%lWinRate;
 			bool bWin = false;
-			int nRnd = rand();
-			if ( nRnd <= lWinRate || (lMaxLose > 0 && m_lBankerWinScore <= (-lMaxLose)) )
+			int nRnd = rand()%100;
+			if ( nRnd <= nRobotWin || (lMaxLose > 0 && m_lBankerWinScore <= (-lMaxLose)) )
 			{
 				int nDispatch = 30;
 				while(PreCalculateBankerWin() < 0 && nDispatch > 0)
@@ -1625,28 +1718,14 @@ void CTableFrameSink::CalculateScore()
 		IServerUserItem *pIServerUserItem = m_pITableFrame->GetServerUserItem(wUserIndex);
 		if ( pIServerUserItem == NULL ) continue;
 		//我的下注
-		if (FindUserLeft(pIServerUserItem->GetUserID()) == false)
-		{
-			GameScore.lMeTieScore		 = m_lUserTieScore[wUserIndex];
-			GameScore.lMeBankerScore	 = m_lUserBankerScore[wUserIndex];
-			GameScore.lMePlayerScore	 = m_lUserPlayerScore[wUserIndex];
-			GameScore.lMeTieKingScore    = m_lUserTieSamePointScore[wUserIndex];
-			GameScore.lMeBankerKingScore = m_lUserBankerKingScore[wUserIndex];
-			GameScore.lMePlayerKingScore = m_lUserPlayerKingScore[wUserIndex];
-			GameScore.lMeGameScore=m_lUserWinScore[wUserIndex];
-			GameScore.lMeReturnScore = m_lUserReturnScore[wUserIndex];
-		}
-		else
-		{
-			GameScore.lMeTieScore		 = 0;
-			GameScore.lMeBankerScore	 = 0;
-			GameScore.lMePlayerScore	 = 0;
-			GameScore.lMeTieKingScore    = 0;
-			GameScore.lMeBankerKingScore = 0;
-			GameScore.lMePlayerKingScore = 0;
-			GameScore.lMeGameScore=0;
-			GameScore.lMeReturnScore = 0;
-		}
+		GameScore.lMeTieScore		 = m_lUserTieScore[wUserIndex];
+		GameScore.lMeBankerScore	 = m_lUserBankerScore[wUserIndex];
+		GameScore.lMePlayerScore	 = m_lUserPlayerScore[wUserIndex];
+		GameScore.lMeTieKingScore    = m_lUserTieSamePointScore[wUserIndex];
+		GameScore.lMeBankerKingScore = m_lUserBankerKingScore[wUserIndex];
+		GameScore.lMePlayerKingScore = m_lUserPlayerKingScore[wUserIndex];
+		GameScore.lMeGameScore=m_lUserWinScore[wUserIndex];
+		GameScore.lMeReturnScore = m_lUserReturnScore[wUserIndex];
 		//发送消息
 		m_pITableFrame->SendTableData(wUserIndex,SUB_S_GAME_SCORE,&GameScore,sizeof(GameScore));
 		m_pITableFrame->SendLookonData(wUserIndex,SUB_S_GAME_SCORE,&GameScore,sizeof(GameScore));
@@ -1716,23 +1795,66 @@ void CTableFrameSink::MakeJettonString(WORD wChairID, TCHAR szJetton[MAX_DB_JETT
 		m_lUserPlayerKingScore[wChairID]);
 }
 
-void CTableFrameSink::AddUserLeft( DWORD nUserID, __int64 allZhu )
+void CTableFrameSink::JettonChangeByUserLeft( WORD wChairID, IServerUserItem * pIServerUserItem )
 {
-	bool bPush = true;
-	if (m_vForseLeave.find(nUserID) == m_vForseLeave.end())
-	{
-		m_vForseLeave.insert(std::make_pair(nUserID, allZhu));
-	}
-	else
-	{
-		m_vForseLeave[nUserID] += allZhu;
-	}
+	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
+		return;
+
+	__int64 nTieScore = m_lUserTieScore[wChairID];
+	__int64 nBankerScore = m_lUserBankerScore[wChairID];
+	__int64 nPlayerScore  = m_lUserPlayerScore[wChairID];
+	__int64 nTieSamePointScore = m_lUserTieSamePointScore[wChairID];
+	__int64 nBankerKingScore = m_lUserBankerKingScore[wChairID];
+	__int64 nPlayerKingScore  = m_lUserPlayerKingScore[wChairID];
+
+	m_lTieScore -= nTieScore;
+	m_lBankerScore -= nBankerScore;
+	m_lPlayerScore	-= nPlayerScore;
+	m_lTieSamePointScore -= nTieSamePointScore;
+	m_lBankerKingScore -= nBankerKingScore;
+	m_lPlayerKingScore -= nPlayerKingScore;
+
+	m_lUserTieScore[wChairID] = 0;
+	m_lUserBankerScore[wChairID] = 0;
+	m_lUserPlayerScore[wChairID] = 0;
+	m_lUserTieSamePointScore[wChairID] = 0;
+	m_lUserBankerKingScore[wChairID] = 0;
+	m_lUserPlayerKingScore[wChairID] = 0;
+
+	//变量定义
+	CMD_S_JettonChange JettonChange;
+	ZeroMemory(&JettonChange,sizeof(JettonChange));
+	JettonChange.lIieScore=nTieScore;
+	JettonChange.lBankerScore=nBankerScore;
+	JettonChange.lPlayerScore=nPlayerScore;
+	JettonChange.lTieSamePointScore=nTieSamePointScore;
+	JettonChange.lPlayerKingScore=nBankerKingScore;
+	JettonChange.lBankerkingScore=nPlayerKingScore;
+
+	JettonChange.lZhuangSocre=m_CurrentBanker.lUserScore; 
+	JettonChange.lKexiaSocre=m_CurrentBanker.lUserScore-(m_lTieScore+m_lBankerScore+m_lPlayerScore+m_lTieSamePointScore+m_lBankerKingScore+m_lPlayerKingScore);
+	//发送消息
+	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_JETTON_CHANGE,&JettonChange,sizeof(JettonChange));
+	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_JETTON_CHANGE,&JettonChange,sizeof(JettonChange));
+
 }
 
-bool CTableFrameSink::FindUserLeft( DWORD nUserID )
+bool CTableFrameSink::OnEventStartPlaceJetton()
 {
-	return m_vForseLeave.find(nUserID) != m_vForseLeave.end(); 
+	m_pITableFrame->SetGameStatus(GS_FREE + 1);
+	m_dwJettonTime=(DWORD)time(NULL);
+
+	//变量定义
+	CMD_S_JettonStart JettonStart;
+	ZeroMemory(&JettonStart,sizeof(JettonStart));
+	//构造数据
+	JettonStart.cbTimeLeave=TIME_PLACE_JETTON;	
+	//发送数据
+	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_StartJetton,&JettonStart,sizeof(JettonStart));
+	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_StartJetton,&JettonStart,sizeof(JettonStart));
+	return true;
 }
+
 
 //////////////////////////////////////////////////////////////////////////
 
