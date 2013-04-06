@@ -344,7 +344,6 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					}
 				}
 			}
-			m_pITableFrame->SetGameStatus(GS_FREE);
 			//结束游戏
 			m_pITableFrame->ConcludeGame();
 
@@ -642,6 +641,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 			//设置时间
 			m_dwJettonTime=(DWORD)time(NULL);
 			m_pITableFrame->SetGameTimer(IDI_GAME_FREE,TIME_FREE*1000L,1,0L);
+			m_pITableFrame->SetGameStatus(GS_FREE);
 
 			//轮换庄家
 			ChangeBanker();
