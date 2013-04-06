@@ -23,16 +23,26 @@
 
 //结束原因
 #define GER_NO_PLAYER					0x10								//没有玩家
-
 //游戏状态
 #define GS_TK_FREE					GS_FREE									//等待开始
 #define GS_TK_CALL					GS_PLAYING								//叫庄状态
 #define GS_TK_SCORE					GS_PLAYING+1							//下注状态
 #define GS_TK_PLAYING				GS_PLAYING+2							//游戏进行
 
+//定时器ID
+#define TIMER_WAITSTATR					10 //等待开始	
+#define TIMER_WAITCALLBANKER			11 //等待叫庄
+#define TIMER_WAITSETSCORE				12 //等待下分
+#define TIMER_WAITKAIPAI				13 //等待开牌
+
+//定时器时长（毫秒）
+#define TIMER_WAITSTATR_Continued				30*1000L
+#define TIMER_WAITCALLBANKER_Continued			30*1000L 
+#define TIMER_WAITSETSCORE_Continued			30*1000L 
+#define TIMER_WAITKAIPAI_Continued				30*1000L 
+
 //////////////////////////////////////////////////////////////////////////
 //服务器命令结构
-
 #define SUB_S_GAME_START				100									//游戏开始
 #define SUB_S_ADD_SCORE					101									//加注结果
 #define SUB_S_PLAYER_EXIT				102									//用户强退

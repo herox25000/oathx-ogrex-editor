@@ -86,10 +86,8 @@ void __cdecl CTableFrameSink::RepositTableFrameSink()
 	ZeroMemory(m_bPlayStatus,sizeof(m_bPlayStatus));
 	ZeroMemory(m_bCallStatus,sizeof(m_bCallStatus));
 	for(BYTE i=0;i<m_wPlayerCount;i++)m_bOxCard[i]=0xff;
-
 	//扑克变量
 	ZeroMemory(m_cbHandCardData,sizeof(m_cbHandCardData));
-
 	//下注信息
 	ZeroMemory(m_lTurnMaxScore,sizeof(m_lTurnMaxScore));
 
@@ -115,13 +113,12 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 {
 	//设置状态
 	m_pITableFrame->SetGameStatus(GS_TK_CALL);
-
+	m_pITableFrame->SetGameTimer(TIMER_WAITCALLBANKER,TIMER_WAITCALLBANKER_Continued,1,0L);
 	//用户状态
 	for (WORD i=0;i<m_wPlayerCount;i++)
 	{
 		//获取用户
 		IServerUserItem *pIServerUser=m_pITableFrame->GetServerUserItem(i);
-
 		if(pIServerUser==NULL)
 		{
 			m_bPlayStatus[i]=FALSE;
@@ -131,7 +128,6 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 			m_bPlayStatus[i]=TRUE;
 		}
 	}
-
 	//首局随机始叫
 	if(m_wFisrtCallUser==INVALID_CHAIR)
 	{
@@ -169,6 +165,10 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 //游戏结束
 bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbReason)
 {
+	//设置状态
+	m_pITableFrame->SetGameStatus(GS_TK_FREE);
+	m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,0L);
+
 	switch (cbReason)
 	{
 	case GER_NORMAL:		//常规结束
@@ -506,7 +506,8 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					//结束游戏
 					m_pITableFrame->ConcludeGame();			
 				}
-				else if(m_wCurrentUser==wChairID)OnUserCallBanker(wChairID,0);
+				else if(m_wCurrentUser==wChairID)
+					OnUserCallBanker(wChairID,0);
 			}
 
 			return true;
@@ -526,10 +527,8 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			CMD_S_StatusFree StatusFree;
 			ZeroMemory(&StatusFree,sizeof(StatusFree));
-
 			//设置变量
 			StatusFree.lCellScore=0L;
-
 			//发送场景
 			return m_pITableFrame->SendGameScene(pIServerUserItem,&StatusFree,sizeof(StatusFree));
 		}
@@ -538,10 +537,8 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			CMD_S_StatusCall StatusCall;
 			ZeroMemory(&StatusCall,sizeof(StatusCall));
-
 			//设置变量
 			StatusCall.wCallBanker=m_wCurrentUser;
-
 			//发送场景
 			return m_pITableFrame->SendGameScene(pIServerUserItem,&StatusCall,sizeof(StatusCall));
 		}
@@ -550,18 +547,15 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			CMD_S_StatusScore StatusScore;
 			memset(&StatusScore,0,sizeof(StatusScore));
-
 			//加注信息
 			StatusScore.lTurnMaxScore=m_lTurnMaxScore[wChiarID];
 			StatusScore.wBankerUser=m_wBankerUser;
-
 			//设置积分
 			for (WORD i=0;i<m_wPlayerCount;i++)
 			{
 				if(m_bPlayStatus[i]==FALSE)continue;
 				StatusScore.lTableScore[i]=m_lTableScore[i];
 			}
-
 			//发送场景
 			return m_pITableFrame->SendGameScene(pIServerUserItem,&StatusScore,sizeof(StatusScore));
 		}
@@ -570,12 +564,10 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			//构造数据
 			CMD_S_StatusPlay StatusPlay;
 			memset(&StatusPlay,0,sizeof(StatusPlay));
-
 			//设置信息
 			StatusPlay.lTurnMaxScore=m_lTurnMaxScore[wChiarID];
 			StatusPlay.wBankerUser=m_wBankerUser;
 			CopyMemory(StatusPlay.bOxCard,m_bOxCard,sizeof(StatusPlay.bOxCard));
-
 			//设置扑克
 			for (WORD i=0;i< m_wPlayerCount;i++)
 			{
@@ -584,7 +576,6 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 				StatusPlay.lTableScore[j]=m_lTableScore[j];
 				CopyMemory(StatusPlay.cbHandCardData[j],m_cbHandCardData[j],MAX_COUNT);
 			}
-
 			//发送场景
 			return m_pITableFrame->SendGameScene(pIServerUserItem,&StatusPlay,sizeof(StatusPlay));
 		}
@@ -598,7 +589,18 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 //定时器事件
 bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 {
+	switch(wTimerID)
+	{
+	case TIMER_WAITSTATR:
+		break;
+	case TIMER_WAITCALLBANKER:
 
+		break;
+	case TIMER_WAITSETSCORE:
+		break;
+	case TIMER_WAITKAIPAI:
+		break;
+	}
 	return false;
 }
 
@@ -612,18 +614,15 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 			//效验数据
 			ASSERT(wDataSize==sizeof(CMD_C_CallBanker));
 			if (wDataSize!=sizeof(CMD_C_CallBanker)) return false;
-
 			//变量定义
 			CMD_C_CallBanker * pCallBanker=(CMD_C_CallBanker *)pDataBuffer;
-
 			//用户效验
 			tagServerUserData * pUserData=pIServerUserItem->GetUserData();
 			if (pUserData->cbUserStatus!=US_PLAY) return true;
-
 			//状态判断
 			ASSERT(IsUserPlaying(pUserData->wChairID));
-			if (!IsUserPlaying(pUserData->wChairID)) return false;
-
+			if (!IsUserPlaying(pUserData->wChairID)) 
+				return false;
 			//消息处理
 			return OnUserCallBanker(pUserData->wChairID,pCallBanker->bBanker);
 		}
@@ -632,14 +631,11 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 			//效验数据
 			ASSERT(wDataSize==sizeof(CMD_C_AddScore));
 			if (wDataSize!=sizeof(CMD_C_AddScore)) return false;
-
 			//变量定义
 			CMD_C_AddScore * pAddScore=(CMD_C_AddScore *)pDataBuffer;
-
 			//用户效验
 			tagServerUserData * pUserData=pIServerUserItem->GetUserData();
 			if (pUserData->cbUserStatus!=US_PLAY) return true;
-
 			//状态判断
 			ASSERT(IsUserPlaying(pUserData->wChairID));
 			if (!IsUserPlaying(pUserData->wChairID)) return false;
@@ -684,17 +680,18 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 {
 	//状态效验
 	ASSERT(m_pITableFrame->GetGameStatus()==GS_TK_CALL);
-	if (m_pITableFrame->GetGameStatus()!=GS_TK_CALL) return false;
-
+	if (m_pITableFrame->GetGameStatus()!=GS_TK_CALL)
+		return false;
 	//设置变量
 	m_bCallStatus[wChairID]=TRUE;
-
 	//叫庄人数
 	WORD wCallUserCount=0;
 	for (WORD i=0;i<m_wPlayerCount;i++)
 	{
-		if(m_bPlayStatus[i]==TRUE && m_bCallStatus[i]==TRUE) wCallUserCount++;
-		else if(m_bPlayStatus[i]!=TRUE) wCallUserCount++;
+		if(m_bPlayStatus[i]==TRUE && m_bCallStatus[i]==TRUE) 
+			wCallUserCount++;
+		else if(m_bPlayStatus[i]!=TRUE)
+			wCallUserCount++;
 	}
 
 	//下注开始
@@ -702,38 +699,31 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 	{
 		//始叫用户
 		m_wBankerUser=wChairID;
-
 		//过滤最后一个叫庄用户强退情况
 		while(m_bPlayStatus[m_wBankerUser]==FALSE)
 		{
 			m_wBankerUser=(m_wBankerUser+1)%GAME_PLAYER;
 		}
-
 		//设置状态
 		m_pITableFrame->SetGameStatus(GS_TK_SCORE);
-
+		m_pITableFrame->SetGameTimer(TIMER_WAITSETSCORE,TIMER_WAITSETSCORE_Continued,1,0L);
 		//庄家积分
 		IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(m_wBankerUser);
 		__int64 lBankerScore=pIServerUserItem->GetUserScore()->lScore;
-
 		//玩家人数
 		WORD wUserCount=0;
-		for (WORD i=0;i<m_wPlayerCount;i++)if(m_bPlayStatus[i]==TRUE )wUserCount++;
-
+		for (WORD i=0;i<m_wPlayerCount;i++)if(m_bPlayStatus[i]==TRUE )
+			wUserCount++;
 		//最大下注
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
 			if(m_bPlayStatus[i]!=TRUE || i==m_wBankerUser)continue;
-
 			//获取用户
 			pIServerUserItem=m_pITableFrame->GetServerUserItem(i);
-
 			//获取积分
 			const tagUserScore * pUserScore=pIServerUserItem->GetUserScore();
-
 			//金币检验
 			ASSERT(pUserScore->lScore>=m_pGameServiceOption->lCellScore);
-
 			//下注变量 客户要求
 			m_lTurnMaxScore[i]=__min(lBankerScore/(wUserCount-1)/5,pUserScore->lScore/5);
 		}
@@ -743,7 +733,6 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 		CMD_S_GameStart GameStart;
 		GameStart.wBankerUser=m_wBankerUser;
 		GameStart.lTurnMaxScore=0;
-
 		//发送数据
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
@@ -756,14 +745,13 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 	else		 //用户叫庄
 	{
 		//查找下个玩家
-		do{
+		do
+		{
 			m_wCurrentUser=(m_wCurrentUser+1)%m_wPlayerCount;
 		}while(m_bPlayStatus[m_wCurrentUser]==FALSE);
-
 		//设置变量
 		CMD_S_CallBanker CallBanker;
 		CallBanker.wCallBanker=m_wCurrentUser;
-
 		//发送数据
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
@@ -781,7 +769,6 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 	//状态效验
 	ASSERT(m_pITableFrame->GetGameStatus()==GS_TK_SCORE);
 	if (m_pITableFrame->GetGameStatus()!=GS_TK_SCORE) return false;
-
 	//金币效验
 	if(m_bPlayStatus[wChairID]==TRUE)
 	{
@@ -798,12 +785,10 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 	{
 		//下注金币
 		m_lTableScore[wChairID]=lScore;
-
 		//构造数据
 		CMD_S_AddScore AddScore;
 		AddScore.wAddScoreUser=wChairID;
 		AddScore.lAddScoreCount=m_lTableScore[wChairID];
-
 		//发送数据
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
@@ -817,53 +802,51 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 	BYTE bUserCount=0;
 	for(WORD i=0;i<m_wPlayerCount;i++)
 	{
-		if(m_lTableScore[i]>0L && m_bPlayStatus[i]==TRUE)bUserCount++;
-		else if(m_bPlayStatus[i]==FALSE || i==m_wBankerUser)bUserCount++;
+		if(m_lTableScore[i]>0L && m_bPlayStatus[i]==TRUE)
+			bUserCount++;
+		else if(m_bPlayStatus[i]==FALSE || i==m_wBankerUser)
+			bUserCount++;
 	}
 
-	//闲家全到
+	//所有人都叫庄 开始发牌
 	if(bUserCount==m_wPlayerCount)
 	{
 		//设置状态
 		m_pITableFrame->SetGameStatus(GS_TK_PLAYING);
-
+		m_pITableFrame->SetGameTimer(TIMER_WAITKAIPAI,TIMER_WAITKAIPAI_Continued,1,0L);
 		//构造数据
 		CMD_S_SendCard SendCard;
 		ZeroMemory(SendCard.cbCardData,sizeof(SendCard.cbCardData));
-
 		//获取扑克
 		BYTE bTempArray[GAME_PLAYER*MAX_COUNT];
 		m_GameLogic.RandCardList(bTempArray,sizeof(bTempArray));
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
-			if(m_bPlayStatus[i]==FALSE)continue;
-
+			if(m_bPlayStatus[i]==FALSE)
+				continue;
 			//派发扑克
 			CopyMemory(m_cbHandCardData[i],&bTempArray[i*MAX_COUNT],MAX_COUNT);
 			m_GameLogic.SortCardList(m_cbHandCardData[i],MAX_COUNT);
 		}
-
 		//分析扑克
 		AnalyseCard();
-
 		//发送扑克
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
-			if(m_bPlayStatus[i]==FALSE)continue;
-
+			if(m_bPlayStatus[i]==FALSE)
+				continue;
 			//派发扑克
 			CopyMemory(SendCard.cbCardData[i],m_cbHandCardData[i],MAX_COUNT);
 		}
-
 		//发送数据
 		for (WORD i=0;i< m_wPlayerCount;i++)
 		{
-			if(m_bPlayStatus[i]==FALSE)continue;
+			if(m_bPlayStatus[i]==FALSE)
+				continue;
 			m_pITableFrame->SendTableData(i,SUB_S_SEND_CARD,&SendCard,sizeof(SendCard));
 		}
 		m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_SEND_CARD,&SendCard,sizeof(SendCard));
 	}
-
 	return true;
 }
 
@@ -873,45 +856,42 @@ bool CTableFrameSink::OnUserOpenCard(WORD wChairID, BYTE bOx)
 	//状态效验
 	ASSERT (m_pITableFrame->GetGameStatus()==GS_TK_PLAYING);
 	if (m_pITableFrame->GetGameStatus()!=GS_TK_PLAYING) return false;
-
 	//效验数据
 	ASSERT(bOx==FALSE || bOx==TRUE);
-	if(bOx!=FALSE && bOx!=TRUE)return false;
-
+	if(bOx!=FALSE && bOx!=TRUE)
+		return false;
 	//效验数据
 	if(bOx)
 	{
 		ASSERT(m_GameLogic.GetCardType(m_cbHandCardData[wChairID],MAX_COUNT)>0);
-		if(!(m_GameLogic.GetCardType(m_cbHandCardData[wChairID],MAX_COUNT)>0))return false;
+		if(!(m_GameLogic.GetCardType(m_cbHandCardData[wChairID],MAX_COUNT)>0))
+			return false;
 	}
-
 	//牛牛数据
 	m_bOxCard[wChairID] = bOx;
-
 	//摊牌人数
 	BYTE bUserCount=0;
 	for(WORD i=0;i<m_wPlayerCount;i++)
 	{
-		if(m_bOxCard[i]<2 && m_bPlayStatus[i]==TRUE)bUserCount++;
-		else if(m_bPlayStatus[i]==FALSE)bUserCount++;
+		if(m_bOxCard[i]<2 && m_bPlayStatus[i]==TRUE)
+			bUserCount++;
+		else if(m_bPlayStatus[i]==FALSE)
+			bUserCount++;
 	}
-
 	 //构造变量
 	CMD_S_Open_Card OpenCard;
 	ZeroMemory(&OpenCard,sizeof(OpenCard));
-
 	//设置变量
 	OpenCard.bOpen=bOx;
 	OpenCard.wPlayerID=wChairID;
-
 	//发送数据
 	for (WORD i=0;i< m_wPlayerCount;i++)
 	{
-		if(m_bPlayStatus[i]==FALSE)continue;
+		if(m_bPlayStatus[i]==FALSE)
+			continue;
 		m_pITableFrame->SendTableData(i,SUB_S_OPEN_CARD,&OpenCard,sizeof(OpenCard));
 	}
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_OPEN_CARD,&OpenCard,sizeof(OpenCard));	
-
 	//结束游戏
 	if(bUserCount == m_wPlayerCount)
 	{
@@ -946,11 +926,9 @@ void CTableFrameSink::AnalyseCard()
 
 	//全部机器
 	if(wPlayerCount == wAiCount || wAiCount==0)return;
-
 	//扑克变量
 	BYTE cbUserCardData[GAME_PLAYER][MAX_COUNT];
 	CopyMemory(cbUserCardData,m_cbHandCardData,sizeof(m_cbHandCardData));
-
 	//牛牛数据
 	BOOL bUserOxData[GAME_PLAYER];
 	ZeroMemory(bUserOxData,sizeof(bUserOxData));
@@ -959,16 +937,13 @@ void CTableFrameSink::AnalyseCard()
 		if(m_bPlayStatus[i]!=TRUE)continue;
 		bUserOxData[i] = (m_GameLogic.GetCardType(cbUserCardData[i],MAX_COUNT)>0)?TRUE:FALSE;
 	}
-
 	//排列扑克
 	for (WORD i=0;i<m_wPlayerCount;i++)
 	{
 		m_GameLogic.SortCardList(cbUserCardData[i],MAX_COUNT);
 	}
-
 	//变量定义
 	__int64 lAndroidScore=0;
-
 	//倍数变量
 	BYTE cbCardTimes[GAME_PLAYER];
 	ZeroMemory(cbCardTimes,sizeof(cbCardTimes));
