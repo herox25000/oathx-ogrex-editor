@@ -10,6 +10,10 @@
 //历史记录
 #define MAX_SCORE_HISTORY			16									//历史个数
 //////////////////////////////////////////////////////////////////////////
+
+#define PLAY_PLACE_JETTON			1
+#define PLAY_DISCARD				2
+
 //玩家信息
 struct tagApplyUserInfo
 {
@@ -166,6 +170,8 @@ protected:
 	bool OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore);
 	//申请庄家
 	bool OnUserApplyBanker( tagServerUserData *pUserData, bool bApplyBanker );
+	//开始下注
+	bool OnEventStartPlaceJetton();
 
 	//辅助函数
 private:
@@ -201,8 +207,8 @@ private:
 	//推断赢家
 	void    MakeJettonString(WORD wChairID, TCHAR szJetton[MAX_DB_JETTON_LEN]);
 
-	void AddUserLeft(DWORD nUserID, __int64 allZhu);
-	bool FindUserLeft(DWORD nUserID);
+	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);
+
 };
 
 //////////////////////////////////////////////////////////////////////////
