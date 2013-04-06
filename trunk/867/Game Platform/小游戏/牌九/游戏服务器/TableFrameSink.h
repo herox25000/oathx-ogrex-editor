@@ -169,6 +169,8 @@ protected:
 	bool OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore, bool bRobot = false);
 	//申请庄家
 	bool OnUserApplyBanker( tagServerUserData *pUserData, bool bApplyBanker );
+	//开始下注
+	bool OnEventStartPlaceJetton();
 
 	//辅助函数
 private:
@@ -206,8 +208,8 @@ private:
 
 	void SortCardComp( BYTE chCardComp[], int nCount );
 	void SwapBankerCard( BYTE chCardSort[], bool bWin);
-	void AddUserLeft(DWORD nUserID, __int64 allZhu);
-	bool FindUserLeft( DWORD nUserID );
+
+	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);
 };
 
 //////////////////////////////////////////////////////////////////////////
