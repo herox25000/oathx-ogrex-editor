@@ -12,10 +12,10 @@ typedef struct tagBankerConfig
 	INT64							nMinScore;
 	double							fMaxPlaceTime;
 	double							fMinPlaceTime;
-	WORD							nTenMillionRate;
-	WORD							nFiveMillionRate;
-	WORD							nOneMillionRate;
-	WORD							nFiveLakhRate;
+	WORD							wSaveRot;
+	INT64							nMaxSaveScore;
+	WORD							wGetRot;
+	INT64							nMaxGetScore;
 	WORD							nTenLakhRate;
 	WORD							nPlaceMaxRate;
 

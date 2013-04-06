@@ -21,7 +21,7 @@ public:
 	//”Œœ∑œ˚œ¢
 	virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL,
 		WORD wDataSize=0);
-
+	virtual bool			OnBanker();
 public:
 	virtual bool			SendApplyBanker(bool bUp);
 	virtual	void			ResetGame();
