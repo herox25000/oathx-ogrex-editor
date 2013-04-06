@@ -175,7 +175,6 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	{
 	case GER_NORMAL:		//常规结束
 		{
-			m_pITableFrame->SetGameStatus(GS_FREE);
 			//结束消息
 			CMD_S_GameEnd GameEnd;
 			ZeroMemory(&GameEnd,sizeof(GameEnd));
@@ -246,7 +245,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					}
 				}
 			}
-
+			m_pITableFrame->SetGameStatus(GS_FREE);
 			//结束游戏
 			m_pITableFrame->ConcludeGame();
 
@@ -901,26 +900,30 @@ bool CTableFrameSink::OnUserApplyBanker( tagServerUserData *pUserData, bool bApp
 			if ( pServerUserItem )
 				OnUserApplyBanker( pServerUserItem->GetUserData(), false );
 		}
-		//轮换庄家
-		ChangeBanker();
-		//庄家信息
-		if ( m_CurrentBanker.dwUserID != 0 )
+		if (m_CurrentBanker.dwUserID == 0)
 		{
-			CMD_S_ChangeUserScore ChangeUserScore;
-			ZeroMemory( &ChangeUserScore, sizeof( ChangeUserScore ) );
-			ChangeUserScore.wCurrentBankerChairID = m_CurrentBanker.wChairID;
-			ChangeUserScore.lCurrentBankerScore = m_lBankerWinScore;
-			ChangeUserScore.cbBankerTime = m_cbBankerTimer;
-			ChangeUserScore.lScore = m_CurrentBanker.lUserScore;
-			ChangeUserScore.wChairID = m_CurrentBanker.wChairID;
-			m_pITableFrame->SendTableData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
-			m_pITableFrame->SendLookonData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
-		}
-		//切换判断
-		if ( m_cbBankerTimer == 0 )
-		{
-			//发送消息
-			SendChangeBankerMsg();
+			//轮换庄家
+			ChangeBanker();
+			//庄家信息
+			if ( m_CurrentBanker.dwUserID != 0 )
+			{
+				CMD_S_ChangeUserScore ChangeUserScore;
+				ZeroMemory( &ChangeUserScore, sizeof( ChangeUserScore ) );
+				ChangeUserScore.wCurrentBankerChairID = m_CurrentBanker.wChairID;
+				ChangeUserScore.lCurrentBankerScore = m_lBankerWinScore;
+				ChangeUserScore.cbBankerTime = m_cbBankerTimer;
+				ChangeUserScore.lScore = m_CurrentBanker.lUserScore;
+				ChangeUserScore.wChairID = m_CurrentBanker.wChairID;
+				m_pITableFrame->SendTableData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+				m_pITableFrame->SendLookonData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+			}
+			//切换判断
+			if ( m_cbBankerTimer == 0 )
+			{
+				//发送消息
+				SendChangeBankerMsg();
+			}
+
 		}
 	}
 	return true;
