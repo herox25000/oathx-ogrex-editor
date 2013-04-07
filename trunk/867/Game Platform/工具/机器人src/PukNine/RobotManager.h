@@ -13,9 +13,9 @@ typedef struct tagBankerConfig
 	double							fMaxPlaceTime;
 	double							fMinPlaceTime;
 
-	WORD							wSaveRot;
+	INT64							nMaxSaveCondition;
 	INT64							nMaxSaveScore;
-	WORD							wGetRot;
+	INT64							nMinGetCondition;
 	INT64							nMaxGetScore;
 
 	WORD							nTenLakhRate;

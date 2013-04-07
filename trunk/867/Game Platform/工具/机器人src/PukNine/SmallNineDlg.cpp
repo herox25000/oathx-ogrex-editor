@@ -135,16 +135,16 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT11,	"30000000");
 	SetDlgItemText(IDC_EDIT12,	"100000");
 
-	SetDlgItemText(IDC_EDIT13,	"20000000");
+	SetDlgItemText(IDC_EDIT13,	"100000000");
 	SetDlgItemText(IDC_EDIT14,	"10000000");
-	SetDlgItemText(IDC_EDIT15,	"20000000");
+	SetDlgItemText(IDC_EDIT15,	"2000000");
 	SetDlgItemText(IDC_EDIT16,	"10000000");
 	SetDlgItemText(IDC_EDIT17,	"10");
 	SetDlgItemText(IDC_EDIT18,	"10");
 	SetDlgItemText(IDC_EDIT19,	"20");
 
-	SetDlgItemText(IDC_EDIT20,	"1");
-	SetDlgItemText(IDC_EDIT21,	"3");
+	SetDlgItemText(IDC_EDIT20,	"30");
+	SetDlgItemText(IDC_EDIT21,	"120");
 
 	SetDlgItemText(IDC_EDIT22,  "10");
 	SetDlgItemText(IDC_EDIT23,  "10");
@@ -311,11 +311,11 @@ void CSmallNineDlg::OnBnClickedOk()
 		m_AppConfig.nMinScore		= _atoi64(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT13, buffer);
-		m_AppConfig.wSaveRot		= atoi(buffer.GetBuffer());
+		m_AppConfig.nMaxSaveCondition	= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT14, buffer);
 		m_AppConfig.nMaxSaveScore	= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT15, buffer);
-		m_AppConfig.wGetRot			= atoi(buffer.GetBuffer());
+		m_AppConfig.nMinGetCondition	= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT16, buffer);
 		m_AppConfig.nMaxGetScore	= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT17, buffer);
@@ -426,7 +426,7 @@ void CSmallNineDlg::OnEnChangeEdit13()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT13, buffer);
-	m_AppConfig.wSaveRot		= atoi(buffer.GetBuffer());
+	m_AppConfig.nMaxSaveCondition	= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -442,7 +442,7 @@ void CSmallNineDlg::OnEnChangeEdit15()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT15, buffer);
-	m_AppConfig.wGetRot			= atoi(buffer.GetBuffer());
+	m_AppConfig.nMinGetCondition	= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -547,7 +547,7 @@ void CSmallNineDlg::OnEnChangeEdit28()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT28, buffer);
-	m_AppConfig.nUpBankerLoseScore	= atol(buffer.GetBuffer());	
+	m_AppConfig.nUpBankerLoseScore	= _atoi64(buffer.GetBuffer());	
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 
 }

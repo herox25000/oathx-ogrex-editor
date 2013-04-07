@@ -37,6 +37,13 @@ public:
 
 		return rand() % (dwMax - dwMin) + dwMin;
 	}
+
+	static INT64			rdi64t(INT64 nMin, INT64 nMax)
+	{
+		if (nMin > nMax)
+			return nMax;
+		return rand()%(nMax-nMin) + nMin;
+	}
 public:
 	RobotTimer(void);
 	virtual ~RobotTimer(void);
