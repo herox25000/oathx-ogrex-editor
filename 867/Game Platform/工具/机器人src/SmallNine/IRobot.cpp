@@ -442,7 +442,7 @@ bool			IRobot::OnSocketMainLogon(CMD_Command Command, void* pBuffer, WORD wDataS
 			szMessage.Format("Robot[%i], Check In Game", (int)m_dwUserID);
 			ShowMessageBox(szMessage);
 
-			//SitDown();
+			SitDown();
 		}
 		break;
 

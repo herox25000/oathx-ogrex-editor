@@ -30,7 +30,7 @@ public:
 		return Min+(gnSeed >> 16) * (1.0f / 65535.0f) * (Max-Min);
 	}
 
-	static DWORD			rdit(DWORD dwMin, DWORD dwMax)
+	static INT64			rdit(INT64 dwMin, INT64 dwMax)
 	{
 		if (dwMin > dwMax)
 			return dwMax;
