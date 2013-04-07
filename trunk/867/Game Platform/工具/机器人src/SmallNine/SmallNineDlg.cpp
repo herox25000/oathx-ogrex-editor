@@ -115,7 +115,7 @@ BOOL CSmallNineDlg::OnInitDialog()
 
 	m_RobotDialog.Create(IDD_DIALOG_ROBOT, this);
 
-	SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
+	SetDlgItemText(IDC_EDIT1,	"222.186.36.78");
 	SetDlgItemText(IDC_EDIT2,	"11021");
 	SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
 	SetDlgItemText(IDC_EDIT4,	"10");
@@ -129,8 +129,8 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT11,	"50000000");
 	SetDlgItemText(IDC_EDIT12,	"100000");
 
-	SetDlgItemText(IDC_EDIT13,	"20");
-	SetDlgItemText(IDC_EDIT14,	"10000000");
+	SetDlgItemText(IDC_EDIT13,	"200000");
+	SetDlgItemText(IDC_EDIT14,	"100000");
 	SetDlgItemText(IDC_EDIT15,	"20");
 	SetDlgItemText(IDC_EDIT16,	"10000000");
 	SetDlgItemText(IDC_EDIT17,	"10");
@@ -296,13 +296,13 @@ void CSmallNineDlg::OnBnClickedOk()
 		m_AppConfig.nMinScore		= _atoi64(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT13, buffer);
-		m_AppConfig.wSaveRot		= atoi(buffer.GetBuffer());
+		m_AppConfig.nGameMaxScore	= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT14, buffer);
-		m_AppConfig.nMaxSaveScore	= _atoi64(buffer.GetBuffer());
+		m_AppConfig.nGameMinScore	= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT15, buffer);
-		m_AppConfig.wGetRot			= atoi(buffer.GetBuffer());
+		//m_AppConfig.wGetRot		= atoi(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT16, buffer);
-		m_AppConfig.nMaxGetScore	= _atoi64(buffer.GetBuffer());
+		//m_AppConfig.nMaxGetScore	= _atoi64(buffer.GetBuffer());
 		GetDlgItemText(IDC_EDIT17, buffer);
 		m_AppConfig.nTenLakhRate	= atoi(buffer.GetBuffer());	
 		GetDlgItemText(IDC_EDIT18, buffer);
@@ -413,7 +413,7 @@ void CSmallNineDlg::OnEnChangeEdit13()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT13, buffer);
-	m_AppConfig.wSaveRot		= atoi(buffer.GetBuffer());
+	m_AppConfig.nGameMaxScore	= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -421,7 +421,7 @@ void CSmallNineDlg::OnEnChangeEdit14()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT14, buffer);
-	m_AppConfig.nMaxSaveScore	= _atoi64(buffer.GetBuffer());
+	m_AppConfig.nGameMinScore	= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -429,7 +429,7 @@ void CSmallNineDlg::OnEnChangeEdit15()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT15, buffer);
-	m_AppConfig.wGetRot			= atoi(buffer.GetBuffer());
+	//m_AppConfig.wGetRot			= atoi(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 
@@ -437,7 +437,7 @@ void CSmallNineDlg::OnEnChangeEdit16()
 {
 	CString buffer;
 	GetDlgItemText(IDC_EDIT16, buffer);
-	m_AppConfig.nMaxGetScore	= _atoi64(buffer.GetBuffer());
+	//m_AppConfig.nMaxGetScore	= _atoi64(buffer.GetBuffer());
 	RobotManager::GetSingleton().SetBankerConfig(m_AppConfig);
 }
 

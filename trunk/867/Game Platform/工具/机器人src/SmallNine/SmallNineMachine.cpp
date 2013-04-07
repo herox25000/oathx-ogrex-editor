@@ -228,15 +228,15 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 		break;
 	}
 
-	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();
-	if (m_nMeMaxScore > 0)
-	{
-		m_nGetMaxScore	= m_nMeMaxScore * (config.wGetRot / 100);
-		m_nSaveMaxScore	= m_nMeMaxScore * (config.wSaveRot / 100);
-		return true;
-	}
+	//const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();
+	//if (m_nMeMaxScore > 0)
+	//{
+	//	m_nGetMaxScore	= m_nMeMaxScore * (config.wGetRot / 100);
+	//	m_nSaveMaxScore	= m_nMeMaxScore * (config.wSaveRot / 100);
+	//	return true;
+	//}
 
-	return false;
+	return true;
 }
 
 void			SmallNineMachine::OnUpdate(float fElapsed)
@@ -426,7 +426,7 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				{
 					// 获取庄配置
 					const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();
-					if (m_nBankerWinScore > c.nMaxWinScore)
+					if (pUserInfo->lScore >= c.nGameMaxScore || pUserInfo->lScore <= c.nGameMinScore)
 					{
 						SitUp();
 					}
@@ -506,6 +506,22 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 							SendApplyBanker(false);
 						}
 					}
+					else
+					{
+						if (m_nMeMaxScore >= c.nGameMaxScore)
+						{
+							INT64 nMax = m_nMeMaxScore - c.nGameMinScore;
+							INT64 nMin = m_nMeMaxScore - c.nGameMaxScore;
+							BankSaveScore(RobotTimer::rdit(nMin, nMax));
+						}
+						else if (m_nMeMaxScore <= c.nGameMinScore)
+						{
+							INT64 nMin = c.nGameMinScore - m_nMeMaxScore;
+							INT64 nMax = c.nGameMaxScore - m_nMeMaxScore;
+
+							BankGetScore(RobotTimer::rdit(nMin, nMax));
+						}
+					}
 				}
 			}
 
@@ -519,23 +535,6 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			// 重置机器人当前压的钱
 			m_nMePlaceScore	= 0;
 			m_bAddJetton	= FALSE;
-
-			if (m_nMeWinScore >= m_nSaveMaxScore)
-			{
-				INT64 nSaveScore = RobotTimer::rdit(m_nSaveMaxScore, c.nMaxSaveScore);
-				BankSaveScore(nSaveScore);
-			}
-
-			// 若机器人的金钱少于最小积分
-			if (m_nMeMaxScore <= m_nGetMaxScore)
-			{
-				INT64 nGetScore = RobotTimer::rdit(m_nMeMaxScore, c.nMaxGetScore);
-				BankGetScore(nGetScore);
-
-				CString szMessage;
-				szMessage.Format("Robot[%d] try get score %I64d", m_dwUserID, nGetScore);
-				ShowMessageBox(szMessage, TraceLevel_Warning);
-			}
 		}
 		break;
 	case SUB_S_SEND_RECORD:		//游戏记录
@@ -564,8 +563,19 @@ bool	SmallNineMachine::OnBanker()
 {
 	// 获取庄配置
 	const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();
-	INT64 nSaveScore = RobotTimer::rdit(m_nSaveMaxScore, c.nMaxSaveScore);
-	BankSaveScore(nSaveScore);
+	if (m_nMeMaxScore >= c.nGameMaxScore)
+	{
+		INT64 nMax = m_nMeMaxScore - c.nGameMinScore;
+		INT64 nMin = m_nMeMaxScore - c.nGameMaxScore;
+		BankSaveScore(RobotTimer::rdit(nMin, nMax));
+	}
+	else if (m_nMeMaxScore <= c.nGameMinScore)
+	{
+		INT64 nMin = c.nGameMinScore - m_nMeMaxScore;
+		INT64 nMax = c.nGameMaxScore - m_nMeMaxScore;
+
+		BankGetScore(RobotTimer::rdit(nMin, nMax));
+	}
 
 	return __super::OnBanker();
 }
