@@ -426,9 +426,19 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				{
 					// »ñÈ¡×¯ÅäÖÃ
 					const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();
-					if (pUserInfo->lScore >= c.nGameMaxScore || pUserInfo->lScore <= c.nGameMinScore)
+					if (pUserInfo->lScore >= c.nGameMaxScore)
 					{
 						SitUp();
+					}
+					else
+					{
+						if (m_nMeMaxScore <= c.nGameMinScore)
+						{
+							INT64 nMin = c.nGameMinScore - m_nMeMaxScore;
+							INT64 nMax = c.nGameMaxScore - m_nMeMaxScore;
+
+							BankGetScore(RobotTimer::rdit(nMin, nMax));
+						}
 					}
 				}
 			}
@@ -568,13 +578,6 @@ bool	SmallNineMachine::OnBanker()
 		INT64 nMax = m_nMeMaxScore - c.nGameMinScore;
 		INT64 nMin = m_nMeMaxScore - c.nGameMaxScore;
 		BankSaveScore(RobotTimer::rdit(nMin, nMax));
-	}
-	else if (m_nMeMaxScore <= c.nGameMinScore)
-	{
-		INT64 nMin = c.nGameMinScore - m_nMeMaxScore;
-		INT64 nMax = c.nGameMaxScore - m_nMeMaxScore;
-
-		BankGetScore(RobotTimer::rdit(nMin, nMax));
 	}
 
 	return __super::OnBanker();
