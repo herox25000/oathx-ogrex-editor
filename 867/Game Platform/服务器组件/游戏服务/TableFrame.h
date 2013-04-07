@@ -117,17 +117,17 @@ public:
 
 	//网络接口
 public:
-	//发送数据
+	//发送数据给指定玩家
 	virtual bool __cdecl SendUserData(IServerUserItem * pIServerUserItem, WORD wSubCmdID);
-	//发送数据
+	//发送数据给指定玩家
 	virtual bool __cdecl SendUserData(IServerUserItem * pIServerUserItem, WORD wSubCmdID, void * pData, WORD wDataSize);
-	//发送数据
+	//发送数据玩家，wChairID=INVALID_CHAIR，数据发送给桌子上所有玩家；wChairID!=INVALID_CHAIR，发送给指定玩家
 	virtual bool __cdecl SendTableData(WORD wChairID, WORD wSubCmdID);
-	//发送数据
+	//发送数据玩家，wChairID=INVALID_CHAIR，数据发送给桌子上所有玩家；wChairID!=INVALID_CHAIR，发送给指定玩家
 	virtual bool __cdecl SendTableData(WORD wChairID, WORD wSubCmdID, void * pData, WORD wDataSize);
-	//发送数据
+	//发送数据,wChairID=INVALID_CHAIR，发送给桌子上所有的旁观玩家；wChairID！=INVALID_CHAIR发送给旁观wChairID的玩家
 	virtual bool __cdecl SendLookonData(WORD wChairID, WORD wSubCmdID);
-	//发送数据
+	//发送数据，wChairID=INVALID_CHAIR，发送给桌子上所有的旁观玩家；wChairID！=INVALID_CHAIR发送给旁观wChairID的玩家
 	virtual bool __cdecl SendLookonData(WORD wChairID, WORD wSubCmdID, void * pData, WORD wDataSize);
 
 	//消息接口

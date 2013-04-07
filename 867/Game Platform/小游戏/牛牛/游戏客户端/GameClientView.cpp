@@ -229,13 +229,13 @@ BOOL CGameClientView::OnCommand(WPARAM wParam, LPARAM lParam)
 			AfxGetMainWnd()->SendMessage(IDM_SHORTCUT_KEY,0,0);
 			return TRUE;
 		}
-	case IDC_BANKER:			//庄家按钮
+	case IDC_BANKER:	
 		{
 			//发送消息
 			AfxGetMainWnd()->SendMessage(IDM_BANKER,1,1);
 			return TRUE;
 		}
-	case IDC_IDLER:				//闲家按钮
+	case IDC_IDLER:		
 		{
 			//发送消息
 			AfxGetMainWnd()->SendMessage(IDM_BANKER,0,0);

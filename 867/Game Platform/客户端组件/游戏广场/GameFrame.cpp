@@ -144,7 +144,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 			CListInside * pListInside=(CListInside *)pListItem;
 			tagGameInside * pGameInside=pListInside->GetItemInfo();
 
-		//	WebBrowse(TEXT("www.game867.com"),false);
+		//	WebBrowse(TEXT("www.game541.com"),false);
 
 			return;
 		}
@@ -163,7 +163,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 				nTypeID = 9;
 			else if (pGameKind->wTypeID == 3)
 				nTypeID = 8;
-			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.game867.com/downCenter.php?colm=7&cata=%d&content=%d"),nTypeID, pGameKind->wKindID);
+			_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.game541.com/downCenter.php?colm=7&cata=%d&content=%d"),nTypeID, pGameKind->wKindID);
 			WebBrowse(szRuleUrl,true);
 
 			return;
@@ -302,12 +302,12 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 			TCHAR chBrowse[MAX_PATH];
 			if(IDC_BT_BUTTON_1==nCommandID)
 			{
-				::GetPrivateProfileString("Http", "MainPage", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
+				::GetPrivateProfileString("Http", "MainPage", "www.game541.com", chBrowse, MAX_PATH, chFilePath);
 				WebBrowse(TEXT(chBrowse),true);
 			}
 			if(IDC_BT_BUTTON_2==nCommandID)
 			{
-				::GetPrivateProfileString("Http", "MainBuy", "www.game867.com", chBrowse, MAX_PATH, chFilePath);
+				::GetPrivateProfileString("Http", "MainBuy", "www.game541.com", chBrowse, MAX_PATH, chFilePath);
 				WebBrowse(TEXT(chBrowse),true);
 			}
 			return TRUE;
@@ -1306,7 +1306,7 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	//广告控件
 	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,IDC_BROWER_AD,NULL);
-	//m_BrowerAD.Navigate(TEXT("www.game867.com"),NULL,NULL,NULL,NULL);
+	//m_BrowerAD.Navigate(TEXT("www.game541.com"),NULL,NULL,NULL,NULL);
 	m_BrowerAD.ShowWindow(SW_HIDE);
 
 	//拆分条控件

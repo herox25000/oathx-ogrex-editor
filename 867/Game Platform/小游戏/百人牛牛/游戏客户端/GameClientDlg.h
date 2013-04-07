@@ -14,17 +14,17 @@ class CGameClientDlg : public CGameFrameDlg
 
 	//限制信息
 protected:
-	LONG							m_lMeMaxScore;						//最大下注
-	LONG							m_lAreaLimitScore;					//区域限制
-	LONG							m_lApplyBankerCondition;			//申请条件
+	__int64							m_lMeMaxScore;						//最大下注
+	__int64							m_lAreaLimitScore;					//区域限制
+	__int64							m_lApplyBankerCondition;			//申请条件
 
 	//个人下注
 protected:
-	LONG							m_lUserJettonScore[AREA_COUNT+1];	//个人总注
+	__int64							m_lUserJettonScore[AREA_COUNT+1];	//个人总注
 
 	//庄家信息
 protected:
-	LONG							m_lBankerScore;						//庄家积分
+	__int64							m_lBankerScore;						//庄家积分
 	WORD							m_wCurrentBanker;					//当前庄家
 	BYTE							m_cbLeftCardCount;					//扑克数目
 	bool							m_bEnableSysBanker;					//系统做庄
@@ -46,10 +46,10 @@ protected:
 
 	struct SortTemp
 	{
-		LONG a;
-		LONG b;
-		LONG c;
-		LONG d;
+		__int64 a;
+		__int64 b;
+		__int64 c;
+		__int64 d;
 		SortTemp()
 		{
 			memset(this,0,sizeof(*this));
@@ -110,9 +110,9 @@ protected:
 	//赋值函数
 protected:
 	//设置庄家
-	void SetBankerInfo(WORD wBanker,LONG lScore);
+	void SetBankerInfo(WORD wBanker,__int64 lScore);
 	//个人下注
-	void SetMePlaceJetton(BYTE cbViewIndex, LONG lJettonCount);
+	void SetMePlaceJetton(BYTE cbViewIndex, __int64 lJettonCount);
 
 	//功能函数
 protected:

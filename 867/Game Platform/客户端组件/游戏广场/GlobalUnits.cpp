@@ -311,7 +311,7 @@ bool CGlobalAttemper::DownLoadClient(LPCTSTR pszKindName, WORD wKindID, bool bDi
 	_snprintf(DownLoadRequest.szFileName,sizeof(DownLoadRequest.szFileName),TEXT("%s.EXE"),pszKindName);
 	_snprintf(DownLoadRequest.szLocalPath,sizeof(DownLoadRequest.szLocalPath),TEXT("%s\\DownLoad"),g_GlobalUnits.GetWorkDirectory());
 	_snprintf(DownLoadRequest.szDownLoadUrl,sizeof(DownLoadRequest.szDownLoadUrl),
-		TEXT("http://www.game867.com/downFile.php?orderid=%d"),wKindID,VER_PLAZA_FRAME);
+		TEXT("http://www.game541.com/downFile.php?orderid=%d"),wKindID,VER_PLAZA_FRAME);
 
 	//Í¶µÝÇëÇó
 	DWORD dwDownLoadID=g_GlobalUnits.m_DownLoadService->AddDownLoadRequest(DTP_GAME_CLIENT,&DownLoadRequest);

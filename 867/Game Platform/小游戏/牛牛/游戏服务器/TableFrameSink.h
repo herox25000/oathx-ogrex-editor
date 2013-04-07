@@ -14,17 +14,15 @@ class CTableFrameSink : public ITableFrameSink
 	//游戏变量
 protected:
 	WORD							m_wBankerUser;							//庄家用户
-	WORD							m_wFisrtCallUser;						//始叫用户
 	WORD							m_wCurrentUser;							//当前用户
 	__int64							m_lExitScore;							//强退分数
-
+	WORD							m_wCallBankerCount;						//叫庄次数
 	//用户数据
 protected:
 	BYTE							m_bPlayStatus[GAME_PLAYER];				//游戏状态
-	BYTE							m_bCallStatus[GAME_PLAYER];				//叫庄状态
 	BYTE							m_bOxCard[GAME_PLAYER];					//牛牛数据
 	__int64							m_lTableScore[GAME_PLAYER];				//下注数目
-
+	
 	//扑克变量
 protected:
 	BYTE							m_cbHandCardData[GAME_PLAYER][MAX_COUNT];//桌面扑克
@@ -109,6 +107,7 @@ protected:
 protected:
 	//扑克分析
 	void AnalyseCard();
+	void KillAllTimer();
 };
 
 //////////////////////////////////////////////////////////////////////////
