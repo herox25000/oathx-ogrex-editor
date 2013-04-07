@@ -143,8 +143,8 @@ BOOL CSmallNineDlg::OnInitDialog()
 	SetDlgItemText(IDC_EDIT18,	"10");
 	SetDlgItemText(IDC_EDIT19,	"20");
 
-	SetDlgItemText(IDC_EDIT20,	"1");
-	SetDlgItemText(IDC_EDIT21,	"3");
+	SetDlgItemText(IDC_EDIT20,	"30");
+	SetDlgItemText(IDC_EDIT21,	"120");
 
 	SetDlgItemText(IDC_EDIT22,  "40");
 	SetDlgItemText(IDC_EDIT23,  "8");
