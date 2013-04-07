@@ -1261,7 +1261,8 @@ bool __cdecl CTableFrame::SetGameTimer(DWORD dwTimerID, DWORD dwElapse, DWORD dw
 {
 	//效验参数
 	ASSERT(dwTimerID<=IDI_MAX_TIME_ID);
-	if (dwTimerID>IDI_MAX_TIME_ID) return false;
+	if (dwTimerID>IDI_MAX_TIME_ID)
+		return false;
 
 	//设置定时器
 	return m_pIGameServiceFrame->SetTableTimer(m_wTableID,dwTimerID,dwElapse,dwRepeat,wBindParam);

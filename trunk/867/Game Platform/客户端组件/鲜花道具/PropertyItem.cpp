@@ -387,7 +387,7 @@ void CPropertyItem::OnBnClickedOk()
 	{
 		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2) )	
 		{
-			ShellExecute(NULL,TEXT("open"),TEXT("www.game867.com"),NULL,NULL,SW_SHOWDEFAULT);
+			ShellExecute(NULL,TEXT("open"),TEXT("www.game541.com"),NULL,NULL,SW_SHOWDEFAULT);
 		}
 		
 		return;
@@ -902,7 +902,7 @@ void CFlowerSetting::OnBnClickedOk()
 	{
 		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION |MB_YESNO|MB_DEFBUTTON2))	
 		{
-			ShellExecute(NULL,TEXT("open"),TEXT("www.game867.com"),NULL,NULL,SW_SHOWDEFAULT);
+			ShellExecute(NULL,TEXT("open"),TEXT("www.game541.com"),NULL,NULL,SW_SHOWDEFAULT);
 		}
 
 		return;

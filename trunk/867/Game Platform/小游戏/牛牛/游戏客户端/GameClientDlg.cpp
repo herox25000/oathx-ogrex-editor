@@ -16,15 +16,15 @@
 
 //时间标识
 #ifdef _DEBUG
-#define TIME_USER_CALL_BANKER		99									//叫庄定时器
-#define TIME_USER_START_GAME		99									//开始定时器
-#define TIME_USER_ADD_SCORE			99									//放弃定时器
-#define TIME_USER_OPEN_CARD			99									//摊牌定时器
+#define TIME_USER_CALL_BANKER		20									//叫庄定时器
+#define TIME_USER_START_GAME		20									//开始定时器
+#define TIME_USER_ADD_SCORE			20									//放弃定时器
+#define TIME_USER_OPEN_CARD			20									//摊牌定时器
 #else
-#define TIME_USER_CALL_BANKER		30									//叫庄定时器
-#define TIME_USER_START_GAME		30									//开始定时器
-#define TIME_USER_ADD_SCORE			30									//放弃定时器
-#define TIME_USER_OPEN_CARD			30									//摊牌定时器
+#define TIME_USER_CALL_BANKER		20									//叫庄定时器
+#define TIME_USER_START_GAME		20									//开始定时器
+#define TIME_USER_ADD_SCORE			20									//放弃定时器
+#define TIME_USER_OPEN_CARD			20									//摊牌定时器
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -197,14 +197,14 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 		}
 	case IDI_CALL_BANKER:		//叫庄定时
 		{
-			//中止判断
-			if (nElapse==0)
-			{
-				//测试代码
-				//放弃做庄
-				OnBanker(0,0);
-				return false;
-			}
+			////中止判断
+			//if (nElapse==0)
+			//{
+			//	//测试代码
+			//	//放弃做庄
+			//	OnBanker(0,0);
+			//	return false;
+			//}
 
 			//警告通知
 			if (nElapse<=5) PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WARN"));
@@ -238,12 +238,12 @@ bool CGameClientDlg::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wD
 			//消息处理
 			return OnSubCallBanker(pBuffer,wDataSize);
 		}
-	case SUB_S_GAME_START:	//游戏开始
+	case SUB_S_GAME_START:	//庄家确定，开始下注
 		{
 			//消息处理
 			return OnSubGameStart(pBuffer,wDataSize);
 		}
-	case SUB_S_ADD_SCORE:	//用户下注
+	case SUB_S_ADD_SCORE:	//用户下注消息
 		{
 			//消息处理
 			return OnSubAddScore(pBuffer,wDataSize);
@@ -267,7 +267,6 @@ bool CGameClientDlg::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WORD wD
 		{
 			//结束动画
 			m_GameClientView.FinishDispatchCard();
-
 			//消息处理
 			return OnSubGameEnd(pBuffer,wDataSize);
 		}
@@ -381,7 +380,8 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 				__int64 lTemp=m_lTurnMaxScore;
 				for (WORD i=0;i<GAME_PLAYER;i++)
 				{
-					if(i>0)lTemp/=2;
+					if(i>0)
+						lTemp/=2;
 					lUserMaxScore[i]=__max(lTemp,1L);
 				}
 
@@ -389,7 +389,7 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 				UpdateScoreControl(lUserMaxScore,SW_SHOW);
 
 				//实际定时器
-				SetTimer(IDI_TIME_USER_ADD_SCORE,(TIME_USER_ADD_SCORE)*1000,NULL);
+				//SetTimer(IDI_TIME_USER_ADD_SCORE,(TIME_USER_ADD_SCORE)*1000,NULL);
 			}
 
 			//庄家标志
@@ -526,24 +526,19 @@ bool CGameClientDlg::OnSubCallBanker(const void * pBuffer, WORD wDataSize)
 	//效验数据
 	if (wDataSize!=sizeof(CMD_S_CallBanker)) return false;
 	CMD_S_CallBanker * pCallBanker=(CMD_S_CallBanker *)pBuffer;
-
 	//用户信息
 	for (WORD i=0;i<GAME_PLAYER;i++)
 	{
 		//视图位置
 		m_wViewChairID[i]=SwitchViewChairID(i);
-
 		//获取用户
 		const tagUserData * pUserData=GetUserData(i);
 		if (pUserData==NULL) continue;
-
 		//游戏信息
 		m_cbPlayStatus[i]=TRUE;
-
 		//用户名字
 		lstrcpyn(m_szAccounts[i],pUserData->szName,CountArray(m_szAccounts[i]));
 	}
-
 	//旁观者
 	if (IsLookonMode())
 	{
@@ -572,11 +567,12 @@ bool CGameClientDlg::OnSubCallBanker(const void * pBuffer, WORD wDataSize)
 		ZeroMemory(m_cbHandCardData,sizeof(m_cbHandCardData));
 	}
 
-	//始叫用户
+	//控件处理
+	m_GameClientView.m_btBanker.ShowWindow(SW_HIDE);
+	m_GameClientView.m_btIdler.ShowWindow(SW_HIDE);
 	if(!IsLookonMode() && pCallBanker->wCallBanker==GetMeChairID())
 	{
 		//控件显示
-		//ActiveGameFrame();
 		m_GameClientView.m_btBanker.ShowWindow(SW_SHOW);
 		m_GameClientView.m_btIdler.ShowWindow(SW_SHOW);
 	}
@@ -590,7 +586,8 @@ bool CGameClientDlg::OnSubCallBanker(const void * pBuffer, WORD wDataSize)
 	{
 		SetGameTimer(pCallBanker->wCallBanker,IDI_CALL_BANKER,TIME_USER_CALL_BANKER);
 	}
-	else SetGameTimer(pCallBanker->wCallBanker,IDI_NULLITY,TIME_USER_CALL_BANKER);
+	else 
+		SetGameTimer(pCallBanker->wCallBanker,IDI_NULLITY,TIME_USER_CALL_BANKER);
 
 	return true;
 }
@@ -620,31 +617,27 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 		__int64 lTemp=m_lTurnMaxScore;
 		for (WORD i=0;i<GAME_PLAYER;i++)
 		{
-			if(i>0)lTemp/=2;
+			if(i>0)
+				lTemp/=2;
 			lUserMaxScore[i]=__max(lTemp,1L);
 		}
 
 		//更新控件
-		//ActiveGameFrame();
 		UpdateScoreControl(lUserMaxScore,SW_SHOW);
 
 		//实际定时器
-		SetTimer(IDI_TIME_USER_ADD_SCORE,(TIME_USER_ADD_SCORE)*1000,NULL);
+		//SetTimer(IDI_TIME_USER_ADD_SCORE,(TIME_USER_ADD_SCORE)*1000,NULL);
 	}
 
 	//庄家标志
 	WORD wID=m_wViewChairID[m_wBankerUser];
 	m_GameClientView.SetBankerUser(wID);
-
 	//等待标志
 	m_GameClientView.SetWaitInvest(true);
-
 	//左上信息
 	//m_GameClientView.SetScoreInfo(m_lTurnMaxScore,m_lTurnLessScore);
-
 	//辅助显示中心时钟
 	SetGameTimer(GetMeChairID(),IDI_NULLITY,TIME_USER_ADD_SCORE);
-
 	//环境设置
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
 
@@ -657,30 +650,27 @@ bool CGameClientDlg::OnSubAddScore(const void * pBuffer, WORD wDataSize)
 	//效验数据
 	if (wDataSize!=sizeof(CMD_S_AddScore)) return false;
 	CMD_S_AddScore * pAddScore=(CMD_S_AddScore *)pBuffer;
-
 	//变量定义
 	WORD wMeChairID=GetMeChairID();
 	WORD wAddScoreUser=pAddScore->wAddScoreUser;
 	WORD wViewChairID=m_wViewChairID[wAddScoreUser];
-
-	//加注处理
-	if ((IsLookonMode()==true)||(pAddScore->wAddScoreUser!=wMeChairID))
-	{
+	if(pAddScore->wAddScoreUser==wMeChairID)
+		UpdateScoreControl(NULL,SW_HIDE);
+	////加注处理
+	//if ((IsLookonMode()==true)||(pAddScore->wAddScoreUser!=wMeChairID))
+	//{
 		//下注金币
 		m_lTableScore[pAddScore->wAddScoreUser]=pAddScore->lAddScoreCount;
-
 		//加注界面
 		m_GameClientView.SetUserTableScore(wViewChairID,pAddScore->lAddScoreCount);
-
 		//播放声音
 		if (m_cbPlayStatus[wAddScoreUser]==TRUE)
 		{
 			 PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_SCORE"));
 		}
-	}
-
-	//设置筹码
-	m_GameClientView.SetUserTableScore(wViewChairID,m_lTableScore[wAddScoreUser]);
+	//}
+	////设置筹码
+	//m_GameClientView.SetUserTableScore(wViewChairID,m_lTableScore[wAddScoreUser]);
 
 	return true;
 }
@@ -691,21 +681,16 @@ bool CGameClientDlg::OnSubSendCard(const void * pBuffer, WORD wDataSize)
 	//效验数据
 	if (wDataSize!=sizeof(CMD_S_SendCard)) return false;
 	CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
-
 	//删除定时器
 	KillGameTimer(IDI_NULLITY);
-
 	m_GameClientView.SetWaitInvest(false);
-
 	CopyMemory(m_cbHandCardData,pSendCard->cbCardData,sizeof(m_cbHandCardData));
-
 	WORD wMeChiarID=GetMeChairID();
 	WORD wViewChairID=m_wViewChairID[wMeChiarID];
 	if(IsAllowLookon() || !IsLookonMode())
 	{
 		m_GameClientView.m_CardControl[wViewChairID].SetDisplayFlag(true);
 	}
-
 	//派发扑克
 	for(WORD i=0;i<MAX_COUNT;i++)
 	{
@@ -732,11 +717,17 @@ bool CGameClientDlg::OnSubOpenCard(const void * pBuffer, WORD wDataSize)
 	//效验数据
 	if (wDataSize!=sizeof(CMD_S_Open_Card)) return false;
 	CMD_S_Open_Card * pOpenCard=(CMD_S_Open_Card *)pBuffer;
-
 	//游戏信息
 	WORD wID=pOpenCard->wPlayerID;
-	//ASSERT(m_cbPlayStatus[wID]==TRUE);
-
+	if(wID == GetMeChairID())
+	{
+		//处理控件
+		m_GameClientView.m_btOx.ShowWindow(SW_HIDE);
+		m_GameClientView.m_btOpenCard.ShowWindow(SW_HIDE);
+		m_GameClientView.m_btHintOx.ShowWindow(SW_HIDE);
+		m_GameClientView.m_btReSort.ShowWindow(SW_HIDE);
+		m_GameClientView.m_btShortcut.ShowWindow(SW_HIDE);
+	}
 	//摊牌标志
 	if(wID!=GetMeChairID() || IsLookonMode())
 	{
@@ -746,7 +737,6 @@ bool CGameClientDlg::OnSubOpenCard(const void * pBuffer, WORD wDataSize)
 		m_bUserOxCard[wID]=pOpenCard->bOpen;
 		PlayGameSound(AfxGetInstanceHandle(),TEXT("OPEN_CARD"));
 	}
-
 	return true;
 }
 
@@ -1103,7 +1093,7 @@ LRESULT CGameClientDlg::OnSendCardFinish(WPARAM wParam, LPARAM lParam)
 	m_GameClientView.m_bOpenCard=true;
 
 	//时间设置
-	SetTimer(IDI_TIME_OPEN_CARD,TIME_USER_OPEN_CARD*1000,NULL);
+	//SetTimer(IDI_TIME_OPEN_CARD,TIME_USER_OPEN_CARD*1000,NULL);
 
 	return 0;
 }
@@ -1304,45 +1294,45 @@ LRESULT CGameClientDlg::OnBanker(WPARAM wParam, LPARAM lParam)
 //定时操作
 void CGameClientDlg::OnTimer(UINT nIDEvent)
 {
-	switch(nIDEvent)
-	{
-	case IDI_TIME_USER_ADD_SCORE:
-		{
-			//测试代码
-			//m_GameClientView.m_btOpenCard.ShowWindow(SW_SHOW);
-			//删除定时器
-			KillTimer(IDI_TIME_USER_ADD_SCORE);
+	//switch(nIDEvent)
+	//{
+	//case IDI_TIME_USER_ADD_SCORE:
+	//	{
+	//		//测试代码
+	//		//m_GameClientView.m_btOpenCard.ShowWindow(SW_SHOW);
+	//		//删除定时器
+	//		KillTimer(IDI_TIME_USER_ADD_SCORE);
 
-			//获取位置
-			WORD wMeChairID=GetMeChairID();
-			WORD wViewChairID=m_wViewChairID[wMeChairID];
+	//		//获取位置
+	//		WORD wMeChairID=GetMeChairID();
+	//		WORD wViewChairID=m_wViewChairID[wMeChairID];
 
-			//控制按钮
-			UpdateScoreControl(NULL,SW_HIDE);
+	//		//控制按钮
+	//		UpdateScoreControl(NULL,SW_HIDE);
 
-			//发送消息
-			CMD_C_AddScore AddScore;
-			AddScore.lScore=__max(m_lTurnMaxScore/8,1L);
-			SendData(SUB_C_ADD_SCORE,&AddScore,sizeof(AddScore));
+	//		//发送消息
+	//		CMD_C_AddScore AddScore;
+	//		AddScore.lScore=__max(m_lTurnMaxScore/8,1L);
+	//		SendData(SUB_C_ADD_SCORE,&AddScore,sizeof(AddScore));
 
-			//界面设置
-			m_lTableScore[wMeChairID]=AddScore.lScore;
-			m_GameClientView.SetUserTableScore(wViewChairID,m_lTableScore[wMeChairID]);
-			PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_SCORE"));
+	//		//界面设置
+	//		m_lTableScore[wMeChairID]=AddScore.lScore;
+	//		m_GameClientView.SetUserTableScore(wViewChairID,m_lTableScore[wMeChairID]);
+	//		PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_SCORE"));
 
-			return;
-		}
-	case IDI_TIME_OPEN_CARD:
-		{
-			//删除定时器
-			KillTimer(IDI_TIME_OPEN_CARD);
+	//		return;
+	//	}
+	//case IDI_TIME_OPEN_CARD:
+	//	{
+	//		//删除定时器
+	//		KillTimer(IDI_TIME_OPEN_CARD);
 
-			//摊牌
-			OnOpenCard(0,0);
+	//		//摊牌
+	//		OnOpenCard(0,0);
 
-			return;
-		}
-	}
+	//		return;
+	//	}
+	//}
 
 	CGameFrameDlg::OnTimer(nIDEvent);
 }

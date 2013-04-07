@@ -1241,5 +1241,5 @@ afx_msg void CPlazaViewItem::OnBnClickedHOME()
 }
 afx_msg void CPlazaViewItem::OnBnClickedBBS()
 {
-	//m_pHtmlBrower->Navigate("www.game867.com");
+	//m_pHtmlBrower->Navigate("www.game541.com");
 }

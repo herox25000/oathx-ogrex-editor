@@ -85,13 +85,13 @@ class CGameClientView : public CGameFrameView
 {
 	//限制信息
 protected:
-	LONG							m_lMeMaxScore;						//最大下注
-    LONG							m_lAreaLimitScore;					//区域限制
+	__int64							m_lMeMaxScore;						//最大下注
+    __int64							m_lAreaLimitScore;					//区域限制
 
 	//下注信息
 protected:
-	LONG							m_lUserJettonScore[AREA_COUNT+1];	//个人总注
-	LONG							m_lAllJettonScore[AREA_COUNT+1];	//全体总注
+	__int64							m_lUserJettonScore[AREA_COUNT+1];	//个人总注
+	__int64							m_lAllJettonScore[AREA_COUNT+1];	//全体总注
 	
 
 
@@ -122,11 +122,11 @@ public:
 	BYTE							m_bcfirstShowCard;
 	BYTE							m_bcShowCount;
 	bool							m_blAutoOpenCard;					//手自动
-	LONG							m_lUserCardType[AREA_COUNT+1];	//个人总注
+	long							m_lUserCardType[AREA_COUNT+1];	//个人总注
 
 	//历史信息
 protected:
-	LONG							m_lMeStatisticScore;				//游戏成绩
+	__int64							m_lMeStatisticScore;				//游戏成绩
 	tagClientGameRecord				m_GameRecordArrary[MAX_SCORE_HISTORY];//游戏记录
 	int								m_nRecordFirst;						//开始记录
 	int								m_nRecordLast;						//最后记录
@@ -150,17 +150,17 @@ protected:
 protected:	
 	WORD							m_wBankerUser;						//当前庄家
 	WORD							m_wBankerTime;						//做庄次数
-	LONG							m_lBankerScore;						//庄家积分
-	LONG							m_lBankerWinScore;					//庄家成绩	
-	LONG							m_lTmpBankerWinScore;				//庄家成绩	
+	__int64							m_lBankerScore;						//庄家积分
+	__int64							m_lBankerWinScore;					//庄家成绩	
+	__int64							m_lTmpBankerWinScore;				//庄家成绩	
 	bool							m_bEnableSysBanker;					//系统做庄
 
 	//当局成绩
 public:
-	LONG							m_lMeCurGameScore;					//我的成绩
-	LONG							m_lMeCurGameReturnScore;			//我的成绩
-	LONG							m_lBankerCurGameScore;				//庄家成绩
-	LONG							m_lGameRevenue;						//游戏税收
+	__int64							m_lMeCurGameScore;					//我的成绩
+	__int64							m_lMeCurGameReturnScore;			//我的成绩
+	__int64							m_lBankerCurGameScore;				//庄家成绩
+	__int64							m_lGameRevenue;						//游戏税收
 
 	//数据变量
 protected:
@@ -270,21 +270,22 @@ private:
 	//设置函数
 public:
 	//设置信息
-	void SetMeMaxScore(LONG lMeMaxScore);
+	void SetMeMaxScore(__int64 lMeMaxScore);
 	//我的位置
 	void SetMeChairID(DWORD dwMeUserID);
 	//个人下注
-	void SetMePlaceJetton(BYTE cbViewIndex, LONG lJettonCount);
+	void SetMePlaceJetton(BYTE cbViewIndex, __int64 lJettonCount);
 	//庄家信息
-	void SetBankerInfo(DWORD dwBankerUserID, LONG lBankerScore);
+	void SetBankerInfo(DWORD dwBankerUserID, __int64 lBankerScore);
 	//庄家成绩
-	void SetBankerScore(WORD wBankerTime, LONG lWinScore) {m_wBankerTime=wBankerTime; m_lTmpBankerWinScore=lWinScore;}
+	void SetBankerScore(WORD wBankerTime, __int64 lWinScore)
+	{m_wBankerTime=wBankerTime; m_lTmpBankerWinScore=lWinScore;}
 	//当局成绩
-	void SetCurGameScore(LONG lMeCurGameScore, LONG lMeCurGameReturnScore, LONG lBankerCurGameScore, LONG lGameRevenue);
+	void SetCurGameScore(__int64 lMeCurGameScore, __int64 lMeCurGameReturnScore, __int64 lBankerCurGameScore, __int64 lGameRevenue);
 	//设置筹码
-	void PlaceUserJetton(BYTE cbViewIndex, LONG lScoreCount);
+	void PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount);
 	//区域限制
-	void SetAreaLimitScore(LONG lAreaLimitScore);	
+	void SetAreaLimitScore(__int64 lAreaLimitScore);	
 	//设置扑克
 	void SetCardInfo(BYTE cbTableCardArray[5][5]);
 	//设置筹码
@@ -314,7 +315,7 @@ public:
 	//计算限制
 public:
 	//最大下注
-	LONG GetUserMaxJetton();
+	__int64 GetUserMaxJetton();
 
 	//绘画函数
 protected:
@@ -348,11 +349,11 @@ private:
 	//获取区域
 	BYTE GetJettonArea(CPoint MousePoint);
 	//绘画数字
-	void DrawNumberString(CDC * pDC, LONG lNumber, INT nXPos, INT nYPos, bool bMeScore = false);
+	void DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, INT nYPos, bool bMeScore = false);
 	//绘画数字
-	void DrawNumberStringWithSpace(CDC * pDC, LONG lNumber, INT nXPos, INT nYPos);
+	void DrawNumberStringWithSpace(CDC * pDC, __int64 lNumber, INT nXPos, INT nYPos);
 	//绘画数字
-	void DrawNumberStringWithSpace(CDC * pDC, LONG lNumber, CRect rcRect, INT nFormat=-1);
+	void DrawNumberStringWithSpace(CDC * pDC, __int64 lNumber, CRect rcRect, INT nFormat=-1);
 	//绘画标识
 	void DrawWinFlags(CDC * pDC);
 	//显示结果

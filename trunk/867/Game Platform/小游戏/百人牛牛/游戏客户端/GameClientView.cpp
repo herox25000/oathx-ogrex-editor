@@ -674,7 +674,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 }
 
 //设置信息
-void CGameClientView::SetMeMaxScore(LONG lMeMaxScore)
+void CGameClientView::SetMeMaxScore(__int64 lMeMaxScore)
 {
 	if (m_lMeMaxScore!=lMeMaxScore)
 	{
@@ -686,7 +686,7 @@ void CGameClientView::SetMeMaxScore(LONG lMeMaxScore)
 }
 
 //最大下注
-void CGameClientView::SetAreaLimitScore(LONG lAreaLimitScore)
+void CGameClientView::SetAreaLimitScore(__int64 lAreaLimitScore)
 {
 	if ( m_lAreaLimitScore!= lAreaLimitScore )
 	{
@@ -777,7 +777,7 @@ void CGameClientView::CleanUserJetton()
 }
 
 //个人下注
-void CGameClientView::SetMePlaceJetton(BYTE cbViewIndex, LONG lJettonCount)
+void CGameClientView::SetMePlaceJetton(BYTE cbViewIndex, __int64 lJettonCount)
 {
 	//效验参数
 	ASSERT(cbViewIndex<=ID_HUANG_MEN);
@@ -806,7 +806,7 @@ void CGameClientView::SetCardInfo(BYTE cbTableCardArray[5][5])
 }
 
 //设置筹码
-void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, LONG lScoreCount)
+void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, __int64 lScoreCount)
 {
 	//效验参数
 	ASSERT(cbViewIndex<=ID_HUANG_MEN);
@@ -862,14 +862,15 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, LONG lScoreCount)
 
 	//增加判断
 	bool bAddJetton=lScoreCount>0?true:false;
-	lScoreCount=abs(lScoreCount);
+	if(lScoreCount<0)
+	lScoreCount=lScoreCount*-1;
 
 	//增加筹码
 	for (BYTE i=0;i<CountArray(lScoreIndex);i++)
 	{
 		//计算数目
 		BYTE cbScoreIndex=JETTON_COUNT-i-1;
-		LONG lCellCount=lScoreCount/lScoreIndex[cbScoreIndex];
+		__int64 lCellCount=lScoreCount/lScoreIndex[cbScoreIndex];
 
 		//插入过虑
 		if (lCellCount==0L) continue;
@@ -916,7 +917,8 @@ void CGameClientView::PlaceUserJetton(BYTE cbViewIndex, LONG lScoreCount)
 }
 
 //当局成绩
-void CGameClientView::SetCurGameScore(LONG lMeCurGameScore, LONG lMeCurGameReturnScore, LONG lBankerCurGameScore, LONG lGameRevenue)
+void CGameClientView::SetCurGameScore(__int64 lMeCurGameScore, __int64 lMeCurGameReturnScore,
+									  __int64 lBankerCurGameScore, __int64 lGameRevenue)
 {
 	m_lMeCurGameScore=lMeCurGameScore;			
 	m_lMeCurGameReturnScore=lMeCurGameReturnScore;			
@@ -1017,7 +1019,7 @@ void CGameClientView::DrawType(CDC* pDC,WORD wChairID)
 	CImageHandle HandleImageCardType[5];
 	for (int i = 0;i<5;i++)	
 	{
-		int iIndex = 0;
+		__int64 iIndex = 0;
 		//iIndex = CT_SPECIAL_NIUNIUXW-2;
 		//m_lUserCardType[IDC_BANK]
 		if(m_lUserCardType[i]!= CT_POINT)
@@ -1076,7 +1078,7 @@ void CGameClientView::DrawType(CDC* pDC,WORD wChairID)
 	
 }
 //绘画数字
-void CGameClientView::DrawNumberString(CDC * pDC, LONG lNumber, INT nXPos, INT nYPos, bool bMeScore)
+void CGameClientView::DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, INT nYPos, bool bMeScore)
 {
 	//加载资源
 	CImageHandle HandleScoreNumber(&m_ImageScoreNumber);
@@ -1123,12 +1125,12 @@ void CGameClientView::DrawNumberString(CDC * pDC, LONG lNumber, INT nXPos, INT n
 }
 
 //绘画数字
-void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, LONG lNumber, INT nXPos, INT nYPos)
+void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, __int64 lNumber, INT nXPos, INT nYPos)
 {
 	CString strNumber=TEXT(""), strTmpNumber1,strTmpNumber2;
 	if (lNumber==0) strNumber=TEXT("0");
 	int nNumberCount=0;
-	LONG lTmpNumber=lNumber;
+	__int64 lTmpNumber=lNumber;
 	if (lNumber<0) lNumber=-lNumber;
 	while (lNumber>0)
 	{
@@ -1159,7 +1161,7 @@ void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, LONG lNumber, INT nXP
 }
 
 //绘画数字
-void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, LONG lNumber, CRect rcRect, INT nFormat)
+void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, __int64 lNumber, CRect rcRect, INT nFormat)
 {
 	CString static strNumber=TEXT(""), strTmpNumber1,strTmpNumber2;
 	strTmpNumber1.Empty();
@@ -1167,7 +1169,7 @@ void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, LONG lNumber, CRect r
 	strNumber.Empty();
 	if (lNumber==0) strNumber=TEXT("0");
 	int nNumberCount=0;
-	LONG lTmpNumber=lNumber;
+	__int64 lTmpNumber=lNumber;
 	if (lNumber<0) lNumber=-lNumber;
 	while (lNumber>0)
 	{
@@ -1509,7 +1511,7 @@ void CGameClientView::OnLButtonDown(UINT nFlags, CPoint Point)
 		BYTE cbJettonArea=GetJettonArea(Point);
 	
 		//最大下注
-		LONG lMaxJettonScore=GetUserMaxJetton();
+		__int64 lMaxJettonScore=GetUserMaxJetton();
 
 		if((m_lAllJettonScore[cbJettonArea]+m_lCurrentJetton)>m_lAreaLimitScore)
 		{		
@@ -1604,7 +1606,7 @@ BOOL CGameClientView::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
 		}
 
 		//最大下注
-		LONG lMaxJettonScore=GetUserMaxJetton();
+		__int64 lMaxJettonScore=GetUserMaxJetton();
 
 		//合法判断
 		int iTimer = 1;
@@ -1717,7 +1719,7 @@ void CGameClientView::DrawTextString(CDC * pDC, LPCTSTR pszString, COLORREF crTe
 	return;
 }
 //庄家信息
-void CGameClientView::SetBankerInfo(DWORD dwBankerUserID, LONG lBankerScore) 
+void CGameClientView::SetBankerInfo(DWORD dwBankerUserID, __int64 lBankerScore) 
 {
 	//庄家椅子号
 	WORD wBankerUser=INVALID_CHAIR;
@@ -1928,21 +1930,22 @@ bool CGameClientView::DrawAlphaRect(CDC* pDC, LPRECT lpRect, COLORREF clr, FLOAT
 }
 
 //最大下注
-LONG CGameClientView::GetUserMaxJetton()
+__int64 CGameClientView::GetUserMaxJetton()
 {
 	int iTimer = 10;
 	//已下注额
-	LONG lNowJetton = 0;
+	__int64 lNowJetton = 0;
 	ASSERT(AREA_COUNT<=CountArray(m_lUserJettonScore));
-	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) lNowJetton += m_lUserJettonScore[nAreaIndex]*iTimer;
+	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex)
+		lNowJetton += m_lUserJettonScore[nAreaIndex]*iTimer;
 
 	//庄家金币
-	LONG lBankerScore=2147483647;
+	__int64 lBankerScore=2147483647;
 	if (m_wBankerUser!=INVALID_CHAIR) lBankerScore=m_lBankerScore;
 	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) lBankerScore-=m_lAllJettonScore[nAreaIndex]*iTimer;
 
 	//区域限制
-	LONG lMeMaxScore;
+	__int64 lMeMaxScore;
 	if((m_lMeMaxScore-lNowJetton)/iTimer>m_lAreaLimitScore)
 	{
 		lMeMaxScore= m_lAreaLimitScore*iTimer;
@@ -2337,8 +2340,9 @@ void CGameClientView::DrawMeInfo(CDC *pDC,int nWidth,int nHeight)
 		pDC->SetTextColor(RGB(255,255,255));
 
 		//总共下注
-		LONG lMeJetton=0L;
-		for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) lMeJetton += m_lUserJettonScore[nAreaIndex];
+		__int64 lMeJetton=0L;
+		for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex)
+			lMeJetton += m_lUserJettonScore[nAreaIndex];
 
 		//设置位置
 		CRect static rcDraw;

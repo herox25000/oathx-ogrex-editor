@@ -17,7 +17,7 @@ struct tagApplyUser
 {
 	//玩家信息
 	CString							strUserName;						//玩家帐号
-	LONG							lUserScore;							//玩家金币
+	__int64							lUserScore;							//玩家金币
 };
 
 

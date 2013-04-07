@@ -1522,7 +1522,6 @@ bool __cdecl CAttemperEngineSink::OnEventTCPSocketLink(WORD wServiceID, INT nErr
 	{
 		//设置时间
 		m_pITimerEngine->SetTimer(IDI_CONNECT_CENTER_SERVER,TIME_RECONNECT,1,NULL);
-
 		//错误提示
 		CTraceService::TraceString(TEXT("中心服务器连接失败，稍后将会再次尝试...."),TraceLevel_Warning);
 
@@ -4035,13 +4034,16 @@ bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSiz
 		return true;
 	}
 
-	//如果是存钱操作，游戏中不能进行
-	if(pBankTask->lBankTask == BANKTASK_DEPOSIT)
+	//如果不是机器人，游戏中不能进行存钱操作
+	if(pServerUserData->cbMasterOrder != 10)
 	{
-		if(pServerUserData->wTableID!=INVALID_TABLE)
+		if(pBankTask->lBankTask == BANKTASK_DEPOSIT)
 		{
-			SendGameMessage(pIServerUserItem,"游戏中不能存钱！",SMT_INFO|SMT_EJECT);
-			return true;
+			if(pServerUserData->wTableID!=INVALID_TABLE)
+			{
+				SendGameMessage(pIServerUserItem,"游戏中不能存钱！",SMT_INFO|SMT_EJECT);
+				return true;
+			}
 		}
 	}
 

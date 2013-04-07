@@ -22,24 +22,24 @@ class CTableFrameSink : public ITableFrameSink, public ITableUserAction,public I
 {
 	//总下注数
 protected:
-	LONG							m_lAllJettonScore[AREA_COUNT+1];	//全体总注
+	__int64							m_lAllJettonScore[AREA_COUNT+1];	//全体总注
 	
 	//个人下注
 protected:
-	LONG							m_lUserJettonScore[AREA_COUNT+1][GAME_PLAYER];//个人总注
+	__int64							m_lUserJettonScore[AREA_COUNT+1][GAME_PLAYER];//个人总注
 
 	//控制变量
 protected:
-	LONG							m_lAreaLimitScore;						//区域限制
-	LONG							m_lUserLimitScore;						//区域限制
-	LONG							m_lApplyBankerCondition;				//申请条件
+	__int64							m_lAreaLimitScore;						//区域限制
+	__int64							m_lUserLimitScore;						//区域限制
+	__int64							m_lApplyBankerCondition;				//申请条件
 	TCHAR							m_szConfigFileName[MAX_PATH];			//配置文件
 
 	//玩家成绩
 protected:
-	LONG							m_lUserWinScore[GAME_PLAYER];			//玩家成绩
-	LONG							m_lUserReturnScore[GAME_PLAYER];		//返回下注
-	LONG							m_lUserRevenue[GAME_PLAYER];			//玩家税收
+	__int64							m_lUserWinScore[GAME_PLAYER];			//玩家成绩
+	__int64							m_lUserReturnScore[GAME_PLAYER];		//返回下注
+	__int64							m_lUserRevenue[GAME_PLAYER];			//玩家税收
 	BYTE							m_cbLeftCardCount;						//扑克数目
 	bool							m_bContiueCard;							//继续发牌
 	BYTE							m_bcFirstPostCard;						//最新發牌點數
@@ -59,8 +59,8 @@ protected:
 	CArrayTemplate<WORD>			m_ApplyUserArray;						//申请玩家
 	WORD							m_wCurrentBanker;						//当前庄家
 	WORD							m_wBankerTime;							//做庄次数
-	LONG							m_lBankerWinScore;						//累计成绩
-	LONG							m_lBankerCurGameScore;					//当前成绩
+	__int64							m_lBankerWinScore;						//累计成绩
+	__int64							m_lBankerCurGameScore;					//当前成绩
 	bool							m_bEnableSysBanker;						//系统做庄
 
 	//控制变量
@@ -179,12 +179,12 @@ private:
 	//下注计算
 private:
 	//最大下注
-	LONG GetUserMaxJetton(WORD wChairID);
+	__int64 GetUserMaxJetton(WORD wChairID);
 
 	//游戏统计
 private:
 	//计算得分
-    LONG CalculateScore();
+    __int64 CalculateScore();
 	//推断赢家
     void DeduceWinner(bool &bWinTian, bool &bWinDi, bool &bWinXuan,bool &bWinHuan,BYTE &TianMultiple,BYTE &diMultiple,BYTE &TianXuanltiple,BYTE &HuangMultiple );
 };

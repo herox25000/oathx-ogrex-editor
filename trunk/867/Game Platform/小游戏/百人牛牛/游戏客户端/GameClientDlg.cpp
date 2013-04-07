@@ -602,12 +602,13 @@ void CGameClientDlg::UpdateButtonContron()
 	if (bEnablePlaceJetton==true)
 	{
 		//计算积分
-		LONG lCurrentJetton=m_GameClientView.GetCurrentJetton();
-		LONG lLeaveScore=m_lMeMaxScore;
-		for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) lLeaveScore -= m_lUserJettonScore[nAreaIndex];
+		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
+		__int64 lLeaveScore=m_lMeMaxScore;
+		for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex)
+			lLeaveScore -= m_lUserJettonScore[nAreaIndex];
 
 		//最大下注
-		LONG lUserMaxJetton=m_GameClientView.GetUserMaxJetton();
+		__int64 lUserMaxJetton=m_GameClientView.GetUserMaxJetton();
 
 		//设置光标
 		lLeaveScore = min((lLeaveScore/10),lUserMaxJetton); //用户可下分 和最大分比较 由于是五倍 
@@ -1065,7 +1066,7 @@ bool CGameClientDlg::OnSubPlaceJettonFail(const void * pBuffer, WORD wDataSize)
 }
 
 //设置庄家
-void CGameClientDlg::SetBankerInfo(WORD wBanker,LONG lScore)
+void CGameClientDlg::SetBankerInfo(WORD wBanker,__int64 lScore)
 {
 	m_wCurrentBanker=wBanker;
 	m_lBankerScore=lScore;
@@ -1075,7 +1076,7 @@ void CGameClientDlg::SetBankerInfo(WORD wBanker,LONG lScore)
 }
 
 //个人下注
-void CGameClientDlg::SetMePlaceJetton(BYTE cbViewIndex, LONG lJettonCount)
+void CGameClientDlg::SetMePlaceJetton(BYTE cbViewIndex, __int64 lJettonCount)
 {
 	//合法判断
 	ASSERT(cbViewIndex>=ID_TIAN_MEN && cbViewIndex<=ID_HUANG_MEN);

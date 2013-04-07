@@ -98,7 +98,7 @@ struct CMD_S_CancelBanker
 struct CMD_S_ChangeBanker
 {
 	WORD							wBankerUser;						//当庄玩家
-	LONG							lBankerScore;						//庄家金币
+	__int64							lBankerScore;						//庄家金币
 };
 
 //游戏状态
@@ -108,35 +108,35 @@ struct CMD_S_StatusFree
 	BYTE							cbTimeLeave;						//剩余时间
 
 	//玩家信息
-	LONG							lUserMaxScore;							//玩家金币
+	__int64							lUserMaxScore;							//玩家金币
 
 	//庄家信息
 	WORD							wBankerUser;						//当前庄家
 	WORD							cbBankerTime;						//庄家局数
-	LONG							lBankerWinScore;					//庄家成绩
-	LONG							lBankerScore;						//庄家分数
+	__int64							lBankerWinScore;					//庄家成绩
+	__int64							lBankerScore;						//庄家分数
 	bool							bEnableSysBanker;					//系统做庄
 
 	//控制信息
-	LONG							lApplyBankerCondition;				//申请条件
-	LONG							lAreaLimitScore;					//区域限制
+	__int64							lApplyBankerCondition;				//申请条件
+	__int64							lAreaLimitScore;					//区域限制
 };
 
 //游戏状态
 struct CMD_S_StatusPlay
 {
 	//全局下注
-	LONG							lAllJettonScore[AREA_COUNT+1];		//全体总注
+	__int64							lAllJettonScore[AREA_COUNT+1];		//全体总注
 
 	//玩家下注
-	LONG							lUserJettonScore[AREA_COUNT+1];		//个人总注
+	__int64							lUserJettonScore[AREA_COUNT+1];		//个人总注
 
 	//玩家积分
-	LONG							lUserMaxScore;						//最大下注							
+	__int64							lUserMaxScore;						//最大下注							
 
 	//控制信息
-	LONG							lApplyBankerCondition;				//申请条件
-	LONG							lAreaLimitScore;					//区域限制
+	__int64							lApplyBankerCondition;				//申请条件
+	__int64							lAreaLimitScore;					//区域限制
 
 	//扑克信息
 	BYTE							cbTableCardArray[5][5];				//桌面扑克
@@ -144,15 +144,15 @@ struct CMD_S_StatusPlay
 	//庄家信息
 	WORD							wBankerUser;						//当前庄家
 	WORD							cbBankerTime;						//庄家局数
-	LONG							lBankerWinScore;					//庄家赢分
-	LONG							lBankerScore;						//庄家分数
+	__int64							lBankerWinScore;					//庄家赢分
+	__int64							lBankerScore;						//庄家分数
 	bool							bEnableSysBanker;					//系统做庄
 
 	//结束信息
-	LONG							lEndBankerScore;					//庄家成绩
-	LONG							lEndUserScore;						//玩家成绩
-	LONG							lEndUserReturnScore;				//返回积分
-	LONG							lEndRevenue;						//游戏税收
+	__int64							lEndBankerScore;					//庄家成绩
+	__int64							lEndUserScore;						//玩家成绩
+	__int64							lEndUserReturnScore;				//返回积分
+	__int64							lEndRevenue;						//游戏税收
 
 	//全局信息
 	BYTE							cbTimeLeave;						//剩余时间
@@ -169,8 +169,8 @@ struct CMD_S_GameFree
 struct CMD_S_GameStart
 {
 	WORD							wBankerUser;						//庄家位置
-	LONG							lBankerScore;						//庄家金币
-	LONG							lUserMaxScore;						//我的金币
+	__int64							lBankerScore;						//庄家金币
+	__int64							lUserMaxScore;						//我的金币
 	BYTE							cbTimeLeave;						//剩余时间	
 	bool							bContiueCard;						//继续发牌
 };
@@ -196,16 +196,16 @@ struct CMD_S_GameEnd
 	BYTE							bcFirstCard;
  
 	//庄家信息
-	LONG							lBankerScore;						//庄家成绩
-	LONG							lBankerTotallScore;					//庄家成绩
+	__int64							lBankerScore;						//庄家成绩
+	__int64							lBankerTotallScore;					//庄家成绩
 	INT								nBankerTime;						//做庄次数
 
 	//玩家成绩
-	LONG							lUserScore;							//玩家成绩
-	LONG							lUserReturnScore;					//返回积分
+	__int64							lUserScore;							//玩家成绩
+	__int64							lUserReturnScore;					//返回积分
 
 	//全局信息
-	LONG							lRevenue;							//游戏税收
+	__int64							lRevenue;							//游戏税收
 };
 
 //////////////////////////////////////////////////////////////////////////
