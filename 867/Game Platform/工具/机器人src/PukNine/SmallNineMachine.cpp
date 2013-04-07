@@ -225,16 +225,7 @@ bool			SmallNineMachine::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, 
 		}
 		break;
 	}
-
-	const SBankerConfig& config	= RobotManager::GetSingleton().GetBankerConfig();
-	if (m_nMeMaxScore > 0)
-	{
-		m_nGetMaxScore	= m_nMeMaxScore * (config.wGetRot / 100);
-		m_nSaveMaxScore	= m_nMeMaxScore * (config.wSaveRot / 100);
-		return true;
-	}
-
-	return false;
+	return true;
 }
 
 void			SmallNineMachine::OnUpdate(float fElapsed)
@@ -416,14 +407,18 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 				{
 					// 获取庄配置
 					const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();
-					if (m_nBankerWinScore > 0)
+					if (m_nMeMaxScore > c.nMaxSaveCondition)
 					{
 						SitUp();
 					}
-					else
+					else if (m_nMeMaxScore < c.nMinGetCondition)
 					{
-						INT64 nGetScore = RobotTimer::rdit(m_nGetMaxScore, c.nMaxGetScore);
-						BankGetScore(nGetScore);
+						INT64 nGetScore = RobotTimer::rdi64t(c.nMinGetCondition-m_nMeMaxScore, c.nMaxGetScore);
+						int nRand = rand()%100;
+						if (nRand < 20)
+							nGetScore *= 2;
+						if (m_nMeMaxScore + nGetScore < c.nMaxSaveCondition)
+							BankGetScore(nGetScore);
 					}
 				}
 			}
@@ -514,21 +509,35 @@ bool			SmallNineMachine::OnGameMessage(WORD wSubCmdID, const void * pBuffer, WOR
 			m_nMePlaceScore	= 0;
 			m_bAddJetton	= FALSE;
 
-			if (m_nMeWinScore >= m_nSaveMaxScore)
+			if (m_wCurBanker != INVALID_CHAIR)
 			{
-				INT64 nSaveScore = RobotTimer::rdit(m_nSaveMaxScore, c.nMaxSaveScore);
-				BankSaveScore(nSaveScore);
-			}
+				tagUserInfo* pUserInfo = m_pGameManager->Search(m_wCurBanker);
+				if (pUserInfo)
+				{
+					if (pUserInfo->dwUserID != m_dwUserID)
+					{
+						if (m_nMeMaxScore > c.nMaxSaveCondition)
+						{
+							SitUp();
+						}
+						// 若机器人的金钱少于最小积分
+						else if (m_nMeMaxScore < c.nMinGetCondition)
+						{
+							INT64 nGetScore = RobotTimer::rdi64t(c.nMinGetCondition-m_nMeMaxScore, c.nMaxGetScore);
+							int nRnd = rand()%100;
+							if (nRnd <= 20)
+								nGetScore *= 2;
+							if (nGetScore + m_nMeMaxScore < c.nMaxSaveCondition)
+							{
+								BankGetScore(nGetScore);
+								CString szMessage;
+								szMessage.Format("Robot[%d] try get score %I64d", m_dwUserID, nGetScore);
+								ShowMessageBox(szMessage, TraceLevel_Warning);
+							}
+						}
+					}
+				}
 
-			// 若机器人的金钱少于最小积分
-			if (m_nMeMaxScore <= m_nGetMaxScore)
-			{
-				INT64 nGetScore = RobotTimer::rdit(m_nGetMaxScore, c.nMaxGetScore);
-				BankGetScore(nGetScore);
-
-				CString szMessage;
-				szMessage.Format("Robot[%d] try get score %I64d", m_dwUserID, nGetScore);
-				ShowMessageBox(szMessage, TraceLevel_Warning);
 			}
 		}
 		break;
@@ -558,9 +567,14 @@ bool	SmallNineMachine::OnBanker()
 {
 	// 获取庄配置
 	const SBankerConfig& c	= RobotManager::GetSingleton().GetBankerConfig();
-	INT64 nSaveScore = RobotTimer::rdit(m_nSaveMaxScore, c.nMaxSaveScore);
-	BankSaveScore(nSaveScore);
-
+	if (m_nMeMaxScore > c.nMaxSaveCondition)
+	{
+		INT64 nSaveScore = RobotTimer::rdi64t(m_nMeMaxScore - c.nMaxSaveCondition, c.nMaxSaveScore);
+		if (m_nMeMaxScore - nSaveScore > c.nMinGetCondition)
+		{
+			BankSaveScore(nSaveScore);
+		}
+	}
 	return __super::OnBanker();
 }
 
