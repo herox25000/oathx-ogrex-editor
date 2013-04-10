@@ -91,7 +91,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../开发库/Lib/plugin_common.lib ../../开发库/Lib/plugin_share.lib ../../开发库/Lib/plugin_ui.lib ../../开发库/Lib/plugin_channel.lib ../../开发库/Lib/plugin_property.lib Zip.lib Winmm.lib"
-				OutputFile="../../运行/Release/PLQGame.exe"
+				OutputFile="../../运行/Release/541Game.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(SolutionDir)\objs\$(ProjectName)\$(ConfigurationName)\$(ProjectName).pdb"
