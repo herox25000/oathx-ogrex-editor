@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../开发库/Include"
+				AdditionalIncludeDirectories="../../../小游戏/小九/消息定义;../include;../../../开发库/Include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -127,10 +127,16 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\BankerDialog.cpp">
+			</File>
+			<File
 				RelativePath=".\ConfigDialog.cpp">
 			</File>
 			<File
 				RelativePath=".\SmallNine.cpp">
+			</File>
+			<File
+				RelativePath=".\SmallNineAndroid.cpp">
 			</File>
 			<File
 				RelativePath=".\SmallNineDlg.cpp">
@@ -156,6 +162,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\BankerDialog.h">
+			</File>
+			<File
 				RelativePath=".\ConfigDialog.h">
 			</File>
 			<File
@@ -163,6 +172,9 @@
 			</File>
 			<File
 				RelativePath=".\SmallNine.h">
+			</File>
+			<File
+				RelativePath=".\SmallNineAndroid.h">
 			</File>
 			<File
 				RelativePath=".\SmallNineDlg.h">
@@ -186,31 +198,47 @@
 			</File>
 		</Filter>
 		<Filter
-			Name="Android"
+			Name="include"
 			Filter="">
 			<File
-				RelativePath=".\AndroidManager.cpp">
+				RelativePath="..\include\AndroidManager.h">
 			</File>
 			<File
-				RelativePath=".\AndroidManager.h">
+				RelativePath="..\include\AndroidTimer.h">
 			</File>
 			<File
-				RelativePath=".\AndroidTimer.cpp">
+				RelativePath="..\include\BankerManager.h">
 			</File>
 			<File
-				RelativePath=".\AndroidTimer.h">
+				RelativePath="..\include\ConfigFile.h">
 			</File>
 			<File
-				RelativePath=".\IAndroid.cpp">
+				RelativePath="..\include\IAndroid.h">
 			</File>
 			<File
-				RelativePath=".\IAndroid.h">
+				RelativePath="..\include\UserManager.h">
+			</File>
+		</Filter>
+		<Filter
+			Name="src"
+			Filter="">
+			<File
+				RelativePath="..\src\AndroidManager.cpp">
 			</File>
 			<File
-				RelativePath=".\UserManager.cpp">
+				RelativePath="..\src\AndroidTimer.cpp">
 			</File>
 			<File
-				RelativePath=".\UserManager.h">
+				RelativePath="..\src\BankerManager.cpp">
+			</File>
+			<File
+				RelativePath="..\src\ConfigFile.cpp">
+			</File>
+			<File
+				RelativePath="..\src\IAndroid.cpp">
+			</File>
+			<File
+				RelativePath="..\src\UserManager.cpp">
 			</File>
 		</Filter>
 		<File
