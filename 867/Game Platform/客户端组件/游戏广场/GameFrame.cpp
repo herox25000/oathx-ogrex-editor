@@ -144,7 +144,7 @@ void __cdecl CGameFrame::OnTreeLeftClick(CListItem *pListItem, HTREEITEM hTreeIt
 			CListInside * pListInside=(CListInside *)pListItem;
 			tagGameInside * pGameInside=pListInside->GetItemInfo();
 
-		//	WebBrowse(TEXT("www.game541.com"),false);
+			WebBrowse(TEXT("www.game541.com"),false);
 
 			return;
 		}
@@ -292,24 +292,14 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 
 			return TRUE;
 		}
-	case IDC_BT_BUTTON_1:				//功能按钮
-	case IDC_BT_BUTTON_2:				//功能按钮
+	case IDC_BT_BUTTON_1:				//主页
 		{
-			TCHAR chDir[MAX_PATH];
-			GetCurrentDirectory(MAX_PATH, chDir);
-			TCHAR chFilePath[MAX_PATH];
-			sprintf(chFilePath, "%s\\BLQ.ini", chDir);
-			TCHAR chBrowse[MAX_PATH];
-			if(IDC_BT_BUTTON_1==nCommandID)
-			{
-				::GetPrivateProfileString("Http", "MainPage", "www.game541.com", chBrowse, MAX_PATH, chFilePath);
-				WebBrowse(TEXT(chBrowse),true);
-			}
-			if(IDC_BT_BUTTON_2==nCommandID)
-			{
-				::GetPrivateProfileString("Http", "MainBuy", "www.game541.com", chBrowse, MAX_PATH, chFilePath);
-				WebBrowse(TEXT(chBrowse),true);
-			}
+			WebBrowse(TEXT("www.game541.com"),true);
+			return TRUE;
+		}
+	case IDC_BT_BUTTON_2:				//充值
+		{
+			WebBrowse(TEXT("www.game541.com"),true);
 			return TRUE;
 		}
 	case IDC_BT_BUTTON_3:				//上传头像
@@ -330,18 +320,6 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_BUTTON_4: // 银行功能
 		{
-			//////创建窗体
-			//if ( m_DlgBank.m_hWnd == NULL )
-			//{
-			//	m_DlgBank.Create(IDD_BANK_DIALOG, this);
-			//}
-			////显示窗体
-			//m_DlgBank.CenterWindow();
-			//m_DlgBank.ShowWindow(SW_SHOW);
-			//m_DlgBank.SetActiveWindow();
-			//m_DlgBank.SetForegroundWindow();
-
-
 			bool bSuccess = false; 
 			if(m_pRoomViewItem[0] == NULL)
 			{

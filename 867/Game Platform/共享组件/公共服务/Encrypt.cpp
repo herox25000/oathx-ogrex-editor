@@ -341,7 +341,8 @@ WORD CXOREncrypt::CrevasseData(LPCTSTR pszEncrypData, LPTSTR pszSrcData, WORD wS
 	TCHAR * pEnd=NULL;
 	TCHAR szTempBuffer[3]={pszEncrypData[0],pszEncrypData[1],0};
 	WORD wSoureLength=(WORD)strtol(szTempBuffer,&pEnd,16);
-	if (wEncrypPassLen!=((wSoureLength+ENCRYPT_KEY_LEN-1)/ENCRYPT_KEY_LEN*ENCRYPT_KEY_LEN*4)) return 0;
+	if (wEncrypPassLen!=((wSoureLength+ENCRYPT_KEY_LEN-1)/ENCRYPT_KEY_LEN*ENCRYPT_KEY_LEN*4)) 
+		return 0;
 	if (wSoureLength>(wSize-1)) return wSoureLength;
 
 	//½â¿ªÃÜÂë
