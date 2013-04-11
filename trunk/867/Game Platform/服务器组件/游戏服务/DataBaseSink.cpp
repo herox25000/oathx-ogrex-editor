@@ -108,6 +108,18 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineStop(IUnknownEx * pIUnknownEx)
 	return false;
 }
 
+// 显示存储过程错误的信息 
+void CDataBaseSink::ShowDbProcErrorInfo(LPCTSTR pszProc, IDataBaseException * pIException)
+{
+	if(pIException)
+	{
+		//错误信息
+		CString str;
+		str.Format("[%s] %s", pszProc, pIException->GetExceptionDescribe());
+		CTraceService::TraceString(str,TraceLevel_Exception);
+	}
+}
+
 //数据操作处理
 bool __cdecl CDataBaseSink::OnDataBaseEngineRequest(WORD wRequestID, DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
@@ -200,6 +212,10 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineRequest(WORD wRequestID, DWORD dwCon
 	case DBR_GR_QUERYUSERNAME:
 		{
 			return OnRequsetQueryUserName(dwContextID,pData,wDataSize);
+		}
+	case DBR_GR_UPDATEONLINECOUNT:  //统计房间的人数到数据库
+		{
+			return OnUpdateOnLineCount(dwContextID,pData,wDataSize);
 		}
 	}
 
@@ -1599,40 +1615,51 @@ bool CDataBaseSink::OnRequestBankTask(DWORD dwContextID, VOID * pData, WORD wDat
 //查询用户名
 bool CDataBaseSink::OnRequsetQueryUserName(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
-	try
+	//效验参数
+	ASSERT(wDataSize==sizeof(DBR_GR_Query_UserName));
+	if (wDataSize!=sizeof(DBR_GR_Query_UserName)) return false;
+	//执行查询
+	DBR_GR_Query_UserName * QuserName=(DBR_GR_Query_UserName *)pData;
+	LPCTSTR lpszProc = _T("GSP_GP_QueryUserName");
+	TRY_BEGIN()
+	//执行存储过程
+	m_AccountsDBModule->ClearParameters();
+	m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
+	m_AccountsDBModule->AddParameter(TEXT("@dwGameID"),adInteger,adParamInput,sizeof(long),_variant_t((long)QuserName->lGameID));
+	m_AccountsDBModule->ExecuteProcess(lpszProc,true);
+	LONG lReturn=m_AccountsDBModule->GetReturnValue();
+	QuserName->lErrorCode=lReturn;
+	if ( lReturn==0 )
 	{
-		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_Query_UserName));
-		if (wDataSize!=sizeof(DBR_GR_Query_UserName)) return false;
-		//执行查询
-		DBR_GR_Query_UserName * QuserName=(DBR_GR_Query_UserName *)pData;
-
-		//执行存储过程
-		m_AccountsDBModule->ClearParameters();
-		m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
-		m_AccountsDBModule->AddParameter(TEXT("@dwGameID"),adInteger,adParamInput,sizeof(long),_variant_t((long)QuserName->lGameID));
-		m_AccountsDBModule->ExecuteProcess("GSP_GP_QueryUserName",true);
-		LONG lReturn=m_AccountsDBModule->GetReturnValue();
-		QuserName->lErrorCode=lReturn;
-		if ( lReturn==0 )
-		{
-			m_AccountsDBModule->GetFieldValue(TEXT("UserName"), QuserName->szUserName,sizeof(QuserName->szUserName));
-		}
-		else
-		{
-			m_AccountsDBModule->GetFieldValue(TEXT("@ErrorDescribe"), QuserName->szErrorDescribe, sizeof(QuserName->szErrorDescribe) );
-		}
-
-		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_QUERYUSERNAME_OUT,
-			dwContextID , QuserName, sizeof(DBR_GR_Query_UserName));
-		return true;
+		m_AccountsDBModule->GetFieldValue(TEXT("UserName"), QuserName->szUserName,sizeof(QuserName->szUserName));
 	}
-	catch (IDataBaseException * pIException)
+	else
 	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
+		m_AccountsDBModule->GetFieldValue(TEXT("@ErrorDescribe"), QuserName->szErrorDescribe, sizeof(QuserName->szErrorDescribe) );
 	}
+	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_QUERYUSERNAME_OUT,
+		dwContextID , QuserName, sizeof(DBR_GR_Query_UserName));
+	return true;
+	CATCH_ADO_SHOW(lpszProc);
+	return true;
+}
+
+//更新房间人数
+bool CDataBaseSink::OnUpdateOnLineCount(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	ASSERT(wDataSize == sizeof(DBR_GR_UpdateOnLineCount));
+	if (wDataSize!=sizeof(DBR_GR_UpdateOnLineCount)) 
+		return false;
+	DBR_GR_UpdateOnLineCount* Count = (DBR_GR_UpdateOnLineCount*)pData;
+	LPCTSTR lpszProc = _T("GSP_GP_UpdateOnLineCount");
+	TRY_BEGIN()
+	m_AccountsDBModule->ClearParameters();
+	m_AccountsDBModule->AddParameter(TEXT("@GameID"),adInteger,adParamInput,sizeof(int),_variant_t((int)Count->lGameID));
+	m_AccountsDBModule->AddParameter(TEXT("@RoomID"),adInteger,adParamInput,sizeof(int),_variant_t((long)Count->lRoomID));
+	m_AccountsDBModule->AddParameter(TEXT("@Count"),adInteger,adParamInput,sizeof(int),_variant_t((long)Count->lCount));
+	m_AccountsDBModule->ExecuteProcess(lpszProc,true);
+	return true;
+	CATCH_ADO_SHOW(lpszProc);
 	return true;
 }
 
