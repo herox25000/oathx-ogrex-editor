@@ -11,6 +11,7 @@ namespace O2
 #define MIN_LINUP					2
 
 #define MAX_PLACE_JETTON_TIME		25
+#define MIN_PLACE_REMAIN			103000
 
 	//////////////////////////////////////////////////////////////////////////
 	// 小九机器人实现
