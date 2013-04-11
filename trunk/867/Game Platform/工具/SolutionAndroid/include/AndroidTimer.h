@@ -44,6 +44,8 @@ namespace O2
 		*/
 		static INT64				rdit(INT64 dwMin, INT64 dwMax)
 		{
+			srand(time(NULL));
+
 			if (dwMax < dwMin)
 				return dwMax;
 
