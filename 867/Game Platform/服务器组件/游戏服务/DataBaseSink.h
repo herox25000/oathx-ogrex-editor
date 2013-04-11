@@ -44,7 +44,9 @@ struct tagDataBaseSinkParameter
 #define DBR_GR_MODIFY_BANK_PASSWORD		20								//修改银行密码
 #define DBR_GR_MODIFY_NICKNAME   		21								//修改昵称
 #define DBR_GR_BANK_TASK				22								//存取钱操作
-#define DBR_GR_QUERYUSERNAME			23
+#define DBR_GR_QUERYUSERNAME			23								
+#define DBR_GR_UPDATEONLINECOUNT		24								//统计房间在线人数
+
 //数据库输出标识
 #define DBR_GR_LOGON_SUCCESS			100								//登录成功
 #define DBR_GR_LOGON_ERROR				101								//登录失败
@@ -394,7 +396,30 @@ struct DBR_GR_Query_UserName
 	LONG			lErrorCode;
 };
 
+//统计房间人数
+struct DBR_GR_UpdateOnLineCount
+{
+	UINT			lGameID;	//游戏ID
+	UINT			lRoomID;	//房间ID	
+	UINT			lCount;		//人数
+};
+
+
+
 //////////////////////////////////////////////////////////////////////////
+
+// 开始捕获模块
+#define TRY_BEGIN() try {
+
+// 捕获ADO异常并显示相关信息
+#define CATCH_ADO_SHOW(pszProc) } \
+	catch (IDataBaseException * pIException) \
+{ \
+	ShowDbProcErrorInfo(pszProc, pIException); \
+}
+
+#define END_CATCH_ADO }
+
 
 //数据库引擎钩子
 class CDataBaseSink : public IDataBaseEngineSink
@@ -447,6 +472,10 @@ public:
 	//请求事件
 	virtual bool __cdecl OnDataBaseEngineRequest(WORD wRequestID, DWORD dwContextID, VOID * pData, WORD wDataSize);
 
+public:
+	// 显示存储过程错误的信息 
+	void ShowDbProcErrorInfo(LPCTSTR pszProc, IDataBaseException * pIException);
+
 	//处理函数
 private:
 	//登录请求
@@ -493,6 +522,9 @@ private:
 	bool OnRequestBankTask(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//查询用户名
 	bool OnRequsetQueryUserName(DWORD dwContextID, VOID * pData, WORD wDataSize);
+	//更新房间人数
+	bool OnUpdateOnLineCount(DWORD dwContextID, VOID * pData, WORD wDataSize);
+
 	//存储过程
 protected:
 	//I D 存储过程

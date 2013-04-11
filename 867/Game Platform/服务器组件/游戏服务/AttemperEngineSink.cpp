@@ -738,7 +738,12 @@ bool __cdecl CAttemperEngineSink::OnEventTimer(DWORD dwTimerID, WPARAM wBindPara
 				ServerOnLineCount.wServerID=m_pGameServiceOption->wServerID;
 				ServerOnLineCount.dwOnLineCount=(m_ServerUserManager.GetOnLineCount()+m_ServerUserManager.GetOffLineCount());
 				m_pITCPSocketCorrespond->SendData(MDM_CS_SERVER_MANAGER,SUB_CS_SERVER_ONLINE_COUNT,&ServerOnLineCount,sizeof(ServerOnLineCount));
-
+				
+				DBR_GR_UpdateOnLineCount Count={0};
+				Count.lGameID = m_pGameServiceOption->wKindID;
+				Count.lRoomID = m_pGameServiceOption->wServerID;
+				Count.lCount = m_ServerUserManager.GetOnLineCount()+m_ServerUserManager.GetOffLineCount();
+				m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_UPDATEONLINECOUNT,0,&Count,sizeof(Count));
 				return true;
 			}
 
