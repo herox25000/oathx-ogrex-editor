@@ -611,7 +611,8 @@ bool CDlgLogon::OnLogonSuccess()
 			g_GlobalOption.m_enAcountsRule=enAcountsRule_Accounts;
 		}
 	}
-	else g_GlobalOption.m_enAcountsRule=enAcountsRule_AccountsAndPass;
+	else 
+		g_GlobalOption.m_enAcountsRule=enAcountsRule_AccountsAndPass;
 
 	//用户信息
 	tagGlobalUserData & UserData=g_GlobalUnits.GetGolbalUserData();
@@ -629,11 +630,13 @@ bool CDlgLogon::OnLogonSuccess()
 		if (RegUserInfo.Create(HKEY_CURRENT_USER,szBuffer)==ERROR_SUCCESS)
 		{
 			TCHAR szPassBuffer[256]=TEXT("");
-			if (bRemPassword) CXOREncrypt::EncryptData(m_szPassword,szPassBuffer,CountArray(szPassBuffer));
+			if (bRemPassword)
+				CXOREncrypt::EncryptData(m_szPassword,szPassBuffer,CountArray(szPassBuffer));
 			RegUserInfo.SetKeyValue(TEXT(""),UserData.szAccounts,TEXT("UserAccount"));
 			RegUserInfo.SetKeyValue(TEXT(""),UserData.szPassWord,TEXT("UserPassToken"));
 			RegUserInfo.SetKeyValue(TEXT(""),szPassBuffer,TEXT("UserPassword"));
-			if (UserData.dwGameID!=0L) RegUserInfo.SetDWORDValue(TEXT("GameID"),UserData.dwGameID);
+			if (UserData.dwGameID!=0L) 
+				RegUserInfo.SetDWORDValue(TEXT("GameID"),UserData.dwGameID);
 		}
 	}
 	else
@@ -644,7 +647,8 @@ bool CDlgLogon::OnLogonSuccess()
 
 		//写入信息
 		CRegKey RegUserID;
-		if (RegUserID.Open(HKEY_CURRENT_USER,REG_USER_INFO)==ERROR_SUCCESS)	RegUserID.RecurseDeleteKey(szBuffer);
+		if (RegUserID.Open(HKEY_CURRENT_USER,REG_USER_INFO)==ERROR_SUCCESS)
+			RegUserID.RecurseDeleteKey(szBuffer);
 	}
 	CComboBox * pComBoxServer=(CComboBox *)GetDlgItem(IDC_SERVER);
 	//读取最近登录服务器
@@ -1061,8 +1065,10 @@ void CDlgLogon::UpdateUserPassWord(DWORD dwUserDBID)
 			{
 				m_szPassword[0]=0;
 				CXOREncrypt::CrevasseData(szPassBuffer,m_szPassword,CountArray(m_szPassword));
-				if (m_szPassword[0]==0) SetDlgItemText(IDC_PASSWORD,TEXT(""));
-				else SetDlgItemText(IDC_PASSWORD,TEXT("**********"));
+				if (m_szPassword[0]==0)
+					SetDlgItemText(IDC_PASSWORD,TEXT(""));
+				else 
+					SetDlgItemText(IDC_PASSWORD,TEXT("**********"));
 				m_bChangePassWord=false;
 				return;
 			}
@@ -1257,7 +1263,8 @@ void CDlgLogon::OnDeleteAccounts()
 		UpdateUserPassWord(dwUserDBID);
 		UpdateUserComboBox(uComboBoxID);
 	}
-	else UpdateUserPassWord(0L);
+	else
+		UpdateUserPassWord(0L);
 
 	return;
 }

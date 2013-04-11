@@ -23,11 +23,6 @@ enum enLogonMode
 	LogonMode_UserID,			//I D 登录
 };
 
-//注册表项名
-#define REG_OPTION_LOGON		TEXT("OptionLogon")
-#define REG_USER_INFO			TEXT("Software\\WHSCDCQPGame\\GamePlaza\\UserInfo")
-#define REG_LOGON_SERVER		TEXT("Software\\WHSCDCQPGame\\GamePlaza\\LogonServer")
-
 //////////////////////////////////////////////////////////////////////////
 
 //登录 TAB 控件

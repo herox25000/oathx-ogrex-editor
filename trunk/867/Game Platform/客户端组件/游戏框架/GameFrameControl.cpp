@@ -436,7 +436,7 @@ void CGameFrameControl::OnBnClickedOption()
 void CGameFrameControl::OnBnClickedRule()
 {
 	TCHAR szRuleUrl[128];
-	_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("www.baidu.com/GameRule.asp?KindID=%ld"),m_UserListView.m_wKindID);
+	_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("www.game541.com/GameRule.asp?KindID=%ld"),m_UserListView.m_wKindID);
 	ShellExecute(NULL,TEXT("open"),szRuleUrl,NULL,NULL,SW_SHOWDEFAULT);
 
 	return;
