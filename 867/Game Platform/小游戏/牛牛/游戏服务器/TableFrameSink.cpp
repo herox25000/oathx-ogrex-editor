@@ -141,7 +141,11 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	//设置变量
 	CMD_S_CallBanker CallBanker;
 	CallBanker.wCallBanker=m_wCurrentUser;
-	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+	for (WORD i=0;i<m_wPlayerCount;i++)
+	{
+		if(m_bPlayStatus[i]!=TRUE)continue;
+		m_pITableFrame->SendTableData(i,SUB_S_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+	}
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_CALL_BANKER,&CallBanker,sizeof(CallBanker));
 
 	return true;
@@ -795,8 +799,6 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 		//设置变量
 		CMD_S_CallBanker CallBanker;
 		CallBanker.wCallBanker=m_wCurrentUser;
-		m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_CALL_BANKER,&CallBanker,sizeof(CallBanker));
-
 		//发送数据
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
