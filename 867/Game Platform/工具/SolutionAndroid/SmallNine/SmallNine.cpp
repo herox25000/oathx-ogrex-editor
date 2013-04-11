@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "SmallNine.h"
 #include "SmallNineDlg.h"
+#include ".\smallnine.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

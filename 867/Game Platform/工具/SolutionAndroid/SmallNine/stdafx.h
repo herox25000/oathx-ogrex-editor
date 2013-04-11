@@ -58,3 +58,4 @@
 #include <vector>
 #include <list>
 #include "Nb30.h"
+#include "CMD_XiaoJiu.h"
