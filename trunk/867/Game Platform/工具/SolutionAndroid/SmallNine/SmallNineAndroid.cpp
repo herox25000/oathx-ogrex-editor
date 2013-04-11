@@ -163,8 +163,8 @@ namespace O2
 
 			if (pUser->nScore > pConfig->nMaxScore)
 			{
-				nMin = pUser->nScore - pConfig->nMinScore;
-				nMax = pUser->nScore - pConfig->nMaxScore;
+				nMin = pUser->nScore - pConfig->nMaxScore;
+				nMax = pUser->nScore - pConfig->nMinScore;
 
 				SaveScoreToBanker(AndroidTimer::rdit(nMin, nMax));
 			}
