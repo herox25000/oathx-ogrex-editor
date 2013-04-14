@@ -33,7 +33,7 @@ BOOL CConfigDialog::OnInitDialog()
 	bool bResult = O2::ConfigFile::GetSingleton().LoadConfig(SMALLNINE_CFG_FILENAME);
 	if (!bResult)
 	{
-		SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
+		SetDlgItemText(IDC_EDIT1,	"192.168.1.102");
 		SetDlgItemText(IDC_EDIT2,	"12061");
 		SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
 		SetDlgItemText(IDC_EDIT4,	"10");
@@ -83,10 +83,7 @@ void CConfigDialog::OnAplyConfig()
 		pApp->dwOnline		= atol(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT7,	buffer);
-		pApp->wMaxDeque		= atol(buffer.GetBuffer());
-
-		GetDlgItemText(IDC_EDIT8,	buffer);
-		pApp->wMaxUpBanker	= atol(buffer.GetBuffer());
+		pApp->wBankerRate	= atol(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT9,	buffer);
 		pApp->nMaxWinScore	= _atoi64(buffer.GetBuffer());
@@ -98,10 +95,10 @@ void CConfigDialog::OnAplyConfig()
 		pApp->wMaxTime		= atol(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT12,	buffer);
-		pApp->wMinPlaceTime	= atol(buffer.GetBuffer());
+		pApp->wMinWorkTime	= atol(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT13,	buffer);
-		pApp->wMaxPlaceTime	= atol(buffer.GetBuffer());
+		pApp->wMaxWorkTime	= atol(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT14,	buffer);
 		pApp->nMinScore		= _atoi64(buffer.GetBuffer());
@@ -135,11 +132,8 @@ void CConfigDialog::OnLoadConfig()
 	sprintf(szText, "%d", pConfig->dwOnline);
 	SetDlgItemText(IDC_EDIT6,	szText);
 
-	sprintf(szText, "%d", pConfig->wMaxDeque);
+	sprintf(szText, "%d", pConfig->wBankerRate);
 	SetDlgItemText(IDC_EDIT7,	szText);
-
-	sprintf(szText, "%d", pConfig->wMaxUpBanker);
-	SetDlgItemText(IDC_EDIT8,	szText);
 
 	sprintf(szText, "%I64d", pConfig->nMaxWinScore);
 	SetDlgItemText(IDC_EDIT9,	szText);
@@ -150,10 +144,10 @@ void CConfigDialog::OnLoadConfig()
 	sprintf(szText, "%d", pConfig->wMaxTime);
 	SetDlgItemText(IDC_EDIT11,	szText);
 
-	sprintf(szText, "%d", pConfig->wMinPlaceTime);
+	sprintf(szText, "%d", pConfig->wMinWorkTime);
 	SetDlgItemText(IDC_EDIT12,	szText);
 
-	sprintf(szText, "%d", pConfig->wMaxPlaceTime);
+	sprintf(szText, "%d", pConfig->wMaxWorkTime);
 	SetDlgItemText(IDC_EDIT13,	szText);
 
 	sprintf(szText, "%I64d", pConfig->nMinScore);

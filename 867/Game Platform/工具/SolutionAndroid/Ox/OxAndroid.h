@@ -17,6 +17,20 @@ namespace O2
 #define OX_FOURKING					14									//天王牌型
 #define OX_FIVEKING					15									//天王牌型
 
+	struct STimerItem
+	{
+		DWORD						dwID;
+		float						fElapsed;
+
+		STimerItem(DWORD id, float fTime)
+			: dwID(id), fElapsed(fTime)
+		{
+
+		}
+	};
+	
+	typedef std::map<DWORD, STimerItem*> TimerItemRegister;
+
 	//////////////////////////////////////////////////////////////////////////
 	// 牛牛机器人
 	//////////////////////////////////////////////////////////////////////////
@@ -70,7 +84,11 @@ namespace O2
 		*/
 		virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL, 
 			WORD wDataSize=0);
-
+		
+		/*
+		*游戏消息
+		*/
+		virtual bool			OnTimerEvent(DWORD dwID);
 	protected:
 		//用户叫庄
 		virtual bool			OnSubCallBanker(const void * pBuffer, WORD wDataSize);
@@ -86,10 +104,20 @@ namespace O2
 		virtual bool			OnSubPlayerExit(const void * pBuffer, WORD wDataSize);
 		//游戏结束
 		virtual bool			OnSubGameEnd(const void * pBuffer, WORD wDataSize);
-
+	protected:
+		//设置定时器
+		virtual bool			SetTimer(DWORD dwID, double fElapsed);
+		//删除定时器
+		virtual bool			KillTimer(DWORD dwID);
+		//更新定时器
+		virtual void			UpdateTimer(float fElapsed);
 	protected:
 		WORD					m_wTableCount;
 		WORD					m_wChairCount;
+		TimerItemRegister		m_TimerItemActive;
+		TimerItemRegister		m_TimerItemDetive;
+		INT64					m_nTurnMaxScore;
+		BYTE					m_byCard[MAX_COUNT];
 	};
 
 	class OxFactory : public IAndroidFactroy
