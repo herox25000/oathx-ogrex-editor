@@ -317,8 +317,11 @@ namespace O2
 			{
 				//…Ë÷√±‰¡ø
 				CMD_C_CallBanker CallBanker;
-				CallBanker.bBanker = 0;
-
+				CallBanker.bBanker = 1;
+				
+				CString szMessage;
+				szMessage.Format("[%d] Ω–◊Ø", GetUserID());
+				LogEvent(szMessage, TraceLevel_Warning);
 				SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
 			}
 		}
