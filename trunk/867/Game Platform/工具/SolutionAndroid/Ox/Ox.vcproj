@@ -75,7 +75,7 @@
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalIncludeDirectories="../../../小游戏/小九/消息定义;../include;../../../开发库/Include"
+				AdditionalIncludeDirectories="../../../小游戏/牛牛/消息定义;../include;../../../开发库/Include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="2"
