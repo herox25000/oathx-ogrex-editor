@@ -33,7 +33,7 @@ BOOL CConfigDialog::OnInitDialog()
 	bool bResult = O2::ConfigFile::GetSingleton().LoadConfig(SMALLNINE_CFG_FILENAME);
 	if (!bResult)
 	{
-		SetDlgItemText(IDC_EDIT1,	"192.168.1.101");
+		SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
 		SetDlgItemText(IDC_EDIT2,	"11021");
 		SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
 		SetDlgItemText(IDC_EDIT4,	"10");
@@ -41,7 +41,7 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT6,	"30");
 		SetDlgItemText(IDC_EDIT7,	"4");
 		SetDlgItemText(IDC_EDIT8,	"4");
-		SetDlgItemText(IDC_EDIT9,	"30000000");
+		SetDlgItemText(IDC_EDIT9,	"50000000");
 		SetDlgItemText(IDC_EDIT10,	"30");
 		SetDlgItemText(IDC_EDIT11,	"180");
 		SetDlgItemText(IDC_EDIT12,	"3");
@@ -49,6 +49,10 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT14,	"2000000");
 		SetDlgItemText(IDC_EDIT15,	"150000000");
 		SetDlgItemText(IDC_EDIT16,	"10");
+		SetDlgItemText(IDC_EDIT17,  "10");
+		SetDlgItemText(IDC_EDIT18,	"20");
+		SetDlgItemText(IDC_EDIT19,  "50");
+		SetDlgItemText(IDC_EDIT20,  "20");
 	}
 	else
 	{
@@ -111,6 +115,18 @@ void CConfigDialog::OnAplyConfig()
 
 		GetDlgItemText(IDC_EDIT16,	buffer);
 		pApp->wPlaceRate	= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT17,	buffer);
+		pApp->wHunMillionRate	= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT18,	buffer);
+		pApp->wTenMillionRate1	= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT19,	buffer);
+		pApp->wTenMillionRate2	= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT20,	buffer);
+		pApp->wMaxPlaceRate	= atol(buffer.GetBuffer());
 	}
 }
 
@@ -164,6 +180,18 @@ void CConfigDialog::OnLoadConfig()
 
 	sprintf(szText, "%d", pConfig->wPlaceRate);
 	SetDlgItemText(IDC_EDIT16,	szText);
+
+	sprintf(szText, "%d", pConfig->wHunMillionRate);
+	SetDlgItemText(IDC_EDIT17,	szText);
+
+	sprintf(szText, "%d", pConfig->wTenMillionRate1);
+	SetDlgItemText(IDC_EDIT18,	szText);
+
+	sprintf(szText, "%d", pConfig->wTenMillionRate2);
+	SetDlgItemText(IDC_EDIT19,	szText);
+
+	sprintf(szText, "%d", pConfig->wMaxPlaceRate);
+	SetDlgItemText(IDC_EDIT20,	szText);
 }
 
 void CConfigDialog::OnBnClickedOk()

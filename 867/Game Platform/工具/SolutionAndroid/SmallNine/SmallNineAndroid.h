@@ -127,6 +127,7 @@ namespace O2
 		INT64					m_nBankerWinScore;
 		BOOL					m_bChipIn;
 		float					m_fChipTime;
+		int						m_nPlaceRate;
 	};
 
 	//////////////////////////////////////////////////////////////////////////

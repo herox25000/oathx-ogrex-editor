@@ -21,6 +21,19 @@ namespace O2
 		INT64						nMinScore;
 		INT64						nMaxScore;
 		WORD						wPlaceRate;
+
+		WORD						wShunMenRate;
+		WORD						wTianMenRate;
+		WORD						wDaoMenRate;
+		WORD						wZuoJiaoRate;
+		WORD						wYouJiaoRate;
+		WORD						wQiaoRate;
+
+		WORD						wHunMillionRate;
+		WORD						wTenMillionRate1;	//5千万-1亿
+		WORD						wTenMillionRate2;	//1千万-5千万
+
+		WORD						wMaxPlaceRate;
 	};
 	
 	//////////////////////////////////////////////////////////////////////////

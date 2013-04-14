@@ -98,6 +98,10 @@ namespace O2
 		* 是否允许下线
 		*/	
 		virtual bool			CanOffline();
+		/*
+		* 获取持有金钱
+		*/	
+		virtual INT64			GetScore();
 
 		/*
 		* 网络协议发送
@@ -197,6 +201,11 @@ namespace O2
 		*响应存钱
 		*/
 		virtual bool			OnBanker();
+		/*
+		*更新房间机器人持有金钱
+		*/
+		virtual void			OnUpdateRobotScoreStart();
+		virtual void			OnUpdateRobotScoreEnd();
 	protected:
 		/*
 		* 获取客户端MAC
@@ -222,6 +231,8 @@ namespace O2
 		UserManager*			m_pUserManager;
 		BYTE					m_wStaus;
 		BYTE					m_bGameStatus;	
+
+		static bool				m_bUpdateRobotScore;
 	};
 
 	//////////////////////////////////////////////////////////////////////////
