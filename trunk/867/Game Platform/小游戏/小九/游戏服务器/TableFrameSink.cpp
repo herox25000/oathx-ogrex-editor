@@ -500,15 +500,28 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 	{
 	case IDI_GAME_FREE:
 		{
+			//刷新下庄家的分数
+			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+			if(pBankerItem)
+			{
+				if(m_CurrentBanker.dwUserID != 0L)
+					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+			}
 			OnEventStartPlaceJetton();
 			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON, TIME_PLACE_JETTON*1000,1,0L);
 			return true;
 		}
 	case IDI_PLACE_JETTON:		//下注时间
 		{
+			//刷新下庄家的分数
+			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+			if(pBankerItem)
+			{
+				if(m_CurrentBanker.dwUserID != 0L)
+					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+			}
 			//开始游戏
 			m_pITableFrameControl->StartGame();
-
 			//设置时间
 			m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,1,0L);
 
@@ -516,9 +529,15 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 		}
 	case IDI_GAME_END:			//结束游戏
 		{
+			//刷新下庄家的分数
+			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+			if(pBankerItem)
+			{
+				if(m_CurrentBanker.dwUserID != 0L)
+					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+			}
 			//结束游戏
 			OnEventGameEnd(INVALID_CHAIR,NULL,GER_NORMAL);
-
 			//下庄判断
 			if ( m_bCancelBanker && m_CurrentBanker.dwUserID != 0 )
 			{		
@@ -711,6 +730,15 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	ASSERT(m_pITableFrame->GetGameStatus()== GS_FREE+1);
 	if (m_pITableFrame->GetGameStatus()!= (GS_FREE+1) )
 		return true;
+
+	//刷新下庄家的分数
+	IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	if(pBankerItem)
+	{
+		if(m_CurrentBanker.dwUserID != 0L)
+			m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+	}
+
 	//庄家判断
 	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
 		return true;
@@ -722,11 +750,13 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	for(int i=0;i<7;++i)
 	{
 		if(lJettonScore == lScoreJetton[i])
+		{
 			illegal = false;
+			break;
+		}
 	}
 	if(illegal)
 		return true;
-	
 
 	//变量定义
 	IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
@@ -735,10 +765,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 
 	if ( lUserScore < lJettonCount + lJettonScore ) 
 		return true;
-
 	if (IsBigBanker(wChairID, cbJettonArea, lJettonScore)==true) 
 		return true;
-
 	//合法验证
 	if ( ID_SHUN_MEN == cbJettonArea )
 	{
@@ -781,7 +809,6 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	//发送消息
 	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_PLACE_JETTON,&PlaceJetton,sizeof(PlaceJetton));
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_PLACE_JETTON,&PlaceJetton,sizeof(PlaceJetton));
-
 	return true;
 }
 
@@ -1078,7 +1105,9 @@ __int64 CTableFrameSink::GetMaxPlayerScore(WORD wChairID)//顺门
 	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 	//最大下注
-	__int64 lMaxPlayerScore = m_CurrentBanker.lUserScore-lAllAreaScore;
+	//最大下注
+	IServerUserItem * pIServerUserItemBanker=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	__int64 lMaxPlayerScore = pIServerUserItemBanker->GetUserScore()->lScore-lAllAreaScore;
 	//已下注额
 	__int64 lNowJetton = 0;
 	lNowJetton += m_lUserShunMenScore[wChairID];
@@ -1120,7 +1149,8 @@ __int64 CTableFrameSink::GetMaxBankerScore(WORD wChairID)//倒门
 	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 	//最大下注
-	__int64 lMaxPlayerScore =m_CurrentBanker.lUserScore-lAllAreaScore;
+	IServerUserItem * pIServerUserItemBanker=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	__int64 lMaxPlayerScore = pIServerUserItemBanker->GetUserScore()->lScore-lAllAreaScore;
 	//已下注额
 	__int64 lNowJetton = 0;
 	lNowJetton += m_lUserShunMenScore[wChairID];
@@ -1163,7 +1193,8 @@ __int64 CTableFrameSink::GetMaxTieScore(WORD wChairID)//天门
 {
 	__int64 lAllAreaScore = m_lDaoMenScore+ m_lTianMenScore+m_lShunMenScore;
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
-	__int64 lMaxTieScore = m_CurrentBanker.lUserScore-lAllAreaScore;
+	IServerUserItem * pIServerUserItemBanker=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	__int64 lMaxPlayerScore = pIServerUserItemBanker->GetUserScore()->lScore-lAllAreaScore;
 	//已下注额
 	__int64 lNowJetton = 0;
 	lNowJetton += m_lUserShunMenScore[wChairID];
@@ -1171,7 +1202,7 @@ __int64 CTableFrameSink::GetMaxTieScore(WORD wChairID)//天门
 	lNowJetton += m_lUserTianMenScore[wChairID];
 	//我的下注
 	__int64 lMeLessScore = pServerUserItem->GetUserScore()->lScore - lNowJetton;
-	__int64 lMaxJetton = min(lMaxTieScore, lMeLessScore);
+	__int64 lMaxJetton = min(lMaxPlayerScore, lMeLessScore);
 	return lMaxJetton;
 }
 

@@ -600,15 +600,28 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 	{
 	case IDI_GAME_FREE:
 		{
+			//刷新下庄家的分数
+			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+			if(pBankerItem)
+			{
+				if(m_CurrentBanker.dwUserID != 0L)
+					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+			}
 			OnEventStartPlaceJetton();
 			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON, TIME_PLACE_JETTON*1000,1,0L);
 			return true;
 		}
 	case IDI_PLACE_JETTON:		//下注时间
 		{
+			//刷新下庄家的分数
+			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+			if(pBankerItem)
+			{
+				if(m_CurrentBanker.dwUserID != 0L)
+					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+			}
 			//开始游戏
 			m_pITableFrameControl->StartGame();
-
 			//设置时间
 			m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000L,1,0L);
 
@@ -616,9 +629,15 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 		}
 	case IDI_GAME_END:			//结束游戏
 		{
+			//刷新下庄家的分数
+			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+			if(pBankerItem)
+			{
+				if(m_CurrentBanker.dwUserID != 0L)
+					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+			}
 			//结束游戏
 			OnEventGameEnd(INVALID_CHAIR,NULL,GER_NORMAL);
-
 			//下庄判断
 			if ( m_bCancelBanker && m_CurrentBanker.dwUserID != 0 )
 			{
@@ -629,11 +648,9 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 				m_cbBankerTimer = 0;
 				m_lBankerWinScore=0;
 				ZeroMemory( &m_CurrentBanker, sizeof( m_CurrentBanker ) );
-				m_bCancelBanker=false;
-				
+				m_bCancelBanker=false;	
 				//发送消息
 				SendChangeBankerMsg();
-
 				//删除庄家
 				if ( pServerUserItem ) OnUserApplyBanker( pServerUserItem->GetUserData(), false );
 			}
@@ -801,6 +818,14 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	ASSERT(m_pITableFrame->GetGameStatus()==GS_FREE + 1);
 	if (m_pITableFrame->GetGameStatus()!=GS_FREE + 1) 
 		return true;
+
+	//刷新下庄家的分数
+	IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	if(pBankerItem)
+	{
+		if(m_CurrentBanker.dwUserID != 0L)
+			m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+	}
 
 	//庄家判断
 	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
