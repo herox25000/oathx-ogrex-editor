@@ -2550,7 +2550,8 @@ bool CAttemperEngineSink::OnSocketPresent(WORD wSubCmdID, VOID * pData, WORD wDa
 {
 	//获取用户
 	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
-	if (pIServerUserItem==NULL) return false;
+	if (pIServerUserItem==NULL)
+		return false;
 
 	//消息处理
 	bool bReturnValue = false;
@@ -2576,6 +2577,7 @@ bool CAttemperEngineSink::OnSocketPresent(WORD wSubCmdID, VOID * pData, WORD wDa
 			//CMD_GF_ExchangeCharm *pTemp = (CMD_GF_ExchangeCharm*)pData;
 			//m_cbSendLocation = pTemp->cbSendLocation;
 			//bReturnValue = OnEventExchangeCharm(pData,wDataSize,pIServerUserItem);
+			bReturnValue = true;
 			break;
 		}
 	case SUB_GF_PROP_BUGLE:				//喇叭事件
@@ -2583,6 +2585,7 @@ bool CAttemperEngineSink::OnSocketPresent(WORD wSubCmdID, VOID * pData, WORD wDa
 			//CMD_GF_BugleProperty *pTemp = (CMD_GF_BugleProperty*)pData;
 			//m_cbSendLocation = pTemp->cbSendLocation;
 			//bReturnValue = OnEventBugle(pData,wDataSize,pIServerUserItem);
+			bReturnValue = true;
 			break;
 		}
 	}
