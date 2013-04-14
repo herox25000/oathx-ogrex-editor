@@ -135,7 +135,7 @@ void COxAndroidDlg::OnBnClickedOk()
 	if (m_pAndroidManager == NULL)
 	{
 		m_pOx4Factory		= new O2::Ox4Factory(0);
-		m_pAndroidManager	= new O2::AndroidManager(100, 200, 1, "192.168.1.106", 12061, "d746e3733dff946b0db30eb3fb0069c4", m_pOx4Factory);
+		m_pAndroidManager	= new O2::AndroidManager(100, 200, 10, "192.168.1.102", 12061, "d746e3733dff946b0db30eb3fb0069c4", m_pOx4Factory);
 	}
 	
 	SetTimer(IDT_ANDROID_UPDATE, 30, NULL);

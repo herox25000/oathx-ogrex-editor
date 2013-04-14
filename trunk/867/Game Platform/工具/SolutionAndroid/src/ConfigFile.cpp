@@ -60,7 +60,7 @@ namespace O2
 	{
 		CString szFilePath = lpszFilePath ? lpszFilePath : m_szFilePath;
 		if (szFilePath.IsEmpty())
-			szFilePath = ".\\SmallNine.Config";
+			szFilePath = ".\\Ox.Config";
 
 		FILE* pFile	= fopen(szFilePath, "w+");
 		if (pFile == NULL)
