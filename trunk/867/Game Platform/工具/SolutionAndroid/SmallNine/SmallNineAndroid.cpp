@@ -10,7 +10,7 @@ namespace O2
 	SmallNineAndroid::SmallNineAndroid(DWORD dwUserID, double fOnlineTime)
 		: IAndroid(dwUserID, fOnlineTime), m_bChipIn(FALSE)
 	{
-
+		m_nPlaceRate = 0;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -31,6 +31,7 @@ namespace O2
 		m_fAddChipTime		= AndroidTimer::rdft(1, 3);
 		m_fElapsedTime		= 0;
 		m_nBankerWinScore	= 0;
+		m_nPlaceRate		= 0;
 
 		return IAndroid::OnReset();
 	}
@@ -341,6 +342,7 @@ namespace O2
 		if (nPlaceRand < 10)
 		{
 			m_bChipIn = FALSE;
+			m_nPlaceRate = 0;
 			return 0;
 		}
 
@@ -369,7 +371,9 @@ namespace O2
 					};
 
 					PlaceJetton.cbJettonArea = cbArea[rand() % 3];
-					INT64 nLeftScore = pUser->nScore * pConfig->wPlaceRate / 100 - m_nChipInScore;
+					if (m_nPlaceRate == 0)
+						m_nPlaceRate = AndroidTimer::rdft(pConfig->wPlaceRate, pConfig->wMaxPlaceRate);
+					INT64 nLeftScore = pUser->nScore * m_nPlaceRate / 100 - m_nChipInScore;
 					PlaceJetton.lJettonScore = GetRandScore(nLeftScore);
 
 					if (pUser->nScore >= PlaceJetton.lJettonScore)
@@ -445,6 +449,7 @@ namespace O2
 				m_nReqBankerScore	= pStatus->lApplyBankerCondition;
 				m_fChipTime			= pStatus->cbTimeLeave;
 				m_bChipIn			= FALSE;
+				m_nPlaceRate		= 0;
 			}
 			break;
 		}
@@ -570,6 +575,7 @@ namespace O2
 	bool		SmallNineAndroid::OnGameStart(const void* pBuffer, WORD wDataSize)
 	{
 		m_bChipIn = FALSE;
+		m_nPlaceRate = 0;
 		return true;
 	}
 
@@ -619,6 +625,7 @@ namespace O2
 
 		OnDownBankerRequest();
 		OnUpdateBank();
+		OnUpdateRobotScoreStart();
 
 		return true;
 	}
@@ -655,6 +662,7 @@ namespace O2
 		m_fChipTime	= pJettonStart->cbTimeLeave;
 		m_bChipIn	= TRUE;
 
+		OnUpdateRobotScoreEnd();
 		return true;
 	}
 }

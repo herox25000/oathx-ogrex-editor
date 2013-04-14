@@ -10,6 +10,7 @@ namespace O2
 
 
 	static unsigned int gnSeed = 0;
+	static INT64 gSeedTime = 0;
 	
 	//////////////////////////////////////////////////////////////////////////
 	// 机器人时间管理
@@ -44,8 +45,11 @@ namespace O2
 		*/
 		static INT64				rdit(INT64 dwMin, INT64 dwMax)
 		{
-			srand(time(NULL));
-
+			if (gSeedTime == 0)
+			{
+				srand(time(NULL));
+				gSeedTime = 1;
+			}
 			if (dwMax < dwMin)
 				return dwMax;
 

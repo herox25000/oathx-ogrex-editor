@@ -77,10 +77,17 @@ namespace O2
 		* 销毁所有机器人
 		*/	
 		virtual void			DestroyAll();
+		/*
+		*更新机器人比率
+		*/
+		virtual void			UpdateRobotScore();
+		virtual void			SetGameEnd(bool bGameEnd) { m_bGameEnd = bGameEnd; }
 	protected:
 		AndroidRegister			m_AndroidRegister;
 		double					m_fElapsed;
 		double					m_fCreate;
 		IAndroidFactroy*		m_pFactory;
+		double					m_fCheckMoneyElapsed;
+		bool					m_bGameEnd;
 	};
 }

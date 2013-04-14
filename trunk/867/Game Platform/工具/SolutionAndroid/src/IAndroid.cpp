@@ -1,8 +1,13 @@
 #include "StdAfx.h"
 #include "IAndroid.h"
+#include "ConfigFile.h"
+#include "AndroidTimer.h"
+#include "UserManager.h"
+#include "AndroidManager.h"
 
 namespace O2
 {
+	bool IAndroid::m_bUpdateRobotScore = false;
 	//状态信息
 	struct tagAstatInfo
 	{
@@ -246,6 +251,16 @@ namespace O2
 	}
 
 	//////////////////////////////////////////////////////////////////////////
+	INT64			IAndroid::GetScore()
+	{
+		SUser* pUser = m_pUserManager->Search(m_dwUserID);
+		if (pUser)
+			return pUser->nScore;
+
+		return 0;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
 	bool			IAndroid::GetScoreFromBanker(INT64 nScore)
 	{
 		CMD_TOOLBOX_BankTask tb;
@@ -262,6 +277,15 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	bool			IAndroid::SaveScoreToBanker(INT64 nScore)
 	{
+		if (US_FREE != m_wStaus)
+		{
+			CString szMessage;
+			szMessage.Format("Robot[%d] request sit up", m_dwUserID);
+			CTraceService::TraceString(szMessage,
+				TraceLevel_Normal);
+			m_ClientSocket->SendData(MDM_GR_USER,SUB_GR_USER_STANDUP_REQ);
+		}
+
 		CMD_TOOLBOX_BankTask tb;
 		memset(&tb, 0, sizeof(CMD_TOOLBOX_BankTask));
 
@@ -634,6 +658,7 @@ namespace O2
 					if (pUserStatus->cbUserStatus == US_FREE && pUserStatus->dwUserID == m_dwUserID)
 					{
 						OnBanker();
+						SetStatus(US_FREE);
 					}
 
 					//更新状态
@@ -676,6 +701,14 @@ namespace O2
 				//消息处理
 				CMD_GR_SitFailed* pSitFailed = (CMD_GR_SitFailed *)pBuffer;
 
+				SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+				SUser* pGameUser = m_pUserManager->Search(m_dwUserID);
+				if (pGameUser->nScore < pConfig->nMinScore) 
+				{
+					INT64 nMin = pConfig->nMinScore - pGameUser->nScore;
+					INT64 nMax = pConfig->nMaxScore - pGameUser->nScore;
+					GetScoreFromBanker(AndroidTimer::rdit(nMin, nMax));
+				}
 				CString szMessage;
 				szMessage.Format("[%d] %s, 5秒后重连", m_dwUserID, pSitFailed->szFailedDescribe);
 				LogEvent(szMessage, 
@@ -885,4 +918,24 @@ namespace O2
 	{
 		return true;
 	}
+
+	void			IAndroid::OnUpdateRobotScoreStart()
+	{
+		if (m_bUpdateRobotScore == true)
+			return;
+		else
+		{
+			m_bUpdateRobotScore = true;
+			AndroidManager::GetSingleton()->UpdateRobotScore();
+		}
+	}
+
+	void IAndroid::OnUpdateRobotScoreEnd()
+	{
+		if (m_bUpdateRobotScore == false)
+			return;
+		else
+			m_bUpdateRobotScore = false;
+	}
+
 }
