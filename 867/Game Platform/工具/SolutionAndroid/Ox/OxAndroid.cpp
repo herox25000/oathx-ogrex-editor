@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "OxAndroid.h"
 #include "AndroidTimer.h"
+#include "ConfigFile.h"
 
 namespace O2
 {
@@ -121,10 +122,26 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	bool		Ox::OnSwitchTable()
 	{
+		SUser* pUser = GetUserInfo();
+
+		WORD wTableID = 0;
+		if (pUser->nScore > 0 && pUser->nScore <5000000)
+		{
+			wTableID = AndroidTimer::rdit(0, 20);
+		}
+		else if (pUser->nScore >= 5000000 && pUser->nScore <= 50000000)
+		{
+			wTableID = AndroidTimer::rdit(20, 40);
+		}
+		else if (pUser->nScore >= 50000000)
+		{
+			wTableID = AndroidTimer::rdit(40, 60);
+		}
+
 		//构造数据包
 		CMD_GR_UserSitReq UserSitReq;
 		memset(&UserSitReq,0,sizeof(UserSitReq));
-		UserSitReq.wTableID	= rand() % 60;
+		UserSitReq.wTableID	= wTableID;
 		UserSitReq.wChairID	= rand() % 4;
 
 		//发送数据包
@@ -465,6 +482,30 @@ namespace O2
 			SetTimer(OXT_START_GAME, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 		}
 		
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+		{
+			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+		
+			INT64 nMin = 0;
+			INT64 nMax = 0;
+
+			if (pUser->nScore > pConfig->nMaxScore)
+			{
+				nMin = pUser->nScore - pConfig->nMaxScore;
+				nMax = pUser->nScore - pConfig->nMinScore;
+
+				SaveScoreToBanker(AndroidTimer::rdit(nMin, nMax));
+			}
+			else if (pUser->nScore < pConfig->nMinScore)
+			{
+				nMin = pConfig->nMinScore - pUser->nScore;
+				nMax = pConfig->nMaxScore - pUser->nScore;
+
+				GetScoreFromBanker(AndroidTimer::rdit(nMin, nMax));
+			}
+			
+		}
 
 		//清理变量
 		m_nTurnMaxScore = 0;
