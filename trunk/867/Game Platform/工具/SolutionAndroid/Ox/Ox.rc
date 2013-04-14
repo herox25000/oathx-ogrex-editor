@@ -78,8 +78,7 @@ CAPTION "关于 Ox"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
-    LTEXT           "Ox Version 1.0",IDC_STATIC,40,10,119,8,
-                    SS_NOPREFIX
+    LTEXT           "Ox Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2013",IDC_STATIC,40,25,119,8
     DEFPUSHBUTTON   "确定",IDOK,178,7,50,16,WS_GROUP
 END
@@ -121,29 +120,27 @@ BEGIN
     LTEXT           "登录密码",IDC_STATIC,191,20,34,11
     EDITTEXT        IDC_EDIT3,225,18,133,12,ES_AUTOHSCROLL
     GROUPBOX        "庄家配置",IDC_STATIC,7,57,356,33
-    LTEXT           "最大排庄人数",IDC_STATIC,12,72,50,11
+    RTEXT           "上庄概率",IDC_STATIC,12,72,50,11
     EDITTEXT        IDC_EDIT7,66,71,33,12,ES_AUTOHSCROLL
-    LTEXT           "最大上庄次数",IDC_STATIC,107,72,54,9
-    EDITTEXT        IDC_EDIT8,161,71,34,12,ES_AUTOHSCROLL
-    LTEXT           "赢钱上限",IDC_STATIC,204,72,36,10
-    EDITTEXT        IDC_EDIT9,242,70,113,12,ES_AUTOHSCROLL
+    LTEXT           "赢钱上限",IDC_STATIC,106,72,36,10
+    EDITTEXT        IDC_EDIT9,144,70,113,12,ES_AUTOHSCROLL
     GROUPBOX        "时间配置",IDC_STATIC,7,93,356,49
     LTEXT           "最小在线时间",IDC_STATIC,13,108,50,11
     EDITTEXT        IDC_EDIT10,66,107,33,12,ES_AUTOHSCROLL
     LTEXT           "最大在线时间",IDC_STATIC,12,124,51,9
     EDITTEXT        IDC_EDIT11,65,123,34,12,ES_AUTOHSCROLL
-    LTEXT           "最小押注时间",IDC_STATIC,109,108,52,10
+    LTEXT           "最小工作时间",IDC_STATIC,109,108,52,10
     EDITTEXT        IDC_EDIT12,166,107,43,12,ES_AUTOHSCROLL
-    LTEXT           "最大押注时间",IDC_STATIC,110,124,52,10
+    LTEXT           "最大工作时间",IDC_STATIC,110,124,52,10
     EDITTEXT        IDC_EDIT13,166,122,44,12,ES_AUTOHSCROLL
     LTEXT           "押注比例",IDC_STATIC,26,197,35,10
     EDITTEXT        IDC_EDIT16,66,196,33,12,ES_AUTOHSCROLL
     GROUPBOX        "押注配置",IDC_STATIC,8,182,355,34
     GROUPBOX        "银行配置",IDC_STATIC,7,145,355,34
     LTEXT           "最小携带金钱",IDC_STATIC,13,159,50,11
-    EDITTEXT        IDC_EDIT14,65,157,33,12,ES_AUTOHSCROLL
-    LTEXT           "最大携带金钱",IDC_STATIC,109,159,52,10
-    EDITTEXT        IDC_EDIT15,165,157,43,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT14,65,157,96,12,ES_AUTOHSCROLL
+    LTEXT           "最大携带金钱",IDC_STATIC,163,159,52,10
+    EDITTEXT        IDC_EDIT15,219,157,129,12,ES_AUTOHSCROLL
     LTEXT           "起始ID",IDC_STATIC,15,36,26,11
     EDITTEXT        IDC_EDIT4,47,35,71,12,ES_AUTOHSCROLL
     LTEXT           "结束ID",IDC_STATIC,123,36,24,10
@@ -248,11 +245,6 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// HTML
-//
 
 /////////////////////////////////////////////////////////////////////////////
 //

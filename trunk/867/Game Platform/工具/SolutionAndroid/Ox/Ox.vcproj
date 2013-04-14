@@ -130,10 +130,61 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\AndroidManager.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\AndroidTimer.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\BankerDialog.cpp">
 			</File>
 			<File
 				RelativePath=".\ConfigDialog.cpp">
+			</File>
+			<File
+				RelativePath=".\ConfigFile.cpp">
+			</File>
+			<File
+				RelativePath=".\ConfigFile.h">
+			</File>
+			<File
+				RelativePath=".\IAndroid.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
 			</File>
 			<File
 				RelativePath=".\Ox.cpp">
@@ -159,11 +210,32 @@
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\UserManager.cpp">
+				<FileConfiguration
+					Name="Debug|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						ObjectFile="$(IntDir)/$(InputName)1.obj"/>
+				</FileConfiguration>
+			</File>
 		</Filter>
 		<Filter
 			Name="头文件"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\AndroidManager.h">
+			</File>
+			<File
+				RelativePath=".\AndroidTimer.h">
+			</File>
 			<File
 				RelativePath=".\BankerDialog.h">
 			</File>
@@ -185,13 +257,16 @@
 			<File
 				RelativePath=".\stdafx.h">
 			</File>
+			<File
+				RelativePath=".\UserManager.h">
+			</File>
 		</Filter>
 		<Filter
 			Name="资源文件"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 			<File
-				RelativePath=".\Ox.rc">
+				RelativePath=".\res\Ox.ico">
 			</File>
 			<File
 				RelativePath=".\Ox.rc">
@@ -201,50 +276,6 @@
 			</File>
 			<File
 				RelativePath=".\res\SmallNine.ico">
-			</File>
-		</Filter>
-		<Filter
-			Name="include"
-			Filter="">
-			<File
-				RelativePath="..\include\AndroidManager.h">
-			</File>
-			<File
-				RelativePath="..\include\AndroidTimer.h">
-			</File>
-			<File
-				RelativePath="..\include\BankerManager.h">
-			</File>
-			<File
-				RelativePath="..\include\ConfigFile.h">
-			</File>
-			<File
-				RelativePath="..\include\IAndroid.h">
-			</File>
-			<File
-				RelativePath="..\include\UserManager.h">
-			</File>
-		</Filter>
-		<Filter
-			Name="src"
-			Filter="">
-			<File
-				RelativePath="..\src\AndroidManager.cpp">
-			</File>
-			<File
-				RelativePath="..\src\AndroidTimer.cpp">
-			</File>
-			<File
-				RelativePath="..\src\BankerManager.cpp">
-			</File>
-			<File
-				RelativePath="..\src\ConfigFile.cpp">
-			</File>
-			<File
-				RelativePath="..\src\IAndroid.cpp">
-			</File>
-			<File
-				RelativePath="..\src\UserManager.cpp">
 			</File>
 		</Filter>
 		<File

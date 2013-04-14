@@ -1,8 +1,18 @@
 #include "stdafx.h"
 #include "OxAndroid.h"
+#include "AndroidTimer.h"
 
 namespace O2
 {
+	enum {
+		OXT_CALL_BANKER,
+		OXT_USER_ADD_SCORE,
+		OXT_OPEN_CARD,
+		OXT_START_GAME,
+	};
+
+#define OXT_MIN_TIME	1
+#define OXT_MAX_TIME	6
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
@@ -96,6 +106,15 @@ namespace O2
 		if (!IAndroid::Update(fElapsed))
 			return 0;
 
+		switch( m_wStaus )
+		{
+		case US_SIT:
+			{
+				UpdateTimer(fElapsed);
+			}
+			break;
+		}
+
 		return 0;
 	}
 
@@ -128,6 +147,8 @@ namespace O2
 	{	
 		m_wTableCount	= 0;
 		m_wChairCount	= 0;
+		m_nTurnMaxScore	= 0;
+		ZeroMemory(m_byCard, sizeof(m_byCard));
 
 		return IAndroid::OnReset();
 	}
@@ -156,10 +177,7 @@ namespace O2
 		{
 		case GS_FREE:
 			{
-				if (m_wStaus == US_SIT)
-				{
-					SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
-				}
+				SetTimer(OXT_START_GAME, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 			}
 			break;
 
@@ -176,11 +194,7 @@ namespace O2
 					//始叫用户
 					if(pStatusCall->wCallBanker == pUser->wChairID)
 					{
-						//设置变量
-						CMD_C_CallBanker CallBanker;
-						CallBanker.bBanker = 0;
-
-						SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+						SetTimer(OXT_CALL_BANKER, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 					}
 				}
 			}
@@ -193,6 +207,7 @@ namespace O2
 					return 0;
 
 				CMD_S_StatusScore* pStatusScore = (CMD_S_StatusScore *)(pBuffer);
+				m_nTurnMaxScore					= pStatusScore->lTurnMaxScore;
 
 				SUser* pUser = m_pUserManager->Search(m_dwUserID);
 				if (pUser)
@@ -200,22 +215,7 @@ namespace O2
 					//设置筹码
 					if (pStatusScore->lTurnMaxScore > 0L && pStatusScore->lTableScore[pUser->wChairID] == 0L )
 					{
-						INT64 nUserMaxScore[4];
-						ZeroMemory(nUserMaxScore, sizeof(nUserMaxScore));
-
-						INT64 nTempScore = pStatusScore->lTurnMaxScore;
-						for (int i=0; i<4; i++)
-						{
-							if (i>0)
-								nTempScore /= 2;
-
-							nUserMaxScore[i] = max(nTempScore, 1L);
-						}
-
-						//发送消息
-						CMD_C_AddScore AddScore;
-						AddScore.lScore = nUserMaxScore[rand()%4];
-						SendData(MDM_GF_GAME, SUB_C_ADD_SCORE, &AddScore, sizeof(AddScore));
+						SetTimer(OXT_USER_ADD_SCORE, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 					}
 				}
 
@@ -229,24 +229,82 @@ namespace O2
 				if (wDataSize!=sizeof(CMD_S_StatusPlay))
 					return 0;
 
-				CMD_S_StatusPlay* pStatusPlay = (CMD_S_StatusPlay *)(pBuffer);
+				CMD_S_StatusPlay* pStatusPlay	= (CMD_S_StatusPlay *)(pBuffer);
+				m_nTurnMaxScore					= pStatusPlay->lTurnMaxScore;
 
 				SUser* pUser = m_pUserManager->Search(m_dwUserID);
 				if (pUser)
 				{
-					BYTE byCard[MAX_COUNT];
-					CopyMemory(byCard, pStatusPlay->cbHandCardData[pUser->wChairID], MAX_COUNT);
+					CopyMemory(m_byCard, pStatusPlay->cbHandCardData[pUser->wChairID], MAX_COUNT);
 
 					//控件处理
 					if(pStatusPlay->bOxCard[pUser->wChairID] == 0xff)
 					{
-						//发送消息
-						CMD_C_OxCard OxCard;
-						OxCard.bOX=(GetCardType(byCard, MAX_COUNT) > 0 ) ? TRUE : FALSE;
-
-						SendData(MDM_GF_GAME, SUB_C_OPEN_CARD, &OxCard, sizeof(OxCard));
+						SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 					}
 				}
+			}
+			break;
+		}
+
+		return true;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	bool		Ox::OnTimerEvent(DWORD dwID)
+	{
+		switch( dwID )
+		{
+		case OXT_START_GAME:
+			{
+				if (m_wStaus == US_SIT)
+				{
+					SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
+				}
+			}
+			break;
+		case OXT_CALL_BANKER:
+			{
+				if (m_wStaus == US_SIT)
+				{
+					////设置变量
+					CMD_C_CallBanker CallBanker;
+					CallBanker.bBanker = 1;
+
+					SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+				}
+			}
+			break;
+		case OXT_OPEN_CARD:
+			{
+				if (m_wStaus == US_SIT)
+				{
+					//发送消息
+					CMD_C_OxCard OxCard;
+					OxCard.bOX=(GetCardType(m_byCard, MAX_COUNT) > 0 ) ? TRUE : FALSE;
+
+					SendData(MDM_GF_GAME, SUB_C_OPEN_CARD, &OxCard, sizeof(OxCard));
+				}
+			}
+			break;
+		case OXT_USER_ADD_SCORE:
+			{
+				INT64 nUserMaxScore[4];
+				ZeroMemory(nUserMaxScore, sizeof(nUserMaxScore));
+
+				INT64 nTempScore = m_nTurnMaxScore;
+				for (int i=0; i<4; i++)
+				{
+					if (i>0)
+						nTempScore /= 2;
+
+					nUserMaxScore[i] = max(nTempScore, 1L);
+				}
+
+				//发送消息
+				CMD_C_AddScore AddScore;
+				AddScore.lScore = nUserMaxScore[rand()%4];
+				SendData(MDM_GF_GAME, SUB_C_ADD_SCORE, &AddScore, sizeof(AddScore));
 			}
 			break;
 		}
@@ -315,14 +373,7 @@ namespace O2
 			//始叫用户
 			if(pStatusCall->wCallBanker == pUser->wChairID)
 			{
-				//设置变量
-				CMD_C_CallBanker CallBanker;
-				CallBanker.bBanker = 1;
-				
-				CString szMessage;
-				szMessage.Format("[%d] 叫庄", GetUserID());
-				LogEvent(szMessage, TraceLevel_Warning);
-				SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+				SetTimer(OXT_CALL_BANKER, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 			}
 		}
 
@@ -341,24 +392,10 @@ namespace O2
 		{
 			CMD_S_GameStart * pGameStart=(CMD_S_GameStart *)pBuffer;
 
-			if (pGameStart->wBankerUser != pUser->wChairID)
+			m_nTurnMaxScore				= pGameStart->lTurnMaxScore;
+			if (m_nTurnMaxScore > 0)
 			{
-				INT64 nUserMaxScore[4];
-				ZeroMemory(nUserMaxScore, sizeof(nUserMaxScore));
-
-				INT64 nTempScore = pGameStart->lTurnMaxScore;
-				for (int i=0; i<4; i++)
-				{
-					if (i>0)
-						nTempScore /= 2;
-
-					nUserMaxScore[i] = max(nTempScore, 1L);
-				}
-
-				//发送消息
-				CMD_C_AddScore AddScore;
-				AddScore.lScore = nUserMaxScore[rand()%4];
-				SendData(MDM_GF_GAME, SUB_C_ADD_SCORE,&AddScore,sizeof(AddScore));
+				SetTimer(OXT_USER_ADD_SCORE, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 			}
 		}
 
@@ -387,15 +424,10 @@ namespace O2
 		{
 			CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
 
-			BYTE byCard[MAX_COUNT];
-			CopyMemory(byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
+			BYTE m_byCard[MAX_COUNT];
+			CopyMemory(m_byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
 
-			//发送消息
-			CMD_C_OxCard OxCard;
-			OxCard.bOX=(GetCardType(byCard, MAX_COUNT) > 0 ) ? TRUE : FALSE;
-
-			SendData(MDM_GF_GAME, SUB_C_OPEN_CARD, &OxCard, sizeof(OxCard));
-
+			SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
 		}
 
 		return true;
@@ -430,9 +462,82 @@ namespace O2
 
 		if (m_wStaus == US_SIT)
 		{
-			SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
+			SetTimer(OXT_START_GAME, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+		}
+		
+
+		//清理变量
+		m_nTurnMaxScore = 0;
+		ZeroMemory(m_byCard,sizeof(m_byCard));
+
+		return true;
+	}
+
+	bool		Ox::SetTimer(DWORD dwID, double fElapsed)
+	{
+		TimerItemRegister::iterator itA = m_TimerItemActive.find(dwID);
+		if ( itA != m_TimerItemActive.end())
+		{
+			itA->second->fElapsed	= fElapsed;
+			return true;
+		}
+
+		TimerItemRegister::iterator itD = m_TimerItemDetive.find(dwID);
+		if ( itD != m_TimerItemDetive.end() )
+		{
+			itD->second->fElapsed	= fElapsed;
+			
+			m_TimerItemActive.insert(
+				TimerItemRegister::value_type(dwID, itD->second)
+				);
+			m_TimerItemDetive.erase(itD);
+		}
+		else
+		{
+			STimerItem* pItem = new STimerItem(dwID, fElapsed);
+			m_TimerItemActive.insert(
+				TimerItemRegister::value_type(dwID, pItem)
+				);
 		}
 
 		return true;
+	}
+
+	bool		Ox::KillTimer(DWORD dwID)
+	{
+		TimerItemRegister::iterator itA = m_TimerItemActive.find(dwID);
+		if ( itA != m_TimerItemActive.end() )
+		{
+			delete itA->second; m_TimerItemActive.erase(itA);
+		}
+
+		TimerItemRegister::iterator itD = m_TimerItemDetive.find(dwID);
+		if ( itD != m_TimerItemDetive.end() )
+		{
+			delete itD->second; m_TimerItemDetive.erase(itD);
+		}
+		return 0;
+	}
+
+	void		Ox::UpdateTimer(float fElapsed)
+	{
+		TimerItemRegister::iterator it = m_TimerItemActive.begin();
+		while ( it != m_TimerItemActive.end() )
+		{
+			it->second->fElapsed -= fElapsed;
+			if (it->second->fElapsed <= 0)
+			{
+				m_TimerItemDetive.insert(
+					TimerItemRegister::value_type(it->second->dwID, it->second)
+					);
+				OnTimerEvent(it->second->dwID);
+
+				it = m_TimerItemActive.erase(it);
+			}
+			else
+			{
+				it ++;
+			}
+		}
 	}
 }
