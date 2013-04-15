@@ -20,7 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="../../../小游戏/牛牛/消息定义;../include;../../../开发库/Include"
+				AdditionalIncludeDirectories="../../../小游戏/牛牛/消息定义;../../../开发库/Include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
