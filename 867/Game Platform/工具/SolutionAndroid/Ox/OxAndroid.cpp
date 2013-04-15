@@ -440,8 +440,6 @@ namespace O2
 		if (pUser)
 		{
 			CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
-
-			BYTE m_byCard[MAX_COUNT];
 			CopyMemory(m_byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
 
 			SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
