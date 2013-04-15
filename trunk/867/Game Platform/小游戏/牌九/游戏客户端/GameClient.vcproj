@@ -140,6 +140,9 @@
 				RelativePath=".\ApplyUserList.cpp">
 			</File>
 			<File
+				RelativePath=".\CMyListCtrl.cpp">
+			</File>
+			<File
 				RelativePath=".\DrawCard.cpp">
 			</File>
 			<File
@@ -188,6 +191,9 @@
 			</File>
 			<File
 				RelativePath="..\消息定义\CMD_PaiJiu.h">
+			</File>
+			<File
+				RelativePath=".\CMyListCtrl.h">
 			</File>
 			<File
 				RelativePath=".\DrawCard.h">

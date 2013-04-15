@@ -29,6 +29,8 @@
 #define IDC_CUOPAI					215
 #define IDC_MONEY					216
 #define	IDC_SHENGYIN				217
+#define IDC_UP						218
+#define IDC_DOWN					219
 
 //庄家信息
 #define BANKER_INFO_LEN				150									//庄家信息
@@ -48,6 +50,10 @@ BEGIN_MESSAGE_MAP(CGameClientView, CGameFrameView)
 	ON_BN_CLICKED(IDC_SCORE_MOVE_R, OnScoreMoveR)
 	ON_BN_CLICKED(IDC_CUOPAI, OnCuoPaiModel)
 	ON_BN_CLICKED(IDC_MONEY, OnBank)
+
+	ON_BN_CLICKED(IDC_UP, OnUp)
+	ON_BN_CLICKED(IDC_DOWN, OnDown)
+
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
@@ -290,6 +296,8 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btnNoShengyin.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_SHENGYIN);
 	m_btnQuqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
 	//m_btnCunqian.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_MONEY);
+	m_btUp.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_UP);
+	m_btDown.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_DOWN);
 
 
 	//设置按钮
@@ -305,6 +313,8 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btnQuqian.SetButtonImage(IDB_BT_QUQIAN,hResInstance,false);
 	//m_btnCunqian.SetButtonImage(IDB_BT_CUNQIAN,hResInstance,false);
 
+	m_btUp.SetButtonImage(IDB_BT_BT_S,hResInstance,false);
+	m_btDown.SetButtonImage(IDB_BT_BT_X,hResInstance,false);
 
 	return 0;
 }
@@ -384,9 +394,19 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	HDWP hDwp=BeginDeferWindowPos(32);
 	const UINT uFlags=SWP_NOACTIVATE|SWP_NOZORDER|SWP_NOCOPYBITS;
 
+	m_ApplyUser.m_viewHandle = m_hWnd;
+
 	//列表控件
 	DeferWindowPos(hDwp,m_ApplyUser,NULL,nWidth/2 + 150,nHeight/2-294,220,52,uFlags);
-
+	DeferWindowPos(hDwp,m_btUp,NULL,nWidth/2 + 150 + 204, nHeight/2-294,75/5,16,uFlags);
+	DeferWindowPos(hDwp,m_btDown,NULL,nWidth/2 + 150 + 204, nHeight/2-294 + 36,75/5,16,uFlags);
+	if(1)
+	{
+		m_btUp.ShowWindow(SW_HIDE);
+		m_btUp.EnableWindow(true);
+		m_btDown.ShowWindow(SW_HIDE);
+		m_btDown.EnableWindow(true);
+	}
 	//筹码按钮
 	CRect rcJetton;
 	int nXPos = nWidth / 2 - 205;
@@ -2244,3 +2264,28 @@ void CGameClientView::RemoveUserJetton( BYTE cbViewIndex, __int64 lScoreCount )
 	UpdateGameView(NULL);
 	return;
 }
+
+void CGameClientView::OnUp()
+{
+	m_ApplyUser.m_AppyUserList.SendMessage(WM_VSCROLL, MAKELONG(SB_LINEUP,0),NULL);
+	m_ApplyUser.m_AppyUserList.Invalidate(TRUE);
+	double nPos = m_ApplyUser.m_AppyUserList.GetScrollPos(SB_VERT);
+	double nMax = m_ApplyUser.m_AppyUserList.GetScrollLimit(SB_VERT);
+
+}
+void CGameClientView::OnDown()
+{
+	double nPos = m_ApplyUser.m_AppyUserList.GetScrollPos(SB_VERT);
+	if(m_ApplyUser.m_AppyUserList.GetItemCount()>4)
+	{
+		if(nPos>m_ApplyUser.m_AppyUserList.GetItemCount()-5)
+		{
+			return ;
+
+		}
+
+	}
+	m_ApplyUser.m_AppyUserList.SendMessage(WM_VSCROLL, MAKELONG(SB_LINEDOWN,0),NULL);
+	m_ApplyUser.m_AppyUserList.Invalidate(TRUE);
+	double nMax = m_ApplyUser.m_AppyUserList.GetScrollLimit(SB_VERT);
+};
