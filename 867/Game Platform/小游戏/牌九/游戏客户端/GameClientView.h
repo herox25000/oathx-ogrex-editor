@@ -196,7 +196,10 @@ public:
 	CSkinButton						m_btnShengyin;						
 	CSkinButton						m_btnNoShengyin;
 	CSkinButton						m_btnQuqian;						
-	CSkinButton						m_btnCunqian;						
+	CSkinButton						m_btnCunqian;		
+
+	CSkinButton						m_btUp;								//去上一个申请庄家信息
+	CSkinButton						m_btDown;							//去下一个申请庄家信息
 
 	JettonButton					m_JettonButton[7];
 	BOOL							m_JettonButtonPushDown;
@@ -384,6 +387,10 @@ protected:
 
 	afx_msg void OnCuoPaiModel();
 	afx_msg void OnBank();
+	afx_msg void OnUp();
+
+	afx_msg void OnDown();
+
 	//消息映射
 protected:
 	//定时器消息

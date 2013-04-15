@@ -6,6 +6,7 @@
 
 BEGIN_MESSAGE_MAP(CApplyUser, CDialog)
 	ON_WM_SIZE()
+	ON_MESSAGE(WM_LBTUP,OnLBtUp)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
@@ -13,11 +14,18 @@ END_MESSAGE_MAP()
 //构造函数
 CApplyUser::CApplyUser() : CDialog(IDD_DLG_GAME_RECORD)
 {
+	 m_viewHandle = NULL;
 }
 
 //析构函数
 CApplyUser::~CApplyUser()
 {
+}
+
+LRESULT CApplyUser::OnLBtUp(WPARAM wParam,LPARAM lParam)
+{
+	::SendMessage(m_viewHandle,WM_VIEWLBTUP,wParam,lParam);
+	return 1;
 }
 
 //控件绑定
@@ -46,11 +54,31 @@ BOOL CApplyUser::OnInitDialog()
 	m_AppyUserList.SetTextBkColor(-1);
 	m_AppyUserList.SetTextColor(RGB(232, 245, 3));
 
+	SCROLLINFO info;
+
+	info.cbSize = 20;
+	info.fMask = 3;
+	info.nMax = 200;
+	info.nMin  = 4;
+	info.nPage = 1;
+	info.nPos = 0;
+	info.nTrackPos = 8;
+	CRect windowRect;
+	GetWindowRect(&windowRect);
+
+	CWnd* pParent = GetParent();
+	m_AppyUserList.Init(m_OrtRect,pParent);
+	m_AppyUserList.m_viewHandle  = m_hWnd;
 	//插入列表
 	m_AppyUserList.InsertColumn(0,TEXT("申请玩家"),LVCFMT_LEFT,120);
 	m_AppyUserList.InsertColumn(1,TEXT("游戏币"),LVCFMT_LEFT,100);
 
 	return FALSE;
+}
+
+int  CApplyUser::GetItemCount()
+{
+	return m_AppyUserList.GetItemCount();
 }
 
 //插入列表

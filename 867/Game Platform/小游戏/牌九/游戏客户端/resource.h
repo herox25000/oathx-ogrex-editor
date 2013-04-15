@@ -76,7 +76,10 @@
 #define IDB_BT_QUQIAN                   232
 #define IDB_BT_CUNQIAN                  233
 #define IDC_RECORD_LIST                 1056
-#define IDC_SCORE_10000000              1056
+#define IDC_SCORE_10000000              1057
+
+#define IDB_BT_BT_X                     1016
+#define IDB_BT_BT_S                     1015
 
 // Next default values for new objects
 // 
