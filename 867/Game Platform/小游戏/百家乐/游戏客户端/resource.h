@@ -65,6 +65,9 @@
 #define IDC_SCORE_10000000              819
 #define IDC_RECORD_LIST                 1056
 
+#define IDB_BT_BT_S                     1015
+#define IDB_BT_BT_X                     1016
+
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED

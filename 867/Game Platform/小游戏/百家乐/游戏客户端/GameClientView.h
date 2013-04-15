@@ -147,7 +147,10 @@ public:
 
 	CSkinButton						m_btScoreMoveL;						//移动成绩
 	CSkinButton						m_btScoreMoveR;						//移动成绩
-	CSkinButton						m_btnQuqian;						
+	CSkinButton						m_btnQuqian;	
+	CSkinButton						m_btUp;								//去上一个申请庄家信息
+	CSkinButton						m_btDown;							//去下一个申请庄家信息
+
 //	CSkinButton						m_btnCunqian;
 	//控件变量
 public:
@@ -320,6 +323,9 @@ protected:
 	//移动按钮
 	afx_msg void OnScoreMoveR();
 	afx_msg void OnBank();
+	afx_msg void OnUp();
+
+	afx_msg void OnDown();
 	//消息映射
 protected:
 	//定时器消息
