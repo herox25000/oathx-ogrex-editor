@@ -20,6 +20,18 @@ namespace O2
 		INT64						nMinScore;
 		INT64						nMaxScore;
 		WORD						wPlaceRate;
+
+		WORD						wOneMinID;
+		WORD						wOneMaxID;
+		INT64						nOneScore;
+
+		WORD						wTwoMinID;
+		WORD						wTwoMaxID;
+		INT64						nTwoScore;
+
+		WORD						wThreeMinID;
+		WORD						wThreeMaxID;
+		INT64						nThreeScore;
 	};
 	
 	//////////////////////////////////////////////////////////////////////////

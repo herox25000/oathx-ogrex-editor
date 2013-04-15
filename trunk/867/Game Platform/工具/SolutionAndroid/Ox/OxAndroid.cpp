@@ -12,8 +12,6 @@ namespace O2
 		OXT_START_GAME,
 	};
 
-#define OXT_MIN_TIME	1
-#define OXT_MAX_TIME	6
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
@@ -101,6 +99,45 @@ namespace O2
 		return (bCardValue>10)?(10):bCardValue;
 	}
 
+	WORD		Ox::GetWorkTime()
+	{
+		SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+		if (pConfig)
+			return AndroidTimer::rdit(pConfig->wMinWorkTime, pConfig->wMaxWorkTime);
+
+		return 0;
+	}
+
+	WORD		Ox::GetTableID()
+	{
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+		{
+			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+			
+			WORD wTableID = INVALID_TABLE;
+			if (pUser->nScore > 0 && pUser->nScore < pConfig->nOneScore)
+			{
+				wTableID = AndroidTimer::rdit(pConfig->wOneMinID, pConfig->wOneMaxID);
+				return wTableID;
+			}
+
+			if (pUser->nScore > pConfig->nOneScore && pUser->nScore < pConfig->nTwoScore)
+			{
+				wTableID = AndroidTimer::rdit(pConfig->wTwoMinID, pConfig->wTwoMaxID);
+				return wTableID;
+			}
+
+			if (pUser->nScore > pConfig->nTwoScore && pUser->nScore < pConfig->nThreeScore)
+			{
+				wTableID = AndroidTimer::rdit(pConfig->wThreeMinID, pConfig->wThreeMaxID);
+				return wTableID;
+			}
+		}
+
+		return INVALID_TABLE;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	bool		Ox::Update(float fElapsed)
 	{
@@ -111,6 +148,7 @@ namespace O2
 		{
 		case US_SIT:
 			{
+				UpdateOnline(fElapsed);
 				UpdateTimer(fElapsed);
 			}
 			break;
@@ -119,34 +157,71 @@ namespace O2
 		return 0;
 	}
 
+	bool		Ox::UpdateOnline(float fElapsed)
+	{
+		m_fElapsed += fElapsed;
+		if ((m_fElapsed / 60) >= m_fOnlineTime)
+		{
+			if (isSelf(m_wCurBanker))
+			{
+				m_fOnlineTime	= AndroidTimer::rdit(5, 15);
+				m_fElapsed		= 0;
+			}
+			else
+			{
+				if (m_nChipInScore <= 0)
+				{
+					CString szMessage;
+					szMessage.Format("[%d][%d]到达在线时间, 立刻下线", GetUserID(), GetGameID());
+					LogEvent(szMessage, TraceLevel_Exception);
+
+					SetStatus(US_OFFLINE);
+				}
+				else
+				{
+					m_fOnlineTime	= AndroidTimer::rdit(5, 15);
+					m_fElapsed		= 0;
+				}
+			}
+		}
+		return true;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	bool		Ox::OnSwitchTable()
 	{
-		SUser* pUser = GetUserInfo();
+		SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+		if (pConfig == NULL)
+			return 0;
 
-		WORD wTableID = 0;
-		if (pUser->nScore > 0 && pUser->nScore <5000000)
+		SUser* pUser = GetUserInfo();
+		if (pUser == NULL)
+			return 0;
+
+		if (pUser->nScore < pConfig->nMinScore)
 		{
-			wTableID = AndroidTimer::rdit(0, 20);
+			GetScoreFromBanker( (pConfig->nMaxScore - pUser->nScore) / (rand() % 3) );
 		}
-		else if (pUser->nScore >= 5000000 && pUser->nScore <= 50000000)
-		{
-			wTableID = AndroidTimer::rdit(20, 40);
-		}
-		else if (pUser->nScore >= 50000000)
-		{
-			wTableID = AndroidTimer::rdit(40, 60);
-		}
+
+		WORD wTableID = GetTableID();
+		if (wTableID == INVALID_TABLE)
+			return 0;
 
 		//构造数据包
 		CMD_GR_UserSitReq UserSitReq;
-		memset(&UserSitReq,0,sizeof(UserSitReq));
+		memset(&UserSitReq, 0, sizeof(UserSitReq));
 		UserSitReq.wTableID	= wTableID;
 		UserSitReq.wChairID	= rand() % 4;
 
 		//发送数据包
 		WORD wSendSize=sizeof(UserSitReq)-sizeof(UserSitReq.szTablePass)+UserSitReq.cbPassLen;
 		m_ClientSocket->SendData(MDM_GR_USER, SUB_GR_USER_SIT_REQ, &UserSitReq, wSendSize);
+	
+		m_wSitReqCount ++;
+		CString szMessage;
+		szMessage.Format("[%d]第%d次请求坐下", m_dwUserID, m_wSitReqCount);
+		CTraceService::TraceString(szMessage,
+			TraceLevel_Normal);
 
 		//获取场景
 		CMD_GF_Info Info;
@@ -165,6 +240,8 @@ namespace O2
 		m_wTableCount	= 0;
 		m_wChairCount	= 0;
 		m_nTurnMaxScore	= 0;
+		m_nChipInScore	= 0;
+		m_wCurBanker	= INVALID_CHAIR;
 		ZeroMemory(m_byCard, sizeof(m_byCard));
 
 		return IAndroid::OnReset();
@@ -194,7 +271,7 @@ namespace O2
 		{
 		case GS_FREE:
 			{
-				SetTimer(OXT_START_GAME, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+				SetTimer(OXT_START_GAME, GetWorkTime());
 			}
 			break;
 
@@ -211,7 +288,7 @@ namespace O2
 					//始叫用户
 					if(pStatusCall->wCallBanker == pUser->wChairID)
 					{
-						SetTimer(OXT_CALL_BANKER, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+						SetTimer(OXT_CALL_BANKER, GetWorkTime());
 					}
 				}
 			}
@@ -232,7 +309,7 @@ namespace O2
 					//设置筹码
 					if (pStatusScore->lTurnMaxScore > 0L && pStatusScore->lTableScore[pUser->wChairID] == 0L )
 					{
-						SetTimer(OXT_USER_ADD_SCORE, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+						SetTimer(OXT_USER_ADD_SCORE, GetWorkTime());
 					}
 				}
 
@@ -257,7 +334,7 @@ namespace O2
 					//控件处理
 					if(pStatusPlay->bOxCard[pUser->wChairID] == 0xff)
 					{
-						SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+						SetTimer(OXT_OPEN_CARD, GetWorkTime());
 					}
 				}
 			}
@@ -284,11 +361,16 @@ namespace O2
 			{
 				if (m_wStaus == US_SIT)
 				{
-					////设置变量
-					CMD_C_CallBanker CallBanker;
-					CallBanker.bBanker = 1;
+					SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+					if (pConfig)
+					{
+						int nBankerRate = rand() % 100;
 
-					SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+						CMD_C_CallBanker CallBanker;
+						CallBanker.bBanker = pConfig->wBankerRate >= nBankerRate ? 1 : 0;
+
+						SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+					}
 				}
 			}
 			break;
@@ -322,6 +404,8 @@ namespace O2
 				CMD_C_AddScore AddScore;
 				AddScore.lScore = nUserMaxScore[rand()%4];
 				SendData(MDM_GF_GAME, SUB_C_ADD_SCORE, &AddScore, sizeof(AddScore));
+
+				m_nChipInScore	+= AddScore.lScore;
 			}
 			break;
 		}
@@ -390,7 +474,7 @@ namespace O2
 			//始叫用户
 			if(pStatusCall->wCallBanker == pUser->wChairID)
 			{
-				SetTimer(OXT_CALL_BANKER, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+				SetTimer(OXT_CALL_BANKER, GetWorkTime());
 			}
 		}
 
@@ -407,13 +491,14 @@ namespace O2
 		SUser* pUser = m_pUserManager->Search(m_dwUserID);
 		if (pUser)
 		{
-			CMD_S_GameStart * pGameStart=(CMD_S_GameStart *)pBuffer;
+			CMD_S_GameStart* pGameStart	= (CMD_S_GameStart *)pBuffer;
 
 			m_nTurnMaxScore				= pGameStart->lTurnMaxScore;
+			m_wCurBanker				= pGameStart->wBankerUser;
 			if (m_nTurnMaxScore > 0)
 			{
-				SetTimer(OXT_USER_ADD_SCORE, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
-			}
+				SetTimer(OXT_USER_ADD_SCORE, GetWorkTime());
+			}			
 		}
 
 		return true;
@@ -442,7 +527,7 @@ namespace O2
 			CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
 			CopyMemory(m_byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
 
-			SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+			SetTimer(OXT_OPEN_CARD, GetWorkTime());
 		}
 
 		return true;
@@ -477,17 +562,16 @@ namespace O2
 
 		if (m_wStaus == US_SIT)
 		{
-			SetTimer(OXT_START_GAME, AndroidTimer::rdft(OXT_MIN_TIME, OXT_MAX_TIME));
+			SetTimer(OXT_START_GAME, GetWorkTime());
 		}
 		
 		SUser* pUser = GetUserInfo();
 		if (pUser)
 		{
 			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
-		
+			
 			INT64 nMin = 0;
 			INT64 nMax = 0;
-
 			if (pUser->nScore > pConfig->nMaxScore)
 			{
 				nMin = pUser->nScore - pConfig->nMaxScore;
@@ -503,10 +587,20 @@ namespace O2
 				GetScoreFromBanker(AndroidTimer::rdit(nMin, nMax));
 			}
 			
+			pUser->nWinScore += pGameEnd->lGameScore[pUser->wChairID];
+			if (pUser->nWinScore >= pConfig->nMaxWinScore)
+			{
+				CString szMessage;
+				szMessage.Format("[%d][%s]已赢取了额定金币，立刻下线", GetUserID(), pUser->szName);
+				LogEvent(szMessage, TraceLevel_Debug);
+				SetStatus(US_OFFLINE);
+			}
 		}
 
 		//清理变量
+		m_wCurBanker	= INVALID_CHAIR;
 		m_nTurnMaxScore = 0;
+		m_nChipInScore	= 0;
 		ZeroMemory(m_byCard,sizeof(m_byCard));
 
 		return true;
