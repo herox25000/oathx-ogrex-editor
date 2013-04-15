@@ -140,6 +140,15 @@
 				RelativePath=".\CardControl.cpp">
 			</File>
 			<File
+				RelativePath=".\CMyListCtrl.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\GameClient.cpp">
 			</File>
 			<File
@@ -188,6 +197,9 @@
 			</File>
 			<File
 				RelativePath="..\消息定义\CMD_Baccarat.h">
+			</File>
+			<File
+				RelativePath=".\CMyListCtrl.h">
 			</File>
 			<File
 				RelativePath=".\GameClient.h">

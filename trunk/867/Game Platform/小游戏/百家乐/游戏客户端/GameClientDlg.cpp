@@ -997,7 +997,24 @@ bool CGameClientDlg::OnUserApplyBanker(const void * pBuffer, WORD wDataSize)
 				bInsertApplyUser = false;
 		}
 
-		if ( bInsertApplyUser == true ) m_GameClientView.m_ApplyUser.InserUser( ApplyUser );
+		if ( bInsertApplyUser == true )
+		{
+			m_GameClientView.m_ApplyUser.InserUser( ApplyUser );
+			if(m_GameClientView.m_ApplyUser.GetItemCount()>6)
+			{
+				m_GameClientView.m_btUp.ShowWindow(SW_SHOW);
+				m_GameClientView.m_btUp.EnableWindow(true);
+				m_GameClientView.m_btDown.ShowWindow(SW_SHOW);
+				m_GameClientView.m_btDown.EnableWindow(true);  
+			}
+			else
+			{
+				m_GameClientView.m_btUp.ShowWindow(SW_HIDE);
+				m_GameClientView.m_btUp.EnableWindow(true);
+				m_GameClientView.m_btDown.ShowWindow(SW_HIDE);
+				m_GameClientView.m_btDown.EnableWindow(true); 
+			}
+		}
 
 		//更换按钮
 		tagUserData const *pUserData = GetUserData( GetMeChairID() );
@@ -1013,6 +1030,22 @@ bool CGameClientDlg::OnUserApplyBanker(const void * pBuffer, WORD wDataSize)
 		ApplyUser.strUserName = pApplyBanker->szAccount;
 		ApplyUser.lUserScore = pApplyBanker->lScore;
 		m_GameClientView.m_ApplyUser.DeleteUser( ApplyUser );
+
+		if(m_GameClientView.m_ApplyUser.GetItemCount()>6)
+		{
+			m_GameClientView.m_btUp.ShowWindow(SW_SHOW);
+			m_GameClientView.m_btUp.EnableWindow(true);
+			m_GameClientView.m_btDown.ShowWindow(SW_SHOW);
+			m_GameClientView.m_btDown.EnableWindow(true);  
+
+		}else
+		{
+			m_GameClientView.m_btUp.ShowWindow(SW_HIDE);
+			m_GameClientView.m_btUp.EnableWindow(true);
+			m_GameClientView.m_btDown.ShowWindow(SW_HIDE);
+			m_GameClientView.m_btDown.EnableWindow(true); 
+
+		}
 
 		//更换按钮
 		tagUserData const *pUserData = GetUserData( GetMeChairID() );
