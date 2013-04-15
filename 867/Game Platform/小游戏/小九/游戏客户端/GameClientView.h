@@ -198,6 +198,8 @@ public:
 	CSkinButton						m_btnNoShengyin;
 	CSkinButton						m_btnQuqian;						
 //	CSkinButton						m_btnCunqian;
+	CSkinButton						m_btUp;								//向上移动申请列表
+	CSkinButton						m_btDown;							//向下移动申请列表
 
 	JettonButton					m_JettonButton[7];
 	BOOL							m_JettonButtonPushDown;
@@ -389,6 +391,10 @@ protected:
 	afx_msg void OnScoreMoveR();
 	afx_msg void OnCuoPaiModel();
 	afx_msg void OnBank();
+
+	afx_msg void OnUp();
+
+	afx_msg void OnDown();
 
 	//消息映射
 protected:

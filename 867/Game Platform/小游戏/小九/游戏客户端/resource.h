@@ -79,13 +79,17 @@
 #define IDB_BT_NOSHENGYIN               231
 #define IDB_BT_QUQIAN                   232
 #define IDB_BT_CUNQIAN                  233
+#define IDB_BITMAP3                     234
 #define IDC_RECORD_LIST                 1056
+
+#define IDB_BT_BT_S                     1015
+#define IDB_BT_BT_X                     1016
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        234
+#define _APS_NEXT_RESOURCE_VALUE        237
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           101
