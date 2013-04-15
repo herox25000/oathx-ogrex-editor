@@ -5,7 +5,9 @@
 
 #include "Stdafx.h"
 
+#include "CMyListCtrl.h"
 
+#define  WM_VIEWLBTUP WM_USER+1
 //////////////////////////////////////////////////////////////////////////
 
 //
@@ -23,7 +25,10 @@ class CApplyUser : public CDialog
 {
 	//控件变量
 public:
-	CListCtrl					m_AppyUserList;					//游戏列表
+	CMyListCtrl					m_AppyUserList;					//游戏列表
+	HWND						m_viewHandle;
+
+	CRect						m_OrtRect;
 
 	//函数定义
 public:
@@ -31,6 +36,8 @@ public:
 	CApplyUser();
 	//析构函数
 	virtual ~CApplyUser();
+
+	void MySetRect(CRect aRect);
 
 	//重载函数
 protected:
@@ -54,7 +61,12 @@ public:
 	//清空列表
 	void ClearAll();
 
+	int  GetItemCount();
+
 	//消息映射
+	//listctrlUp消息
+	LRESULT OnLBtUp(WPARAM wParam,LPARAM lParam);
+
 protected:
 	//位置变化
 	afx_msg void OnSize(UINT nType, int cx, int cy);

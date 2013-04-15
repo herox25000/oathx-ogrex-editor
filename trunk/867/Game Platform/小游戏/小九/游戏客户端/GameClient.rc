@@ -159,6 +159,8 @@ IDB_BT_SHENGYIN         BITMAP                  "res\\shengyin.bmp"
 IDB_BT_NOSHENGYIN       BITMAP                  "res\\shengyinNO.bmp"
 IDB_BT_QUQIAN           BITMAP                  "res\\quqian.bmp"
 IDB_BT_CUNQIAN          BITMAP                  "res\\cunqian.bmp"
+IDB_BT_BT_S             BITMAP                  "res\\BT_S.bmp"
+IDB_BT_BT_X             BITMAP                  "res\\BT_X.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //
