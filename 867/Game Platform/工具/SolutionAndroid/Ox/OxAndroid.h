@@ -55,7 +55,10 @@ namespace O2
 		virtual BYTE			GetCardColor(BYTE cbCardData);
 		//逻辑数值
 		virtual BYTE			GetCardLogicValue(BYTE cbCardData);
-
+		//获取工作时间
+		virtual WORD			GetWorkTime();
+		//获取桌子ID
+		virtual WORD			GetTableID();
 	protected:
 		/*
 		* 房价服务信息
@@ -89,6 +92,10 @@ namespace O2
 		*游戏消息
 		*/
 		virtual bool			OnTimerEvent(DWORD dwID);
+		/*
+		*更新在线时间
+		*/
+		virtual bool			UpdateOnline(float fElapsed);
 	protected:
 		//用户叫庄
 		virtual bool			OnSubCallBanker(const void * pBuffer, WORD wDataSize);
@@ -118,6 +125,8 @@ namespace O2
 		TimerItemRegister		m_TimerItemDetive;
 		INT64					m_nTurnMaxScore;
 		BYTE					m_byCard[MAX_COUNT];
+		INT64					m_nChipInScore;
+		WORD					m_wCurBanker;
 	};
 
 	class OxFactory : public IAndroidFactroy

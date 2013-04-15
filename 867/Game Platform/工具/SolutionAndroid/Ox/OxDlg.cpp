@@ -108,8 +108,6 @@ BOOL OxDlg::OnInitDialog()
 		"用户名",
 		"当前金钱",
 		"输赢金钱",
-		"做庄总数",
-		"做庄总成绩",
 		"存入总金额",
 		"取出总金额",
 		"银行结余",
@@ -118,7 +116,7 @@ BOOL OxDlg::OnInitDialog()
 		"剩余时间",
 	};
 
-	for (int i=0; i<13; i++)
+	for (int i=0; i<11; i++)
 	{
 		m_ListView.InsertColumn(i, chColumnName[i],	LVCFMT_CENTER,	100 );
 	}
@@ -242,20 +240,14 @@ BOOL OxDlg::OnUpdateListView()
 				sprintf(szText, "%I64d", pUser->nWinScore);
 				m_ListView.SetItemText(iItem, 4, szText);
 
-				sprintf(szText, "%d",	pUser->wBankerCount);
+				sprintf(szText, "%I64d", pUser->nSaveScore);
 				m_ListView.SetItemText(iItem, 5, szText);
 
-				sprintf(szText, "%I64d", pUser->nBankerAllWin);
+				sprintf(szText, "%I64d", pUser->nGetScore);
 				m_ListView.SetItemText(iItem, 6, szText);
 
-				sprintf(szText, "%I64d", pUser->nSaveScore);
-				m_ListView.SetItemText(iItem, 7, szText);
-
-				sprintf(szText, "%I64d", pUser->nGetScore);
-				m_ListView.SetItemText(iItem, 8, szText);
-
 				sprintf(szText, "%I64d", pUser->nSaveScore - pUser->nGetScore);
-				m_ListView.SetItemText(iItem, 9, szText);
+				m_ListView.SetItemText(iItem, 7, szText);
 
 				static const char* chStatusText[] = 
 				{
@@ -269,13 +261,13 @@ BOOL OxDlg::OnUpdateListView()
 				};
 
 				sprintf(szText, "%s",	chStatusText[pUser->cbUserStatus]);
-				m_ListView.SetItemText(iItem, 10, szText);
+				m_ListView.SetItemText(iItem, 8, szText);
 
 				sprintf(szText, "%s",	pUser->chLoginTime);
-				m_ListView.SetItemText(iItem, 11, szText);
+				m_ListView.SetItemText(iItem, 9, szText);
 
 				sprintf(szText, "%d",	pAndroid->GetRemaindTime());
-				m_ListView.SetItemText(iItem, 12, szText);
+				m_ListView.SetItemText(iItem, 10, szText);
 			}
 		}
 	}
