@@ -153,7 +153,8 @@ public:
 	tagPlatformFrameImage GetPlatformRes();
 	//更新资源
 	bool UpdateSkinResource();
-
+	//解释服务器地址
+	DWORD TranslateAddr(LPCTSTR pszServerAddr);
 	//房间函数
 public:
 	//激活广场

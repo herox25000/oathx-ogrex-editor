@@ -816,6 +816,11 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 		return NULL;
 	}
 
+	//电信登陆用电信地址，网通登陆用网通地址
+	if(pListServer!= NULL)
+		pListServer->m_GameServer.dwServerAddr = TranslateAddr(m_DlgGamePlaza.m_DlgLogon.GetLogonServer());
+
+
 	//效验参数
 	ASSERT(pListServer!=NULL);
 	CListKind * pListKind=pListServer->GetListKind();
@@ -1615,5 +1620,20 @@ LRESULT CGameFrame::OnCloseRoomViewItem(WPARAM wParam, LPARAM lParam)
 
 	return 0;
 }
+
+//解释服务器地址
+DWORD CGameFrame::TranslateAddr(LPCTSTR pszServerAddr)
+{
+	//转化地址
+	DWORD dwServerIP=inet_addr(pszServerAddr);
+	if (dwServerIP==INADDR_NONE)
+	{
+		LPHOSTENT lpHost=gethostbyname(pszServerAddr);
+		if (lpHost==NULL) return INADDR_NONE;
+		dwServerIP=((LPIN_ADDR)lpHost->h_addr)->s_addr;
+	}
+	return dwServerIP;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
