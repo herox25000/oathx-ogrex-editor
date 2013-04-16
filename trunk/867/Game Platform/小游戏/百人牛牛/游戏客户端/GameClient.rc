@@ -154,8 +154,6 @@ IDB_FRAME_JIAO_R_EX     BITMAP                  "res\\FRAME_JIAO_R_EX.bmp"
 IDB_FRAME_QIAO_EX       BITMAP                  "res\\FRAME_QIAO_EX.bmp"
 IDB_FRAME_SHUN_MEN_EX   BITMAP                  "res\\FRAME_SHUN_MEN_EX.bmp"
 IDB_BT_BANK             BITMAP                  "res\\BT_BANK.bmp"
-IDB_BT_STORAGE          BITMAP                  "res\\BT_STORAGE.bmp"
-IDB_BT_DRAW             BITMAP                  "res\\BT_DRAW.bmp"
 IDB_FRAME_TIAN_MEN_EX   BITMAP                  "res\\FRAME_TIAN_MEN_EX.bmp"
 IDB_FRAME_TIAN_EMN      BITMAP                  "res\\FRAME_TIAN_MEN.bmp"
 IDB_FRAME_DI_MEN_EX     BITMAP                  "res\\FRAME_DI_MEN_EX.bmp"
@@ -167,6 +165,8 @@ IDB_FRAME_HUANG_EMN     BITMAP                  "res\\FRAME_HUANG_MEN.bmp"
 IDB_CARDTYPE            BITMAP                  "res\\CARDTYPE.bmp"
 IDB_BT_BT_S             BITMAP                  "res\\BT_S.bmp"
 IDB_BT_BT_X             BITMAP                  "res\\BT_X.bmp"
+IDB_BT_CUNQIAN          BITMAP                  "res\\BT_cunqian.bmp"
+IDB_BT_QUQIAN           BITMAP                  "res\\BT_quqian.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
 //

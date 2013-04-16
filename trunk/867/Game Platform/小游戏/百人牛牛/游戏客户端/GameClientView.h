@@ -24,7 +24,7 @@
 #define IDM_CONTINUE_CARD			WM_USER+202							//继续发牌
 #define IDM_AUTO_OPEN_CARD			WM_USER+203							//按钮标识
 #define IDM_OPEN_CARD				WM_USER+204		
-
+#define IDM_ONBANK					WM_USER+205
 //索引定义
 #define INDEX_PLAYER				0									//闲家索引
 #define INDEX_BANKER				1									//庄家索引
@@ -175,7 +175,6 @@ public:
 	CSkinButton						m_btJetton10000;					//筹码按钮
 	CSkinButton						m_btJetton50000;					//筹码按钮
 	CSkinButton						m_btJetton100000;					//筹码按钮
-
 	CSkinButton						m_btJetton500000;					//筹码按钮
 	CSkinButton						m_btJetton1000000;					//筹码按钮
 	CSkinButton						m_btJetton5000000;					//筹码按钮
@@ -185,12 +184,11 @@ public:
 	CSkinButton						m_btScoreMoveR;						//移动成绩
 	CSkinButton						m_btAutoOpenCard;					//自动开牌
 	CSkinButton						m_btOpenCard;						//手动开牌
-	CSkinButton						m_btBank;							//银行按钮
 	CSkinButton						m_btContinueCard;					//继续发牌
 	CSkinButton						m_btBankerStorage;					//存款按钮
 	CSkinButton						m_btBankerDraw;						//取款按钮
-	CSkinButton						m_btUp;					//存款按钮
-	CSkinButton						m_btDown;						//取款按钮
+	CSkinButton						m_btUp;								//申请坐庄列表翻页
+	CSkinButton						m_btDown;							//申请坐庄列表翻页
 
 
 	//控件变量
@@ -199,10 +197,10 @@ public:
 	CGameRecord						m_GameRecord;						//记录列表
 	CCardControl					m_CardControl[6];					//扑克控件	
 	CGameClientDlg					*m_pGameClientDlg;					//父类指针
-	CGameLogic						m_GameLogic;						//游戏逻辑
-	#ifdef __SPECIAL___
+	CGameLogic						m_GameLogic;						//游戏逻辑、
+#ifdef __SPECIAL___
 	CDlgBank						m_DlgBank;							//银行控件
-	#endif
+#endif
 	CRect							m_MeInfoRect;
 	
 

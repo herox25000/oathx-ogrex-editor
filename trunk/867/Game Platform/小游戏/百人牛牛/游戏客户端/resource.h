@@ -29,10 +29,8 @@
 #define IDR_WAVE2                       174
 #define IDD_DLG_GAME_RECORD             177
 #define IDB_BT_APPLY_BANKER             179
-#define IDB_BITMAP2                     180
 #define IDB_BT_CANCEL_BANKER            180
 #define IDB_BITMAP1                     183
-#define IDC_SCORE_500                   187
 #define IDC_SCORE_1000000               187
 #define IDC_SCORE_50000                 188
 #define IDC_SCORE_5000000               189
@@ -70,7 +68,6 @@
 #define IDB_BT_AUTO_OPEN_CARD           241
 #define IDB_BT_OPEN_CARD                242
 #define IDB_BT_CONTINUE_CARD            243
-#define IDB_BITMAP3                     244
 #define IDB_CONTINUE_CARD               244
 #define IDB_FRAME_DAO_EMN_EX            245
 #define IDB_FRAME_DUI_MEN_EX            246
@@ -82,11 +79,9 @@
 #define IDB_BT_BANK                     251
 #define IDD_DIALOG1                     253
 #define IDD_OPTION                      253
-#define IDB_BT_DRAW                     256
-#define IDB_BT_STORAGE                  257
-#define IDC_RADIO1                      1000
+#define IDB_BT_CUNQIAN     				258
+#define IDB_BT_QUQIAN          			259
 #define IDC_RADIOSTORE                  1000
-#define IDC_ALLOWLOOKON                 1001
 #define IDC_TEXT_CAPTION                1001
 #define IDC_RADIOGET                    1001
 #define IDC_ENABLE_SOUND                1002

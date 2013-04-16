@@ -442,14 +442,14 @@ VOID CCardControl::DrawCardControl(CDC * pDC)
 		}
 		else
 		{
-			nXImagePos=m_CardSize.cx*2;
+			nXImagePos=m_CardSize.cx*5;
 			nYImagePos=m_CardSize.cy*4;
 		}
 		if(m_blhideOneCard)
 		{
 			if(i==3)
 			{
-				nXImagePos=m_CardSize.cx*2;
+				nXImagePos=m_CardSize.cx*5;
 				nYImagePos=m_CardSize.cy*4;
 
 			}

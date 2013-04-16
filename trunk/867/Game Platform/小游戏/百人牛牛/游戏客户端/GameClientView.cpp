@@ -240,8 +240,6 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_btAutoOpenCard.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_AUTO_OPEN_CARD);
 	m_btOpenCard.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_OPEN_CARD);
-
-	m_btBank.Create(NULL,WS_CHILD,rcCreate,this,IDC_BANK);
 	m_btContinueCard.Create(NULL,WS_CHILD,rcCreate,this,IDC_CONTINUE_CARD);
 
 	m_btBankerStorage.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_BANK_STORAGE);
@@ -249,8 +247,6 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_btUp.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_UP);
 	m_btDown.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_DOWN);
-
-//	m_btBankerStorage.EnableWindow(TRUE);
 
 	//设置按钮
 	HINSTANCE hResInstance=AfxGetInstanceHandle();
@@ -275,12 +271,10 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	m_btAutoOpenCard.SetButtonImage(IDB_BT_AUTO_OPEN_CARD,hResInstance,false);
 	m_btOpenCard.SetButtonImage(IDB_BT_OPEN_CARD,hResInstance,false);
-
-	m_btBank.SetButtonImage(IDB_BT_BANK,hResInstance,false);
 	m_btContinueCard.SetButtonImage(IDB_BT_CONTINUE_CARD,hResInstance,false);
 
-	m_btBankerStorage.SetButtonImage(IDB_BT_STORAGE,hResInstance,false);
-	m_btBankerDraw.SetButtonImage(IDB_BT_DRAW,hResInstance,false);
+	m_btBankerStorage.SetButtonImage(IDB_BT_CUNQIAN,hResInstance,false);
+	m_btBankerDraw.SetButtonImage(IDB_BT_QUQIAN,hResInstance,false);
 
 	//tagApplyUser ApplyUser;
 	//ApplyUser.strUserName="fdsfds";
@@ -370,7 +364,7 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 {
 	//位置信息
 	m_nWinFlagsExcursionX = nWidth/2-260-41;	
-	m_nWinFlagsExcursionY = nHeight/2 + 246-21;
+	m_nWinFlagsExcursionY = nHeight/2 + 246-18;
 
 	CSize Size;
 	m_CardControl[0].GetControlSize(Size,3);
@@ -463,50 +457,33 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	CRect rcJetton;
 	m_btJetton100.GetWindowRect(&rcJetton);
 	int nYPos = nHeight/2+265-42;
-	int nXPos = nWidth/2+110+25;
+	int nXPos = nWidth/2+100;
 	int nSpace = 3;
 
 	DeferWindowPos(hDwp,m_btJetton100,NULL,nXPos,nYPos,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btJetton1000,NULL,nXPos + nSpace + rcJetton.Width(),nYPos,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btJetton10000,NULL,nXPos + nSpace * 2 + rcJetton.Width() * 2,nYPos,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btJetton50000,NULL,nXPos + nSpace * 3 + rcJetton.Width() * 3,nYPos,0,0,uFlags|SWP_NOSIZE);
-
 	DeferWindowPos(hDwp,m_btJetton100000,NULL,nXPos + nSpace * 0 + rcJetton.Width() * 0,nYPos+rcJetton.Height()-5,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btJetton500000,NULL,nXPos + nSpace * 1 + rcJetton.Width() * 1,nYPos+rcJetton.Height()-5,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btJetton1000000,NULL,nXPos + nSpace * 2 + rcJetton.Width() * 2,nYPos+rcJetton.Height()-5,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btJetton5000000,NULL,nXPos + nSpace * 3 + rcJetton.Width() *3,nYPos+rcJetton.Height()-5,0,0,uFlags|SWP_NOSIZE);
+	//其他按钮
+	DeferWindowPos(hDwp,m_btBankerStorage,NULL,nXPos + nSpace * 4 + rcJetton.Width() *4,nYPos+5,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btBankerDraw,NULL,nXPos + nSpace * 4 + rcJetton.Width() *4,nYPos+60,0,0,uFlags|SWP_NOSIZE);
+	m_btBankerStorage.ShowWindow(SW_SHOW);
+	m_btBankerDraw.ShowWindow(SW_SHOW);
 
 	//上庄按钮
 	DeferWindowPos(hDwp,m_btApplyBanker,NULL,nWidth/2+277-80,nHeight/2-340+74,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btCancelBanker,NULL,nWidth/2+277-80,nHeight/2-340+74,0,0,uFlags|SWP_NOSIZE);
-
-	
 	DeferWindowPos(hDwp,m_btScoreMoveL,NULL,LifeWidth+58+23+4,TopHeight+594+9,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btScoreMoveR,NULL,LifeWidth+58+28+403+2,TopHeight+594+9,0,0,uFlags|SWP_NOSIZE);
-
 	//开牌按钮
 	DeferWindowPos(hDwp,m_btAutoOpenCard,NULL,LifeWidth+624+20,TopHeight+198,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btOpenCard,NULL,LifeWidth+624+20,TopHeight+198+30,0,0,uFlags|SWP_NOSIZE);
-
 	//其他按钮
-	DeferWindowPos(hDwp,m_btBank,NULL,nWidth/2+290,nHeight/2-340+74,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btContinueCard,NULL,LifeWidth+624+20,TopHeight+198-30,0,0,uFlags|SWP_NOSIZE);
-
-	
-//	m_btContinueCard.ShowWindow(1);
-
-	//其他按钮
-	DeferWindowPos(hDwp,m_btBankerStorage,NULL,nWidth/2-355+60+5,TopHeight+143,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btBankerDraw,NULL,nWidth/2-415+50+5,TopHeight+143,0,0,uFlags|SWP_NOSIZE);
-#ifndef __SPECIAL___
-	m_btBankerStorage.ShowWindow(SW_HIDE);
-	m_btBankerDraw.ShowWindow(SW_HIDE);
-	m_btBank.ShowWindow(SW_HIDE);
-#else
-	m_btBank.ShowWindow(SW_SHOW);
-	m_btBankerStorage.ShowWindow(SW_HIDE);
-	m_btBankerDraw.ShowWindow(SW_HIDE);
-#endif
 	//结束移动
 	EndDeferWindowPos(hDwp);
 
@@ -539,12 +516,13 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	if (cbGameStatus==GS_FREE) nFlagIndex=0;
 	else if (cbGameStatus==GS_PLACE_JETTON) nFlagIndex=1;
 	else if (cbGameStatus==GS_GAME_END) nFlagIndex=2;
-	m_ImageTimeFlag.BitBlt(pDC->GetSafeHdc(), nWidth/2-348+49, nHeight/2+225-372, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(),
-		nFlagIndex * nTimeFlagWidth, 0);
+	m_ImageTimeFlag.AlphaDrawImage(pDC, nWidth/2-348+49, nHeight/2+225-372, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(),
+		nFlagIndex * nTimeFlagWidth, 0,RGB(255,0,255));
 
 	//Dlg里面的SetGameTimer(GetMeChairID()）里面调用的SwitchViewChairID在桌子人数大于8时实际是ViewID转化为0了
 	WORD wUserTimer=GetUserTimer(0);
-	if (wUserTimer!=0) DrawUserTimer(pDC,nWidth/2-323+49,nHeight/2+197-372,wUserTimer);
+	if (wUserTimer!=0) 
+		DrawUserTimer(pDC,nWidth/2-323+49,nHeight/2+197-372,wUserTimer);
 
 	//胜利边框
 	FlashJettonAreaFrame(nWidth,nHeight,pDC);
@@ -583,7 +561,8 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		}
 
 		//绘画数字
-		if (lScoreCount>0L)	DrawNumberString(pDC,lScoreCount,m_PointJettonNumber[i].x,m_PointJettonNumber[i].y);
+		if (lScoreCount>0L)	
+			DrawNumberString(pDC,lScoreCount,m_PointJettonNumber[i].x,m_PointJettonNumber[i].y);
 	}
 
 	//绘画庄家
@@ -602,17 +581,17 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		if ( m_wMeChairID == m_wBankerUser )
 		{
 			CImageHandle ImageHandleBanker(&m_ImageMeBanker);
-			m_ImageMeBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageMeBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 		else if ( m_wBankerUser != INVALID_CHAIR )
 		{
 			CImageHandle ImageHandleBanker(&m_ImageChangeBanker);
-			m_ImageChangeBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageChangeBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 		else
 		{
 			CImageHandle ImageHandleBanker(&m_ImageNoBanker);
-			m_ImageNoBanker.BitBlt(pDC->GetSafeHdc(), nXPos, nYPos);
+			m_ImageNoBanker.AlphaDrawImage(pDC, nXPos, nYPos,RGB(255,0,255));
 		}
 	}
 
@@ -625,7 +604,7 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		else
 			m_ImageDispatchCardTip.SetLoadInfo(IDB_CONTINUE_CARD,AfxGetInstanceHandle(),false);
 		CImageHandle ImageHandle(&m_ImageDispatchCardTip);
-		m_ImageDispatchCardTip.BitBlt(pDC->GetSafeHdc(), (nWidth-m_ImageDispatchCardTip.GetWidth())/2, nHeight/2);
+		m_ImageDispatchCardTip.AlphaDrawImage(pDC, (nWidth-m_ImageDispatchCardTip.GetWidth())/2, nHeight/2,RGB(255,0,255));
 	}
 
 	//我的下注
@@ -635,7 +614,8 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	if (0)
 	{
 		//绘画扑克
-		for (int i=0; i<CountArray(m_CardControl); ++i) m_CardControl[i].DrawCardControl(pDC);
+		for (int i=0; i<CountArray(m_CardControl); ++i) 
+			m_CardControl[i].DrawCardControl(pDC);
 	}
 
 	//胜利标志
@@ -2370,57 +2350,13 @@ void CGameClientView::DrawMeInfo(CDC *pDC,int nWidth,int nHeight)
 //银行存款
 void CGameClientView::OnBankStorage()
 {
-#ifdef __SPECIAL___
-	//获取接口
-	CGameClientDlg *pGameClientDlg=CONTAINING_RECORD(this,CGameClientDlg,m_GameClientView);
-	IClientKernel *pIClientKernel=(IClientKernel *)pGameClientDlg->GetClientKernel(IID_IClientKernel,VER_IClientKernel);
-
-	if (NULL!=pIClientKernel)
-	{
-		if (NULL==m_DlgBank.m_hWnd) m_DlgBank.Create(IDD_BANK_STORAGE,this);
-		m_DlgBank.SetSendInfo(pIClientKernel,pIClientKernel->GetMeUserInfo());
-		//m_DlgBank.SetBankerActionType(true);
-		m_DlgBank.ShowWindow(SW_SHOW);
-		m_DlgBank.PostMessage(WM_CREADED,0,0);
-
-
-		CPoint Point;
-		GetCursorPos(&Point);
-		CRect Rect;
-		CRect btRect;
-		m_btBank.GetWindowRect(&btRect);
-		m_DlgBank.GetWindowRect(&Rect);
-		m_DlgBank.SetPostPoint(CPoint(btRect.right-76,btRect.top+178+30 ));
-		//m_DlgBank.SetWindowPos(NULL,)
-	//	m_DlgBank.CenterWindow();
-	}
-   #endif
+	AfxMessageBox("游戏中不能存钱！请退出游戏进行！");
 }
 
 //银行取款
 void CGameClientView::OnBankDraw()
 {
-	#ifdef __SPECIAL___
-	//获取接口
-	CGameClientDlg *pGameClientDlg=CONTAINING_RECORD(this,CGameClientDlg,m_GameClientView);
-	IClientKernel *pIClientKernel=(IClientKernel *)pGameClientDlg->GetClientKernel(IID_IClientKernel,VER_IClientKernel);
-
-	if (NULL!=pIClientKernel)
-	{
-		if (NULL==m_DlgBank.m_hWnd) m_DlgBank.Create(IDD_BANK_STORAGE,this);
-		m_DlgBank.SetSendInfo(pIClientKernel,pIClientKernel->GetMeUserInfo());
-		m_DlgBank.SetBankerActionType(false);
-		m_DlgBank.ShowWindow(SW_SHOW);
-		CPoint Point;
-		GetCursorPos(&Point);
-		CRect Rect;
-		CRect btRect;
-		m_btBank.GetWindowRect(&btRect);
-		m_DlgBank.GetWindowRect(&Rect);
-		m_DlgBank.SetPostPoint(CPoint(btRect.right,btRect.top));
-		//m_DlgBank.CenterWindow();
-	}
-	#endif
+	AfxGetMainWnd()->SendMessage(IDM_ONBANK,0,0);
 }
 void CGameClientView::OnUp()
 {
