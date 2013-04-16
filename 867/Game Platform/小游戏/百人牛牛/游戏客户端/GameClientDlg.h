@@ -132,7 +132,8 @@ protected:
 	LRESULT  OnOpenCard(WPARAM wParam, LPARAM lParam);
 	//×Ô¶¯´êÅÆ
 	LRESULT  OnAutoOpenCard(WPARAM wParam, LPARAM lParam);
-
+	LRESULT  OnBank(WPARAM wParam, LPARAM lParam);
+	
 	DECLARE_MESSAGE_MAP()
 };
 

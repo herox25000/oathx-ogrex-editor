@@ -280,6 +280,9 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 				RelativePath=".\Res\BT_CONTINUE_CARD.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\BT_cunqian.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\BT_DRAW.bmp">
 			</File>
 			<File
@@ -317,6 +320,9 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 			</File>
 			<File
 				RelativePath=".\Res\BT_OPEN_CARD.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\BT_quqian.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\BT_S.bmp">
@@ -557,10 +563,10 @@ copy /y ..\..\..\运行\Release\$(TargetFileName) ..\..\..\发布组件\客户端组件\Rel
 			</File>
 		</Filter>
 		<File
-			RelativePath=".\Res\Sound\ADD_GOLD.wav">
+			RelativePath=".\Res\ADD_GOLD.wav">
 		</File>
 		<File
-			RelativePath=".\Res\ADD_GOLD.wav">
+			RelativePath=".\Res\Sound\ADD_GOLD.wav">
 		</File>
 		<File
 			RelativePath=".\Res\Sound\ADD_GOLD_EX.wav">

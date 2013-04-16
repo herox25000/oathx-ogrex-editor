@@ -19,6 +19,7 @@ BEGIN_MESSAGE_MAP(CGameClientDlg, CGameFrameDlg)
 	ON_MESSAGE(IDM_CONTINUE_CARD, OnContinueCard)
 	ON_MESSAGE(IDM_AUTO_OPEN_CARD, OnAutoOpenCard)	
 	ON_MESSAGE(IDM_OPEN_CARD, OnOpenCard)	
+	ON_MESSAGE(IDM_ONBANK,OnBank)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
@@ -711,26 +712,12 @@ void CGameClientDlg::UpdateButtonContron()
 	//获取信息
 	const tagUserData *pMeUserData=GetUserData(GetMeChairID());
 
-
-	//银行按钮
-	m_GameClientView.m_btBankerDraw.EnableWindow(TRUE);
 	//存款判断
 	BOOL bEnableStorage=TRUE;
 	if (GetGameStatus()!=GS_FREE) bEnableStorage=FALSE;
 	if (IsLookonMode()) bEnableStorage=FALSE;
 	if (m_GameClientView.m_ApplyUser.FindUser(pMeUserData->szName)) bEnableStorage=FALSE;
 	if (m_wCurrentBanker==pMeUserData->wChairID) bEnableStorage=FALSE;
-//	m_GameClientView.m_btBankerStorage.EnableWindow(bEnableStorage);
-//	m_GameClientView.m_btBankerDraw.EnableWindow(bEnableStorage);
-
-#ifndef __SPECIAL___
-
-	m_GameClientView.m_btBankerStorage.ShowWindow(SW_HIDE);
-	m_GameClientView.m_btBankerDraw.ShowWindow(SW_HIDE);
-	m_GameClientView.m_btBank.ShowWindow(SW_HIDE);
-#else
-	m_GameClientView.m_btBank.ShowWindow(SW_SHOW);
-#endif
 
 	return;
 }
@@ -1087,5 +1074,12 @@ void CGameClientDlg::SetMePlaceJetton(BYTE cbViewIndex, __int64 lJettonCount)
 
 	//设置界面
 	m_GameClientView.SetMePlaceJetton(cbViewIndex,lJettonCount);
+}
+
+
+LRESULT CGameClientDlg:: OnBank(WPARAM wParam, LPARAM lParam)
+{
+	UserOnBankBT(2);
+	return 0;
 }
 //////////////////////////////////////////////////////////////////////////
