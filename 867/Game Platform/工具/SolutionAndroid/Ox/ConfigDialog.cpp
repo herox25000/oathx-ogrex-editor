@@ -49,7 +49,7 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT15,	"150000000");
 		SetDlgItemText(IDC_EDIT16,	"10");
 
-		SetDlgItemText(IDC_EDIT17,	"0");
+		SetDlgItemText(IDC_EDIT17,	"1");
 		SetDlgItemText(IDC_EDIT18,	"20");
 		SetDlgItemText(IDC_EDIT19,	"10000000");
 

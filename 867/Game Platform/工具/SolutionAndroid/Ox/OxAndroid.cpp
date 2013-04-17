@@ -247,12 +247,7 @@ namespace O2
 
 		if (pUser->nScore < pConfig->nMinScore)
 		{
-			GetScoreFromBanker( (pConfig->nMaxScore - pUser->nScore) / (AndroidTimer::rdft(1, 3)) );
-		}
-
-		if (pUser->nScore > pConfig->nMaxScore)
-		{
-			SaveScoreToBanker( (pUser->nScore - pConfig->nMaxScore) );
+			GetScoreFromBanker( pConfig->nMinScore );
 		}
 
 		WORD wTableID;
@@ -637,7 +632,7 @@ namespace O2
 				nMin = pConfig->nMinScore - pUser->nScore;
 				nMax = pConfig->nMaxScore - pUser->nScore;
 
-				GetScoreFromBanker( (nMax) / (AndroidTimer::rdft(1, 3)) );
+				GetScoreFromBanker(AndroidTimer::rdit(nMin, nMax));
 			}
 			
 			pUser->nWinScore += pGameEnd->lGameScore[pUser->wChairID];
