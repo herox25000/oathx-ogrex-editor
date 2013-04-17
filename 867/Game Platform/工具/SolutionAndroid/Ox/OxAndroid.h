@@ -58,7 +58,7 @@ namespace O2
 		//获取工作时间
 		virtual WORD			GetWorkTime();
 		//获取桌子ID
-		virtual WORD			GetTableID();
+		virtual bool			GetTableID(WORD& wTableID, WORD& wChairID);
 	protected:
 		/*
 		* 房价服务信息
@@ -127,6 +127,7 @@ namespace O2
 		BYTE					m_byCard[MAX_COUNT];
 		INT64					m_nChipInScore;
 		WORD					m_wCurBanker;
+
 	};
 
 	class OxFactory : public IAndroidFactroy

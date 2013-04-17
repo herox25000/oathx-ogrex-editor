@@ -12,6 +12,10 @@ namespace O2
 		OXT_START_GAME,
 	};
 
+	static WORD		m_wCurOneTableID = INVALID_TABLE;
+	static WORD		m_wCurTwoTableID = INVALID_TABLE;
+	static WORD		m_wCurThrTableID = INVALID_TABLE;
+
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
@@ -24,7 +28,17 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	Ox::~Ox()
 	{
+		TimerItemRegister::iterator itA = m_TimerItemActive.begin();
+		while ( itA != m_TimerItemActive.end() )
+		{
+			delete itA->second; itA = m_TimerItemActive.erase(itA);
+		}
 
+		TimerItemRegister::iterator itD = m_TimerItemDetive.begin();
+		while ( itD != m_TimerItemDetive.end() )
+		{
+			delete itD->second; itD = m_TimerItemDetive.erase(itD);
+		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -108,34 +122,67 @@ namespace O2
 		return 0;
 	}
 
-	WORD		Ox::GetTableID()
+	bool		Ox::GetTableID(WORD& wTableID, WORD& wChairID)
 	{
 		SUser* pUser = GetUserInfo();
 		if (pUser)
 		{
 			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
 			
-			WORD wTableID = INVALID_TABLE;
 			if (pUser->nScore > 0 && pUser->nScore < pConfig->nOneScore)
 			{
-				wTableID = AndroidTimer::rdit(pConfig->wOneMinID, pConfig->wOneMaxID);
-				return wTableID;
+				if (m_wCurOneTableID == INVALID_TABLE)
+					m_wCurOneTableID = AndroidTimer::rdit(pConfig->wOneMinID, pConfig->wOneMaxID);
+
+				WORD wCount = m_pUserManager->GetTableChairCount(m_wCurOneTableID);
+				if (wCount <= rand() % 4)
+				{
+					wChairID = m_pUserManager->GetEmptyChairID(m_wCurOneTableID);
+					wTableID = m_wCurOneTableID;
+					return true;
+				}
+				else
+				{
+					m_wCurOneTableID = AndroidTimer::rdit(pConfig->wOneMinID, pConfig->wOneMaxID);
+				}
 			}
 
 			if (pUser->nScore > pConfig->nOneScore && pUser->nScore < pConfig->nTwoScore)
 			{
-				wTableID = AndroidTimer::rdit(pConfig->wTwoMinID, pConfig->wTwoMaxID);
-				return wTableID;
+				if (m_wCurOneTableID == INVALID_TABLE)
+					m_wCurTwoTableID = AndroidTimer::rdit(pConfig->wTwoMinID, pConfig->wTwoMaxID);
+				WORD wCount = m_pUserManager->GetTableChairCount(m_wCurTwoTableID);
+				if (wCount <= rand() % 4)
+				{
+					wChairID = m_pUserManager->GetEmptyChairID(m_wCurTwoTableID);
+					wTableID = m_wCurTwoTableID;
+					return true;
+				}
+				else
+				{
+					m_wCurTwoTableID = AndroidTimer::rdit(pConfig->wTwoMinID, pConfig->wTwoMaxID);
+				}
 			}
 
 			if (pUser->nScore > pConfig->nTwoScore && pUser->nScore < pConfig->nThreeScore)
 			{
-				wTableID = AndroidTimer::rdit(pConfig->wThreeMinID, pConfig->wThreeMaxID);
-				return wTableID;
+				if (m_wCurOneTableID == INVALID_TABLE)
+					m_wCurThrTableID = AndroidTimer::rdit(pConfig->wThreeMinID, pConfig->wThreeMaxID);
+				WORD wCount = m_pUserManager->GetTableChairCount(m_wCurThrTableID);
+				if (wCount <= rand() % 4)
+				{
+					wChairID = m_pUserManager->GetEmptyChairID(m_wCurThrTableID);
+					wTableID = m_wCurThrTableID;
+					return true;
+				}
+				else
+				{
+					m_wCurThrTableID = AndroidTimer::rdit(pConfig->wThreeMinID, pConfig->wThreeMaxID);
+				}
 			}
 		}
 
-		return INVALID_TABLE;
+		return 0;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -203,15 +250,21 @@ namespace O2
 			GetScoreFromBanker( (pConfig->nMaxScore - pUser->nScore) / (rand() % 3) );
 		}
 
-		WORD wTableID = GetTableID();
-		if (wTableID == INVALID_TABLE)
+		if (pUser->nScore > pConfig->nMaxScore)
+		{
+			SaveScoreToBanker( (pUser->nScore - pConfig->nMaxScore) );
+		}
+
+		WORD wTableID;
+		WORD wChairID;
+		if (!GetTableID(wTableID, wChairID))
 			return 0;
 
 		//构造数据包
 		CMD_GR_UserSitReq UserSitReq;
 		memset(&UserSitReq, 0, sizeof(UserSitReq));
 		UserSitReq.wTableID	= wTableID;
-		UserSitReq.wChairID	= rand() % 4;
+		UserSitReq.wChairID	= wChairID;
 
 		//发送数据包
 		WORD wSendSize=sizeof(UserSitReq)-sizeof(UserSitReq.szTablePass)+UserSitReq.cbPassLen;
@@ -219,7 +272,7 @@ namespace O2
 	
 		m_wSitReqCount ++;
 		CString szMessage;
-		szMessage.Format("[%d]第%d次请求坐下", m_dwUserID, m_wSitReqCount);
+		szMessage.Format("[%d]第%d次请求坐下 桌子ID[%d] 椅子ID[%d]", m_dwUserID, m_wSitReqCount, wTableID, wChairID);
 		CTraceService::TraceString(szMessage,
 			TraceLevel_Normal);
 
@@ -237,11 +290,11 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	bool		Ox::OnReset()
 	{	
-		m_wTableCount	= 0;
-		m_wChairCount	= 0;
-		m_nTurnMaxScore	= 0;
-		m_nChipInScore	= 0;
-		m_wCurBanker	= INVALID_CHAIR;
+		m_wTableCount		= 0;
+		m_wChairCount		= 0;
+		m_nTurnMaxScore		= 0;
+		m_nChipInScore		= 0;
+		m_wCurBanker		= INVALID_CHAIR;
 		ZeroMemory(m_byCard, sizeof(m_byCard));
 
 		return IAndroid::OnReset();
@@ -584,7 +637,7 @@ namespace O2
 				nMin = pConfig->nMinScore - pUser->nScore;
 				nMax = pConfig->nMaxScore - pUser->nScore;
 
-				GetScoreFromBanker(AndroidTimer::rdit(nMin, nMax));
+				GetScoreFromBanker( (nMax) / (AndroidTimer::rdit(1, 3)) );
 			}
 			
 			pUser->nWinScore += pGameEnd->lGameScore[pUser->wChairID];
@@ -592,6 +645,14 @@ namespace O2
 			{
 				CString szMessage;
 				szMessage.Format("[%d][%s]已赢取了额定金币，立刻下线", GetUserID(), pUser->szName);
+				LogEvent(szMessage, TraceLevel_Debug);
+				SetStatus(US_OFFLINE);
+			}
+
+			if (pUser->nWinScore <= (-pConfig->nMaxWinScore))
+			{
+				CString szMessage;
+				szMessage.Format("[%d][%s]已输掉额定金币，立刻下线", GetUserID(), pUser->szName);
 				LogEvent(szMessage, TraceLevel_Debug);
 				SetStatus(US_OFFLINE);
 			}
