@@ -73,6 +73,14 @@ namespace O2
 		*/		
 		virtual SUser*			Search(WORD wCharID);
 		/*
+		* 获取同一桌子的总人数
+		*/	
+		virtual WORD			GetTableChairCount(WORD wTableID);
+		/*
+		* 获取桌子的空位置
+		*/	
+		virtual WORD			GetEmptyChairID(WORD wTableID);
+		/*
 		* 销毁所有角色
 		*/		
 		virtual void			Clear(bool bDestroy=true);

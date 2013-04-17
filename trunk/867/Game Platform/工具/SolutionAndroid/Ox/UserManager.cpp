@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "UserManager.h"
+#include <algorithm>
 
 namespace O2
 {
@@ -95,6 +96,49 @@ namespace O2
 		}
 
 		return NULL;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	WORD		UserManager::GetTableChairCount(WORD wTableID)
+	{
+		WORD wCount = 0;
+
+		UserRegister::iterator it = m_UserRegister.begin();
+		while( it != m_UserRegister.end() )
+		{
+			if ( wTableID == it->second->wTableID )
+				wCount ++;
+
+			it++;
+		}
+
+		return wCount;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	WORD		UserManager::GetEmptyChairID(WORD wTableID)
+	{
+		std::vector<WORD> vEmpty;
+
+		UserRegister::iterator it = m_UserRegister.begin();
+		while( it != m_UserRegister.end() )
+		{
+			if ( wTableID == it->second->wTableID )
+			{
+				vEmpty.push_back(it->second->wChairID);
+			}
+
+			it++;
+		}
+
+		for (int i=0; i<4; i++)
+		{
+			std::vector<WORD>::iterator it = std::find(vEmpty.begin(), vEmpty.end(), i);
+			if ( it == vEmpty.end() )
+				return i;
+		}
+
+		return rand() % 4;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
