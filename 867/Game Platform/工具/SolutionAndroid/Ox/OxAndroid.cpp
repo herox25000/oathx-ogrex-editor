@@ -247,7 +247,7 @@ namespace O2
 
 		if (pUser->nScore < pConfig->nMinScore)
 		{
-			GetScoreFromBanker( (pConfig->nMaxScore - pUser->nScore) / (rand() % 3) );
+			GetScoreFromBanker( (pConfig->nMaxScore - pUser->nScore) / (AndroidTimer::rdft(1, 3)) );
 		}
 
 		if (pUser->nScore > pConfig->nMaxScore)
@@ -637,7 +637,7 @@ namespace O2
 				nMin = pConfig->nMinScore - pUser->nScore;
 				nMax = pConfig->nMaxScore - pUser->nScore;
 
-				GetScoreFromBanker( (nMax) / (AndroidTimer::rdit(1, 3)) );
+				GetScoreFromBanker( (nMax) / (AndroidTimer::rdft(1, 3)) );
 			}
 			
 			pUser->nWinScore += pGameEnd->lGameScore[pUser->wChairID];
