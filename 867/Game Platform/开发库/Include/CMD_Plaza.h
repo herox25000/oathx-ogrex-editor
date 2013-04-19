@@ -5,7 +5,7 @@
 
 //广场版本
 #define VER_PLAZA_LOW					1								//广场版本
-#define VER_PLAZA_HIGH					1								//广场版本
+#define VER_PLAZA_HIGH					2								//广场版本
 #define VER_PLAZA_FRAME					MAKELONG(VER_PLAZA_LOW,VER_PLAZA_HIGH)
 
 //////////////////////////////////////////////////////////////////////////
