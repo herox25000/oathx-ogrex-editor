@@ -5,19 +5,10 @@
 
 namespace O2
 {
-	AndroidManager*	AndroidManager::mpSingleton = NULL;
-
 	//////////////////////////////////////////////////////////////////////////
-	AndroidManager*	AndroidManager::GetSingleton()
+	AndroidManager::AndroidManager(DWORD dwStartID, DWORD dwEndID, IAndroidFactroy* pFactory)
+		: m_pFactory(pFactory), m_dwStartID(dwStartID), m_dwEndID(dwEndID)
 	{
-		return mpSingleton;
-	}
-
-	//////////////////////////////////////////////////////////////////////////
-	AndroidManager::AndroidManager(IAndroidFactroy* pFactory)
-		: m_pFactory(pFactory)
-	{
-		mpSingleton			= this;
 		m_fCreate			= AndroidTimer::rdit(1, 10);
 		m_fElapsed			= 0;
 	}
@@ -50,7 +41,7 @@ namespace O2
 			if (m_fElapsed >= m_fCreate)
 			{
 				// 随机机器人ID
-				DWORD dwUserID = AndroidTimer::rdit(pConfig->dwStartID, pConfig->dwEndID);
+				DWORD dwUserID = AndroidTimer::rdit(m_dwStartID, m_dwEndID);
 				
 				// 检查该机器人是否存在
 				IAndroid* pAndroid = Search(dwUserID);

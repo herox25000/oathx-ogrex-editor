@@ -243,6 +243,9 @@
 				RelativePath=".\ConfigDialog.h">
 			</File>
 			<File
+				RelativePath=".\IAndroid.h">
+			</File>
+			<File
 				RelativePath=".\Ox.h">
 			</File>
 			<File

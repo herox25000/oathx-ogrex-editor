@@ -36,8 +36,6 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT1,	"192.168.1.102");
 		SetDlgItemText(IDC_EDIT2,	"12061");
 		SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
-		SetDlgItemText(IDC_EDIT4,	"10");
-		SetDlgItemText(IDC_EDIT5,	"240");
 		SetDlgItemText(IDC_EDIT6,	"30");
 		SetDlgItemText(IDC_EDIT7,	"50");
 		SetDlgItemText(IDC_EDIT9,	"30000000");
@@ -51,15 +49,26 @@ BOOL CConfigDialog::OnInitDialog()
 
 		SetDlgItemText(IDC_EDIT17,	"1");
 		SetDlgItemText(IDC_EDIT18,	"20");
-		SetDlgItemText(IDC_EDIT19,	"10000000");
+		SetDlgItemText(IDC_EDIT30,	"2000");
+		SetDlgItemText(IDC_EDIT31,	"300000");
 
 		SetDlgItemText(IDC_EDIT20,	"20");
 		SetDlgItemText(IDC_EDIT21,	"40");
-		SetDlgItemText(IDC_EDIT22,	"50000000");
+		SetDlgItemText(IDC_EDIT32,	"300000");
+		SetDlgItemText(IDC_EDIT33,	"1000000");
 
 		SetDlgItemText(IDC_EDIT23,	"40");
 		SetDlgItemText(IDC_EDIT24,	"60");
-		SetDlgItemText(IDC_EDIT25,	"100000000");
+		SetDlgItemText(IDC_EDIT34,	"1000000");
+		SetDlgItemText(IDC_EDIT35,	"9999999000");
+
+		SetDlgItemText(IDC_EDIT40,	"10");
+		SetDlgItemText(IDC_EDIT41,	"100");
+		SetDlgItemText(IDC_EDIT42,	"101");
+		SetDlgItemText(IDC_EDIT43,	"200");
+
+		SetDlgItemText(IDC_EDIT44,	"201");
+		SetDlgItemText(IDC_EDIT45,	"300");
 	}
 	else
 	{
@@ -83,12 +92,6 @@ void CConfigDialog::OnAplyConfig()
 
 		GetDlgItemText(IDC_EDIT3,	buffer);
 		strcpy(pApp->chMD5,			buffer.GetBuffer());
-
-		GetDlgItemText(IDC_EDIT4,	buffer);
-		pApp->dwStartID		= atol(buffer.GetBuffer());
-
-		GetDlgItemText(IDC_EDIT5,	buffer);
-		pApp->dwEndID		= atol(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT6,	buffer);
 		pApp->dwOnline		= atol(buffer.GetBuffer());
@@ -126,8 +129,11 @@ void CConfigDialog::OnAplyConfig()
 		GetDlgItemText(IDC_EDIT18,	buffer);
 		pApp->wOneMaxID		= atol(buffer.GetBuffer());
 
-		GetDlgItemText(IDC_EDIT19,	buffer);
-		pApp->nOneScore		= _atoi64(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT30,	buffer);
+		pApp->nOneMinScore	= _atoi64(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT31,	buffer);
+		pApp->nOneMaxScore	= _atoi64(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT20,	buffer);
 		pApp->wTwoMinID		= atol(buffer.GetBuffer());
@@ -135,8 +141,11 @@ void CConfigDialog::OnAplyConfig()
 		GetDlgItemText(IDC_EDIT21,	buffer);
 		pApp->wTwoMaxID		= atol(buffer.GetBuffer());
 
-		GetDlgItemText(IDC_EDIT22,	buffer);
-		pApp->nTwoScore		= _atoi64(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT32,	buffer);
+		pApp->nTwoMinScore	= _atoi64(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT33,	buffer);
+		pApp->nTwoMaxScore	= _atoi64(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT23,	buffer);
 		pApp->wThreeMinID	= atol(buffer.GetBuffer());
@@ -144,8 +153,30 @@ void CConfigDialog::OnAplyConfig()
 		GetDlgItemText(IDC_EDIT24,	buffer);
 		pApp->wThreeMaxID	= atol(buffer.GetBuffer());
 
-		GetDlgItemText(IDC_EDIT25,	buffer);
-		pApp->nThreeScore	= _atoi64(buffer.GetBuffer());
+		GetDlgItemText(IDC_EDIT34,	buffer);
+		pApp->nThreeMinScore	= _atoi64(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT35,	buffer);
+		pApp->nThreeMaxScore	= _atoi64(buffer.GetBuffer());
+
+
+		GetDlgItemText(IDC_EDIT40,	buffer);
+		pApp->dwOneStartID		= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT41,	buffer);
+		pApp->dwOneEndID		= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT42,	buffer);
+		pApp->dwTwoStartID		= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT43,	buffer);
+		pApp->dwTwoEndID		= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT44,	buffer);
+		pApp->dwThreeStartID	= atol(buffer.GetBuffer());
+
+		GetDlgItemText(IDC_EDIT45,	buffer);
+		pApp->dwThreeEndID		= atol(buffer.GetBuffer());
 	}
 }
 
@@ -160,12 +191,6 @@ void CConfigDialog::OnLoadConfig()
 	SetDlgItemText(IDC_EDIT2,	szText);
 
 	SetDlgItemText(IDC_EDIT3,	pConfig->chMD5);
-
-	sprintf(szText, "%d", pConfig->dwStartID);
-	SetDlgItemText(IDC_EDIT4,	szText);
-
-	sprintf(szText, "%d", pConfig->dwEndID);
-	SetDlgItemText(IDC_EDIT5,	szText);
 
 	sprintf(szText, "%d", pConfig->dwOnline);
 	SetDlgItemText(IDC_EDIT6,	szText);
@@ -203,8 +228,11 @@ void CConfigDialog::OnLoadConfig()
 	sprintf(szText, "%d", pConfig->wOneMaxID);
 	SetDlgItemText(IDC_EDIT18,	szText);
 
-	sprintf(szText, "%I64d", pConfig->nOneScore);
-	SetDlgItemText(IDC_EDIT19,	szText);
+	sprintf(szText, "%I64d", pConfig->nOneMinScore);
+	SetDlgItemText(IDC_EDIT30,	szText);
+
+	sprintf(szText, "%I64d", pConfig->nOneMaxScore);
+	SetDlgItemText(IDC_EDIT31,	szText);
 
 	sprintf(szText, "%d", pConfig->wTwoMinID);
 	SetDlgItemText(IDC_EDIT20,	szText);
@@ -212,8 +240,11 @@ void CConfigDialog::OnLoadConfig()
 	sprintf(szText, "%d", pConfig->wTwoMaxID);
 	SetDlgItemText(IDC_EDIT21,	szText);
 
-	sprintf(szText, "%I64d", pConfig->nTwoScore);
-	SetDlgItemText(IDC_EDIT22,	szText);
+	sprintf(szText, "%I64d", pConfig->nTwoMinScore);
+	SetDlgItemText(IDC_EDIT32,	szText);
+
+	sprintf(szText, "%I64d", pConfig->nTwoMaxScore);
+	SetDlgItemText(IDC_EDIT33,	szText);
 
 	sprintf(szText, "%d", pConfig->wThreeMinID);
 	SetDlgItemText(IDC_EDIT23,	szText);
@@ -221,8 +252,29 @@ void CConfigDialog::OnLoadConfig()
 	sprintf(szText, "%d", pConfig->wThreeMaxID);
 	SetDlgItemText(IDC_EDIT24,	szText);
 
-	sprintf(szText, "%I64d", pConfig->nThreeScore);
-	SetDlgItemText(IDC_EDIT25,	szText);
+	sprintf(szText, "%I64d", pConfig->nThreeMinScore);
+	SetDlgItemText(IDC_EDIT34,	szText);
+
+	sprintf(szText, "%I64d", pConfig->nThreeMaxScore);
+	SetDlgItemText(IDC_EDIT35,	szText);
+
+	sprintf(szText, "%d", pConfig->dwOneStartID);
+	SetDlgItemText(IDC_EDIT40,	szText);
+
+	sprintf(szText, "%d", pConfig->dwOneEndID);
+	SetDlgItemText(IDC_EDIT41,	szText);
+
+	sprintf(szText, "%d", pConfig->dwTwoStartID);
+	SetDlgItemText(IDC_EDIT42,	szText);
+
+	sprintf(szText, "%d", pConfig->dwTwoEndID);
+	SetDlgItemText(IDC_EDIT43,	szText);
+
+	sprintf(szText, "%d", pConfig->dwThreeStartID);
+	SetDlgItemText(IDC_EDIT44,	szText);
+
+	sprintf(szText, "%d", pConfig->dwThreeEndID);
+	SetDlgItemText(IDC_EDIT45,	szText);
 }
 
 void CConfigDialog::OnBnClickedOk()

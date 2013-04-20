@@ -13,19 +13,10 @@ namespace O2
 	class AndroidManager
 	{
 	public:
-		// 单件指针
-		static AndroidManager*	mpSingleton;
-
-		/*
-		* 获取单件
-		*/
-		static AndroidManager*	GetSingleton();
-
-	public:
 		/*
 		* 构造函数
 		*/	
-		AndroidManager(IAndroidFactroy* pFactory);
+		AndroidManager(DWORD dwStartID, DWORD dwEndID, IAndroidFactroy* pFactory);
 
 		/*
 		* 析构函数
@@ -82,5 +73,7 @@ namespace O2
 		double					m_fElapsed;
 		double					m_fCreate;
 		IAndroidFactroy*		m_pFactory;
+		DWORD					m_dwStartID;
+		DWORD					m_dwEndID;
 	};
 }

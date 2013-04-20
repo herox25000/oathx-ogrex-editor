@@ -22,11 +22,12 @@ protected:
 	CListCtrl				m_ListView;
 	CRichEditTrace			m_AndroidLog;
 	CConfigDialog			m_ConfigDlg;
-	O2::AndroidManager*		m_pManager;
 	double					m_fLostTime;
-	O2::OxFactory*			m_pFactroy;
 	int						m_nSelectItem;
 	CBankerDialog			m_BankerDialog;
+
+	O2::AndroidManager*		m_pManager[3];
+	O2::OxFactory*			m_pFactory[3];
 protected:
 	virtual BOOL			OnInitDialog();
 	virtual void			DoDataExchange(CDataExchange* pDX);	
@@ -46,8 +47,8 @@ public:
 	afx_msg void			OnDestroy();
 	afx_msg void			OnBnClickedUpdate();
 	afx_msg void			OnNMRclickListUserView(NMHDR *pNMHDR, LRESULT *pResult);
-	afx_msg void OnOffline();
-	afx_msg void OnParticulars();
-	afx_msg void OnSaveScore();
-	afx_msg void OnGetScore();
+	afx_msg void			OnOffline();
+	afx_msg void			OnParticulars();
+	afx_msg void			OnSaveScore();
+	afx_msg void			OnGetScore();
 };
