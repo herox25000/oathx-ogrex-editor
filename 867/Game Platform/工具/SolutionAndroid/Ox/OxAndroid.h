@@ -38,7 +38,7 @@ namespace O2
 	{
 	public:
 		// 构造函数
-		Ox(DWORD dwUserID, double fOnlineTime);
+		Ox(DWORD dwUserID, double fOnlineTime, DWORD nType, WORD nMinTable, WORD nMaxTable, INT64 nMinNeedScore, INT64 nMaxNeedScore);
 		// 析构函数
 		virtual ~Ox();
 		
@@ -127,14 +127,19 @@ namespace O2
 		BYTE					m_byCard[MAX_COUNT];
 		INT64					m_nChipInScore;
 		WORD					m_wCurBanker;
+		DWORD					m_dwTypeID;
+		WORD					m_nMinTableID;
+		WORD					m_nMaxTableID;
+		INT64					m_nMinNeedScore;
+		INT64					m_nMaxNeedScore;
 
 	};
 
 	class OxFactory : public IAndroidFactroy
 	{
 	public:
-		OxFactory(DWORD dwTypeID)
-			: IAndroidFactroy(dwTypeID)
+		OxFactory(DWORD dwTypeID, WORD wMinTableID, WORD wMaxTableID, INT64 nMinScore, INT64 nMaxScore)
+			: IAndroidFactroy(dwTypeID), m_wMinTableID(wMinTableID), m_wMaxTableID(wMaxTableID), m_nMinScore(nMinScore), m_nMaxScore(nMaxScore)
 		{
 
 		}
@@ -146,7 +151,12 @@ namespace O2
 
 		virtual IAndroid*		Create(const DWORD dwUserID, double fOnlineTime)
 		{
-			return new Ox(dwUserID, fOnlineTime);
+			return new Ox(dwUserID, fOnlineTime, m_dwTypeID, m_wMinTableID, m_wMaxTableID, m_nMinScore, m_nMaxScore);
 		}
+	protected:
+		WORD					m_wMinTableID;
+		WORD					m_wMaxTableID;
+		INT64					m_nMinScore;
+		INT64					m_nMaxScore;
 	};
 }
