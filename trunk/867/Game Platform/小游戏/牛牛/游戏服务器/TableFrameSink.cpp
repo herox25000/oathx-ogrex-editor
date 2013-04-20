@@ -116,7 +116,6 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	m_pITableFrame->SetGameStatus(GS_TK_CALL);
 	m_pITableFrame->KillGameTimer(TIMER_WAITSTATR);
 	m_pITableFrame->SetGameTimer(TIMER_WAITCALLBANKER,TIMER_WAITCALLBANKER_Continued,20,NULL);
-	m_pITableFrame->SetGameTimer(TIMER_WAITCALLBANKER,TIMER_WAITCALLBANKER_Continued,1,0L);
 	//用户状态
 	for (WORD i=0;i<m_wPlayerCount;i++)
 	{
@@ -157,12 +156,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//设置状态
 	KillAllTimer();
 	m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	m_pITableFrame->KillGameTimer(TIMER_WAITKAIPAI);
 	m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
-
-	//设置状态
-	m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,0L);
 
 	switch (cbReason)
 	{
@@ -615,7 +609,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 				if(m_bPlayStatus[i] == FALSE)
 					continue;
 				if(m_lTableScore[i] <= 0 && i!=m_wBankerUser)
-					OnUserAddScore(i,m_lTurnMaxScore[i]);
+					OnUserAddScore(i,m_lTurnMaxScore[i]/GAME_PLAYER);
 			}
 			return true;
 		}
@@ -740,10 +734,6 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 		{
 			m_wBankerUser=(m_wBankerUser+1)%GAME_PLAYER;
 		}
-
-		//设置状态
-		m_pITableFrame->SetGameStatus(GS_TK_SCORE);
-		m_pITableFrame->SetGameTimer(TIMER_WAITSETSCORE,TIMER_WAITSETSCORE_Continued,1,0L);
 		//庄家积分
 		IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(m_wBankerUser);
 		__int64 lBankerScore=pIServerUserItem->GetUserScore()->lScore;
@@ -866,11 +856,10 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 	//所有人都叫庄 开始发牌
 	if(bUserCount==m_wPlayerCount)
 	{
+		m_pITableFrame->KillGameTimer(TIMER_WAITSETSCORE);
+		m_pITableFrame->SetGameTimer(TIMER_WAITKAIPAI,TIMER_WAITKAIPAI_Continued,2,NULL);
 		//设置状态
 		m_pITableFrame->SetGameStatus(GS_TK_PLAYING);
-		m_pITableFrame->KillGameTimer(TIMER_WAITSETSCORE);
-		m_pITableFrame->SetGameTimer(TIMER_WAITKAIPAI,TIMER_WAITKAIPAI_Continued,1,NULL);
-		m_pITableFrame->SetGameTimer(TIMER_WAITKAIPAI,TIMER_WAITKAIPAI_Continued,1,0L);
 
 		//构造数据
 		CMD_S_SendCard SendCard;
