@@ -26,8 +26,8 @@ protected:
 	int						m_nSelectItem;
 	CBankerDialog			m_BankerDialog;
 
-	O2::AndroidManager*		m_pManager[3];
-	O2::OxFactory*			m_pFactory[3];
+	O2::AndroidManager*		m_pManager;
+	O2::OxFactory*			m_pFactory;
 protected:
 	virtual BOOL			OnInitDialog();
 	virtual void			DoDataExchange(CDataExchange* pDX);	

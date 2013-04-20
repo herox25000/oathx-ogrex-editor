@@ -12,15 +12,13 @@ namespace O2
 		OXT_START_GAME,
 	};
 
-	static WORD		s_wCurOneTableID = INVALID_TABLE;
-	static WORD		s_wCurTwoTableID = INVALID_TABLE;
-	static WORD		s_wCurThrTableID = INVALID_TABLE;
+	static WORD		s_wCurTableID = INVALID_TABLE;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
-	Ox::Ox(DWORD dwUserID, double fOnlineTime, DWORD dwTypeID, WORD nMinTable, WORD nMaxTable, INT64 nMinNeedScore, INT64 nMaxNeedScore)
-		: IAndroid(dwUserID, fOnlineTime), m_dwTypeID(dwTypeID), m_nMinTableID(nMinTable), m_nMaxTableID(nMaxTable), m_nMinNeedScore(nMinNeedScore), m_nMaxNeedScore(nMaxNeedScore)
+	Ox::Ox(DWORD dwUserID, double fOnlineTime)
+		: IAndroid(dwUserID, fOnlineTime)
 	{
 		OnReset();
 	}
@@ -129,73 +127,22 @@ namespace O2
 		{
 			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
 			
-			if (pUser->nScore >= m_nMinNeedScore && pUser->nScore <= m_nMaxNeedScore)
+			if (pUser->nScore >= pConfig->nMinScore && pUser->nScore < pConfig->nMaxScore)
 			{
-				WORD wCurTableID = INVALID_TABLE;
-				switch (m_dwTypeID)
+				if (s_wCurTableID == INVALID_TABLE)
+					s_wCurTableID = AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
+
+				WORD wCount = m_pUserManager->GetTableChairCount(s_wCurTableID);
+				if (wCount <= rand() % 4)
 				{
-				case 0:
-					{
-						if (s_wCurOneTableID == INVALID_TABLE)
-							s_wCurOneTableID = AndroidTimer::rdit(m_nMinTableID, m_nMaxTableID);
-
-						wCurTableID = s_wCurOneTableID;
-					}
-					break;
-
-				case 1:
-					{
-						if (s_wCurTwoTableID == INVALID_TABLE)
-							s_wCurTwoTableID = AndroidTimer::rdit(m_nMinTableID, m_nMaxTableID);
-
-						wCurTableID = s_wCurTwoTableID;
-					}
-					break;
-
-				case 2:
-					{
-						if (s_wCurThrTableID == INVALID_TABLE)
-							s_wCurThrTableID = AndroidTimer::rdit(m_nMinTableID, m_nMaxTableID);
-
-						wCurTableID = s_wCurThrTableID;
-					}
-					break;
+					wChairID = m_pUserManager->GetEmptyChairID(s_wCurTableID);
+					wTableID = s_wCurTableID;
+					return true;
 				}
-
-				if (wCurTableID != INVALID_TABLE)
+				else
 				{
-					WORD wCount = m_pUserManager->GetTableChairCount(wCurTableID);
-					if (wCount <= rand() % 4)
-					{
-						wChairID = m_pUserManager->GetEmptyChairID(wCurTableID);
-						wTableID = wCurTableID;
-						return true;
-					}
-					else
-					{
-						switch (m_dwTypeID)
-						{
-						case 0:
-							{
-								s_wCurOneTableID = AndroidTimer::rdit(m_nMinTableID, m_nMaxTableID);
-							}
-							break;
-
-						case 1:
-							{
-								s_wCurTwoTableID = AndroidTimer::rdit(m_nMinTableID, m_nMaxTableID);
-							}
-							break;
-
-						case 2:
-							{
-								s_wCurThrTableID = AndroidTimer::rdit(m_nMinTableID, m_nMaxTableID);
-							}
-							break;
-						}
-					}
+					s_wCurTableID = AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
 				}
-
 			}
 		}
 
@@ -262,14 +209,22 @@ namespace O2
 		if (pUser == NULL)
 			return 0;
 
-		if (pUser->nScore < m_nMinNeedScore)
+		INT64 nMin;
+		INT64 nMax;
+		if (pUser->nScore < pConfig->nMinScore)
 		{
-			GetScoreFromBanker( AndroidTimer::rdit( m_nMinNeedScore,  m_nMaxNeedScore - pUser->nScore) );
+			nMin = pConfig->nMinScore - pUser->nScore;
+			nMax = pConfig->nMaxScore - pUser->nScore;
+
+			GetScoreFromBanker( AndroidTimer::rdit( nMin,  nMax) );
 			return 0;
 		}
-		else if (pUser->nScore > m_nMaxNeedScore)
+		else if (pUser->nScore > pConfig->nMaxScore)
 		{
-			SaveScoreToBanker( pUser->nScore - m_nMaxNeedScore );
+			nMin = pUser->nScore - pConfig->nMaxScore;
+			nMax = pUser->nScore - pConfig->nMinScore;
+
+			SaveScoreToBanker( AndroidTimer::rdit( nMin,  nMax) );
 			return 0;
 		}
 
@@ -639,17 +594,25 @@ namespace O2
 		SUser* pUser = GetUserInfo();
 		if (pUser)
 		{
-			if (pUser->nScore < m_nMinNeedScore)
-			{
-				GetScoreFromBanker( AndroidTimer::rdit( m_nMinNeedScore,  m_nMaxNeedScore - pUser->nScore) );
-			}
-			else if (pUser->nScore > m_nMaxNeedScore)
-			{
-				SaveScoreToBanker( pUser->nScore - m_nMaxNeedScore );
-			}
-			
 			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
 
+			INT64 nMin;
+			INT64 nMax;
+			if (pUser->nScore < pConfig->nMinScore)
+			{
+				nMin = pConfig->nMinScore - pUser->nScore;
+				nMax = pConfig->nMaxScore - pUser->nScore;
+
+				GetScoreFromBanker( AndroidTimer::rdit( nMin,  nMax) );
+			}
+			else if (pUser->nScore > pConfig->nMaxScore)
+			{
+				nMin = pUser->nScore - pConfig->nMaxScore;
+				nMax = pUser->nScore - pConfig->nMinScore;
+
+				SaveScoreToBanker( AndroidTimer::rdit( nMin,  nMax) );
+			}
+			
 			pUser->nWinScore += pGameEnd->lGameScore[pUser->wChairID];
 			if (pUser->nWinScore >= pConfig->nMaxWinScore)
 			{

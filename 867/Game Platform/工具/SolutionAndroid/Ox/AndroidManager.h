@@ -16,7 +16,7 @@ namespace O2
 		/*
 		* 构造函数
 		*/	
-		AndroidManager(DWORD dwStartID, DWORD dwEndID, IAndroidFactroy* pFactory);
+		AndroidManager(IAndroidFactroy* pFactory);
 
 		/*
 		* 析构函数
@@ -73,7 +73,5 @@ namespace O2
 		double					m_fElapsed;
 		double					m_fCreate;
 		IAndroidFactroy*		m_pFactory;
-		DWORD					m_dwStartID;
-		DWORD					m_dwEndID;
 	};
 }

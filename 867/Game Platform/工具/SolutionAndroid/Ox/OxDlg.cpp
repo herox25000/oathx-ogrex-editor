@@ -42,6 +42,8 @@ OxDlg::OxDlg(CWnd* pParent /*=NULL*/)
 	m_hIcon			= AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 	m_fLostTime		= 0;
 	m_nSelectItem	= -1;
+	m_pManager		= NULL;
+	m_pFactory		= NULL;
 }
 
 void OxDlg::DoDataExchange(CDataExchange* pDX)
@@ -174,12 +176,8 @@ void OxDlg::OnBnClickedOk()
 	O2::SAppConfig* pConfig = O2::ConfigFile::GetSingleton().GetAppConfig();
 	if (pConfig)
 	{
-		m_pFactory[0] = new O2::OxFactory(0, pConfig->wOneMinID, pConfig->wOneMaxID, pConfig->nOneMinScore, pConfig->nOneMaxScore);
-		m_pManager[0] = new O2::AndroidManager(pConfig->dwOneStartID, pConfig->dwOneEndID, m_pFactory[0]);
-		m_pFactory[1] = new O2::OxFactory(1, pConfig->wTwoMinID, pConfig->wTwoMaxID, pConfig->nTwoMinScore, pConfig->nTwoMaxScore);
-		m_pManager[1] = new O2::AndroidManager(pConfig->dwTwoStartID, pConfig->dwTwoEndID,m_pFactory[1]);
-		m_pFactory[2] = new O2::OxFactory(2, pConfig->wThreeMinID, pConfig->wThreeMaxID, pConfig->nThreeMinScore, pConfig->nThreeMaxScore);
-		m_pManager[2] = new O2::AndroidManager(pConfig->dwThreeStartID, pConfig->dwThreeEndID,m_pFactory[2]);
+		m_pFactory = new O2::OxFactory(0);
+		m_pManager = new O2::AndroidManager(m_pFactory);
 		
 		SetTimer(IDT_UPDATE,	30,		NULL);
 		SetTimer(IDT_LISTVIEW, 3000,	NULL);
@@ -202,79 +200,77 @@ BOOL OxDlg::OnUpdateListView()
 
 	m_ListView.SetRedraw(FALSE);
 	
-	for (int i=0; i<3; i++)
+	int nCount = m_pManager->GetAndroidCount();
+	// 添加用户到列表中
+	for (int i=0; i<nCount; i++)
 	{
-		int nCount = m_pManager[i]->GetAndroidCount();
-		// 添加用户到列表中
-		for (int j=0; j<nCount; j++)
+		O2::IAndroid* pAndroid = m_pManager->GetAndroid( i );
+		if (pAndroid)
 		{
-			O2::IAndroid* pAndroid = m_pManager[i]->GetAndroid( j );
-			if (pAndroid)
+			// 获取用户完整信息
+			O2::SUser* pUser = pAndroid->GetUserInfo();
+			if (pUser)
 			{
-				// 获取用户完整信息
-				O2::SUser* pUser = pAndroid->GetUserInfo();
-				if (pUser)
+				//查找用户
+				LVFINDINFO fd;
+				memset(&fd, 0, sizeof(fd));
+				fd.flags	= LVFI_PARAM;
+				fd.lParam	= (LPARAM)pUser;
+
+				char szText[MAX_PATH];
+				sprintf(szText, "%d", pUser->dwUserID);
+
+				int iItem	= m_ListView.FindItem(&fd);
+				if (iItem == -1)
 				{
-					//查找用户
-					LVFINDINFO fd;
-					memset(&fd, 0, sizeof(fd));
-					fd.flags	= LVFI_PARAM;
-					fd.lParam	= (LPARAM)pUser;
-
-					char szText[MAX_PATH];
-					sprintf(szText, "%d", pUser->dwUserID);
-
-					int iItem	= m_ListView.FindItem(&fd);
-					if (iItem == -1)
-					{
-						iItem = m_ListView.InsertItem(m_ListView.GetItemCount(), szText);
-						m_ListView.SetItemData(iItem, (DWORD_PTR)pUser);
-					}
-
-					m_ListView.SetItemText(iItem, 0, szText);
-					sprintf(szText, "%d", pUser->dwGameID);
-					m_ListView.SetItemText(iItem, 1, szText);
-
-					sprintf(szText, "%s", pUser->szName);
-					m_ListView.SetItemText(iItem, 2, szText);
-
-					sprintf(szText, "%I64d", pUser->nScore);
-					m_ListView.SetItemText(iItem, 3, szText);
-
-					sprintf(szText, "%I64d", pUser->nWinScore);
-					m_ListView.SetItemText(iItem, 4, szText);
-
-					sprintf(szText, "%I64d", pUser->nSaveScore);
-					m_ListView.SetItemText(iItem, 5, szText);
-
-					sprintf(szText, "%I64d", pUser->nGetScore);
-					m_ListView.SetItemText(iItem, 6, szText);
-
-					sprintf(szText, "%I64d", pUser->nSaveScore - pUser->nGetScore);
-					m_ListView.SetItemText(iItem, 7, szText);
-
-					static const char* chStatusText[] = 
-					{
-						"没有",
-						"站立",
-						"坐下",
-						"同意",
-						"旁观",
-						"游戏",
-						"断线",
-					};
-
-					sprintf(szText, "%s",	chStatusText[pUser->cbUserStatus]);
-					m_ListView.SetItemText(iItem, 8, szText);
-
-					sprintf(szText, "%s",	pUser->chLoginTime);
-					m_ListView.SetItemText(iItem, 9, szText);
-
-					sprintf(szText, "%d",	pAndroid->GetRemaindTime());
-					m_ListView.SetItemText(iItem, 10, szText);
+					iItem = m_ListView.InsertItem(m_ListView.GetItemCount(), szText);
+					m_ListView.SetItemData(iItem, (DWORD_PTR)pUser);
 				}
+
+				m_ListView.SetItemText(iItem, 0, szText);
+				sprintf(szText, "%d", pUser->dwGameID);
+				m_ListView.SetItemText(iItem, 1, szText);
+
+				sprintf(szText, "%s", pUser->szName);
+				m_ListView.SetItemText(iItem, 2, szText);
+
+				sprintf(szText, "%I64d", pUser->nScore);
+				m_ListView.SetItemText(iItem, 3, szText);
+
+				sprintf(szText, "%I64d", pUser->nWinScore);
+				m_ListView.SetItemText(iItem, 4, szText);
+
+				sprintf(szText, "%I64d", pUser->nSaveScore);
+				m_ListView.SetItemText(iItem, 5, szText);
+
+				sprintf(szText, "%I64d", pUser->nGetScore);
+				m_ListView.SetItemText(iItem, 6, szText);
+
+				sprintf(szText, "%I64d", pUser->nSaveScore - pUser->nGetScore);
+				m_ListView.SetItemText(iItem, 7, szText);
+
+				static const char* chStatusText[] = 
+				{
+					"没有",
+					"站立",
+					"坐下",
+					"同意",
+					"旁观",
+					"游戏",
+					"断线",
+				};
+
+				sprintf(szText, "%s",	chStatusText[pUser->cbUserStatus]);
+				m_ListView.SetItemText(iItem, 8, szText);
+
+				sprintf(szText, "%s",	pUser->chLoginTime);
+				m_ListView.SetItemText(iItem, 9, szText);
+
+				sprintf(szText, "%d",	pAndroid->GetRemaindTime());
+				m_ListView.SetItemText(iItem, 10, szText);
 			}
 		}
+	
 	}
 
 	m_ListView.SetRedraw(TRUE);
@@ -327,28 +323,25 @@ void OxDlg::OnOffline()
 {
 	DWORD dwUserID			= GetUserID();
 
-	for (int i=0; i<3; i++)
+	O2::IAndroid* pAndroid	= m_pManager->Search(dwUserID);
+	if (pAndroid != NULL)
 	{
-		O2::IAndroid* pAndroid	= m_pManager[i]->Search(dwUserID);
-		if (pAndroid != NULL)
+		CString szMessage;
+		szMessage.Format("你确定要让[%d] [%d] 机器人下线吗", pAndroid->GetUserID(), pAndroid->GetGameID());
+		if (IDYES == AfxMessageBox(szMessage, MB_YESNO))
 		{
-			CString szMessage;
-			szMessage.Format("你确定要让[%d] [%d] 机器人下线吗", pAndroid->GetUserID(), pAndroid->GetGameID());
-			if (IDYES == AfxMessageBox(szMessage, MB_YESNO))
+			if (pAndroid->CanOffline())
 			{
-				if (pAndroid->CanOffline())
-				{
-					pAndroid->SetStatus(US_OFFLINE);
-				}
-				else
-				{
-					szMessage.Format("该机器人不能下线，正在游戏中，下线会导致强制扣分", 
-						pAndroid->GetUserID(), pAndroid->GetGameID());
-					AfxMessageBox(szMessage);
-				}
-
-				OnBnClickedUpdate();
+				pAndroid->SetStatus(US_OFFLINE);
 			}
+			else
+			{
+				szMessage.Format("该机器人不能下线，正在游戏中，下线会导致强制扣分", 
+					pAndroid->GetUserID(), pAndroid->GetGameID());
+				AfxMessageBox(szMessage);
+			}
+
+			OnBnClickedUpdate();
 		}
 	}
 	
@@ -358,20 +351,17 @@ void OxDlg::OnParticulars()
 {
 	DWORD dwUserID			= GetUserID();
 
-	for (int i=0; i<3; i++)
+	O2::IAndroid* pAndroid	= m_pManager->Search(dwUserID);
+	if (pAndroid)
 	{
-		O2::IAndroid* pAndroid	= m_pManager[i]->Search(dwUserID);
-		if (pAndroid)
+		O2::SUser* pUser = pAndroid->GetUserInfo();
+		if (pUser)
 		{
-			O2::SUser* pUser = pAndroid->GetUserInfo();
-			if (pUser)
-			{
-				CString szMessage;
-				szMessage.Format("游戏ID:		%d\n游戏名称:	%s\n当前金钱:	%I64d\n输赢金额:	%I64d\n存入银行总额:	%I64d\n银行取出总额:	%I64d\n银行结余:	%I64d\n总计坐庄次数:	%d\n坐庄总成绩:	%I64d",
-					pUser->dwGameID, pUser->szName, pUser->nScore, pUser->nWinScore, pUser->nSaveScore, 
-					pUser->nGetScore, pUser->nSaveScore-pUser->nGetScore, pUser->wBankerCount, pUser->nBankerAllWin);
-				AfxMessageBox(szMessage);
-			}
+			CString szMessage;
+			szMessage.Format("游戏ID:		%d\n游戏名称:	%s\n当前金钱:	%I64d\n输赢金额:	%I64d\n存入银行总额:	%I64d\n银行取出总额:	%I64d\n银行结余:	%I64d\n总计坐庄次数:	%d\n坐庄总成绩:	%I64d",
+				pUser->dwGameID, pUser->szName, pUser->nScore, pUser->nWinScore, pUser->nSaveScore, 
+				pUser->nGetScore, pUser->nSaveScore-pUser->nGetScore, pUser->wBankerCount, pUser->nBankerAllWin);
+			AfxMessageBox(szMessage);
 		}
 	}
 }
@@ -380,57 +370,46 @@ void OxDlg::SaveScore(INT64 nScore)
 {
 	DWORD dwUserID			= GetUserID();
 
-	for (int i=0; i<3; i++)
+	O2::IAndroid* pAndroid	= m_pManager->Search(dwUserID);
+	if (pAndroid)
 	{
-		O2::IAndroid* pAndroid	= m_pManager[i]->Search(dwUserID);
-		if (pAndroid)
+		O2::SUser* pUser = pAndroid->GetUserInfo();
+		if (pUser->nScore < nScore)
 		{
-			O2::SUser* pUser = pAndroid->GetUserInfo();
-			if (pUser->nScore < nScore)
-			{
-				AfxMessageBox("存入金钱大于当前金钱，非法操作");
-			}
-			else
-			{
-				pAndroid->SaveScoreToBanker(nScore);
-			}
+			AfxMessageBox("存入金钱大于当前金钱，非法操作");
+		}
+		else
+		{
+			pAndroid->SaveScoreToBanker(nScore);
 		}
 	}
-
 }
 
 void OxDlg::GetScore(INT64 nScore)
 {
 	DWORD dwUserID			= GetUserID();
 
-	for (int i=0; i<3; i++)
+	O2::IAndroid* pAndroid	= m_pManager->Search(dwUserID);
+	if (pAndroid)
 	{
-		O2::IAndroid* pAndroid	= m_pManager[i]->Search(dwUserID);
-		if (pAndroid)
-		{
-			pAndroid->GetScoreFromBanker(nScore);
-		}
+		pAndroid->GetScoreFromBanker(nScore);
 	}
-
 }
 
 void OxDlg::OnSaveScore()
 {
 	DWORD dwUserID			= GetUserID();
 
-	for (int i=0; i<3; i++)
+	O2::IAndroid* pAndroid	= m_pManager->Search(dwUserID);
+	if (pAndroid)
 	{
-		O2::IAndroid* pAndroid	= m_pManager[i]->Search(dwUserID);
-		if (pAndroid)
+		O2::SUser* pUser = pAndroid->GetUserInfo();
+		if (pUser)
 		{
-			O2::SUser* pUser = pAndroid->GetUserInfo();
-			if (pUser)
-			{
-				m_BankerDialog.CenterWindow();
-				m_BankerDialog.SetType(true);
-				m_BankerDialog.SetText("存入金额：");
-				m_BankerDialog.ShowWindow(SW_SHOW);
-			}
+			m_BankerDialog.CenterWindow();
+			m_BankerDialog.SetType(true);
+			m_BankerDialog.SetText("存入金额：");
+			m_BankerDialog.ShowWindow(SW_SHOW);
 		}
 	}
 }
@@ -439,19 +418,16 @@ void OxDlg::OnGetScore()
 {
 	DWORD dwUserID			= GetUserID();
 
-	for (int i=0; i<3; i++)
+	O2::IAndroid* pAndroid	= m_pManager->Search(dwUserID);
+	if (pAndroid)
 	{
-		O2::IAndroid* pAndroid	= m_pManager[i]->Search(dwUserID);
-		if (pAndroid)
+		O2::SUser* pUser = pAndroid->GetUserInfo();
+		if (pUser)
 		{
-			O2::SUser* pUser = pAndroid->GetUserInfo();
-			if (pUser)
-			{
-				m_BankerDialog.CenterWindow();
-				m_BankerDialog.SetType(false);
-				m_BankerDialog.SetText("取出金额：");
-				m_BankerDialog.ShowWindow(SW_SHOW);
-			}
+			m_BankerDialog.CenterWindow();
+			m_BankerDialog.SetType(false);
+			m_BankerDialog.SetText("取出金额：");
+			m_BankerDialog.ShowWindow(SW_SHOW);
 		}
 	}
 }
@@ -466,11 +442,8 @@ void OxDlg::OnTimer(UINT nIDEvent)
 			double fCurrentTime = O2::AndroidTimer::GetSingleton().GetElapsed();
 			double fElapsed		= fCurrentTime - m_fLostTime;
 
-			for (int i=0; i<3; i++)
-			{
-				m_pManager[i]->Update(fElapsed);
-			}
-				
+			m_pManager->Update(fElapsed);
+			
 			m_fLostTime = fCurrentTime;
 		}
 		break;
@@ -506,10 +479,8 @@ void OxDlg::OnDestroy()
 	KillTimer(IDT_UPDATE);
 	KillTimer(IDT_LISTVIEW);
 
-	for (int i=0; i<3; i++)
-	{
-		delete m_pFactory[i];
-		delete m_pManager[i];
-	}
+	delete m_pFactory;
+	delete m_pManager;
+	
 }
 
