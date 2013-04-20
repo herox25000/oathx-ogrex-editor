@@ -173,12 +173,13 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 			//中止判断
 			if (nElapse==0)
 			{
-				PostMessage(WM_CLOSE,0,0);
+				CloseClientDlg();
 				return false;
 			}
 
 			//警告通知
-			if (nElapse<=5) PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WARN"));
+			if (nElapse<=5) 
+				PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WARN"));
 
 			return true;
 		}
@@ -192,7 +193,8 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 			}
 
 			//警告通知
-			if (nElapse<=5) PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WARN"));
+			if (nElapse<=5)
+				PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WARN"));
 			return true;
 		}
 	case IDI_CALL_BANKER:		//叫庄定时
@@ -207,7 +209,8 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 			//}
 
 			//警告通知
-			if (nElapse<=5) PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WARN"));
+			if (nElapse<=5)
+				PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_WARN"));
 			return true;			
 		}
 	}
