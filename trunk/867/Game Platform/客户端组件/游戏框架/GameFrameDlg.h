@@ -136,7 +136,8 @@ public:
 	bool PlayGameSound(HINSTANCE hInstance, LPCTSTR pszSoundName);
 	//点击银行按钮
 	void UserOnBankBT(BYTE Type);
-
+	//关闭客户端（直接关闭，没有提示）
+	void CloseClientDlg();
 
 	//消息函数
 public:

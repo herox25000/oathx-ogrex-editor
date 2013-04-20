@@ -673,7 +673,6 @@ void CGameFrameDlg::OnCancel()
 
 	//保存配置
 	g_GlobalOption.SaveOptionParameter();
-
 	//注销接口
 	m_ClientKernelHelper->DestroyClientKernel();
 
@@ -748,5 +747,20 @@ void CGameFrameDlg::UserOnBankBT(BYTE Type)
 	m_DlgFramBank.DoModal();
 	m_DlgFramBank.SetBankType(Type);
 
+}
+
+//关闭客户端（直接关闭，没有提示）
+void CGameFrameDlg::CloseClientDlg()
+{
+	//保存配置
+	g_GlobalOption.SaveOptionParameter();
+	//注销接口
+	m_ClientKernelHelper->DestroyClientKernel();
+	//销毁组件
+	SafeDelete(m_pKernelSink);
+	m_UserFaceResHelper.CloseInstance();
+	m_ClientKernelHelper.CloseInstance();
+	//关闭窗口
+	DestroyWindow();
 }
 //////////////////////////////////////////////////////////////////////////
