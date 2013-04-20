@@ -9,15 +9,8 @@ namespace O2
 		WORD						wPort;
 		char						chMD5[128];
 		
-		DWORD						dwOneStartID;
-		DWORD						dwOneEndID;
-
-		DWORD						dwTwoStartID;
-		DWORD						dwTwoEndID;
-
-		DWORD						dwThreeStartID;
-		DWORD						dwThreeEndID;
-
+		DWORD						dwStartID;
+		DWORD						dwEndID;
 
 		DWORD						dwOnline;
 		WORD						wBankerRate;
@@ -30,20 +23,8 @@ namespace O2
 		INT64						nMaxScore;
 		WORD						wPlaceRate;
 
-		WORD						wOneMinID;
-		WORD						wOneMaxID;
-		INT64						nOneMinScore;
-		INT64						nOneMaxScore;
-
-		WORD						wTwoMinID;
-		WORD						wTwoMaxID;
-		INT64						nTwoMinScore;
-		INT64						nTwoMaxScore;
-
-		WORD						wThreeMinID;
-		WORD						wThreeMaxID;
-		INT64						nThreeMinScore;
-		INT64						nThreeMaxScore;
+		WORD						wMinTableID;
+		WORD						wMaxTableID;
 	};
 	
 	//////////////////////////////////////////////////////////////////////////
