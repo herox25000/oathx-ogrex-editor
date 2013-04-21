@@ -48,8 +48,8 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT14,	"10");
 		SetDlgItemText(IDC_EDIT15,	"1");
 		SetDlgItemText(IDC_EDIT16,	"20");
-		SetDlgItemText(IDC_EDIT15,	"2000");
-		SetDlgItemText(IDC_EDIT16,	"300000");
+		SetDlgItemText(IDC_EDIT17,	"2000");
+		SetDlgItemText(IDC_EDIT18,	"300000");
 	}
 	else
 	{
@@ -114,7 +114,7 @@ void CConfigDialog::OnAplyConfig()
 		pApp->nMinScore		= _atoi64(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT18,	buffer);
-		pApp->nMinScore		= _atoi64(buffer.GetBuffer());
+		pApp->nMaxScore		= _atoi64(buffer.GetBuffer());
 	}
 }
 
