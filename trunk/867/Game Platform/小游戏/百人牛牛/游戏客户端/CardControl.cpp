@@ -112,17 +112,17 @@ bool CCardControl::SetCardData(const BYTE cbCardData[], WORD wCardCount,bool blT
 			m_CardItemArray[i].cbCardData=cbCardData[i];
 		}
 		return true;
-
-
 	}
 	if(wCardCount==0)
 	{
        m_CardItemArray.SetSize(0);
 	}
+
 	m_CardTempItemArray.SetSize(wCardCount);
 	//效验参数
 	ASSERT(wCardCount<=CountArray(m_CardTempItemArray));
-	if (wCardCount>CountArray(m_CardTempItemArray)) return false;
+	if (wCardCount>CountArray(m_CardTempItemArray))
+		return false;
 
 	//设置变量
 	m_wEndIndex=INVALID_ITEM;
@@ -137,7 +137,6 @@ bool CCardControl::SetCardData(const BYTE cbCardData[], WORD wCardCount,bool blT
 		m_CardTempItemArray[i].bShoot=false;
 		m_CardTempItemArray[i].cbCardData=cbCardData[i];
 	}
-
 	return true;
 }
 
@@ -313,7 +312,8 @@ WORD CCardControl::GetShootCard(BYTE cbCardData[], WORD wBufferCount)
 		if (wBufferCount<=wShootCount) break;
 
 		//拷贝扑克
-		if (m_CardItemArray[i].bShoot==true) cbCardData[wShootCount++]=m_CardItemArray[i].cbCardData;
+		if (m_CardItemArray[i].bShoot==true)
+			cbCardData[wShootCount++]=m_CardItemArray[i].cbCardData;
 	}
 
 	return wShootCount;
@@ -390,7 +390,8 @@ VOID CCardControl::SetBenchmarkPos(const CPoint & BenchmarkPos, enXCollocateMode
 VOID CCardControl::DrawCardControl(CDC * pDC)
 {
 	//显示判断
-	if (m_bShowCardControl==false) return;
+	if (m_bShowCardControl==false) 
+		return;
 
 	//加载位图
 	CPngImage ImageCardMask;
@@ -418,11 +419,9 @@ VOID CCardControl::DrawCardControl(CDC * pDC)
 		//获取扑克
 		bool bShoot=m_CardItemArray[i].bShoot;
 		BYTE cbCardData=m_CardItemArray[i].cbCardData;
-
 		//间隙过滤
-		if (cbCardData==SPACE_CARD_DATA) continue;
-
-
+		if (cbCardData==SPACE_CARD_DATA)
+			continue;
 
 		//图片位置
 		if ((m_bDisplayItem==true)&&(cbCardData!=0))
@@ -458,34 +457,31 @@ VOID CCardControl::DrawCardControl(CDC * pDC)
 		//屏幕位置
 		if (m_bHorizontal==true)
 		{
-
-				if(m_blGameEnd)
+			if(m_blGameEnd)
+			{
+				int iadd = i;
+				if(i>=3)
 				{
-					int iadd = i;
-					if(i>=3)
-					{
-						iadd = i-2;
-
-					}
-					nXDrawPos=m_nXDistance*iadd;
-
+					iadd = i-2;
+				}
+				nXDrawPos=m_nXDistance*iadd;
+			}
+			else
+			{
+				if(i>=3)
+				{
+					nXDrawPos = 0;
 				}else
 				{
-					if(i>=3)
-					{
-						nXDrawPos = 0;
-					}else
-					{
-							nXDrawPos=m_nXDistance*i;
-
-					}
+					nXDrawPos=m_nXDistance*i;
 				}
-				 
+			}
+
 			if(i<3)
 			{
 				nYDrawPos=0;
-
-			}else
+			}
+			else
 			{
 				nYDrawPos=m_nShootDistance;
 			}
@@ -495,7 +491,6 @@ VOID CCardControl::DrawCardControl(CDC * pDC)
 				if(i>=2)
 				{
 					iadd = i-1;
-
 				}
 				nXDrawPos=m_nXDistance*iadd;
 				if(i<2)
@@ -506,34 +501,33 @@ VOID CCardControl::DrawCardControl(CDC * pDC)
 				{
 					nYDrawPos=m_nShootDistance;
 				}
-
 			}
 			if(m_blShowLineResult)
 			{
 				nXDrawPos=m_nXDistance*i;
 				nYDrawPos=0;
 
-			}
-				
+			}	
 		}
 		if(m_blGameEnd)
 		{
-				m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+15,OriginPoint.y+nYDrawPos,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
-		}else
+			m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+15,OriginPoint.y+nYDrawPos,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
+		}
+		else
 		{
-			   if(i<3)
-			   {
-			     	m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+25,OriginPoint.y+nYDrawPos,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
+			if(i<3)
+			{
+			    m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+25,OriginPoint.y+nYDrawPos,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
 
-			   }
-				//绘画扑克
-				if(4==i)
-				{
-					m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+m_MovePoint.x+25,OriginPoint.y+nYDrawPos+m_MovePoint.y,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
-					m_ImageOpenCardHandle.AlphaDrawImage(pDC,OriginPoint.x,OriginPoint.y+nYDrawPos-5,m_ImageOpenCardHandle.GetWidth(),m_ImageOpenCardHandle.GetHeight(),0,0,RGB(255,0,255));
-				}
-				else
-					m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+25,OriginPoint.y+nYDrawPos,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
+			}
+			//绘画扑克
+			if(4==i)
+			{
+				m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+m_MovePoint.x+25,OriginPoint.y+nYDrawPos+m_MovePoint.y,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
+				m_ImageOpenCardHandle.AlphaDrawImage(pDC,OriginPoint.x,OriginPoint.y+nYDrawPos-5,m_ImageOpenCardHandle.GetWidth(),m_ImageOpenCardHandle.GetHeight(),0,0,RGB(255,0,255));
+			}
+			else
+				m_ImageCard.AlphaDrawImage(pDC,OriginPoint.x+nXDrawPos+25,OriginPoint.y+nYDrawPos,m_CardSize.cx,m_CardSize.cy,nXImagePos,nYImagePos,RGB(255,0,255));
 
 		}
 		//绘画选择
@@ -543,7 +537,6 @@ VOID CCardControl::DrawCardControl(CDC * pDC)
 			ImageCardSelect.DrawImage(pDC,OriginPoint.x+nXDrawPos,OriginPoint.y+nYDrawPos,SizeSelectImage.cx,SizeSelectImage.cy,0,0);
 		}
 	}
-
 	return;
 }
 
@@ -679,8 +672,6 @@ afx_msg void CCardControl::OnLButtonUp(UINT nFlags, CPoint wndPoint)
 }
 void CCardControl::OnLButtonDown(UINT nFlags, CPoint wndPoint)
 {
-
-	
 	CPoint OriPoint;
 	GetOriginPoint(OriPoint);
 	int x = wndPoint.x ;

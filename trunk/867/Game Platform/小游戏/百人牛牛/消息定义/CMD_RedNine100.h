@@ -11,16 +11,8 @@
 //状态定义
 #define	GS_PLACE_JETTON				GS_PLAYING							//下注状态
 #define	GS_GAME_END					GS_PLAYING+1						//结束状态
-#define	GS_MOVECARD_END				GS_PLAYING+2						//结束状态
 
 //区域索引
-//#define ID_SHUN_MEN					1									//顺门
-//#define ID_DUI_MEN					2									//对门
-//#define ID_DAO_MEN					3									//倒门
-//#define ID_JIAO_L					4									//左边角
-//#define ID_QIAO						5									//桥
-//#define ID_JIAO_R					6									//右边角
-
 #define ID_TIAN_MEN					1									//顺门
 #define ID_DI_MEN					2									//左边角
 #define ID_XUAN_MEN					3									//桥
@@ -32,11 +24,8 @@
 #define DUI_MEN_INDEX				2									//对门索引
 #define DAO_MEN_INDEX				3									//倒门索引
 #define HUAN_MEN_INDEX				4									//倒门索引
-
 #define AREA_COUNT					4									//区域数目
 
-//赔率定义
-#define RATE_TWO_PAIR				12									//对子赔率
 
 //记录信息
 struct tagServerGameRecord

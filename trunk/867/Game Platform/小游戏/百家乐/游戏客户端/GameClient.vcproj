@@ -149,6 +149,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\DirectSound.cpp">
+			</File>
+			<File
 				RelativePath=".\GameClient.cpp">
 			</File>
 			<File
@@ -200,6 +203,9 @@
 			</File>
 			<File
 				RelativePath=".\CMyListCtrl.h">
+			</File>
+			<File
+				RelativePath=".\DirectSound.h">
 			</File>
 			<File
 				RelativePath=".\GameClient.h">

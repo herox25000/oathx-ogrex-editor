@@ -7,6 +7,8 @@
 //时间标识
 #define IDI_PLACE_JETTON			100									//下注时间
 #define IDI_TIME_FREE				101									//空闲时间
+#define IDI_TIME_KAIPAI				102									//开牌阶段
+
 #define IDI_DISPATCH_CARD			301									//发牌时间
 #define IDI_SHOW_GAME_RESULT		302									//显示结果
 
@@ -70,7 +72,11 @@ bool CGameClientDlg::InitGameFrame()
 	HICON hIcon=LoadIcon(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDR_MAINFRAME));
 	SetIcon(hIcon,TRUE);
 	SetIcon(hIcon,FALSE);
-
+	//加载声音
+	VERIFY(m_DTSDBackground.Create(TEXT("BACK_GROUND")));
+	VERIFY(m_DTSDCheer[0].Create(TEXT("CHEER1")));
+	VERIFY(m_DTSDCheer[1].Create(TEXT("CHEER2")));
+	VERIFY(m_DTSDCheer[2].Create(TEXT("CHEER3")));
 	return true;
 }
 
@@ -137,6 +143,12 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 
 		//播放声音
 		PlayGameSound(AfxGetInstanceHandle(),TEXT("STOP_JETTON"));
+	}
+
+	if (IsEnableSound()) 
+	{
+		if (nTimerID==IDI_PLACE_JETTON&&nElapse<=5)
+			PlayGameSound(AfxGetInstanceHandle(),TEXT("TIME_WARIMG"));
 	}
 
 	return true;
@@ -210,10 +222,8 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			//效验数据
 			ASSERT(wDataSize==sizeof(CMD_S_StatusFree));
 			if (wDataSize!=sizeof(CMD_S_StatusFree)) return false;
-
 			//消息处理
 			CMD_S_StatusFree * pStatusFree=(CMD_S_StatusFree *)pBuffer;
-
 			//庄家变量
 			m_lApplyBankerCondition = pStatusFree->lApplyBankerCondition;			
 
@@ -264,7 +274,8 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			m_GameClientView.m_bstate = Status_Free;
 
 			//播放声音
-			//PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
+			if (IsEnableSound()) m_DTSDBackground.Play(0,true);
+			else m_DTSDBackground.Stop();
 
 			//设置时间
 			SetGameTimer(GetMeChairID(),IDI_TIME_FREE, pStatusFree->cbTimeLeave);
@@ -330,7 +341,8 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			m_GameClientView.m_bstate = Status_Jetton;
 
 			//播放声音
-			PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
+			if (IsEnableSound()) m_DTSDBackground.Play(0,true);
+			else m_DTSDBackground.Stop();
 
 			//设置时间
 			SetGameTimer(GetMeChairID(),IDI_PLACE_JETTON, pStatusFree->cbTimeLeave);
@@ -392,17 +404,19 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			m_GameClientView.PlaceUserJetton(ID_ZHUANG_TIAN_WANG,pStatusPlay->lBankerKingScore);
 
 			//播放声音
-			PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
 			m_GameClientView.m_bstate = Status_DisCard;
 
-			//发送扑克
-			DispatchUserCard(pStatusPlay->cbTableCardArray[INDEX_PLAYER],pStatusPlay->cbCardCount[INDEX_PLAYER],
+			//显示扑克
+			ShowCardOnEnd(pStatusPlay->cbTableCardArray[INDEX_PLAYER],pStatusPlay->cbCardCount[INDEX_PLAYER],
 				pStatusPlay->cbTableCardArray[INDEX_BANKER],pStatusPlay->cbCardCount[INDEX_BANKER]);
 
-			//禁用按钮
-			m_GameClientView.m_btApplyBanker.EnableWindow( FALSE );
-			m_GameClientView.m_btCancelBanker.EnableWindow( FALSE );
-
+			//播放声音
+			if (IsEnableSound()) m_DTSDBackground.Play(0,true);
+			else m_DTSDBackground.Stop();
+			//更新控制
+			UpdateButtonContron();
+			//设置时间
+			SetGameTimer(GetMeChairID(),IDI_TIME_KAIPAI, pStatusPlay->cbTimeLeave);
 			return true;
 		}
 	}
@@ -442,6 +456,12 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 
 	//环境设置
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
+	//停止声音
+	for (int i=0; i<CountArray(m_DTSDCheer); ++i)
+		m_DTSDCheer[i].Stop();
+
+	//设置时间
+	SetGameTimer(GetMeChairID(),IDI_TIME_KAIPAI, pGameStart->cbTimeLeave);
 
 #ifdef _DEBUG
 	OutputDebugString("游戏开始\r\n");
@@ -459,9 +479,15 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 
 	//消息处理
 	CMD_S_PlaceJetton * pPlaceJetton=(CMD_S_PlaceJetton *)pBuffer;
-
 	//播放声音
-	PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
+	if (IsEnableSound()) 
+	{
+		if (pPlaceJetton->lJettonScore>=5000000)
+			PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD_EX"));
+		else 
+			PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
+		m_DTSDCheer[rand()%3].Play();
+	}
 
 	//加注界面
 	m_GameClientView.PlaceUserJetton(pPlaceJetton->cbJettonArea, pPlaceJetton->lJettonScore);
@@ -675,22 +701,22 @@ void CGameClientDlg::UpdateButtonContron()
 	//申请按钮
 	if ( ! IsLookonMode() )
 	{
-		//状态判断
-		if ( GetGameStatus()==GS_FREE ) 
-		{
+		////状态判断
+		//if ( GetGameStatus()==GS_FREE ) 
+		//{
+		//	m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
+		//	m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
+		//}
+		//else if ( GetGameStatus()==GS_SHOW_RESULT ) 
+		//{
 			m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
 			m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
-		}
-		else if ( GetGameStatus()==GS_SHOW_RESULT ) 
-		{
-			m_GameClientView.m_btCancelBanker.EnableWindow(TRUE);
-			m_GameClientView.m_btApplyBanker.EnableWindow(TRUE);
-		}
-		else
-		{
-			m_GameClientView.m_btCancelBanker.EnableWindow(FALSE);
-			m_GameClientView.m_btApplyBanker.EnableWindow(FALSE);
-		}
+		//}
+		//else
+		//{
+		//	m_GameClientView.m_btCancelBanker.EnableWindow(FALSE);
+		//	m_GameClientView.m_btApplyBanker.EnableWindow(FALSE);
+		//}
 
 		//显示判断
 		const tagUserData *pMeUserData = GetUserData( GetMeChairID() );
@@ -794,11 +820,8 @@ void CGameClientDlg::OnTimer(UINT nIDEvent)
 
 				//播放声音
 				PlayGameSound(AfxGetInstanceHandle(),TEXT("SEND_CARD"));
-
-				
 				//发牌提示
 				SetDispatchCardTips();
-
 				return;
 			}
 
@@ -835,15 +858,12 @@ void CGameClientDlg::OnTimer(UINT nIDEvent)
 			m_GameClientView.SetShowGameFlag(true);
 			m_GameClientView.m_CardControl[0].ShowWindow(SW_HIDE);
 			m_GameClientView.m_CardControl[1].ShowWindow(SW_HIDE);
-			
 			SetGameStatus(GS_SHOW_RESULT);
 			//庄家按钮
 			m_GameClientView.m_btApplyBanker.EnableWindow( TRUE );
 			m_GameClientView.m_btCancelBanker.EnableWindow( TRUE );
-
 			//播放剩余
 			PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_END"));
-
 			return;
 		}
 	case IDI_SHOW_GAME_RESULT:
@@ -866,7 +886,6 @@ LRESULT CGameClientDlg::OnPlaceJetton(WPARAM wParam, LPARAM lParam)
 {
 	//变量定义
 	BYTE cbJettonArea=(BYTE)wParam;
-	
 	__int64 lJettonScore=*(__int64*)lParam;
 
 	//庄家判断
@@ -1359,9 +1378,69 @@ bool CGameClientDlg::OnStartJetton( const void * pBuffer, WORD wDataSize )
 	m_GameClientView.m_bstate = Status_Jetton;
 	//更新控制
 	UpdateButtonContron();
+
 	//播放声音
-	PlayGameSound(AfxGetInstanceHandle(),TEXT("PLACE_JETTON"));
+	if (IsEnableSound()) 
+	{
+		PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
+		m_DTSDBackground.Play(0,true);
+	}
+	else 
+	{
+		m_DTSDBackground.Stop();
+	}
 	return true;
+}
+
+//在结束状态进入的时候显示扑克
+void CGameClientDlg::ShowCardOnEnd(BYTE cbPlayerCard[], BYTE cbPlayerCount, BYTE cbBankerCard[], BYTE cbBankerCount)
+{
+	//效验参数
+	ASSERT(cbPlayerCount<=CountArray(m_cbTableCardArray[INDEX_PLAYER]));
+	ASSERT(cbBankerCount<=CountArray(m_cbTableCardArray[INDEX_BANKER]));
+
+	//设置变量
+	m_cbSendCount[INDEX_PLAYER]=0;
+	m_cbSendCount[INDEX_BANKER]=0;
+	m_cbCardCount[INDEX_PLAYER]=cbPlayerCount;
+	m_cbCardCount[INDEX_BANKER]=cbBankerCount;
+	CopyMemory(m_cbTableCardArray[INDEX_PLAYER],cbPlayerCard,sizeof(BYTE)*cbPlayerCount);
+	CopyMemory(m_cbTableCardArray[INDEX_BANKER],cbBankerCard,sizeof(BYTE)*cbBankerCount);
+	m_GameClientView.m_CardControl[INDEX_PLAYER].SetCardData(m_cbTableCardArray[INDEX_PLAYER],cbPlayerCount);
+	m_GameClientView.m_CardControl[INDEX_BANKER].SetCardData(m_cbTableCardArray[INDEX_BANKER],cbBankerCount);
+	m_GameClientView.SetDispatchCardFalg(true);	
+
+	//获取牌点
+	BYTE cbPlayerNum=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_PLAYER],m_cbCardCount[INDEX_PLAYER]);
+	BYTE cbBankerNum=m_GameLogic.GetCardListPip(m_cbTableCardArray[INDEX_BANKER],m_cbCardCount[INDEX_BANKER]);
+	//设置胜方
+	BYTE cbWinnerSide=ID_PING_JIA, cbKingWinner=0;
+	DeduceWinner(cbWinnerSide, cbKingWinner);
+	//胜利字符
+	TCHAR szGameResult[256]=TEXT("");
+	LPCTSTR pszWinnerSide[]={TEXT("闲胜"),TEXT("平胜"),TEXT("庄胜")};
+	int nIndex = 0;
+	if (cbPlayerNum>cbBankerNum) nIndex = 0;
+	else if (cbBankerNum>cbPlayerNum) nIndex = 2;
+	else nIndex = 1;
+	_sntprintf(szGameResult,CountArray(szGameResult),TEXT("闲：%d点，庄：%d点，%s"),cbPlayerNum, cbBankerNum, pszWinnerSide[nIndex]);
+	m_strDispatchCardTips += szGameResult;
+	m_GameClientView.SetDispatchCardTips(m_strDispatchCardTips);
+	//设置界面
+	m_GameClientView.SetWinnerSide(szGameResult,cbWinnerSide,cbKingWinner);
+	m_GameClientView.SetDispatchCardFalg(false);
+	//设置时间
+	m_nShowResultTime = 15;
+	SetTimer(IDI_SHOW_GAME_RESULT, 1000, NULL);
+	m_GameClientView.SetShowGameFlag(true);
+	m_GameClientView.m_CardControl[0].ShowWindow(SW_HIDE);
+	m_GameClientView.m_CardControl[1].ShowWindow(SW_HIDE);
+	SetGameStatus(GS_SHOW_RESULT);
+	//庄家按钮
+	m_GameClientView.m_btApplyBanker.EnableWindow( TRUE );
+	m_GameClientView.m_btCancelBanker.EnableWindow( TRUE );
+	//播放剩余
+	PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_END"));
 }
 
 //////////////////////////////////////////////////////////////////////////

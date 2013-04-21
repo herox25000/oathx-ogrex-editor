@@ -2,7 +2,7 @@
 
 #include "Stdafx.h"
 #include "GameClientView.h"
-
+#include "DirectSound.h"
 //////////////////////////////////////////////////////////////////////////
 
 //游戏对话框
@@ -56,7 +56,10 @@ protected:
 protected:
 	CGameLogic						m_GameLogic;						//游戏逻辑
 	CGameClientView					m_GameClientView;					//游戏视图
-	
+	//声音资源
+protected:
+	CDirectSound					m_DTSDBackground;					//背景音乐
+	CDirectSound					m_DTSDCheer[3];						//背景音乐	
 	//函数定义
 public:
 	//构造函数
@@ -117,6 +120,8 @@ protected:
 	void SetDispatchCardTips();
 	//推断赢家
 	void DeduceWinner(WORD &cbWinner);
+	//开牌阶段时候进入现实扑克
+	void ShowCardOnEnd(BYTE cbBankerCard[],BYTE cbPlayerCard1[],BYTE cbPlayerCard2[],BYTE cbPlayerCard3[],BYTE cbPreCard[]);
 
 	//消息映射
 protected:

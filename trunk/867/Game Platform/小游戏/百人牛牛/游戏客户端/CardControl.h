@@ -72,15 +72,15 @@ struct TMoveCard
 class CCardControl
 {
 public:
-		CPoint							m_MovePoint;
-		CPoint							m_DownPoint;
-		TMoveCard						m_tMoveCard;
-		bool							m_blAuto;
-		bool							m_blGameEnd;
-		bool							m_blhideOneCard;
-		bool							m_blAdd;
-		bool							m_blShowResult;
-		bool							m_blShowLineResult;
+	CPoint							m_MovePoint;
+	CPoint							m_DownPoint;
+	TMoveCard						m_tMoveCard;
+	bool							m_blAuto;
+	bool							m_blGameEnd;
+	bool							m_blhideOneCard;
+	bool							m_blAdd;
+	bool							m_blShowResult;
+	bool							m_blShowLineResult;
 
 	//×´Ì¬±äÁ¿
 protected:

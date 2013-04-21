@@ -141,6 +141,7 @@ struct CMD_S_StatusFree
 //游戏状态
 struct CMD_S_StatusPlay
 {
+	BYTE                            cbTimeLeave;						//剩余时间
 	__int64							lCellScore;							//最大单元下注
 	//下注信息
 	__int64							lTieScore;							//买平总注
@@ -174,10 +175,10 @@ struct CMD_S_StatusPlay
 //游戏开始
 struct CMD_S_GameStart
 {
+	BYTE							cbTimeLeave;
 	BYTE							cbCardCount[2];						//扑克数目
     BYTE							cbTableCardArray[2][3];				//桌面扑克
 	__int64							lApplyBankerCondition;				//申请条件
-
 	//庄家信息
 	WORD							wBankerChairID;						//庄家号码
 	__int64							lBankerScore;						//庄家积分
