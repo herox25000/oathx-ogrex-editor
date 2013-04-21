@@ -48,6 +48,10 @@ protected:
 	//控件变量
 protected:
 	CGameClientView					m_GameClientView;					//游戏视图
+
+	int								m_iTimerStep;
+	int								m_iTotoalRun;
+	int								m_iRunIndex;
 	
 	//函数定义
 public:
@@ -94,6 +98,8 @@ protected:
 	bool OnSubGameRecord(const void * pBuffer, WORD wDataSize);
 	//游戏积分
 	bool OnSubGameScore(const void * pBuffer, WORD wDataSize);
+	//开始下注
+	bool OnSubStartJetton(const void * pBuffer, WORD wDataSize);
 
 	//功能函数
 protected:
@@ -103,6 +109,10 @@ protected:
 	bool DispatchUserCard(BYTE cbAnimalBox);
 	//推断赢家
 	BYTE DeduceWinner();
+	
+	void StartRunCar(int iTimer);
+	void RuningCar(int iTimer);
+	void FinishDispatchCard();
 
 	//消息映射
 protected:

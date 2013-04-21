@@ -127,7 +127,6 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_lMeCurGameReturnScore=0L;	
 	m_lBankerCurGameScore=0L;		
 	m_bPlayAnimal =false;
-	m_bShowKXF =false;
 	m_cbAnimalBox=0;
 	m_cbNowAnimalBox=0;
 
@@ -168,6 +167,7 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_cbBankerTime = 0;			
 	m_lBankerWinScore = 0;		
 	m_lBankerTreasure=0;
+	m_bstate = 0;
 
 	//加载位图
 	HINSTANCE hInstance=AfxGetInstanceHandle();
@@ -241,7 +241,7 @@ int CGameClientView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btApplyUp.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_APPLY_UP);
 	m_btApplyDown.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_APPLY_DOWN);
 
-	m_btGetMoney.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_GET_MONEY);
+	m_btGetMoney.Create(NULL,WS_CHILD|WS_VISIBLE,rcCreate,this,IDC_GET_MONEY);
 //	m_btStoreMoney.Create(NULL,WS_CHILD|WS_VISIBLE|WS_DISABLED,rcCreate,this,IDC_STORE_MONEY);
 
 	//设置按钮
@@ -297,7 +297,6 @@ void CGameClientView::ResetGameView()
 	m_lBankerTreasure=0;
 
 	m_bPlayAnimal =false;
-	m_bShowKXF =false;
 	m_cbAnimalBox=0;
 	m_cbNowAnimalBox=0;
 
@@ -340,8 +339,16 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	HDWP hDwp=BeginDeferWindowPos(32);
 	const UINT uFlags=SWP_NOACTIVATE|SWP_NOZORDER|SWP_NOCOPYBITS;
 
+	m_ApplyUser.m_viewHandle = m_hWnd;
 	//列表控件
 	DeferWindowPos(hDwp, m_ApplyUser,NULL, nWidth/2+188,nHeight/2-336,180,42,uFlags);	//193,58
+	//庄家列表按钮
+	DeferWindowPos(hDwp,m_btApplyUp,NULL,nWidth/2+282,nHeight/2-294,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_btApplyDown,NULL,nWidth/2+322,nHeight/2-294,0,0,uFlags|SWP_NOSIZE);
+	m_btApplyUp.ShowWindow(SW_HIDE);
+	m_btApplyUp.EnableWindow(true);
+	m_btApplyDown.ShowWindow(SW_HIDE);
+	m_btApplyDown.EnableWindow(true);
 
 	//筹码按钮
 	CRect rcJetton;
@@ -360,15 +367,13 @@ void CGameClientView::RectifyGameView(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btApplyBanker,NULL,nWidth/2+188,nHeight/2-295,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btCancelBanker,NULL,nWidth/2+188,nHeight/2-295,0,0,uFlags|SWP_NOSIZE);
 
-	//庄家列表按钮
-	DeferWindowPos(hDwp,m_btApplyUp,NULL,nWidth/2+282,nHeight/2-294,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_btApplyDown,NULL,nWidth/2+322,nHeight/2-294,0,0,uFlags|SWP_NOSIZE);
-
 	DeferWindowPos(hDwp,m_btScoreMoveL,NULL,nWidth/2-186,nHeight/2+318,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btScoreMoveR,NULL,nWidth/2+165,nHeight/2+318,0,0,uFlags|SWP_NOSIZE);
 
 	//DeferWindowPos(hDwp,m_btStoreMoney,NULL,nWidth/2+202,nYPos-2,0,0,uFlags|SWP_NOSIZE);
 	DeferWindowPos(hDwp,m_btGetMoney,NULL,nWidth/2+202,nYPos+43,0,0,uFlags|SWP_NOSIZE);
+	m_btGetMoney.ShowWindow(SW_SHOW);
+	m_btGetMoney.EnableWindow(TRUE);
 
 	//结束移动
 	EndDeferWindowPos(hDwp);
@@ -592,8 +597,6 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	DrawDesktopJetton(pDC);
 	
 	DrawMeJettonNumber(pDC);
-
-	
 
 	//绘画时间
 	if (m_wMeChairID!=INVALID_CHAIR)
@@ -1602,9 +1605,9 @@ void CGameClientView::DrawTimeFlag(CDC *pDC, int nWidth, int nHeight)
 // 	else
 // 		m_ImageTimeFlag.BitBlt(pDC->GetSafeHdc(), nWidth/2-98, nHeight/2-192, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 0, 0);
 
-	if ( bDispatchCard ) 
+	if ( m_bstate == Status_DisCard ) 
 		m_ImageTimeFlag.DrawImage(pDC, nWidth/2-106, nHeight/2-200, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 2 * nTimeFlagWidth, 0);
-	else if ( m_wCurrentBankerChairID != INVALID_CHAIR )
+	else if ( m_bstate == Status_Jetton )
 		m_ImageTimeFlag.DrawImage(pDC, nWidth/2-106, nHeight/2-200, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), nTimeFlagWidth, 0);
 	else
 		m_ImageTimeFlag.DrawImage(pDC, nWidth/2-106, nHeight/2-200, nTimeFlagWidth, m_ImageTimeFlag.GetHeight(), 0, 0);
@@ -1641,12 +1644,25 @@ void CGameClientView::DrawShowChangeBanker(CDC *pDC, int nWidth, int nHeight)
 
 void CGameClientView::OnApplyUp()
 {
-
+	m_ApplyUser.m_AppyUserList.SendMessage(WM_VSCROLL, MAKELONG(SB_LINEUP,0),NULL);
+	m_ApplyUser.m_AppyUserList.Invalidate(TRUE);
+	double nPos = m_ApplyUser.m_AppyUserList.GetScrollPos(SB_VERT);
+	double nMax = m_ApplyUser.m_AppyUserList.GetScrollLimit(SB_VERT);
 }
 
 void CGameClientView::OnApplyDown()
 {
-
+	double nPos = m_ApplyUser.m_AppyUserList.GetScrollPos(SB_VERT);
+	if(m_ApplyUser.m_AppyUserList.GetItemCount()>4)
+	{
+		if(nPos>m_ApplyUser.m_AppyUserList.GetItemCount()-5)
+		{
+			return ;
+		}
+	}
+	m_ApplyUser.m_AppyUserList.SendMessage(WM_VSCROLL, MAKELONG(SB_LINEDOWN,0),NULL);
+	m_ApplyUser.m_AppyUserList.Invalidate(TRUE);
+	double nMax = m_ApplyUser.m_AppyUserList.GetScrollLimit(SB_VERT);
 }
 
 void CGameClientView::OnGetMoneyFromBank()
@@ -1661,7 +1677,7 @@ void CGameClientView::OnStoreMoneyToBank()
 
 void CGameClientView::DrawRandAnimal(CDC *pDC, int nWidth, int nHeight)
 {
-	if (m_bShowKXF == false)
+	if (m_bstate == Status_DisCard)
 		return;
 	LONG xCenter=nWidth/2;
 	LONG yCenter=nHeight/2;
@@ -1689,5 +1705,9 @@ __int64 CGameClientView::CalcAllJetton()
 		+m_lAllSmlBogScore+m_lAllBigHorseScore+m_lAllSmlHorseScore+m_lAllBigSnakeScore+m_lAllSmlSnakeScore;
 	return uAllScoreCount;
 }
+
+
+
+
 //////////////////////////////////////////////////////////////////////////
 

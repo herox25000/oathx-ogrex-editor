@@ -165,6 +165,8 @@ protected:
 	bool OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int64 lJettonScore);
 	//申请庄家
 	bool OnUserApplyBanker( tagServerUserData *pUserData, bool bApplyBanker );
+	//开始下注
+	bool OnEventStartPlaceJetton();
 
 	//辅助函数
 private:

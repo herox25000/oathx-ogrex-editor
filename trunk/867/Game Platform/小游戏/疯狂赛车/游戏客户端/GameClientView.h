@@ -17,6 +17,10 @@
 //历史记录
 #define MAX_SCORE_HISTORY			256									//历史个数
 
+#define Status_DisCard				1
+#define Status_Free					2
+#define Status_Jetton				3
+
 //////////////////////////////////////////////////////////////////////////
 //结构定义
 
@@ -107,7 +111,6 @@ public:
 	__int64							m_lBankerCurGameScore;				//返还积分
 	bool							m_bShowGameResult;					//显示积分
 	bool							m_bPlayAnimal;						//显示积分
-	bool							m_bShowKXF;							//显示可下分
 	__int64							m_cbAnimalBox;
 	__int64							m_cbNowAnimalBox;
 
@@ -164,6 +167,9 @@ protected:
 	CSkinImage						m_ImageCard;						//图片资源
 	CPngImage						m_pngCHART_XIAN;
 	CPngImage						m_pngCHART_XIAN_EX;
+
+public:
+	BYTE							m_bstate;							//当前游戏状态
 
 	//函数定义
 public:
