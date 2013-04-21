@@ -114,7 +114,7 @@ void CConfigDialog::OnAplyConfig()
 		pApp->nMinScore		= _atoi64(buffer.GetBuffer());
 
 		GetDlgItemText(IDC_EDIT18,	buffer);
-		pApp->nMinScore		= _atoi64(buffer.GetBuffer());
+		pApp->nMaxScore		= _atoi64(buffer.GetBuffer());
 	}
 }
 
