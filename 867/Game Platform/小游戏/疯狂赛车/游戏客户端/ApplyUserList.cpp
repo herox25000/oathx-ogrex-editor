@@ -6,6 +6,7 @@
 
 BEGIN_MESSAGE_MAP(CApplyUser, CDialog)
 	ON_WM_SIZE()
+	ON_MESSAGE(WM_LBTUP,OnLBtUp)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
@@ -13,13 +14,16 @@ END_MESSAGE_MAP()
 //构造函数
 CApplyUser::CApplyUser() : CDialog(IDD_DLG_GAME_RECORD)
 {
+	m_viewHandle = NULL;
 }
 
 //析构函数
 CApplyUser::~CApplyUser()
 {
 }
-
+void CApplyUser::MySetRect(CRect aRect)
+{
+}
 //控件绑定
 void CApplyUser::DoDataExchange(CDataExchange * pDX)
 {
@@ -47,6 +51,20 @@ BOOL CApplyUser::OnInitDialog()
 	
 	m_AppyUserList.SetTextBkColor(-1);
 	m_AppyUserList.SetTextColor(RGB(232, 245, 3));
+
+	SCROLLINFO info;
+	info.cbSize = 20;
+	info.fMask = 3;
+	info.nMax = 200;
+	info.nMin  = 4;
+	info.nPage = 1;
+	info.nPos = 0;
+	info.nTrackPos = 8;
+	CRect windowRect;
+	GetWindowRect(&windowRect);
+	CWnd* pParent = GetParent();
+	m_AppyUserList.Init(m_OrtRect,pParent);
+	m_AppyUserList.m_viewHandle  = m_hWnd;
 
 	//插入列表
 	m_AppyUserList.InsertColumn(0,TEXT("申请玩家"),LVCFMT_LEFT,100);
@@ -131,4 +149,16 @@ void CApplyUser::ClearAll()
 {
 	m_AppyUserList.DeleteAllItems();
 }
+
+int CApplyUser::GetItemCount()
+{
+	return m_AppyUserList.GetItemCount();
+}
+
+LRESULT CApplyUser::OnLBtUp( WPARAM wParam,LPARAM lParam )
+{
+	::SendMessage(m_viewHandle,WM_VIEWLBTUP,wParam,lParam);
+	return 1;
+}
+
 //////////////////////////////////////////////////////////////////////////

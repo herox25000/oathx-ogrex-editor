@@ -69,7 +69,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="../../../运行/Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			UseOfMFC="2"
@@ -137,6 +137,15 @@
 				RelativePath=".\ApplyUserList.cpp">
 			</File>
 			<File
+				RelativePath=".\CMyListCtrl.cpp">
+				<FileConfiguration
+					Name="Release|Win32">
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"/>
+				</FileConfiguration>
+			</File>
+			<File
 				RelativePath=".\GameClient.cpp">
 			</File>
 			<File
@@ -179,6 +188,9 @@
 			</File>
 			<File
 				RelativePath="..\消息定义\CMD_Tiger.h">
+			</File>
+			<File
+				RelativePath=".\CMyListCtrl.h">
 			</File>
 			<File
 				RelativePath=".\GameClient.h">

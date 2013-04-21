@@ -75,6 +75,7 @@ struct tagServerGameRecord
 #define SUB_S_SEND_RECORD			106									//游戏记录
 #define SUB_S_PLACE_JETTON_FAIL		107									//下注失败
 #define SUB_S_GAME_SCORE			108									//发送积分
+#define SUB_S_StartJetton			109									//开始下注
 
 //失败结构
 struct CMD_S_PlaceJettonFail
@@ -254,6 +255,12 @@ struct CMD_S_GameScore
 	__int64							lMeSmlHorseScore;					//我买小马总注
 	__int64							lMeBigSnakeScore;					//我买大蛇总注
 	__int64							lMeSmlSnakeScore;					//我买小蛇总注
+};
+
+//开始下注
+struct CMD_S_JettonStart
+{
+	BYTE							cbTimeLeave;						//剩余时间
 };
 
 //////////////////////////////////////////////////////////////////////////
