@@ -1,0 +1,304 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\HKFiveAndroid.rc2""  // 非 Microsoft Visual C++ 编辑过的资源\r\n"
+    "#include ""afxres.rc""         // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\HKFive.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOGEX 0, 0, 235, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "关于 HKFiveAndroid"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "HKFiveAndroid Version 1.0",IDC_STATIC,40,10,119,8,SS_NOPREFIX
+    LTEXT           "Copyright (C) 2013",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "确定",IDOK,178,7,50,16,WS_GROUP
+END
+
+IDD_SMALLNINE_DIALOG DIALOGEX 0, 0, 415, 343
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_MINIMIZEBOX | WS_POPUP | 
+    WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "HKFiveAndroid"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "启动",IDOK,287,314,50,16
+    PUSHBUTTON      "取消",IDCANCEL,347,314,50,16
+    CONTROL         "",IDC_LIST1,"SysListView32",LVS_REPORT | LVS_SINGLESEL | 
+                    LVS_SORTASCENDING | LVS_ALIGNLEFT | WS_BORDER | 
+                    WS_TABSTOP,7,7,401,197
+    GROUPBOX        "机器人日志",IDC_STATIC,9,207,399,101
+    CONTROL         "",IDC_RICHEDIT21,"RichEdit20A",ES_MULTILINE | 
+                    ES_AUTOVSCROLL | ES_AUTOHSCROLL | WS_BORDER | WS_VSCROLL | 
+                    WS_TABSTOP,14,221,387,81
+    PUSHBUTTON      "配置",IDB_CONFIG,228,314,50,16
+    PUSHBUTTON      "高级",IDB_ADVANCED,171,314,50,16
+    PUSHBUTTON      "刷新列表",IDB_UPDATE,110,314,50,16
+END
+
+IDD_DIALOG_CONFIG DIALOGEX 0, 0, 414, 247
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "应用",IDOK,215,221,50,14
+    PUSHBUTTON      "取消",IDCANCEL,272,220,50,14
+    GROUPBOX        "登录配置",IDC_STATIC,7,7,400,47
+    LTEXT           "IP地址",IDC_STATIC,15,20,26,11
+    EDITTEXT        IDC_EDIT1,47,19,71,12,ES_AUTOHSCROLL
+    RTEXT           "端口",IDC_STATIC,126,20,20,10
+    EDITTEXT        IDC_EDIT2,151,19,36,12,ES_AUTOHSCROLL
+    LTEXT           "登录密码",IDC_STATIC,191,20,34,11
+    EDITTEXT        IDC_EDIT3,225,18,133,12,ES_AUTOHSCROLL
+    GROUPBOX        "庄家配置",IDC_STATIC,7,57,400,33
+    RTEXT           "上庄概率",IDC_STATIC,12,72,50,11
+    EDITTEXT        IDC_EDIT7,66,71,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "赢钱上限",IDC_STATIC,106,72,36,10
+    EDITTEXT        IDC_EDIT9,144,70,113,12,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "时间配置",IDC_STATIC,7,93,400,49
+    LTEXT           "最小在线时间",IDC_STATIC,13,108,50,11
+    EDITTEXT        IDC_EDIT10,66,107,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "最大在线时间",IDC_STATIC,12,124,51,9
+    EDITTEXT        IDC_EDIT11,65,123,34,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "最小考虑时间",IDC_STATIC,109,108,52,10
+    EDITTEXT        IDC_EDIT12,166,107,43,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "最大考虑时间",IDC_STATIC,110,124,52,10
+    EDITTEXT        IDC_EDIT13,166,122,44,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "押注比例",IDC_STATIC,26,163,35,10
+    EDITTEXT        IDC_EDIT14,66,162,33,12,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "押注配置",IDC_STATIC,7,148,400,34
+    LTEXT           "起始ID",IDC_STATIC,14,38,25,11
+    EDITTEXT        IDC_EDIT4,47,37,71,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "结束ID",IDC_STATIC,123,38,24,10
+    EDITTEXT        IDC_EDIT5,151,37,35,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "在线人数",IDC_STATIC,191,37,34,11
+    EDITTEXT        IDC_EDIT6,225,34,133,12,ES_AUTOHSCROLL | ES_NUMBER
+    PUSHBUTTON      "加载",IDB_LOADCONFIG,103,221,50,14
+    PUSHBUTTON      "保存",IDB_SAVECONFIG,158,221,50,14
+    LTEXT           "起始桌子编号",IDC_STATIC,14,199,53,10
+    EDITTEXT        IDC_EDIT15,69,197,22,12,ES_AUTOHSCROLL | ES_NUMBER
+    GROUPBOX        "桌子配置",IDC_STATIC,7,183,400,33
+    LTEXT           "结束桌子编号",IDC_STATIC,96,199,52,10
+    EDITTEXT        IDC_EDIT16,149,197,24,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "最小金钱",IDC_STATIC,183,199,35,10
+    EDITTEXT        IDC_EDIT17,219,197,71,12,ES_AUTOHSCROLL | ES_NUMBER
+    LTEXT           "最大金钱",IDC_STATIC,296,199,35,10
+    EDITTEXT        IDC_EDIT18,332,197,71,12,ES_AUTOHSCROLL | ES_NUMBER
+END
+
+IDD_DIALOG_BANKER DIALOGEX 0, 0, 186, 55
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,38,31,50,14
+    PUSHBUTTON      "取消",IDCANCEL,105,31,50,14
+    EDITTEXT        IDC_EDIT_BANKER,56,11,113,13,ES_AUTOHSCROLL
+    LTEXT           "存入金额：",IDC_STATIC_BANKER,10,13,42,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "CompanyName", "TODO: <公司名>"
+            VALUE "FileDescription", "TODO: <文件说明>"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "HKFive.exe"
+            VALUE "LegalCopyright", "TODO: (C) <公司名>。保留所有权利。"
+            VALUE "OriginalFilename", "HKFive.exe"
+            VALUE "ProductName", "TODO: <产品名>"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "翻译", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_SMALLNINE_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 408
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 336
+    END
+
+    IDD_DIALOG_CONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 407
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 240
+    END
+
+    IDD_DIALOG_BANKER, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_MENU_ANDROID MENU 
+BEGIN
+    POPUP ""
+    BEGIN
+        MENUITEM "下线",                        ID__32773
+        MENUITEM "存钱",                        ID__32774
+        MENUITEM "取钱",                        ID__
+        MENUITEM "明细",                        ID__32776
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 HKFive(&A)..."
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\HKFive.rc2"  // 非 Microsoft Visual C++ 编辑过的资源
+#include "afxres.rc"         // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
