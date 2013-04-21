@@ -262,7 +262,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				if (pIServerUserItem) 
 				{
 					//积分判断
-					if ( pIServerUserItem->GetUserScore()->lScore < m_lApplyBankerCondition )
+					if ( pIServerUserItem->GetUserScore()->lScore < m_lApplyBankerCondition || m_cbBankerTimer >= 20 )
 					{
 						//玩家下庄
 						OnUserApplyBanker( pIServerUserItem->GetUserData(), false );
@@ -280,9 +280,21 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//胜利类型
 			__int64	allZhu=0;
 			if ( pIServerUserItem->GetUserID()==m_CurrentBanker.dwUserID ) //庄家强退
+			{
 				allZhu=Get_ALL_MultiDesktopScore();
+			}
 			else
-				allZhu=Get_User_DesktopScore(wChairID);
+			{
+				//在押注状态下，可以退出不扣分
+				if (m_pITableFrame->GetGameStatus() == GS_FREE + 1)
+				{
+					JettonChangeByUserLeft( wChairID, pIServerUserItem);
+				}
+				else
+				{
+					allZhu=Get_User_DesktopScore(wChairID);
+				}
+			}
 
 			if ( allZhu>0 )
 			{
@@ -583,12 +595,13 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 				SendChangeBankerMsg();
 
 				//删除庄家
-				if ( pServerUserItem ) OnUserApplyBanker( pServerUserItem->GetUserData(), false );
+				if ( pServerUserItem ) 
+					OnUserApplyBanker( pServerUserItem->GetUserData(), false );
 			}
 
 			//设置时间
 			m_dwJettonTime=(DWORD)time(NULL);
-			m_pITableFrame->SetGameTimer(IDI_GAME_FREE, TIME_FREE*1000, 1, 0L);
+			m_pITableFrame->SetGameTimer(IDI_GAME_FREE, TIME_FREE*1000L, 1, 0L);
 			m_pITableFrame->SetGameStatus(GS_FREE);
 
 			//轮换庄家
@@ -684,7 +697,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 	//记录成绩
 	if ( bLookonUser==false )
 	{
-		if ( m_pITableFrame->GetGameStatus() != GS_FREE ||  m_pITableFrame->GetGameStatus() != GS_PLAYING)
+		if ( m_pITableFrame->GetGameStatus() != GS_PLAYING )
 		{
 			OnEventGameEnd( wChairID, pIServerUserItem, GER_USER_LEFT);
 		}
@@ -713,6 +726,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 				{
 					//重置变量
 					ZeroMemory( &m_CurrentBanker, sizeof( m_CurrentBanker ) );
+					m_CurrentBanker.dwUserID=0;
 					m_cbBankerTimer=0;
 					m_lBankerWinScore=0;
 
@@ -742,7 +756,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 {
 	//效验参数
 	ASSERT( cbJettonArea>=ID_BIG_TIGER && cbJettonArea<=ID_SML_SNAKE);
-	if ( cbJettonArea<ID_BIG_TIGER || cbJettonArea>ID_SML_SNAKE ) return false;
+	if ( cbJettonArea<ID_BIG_TIGER || cbJettonArea>ID_SML_SNAKE ) 
+		return false;
 	if ( lJettonScore<=0L ) return false;
 
 	//效验状态
@@ -1411,13 +1426,13 @@ __int64 CTableFrameSink::PreCalcScore()
 	//玩家下注
 	__int64 allUserScore[MAX_ANIMAL_COUNT] =  {
 		m_lAllBigTigerScore*s_Multiple[0],	//大家买大虎总注
-			m_lAllSmlTigerScore*s_Multiple[1],	//大家买小虎总注
-			m_lAllBigBogScore  *s_Multiple[2],	//大家买大狗总注
-			m_lAllSmlBogScore  *s_Multiple[3],	//大家买大狗总注
-			m_lAllBigHorseScore*s_Multiple[4],	//大家买大马总注
-			m_lAllSmlHorseScore*s_Multiple[5],	//大家买小马总注
-			m_lAllBigSnakeScore*s_Multiple[6],	//大家买大蛇总注
-			m_lAllSmlSnakeScore*s_Multiple[7]	//大家买小蛇总注
+		m_lAllSmlTigerScore*s_Multiple[1],	//大家买小虎总注
+		m_lAllBigBogScore  *s_Multiple[2],	//大家买大狗总注
+		m_lAllSmlBogScore  *s_Multiple[3],	//大家买大狗总注
+		m_lAllBigHorseScore*s_Multiple[4],	//大家买大马总注
+		m_lAllSmlHorseScore*s_Multiple[5],	//大家买小马总注
+		m_lAllBigSnakeScore*s_Multiple[6],	//大家买大蛇总注
+		m_lAllSmlSnakeScore*s_Multiple[7]	//大家买小蛇总注
 	};
 	BYTE cbAnimal=m_cbAnimalBox%MAX_ANIMAL_COUNT;
 	//玩家下注
@@ -1447,5 +1462,50 @@ bool CTableFrameSink::OnEventStartPlaceJetton()
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_StartJetton,&JettonStart,sizeof(JettonStart));
 
 	return true;
+}
+
+void CTableFrameSink::JettonChangeByUserLeft( WORD wChairID, IServerUserItem * pIServerUserItem )
+{
+	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) 
+		return;
+
+	__int64 nBigTiger = m_lUserBigTigerScore[wChairID];
+	__int64 nSmlTiger = m_lUserSmlTigerScore[wChairID];
+	__int64 nBigBog  = m_lUserBigBogScore[wChairID];
+	__int64 nSmlBog = m_lUserSmlBogScore[wChairID];
+	__int64 nBigHorse = m_lUserBigHorseScore[wChairID];
+	__int64 nSmlHorse  = m_lUserSmlHorseScore[wChairID];
+	__int64 nBigSnake = m_lUserBigSnakeScore[wChairID];
+	__int64 nSmlSnake = m_lUserSmlSnakeScore[wChairID];
+
+	m_lAllBigTigerScore -= nBigTiger;
+	m_lAllSmlTigerScore -= nSmlTiger;
+	m_lAllBigBogScore	-= nBigBog;
+	m_lAllSmlBogScore	-= nSmlBog;
+	m_lAllBigHorseScore -= nBigHorse;
+	m_lAllSmlHorseScore -= nSmlHorse;
+	m_lAllBigSnakeScore -= nBigSnake;
+	m_lAllSmlSnakeScore -= nSmlSnake;
+
+	m_lUserBigTigerScore[wChairID] = 0;
+	m_lUserSmlTigerScore[wChairID] = 0;
+	m_lUserBigBogScore[wChairID] = 0;
+	m_lUserSmlBogScore[wChairID] = 0;
+	m_lUserBigHorseScore[wChairID] = 0;
+	m_lUserSmlHorseScore[wChairID] = 0;
+	m_lUserBigSnakeScore[wChairID] = 0;
+	m_lUserSmlSnakeScore[wChairID] = 0;
+
+// 	//变量定义
+// 	CMD_S_JettonChange JettonChange;
+// 	ZeroMemory(&JettonChange,sizeof(JettonChange));
+// 	JettonChange.lTianMenScore=nTianmen;
+// 	JettonChange.lDaoMenScore=nDaomen;
+// 	JettonChange.lShunMenScore=nShunmen;
+// 	JettonChange.lZhuangSocre=m_CurrentBanker.lUserScore; 
+// 	JettonChange.lKexiaSocre=m_CurrentBanker.lUserScore-(m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore);
+// 	//发送消息
+// 	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_JETTON_CHANGE,&JettonChange,sizeof(JettonChange));
+// 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_JETTON_CHANGE,&JettonChange,sizeof(JettonChange));
 }
 

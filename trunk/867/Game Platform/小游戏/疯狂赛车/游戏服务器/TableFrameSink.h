@@ -36,14 +36,14 @@ protected:
 
 	//下注信息
 protected:
-	__int64							m_lUserBigTigerScore[GAME_PLAYER];		//买大虎注
-	__int64							m_lUserSmlTigerScore[GAME_PLAYER];		//买小虎注
-	__int64							m_lUserBigBogScore[GAME_PLAYER];		//买大狗注
-	__int64							m_lUserSmlBogScore[GAME_PLAYER];		//买大狗注
-	__int64							m_lUserBigHorseScore[GAME_PLAYER];		//买大马注
-	__int64							m_lUserSmlHorseScore[GAME_PLAYER];		//买小马注
-	__int64							m_lUserBigSnakeScore[GAME_PLAYER];		//买大蛇注
-	__int64							m_lUserSmlSnakeScore[GAME_PLAYER];		//买小蛇注
+	__int64							m_lUserBigTigerScore[GAME_PLAYER];			//买大虎注
+	__int64							m_lUserSmlTigerScore[GAME_PLAYER];			//买小虎注
+	__int64							m_lUserBigBogScore[GAME_PLAYER];			//买大狗注
+	__int64							m_lUserSmlBogScore[GAME_PLAYER];			//买大狗注
+	__int64							m_lUserBigHorseScore[GAME_PLAYER];			//买大马注
+	__int64							m_lUserSmlHorseScore[GAME_PLAYER];			//买小马注
+	__int64							m_lUserBigSnakeScore[GAME_PLAYER];			//买大蛇注
+	__int64							m_lUserSmlSnakeScore[GAME_PLAYER];			//买小蛇注
 
 	//玩家成绩
 protected:
@@ -191,6 +191,8 @@ private:
 	//出老千
 	void ChuLaoQian();
 	__int64 PreCalcScore();
+
+	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);
 };
 
 //////////////////////////////////////////////////////////////////////////
