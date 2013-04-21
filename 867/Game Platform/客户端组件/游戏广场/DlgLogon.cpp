@@ -251,9 +251,9 @@ void CDlgRegister::OnOK()
 	GetDlgItemText(IDC_ACCOUNTS,strBuffer);
 	strBuffer.TrimLeft();
 	strBuffer.TrimRight();
-	if (strBuffer.GetLength()<4)
+	if (strBuffer.GetLength()<4 || strBuffer.GetLength() > 26 )
 	{
-		ShowInformation(TEXT("帐号名字的长度最短为 4 位字符，请重新输入注册帐号！"),0,MB_ICONQUESTION);
+		ShowInformation(TEXT("帐号名字的长度最短4个字符,最长13个字符,请重新输入注册帐号！"),0,MB_ICONQUESTION);
 		GetDlgItem(IDC_ACCOUNTS)->SetFocus();
 		return;
 	}
