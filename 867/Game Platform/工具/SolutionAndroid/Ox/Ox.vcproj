@@ -89,6 +89,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../../开发库/Lib/plugin_common.lib ../../../开发库/Lib/plugin_kernel.lib"
+				OutputFile="$(OutDir)/$(ProjectName)Android.exe"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
