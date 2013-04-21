@@ -18,9 +18,8 @@ Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 ;拷贝单目录下的文件;Source: "Lobby\*"; DestDir: "{app}"; Flags: ignoreversion
-;能拷贝目录下的子文件夹
-Source: "Lobby\541Game.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_relation.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+;能拷贝目录下的子文件夹;;;;;;;;修改日期：2013.4.21
+Source: "Lobby\541Game.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Lobby\plugin_relation.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Lobby\plugin_framework.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Lobby\plugin_network.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Lobby\plugin_downLoad.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
@@ -32,13 +31,9 @@ Source: "Lobby\plugin_channel.dll"; DestDir: "{app}"; Flags: ignoreversion recur
 Source: "Lobby\plugin_common.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Lobby\plugin_share.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Lobby\plugin_property.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Lobby\plugin_ui.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\Lobby.ini"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-
-
-Source: "Game\Baccarat.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "Lobby\Lobby.ini"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Game\Baccarat.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Game\PaiJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Game\XiaoJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-                 
+Source: "Game\XiaoJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs                
 ;Source: "Lobby\DownLoad\*"; DestDir: "{app}\DownLoad\"; Flags: recursesubdirs;Source: "Lobby\Res\*.*"; DestDir: "{app}\Res\"; Flags: recursesubdirs
 Source: "sys\AVCtrl.dll"; DestDir: "{sys}"; Flags: regserver
 Source: "sys\Audio.acm"; DestDir: "{sys}";
