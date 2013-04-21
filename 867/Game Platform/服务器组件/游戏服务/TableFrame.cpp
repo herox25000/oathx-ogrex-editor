@@ -382,11 +382,15 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 	}
 
 	//游戏状态
-	if ((m_bGameStarted==true)&&(m_pGameServiceAttrib->cbJoinInGame==FALSE))
+	if (m_pGameServiceOption->cbDistributeMode != DISTRIBUTE_MODE_NO_LOOK )
 	{
-		SendSitFailedPacket(pIServerUserItem,TEXT("游戏已经开始了，暂时不能进入游戏桌！"));
-		return false;
+		if ((m_bGameStarted==true)&&(m_pGameServiceAttrib->cbJoinInGame==FALSE))
+		{
+			SendSitFailedPacket(pIServerUserItem,TEXT("游戏已经开始了，暂时不能进入游戏桌！"));
+			return false;
+		}
 	}
+
 
 	//比赛判断
 	if (m_pGameServiceOption->wServerType==GAME_GENRE_MATCH)

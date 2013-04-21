@@ -1773,129 +1773,6 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 	case SUB_GR_USER_SIT_REQ:		//坐下桌子
 	case SUB_GR_USER_LOOKON_REQ:	//旁观桌子
 		{
-			////变量定义
-			//CMD_GR_UserSitReq * pUserSitReq=(CMD_GR_UserSitReq *)pData;
-			//WORD wHeadSize=sizeof(CMD_GR_UserSitReq)-sizeof(pUserSitReq->szTablePass);
-
-			////效验数据
-			//ASSERT((wDataSize>=wHeadSize)&&(wDataSize<=sizeof(CMD_GR_UserSitReq)));
-			//if ((wDataSize<wHeadSize)||(wDataSize>sizeof(CMD_GR_UserSitReq))) return false;
-			//ASSERT((wHeadSize+pUserSitReq->cbPassLen)==wDataSize);
-			//if ((wHeadSize+pUserSitReq->cbPassLen)!=wDataSize) return false;
-
-			////判断位置
-			//if ((pUserSitReq->wChairID>=m_pGameServiceAttrib->wChairCount)&&(pUserSitReq->wChairID!=INVALID_CHAIR)) return false;
-			//if ((pUserSitReq->wTableID>=m_pGameServiceOption->wTableCount)&&(pUserSitReq->wTableID!=INVALID_TABLE)) return false;
-
-			////获取用户
-			//IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
-			//if (pIServerUserItem==NULL) return false;
-			//tagServerUserData * pUserData=pIServerUserItem->GetUserData();
-
-			////随机位置
-			//if ((wSubCmdID==SUB_GR_USER_SIT_REQ)&&(m_pGameServiceOption->cbHideUserInfo==TRUE))
-			//{
-			//	//离开位置
-			//	if (pUserData->wTableID!=INVALID_TABLE)
-			//	{
-			//		CTableFrame * pTableFrame=(m_pTableFrame+pUserData->wTableID);
-			//		if (pTableFrame->IsUserPlaying(pIServerUserItem)==true)
-			//		{
-			//			//构造数据
-			//			CMD_GR_SitFailed SitFailed;
-			//			memset(&SitFailed,0,sizeof(SitFailed));
-			//			_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("你正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
-
-			//			//发送数据
-			//			WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
-			//			SendData(pIServerUserItem,MDM_GR_USER,SUB_GR_SIT_FAILED,&SitFailed,wSendSize);
-
-			//			return true;
-			//		}
-			//		pTableFrame->PerformStandUpAction(pIServerUserItem);
-			//	}
-
-			//	//坐下位置
-			//	for (INT_PTR i=1;i<m_pGameServiceOption->wTableCount;i++)
-			//	{
-			//		//获取桌子
-			//		CTableFrame * pTableFrame=(m_pTableFrame+i);
-			//		if (pTableFrame->IsGameStarted()==true) continue;
-
-			//		//坐下处理
-			//		WORD wChairID=pTableFrame->GetNullChairID();
-			//		if (wChairID!=INVALID_CHAIR)
-			//		{
-			//			if (pTableFrame->PerformSitDownAction(wChairID,pIServerUserItem,NULL)==true) return true;
-			//			return true;
-			//		}
-			//	}
-
-			//	//构造数据
-			//	CMD_GR_SitFailed SitFailed;
-			//	ZeroMemory(&SitFailed,sizeof(SitFailed));
-			//	_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("暂时没有能够加入的游戏桌，请稍后！"));
-
-			//	//发送数据
-			//	WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
-			//	SendData(pIServerUserItem,MDM_GR_USER,SUB_GR_SIT_FAILED,&SitFailed,wSendSize);
-
-			//	return true;
-			//}
-
-			////旁观设置
-			//if ((wSubCmdID==SUB_GR_USER_LOOKON_REQ)&&(m_pGameServiceOption->cbUnLookOnTag==TRUE))
-			//{
-			//	//构造数据
-			//	CMD_GR_SitFailed SitFailed;
-			//	memset(&SitFailed,0,sizeof(SitFailed));
-			//	_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("本房间限制了旁观游戏!"),pUserData->wTableID+1);
-
-			//	//发送数据
-			//	WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
-			//	SendData(pIServerUserItem,MDM_GR_USER,SUB_GR_SIT_FAILED,&SitFailed,wSendSize);
-
-			//	return true;
-			//}
-
-			////处理过虑
-			//if ((pUserData->wTableID==pUserSitReq->wTableID)&&(pUserData->wChairID==pUserSitReq->wChairID))
-			//{
-			//	if ((pUserData->cbUserStatus!=US_LOOKON)&&(wSubCmdID==SUB_GR_USER_SIT_REQ)) return true;
-			//	if ((pUserData->cbUserStatus==US_LOOKON)&&(wSubCmdID==SUB_GR_USER_LOOKON_REQ)) return true;
-			//}
-
-			////离开位置
-			//if (pUserData->wTableID!=INVALID_TABLE)
-			//{
-			//	CTableFrame * pTableFrame=(m_pTableFrame+pUserData->wTableID);
-			//	if (pTableFrame->IsUserPlaying(pIServerUserItem)==true)
-			//	{
-			//		//构造数据
-			//		CMD_GR_SitFailed SitFailed;
-			//		memset(&SitFailed,0,sizeof(SitFailed));
-			//		_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe),TEXT("你正在的 [ %d ] 号游戏桌游戏，暂时不能离开位置！"),pUserData->wTableID+1);
-
-			//		//发送数据
-			//		WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
-			//		SendData(pIServerUserItem,MDM_GR_USER,SUB_GR_SIT_FAILED,&SitFailed,wSendSize);
-
-			//		return true;
-			//	}
-			//	pTableFrame->PerformStandUpAction(pIServerUserItem);
-			//}
-
-			////坐下位置
-			//CTableFrame * pTableFrame=(m_pTableFrame+pUserSitReq->wTableID);
-			//if (wSubCmdID==SUB_GR_USER_SIT_REQ)	
-			//{
-			//	pTableFrame->PerformSitDownAction(pUserSitReq->wChairID,pIServerUserItem,pUserSitReq->szTablePass);
-			//}
-			//else
-			//{
-			//	pTableFrame->PerformLookonAction(pUserSitReq->wChairID,pIServerUserItem,pUserSitReq->szTablePass);
-			//}
-			//return true;
 
 			CMD_GR_UserSitReq * pUserSitReq=(CMD_GR_UserSitReq *)pData;
 			WORD wHeadSize=sizeof(CMD_GR_UserSitReq)-sizeof(pUserSitReq->szTablePass);
@@ -2014,7 +1891,7 @@ bool CAttemperEngineSink::OnSocketMainUser(WORD wSubCmdID, VOID * pData, WORD wD
 				{
 					CMD_GR_SitFailed SitFailed;
 					memset(&SitFailed,0,sizeof(SitFailed));
-					_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe), TEXT("此桌人已经满了，无法入座，请等会再来吧！"));
+					_snprintf(SitFailed.szFailedDescribe,sizeof(SitFailed.szFailedDescribe), TEXT("此房间人已经满了，无法入座，请等会再来吧！"));
 					WORD wSendSize=sizeof(SitFailed)-sizeof(SitFailed.szFailedDescribe)+CountStringBuffer(SitFailed.szFailedDescribe);
 					SendData(pIServerUserItem,MDM_GR_USER,SUB_GR_SIT_FAILED,&SitFailed,wSendSize);
 				}
