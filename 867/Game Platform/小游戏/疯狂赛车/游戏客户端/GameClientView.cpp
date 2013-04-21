@@ -1653,9 +1653,9 @@ void CGameClientView::OnApplyUp()
 void CGameClientView::OnApplyDown()
 {
 	double nPos = m_ApplyUser.m_AppyUserList.GetScrollPos(SB_VERT);
-	if(m_ApplyUser.m_AppyUserList.GetItemCount()>4)
+	if(m_ApplyUser.m_AppyUserList.GetItemCount()>3)
 	{
-		if(nPos>m_ApplyUser.m_AppyUserList.GetItemCount()-5)
+		if(nPos>m_ApplyUser.m_AppyUserList.GetItemCount()-4)
 		{
 			return ;
 		}

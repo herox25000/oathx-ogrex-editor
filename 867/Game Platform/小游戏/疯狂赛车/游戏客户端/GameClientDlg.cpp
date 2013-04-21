@@ -1009,7 +1009,7 @@ bool CGameClientDlg::OnUserApplyBanker(const void * pBuffer, WORD wDataSize)
 		{
 			m_GameClientView.m_ApplyUser.InserUser( ApplyUser );
 
-			if(m_GameClientView.m_ApplyUser.GetItemCount()>4)
+			if(m_GameClientView.m_ApplyUser.GetItemCount()>3)
 			{
 				m_GameClientView.m_btApplyUp.ShowWindow(SW_SHOW);
 				m_GameClientView.m_btApplyUp.EnableWindow(true);
