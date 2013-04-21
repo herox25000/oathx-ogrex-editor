@@ -83,11 +83,8 @@ bool CGameClientDlg::InitGameFrame()
 
 			}
 		}
-			
-
 	//	m_GameClientView.m_CardControl[1].SetCardData(cbCardData1,5);
 		m_GameClientView.SetMoveCardTimer();
-
 	}
 	//加载声音
 	VERIFY(m_DTSDBackground.Create(TEXT("BACK_GROUND")));
@@ -161,7 +158,8 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 
 	if (IsEnableSound()) 
 	{
-		if (nTimerID==IDI_PLACE_JETTON&&nElapse<=5) PlayGameSound(AfxGetInstanceHandle(),TEXT("TIME_WARIMG"));
+		if (nTimerID==IDI_PLACE_JETTON&&nElapse<=5)
+			PlayGameSound(AfxGetInstanceHandle(),TEXT("TIME_WARIMG"));
 	}
 
 	return true;
@@ -297,20 +295,50 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			m_lApplyBankerCondition=pStatusPlay->lApplyBankerCondition;
 			m_lAreaLimitScore=pStatusPlay->lAreaLimitScore;
 			m_GameClientView.SetAreaLimitScore(m_lAreaLimitScore);
+			//设置状态
+			SetGameStatus(pStatusPlay->cbGameStatus);
 
 			if (pStatusPlay->cbGameStatus==GS_GAME_END)
 			{
 				//扑克信息
 				m_GameClientView.SetCardInfo(pStatusPlay->cbTableCardArray);
 				m_GameClientView.FinishDispatchCard();
+				m_GameClientView.m_blMoveFinish = true;
+				////设置扑克
+				for (int i=0; i<5; ++i)
+				{		
+					BYTE bcTmp[5];
+					int iType = m_GameClientView.m_GameLogic.GetCardType(m_GameClientView.m_cbTableCardArray[i],5,bcTmp);
+					m_GameClientView.m_lUserCardType[i] = iType;
+					if(iType==CT_POINT||iType==CT_SPECIAL_BOMEBOME)
+					{
+						CopyMemory(m_GameClientView.m_cbTableSortCardArray[i],bcTmp,5);
+					}
+					else
+					{
+						CopyMemory(m_GameClientView.m_cbTableSortCardArray[i],bcTmp+3,2);
+						CopyMemory(m_GameClientView.m_cbTableSortCardArray[i]+2,bcTmp,3);
+					}
 
+					m_GameClientView.m_CardControl[i].m_blGameEnd = true;
+					m_GameClientView.m_CardControl[i].m_blhideOneCard = false;
+					if(m_GameClientView.m_lUserCardType[i]==CT_POINT||m_GameClientView.m_lUserCardType[i]==CT_SPECIAL_BOMEBOME)
+					{
+						m_GameClientView.m_CardControl[i].m_blShowLineResult = true;
+					}
+					else
+					{
+						m_GameClientView.m_CardControl[i].m_blShowLineResult = false;
+					}
+					m_GameClientView.m_CardControl[i].SetCardData(m_GameClientView.m_cbTableSortCardArray[i],5,false);
+					m_GameClientView.m_CardControl[i].m_blShowResult = true;
+				}
 				//设置成绩
 				m_GameClientView.SetCurGameScore(pStatusPlay->lEndUserScore,pStatusPlay->lEndUserReturnScore,pStatusPlay->lEndBankerScore,pStatusPlay->lEndRevenue);
 			}
 			else
 			{
 				m_GameClientView.SetCardInfo(NULL);
-
 				for (int i = 0;i<5;i++)
 				{
 					m_GameClientView.m_CardControl[i].m_CardItemArray.SetSize(0);
@@ -326,18 +354,11 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			m_GameClientView.SetBankerScore(pStatusPlay->cbBankerTime,pStatusPlay->lBankerWinScore);
 			m_bEnableSysBanker=pStatusPlay->bEnableSysBanker;
 			m_GameClientView.EnableSysBanker(m_bEnableSysBanker);
-
-			//设置状态
-			SetGameStatus(pStatusPlay->cbGameStatus);
-
 			//设置时间
 			SetGameTimer(GetMeChairID(),pStatusPlay->cbGameStatus==GS_GAME_END?IDI_DISPATCH_CARD:IDI_PLACE_JETTON,pStatusPlay->cbTimeLeave);
-
-
 			//更新按钮
 			UpdateButtonContron();
 			m_GameClientView.UpdateGameView(NULL);
-
 			return true;
 		}
 	}
@@ -383,7 +404,6 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	m_GameClientView.SetDispatchCardTip(pGameStart->bContiueCard ? enDispatchCardTip_Continue : enDispatchCardTip_Dispatch);
 
 	
-
 	//播放声音
 	if (IsEnableSound()) 
 	{
@@ -496,9 +516,9 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	m_GameClientView.SetCardInfo(pGameEnd->cbTableCardArray);
 
 	m_GameClientView.SetFirstShowCard(pGameEnd->bcFirstCard);
-
 	////设置扑克
-	for (int i=0; i<CountArray(m_GameClientView.m_CardControl); ++i) m_GameClientView.m_CardControl[i].SetCardData(m_GameClientView.m_cbTableCardArray[i],5);
+	for (int i=0; i<CountArray(m_GameClientView.m_CardControl); ++i)
+		m_GameClientView.m_CardControl[i].SetCardData(m_GameClientView.m_cbTableCardArray[i],5);
 
 	for(int i = 0;i<5;i++) 
 	{
@@ -513,10 +533,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 		{
 			CopyMemory(m_GameClientView.m_cbTableSortCardArray[i],bcTmp+3,2);
 			CopyMemory(m_GameClientView.m_cbTableSortCardArray[i]+2,bcTmp,3);
-
 		}
-
-
 	}
 
 

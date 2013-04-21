@@ -294,7 +294,7 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 	{
 	case GS_FREE:			//空闲状态
 		{
-			//发送记录
+			//发送游戏记录
 			WORD wBufferSize=0;
 			BYTE cbBuffer[SOCKET_PACKAGE];
 			int nIndex = m_nRecordFirst;
@@ -365,7 +365,7 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 		}
 	case GS_FREE + 1:
 		{
-			//发送记录
+			//发送游戏记录
 			WORD wBufferSize=0;
 			BYTE cbBuffer[SOCKET_PACKAGE];
 			int nIndex = m_nRecordFirst;
@@ -383,7 +383,6 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			}
 			if (wBufferSize>0) 
 				m_pITableFrame->SendUserData(pIServerUserItem,SUB_S_SEND_RECORD,cbBuffer,wBufferSize);
-
 			//构造数据
 			CMD_S_StatusFree StatusFree;
 			ZeroMemory(&StatusFree,sizeof(StatusFree));
@@ -429,16 +428,39 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			DWORD dwPassTime=(DWORD)time(NULL)-m_dwJettonTime;
 			StatusFree.cbTimeLeave=(BYTE)(TIME_PLACE_JETTON-__min(dwPassTime,TIME_PLACE_JETTON));
 			//发送场景
-			m_pITableFrame->SendGameScene(pIServerUserItem,&StatusFree,sizeof(StatusFree));
+			bool bSuccess = m_pITableFrame->SendGameScene(pIServerUserItem,&StatusFree,sizeof(StatusFree));
 			//发送申请者
 			SendApplyUser(  pIServerUserItem );
-			return true;
+			return bSuccess;
 		}
 	case GS_PLAYING:		//游戏状态
 		{
+			//发送游戏记录
+			WORD wBufferSize=0;
+			BYTE cbBuffer[SOCKET_PACKAGE];
+			int nIndex = m_nRecordFirst;
+			while ( nIndex != m_nRecordLast )
+			{
+				if ((wBufferSize+sizeof(tagServerGameRecord))>sizeof(cbBuffer))
+				{
+					m_pITableFrame->SendUserData(pIServerUserItem,SUB_S_SEND_RECORD,cbBuffer,wBufferSize);
+					wBufferSize=0;
+				}
+				CopyMemory(cbBuffer+wBufferSize,&m_GameRecordArrary[nIndex],sizeof(tagServerGameRecord));
+				wBufferSize+=sizeof(tagServerGameRecord);
+
+				nIndex = (nIndex+1) % MAX_SCORE_HISTORY;
+			}
+			if (wBufferSize>0) 
+				m_pITableFrame->SendUserData(pIServerUserItem,SUB_S_SEND_RECORD,cbBuffer,wBufferSize);
+
 			//构造数据
 			CMD_S_StatusPlay StatusPlay;
 			ZeroMemory(&StatusPlay,sizeof(StatusPlay));
+			//全局信息
+			DWORD dwPassTime=(DWORD)time(NULL)-m_dwJettonTime;
+			StatusPlay.cbTimeLeave=(BYTE)(TIME_GAME_END-__min(dwPassTime,TIME_GAME_END));
+
 			if(m_lAllPlayCount >0)
 			{
 				StatusPlay.fShunMen = m_lShunMenWinCount*100.00f/m_lAllPlayCount;
@@ -483,10 +505,10 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			CopyMemory(StatusPlay.cbTableCardArray,m_cbTableCardArray,sizeof(m_cbTableCardArray));
 
 			//发送场景
-			m_pITableFrame->SendGameScene(pIServerUserItem,&StatusPlay,sizeof(StatusPlay));
+			bool bSuccess = m_pITableFrame->SendGameScene(pIServerUserItem,&StatusPlay,sizeof(StatusPlay));
 			//发送申请者
 			SendApplyUser( pIServerUserItem );
-			return true;
+			return bSuccess;
 		}
 	}
 
@@ -508,6 +530,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
 			}
 			OnEventStartPlaceJetton();
+			m_dwJettonTime=(DWORD)time(NULL);
 			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON, TIME_PLACE_JETTON*1000,1,0L);
 			return true;
 		}
@@ -523,6 +546,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 			//开始游戏
 			m_pITableFrameControl->StartGame();
 			//设置时间
+			m_dwJettonTime=(DWORD)time(NULL);
 			m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,1,0L);
 
 			return true;
@@ -973,7 +997,6 @@ void CTableFrameSink::SendApplyUser( IServerUserItem *pRcvServerUserItem )
 		CopyMemory( ApplyBanker.szAccount, pServerUserItem->GetAccounts(), sizeof( ApplyBanker.szAccount ) );
 		ApplyBanker.lScore = pServerUserItem->GetUserScore()->lScore;
 		ApplyBanker.bApplyBanker = true;
-
 		//发送消息
 		m_pITableFrame->SendUserData( pRcvServerUserItem, SUB_S_APPLY_BANKER, &ApplyBanker, sizeof( ApplyBanker ) );
 	}

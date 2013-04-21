@@ -610,13 +610,13 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	//我的下注
 	DrawMeJettonNumber(pDC);
 
-	/*test*/
-	if (0)
-	{
-		//绘画扑克
-		for (int i=0; i<CountArray(m_CardControl); ++i) 
-			m_CardControl[i].DrawCardControl(pDC);
-	}
+	///*test*/
+	//if (0)
+	//{
+	//	//绘画扑克
+	//	for (int i=0; i<CountArray(m_CardControl); ++i) 
+	//		m_CardControl[i].DrawCardControl(pDC);
+	//}
 
 	//胜利标志
 	DrawWinFlags(pDC);
@@ -630,26 +630,18 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 	{
 		//显示结果
 		DrawType(pDC,0);
-		
 	}
-
 	//结束状态
 	if (cbGameStatus==GS_GAME_END)
 	{
 		//绘画扑克
-		for (int i=0; i<CountArray(m_CardControl); ++i) m_CardControl[i].DrawCardControl(pDC);
-
+		for (int i=0; i<CountArray(m_CardControl); ++i)
+			m_CardControl[i].DrawCardControl(pDC);
 	}
 	if(m_blMoveFinish)
 	{
-
 		ShowGameResult(pDC, nWidth, nHeight);
 	}
-
-	
-
-	
-
 	return;
 }
 
@@ -775,7 +767,6 @@ void CGameClientView::SetCardInfo(BYTE cbTableCardArray[5][5])
 	if (cbTableCardArray!=NULL)
 	{
 		CopyMemory(m_cbTableCardArray,cbTableCardArray,sizeof(m_cbTableCardArray));
-
 		//开始发牌
 		DispatchCard();
 	}
@@ -1050,11 +1041,6 @@ void CGameClientView::DrawType(CDC* pDC,WORD wChairID)
 		
 
 	}
-
-
-	
-	
-
 	
 }
 //绘画数字
@@ -1386,7 +1372,6 @@ void CGameClientView::OnTimer(UINT nIDEvent)
 	}
 	else if (nIDEvent==IDI_DISPATCH_CARD)
 	{
-
 		//完成发牌
 		FinishDispatchCard();
 		
@@ -1453,7 +1438,6 @@ void CGameClientView::OnTimer(UINT nIDEvent)
 			}
 			KillTimer(IDI_OPENCARD);
 			UpdateGameView(NULL);
-
 		}
 		m_blMoveFinish = true;
 		//更新界面
@@ -1971,7 +1955,8 @@ void CGameClientView::DrawMeJettonNumber(CDC *pDC)
 void CGameClientView::DispatchCard()
 {
 	//设置界面
-	for (int i=0; i<CountArray(m_CardControl); ++i) m_CardControl[i].m_CardItemArray.SetSize(0);
+	for (int i=0; i<CountArray(m_CardControl); ++i)
+		m_CardControl[i].m_CardItemArray.SetSize(0);
 	//设置标识
 	m_bNeedSetGameRecord=true;
 }
@@ -1981,15 +1966,10 @@ void CGameClientView::FinishDispatchCard()
 {
 	//完成判断
 	if (m_bNeedSetGameRecord==false) return;
-
 	//设置标识
 	m_bNeedSetGameRecord=false;
-
 	//删除定时器
 	KillTimer(IDI_DISPATCH_CARD);
-
-	////设置扑克
-	//for (int i=0; i<CountArray(m_CardControl); ++i) m_CardControl[i].SetCardData(m_cbTableCardArray[i],2);
 
 	//推断赢家
 	bool bWinTianMen, bWinDiMen, bWinXuanMen,bWinHuang;
@@ -1998,8 +1978,6 @@ void CGameClientView::FinishDispatchCard()
 
 	DeduceWinner(bWinTianMen, bWinDiMen, bWinXuanMen,bWinHuang,TianMultiple,diMultiple,TianXuanltiple,HuangMultiple);
 
-
-	
 	//保存记录
 	SetGameHistory(bWinTianMen, bWinDiMen, bWinXuanMen,bWinHuang);
 
@@ -2114,8 +2092,6 @@ void CGameClientView::FlashJettonAreaFrame(int nWidth, int nHeight, CDC *pDC)
 void CGameClientView::DeduceWinner(bool &bWinTian, bool &bWinDi, bool &bWinXuan,bool &bWinHuan,BYTE &TianMultiple,BYTE &diMultiple,BYTE &TianXuanltiple,BYTE &HuangMultiple )
 {
 	//大小比较
-
-
 	bWinTian=m_GameLogic.CompareCard(m_cbTableCardArray[BANKER_INDEX],5,m_cbTableCardArray[SHUN_MEN_INDEX],5,TianMultiple)==1?true:false;
 	bWinDi=m_GameLogic.CompareCard(m_cbTableCardArray[BANKER_INDEX],5,m_cbTableCardArray[DUI_MEN_INDEX],5,diMultiple)==1?true:false;
 	bWinXuan=m_GameLogic.CompareCard(m_cbTableCardArray[BANKER_INDEX],5,m_cbTableCardArray[DAO_MEN_INDEX],5,TianXuanltiple)==1?true:false;
@@ -2138,10 +2114,6 @@ void CGameClientView::DeduceWinner(bool &bWinTian, bool &bWinDi, bool &bWinXuan,
 
 
 	}*/
-
-	
-	
-
 }
 
 //控件命令

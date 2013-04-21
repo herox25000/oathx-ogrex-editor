@@ -13,7 +13,7 @@
 //下注时间
 #define IDI_FREE					1									//空闲时间
 #ifdef _DEBUG
-#define TIME_FREE					3									//空闲时间
+#define TIME_FREE					10									//空闲时间
 #else
 #define TIME_FREE					10									//空闲时间
 #endif
@@ -22,18 +22,18 @@
 #define IDI_PLACE_JETTON			2									//下注时间
 
 #ifdef _DEBUG
-#define TIME_PLACE_JETTON			10									//下注时间
+#define TIME_PLACE_JETTON			20									//下注时间
 #else
-#define TIME_PLACE_JETTON			18									//下注时间
+#define TIME_PLACE_JETTON			20									//下注时间
 #endif
 
 //结束时间
 #define IDI_GAME_END				3									//结束时间
 
 #ifdef _DEBUG
-#define TIME_GAME_END				30								//结束时间
+#define TIME_GAME_END				25								//结束时间
 #else
-#define TIME_GAME_END				30									//结束时间
+#define TIME_GAME_END				25									//结束时间
 #endif
 
 //////////////////////////////////////////////////////////////////////////
@@ -84,26 +84,6 @@ CTableFrameSink::CTableFrameSink()
 	m_nRecordFirst=0;
 	m_nRecordLast=0;
 	m_dwRecordCount=0;
-
-	//设置文件名
-	TCHAR szPath[MAX_PATH]=TEXT("");
-	GetCurrentDirectory(sizeof(szPath),szPath);
-	_snprintf(m_szConfigFileName,sizeof(m_szConfigFileName),TEXT("%s\\Ox100Config.ini"),szPath);
-
-	//控制变量
-	LONG lMaxScore=2147483647/10;
-	m_lApplyBankerCondition=GetPrivateProfileInt(TEXT("BankerCondition"), TEXT("Score"), 100, m_szConfigFileName);
-	m_lAreaLimitScore=GetPrivateProfileInt(TEXT("ScoreLimit"), TEXT("AreaLimitScore"), lMaxScore, m_szConfigFileName);
-	m_lUserLimitScore=GetPrivateProfileInt(TEXT("ScoreLimit"), TEXT("UserLimitScore"), lMaxScore, m_szConfigFileName);
-	BYTE cbEnableSysBanker=GetPrivateProfileInt(TEXT("BankerCondition"), TEXT("EnableSysBanker"), 1, m_szConfigFileName);
-	m_bEnableSysBanker=cbEnableSysBanker?true:false;
-
-	if(m_lUserLimitScore*10<0)
-	{
-		m_lUserLimitScore = 2147483647/10;
-		
-	}
-
 	return;
 }
 
@@ -139,6 +119,26 @@ bool __cdecl CTableFrameSink::InitTableFrameSink(IUnknownEx * pIUnknownEx)
 	//获取参数
 	m_pGameServiceOption=m_pITableFrame->GetGameServiceOption();
 	ASSERT(m_pGameServiceOption!=NULL);
+
+
+	//设置文件名
+	TCHAR szPath[MAX_PATH]=TEXT("");
+	GetCurrentDirectory(sizeof(szPath),szPath);
+	_snprintf(m_szConfigFileName,sizeof(m_szConfigFileName),
+		TEXT("%s\\Config\\百人牛牛\\%d.ini"),szPath,m_pGameServiceOption->wServerID);
+
+	//控制变量
+	LONG lMaxScore=2147483647/10;
+	m_lApplyBankerCondition=GetPrivateProfileInt(TEXT("BankerCondition"), TEXT("Score"), 100, m_szConfigFileName);
+	m_lAreaLimitScore=GetPrivateProfileInt(TEXT("ScoreLimit"), TEXT("AreaLimitScore"), lMaxScore, m_szConfigFileName);
+	m_lUserLimitScore=GetPrivateProfileInt(TEXT("ScoreLimit"), TEXT("UserLimitScore"), lMaxScore, m_szConfigFileName);
+	BYTE cbEnableSysBanker=GetPrivateProfileInt(TEXT("BankerCondition"), TEXT("EnableSysBanker"), 1, m_szConfigFileName);
+	m_bEnableSysBanker=cbEnableSysBanker?true:false;
+
+	if(m_lUserLimitScore*10<0)
+	{
+		m_lUserLimitScore = 2147483647/10;	
+	}
 
 	return true;
 }
@@ -252,10 +252,10 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				//返还积分
 				GameEnd.lUserReturnScore=m_lUserReturnScore[wUserIndex];
 
-				//设置税收
-				if (m_lUserRevenue[wUserIndex]>0) GameEnd.lRevenue=m_lUserRevenue[wUserIndex];
-				else if (m_wCurrentBanker!=INVALID_CHAIR) GameEnd.lRevenue=m_lUserRevenue[m_wCurrentBanker];
-				else GameEnd.lRevenue=0;
+				////设置税收
+				//if (m_lUserRevenue[wUserIndex]>0) GameEnd.lRevenue=m_lUserRevenue[wUserIndex];
+				//else if (m_wCurrentBanker!=INVALID_CHAIR) GameEnd.lRevenue=m_lUserRevenue[m_wCurrentBanker];
+				//else GameEnd.lRevenue=0;
 
 				//发送消息					
 				m_pITableFrame->SendTableData(wUserIndex,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
@@ -271,7 +271,6 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			{
 				//变量定义
 				__int64 lScore=0;
-				__int64 lRevenue=0;
 				enScoreKind ScoreKind=enScoreKind_Flee;
 
 				//统计成绩
@@ -281,10 +280,11 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				//写入积分
 				/*if (m_pITableFrame->GetGameStatus()!=GS_GAME_END)
 				{
-					if (lScore!=0L) m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,lRevenue, ScoreKind);
+					if (lScore!=0L) m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,0, ScoreKind);
 				}
 				else*/
-					if (lScore!=0L) m_pITableFrame->WriteUserScore(pIServerUserItem, lScore*10,lRevenue, ScoreKind);
+					if (lScore!=0L)
+						m_pITableFrame->WriteUserScore(pIServerUserItem, lScore*10,0, ScoreKind);
 
 				return true;
 			}
@@ -338,10 +338,10 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					//返还积分
 					GameEnd.lUserReturnScore=m_lUserReturnScore[wUserIndex];
 
-					//设置税收
-					if (m_lUserRevenue[wUserIndex]>0) GameEnd.lRevenue=m_lUserRevenue[wUserIndex];
-					else if (m_wCurrentBanker!=INVALID_CHAIR) GameEnd.lRevenue=m_lUserRevenue[m_wCurrentBanker];
-					else GameEnd.lRevenue=0;
+					////设置税收
+					//if (m_lUserRevenue[wUserIndex]>0) GameEnd.lRevenue=m_lUserRevenue[wUserIndex];
+					//else if (m_wCurrentBanker!=INVALID_CHAIR) GameEnd.lRevenue=m_lUserRevenue[m_wCurrentBanker];
+					//else GameEnd.lRevenue=0;
 
 					//发送消息					
 					m_pITableFrame->SendTableData(wUserIndex,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
@@ -352,7 +352,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//扣除分数
 			if (m_lUserWinScore[m_wCurrentBanker]<0)
 			{
-				m_pITableFrame->WriteUserScore(m_wCurrentBanker,m_lUserWinScore[m_wCurrentBanker], m_lUserRevenue[m_wCurrentBanker], enScoreKind_Flee);
+				m_pITableFrame->WriteUserScore(m_wCurrentBanker,m_lUserWinScore[m_wCurrentBanker], 0, enScoreKind_Flee);
 			}
 
 			//切换庄家
@@ -458,22 +458,22 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 
 			//全局信息
 			DWORD dwPassTime=(DWORD)time(NULL)-m_dwJettonTime;
-			StatusPlay.cbTimeLeave=(BYTE)(TIME_FREE-__min(dwPassTime,TIME_FREE));
 			StatusPlay.cbGameStatus=m_pITableFrame->GetGameStatus();			
-
+			StatusPlay.cbTimeLeave=(BYTE)(TIME_PLACE_JETTON-__min(dwPassTime,TIME_PLACE_JETTON));
 			//结束判断
 			if (cbGameStatus==GS_GAME_END)
 			{
+				StatusPlay.cbTimeLeave=(BYTE)(TIME_GAME_END-__min(dwPassTime,TIME_GAME_END));
 				//设置成绩
 				StatusPlay.lEndUserScore=m_lUserWinScore[wChiarID];
 
 				//返还积分
 				StatusPlay.lEndUserReturnScore=m_lUserReturnScore[wChiarID];
 
-				//设置税收
-				if (m_lUserRevenue[wChiarID]>0) StatusPlay.lEndRevenue=m_lUserRevenue[wChiarID];
-				else if (m_wCurrentBanker!=INVALID_CHAIR) StatusPlay.lEndRevenue=m_lUserRevenue[m_wCurrentBanker];
-				else StatusPlay.lEndRevenue=0;
+				////设置税收
+				//if (m_lUserRevenue[wChiarID]>0) StatusPlay.lEndRevenue=m_lUserRevenue[wChiarID];
+				//else if (m_wCurrentBanker!=INVALID_CHAIR) StatusPlay.lEndRevenue=m_lUserRevenue[m_wCurrentBanker];
+				//else StatusPlay.lEndRevenue=0;
 
 				//庄家成绩
 				StatusPlay.lEndBankerScore=m_lBankerCurGameScore;
@@ -482,11 +482,11 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 				CopyMemory(StatusPlay.cbTableCardArray,m_cbTableCardArray,sizeof(m_cbTableCardArray));
 			}
 
+			//发送场景
+			bool bSuccess = m_pITableFrame->SendGameScene(pIServerUserItem,&StatusPlay,sizeof(StatusPlay));
 			//发送申请者
 			SendApplyUser( pIServerUserItem );
-
-			//发送场景
-			return m_pITableFrame->SendGameScene(pIServerUserItem,&StatusPlay,sizeof(StatusPlay));
+			return bSuccess;
 		}
 	}
 
@@ -502,27 +502,25 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 		{
 			//开始游戏
 			m_pITableFrameControl->StartGame();
-
 			//设置时间
+			m_dwJettonTime=(DWORD)time(NULL);
 			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON,TIME_PLACE_JETTON*1000,1,0L);
-
 			//设置状态
 			m_pITableFrame->SetGameStatus(GS_PLACE_JETTON);
-
 			return true;
 		}
 	case IDI_PLACE_JETTON:		//下注时间
 		{
+
 			//状态判断(防止强退重复设置)
 			if (m_pITableFrame->GetGameStatus()!=GS_GAME_END)
 			{
 				//设置状态
 				m_pITableFrame->SetGameStatus(GS_GAME_END);			
-
 				//结束游戏
 				OnEventGameEnd(INVALID_CHAIR,NULL,GER_NORMAL);
-
 				//设置时间
+				m_dwJettonTime=(DWORD)time(NULL);
 				m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,1,0L);			
 			}
 
@@ -540,7 +538,8 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 				enScoreKind ScoreKind=(m_lUserWinScore[wUserChairID]>0L)?enScoreKind_Win:enScoreKind_Lost;
 
 				//写入积分
-				if (m_lUserWinScore[wUserChairID]!=0L) m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID], m_lUserRevenue[wUserChairID], ScoreKind);
+				if (m_lUserWinScore[wUserChairID]!=0L) 
+					m_pITableFrame->WriteUserScore(wUserChairID,m_lUserWinScore[wUserChairID],0, ScoreKind);
 
 				//坐庄判断
 				__int64 lUserScore=pIServerUserItem->GetUserScore()->lScore;
@@ -724,8 +723,6 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 //加注事件
 bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, LONG lJettonScore)
 {
-
-	
 	//效验参数
 	ASSERT((cbJettonArea<=ID_HUANG_MEN && cbJettonArea>=ID_TIAN_MEN)&&(lJettonScore>0L));
 	if ((cbJettonArea>ID_HUANG_MEN)||(lJettonScore<=0L) || cbJettonArea<ID_TIAN_MEN)
@@ -733,8 +730,6 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, LONG l
 		return false;
 	}
 	////效验状态
-	//ASSERT(m_pITableFrame->GetGameStatus()==GS_PLACE_JETTON);
-
 	if (m_pITableFrame->GetGameStatus()!=GS_PLACE_JETTON)
 	{
 		CMD_S_PlaceJettonFail PlaceJettonFail;
@@ -762,7 +757,8 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, LONG l
 	//变量定义
 	IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
 	__int64 lJettonCount=0L;
-	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) lJettonCount += m_lUserJettonScore[nAreaIndex][wChairID];
+	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) 
+		lJettonCount += m_lUserJettonScore[nAreaIndex][wChairID];
 
 	//玩家积分
 	__int64 lUserScore = pIServerUserItem->GetUserScore()->lScore;
@@ -1203,16 +1199,18 @@ __int64 CTableFrameSink::GetUserMaxJetton(WORD wChairID)
 
 	int iTimer = 10;
 	//已下注额
-	LONGLONG lNowJetton = 0;
+	LONGLONG lNowJetton = 0;	
 	ASSERT(AREA_COUNT<=CountArray(m_lUserJettonScore));
-	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) lNowJetton += m_lUserJettonScore[nAreaIndex][wChairID];
+	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex)
+		lNowJetton += m_lUserJettonScore[nAreaIndex][wChairID];
 
 	//庄家金币
 	LONGLONG lBankerScore=2147483647;
 	if (m_wCurrentBanker!=INVALID_CHAIR)
 	{
 		IServerUserItem *pIUserItemBanker=m_pITableFrame->GetServerUserItem(m_wCurrentBanker);
-		if (NULL!=pIUserItemBanker) lBankerScore=pIUserItemBanker->GetUserScore()->lScore;
+		if (NULL!=pIUserItemBanker) 
+			lBankerScore=pIUserItemBanker->GetUserScore()->lScore;
 	}
 	for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex) lBankerScore-=m_lAllJettonScore[nAreaIndex]*iTimer;
 
@@ -1324,20 +1322,17 @@ __int64 CTableFrameSink::CalculateScore()
 			}
 		}
 
-		//计算税收
-		if (0 < m_lUserWinScore[wChairID])
-		{
-			float fRevenuePer=float(cbRevenue/1000.+0.000001);
-			m_lUserRevenue[wChairID]  = LONG(m_lUserWinScore[wChairID]*fRevenuePer);
-			m_lUserWinScore[wChairID] -= m_lUserRevenue[wChairID];
-		}
+		////计算税收
+		//if (0 < m_lUserWinScore[wChairID])
+		//{
+		//	float fRevenuePer=float(cbRevenue/1000.+0.000001);
+		//	m_lUserRevenue[wChairID]  = LONG(m_lUserWinScore[wChairID]*fRevenuePer);
+		//	m_lUserWinScore[wChairID] -= m_lUserRevenue[wChairID];
+		//}
 
 		//总的分数
 		memset(szBuffer,0,256);
 		m_lUserWinScore[wChairID] += lUserLostScore[wChairID];
-	/*	_snprintf(szBuffer,CountArray(szBuffer),TEXT(" 本局分数 %ld 返回分数 %d 用户名字%s 用户分数%d\r\n"),m_lUserWinScore[wChairID],m_lUserRevenue[wChairID],
-			pIServerUserItem->GetUserData()->szAccounts,pIServerUserItem->GetUserData()->UserScoreInfo.lScore);
-		fwrite(szBuffer,1,strlen(szBuffer)+1,pf);*/
 	}
 
 	//庄家成绩
@@ -1345,16 +1340,14 @@ __int64 CTableFrameSink::CalculateScore()
 	{
 		m_lUserWinScore[m_wCurrentBanker] = lBankerWinScore;
 
-		//计算税收
-		if (0 < m_lUserWinScore[m_wCurrentBanker])
-		{
-			float fRevenuePer=float(cbRevenue/1000.+0.000001);
-			m_lUserRevenue[m_wCurrentBanker]  = LONG(m_lUserWinScore[m_wCurrentBanker]*fRevenuePer);
-			m_lUserWinScore[m_wCurrentBanker] -= m_lUserRevenue[m_wCurrentBanker];
-			lBankerWinScore = m_lUserWinScore[m_wCurrentBanker];
-		}	
-
-	
+		////计算税收
+		//if (0 < m_lUserWinScore[m_wCurrentBanker])
+		//{
+		//	float fRevenuePer=float(cbRevenue/1000.+0.000001);
+		//	m_lUserRevenue[m_wCurrentBanker]  = LONG(m_lUserWinScore[m_wCurrentBanker]*fRevenuePer);
+		//	m_lUserWinScore[m_wCurrentBanker] -= m_lUserRevenue[m_wCurrentBanker];
+		//	lBankerWinScore = m_lUserWinScore[m_wCurrentBanker];
+		//}	
 	}
 
 	//累计积分

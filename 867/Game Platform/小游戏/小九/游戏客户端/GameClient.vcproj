@@ -143,6 +143,9 @@
 				RelativePath=".\CMyListCtrl.cpp">
 			</File>
 			<File
+				RelativePath=".\DirectSound.cpp">
+			</File>
+			<File
 				RelativePath=".\DrawCard.cpp">
 			</File>
 			<File
@@ -197,6 +200,9 @@
 			</File>
 			<File
 				RelativePath=".\CMyListCtrl.h">
+			</File>
+			<File
+				RelativePath=".\DirectSound.h">
 			</File>
 			<File
 				RelativePath=".\DrawCard.h">

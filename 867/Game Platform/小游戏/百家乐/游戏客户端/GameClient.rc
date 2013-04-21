@@ -173,6 +173,12 @@ GAME_START              WAVE                    "res\\GAME_START.wav"
 STOP_JETTON             WAVE                    "res\\STOP_JETTON.wav"
 SEND_CARD               WAVE                    "res\\SEND_CARD.wav"
 GAME_END                WAVE                    "res\\GAME_END.wav"
+ADD_GOLD_EX             WAVE                    "res\\ADD_GOLD_EX.wav"
+TIME_WARIMG		WAVE			"res\\TIME_WARIMG.wav"
+BACK_GROUND             WAVE                    "res\\BACK_GROUND.wav"
+CHEER3                  WAVE                    "res\\CHEER3.wav"
+CHEER1                  WAVE                    "res\\CHEER1.wav"
+CHEER2                  WAVE                    "res\\CHEER2.wav"
 
 /////////////////////////////////////////////////////////////////////////////
 //

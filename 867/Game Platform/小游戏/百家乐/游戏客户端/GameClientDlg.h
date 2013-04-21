@@ -2,7 +2,7 @@
 
 #include "Stdafx.h"
 #include "GameClientView.h"
-
+#include "DirectSound.h"
 //////////////////////////////////////////////////////////////////////////
 
 #define GS_SHOW_RESULT	101
@@ -51,7 +51,12 @@ protected:
 protected:
 	CGameLogic						m_GameLogic;						//游戏逻辑
 	CGameClientView					m_GameClientView;					//游戏视图
-	
+	//声音资源
+protected:
+	CDirectSound					m_DTSDBackground;					//背景音乐
+	CDirectSound					m_DTSDCheer[3];						//背景音乐
+
+
 	//函数定义
 public:
 	//构造函数
@@ -113,6 +118,8 @@ public:
 	void SetDispatchCardTips();
 	//推断赢家
 	void DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner);
+	//在结束状态进入的时候显示扑克
+	void ShowCardOnEnd(BYTE cbPlayerCard[], BYTE cbPlayerCount, BYTE cbBankerCard[], BYTE cbBankerCount);
 
 	//消息映射
 protected:
