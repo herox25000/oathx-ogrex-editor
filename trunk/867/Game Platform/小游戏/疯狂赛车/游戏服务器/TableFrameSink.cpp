@@ -10,7 +10,7 @@
 
 //结束时间
 #define IDI_GAME_END				2									//结束时间
-#define TIME_GAME_END				10									//结束时间
+#define TIME_GAME_END				15									//结束时间
 
 #define IDI_GAME_FREE				3									//空闲阶段
 #define TIME_FREE					10									//空闲时间
@@ -522,14 +522,14 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 			StatusPlay.cbAnimalBox=m_cbAnimalBox;
 
 			//全局信息
+			int Time = (m_cbAnimalBox*ANIMAL_ROLL_SPEED)/1000+TIME_GAME_END;
 			DWORD dwPassTime=(DWORD)time(NULL)-m_dwJettonTime;
-			StatusPlay.cbTimeLeave=(BYTE)(TIME_PLACE_JETTON-__min(dwPassTime,TIME_PLACE_JETTON));
-
+			StatusPlay.cbTimeLeave=(BYTE)(Time-__min(dwPassTime,Time));
+			//发送场景
+			bool bSuccess = m_pITableFrame->SendGameScene(pIServerUserItem,&StatusPlay,sizeof(StatusPlay));
 			//发送申请者
 			SendApplyUser( pIServerUserItem );
-
-			//发送场景
-			return m_pITableFrame->SendGameScene(pIServerUserItem,&StatusPlay,sizeof(StatusPlay));
+			return bSuccess;
 		}
 	}
 
@@ -551,6 +551,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 					m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
 			}
 			OnEventStartPlaceJetton();
+			m_dwJettonTime=(DWORD)time(NULL);
 			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON, TIME_PLACE_JETTON*1000,1,0L);
 			return true;
 		}
@@ -763,6 +764,15 @@ bool CTableFrameSink::OnUserPlaceJetton(WORD wChairID, BYTE cbJettonArea, __int6
 	//效验状态
 	ASSERT(m_pITableFrame->GetGameStatus()==GS_FREE+1);
 	if (m_pITableFrame->GetGameStatus()!=GS_FREE+1) return true;
+
+	//刷新下庄家的分数
+	IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
+	if(pBankerItem)
+	{
+		if(m_CurrentBanker.dwUserID != 0L)
+			m_CurrentBanker.lUserScore=pBankerItem->GetUserScore()->lScore;
+	}
+
 
 	//庄家判断
 	if ( m_CurrentBanker.dwUserID != 0 && m_CurrentBanker.wChairID == wChairID ) return true;

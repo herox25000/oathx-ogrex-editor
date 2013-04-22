@@ -2,6 +2,7 @@
 
 #include "Stdafx.h"
 #include "GameClientView.h"
+#include "DirectSound.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -28,7 +29,7 @@ protected:
 	//状态变量
 protected:
 	bool							m_bPlaying;							//游戏状态
-	int								m_nShowResultTime;					//显示时间
+//	int								m_nShowResultTime;					//显示时间
 	__int64							m_lBeginTime;
 	__int64							m_lTotalTime;
 
@@ -53,6 +54,11 @@ protected:
 	int								m_iTotoalRun;
 	int								m_iRunIndex;
 	
+	//声音资源
+protected:
+	CDirectSound					m_DTSDBackground;					//背景音乐
+	CDirectSound					m_DTSDCheer[3];						//背景音乐
+
 	//函数定义
 public:
 	//构造函数
@@ -105,8 +111,8 @@ protected:
 protected:
 	//更新控制
 	void UpdateButtonContron();
-	//派发扑克
-	bool DispatchUserCard(BYTE cbAnimalBox);
+	//开始显示动画
+	bool DispatchUserCard(BYTE cbAnimalBox,int TimeLeave);
 	//推断赢家
 	BYTE DeduceWinner();
 	
