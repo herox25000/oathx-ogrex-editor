@@ -85,7 +85,7 @@ void CApplyUser::InserUser(tagApplyUser & ApplyUser)
 	INT nItemIndex=m_AppyUserList.InsertItem(m_AppyUserList.GetItemCount(),ApplyUser.strUserName);
 
 	//Íæ¼Ò½ð±Ò
-	_snprintf(szBuffer,CountArray(szBuffer),TEXT("%s"),ChangNumber(ApplyUser.lUserScore));
+	_snprintf(szBuffer,CountArray(szBuffer),TEXT("%I64d"),ApplyUser.lUserScore);
 	m_AppyUserList.SetItem(nItemIndex,wColumnCount++,LVIF_TEXT,szBuffer,0,0,0,0);
 
 	return;
