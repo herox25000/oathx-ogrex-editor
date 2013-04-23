@@ -472,7 +472,7 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 	}
 	//加注界面
 	m_GameClientView.PlaceUserJetton(pPlaceJetton->cbJettonArea,pPlaceJetton->lJettonScore);
-
+	UpdateButtonContron();
 	return true;
 }
 
@@ -659,13 +659,12 @@ void CGameClientDlg::UpdateButtonContron()
 			else if (lLeaveScore>=100000L) m_GameClientView.SetCurrentJetton(100000L);
 			else if (lLeaveScore>=10000L) m_GameClientView.SetCurrentJetton(10000L);
 			else if (lLeaveScore>=1000L) m_GameClientView.SetCurrentJetton(1000L);
-			
 			else m_GameClientView.SetCurrentJetton(0L);
 		}
 
 		//控制按钮
-		UINT uFlageScore[] = {1000, 10000, 100000, 500000, 1000000, 5000000, 10000000};
-		for (int i=0; i<7; i++)
+		UINT uFlageScore[] = {1000L, 10000L, 100000L, 500000L, 1000000L, 5000000L, 10000000L};
+		for (int i=0; i<JETTON_COUNT; i++)
 		{
 			m_GameClientView.m_JettonButton[i].Enabled((lLeaveScore>=uFlageScore[i])?FALSE:TRUE);
 		}
@@ -675,9 +674,8 @@ void CGameClientDlg::UpdateButtonContron()
 	{
 		//设置光标
 		m_GameClientView.SetCurrentJetton(0L);
-
 		//禁止按钮
-		for (int i=0; i<7; i++)
+		for (int i=0; i<JETTON_COUNT; i++)
 		{
 			m_GameClientView.m_JettonButton[i].Enabled(TRUE);
 		}

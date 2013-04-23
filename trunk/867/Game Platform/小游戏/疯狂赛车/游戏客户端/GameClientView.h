@@ -224,7 +224,7 @@ public:
 	void SetPlayAnimalFalg(bool bPlayAnimal){ m_bPlayAnimal = bPlayAnimal; UpdateGameView(NULL);};
 
 	//计算限制
-protected:
+public:
 	//最大下注
 	__int64 GetMaxPutScore(BYTE cbJettonArea, BOOL bDebug=FALSE);
 	//得到所有人下注的积分

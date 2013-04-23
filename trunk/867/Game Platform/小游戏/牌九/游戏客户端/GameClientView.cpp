@@ -2175,11 +2175,11 @@ __int64 CGameClientView::CalcAllJetton()
 {
 	__int64 uAllScoreCount=0;
 	//绘画筹码
-	for (INT i=0;i<3;i++)
+	for (INT i=0;i<6;i++)
 	{
 		//变量定义
 		__int64 lScoreCount=0L;
-		__int64 lScoreJetton[JETTON_COUNT]={1000L,10000L,100000L,500000L,1000000L,5000000L,10000000L};
+		__int64 lScoreJetton[JETTON_COUNT]={1000L, 10000L, 100000L, 500000L, 1000000L, 5000000L, 10000000L};
 		//绘画筹码
 		for (INT_PTR j=0;j<m_JettonInfoArray[i].GetCount();j++)
 		{
