@@ -951,31 +951,31 @@ BYTE CGameClientView::GetJettonArea(CPoint MousePoint)
 	int nHeight = rcClient.Height();
 
 	CRect rect;
-	rect.SetRect(0, 0, 100, 100);
+	rect.SetRect(0, 0, 120, 160);
 
 	//------------------------------------------------------------------
-	rect.MoveToXY(nWidth / 2-245, nHeight / 2 - 120);
+	rect.MoveToXY(nWidth / 2-270, nHeight / 2 - 170);
 	if ( rect.PtInRect(MousePoint) ) return ID_BIG_TIGER;
 
-	rect.MoveToXY(nWidth / 2-245, nHeight / 2 +20 );
+	rect.MoveToXY(nWidth / 2-270, nHeight / 2 +20 );
 	if ( rect.PtInRect(MousePoint) ) return ID_SML_TIGER;
 	//------------------------------------------------------------------
-	rect.MoveToXY(nWidth / 2-115, nHeight / 2 - 120);
+	rect.MoveToXY(nWidth / 2-140, nHeight / 2 - 170);
 	if ( rect.PtInRect(MousePoint) ) return ID_BIG_DOG;
 
-	rect.MoveToXY(nWidth / 2-115, nHeight / 2 +20 );
+	rect.MoveToXY(nWidth / 2-140, nHeight / 2 +20 );
 	if ( rect.PtInRect(MousePoint) ) return ID_SML_DOG;
 	//------------------------------------------------------------------
-	rect.MoveToXY(nWidth / 2+15, nHeight / 2 - 120);
+	rect.MoveToXY(nWidth / 2-10, nHeight / 2 - 170);
 	if ( rect.PtInRect(MousePoint) ) return ID_BIG_HORSE;
 
-	rect.MoveToXY(nWidth / 2+15, nHeight / 2 +20 );
+	rect.MoveToXY(nWidth / 2-10, nHeight / 2 +20 );
 	if ( rect.PtInRect(MousePoint) ) return ID_SML_HORSE;
 	//------------------------------------------------------------------
-	rect.MoveToXY(nWidth / 2+145, nHeight / 2 - 120);
+	rect.MoveToXY(nWidth / 2+120, nHeight / 2 - 170);
 	if ( rect.PtInRect(MousePoint) ) return ID_BIG_SNAKE;
 
-	rect.MoveToXY(nWidth / 2+145, nHeight / 2 +20 );
+	rect.MoveToXY(nWidth / 2+120, nHeight / 2 +20 );
 	if ( rect.PtInRect(MousePoint) ) return ID_SML_SNAKE;
 	//------------------------------------------------------------------
 
@@ -1454,7 +1454,7 @@ __int64 CGameClientView::Get_ALL_MultiDesktopScore()
 	return sxDesktopScore;
 }
 
-//得到所有人下注的积分
+//得到自己总的下注
 __int64 CGameClientView::Get_Me_DesktopJetton()
 {
 	__int64 lMeDesktopJetton = 0;

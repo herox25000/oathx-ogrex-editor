@@ -446,7 +446,7 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			////禁用按钮
 			//m_GameClientView.m_btApplyBanker.EnableWindow( FALSE );
 			//m_GameClientView.m_btCancelBanker.EnableWindow( FALSE );
-
+			UpdateButtonContron();
 			//设置时间
 			SetGameTimer(GetMeChairID(), IDI_OTHER_TIME, pStatusPlay->cbTimeLeave);
 			return true;
@@ -502,10 +502,8 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 	//效验数据
 	ASSERT(wDataSize==sizeof(CMD_S_PlaceJetton));
 	if (wDataSize!=sizeof(CMD_S_PlaceJetton)) return false;
-
 	//消息处理
 	CMD_S_PlaceJetton * pPlaceJetton=(CMD_S_PlaceJetton *)pBuffer;
-
 	//播放声音
 	if (IsEnableSound()) 
 	{
@@ -515,11 +513,9 @@ bool CGameClientDlg::OnSubPlaceJetton(const void * pBuffer, WORD wDataSize)
 			PlayGameSound(AfxGetInstanceHandle(),TEXT("ADD_GOLD"));
 		m_DTSDCheer[rand()%3].Play();
 	}
-
-
 	//加注界面
 	m_GameClientView.PlaceUserJetton(pPlaceJetton->cbJettonArea, pPlaceJetton->lJettonScore);
-
+	UpdateButtonContron();
 	return true;
 }
 
@@ -683,19 +679,9 @@ void CGameClientDlg::UpdateButtonContron()
 			return;
 		//计算积分
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
-		__int64 lLeaveScore=pMeInfo->lScore;
-
-		lLeaveScore-=m_lMeBigTigerScore;					//我买大虎总注
-		lLeaveScore-=m_lMeSmlTigerScore;					//我买小虎总注
-		lLeaveScore-=m_lMeBigBogScore;						//我买大狗总注
-		lLeaveScore-=m_lMeSmlBogScore;						//我买大狗总注
-		lLeaveScore-=m_lMeBigHorseScore;					//我买大马总注
-		lLeaveScore-=m_lMeSmlHorseScore;					//我买小马总注
-		lLeaveScore-=m_lMeBigSnakeScore;					//我买大蛇总注
-		lLeaveScore-=m_lMeSmlSnakeScore;					//我买小蛇总注
-		
-		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.CalcAllJetton();
-		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore);
+		__int64 lLeaveScore=pMeInfo->lScore - m_GameClientView.Get_Me_DesktopJetton();	
+		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.Get_ALL_MultiDesktopScore();
+		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore/5);
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{
@@ -722,7 +708,6 @@ void CGameClientDlg::UpdateButtonContron()
 	{
 		//设置光标
 		m_GameClientView.SetCurrentJetton(0L);
-
 		//禁止按钮
 		m_GameClientView.m_btJetton100.EnableWindow(FALSE);
 		m_GameClientView.m_btJetton1000.EnableWindow(FALSE);

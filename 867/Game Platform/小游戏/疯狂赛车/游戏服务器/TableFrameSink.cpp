@@ -1180,7 +1180,8 @@ __int64 CTableFrameSink::Get_User_DesktopScore(WORD wChairID)
 //×î´óÏÂ×¢
 __int64 CTableFrameSink::GetMaxPutScore(WORD wChairID, BYTE cbJettonArea)
 {
-	if ( cbJettonArea<ID_BIG_TIGER || cbJettonArea>ID_SML_SNAKE ) return 0L;
+	if ( cbJettonArea<ID_BIG_TIGER || cbJettonArea>ID_SML_SNAKE ) 
+		return 0L;
 
 	IServerUserItem *pServerUserItem = m_pITableFrame->GetServerUserItem(wChairID);
 	if (pServerUserItem==NULL)
