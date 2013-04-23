@@ -1391,11 +1391,8 @@ void CGameClientView::ShowGameResult(CDC *pDC, int nWidth, int nHeight)
 	rcMeReturnScore.right = rcMeReturnScore.left + 111;
 	rcMeReturnScore.bottom = rcMeReturnScore.top + 34;
 
-	CString strMeGameScore, strMeReturnScore;
-	strMeGameScore.Format(TEXT("%I64d"), m_lMeCurGameScore);
-	strMeReturnScore.Format(TEXT("%I64d"), m_lMeCurGameReturnScore);
-	pDC->DrawText(strMeGameScore, rcMeWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
-	pDC->DrawText(strMeReturnScore, rcMeReturnScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
+	pDC->DrawText(ChangNumber(m_lMeCurGameScore), rcMeWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
+	pDC->DrawText(ChangNumber(m_lMeCurGameReturnScore), rcMeReturnScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
 
 	CRect rcBankerWinScore;
 	rcBankerWinScore.left = nXPos+2 + 120;
@@ -1403,9 +1400,7 @@ void CGameClientView::ShowGameResult(CDC *pDC, int nWidth, int nHeight)
 	rcBankerWinScore.right = rcBankerWinScore.left + 111;
 	rcBankerWinScore.bottom = rcBankerWinScore.top + 34;
 
-	CString strBankerCurGameScore;
-	strBankerCurGameScore.Format(TEXT("%I64d"), m_lBankerCurGameScore);
-	pDC->DrawText(strBankerCurGameScore, rcBankerWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
+	pDC->DrawText(ChangNumber(m_lBankerCurGameScore), rcBankerWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
 }
 
 //Í¸Ã÷»æ»­
@@ -1705,9 +1700,6 @@ __int64 CGameClientView::CalcAllJetton()
 		+m_lAllSmlBogScore+m_lAllBigHorseScore+m_lAllSmlHorseScore+m_lAllBigSnakeScore+m_lAllSmlSnakeScore;
 	return uAllScoreCount;
 }
-
-
-
 
 //////////////////////////////////////////////////////////////////////////
 

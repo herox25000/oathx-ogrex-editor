@@ -38,6 +38,31 @@
 
 //////////////////////////////////////////////////////////////////////////
 
+inline CString ChangNumber(__int64 iNumber)
+{ 
+	CString strNumber;
+	strNumber.Format("%I64d",iNumber);
+	int len=strNumber.GetLength();
+	for(int index = len-3; index > 0; index -= 3)
+	{
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
+	}
+	return strNumber;
+}
+
+inline CString ChangNumber(int iNumber)
+{
+	CString strNumber;
+	strNumber.Format("%d",iNumber);
+	int len=strNumber.GetLength();
+	for(int index = len-3; index > 0; index -= 3)
+	{
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
+	}
+	return strNumber;
+}
 
 
 //组件头文件

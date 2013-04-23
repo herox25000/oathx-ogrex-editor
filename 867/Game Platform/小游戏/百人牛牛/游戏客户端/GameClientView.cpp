@@ -1093,34 +1093,43 @@ void CGameClientView::DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, IN
 //绘画数字
 void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, __int64 lNumber, INT nXPos, INT nYPos)
 {
-	CString strNumber=TEXT(""), strTmpNumber1,strTmpNumber2;
-	if (lNumber==0) strNumber=TEXT("0");
-	int nNumberCount=0;
-	__int64 lTmpNumber=lNumber;
-	if (lNumber<0) lNumber=-lNumber;
-	while (lNumber>0)
+	CString strNumber;
+	strNumber.Format("%I64d",lNumber);
+	int len=strNumber.GetLength();
+	for(int index = len-3; index > 0; index -= 3)
 	{
-		strTmpNumber1.Format(TEXT("%ld"),lNumber%10);
-		nNumberCount++;
-		strTmpNumber2 = strTmpNumber1+strTmpNumber2;
-
-		if (nNumberCount==4)
-		{
-			strTmpNumber2 += (TEXT(" ") +strNumber);
-			strNumber=strTmpNumber2;
-			nNumberCount=0;
-			strTmpNumber2=TEXT("");
-		}
-		lNumber/=10;
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
 	}
 
-	if (strTmpNumber2.IsEmpty()==FALSE)
-	{
-		strTmpNumber2 += (TEXT(" ") +strNumber);
-		strNumber=strTmpNumber2;
-	}
+	//CString strNumber=TEXT(""), strTmpNumber1,strTmpNumber2;
+	//if (lNumber==0) strNumber=TEXT("0");
+	//int nNumberCount=0;
+	//__int64 lTmpNumber=lNumber;
+	//if (lNumber<0) lNumber=-lNumber;
+	//while (lNumber>0)
+	//{
+	//	strTmpNumber1.Format(TEXT("%ld"),lNumber%10);
+	//	nNumberCount++;
+	//	strTmpNumber2 = strTmpNumber1+strTmpNumber2;
 
-	if (lTmpNumber<0) strNumber=TEXT("-")+strNumber;
+	//	if (nNumberCount==4)
+	//	{
+	//		strTmpNumber2 += (TEXT(",") +strNumber);
+	//		strNumber=strTmpNumber2;
+	//		nNumberCount=0;
+	//		strTmpNumber2=TEXT("");
+	//	}
+	//	lNumber/=10;
+	//}
+
+	//if (strTmpNumber2.IsEmpty()==FALSE)
+	//{
+	//	strTmpNumber2 += (TEXT(" ") +strNumber);
+	//	strNumber=strTmpNumber2;
+	//}
+
+	//if (lTmpNumber<0) strNumber=TEXT("-")+strNumber;
 
 	//输出数字
 	pDC->TextOut(nXPos,nYPos,strNumber);
@@ -1129,41 +1138,52 @@ void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, __int64 lNumber, INT 
 //绘画数字
 void CGameClientView::DrawNumberStringWithSpace(CDC * pDC, __int64 lNumber, CRect rcRect, INT nFormat)
 {
-	CString static strNumber=TEXT(""), strTmpNumber1,strTmpNumber2;
-	strTmpNumber1.Empty();
-	strTmpNumber2.Empty();
-	strNumber.Empty();
-	if (lNumber==0) strNumber=TEXT("0");
-	int nNumberCount=0;
-	__int64 lTmpNumber=lNumber;
-	if (lNumber<0) lNumber=-lNumber;
-	while (lNumber>0)
+	CString strNumber;
+	strNumber.Format("%I64d",lNumber);
+	int len=strNumber.GetLength();
+	for(int index = len-3; index > 0; index -= 3)
 	{
-		strTmpNumber1.Format(TEXT("%ld"),lNumber%10);
-		nNumberCount++;
-		strTmpNumber2 = strTmpNumber1+strTmpNumber2;
-
-		if (nNumberCount==4)
-		{
-			strTmpNumber2 += (TEXT(" ") +strNumber);
-			strNumber=strTmpNumber2;
-			nNumberCount=0;
-			strTmpNumber2=TEXT("");
-		}
-		lNumber/=10;
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
 	}
 
-	if (strTmpNumber2.IsEmpty()==FALSE)
-	{
-		strTmpNumber2 += (TEXT(" ") +strNumber);
-		strNumber=strTmpNumber2;
-	}
+	//CString static strNumber=TEXT(""), strTmpNumber1,strTmpNumber2;
+	//strTmpNumber1.Empty();
+	//strTmpNumber2.Empty();
+	//strNumber.Empty();
+	//if (lNumber==0) strNumber=TEXT("0");
+	//int nNumberCount=0;
+	//__int64 lTmpNumber=lNumber;
+	//if (lNumber<0) lNumber=-lNumber;
+	//while (lNumber>0)
+	//{
+	//	strTmpNumber1.Format(TEXT("%ld"),lNumber%10);
+	//	nNumberCount++;
+	//	strTmpNumber2 = strTmpNumber1+strTmpNumber2;
 
-	if (lTmpNumber<0) strNumber=TEXT("-")+strNumber;
+	//	if (nNumberCount==4)
+	//	{
+	//		strTmpNumber2 += (TEXT(" ") +strNumber);
+	//		strNumber=strTmpNumber2;
+	//		nNumberCount=0;
+	//		strTmpNumber2=TEXT("");
+	//	}
+	//	lNumber/=10;
+	//}
+
+	//if (strTmpNumber2.IsEmpty()==FALSE)
+	//{
+	//	strTmpNumber2 += (TEXT(" ") +strNumber);
+	//	strNumber=strTmpNumber2;
+	//}
+
+	//if (lTmpNumber<0) strNumber=TEXT("-")+strNumber;
 
 	//输出数字
-	if (nFormat==-1) pDC->DrawText(strNumber,rcRect,DT_END_ELLIPSIS|DT_LEFT|DT_TOP|DT_SINGLELINE);
-	else pDC->DrawText(strNumber,rcRect,nFormat);
+	if (nFormat==-1) 
+		pDC->DrawText(strNumber,rcRect,DT_END_ELLIPSIS|DT_LEFT|DT_TOP|DT_SINGLELINE);
+	else
+		pDC->DrawText(strNumber,rcRect,nFormat);
 }
 void CGameClientView::KillCardTime()
 {
@@ -2276,16 +2296,9 @@ void CGameClientView::SetFirstShowCard(BYTE bcCard)
 //绘画玩家
 void CGameClientView::DrawMeInfo(CDC *pDC,int nWidth,int nHeight)
 {
-	
 	//合法判断
 	if (INVALID_CHAIR==m_wMeChairID) return;
-
-
-
-
-
 	const tagUserData *pMeUserData = GetUserInfo(m_wMeChairID);
-
 	if ( pMeUserData != NULL )
 	{
 		//字体颜色
