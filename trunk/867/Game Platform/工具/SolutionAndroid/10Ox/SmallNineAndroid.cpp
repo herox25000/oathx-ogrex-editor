@@ -647,7 +647,9 @@ namespace O2
 			LogEvent(szMessage, TraceLevel_Debug);
 
 			pUser->wCurUpBanker		= 0;
-			pUser->nBankerCurWin	= 0;			
+			pUser->nBankerCurWin	= 0;	
+
+			BankerManager::GetSingleton().Remove(pUser->dwUserID);
 		}
 
 		m_wCurBanker	= pChangeBanker->wBankerUser;
