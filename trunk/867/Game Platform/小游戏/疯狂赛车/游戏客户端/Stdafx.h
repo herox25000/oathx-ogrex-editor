@@ -48,7 +48,10 @@ inline CString ChangNumber(__int64 iNumber)
 	strNumber.Format("%I64d",iNumber);
 	int len=strNumber.GetLength();
 	for(int index = len-3; index > 0; index -= 3)
-		strNumber.Insert(index, ",");
+	{
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
+	}
 	return strNumber;
 }
 
@@ -58,6 +61,9 @@ inline CString ChangNumber(int iNumber)
 	strNumber.Format("%d",iNumber);
 	int len=strNumber.GetLength();
 	for(int index = len-3; index > 0; index -= 3)
-		strNumber.Insert(index, ",");
+	{
+		if(strNumber.Left(index)!="-")
+			strNumber.Insert(index, ",");
+	}
 	return strNumber;
 }

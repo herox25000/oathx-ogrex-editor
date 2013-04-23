@@ -369,13 +369,9 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 
 	//最大下注
 	pDC->SetTextColor(RGB(255,234,0));
-	CString strLimitScore;
-	strLimitScore.Format(TEXT("%I64d"), GetMaxBankerScore());
-	pDC->TextOut(nWidth/2-300, nHeight/2 - 347,strLimitScore);
-	strLimitScore.Format(TEXT("%I64d"), GetMaxPlayerScore());
-	pDC->TextOut(nWidth/2-300, nHeight/2 - 322,strLimitScore);
-	strLimitScore.Format(TEXT("%I64d"), GetMaxTieScore());
-	pDC->TextOut(nWidth/2-300, nHeight/2 - 299,strLimitScore);
+	pDC->TextOut(nWidth/2-300, nHeight/2 - 347,ChangNumber(GetMaxBankerScore()));
+	pDC->TextOut(nWidth/2-300, nHeight/2 - 322,ChangNumber(GetMaxPlayerScore()));
+	pDC->TextOut(nWidth/2-300, nHeight/2 - 299,ChangNumber(GetMaxTieScore()));
 
 	//绘画边框
 	int nXPos=0, nYPos=0;
@@ -555,13 +551,11 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			pDC->DrawText( pUserData->szName, StrRect, DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE );
 
 			//庄家总分
-			CString strBankerTotalScore;
-			strBankerTotalScore.Format( "%I64d", pUserData->lScore );
 			StrRect.left = nWidth/2-85;
 			StrRect.top = nHeight/2 - 316;
 			StrRect.right = StrRect.left + 190;
 			StrRect.bottom = StrRect.top + 15;
-			pDC->DrawText( strBankerTotalScore, StrRect, DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE );
+			pDC->DrawText( ChangNumber(pUserData->lScore) , StrRect, DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE );
 
 			//庄家局数
 			CString strBankerTime;
@@ -573,13 +567,11 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 			pDC->DrawText( strBankerTime, StrRect, DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE );
 
 			//庄家成绩
-			CString strBankerScore;
-			strBankerScore.Format( "%I64d", m_lBankerScore );
 			StrRect.left = nWidth/2-85;
 			StrRect.top = nHeight/2 - 291;
 			StrRect.right = StrRect.left + 190;
 			StrRect.bottom = StrRect.top + 15;
-			pDC->DrawText( strBankerScore, StrRect, DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE );
+			pDC->DrawText( ChangNumber(m_lBankerScore), StrRect, DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE );
 		}
 	}
 	else
@@ -695,18 +687,18 @@ void CGameClientView::DrawGameView(CDC * pDC, int nWidth, int nHeight)
 		if ( pMeUserData != NULL )
 		{
 			//游戏信息
-			TCHAR szResultScore[16]=TEXT("");
-			TCHAR szGameScore[16]=TEXT("");
+			//TCHAR szResultScore[16]=TEXT("");
+			//TCHAR szGameScore[16]=TEXT("");
 			pDC->SetTextColor(RGB(0,0,0));
 			__int64 lMeJetton = m_lMeTieScore+m_lMeBankerScore+m_lMePlayerScore+m_lMeTieSamePointScore+m_lMePlayerKingScore+m_lMeBankerKingScore;
-			_sntprintf(szGameScore,CountArray(szGameScore),TEXT("%I64d"),pMeUserData->lScore-lMeJetton);
-			_sntprintf(szResultScore,CountArray(szResultScore),TEXT("%I64d"),m_lMeResultCount);
-			CRect rcAccount(CPoint(nWidth/2-290,nHeight/2+272),CPoint(nWidth/2-290+100,nHeight/2+272+10));
-			CRect rcGameScore(CPoint(nWidth/2-290,nHeight/2+294),CPoint(nWidth/2-290+100,nHeight/2+294+10));
-			CRect rcResultScore(CPoint(nWidth/2-290,nHeight/2+294+23),CPoint(nWidth/2-290+100,nHeight/2+294+10+23));
+			//_sntprintf(szGameScore,CountArray(szGameScore),TEXT("%I64d"),pMeUserData->lScore-lMeJetton);
+			//_sntprintf(szResultScore,CountArray(szResultScore),TEXT("%I64d"),m_lMeResultCount);
+			CRect rcAccount(CPoint(nWidth/2-290,nHeight/2+272),CPoint(nWidth/2-290+100,nHeight/2+272+15));
+			CRect rcGameScore(CPoint(nWidth/2-290,nHeight/2+294),CPoint(nWidth/2-290+100,nHeight/2+294+15));
+			CRect rcResultScore(CPoint(nWidth/2-290,nHeight/2+294+23),CPoint(nWidth/2-290+100,nHeight/2+294+23+15));
 			pDC->DrawText(pMeUserData->szName,lstrlen(pMeUserData->szName),rcAccount,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
-			pDC->DrawText(szGameScore,lstrlen(szGameScore),rcGameScore,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
-			pDC->DrawText(szResultScore,lstrlen(szResultScore),rcResultScore,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
+			pDC->DrawText(ChangNumber(pMeUserData->lScore-lMeJetton),rcGameScore,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
+			pDC->DrawText(ChangNumber(m_lMeResultCount),rcResultScore,DT_END_ELLIPSIS | DT_LEFT | DT_TOP| DT_SINGLELINE);
 		}
 	}
 
@@ -1725,11 +1717,8 @@ void CGameClientView::ShowGameResult(CDC *pDC, int nWidth, int nHeight)
 	rcMeReturnScore.right = rcMeReturnScore.left + 111;
 	rcMeReturnScore.bottom = rcMeReturnScore.top + 34;
 
-	CString strMeGameScore, strMeReturnScore;
-	strMeGameScore.Format(TEXT("%I64d"), m_lMeCurGameScore);
-	strMeReturnScore.Format(TEXT("%I64d"), m_lMeCurGameReturnScore);
-	pDC->DrawText(strMeGameScore, rcMeWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
-	pDC->DrawText(strMeReturnScore, rcMeReturnScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
+	pDC->DrawText(ChangNumber(m_lMeCurGameScore), rcMeWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
+	pDC->DrawText(ChangNumber(m_lMeCurGameReturnScore), rcMeReturnScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
 
 	CRect rcBankerWinScore;
 	rcBankerWinScore.left = nXPos+2 + 40;
@@ -1737,9 +1726,7 @@ void CGameClientView::ShowGameResult(CDC *pDC, int nWidth, int nHeight)
 	rcBankerWinScore.right = rcBankerWinScore.left + 111;
 	rcBankerWinScore.bottom = rcBankerWinScore.top + 34;
 
-	CString strBankerCurGameScore;
-	strBankerCurGameScore.Format(TEXT("%I64d"), m_lBankerCurGameScore);
-	pDC->DrawText(strBankerCurGameScore, rcBankerWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
+	pDC->DrawText(ChangNumber(m_lBankerCurGameScore), rcBankerWinScore, DT_END_ELLIPSIS | DT_VCENTER | DT_CENTER | DT_SINGLELINE );
 }
 
 //透明绘画
