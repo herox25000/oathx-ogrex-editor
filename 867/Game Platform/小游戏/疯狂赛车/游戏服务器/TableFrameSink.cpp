@@ -180,11 +180,11 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 
 	MakeAnimate();
 
-	ChuLaoQian();
+	RobotAI();
 
 	//构造数据
 	GameStart.cbAnimalBox=m_cbAnimalBox;
-	GameStart.cbTimeLeave=(m_cbAnimalBox*ANIMAL_ROLL_SPEED)/1000+TIME_GAME_END;
+	GameStart.cbTimeLeave=(m_cbAnimalBox*ANIMAL_ROLL_SPEED)/5000+TIME_GAME_END;
 	GameStart.lApplyBankerCondition = m_lApplyBankerCondition;
 
 	//发送数据
@@ -566,7 +566,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 			}
 			m_pITableFrameControl->StartGame();
 			m_dwJettonTime=(DWORD)time(NULL);
-			m_pITableFrame->SetGameTimer(IDI_GAME_END, (m_cbAnimalBox*ANIMAL_ROLL_SPEED)+TIME_GAME_END*1000,1,0L);
+			m_pITableFrame->SetGameTimer(IDI_GAME_END, ((m_cbAnimalBox*ANIMAL_ROLL_SPEED)/5000+TIME_GAME_END)*1000,1,0L);
 			return true;
 		}
 	case IDI_GAME_END:			//结束游戏
@@ -734,6 +734,28 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 					//发送消息
 					SendChangeBankerMsg();
 				}
+			}
+		}
+		if (m_CurrentBanker.dwUserID == 0)
+		{
+			ChangeBanker();
+			//庄家信息
+			if ( m_CurrentBanker.dwUserID != 0 )
+			{
+				CMD_S_ChangeUserScore ChangeUserScore;
+				ZeroMemory( &ChangeUserScore, sizeof( ChangeUserScore ) );
+				ChangeUserScore.wCurrentBankerChairID = m_CurrentBanker.wChairID;
+				ChangeUserScore.lCurrentBankerScore = m_lBankerWinScore;
+				ChangeUserScore.cbBankerTime = m_cbBankerTimer;
+				ChangeUserScore.lScore = m_CurrentBanker.lUserScore;
+				ChangeUserScore.wChairID = m_CurrentBanker.wChairID;
+				m_pITableFrame->SendTableData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+				m_pITableFrame->SendLookonData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+			}
+			//切换判断
+			if ( m_cbBankerTimer == 0 )
+			{
+				SendChangeBankerMsg();
 			}
 		}
 
@@ -1298,14 +1320,14 @@ void CTableFrameSink::CalculateScore()
 	//买注总量
 	GameScore.lDrawBigTigerScore	=m_lAllBigTigerScore;					//买大老虎总注
 	GameScore.lDrawSmlTigerScore	=m_lAllSmlTigerScore;					//买小老虎总注
-	GameScore.lDrawBigBogScore		=m_lAllBigBogScore;					//买大狗总注
-	GameScore.lDrawSmlBogScore		=m_lAllSmlBogScore;					//买大狗总注
+	GameScore.lDrawBigBogScore		=m_lAllBigBogScore;						//买大狗总注
+	GameScore.lDrawSmlBogScore		=m_lAllSmlBogScore;						//买大狗总注
 	GameScore.lDrawBigHorseScore	=m_lAllBigHorseScore;					//买大马总注
 	GameScore.lDrawSmlHorseScore	=m_lAllSmlHorseScore;					//买小马总注
 	GameScore.lDrawBigSnakeScore	=m_lAllBigSnakeScore;					//买大蛇总注
 	GameScore.lDrawSmlSnakeScore	=m_lAllSmlSnakeScore;					//买小蛇总注
 	
-	GameScore.lBankerWinScore		=m_lBankerWinScore;
+	GameScore.lBankerWinScore		=lBankerWinScore;
 
 	//发送积分
 	for ( WORD wUserIndex = 0; wUserIndex < GAME_PLAYER; ++wUserIndex )
@@ -1371,65 +1393,18 @@ void CTableFrameSink::MakeAnimate()
 	m_cbAnimalBox=BYTE(rand()%4*8+cbAnimalBox+96);
 }
 
-void CTableFrameSink::ChuLaoQian()
+void CTableFrameSink::RobotAI()
 {
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\BumperCar.ini", sizeof(szINI));
-	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 3, szINI);
-	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
-	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
-	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
-	LIMIT_VALUE(lWinRate, 1, 10);
+	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 0, szINI);
+	LIMIT_VALUE(lWinRate, 0, 8);
 
-	//获取玩家
-	if (m_CurrentBanker.dwUserID != 0)
+	if (lWinRate != 0)
 	{
-		//机器人30%的概率赢钱
-		if ( m_CurrentBanker.dwUserType == 10 )
-		{
-			bool bWin = false;
-			if ( rand() % lWinRate == 0 || m_lBankerWinScore <= (-lMaxLose) )
-			{
-				bool bWin = false;
-				while (PreCalcScore() < 0)
-				{
-					MakeAnimate();
-				}
-			}
-			else if (bWin == false)
-			{
-				while(PreCalcScore() < (-lMaxPerLose))
-				{
-					MakeAnimate();
-				}
-			}
-		}
-		else
-		{
-			//玩家如果做庄
-			if (m_lBankerWinScore >= lPlayerMaxMin)
-			{
-				while(PreCalcScore() > 0)
-				{
-					MakeAnimate();
-				}
-			}
-			else if(m_lBankerWinScore > 0)
-			{
-				__int64 nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
-				int nRand = rand()%100;
-				if (nRand < nLoseRate)
-				{
-					while(PreCalcScore() > 0)
-					{
-						MakeAnimate();
-					}
-				}
-			}
-		}
+		m_cbAnimalBox=BYTE(rand()%4*8+(lWinRate-ID_BIG_TIGER)+96);
 	}
-
 }
 
 __int64 CTableFrameSink::PreCalcScore()

@@ -167,6 +167,7 @@ protected:
 	CSkinImage						m_ImageCard;						//图片资源
 	CPngImage						m_pngCHART_XIAN;
 	CPngImage						m_pngCHART_XIAN_EX;
+	CPngImage						m_pngCHART_ZHUAN_EX;			
 
 public:
 	BYTE							m_bstate;							//当前游戏状态

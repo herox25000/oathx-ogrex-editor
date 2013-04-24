@@ -188,8 +188,8 @@ private:
 	BYTE DeduceWinner();
 	//产生动物
 	void MakeAnimate();
-	//出老千
-	void ChuLaoQian();
+	
+	void RobotAI();
 	__int64 PreCalcScore();
 
 	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);

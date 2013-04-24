@@ -188,6 +188,8 @@ CGameClientView::CGameClientView() : CGameFrameView(true,24)
 	m_pngCHART_XIAN.LoadImage(GetModuleHandle(0),TEXT("CHART_XIAN"));
 	m_pngCHART_XIAN_EX.LoadImage(GetModuleHandle(0),TEXT("CHART_XIAN_EX"));
 
+	m_pngCHART_ZHUAN_EX.LoadImage(GetModuleHandle(0),TEXT("CHART_ZHUANG_EX"));
+
 	m_ImageMeBanker.SetLoadInfo( IDB_ME_BANKER, hInstance );
 	m_ImageChangeBanker.SetLoadInfo( IDB_CHANGE_BANKER, hInstance );
 	m_ImageNoBanker.SetLoadInfo( IDB_NO_BANKER, hInstance );	
@@ -988,9 +990,6 @@ void CGameClientView::DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, IN
 	//加载资源
 	CImageHandle HandleScoreNumber(&m_ImageScoreNumber);
 	CImageHandle HandleMeScoreNumber(&m_ImageMeScoreNumber);
-	CSize SizeScoreNumber(m_ImageScoreNumber.GetWidth()/10,m_ImageScoreNumber.GetHeight());
-
-	if ( bMeScore ) SizeScoreNumber.SetSize(m_ImageMeScoreNumber.GetWidth()/10, m_ImageMeScoreNumber.GetHeight());
 
 	//计算数目
 	int lNumberCount=0;
@@ -1001,9 +1000,20 @@ void CGameClientView::DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, IN
 		lNumberTemp/=10;
 	} while (lNumberTemp>0);
 
+	const INT nNumberHeight=m_pngCHART_ZHUAN_EX.GetHeight();
+	const INT nNumberWidth=m_pngCHART_ZHUAN_EX.GetWidth()/11;
+
+	CSize SizeScoreNumber(nNumberWidth, nNumberHeight);
+
+	if ( bMeScore ) 
+		SizeScoreNumber.SetSize(m_ImageMeScoreNumber.GetWidth()/10, m_ImageMeScoreNumber.GetHeight());
+
 	//位置定义
 	INT nYDrawPos=nYPos-SizeScoreNumber.cy/2;
 	INT nXDrawPos=nXPos+lNumberCount*SizeScoreNumber.cx/2-SizeScoreNumber.cx;
+
+	INT nYDrawPosEx=nYPos-nNumberHeight/2;
+	INT nXDrawPosEx=nXPos+lNumberCount*nNumberWidth/2-nNumberWidth;
 
 	//绘画桌号
 	for (__int64 i=0;i<lNumberCount;i++)
@@ -1017,13 +1027,19 @@ void CGameClientView::DrawNumberString(CDC * pDC, __int64 lNumber, INT nXPos, IN
 		}
 		else
 		{
-			m_ImageScoreNumber.AlphaDrawImage(pDC,nXDrawPos,nYDrawPos,SizeScoreNumber.cx,SizeScoreNumber.cy,
-				lCellNumber*SizeScoreNumber.cx,0,RGB(255,0,255));
+			m_pngCHART_ZHUAN_EX.DrawImage(pDC,nXDrawPosEx,nYDrawPosEx,nNumberWidth,nNumberHeight,lCellNumber*nNumberWidth,0);
+			if ( i != 0 && (int)((i+1)%4) == 0 && (lNumberCount-1) > i )
+			{
+				nXDrawPosEx -= 6;
+				m_pngCHART_ZHUAN_EX.DrawImage(pDC,nXDrawPosEx,nYDrawPosEx,nNumberWidth,nNumberHeight,10*nNumberWidth,0);
+			}
+			//m_ImageScoreNumber.AlphaDrawImage(pDC,nXDrawPos,nYDrawPos,SizeScoreNumber.cx,SizeScoreNumber.cy, lCellNumber*SizeScoreNumber.cx,0,);
 		}
 
 		//设置变量
 		lNumber/=10;
 		nXDrawPos-=SizeScoreNumber.cx;
+		nXDrawPosEx -= nNumberWidth;
 	};
 
 	return;

@@ -78,8 +78,6 @@ BOOL CApplyUser::OnInitDialog()
 	m_AppyUserList.Init(m_OrtRect,pParent);
 
 
-
-
 //	m_AppyUserList.SetScrollInfo(SB_VERT,&info);
 
 
