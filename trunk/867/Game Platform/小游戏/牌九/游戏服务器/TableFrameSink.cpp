@@ -739,6 +739,28 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 				}
 			}
 		}
+		if (m_CurrentBanker.dwUserID == 0)
+		{
+			ChangeBanker();
+			//×¯¼ÒÐÅÏ¢
+			if ( m_CurrentBanker.dwUserID != 0 )
+			{
+				CMD_S_ChangeUserScore ChangeUserScore;
+				ZeroMemory( &ChangeUserScore, sizeof( ChangeUserScore ) );
+				ChangeUserScore.wCurrentBankerChairID = m_CurrentBanker.wChairID;
+				ChangeUserScore.lCurrentBankerScore = m_lBankerWinScore;
+				ChangeUserScore.cbBankerTime = m_cbBankerTimer;
+				ChangeUserScore.lScore = m_CurrentBanker.lUserScore;
+				ChangeUserScore.wChairID = m_CurrentBanker.wChairID;
+				m_pITableFrame->SendTableData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+				m_pITableFrame->SendLookonData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+			}
+			//ÇÐ»»ÅÐ¶Ï
+			if ( m_cbBankerTimer == 0 )
+			{
+				SendChangeBankerMsg();
+			}
+		}
 
 		WORD wNowCount=m_pITableFrame->GetNowPlayerCount();
 		CString str;

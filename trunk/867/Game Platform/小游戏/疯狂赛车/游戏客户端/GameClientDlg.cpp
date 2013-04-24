@@ -787,21 +787,13 @@ void CGameClientDlg::StartRunCar( int iTimer )
 
 void CGameClientDlg::RuningCar( int iTimer )
 {
-	if(m_iRunIndex<13)
+	if(m_iRunIndex<10)
 	{
-		m_iTimerStep-=90;
-		if(m_iTimerStep<25)
-		{
-			m_iTimerStep=25 ;
-		}
+		m_iTimerStep-=43;
 	}
-	if(m_iRunIndex >= m_iTotoalRun-5)
+	if(m_iRunIndex >= m_iTotoalRun-15)
 	{
-		m_iTimerStep+=200;
-	}
-	if(m_iRunIndex >= m_iTotoalRun-10)
-	{
-		m_iTimerStep+=50;
+		m_iTimerStep+=47;
 	}
 	if(m_iRunIndex==m_iTotoalRun)
 	{
