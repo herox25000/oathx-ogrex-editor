@@ -140,6 +140,7 @@ namespace O2
 					szMessage.Format("[%d][%d]到达在线时间, 立刻下线", GetUserID(), GetGameID());
 					LogEvent(szMessage, TraceLevel_Exception);
 
+					BankerManager::GetSingleton().Remove(m_dwUserID);
 					SetStatus(US_OFFLINE);
 				}
 				else
@@ -499,7 +500,6 @@ namespace O2
 
 			}
 			break;
-
 			//游戏积分
 // 		case SUB_S_GAME_SCORE:		
 // 			{

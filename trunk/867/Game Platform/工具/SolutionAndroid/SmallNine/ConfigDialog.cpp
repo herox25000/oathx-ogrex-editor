@@ -33,26 +33,26 @@ BOOL CConfigDialog::OnInitDialog()
 	bool bResult = O2::ConfigFile::GetSingleton().LoadConfig(SMALLNINE_CFG_FILENAME);
 	if (!bResult)
 	{
-		SetDlgItemText(IDC_EDIT1,	"192.168.1.102");
+		SetDlgItemText(IDC_EDIT1,	"125.90.64.21");
 		SetDlgItemText(IDC_EDIT2,	"11021");
 		SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
 		SetDlgItemText(IDC_EDIT4,	"10");
 		SetDlgItemText(IDC_EDIT5,	"240");
-		SetDlgItemText(IDC_EDIT6,	"30");
-		SetDlgItemText(IDC_EDIT7,	"4");
-		SetDlgItemText(IDC_EDIT8,	"4");
-		SetDlgItemText(IDC_EDIT9,	"50000000");
+		SetDlgItemText(IDC_EDIT6,	"45");
+		SetDlgItemText(IDC_EDIT7,	"5");
+		SetDlgItemText(IDC_EDIT8,	"8");
+		SetDlgItemText(IDC_EDIT9,	"60000000");
 		SetDlgItemText(IDC_EDIT10,	"30");
-		SetDlgItemText(IDC_EDIT11,	"180");
+		SetDlgItemText(IDC_EDIT11,	"120");
 		SetDlgItemText(IDC_EDIT12,	"3");
-		SetDlgItemText(IDC_EDIT13,	"15");
-		SetDlgItemText(IDC_EDIT14,	"2000000");
-		SetDlgItemText(IDC_EDIT15,	"150000000");
-		SetDlgItemText(IDC_EDIT16,	"10");
+		SetDlgItemText(IDC_EDIT13,	"10");
+		SetDlgItemText(IDC_EDIT14,	"1000000");
+		SetDlgItemText(IDC_EDIT15,	"300000000");
+		SetDlgItemText(IDC_EDIT16,	"7");
 		SetDlgItemText(IDC_EDIT17,  "10");
 		SetDlgItemText(IDC_EDIT18,	"20");
 		SetDlgItemText(IDC_EDIT19,  "50");
-		SetDlgItemText(IDC_EDIT20,  "20");
+		SetDlgItemText(IDC_EDIT20,  "15");
 	}
 	else
 	{

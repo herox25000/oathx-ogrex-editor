@@ -4,6 +4,7 @@
 #include "AndroidTimer.h"
 #include "UserManager.h"
 #include "AndroidManager.h"
+#include "BankerManager.h"
 
 namespace O2
 {
@@ -266,6 +267,11 @@ namespace O2
 		CMD_TOOLBOX_BankTask tb;
 		memset(&tb, 0, sizeof(CMD_TOOLBOX_BankTask));
 
+		INT64 nCurScore = GetScore();
+		INT64 nAfterScore = nCurScore + nScore;
+		nAfterScore = nAfterScore / 100 * 100;
+		nScore = nAfterScore - nCurScore;
+
 		tb.lMoneyNumber	= nScore;
 		tb.lBankTask		= 2;
 		CopyMemory(tb.szPassword, m_Password.GetBuffer(), sizeof(tb.szPassword));
@@ -289,6 +295,11 @@ namespace O2
 		CMD_TOOLBOX_BankTask tb;
 		memset(&tb, 0, sizeof(CMD_TOOLBOX_BankTask));
 
+		INT64 nCurScore = GetScore();
+		INT64 nLeftScore = nCurScore - nScore;
+		nLeftScore = nLeftScore / 100 * 100;
+		nScore = nCurScore - nLeftScore;
+		
 		tb.lMoneyNumber	= nScore;
 		tb.lBankTask		= 1;
 		CopyMemory(tb.szPassword, m_Password.GetBuffer(), sizeof(tb.szPassword));
@@ -643,6 +654,7 @@ namespace O2
 
 				if (pUserStatus->cbUserStatus == US_NULL || pUserStatus->cbUserStatus == US_OFFLINE)
 				{
+					BankerManager::GetSingleton().Remove(pUser->dwUserID);
 					// 移除该机器人
 					m_pUserManager->Remove(pUserStatus->dwUserID);
 
@@ -657,10 +669,11 @@ namespace O2
 					// 站起时响应存钱
 					if (pUserStatus->cbUserStatus == US_FREE && pUserStatus->dwUserID == m_dwUserID)
 					{
+						BankerManager::GetSingleton().Remove(pUser->dwUserID);
 						OnBanker();
 						SetStatus(US_FREE);
 					}
-
+						
 					//更新状态
 					pUser->wTableID		= wNowTableID;
 					pUser->wChairID		= wNowChairID;
@@ -750,7 +763,8 @@ namespace O2
 		{
 		case IPC_SUB_SOCKET_RECV:	//数据接收
 			{
-				if (wDataSize<sizeof(CMD_Command)) return false;
+				if (wDataSize<sizeof(CMD_Command)) 
+					return false;
 
 				//提取数据
 				WORD wPacketSize=wDataSize-sizeof(CMD_Command);
