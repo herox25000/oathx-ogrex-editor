@@ -12,7 +12,7 @@ namespace O2
 		OXT_START_GAME,
 	};
 
-	static WORD		s_wCurTableID = INVALID_TABLE;
+	static WORD		oxCurTableID = INVALID_TABLE;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -129,19 +129,69 @@ namespace O2
 			
 			if (pUser->nScore >= pConfig->nMinScore && pUser->nScore <= pConfig->nMaxScore)
 			{
-				if (s_wCurTableID == INVALID_TABLE)
-					s_wCurTableID = AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
-
-				WORD wCount = m_pUserManager->GetTableChairCount(s_wCurTableID);
-				if (wCount <= rand() % 4)
+				if (oxCurTableID == INVALID_TABLE)
 				{
-					wChairID = m_pUserManager->GetEmptyChairID(s_wCurTableID);
-					wTableID = s_wCurTableID;
+					oxCurTableID	= AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
+
+					wTableID		= oxCurTableID;
+					wChairID		= m_pUserManager->GetEmptyChairID(wTableID);
 					return true;
 				}
 				else
 				{
-					s_wCurTableID = AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
+					int nCount		= m_pUserManager->GetTableChairCount(oxCurTableID);
+					if (nCount <= MIN_CHAIR_COUNT)
+					{
+						wTableID	= oxCurTableID;
+						wChairID	= m_pUserManager->GetEmptyChairID(wTableID);
+						return true;
+					}
+					else
+					{
+						std::vector<WORD>	vT;
+
+						int nCur	= pConfig->wMinTableID;
+						int nEnd	= pConfig->wMaxTableID;
+						while( nCur <= nEnd )
+						{
+							nCount = m_pUserManager->GetTableChairCount( nCur );
+							if (nCount == MIN_CHAIR_COUNT)
+							{
+								vT.push_back(nCur);
+							}
+							nCur ++;
+						}
+
+						if (vT.size() > 0)
+						{
+							int idx			= rand() % (vT.size());
+							if (idx == vT.size())
+								idx = vT.size() - 1;
+
+							wTableID		= vT[idx];
+							wChairID		= m_pUserManager->GetEmptyChairID(wTableID);
+							oxCurTableID	= vT[idx];
+							return true;
+						}
+						else
+						{
+							nCur = pConfig->wMinTableID;
+							while( nCur <= nEnd)
+							{
+								oxCurTableID	= AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
+
+								nCount			= m_pUserManager->GetTableChairCount( oxCurTableID );
+								if (nCount != 4)
+								{
+									wTableID	= oxCurTableID;
+									wChairID	= m_pUserManager->GetEmptyChairID(wTableID);
+									return true;
+								}
+
+								nCur ++;
+							}
+						}
+					}
 				}
 			}
 		}
@@ -208,25 +258,6 @@ namespace O2
 		SUser* pUser = GetUserInfo();
 		if (pUser == NULL)
 			return 0;
-
-		INT64 nMin;
-		INT64 nMax;
-		if (pUser->nScore < pConfig->nMinScore)
-		{
-			nMin = pConfig->nMinScore - pUser->nScore;
-			nMax = pConfig->nMaxScore - pUser->nScore;
-
-			GetScoreFromBanker( AndroidTimer::rdit( nMin,  nMax) );
-			return 0;
-		}
-		else if (pUser->nScore > pConfig->nMaxScore)
-		{
-			nMin = pUser->nScore - pConfig->nMaxScore;
-			nMax = pUser->nScore - pConfig->nMinScore;
-
-			SaveScoreToBanker( AndroidTimer::rdit( nMin,  nMax) );
-			return 0;
-		}
 
 		WORD wTableID;
 		WORD wChairID;
@@ -614,32 +645,24 @@ namespace O2
 		//效验参数
 		if (wDataSize!=sizeof(CMD_S_GameEnd)) return false;
 		CMD_S_GameEnd * pGameEnd=(CMD_S_GameEnd *)pBuffer;
-
-		if (m_wStaus == US_SIT)
-		{
-			SetTimer(OXT_START_GAME, GetWorkTime());
-		}
 		
 		SUser* pUser = GetUserInfo();
 		if (pUser)
 		{
 			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
-
-			INT64 nMin;
-			INT64 nMax;
+			
 			if (pUser->nScore < pConfig->nMinScore)
 			{
-				nMin = pConfig->nMinScore - pUser->nScore;
-				nMax = pConfig->nMaxScore - pUser->nScore;
-
-				GetScoreFromBanker( AndroidTimer::rdit( nMin,  nMax) );
+				SetStatus(US_OFFLINE);
 			}
-			else if (pUser->nScore > pConfig->nMaxScore)
+			else
 			{
-				nMin = pUser->nScore - pConfig->nMaxScore;
-				nMax = pUser->nScore - pConfig->nMinScore;
+				OnBanker();
 
-				SaveScoreToBanker( AndroidTimer::rdit( nMin,  nMax) );
+				if (m_wStaus == US_SIT)
+				{
+					SetTimer(OXT_START_GAME, GetWorkTime());
+				}
 			}
 			
 			pUser->nWinScore += pGameEnd->lGameScore[pUser->wChairID];
@@ -658,6 +681,7 @@ namespace O2
 				LogEvent(szMessage, TraceLevel_Debug);
 				SetStatus(US_OFFLINE);
 			}
+
 		}
 
 		//清理变量

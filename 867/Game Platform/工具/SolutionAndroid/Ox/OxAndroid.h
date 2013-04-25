@@ -9,6 +9,7 @@ namespace O2
 #define	LOGIC_MASK_VALUE			0x0F								//数值掩码
 
 #define MAX_COUNT					5
+#define MIN_CHAIR_COUNT				1
 
 	//扑克类型
 #define OX_VALUE0					0									//混合牌型

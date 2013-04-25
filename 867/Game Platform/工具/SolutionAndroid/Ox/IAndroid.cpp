@@ -306,27 +306,24 @@ namespace O2
 		if (m_wStaus == US_OFFLINE)
 			return 0;
 
-		switch( m_wStaus )
+		SUser* pUser = GetUserInfo();
+		if (pUser != NULL && pUser->cbUserStatus == US_FREE)
 		{
-		case US_FREE:
+			if (m_wSitReqCount <= MAX_REQ_SITDOWNCOUNT)
 			{
-				if (m_wSitReqCount <= MAX_REQ_SITDOWNCOUNT)
+				m_fSitReqTime += fElapsed;
+				if (m_fSitReqTime >= MAX_REQ_SITDOWNTIEM)
 				{
-					m_fSitReqTime += fElapsed;
-					if (m_fSitReqTime >= MAX_REQ_SITDOWNTIEM)
-					{
-						OnReset();
-						OnSwitchTable();
-						m_fSitReqTime = 0;
-					}
-				}
-				else
-				{
-					SetStatus(US_OFFLINE);
-					return 0;
+					OnReset();
+					OnSwitchTable();
+					m_fSitReqTime = 0;
 				}
 			}
-			break;
+			else
+			{
+				SetStatus(US_OFFLINE);
+				return 0;
+			}
 		}
 
 		return true;
