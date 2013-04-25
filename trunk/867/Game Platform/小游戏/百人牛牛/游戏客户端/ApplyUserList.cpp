@@ -86,6 +86,11 @@ BOOL CApplyUser::OnInitDialog()
 	m_AppyUserList.SetTextBkColor(-1);
 	m_AppyUserList.SetTextColor(RGB(232, 245, 3));
 
+
+	CFont font;
+	font.CreateFont(14,0,0,0,50,FALSE,0,0,0,0,0,0,0,"Arial");
+	m_AppyUserList.SetFont(&font);
+
 	//插入列表
 	m_AppyUserList.InsertColumn(0,TEXT("申请玩家"),LVCFMT_LEFT,125);
 	m_AppyUserList.InsertColumn(1,TEXT("游戏币"),LVCFMT_LEFT,100);
