@@ -259,6 +259,8 @@ namespace O2
 		if (pUser == NULL)
 			return 0;
 
+		OnBanker();
+
 		WORD wTableID;
 		WORD wChairID;
 		if (!GetTableID(wTableID, wChairID))
