@@ -127,7 +127,7 @@ namespace O2
 		{
 			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
 			
-			if (pUser->nScore >= pConfig->nMinScore && pUser->nScore < pConfig->nMaxScore)
+			if (pUser->nScore >= pConfig->nMinScore && pUser->nScore <= pConfig->nMaxScore)
 			{
 				if (s_wCurTableID == INVALID_TABLE)
 					s_wCurTableID = AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
@@ -271,6 +271,35 @@ namespace O2
 		ZeroMemory(m_byCard, sizeof(m_byCard));
 
 		return IAndroid::OnReset();
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	bool		Ox::OnBanker()
+	{
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+		{
+			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+
+			INT64 nMin;
+			INT64 nMax;
+			if (pUser->nScore < pConfig->nMinScore)
+			{
+				nMin = pConfig->nMinScore - pUser->nScore;
+				nMax = pConfig->nMaxScore - pUser->nScore;
+
+				GetScoreFromBanker( AndroidTimer::rdit( nMin,  nMax) );
+			}
+			else if (pUser->nScore > pConfig->nMaxScore)
+			{
+				nMin = pUser->nScore - pConfig->nMaxScore;
+				nMax = pUser->nScore - pConfig->nMinScore;
+
+				SaveScoreToBanker( AndroidTimer::rdit( nMin,  nMax) );
+			}
+		}
+
+		return true;
 	}
 
 	//////////////////////////////////////////////////////////////////////////

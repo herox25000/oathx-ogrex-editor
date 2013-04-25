@@ -87,7 +87,10 @@ namespace O2
 		*/
 		virtual bool			OnGameMessage(WORD wSubCmdID, const void * pBuffer=NULL, 
 			WORD wDataSize=0);
-		
+		/*
+		*响应银行
+		*/
+		virtual bool			OnBanker();
 		/*
 		*游戏消息
 		*/

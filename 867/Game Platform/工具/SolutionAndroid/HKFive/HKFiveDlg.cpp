@@ -356,9 +356,9 @@ void HKFiveDlg::OnParticulars()
 		if (pUser)
 		{
 			CString szMessage;
-			szMessage.Format("游戏ID:		%d\n游戏名称:	%s\n当前金钱:	%I64d\n输赢金额:	%I64d\n存入银行总额:	%I64d\n银行取出总额:	%I64d\n银行结余:	%I64d\n总计坐庄次数:	%d\n坐庄总成绩:	%I64d",
+			szMessage.Format("游戏ID:		%d\n游戏名称:	%s\n当前金钱:	%I64d\n输赢金额:	%I64d\n存入银行总额:	%I64d\n银行取出总额:	%I64d\n银行结余:	%I64d",
 				pUser->dwGameID, pUser->szName, pUser->nScore, pUser->nWinScore, pUser->nSaveScore, 
-				pUser->nGetScore, pUser->nSaveScore-pUser->nGetScore, pUser->wBankerCount, pUser->nBankerAllWin);
+				pUser->nGetScore, pUser->nSaveScore-pUser->nGetScore);
 			AfxMessageBox(szMessage);
 		}
 	}
