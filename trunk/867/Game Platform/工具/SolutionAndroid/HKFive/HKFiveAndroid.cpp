@@ -184,6 +184,34 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	bool		HKFiveAndroid::OnGameSceneMessage(BYTE cbGameStation, void * pBuffer, WORD wDataSize)
 	{
+		switch (cbGameStation)
+		{
+		case GS_FREE:		//空闲状态
+			{
+				//效验数据
+				if (wDataSize!=sizeof(CMD_S_StatusFree))
+					return 0;
+
+				CMD_S_StatusFree* pStatusFree = (CMD_S_StatusFree *)pBuffer;
+				
+				if (m_wStaus == US_SIT)
+				{
+					SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
+				}
+			}
+			break;
+		case GS_PLAYING:	//游戏状态
+			{
+				//效验数据
+				if (wDataSize!=sizeof(CMD_S_StatusPlay))
+					return 0;
+
+				CMD_S_StatusPlay* pStatusPlay = (CMD_S_StatusPlay*)pBuffer;
+				int x = 0;
+			}
+			break;
+		}
+
 		return true;
 	}
 
@@ -197,8 +225,115 @@ namespace O2
 	bool		HKFiveAndroid::OnGameMessage(WORD wSubCmdID, const void * pBuffer, 
 		WORD wDataSize)
 	{
+		switch (wSubCmdID)
+		{
+		case SUB_S_GAME_START:	//游戏开始
+			{
+				OnSubGameStart(pBuffer,wDataSize);
+			}
+			break;
+		case SUB_S_ADD_SCORE:	//用户下注
+			{
+				OnSubAddScore(pBuffer,wDataSize);
+			}
+			break;
+		case SUB_S_GIVE_UP:		//用户放弃
+			{
+				OnSubGiveUp(pBuffer,wDataSize);
+			}
+			break;
+		case SUB_S_SEND_CARD:	//发牌消息
+			{
+				OnSubSendCard(pBuffer,wDataSize);
+			}
+			break;
+		case SUB_S_GAME_END:	//游戏结束
+			{
+				OnSubGameEnd(pBuffer,wDataSize);
+			}
+			break;
+		}
+		
 		return true;
 	}
+
+	bool		HKFiveAndroid::OnSubGameStart(const void* pBuffer, WORD wDataSize)
+	{
+		CMD_S_GameStart* pStart = (CMD_S_GameStart*)(pBuffer);
+		
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+		{
+			if (pUser->wChairID == pStart->wCurrentUser)
+			{
+				//发送消息
+				CMD_C_AddScore AddScore;
+				AddScore.lScore	=	pStart->lCellScore;
+				SendData(MDM_GF_GAME, SUB_C_ADD_SCORE,&AddScore,sizeof(AddScore));
+			}
+		}
+
+		return true;
+	}
+
+	bool		HKFiveAndroid::OnSubAddScore(const void* pBuffer, WORD wDataSize)
+	{
+		CMD_S_AddScore* pAddScore = (CMD_S_AddScore*)(pBuffer);
+		
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+		{
+			if (pAddScore->wCurrentUser == pUser->wChairID)
+			{
+				INT64 nSocre = pAddScore->lAddScoreCount;
+				if (nSocre >= pUser->nScore)
+					nSocre = pUser->nScore;
+
+				//发送消息
+				CMD_C_AddScore AddScore;
+				AddScore.lScore	=	pAddScore->lAddScoreCount;
+				SendData(MDM_GF_GAME, SUB_C_ADD_SCORE,&AddScore,sizeof(AddScore));
+			}
+		}
+		return true;
+	}
+
+	bool		HKFiveAndroid::OnSubGiveUp(const void* pBuffer, WORD wDataSize)
+	{
+		return true;
+	}
+
+	bool		HKFiveAndroid::OnSubSendCard(const void* pBuffer, WORD wDataSize)
+	{
+		//效验数据
+		if (wDataSize!=sizeof(CMD_S_SendCard)) 
+			return 0;
+
+		CMD_S_SendCard* pSendCard=(CMD_S_SendCard *)pBuffer;
+		
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+		{
+			if (pUser->wChairID == pSendCard->wCurrentUser)
+			{
+				//发送消息
+				CMD_C_AddScore AddScore;
+				AddScore.lScore	=	0;
+				SendData(MDM_GF_GAME, SUB_C_ADD_SCORE,&AddScore,sizeof(AddScore));
+			}
+		}
+		return true;
+	}
+
+	bool		HKFiveAndroid::OnSubGameEnd(const void* pBuffer, WORD wDataSize)
+	{
+		if (m_wStaus == US_SIT)
+		{
+			SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
+		}
+		return true;
+	}
+
 
 	//////////////////////////////////////////////////////////////////////////
 	bool		HKFiveAndroid::SetTimer(DWORD dwID, double fElapsed)

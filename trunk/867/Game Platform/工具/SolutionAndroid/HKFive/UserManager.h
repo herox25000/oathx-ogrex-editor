@@ -2,32 +2,28 @@
 
 namespace O2
 {
+#define  CARD_COUNT 5
 	// 机器人信息结构
 	struct SUser
 	{
-		DWORD		dwUserID;			//玩家ID
-		BYTE		cbUserStatus;		//游戏状态
-		WORD		wTableID;			//桌子ID
-		WORD		wChairID;			//椅子ID
-		TCHAR		szName[32];			//玩家名称
-		INT64		nScore;				//用户积分
-		DWORD		dwGameID;			//游戏ID
-		INT64		nWinScore;			//赢取积分
-		char		chLoginTime[128];	//登录时间
-		DWORD		wBankerCount;		//坐庄总数
-		WORD		wCurUpBanker;		//当前做庄次数
-		INT64		nBankerCurWin;		//庄家当前成绩
-		INT64		nBankerAllWin;		//庄家所有成绩
+		DWORD		dwUserID;				//玩家ID
+		BYTE		cbUserStatus;			//游戏状态
+		WORD		wTableID;				//桌子ID
+		WORD		wChairID;				//椅子ID
+		TCHAR		szName[32];				//玩家名称
+		INT64		nScore;					//用户积分
+		DWORD		dwGameID;				//游戏ID
+		INT64		nWinScore;				//赢取积分
+		char		chLoginTime[128];		//登录时间
 		INT64		nSaveScore;
 		INT64		nGetScore;
+		BYTE		cbObscureCard;			//底牌扑克
+		BYTE		cbCardData[CARD_COUNT];	//用户扑克
 
 		SUser()
-			: dwUserID(0), dwGameID(0), nScore(0), wTableID(INVALID_TABLE), wChairID(INVALID_CHAIR), cbUserStatus(US_NULL),wBankerCount(0),nWinScore(0)
+			: dwUserID(0), dwGameID(0), nScore(0), wTableID(INVALID_TABLE), wChairID(INVALID_CHAIR), cbUserStatus(US_NULL),nWinScore(0)
 		{
 			chLoginTime[0]	= '\0';
-			wCurUpBanker	= 0;
-			nBankerCurWin	= 0;
-			nBankerAllWin	= 0;
 			nGetScore		= 0;
 			nSaveScore		= 0;
 		}

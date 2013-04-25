@@ -33,7 +33,7 @@ BOOL CConfigDialog::OnInitDialog()
 	bool bResult = O2::ConfigFile::GetSingleton().LoadConfig(SMALLNINE_CFG_FILENAME);
 	if (!bResult)
 	{
-		SetDlgItemText(IDC_EDIT1,	"192.168.130.104");
+		SetDlgItemText(IDC_EDIT1,	"192.168.1.102");
 		SetDlgItemText(IDC_EDIT2,	"12041");
 		SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
 		SetDlgItemText(IDC_EDIT4,	"10");
@@ -48,8 +48,8 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT14,	"10");
 		SetDlgItemText(IDC_EDIT15,	"1");
 		SetDlgItemText(IDC_EDIT16,	"20");
-		SetDlgItemText(IDC_EDIT15,	"2000");
-		SetDlgItemText(IDC_EDIT16,	"300000");
+		SetDlgItemText(IDC_EDIT17,	"2000");
+		SetDlgItemText(IDC_EDIT18,	"300000");
 	}
 	else
 	{

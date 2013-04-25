@@ -35,7 +35,7 @@ namespace O2
 		m_fElapsed += fElapsed;
 		
 		int nCount = GetAndroidCount();
-		if (nCount <= pConfig->dwOnline)
+		if (nCount < pConfig->dwOnline)
 		{
 			// 到达创建时间
 			if (m_fElapsed >= m_fCreate)

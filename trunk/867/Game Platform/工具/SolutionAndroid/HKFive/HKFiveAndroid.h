@@ -4,19 +4,6 @@
 
 namespace O2
 {
-	//数值掩码
-#define	LOGIC_MASK_COLOR			0xF0								//花色掩码
-#define	LOGIC_MASK_VALUE			0x0F								//数值掩码
-
-#define MAX_COUNT					5
-
-	//扑克类型
-#define OX_VALUE0					0									//混合牌型
-#define OX_THREE_SAME				12									//三条牌型
-#define OX_FOUR_SAME				13									//四条牌型
-#define OX_FOURKING					14									//天王牌型
-#define OX_FIVEKING					15									//天王牌型
-
 	struct STimerItem
 	{
 		DWORD						dwID;
@@ -87,6 +74,13 @@ namespace O2
 		*更新在线时间
 		*/
 		virtual bool			UpdateOnline(float fElapsed);
+
+	protected:
+		virtual bool			OnSubGameStart(const void* pBuffer, WORD wDataSize);
+		virtual bool			OnSubAddScore(const void* pBuffer, WORD wDataSize);
+		virtual bool			OnSubGiveUp(const void* pBuffer, WORD wDataSize);
+		virtual bool			OnSubSendCard(const void* pBuffer, WORD wDataSize);
+		virtual bool			OnSubGameEnd(const void* pBuffer, WORD wDataSize);
 	protected:
 		//设置定时器
 		virtual bool			SetTimer(DWORD dwID, double fElapsed);
@@ -99,6 +93,11 @@ namespace O2
 		WORD					m_wChairCount;
 		TimerItemRegister		m_TimerItemActive;
 		TimerItemRegister		m_TimerItemDetive;
+		INT64					m_nMaxScore;
+		INT64					m_nCellScore;
+		INT64					m_nTurnMaxScore;
+		INT64					m_nTurnLessScore;
+		INT64					m_nTableScore[10];
 	};
 
 	class HKFiveFactory : public IAndroidFactroy

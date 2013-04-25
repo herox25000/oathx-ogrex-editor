@@ -10,6 +10,8 @@ namespace O2
 		NAME_BUFFER				NameBuff[16];						//Ãû×Ö»º³å
 	};
 
+#define OX_MIN_SCORE	2201
+
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
@@ -550,9 +552,13 @@ namespace O2
 
 				if (pUser)
 				{
-					pUser->nScore		= pUserInfoHead->UserScoreInfo.lScore;	
-					pUser->dwUserID		= pUserInfoHead->dwUserID;
 					pUser->nScore		= pUserInfoHead->UserScoreInfo.lScore;
+					if (pUser->nScore < OX_MIN_SCORE)
+					{
+						GetScoreFromBanker((rand() % OX_MIN_SCORE) + OX_MIN_SCORE);
+					}
+
+					pUser->dwUserID		= pUserInfoHead->dwUserID;
 					pUser->wTableID		= pUserInfoHead->wTableID;
 					pUser->wChairID		= pUserInfoHead->wChairID;
 					pUser->cbUserStatus	= pUserInfoHead->cbUserStatus;
@@ -651,6 +657,8 @@ namespace O2
 						szMessage.Format("[%d]ÒÑ×øÏÂ", m_dwUserID);
 						LogEvent(szMessage, 
 							TraceLevel_Normal);	
+
+						OnBanker();
 					}
 				}
 			}
