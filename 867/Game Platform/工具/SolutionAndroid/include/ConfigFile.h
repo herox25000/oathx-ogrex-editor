@@ -34,6 +34,9 @@ namespace O2
 		WORD						wTenMillionRate2;	//1Ç§Íò-5Ç§Íò
 
 		WORD						wMaxPlaceRate;
+
+		WORD						wExtraRate1;
+		WORD						wExtraRate2;
 	};
 	
 	//////////////////////////////////////////////////////////////////////////
