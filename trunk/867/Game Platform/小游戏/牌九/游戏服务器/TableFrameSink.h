@@ -210,6 +210,8 @@ private:
 	void SwapBankerCard( BYTE chCardSort[], bool bWin);
 
 	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);
+	//·¢ËÍÏûÏ¢
+	void SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg);
 };
 
 //////////////////////////////////////////////////////////////////////////

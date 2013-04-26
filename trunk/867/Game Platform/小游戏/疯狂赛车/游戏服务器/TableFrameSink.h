@@ -193,6 +193,8 @@ private:
 	__int64 PreCalcScore();
 
 	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);
+	//·¢ËÍÏûÏ¢
+	void SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg);
 };
 
 //////////////////////////////////////////////////////////////////////////

@@ -262,18 +262,21 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				//变量定义
 				__int64 lScore=0;
 				enScoreKind ScoreKind=enScoreKind_Flee;
-				//取得下注积分 并清理下注积分
-				for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex)
-				{
-					lScore += m_lUserJettonScore[nAreaIndex][wChairID];
-					m_lAllJettonScore[nAreaIndex]-=lScore;
-					m_lUserJettonScore[nAreaIndex][wChairID]=0;
-				}
-				//计算所扣倍数
 				if(m_pITableFrame->GetGameStatus() == GS_PLACE_JETTON)
+				{
+					//取得下注积分 并清理下注积分
+					for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex)
+					{
+						lScore += m_lUserJettonScore[nAreaIndex][wChairID];
+						m_lAllJettonScore[nAreaIndex]-=lScore;
+						m_lUserJettonScore[nAreaIndex][wChairID]=0;
+					}
 					lScore*=-10;
+				}
 				else if(m_pITableFrame->GetGameStatus() == GS_GAME_END)
+				{
 					lScore = m_lUserWinScore[wChairID];
+				}
 
 				//防止超过用户携带金币
 				if(lScore > pIServerUserItem->GetUserScore()->lScore)
@@ -298,6 +301,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					_sntprintf(szTipMsg,CountArray(szTipMsg),TEXT("由于庄家[ %s ]强退，游戏提前结束！"),pIServerUserItem->GetAccounts());
 					SendGameMessage(INVALID_CHAIR,szTipMsg);	
 					//设置状态
+					m_dwJettonTime=(DWORD)time(NULL);
 					m_pITableFrame->SetGameStatus(GS_GAME_END);
 					m_pITableFrame->KillGameTimer(IDI_PLACE_JETTON);
 					m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,1,0L);

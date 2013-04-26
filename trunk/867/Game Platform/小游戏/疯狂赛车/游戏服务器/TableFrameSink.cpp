@@ -235,7 +235,8 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 
 			//发送积分
 			GameEnd.cbTimeLeave=TIME_FREE;	
-			if ( m_CurrentBanker.dwUserID != 0 ) GameEnd.lBankerTreasure = m_CurrentBanker.lUserScore;
+			if ( m_CurrentBanker.dwUserID != 0 ) 
+				GameEnd.lBankerTreasure = m_CurrentBanker.lUserScore;
 			for ( WORD wUserIndex = 0; wUserIndex < GAME_PLAYER; ++wUserIndex )
 			{
 				IServerUserItem *pIServerUserItem = m_pITableFrame->GetServerUserItem(wUserIndex);
@@ -277,35 +278,83 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 		}
 	case GER_USER_LEFT:		//用户离开
 		{
-			//胜利类型
-			__int64	allZhu=0;
-			if ( pIServerUserItem->GetUserID()==m_CurrentBanker.dwUserID ) //庄家强退
+			//闲家逃跑
+			if(pIServerUserItem->GetUserID() != m_CurrentBanker.dwUserID)
 			{
-				allZhu=Get_ALL_MultiDesktopScore();
-			}
-			else
-			{
-				//在押注状态下，可以退出不扣分
-				if (m_pITableFrame->GetGameStatus() == GS_FREE + 1)
-				{
-					JettonChangeByUserLeft( wChairID, pIServerUserItem);
-				}
-				else
-				{
-					allZhu=Get_User_DesktopScore(wChairID);
-				}
-			}
-
-			if ( allZhu>0 )
-			{
-				if ( allZhu >pIServerUserItem->GetUserScore()->lScore )
-					allZhu=pIServerUserItem->GetUserScore()->lScore;
 				//变量定义
-				tagScoreInfo ScoreInfo;
-				ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
+				__int64 lScore=0;
+				enScoreKind ScoreKind=enScoreKind_Flee;
+				//计算所扣倍数
+				if(m_pITableFrame->GetGameStatus() == GS_FREE+1)
+				{
+					//取得下注积分 并清理下注积分
+					__int64 nAllJetton = m_lUserBigTigerScore[wChairID]
+										+ m_lUserSmlTigerScore[wChairID]
+										+ m_lUserBigBogScore[wChairID]
+										+ m_lUserSmlBogScore[wChairID]
+										+ m_lUserBigHorseScore[wChairID]
+										+ m_lUserSmlHorseScore[wChairID]
+										+ m_lUserBigSnakeScore[wChairID]
+										+ m_lUserSmlSnakeScore[wChairID];
 
-				//设置变量
-				m_pITableFrame->WriteUserScore(pIServerUserItem, -allZhu, 0, enScoreKind_Flee);
+					m_lAllBigTigerScore -= m_lUserBigTigerScore[wChairID];
+					m_lAllSmlTigerScore -= m_lUserSmlTigerScore[wChairID];
+					m_lAllBigBogScore	-= m_lUserBigBogScore[wChairID];
+					m_lAllSmlBogScore	-= m_lUserSmlBogScore[wChairID];
+					m_lAllBigHorseScore -= m_lUserBigHorseScore[wChairID];
+					m_lAllSmlHorseScore -= m_lUserSmlHorseScore[wChairID];
+					m_lAllBigSnakeScore -= m_lUserBigSnakeScore[wChairID];
+					m_lAllSmlSnakeScore -= m_lUserSmlSnakeScore[wChairID];
+
+					m_lUserBigTigerScore[wChairID] = 0;
+					m_lUserSmlTigerScore[wChairID] = 0;
+					m_lUserBigBogScore[wChairID] = 0;
+					m_lUserSmlBogScore[wChairID] = 0;
+					m_lUserBigHorseScore[wChairID] = 0;
+					m_lUserSmlHorseScore[wChairID] = 0;
+					m_lUserBigSnakeScore[wChairID] = 0;
+					m_lUserSmlSnakeScore[wChairID] = 0;
+			
+					lScore = -nAllJetton;
+
+				}
+				else if(m_pITableFrame->GetGameStatus() == GS_PLAYING)
+				{
+					lScore = m_lUserWinScore[wChairID];
+				}
+
+				//防止超过用户携带金币
+				if(lScore > pIServerUserItem->GetUserScore()->lScore)
+					lScore = pIServerUserItem->GetUserScore()->lScore;
+
+				if (lScore != 0 )
+					m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,0, ScoreKind);
+
+				//清理计算的结果
+				m_lUserWinScore[wChairID]=0;
+			}
+			else  // 庄家逃跑
+			{
+				//变量定义
+				__int64 lScore=0;
+				enScoreKind ScoreKind=enScoreKind_Flee;
+				//计算所扣倍数
+				if (m_pITableFrame->GetGameStatus()== GS_FREE+1)
+				{
+					//提示消息
+					TCHAR szTipMsg[128];
+					_sntprintf(szTipMsg,CountArray(szTipMsg),TEXT("由于庄家[ %s ]强退，游戏提前结束！"),pIServerUserItem->GetAccounts());
+					SendGameMessage(INVALID_CHAIR,szTipMsg);	
+					
+					m_pITableFrame->KillGameTimer(IDI_PLACE_JETTON);
+					m_pITableFrameControl->StartGame();
+					m_dwJettonTime=(DWORD)time(NULL);
+					m_pITableFrame->SetGameTimer(IDI_GAME_END, ((m_cbAnimalBox*ANIMAL_ROLL_SPEED)/5000+TIME_GAME_END)*1000,1,0L);
+				}
+				lScore=m_lUserWinScore[m_CurrentBanker.wChairID];
+				if (lScore != 0)
+					m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,0, ScoreKind);
+				m_lUserWinScore[m_CurrentBanker.wChairID]=0;					
 			}
 			return true;
 		}
@@ -557,6 +606,9 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 		}
 	case IDI_PLACE_JETTON:		//下注时间
 		{
+			if(m_pITableFrame->GetGameStatus() != GS_FREE+1)
+				return true;
+
 			//刷新下庄家的分数
 			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
 			if(pBankerItem)
@@ -698,7 +750,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 	//记录成绩
 	if ( bLookonUser==false )
 	{
-		if ( m_pITableFrame->GetGameStatus() != GS_PLAYING )
+		if ( m_pITableFrame->GetGameStatus() == GS_FREE+1 )
 		{
 			OnEventGameEnd( wChairID, pIServerUserItem, GER_USER_LEFT);
 		}
@@ -1493,5 +1545,35 @@ void CTableFrameSink::JettonChangeByUserLeft( WORD wChairID, IServerUserItem * p
 // 	//发送消息
 // 	m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_JETTON_CHANGE,&JettonChange,sizeof(JettonChange));
 // 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_JETTON_CHANGE,&JettonChange,sizeof(JettonChange));
+}
+
+//发送消息
+void CTableFrameSink::SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg)
+{
+	if (wChairID==INVALID_CHAIR)
+	{
+		//游戏玩家
+		for (WORD i=0; i<GAME_PLAYER; ++i)
+		{
+			IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(i);
+			if (pIServerUserItem==NULL) continue;
+			m_pITableFrame->SendGameMessage(pIServerUserItem,pszTipMsg,SMT_INFO);
+		}
+
+		//旁观玩家
+		WORD wIndex=0;
+		do {
+			IServerUserItem *pILookonServerUserItem=m_pITableFrame->EnumLookonUserItem(wIndex++);
+			if (pILookonServerUserItem==NULL) break;
+
+			m_pITableFrame->SendGameMessage(pILookonServerUserItem,pszTipMsg,SMT_INFO);
+
+		}while(true);
+	}
+	else
+	{
+		IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
+		if (pIServerUserItem!=NULL) m_pITableFrame->SendGameMessage(pIServerUserItem,pszTipMsg,SMT_INFO|SMT_EJECT);
+	}
 }
 
