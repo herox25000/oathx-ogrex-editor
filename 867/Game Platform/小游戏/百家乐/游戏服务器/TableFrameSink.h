@@ -208,6 +208,8 @@ private:
 	void    MakeJettonString(WORD wChairID, TCHAR szJetton[MAX_DB_JETTON_LEN]);
 
 	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);
+	//·¢ËÍÏûÏ¢
+	void SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg);
 
 };
 

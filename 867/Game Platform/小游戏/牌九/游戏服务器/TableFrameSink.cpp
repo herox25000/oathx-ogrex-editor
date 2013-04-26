@@ -283,34 +283,54 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	case GER_USER_LEFT:	//用户强退
 		{
 			__int64	allZhu=0;
-			if ( pIServerUserItem->GetUserID()==m_CurrentBanker.dwUserID ) //庄家强退
+			//闲家强退
+			if ( pIServerUserItem->GetUserID() != m_CurrentBanker.dwUserID ) 
 			{
-				allZhu=m_lTianMenScore+m_lDaoMenScore+m_lShunMenScore+m_lQiaoScore+m_lYouJiaoScore+m_lZuoJiaoScore;
+				//变量定义
+				__int64 lScore=0;
+				enScoreKind ScoreKind=enScoreKind_Flee;
+				if (m_pITableFrame->GetGameStatus() == GS_FREE + 1)
+				{
+					//在押注状态下，退出不扣分
+					JettonChangeByUserLeft( wChairID, pIServerUserItem);
+				}
+				else if(m_pITableFrame->GetGameStatus() == GS_PLAYING)
+				{
+					lScore = m_lUserWinScore[wChairID];
+				}
+
+				//防止超过用户携带金币
+				if(lScore > pIServerUserItem->GetUserScore()->lScore)
+					lScore = pIServerUserItem->GetUserScore()->lScore;
+
+				if (lScore != 0 )
+					m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,0, ScoreKind);
+
+				//清理计算的结果
+				m_lUserWinScore[wChairID]=0;
 			}
 			else
 			{
-				//在押注状态下，可以退出不扣分
-				if (m_pITableFrame->GetGameStatus() == GS_FREE + 1)
-				{
-					JettonChangeByUserLeft( wChairID, pIServerUserItem);
-				}
-				else
-				{
-					allZhu=m_lUserTianMenScore[wChairID]+m_lUserDaoMenScore[wChairID]+m_lUserShunMenScore[wChairID]+
-						m_lUserQiaoScore[wChairID]+m_lUserYouJiaoScore[wChairID]+m_lUserZuoJiaoScore[wChairID];
-				}
-			}
-			if ( allZhu>0 )
-			{
-				if ( allZhu >pIServerUserItem->GetUserScore()->lScore )
-					allZhu=pIServerUserItem->GetUserScore()->lScore;
-
 				//变量定义
-				tagScoreInfo ScoreInfo;
-				ZeroMemory(&ScoreInfo,sizeof(ScoreInfo));
+				__int64 lScore=0;
+				enScoreKind ScoreKind=enScoreKind_Flee;
+				//计算所扣倍数
+				if (m_pITableFrame->GetGameStatus()== GS_FREE+1)
+				{
+					//提示消息
+					TCHAR szTipMsg[128];
+					_sntprintf(szTipMsg,CountArray(szTipMsg),TEXT("由于庄家[ %s ]强退，游戏提前结束！"),pIServerUserItem->GetAccounts());
+					SendGameMessage(INVALID_CHAIR,szTipMsg);	
 
-				//设置变量
-				m_pITableFrame->WriteUserScore(pIServerUserItem, -allZhu, 0, enScoreKind_Flee);
+					m_pITableFrame->KillGameTimer(IDI_PLACE_JETTON);
+					m_pITableFrameControl->StartGame();
+					m_dwJettonTime=(DWORD)time(NULL);
+					m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,1,0L);
+				}
+				lScore=m_lUserWinScore[m_CurrentBanker.wChairID];
+				if (lScore != 0)
+					m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,0, ScoreKind);
+				m_lUserWinScore[m_CurrentBanker.wChairID]=0;	
 			}
 			return true;
 		}
@@ -556,6 +576,9 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 		}
 	case IDI_PLACE_JETTON:		//下注时间
 		{
+			if(m_pITableFrame->GetGameStatus() != GS_FREE+1)
+				return true;
+
 			//刷新下庄家的分数
 			IServerUserItem * pBankerItem=m_pITableFrame->GetServerUserItem(m_CurrentBanker.wChairID);
 			if(pBankerItem)
@@ -700,8 +723,7 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 	//记录成绩
 	if (bLookonUser==false)
 	{
-		//状态判断
-		if ( m_pITableFrame->GetGameStatus() != GS_FREE )
+		if ( m_pITableFrame->GetGameStatus() == GS_FREE+1 )
 		{
 			OnEventGameEnd( wChairID, pIServerUserItem, GER_USER_LEFT);
 		}
@@ -1903,6 +1925,35 @@ bool CTableFrameSink::OnEventStartPlaceJetton()
 }
 
 
+//发送消息
+void CTableFrameSink::SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg)
+{
+	if (wChairID==INVALID_CHAIR)
+	{
+		//游戏玩家
+		for (WORD i=0; i<GAME_PLAYER; ++i)
+		{
+			IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(i);
+			if (pIServerUserItem==NULL) continue;
+			m_pITableFrame->SendGameMessage(pIServerUserItem,pszTipMsg,SMT_INFO);
+		}
+
+		//旁观玩家
+		WORD wIndex=0;
+		do {
+			IServerUserItem *pILookonServerUserItem=m_pITableFrame->EnumLookonUserItem(wIndex++);
+			if (pILookonServerUserItem==NULL) break;
+
+			m_pITableFrame->SendGameMessage(pILookonServerUserItem,pszTipMsg,SMT_INFO);
+
+		}while(true);
+	}
+	else
+	{
+		IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
+		if (pIServerUserItem!=NULL) m_pITableFrame->SendGameMessage(pIServerUserItem,pszTipMsg,SMT_INFO|SMT_EJECT);
+	}
+}
 
 //////////////////////////////////////////////////////////////////////////
 

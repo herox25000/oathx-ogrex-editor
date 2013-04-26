@@ -214,6 +214,9 @@ private:
 	bool FindUserLeft(DWORD nUserID);
 
 	void JettonChangeByUserLeft(WORD wChairID, IServerUserItem * pIServerUserItem);
+
+	//·¢ËÍÏûÏ¢
+	void SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg);
 };
 
 //////////////////////////////////////////////////////////////////////////
