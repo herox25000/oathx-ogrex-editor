@@ -4,7 +4,7 @@
 
 namespace O2
 {
-#define MAX_REQ_SITDOWNTIEM		5
+#define MAX_REQ_SITDOWNTIEM		10
 #define MAX_REQ_SITDOWNCOUNT	8
 
 	//////////////////////////////////////////////////////////////////////////
@@ -220,7 +220,6 @@ namespace O2
 		CTCPSocketHelper		m_ClientSocket;
 		CString					m_Password;
 		UserManager*			m_pUserManager;
-		BYTE					m_wStaus;
 		BYTE					m_bGameStatus;	
 	};
 

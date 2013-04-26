@@ -330,17 +330,8 @@ void OxDlg::OnOffline()
 		szMessage.Format("你确定要让[%d] [%d] 机器人下线吗", pAndroid->GetUserID(), pAndroid->GetGameID());
 		if (IDYES == AfxMessageBox(szMessage, MB_YESNO))
 		{
-			if (pAndroid->CanOffline())
-			{
-				pAndroid->SetStatus(US_OFFLINE);
-			}
-			else
-			{
-				szMessage.Format("该机器人不能下线，正在游戏中，下线会导致强制扣分", 
-					pAndroid->GetUserID(), pAndroid->GetGameID());
-				AfxMessageBox(szMessage);
-			}
-
+			pAndroid->SetStatus(US_OFFLINE);
+			
 			OnBnClickedUpdate();
 		}
 	}

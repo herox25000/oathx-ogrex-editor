@@ -131,6 +131,7 @@ namespace O2
 		BYTE					m_byCard[MAX_COUNT];
 		INT64					m_nChipInScore;
 		WORD					m_wCurBanker;
+		BOOL					m_bOffline;
 	};
 
 	class OxFactory : public IAndroidFactroy
