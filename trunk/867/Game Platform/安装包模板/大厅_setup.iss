@@ -64,11 +64,12 @@ function InitializeSetup(): Boolean;
 var
   hWnd: HWND;
 begin
-    hWnd := FindWindowByClassName('MGLGame541Plaza');
-    if  hWnd <> 0  then
-    begin
-        SendMessage(hWnd, 1125, 0, 0);
-    END
+    hWnd := FindWindowByClassName('MGLGame541Plaza');    
+    while  hWnd <> 0  do
+    BEGIN
+        PostMessage(hWnd, 18, 0, 0); 
+        hWnd := FindWindowByClassName('MGLGame541Plaza');
+    END  
     
     hWnd := FindWindowByClassName('MGLGame541Plaza');
     if  hWnd <> 0  then
