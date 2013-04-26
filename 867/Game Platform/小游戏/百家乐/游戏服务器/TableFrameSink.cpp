@@ -831,37 +831,42 @@ bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, IServerUserItem
 				}
 			}
 		}
-		if (m_CurrentBanker.dwUserID == 0)
+
+		if(m_pITableFrame->GetGameStatus() ==GS_FREE)
 		{
-			ChangeBanker();
-			//庄家信息
-			if ( m_CurrentBanker.dwUserID != 0 )
+			if (m_CurrentBanker.dwUserID == 0)
 			{
-				CMD_S_ChangeUserScore ChangeUserScore;
-				ZeroMemory( &ChangeUserScore, sizeof( ChangeUserScore ) );
-				ChangeUserScore.wCurrentBankerChairID = m_CurrentBanker.wChairID;
-				ChangeUserScore.lCurrentBankerScore = m_lBankerWinScore;
-				ChangeUserScore.cbBankerTime = m_cbBankerTimer;
-				ChangeUserScore.lScore = m_CurrentBanker.lUserScore;
-				ChangeUserScore.wChairID = m_CurrentBanker.wChairID;
-				m_pITableFrame->SendTableData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
-				m_pITableFrame->SendLookonData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
-			}
-			//切换判断
-			if ( m_cbBankerTimer == 0 )
-			{
-				SendChangeBankerMsg();
+				ChangeBanker();
+				//庄家信息
+				if ( m_CurrentBanker.dwUserID != 0 )
+				{
+					CMD_S_ChangeUserScore ChangeUserScore;
+					ZeroMemory( &ChangeUserScore, sizeof( ChangeUserScore ) );
+					ChangeUserScore.wCurrentBankerChairID = m_CurrentBanker.wChairID;
+					ChangeUserScore.lCurrentBankerScore = m_lBankerWinScore;
+					ChangeUserScore.cbBankerTime = m_cbBankerTimer;
+					ChangeUserScore.lScore = m_CurrentBanker.lUserScore;
+					ChangeUserScore.wChairID = m_CurrentBanker.wChairID;
+					m_pITableFrame->SendTableData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+					m_pITableFrame->SendLookonData( INVALID_CHAIR,SUB_S_CHANGE_USER_SCORE,&ChangeUserScore,sizeof(ChangeUserScore));
+				}
+				//切换判断
+				if ( m_cbBankerTimer == 0 )
+				{
+					SendChangeBankerMsg();
+				}
 			}
 		}
 
-		WORD wNowCount=m_pITableFrame->GetNowPlayerCount();
-		//OUTPUT("人数=%d", wNowCount);
-		if ( wNowCount<=0 )
-		{
-			m_dwJettonTime=0;
-			m_pITableFrame->KillGameTimer( IDI_GAME_FREE );
-			m_pITableFrame->KillGameTimer( IDI_PLACE_JETTON );
-		}
+
+		//WORD wNowCount=m_pITableFrame->GetNowPlayerCount();
+		////OUTPUT("人数=%d", wNowCount);
+		//if ( wNowCount<=0 )
+		//{
+		//	m_dwJettonTime=0;
+		//	m_pITableFrame->KillGameTimer( IDI_GAME_FREE );
+		//	m_pITableFrame->KillGameTimer( IDI_PLACE_JETTON );
+		//}
 	}
 
 	return true;
