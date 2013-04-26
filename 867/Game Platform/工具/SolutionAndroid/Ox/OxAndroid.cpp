@@ -18,7 +18,7 @@ namespace O2
 	//
 	//////////////////////////////////////////////////////////////////////////
 	Ox::Ox(DWORD dwUserID, double fOnlineTime)
-		: IAndroid(dwUserID, fOnlineTime)
+		: IAndroid(dwUserID, fOnlineTime), m_bOffline(FALSE)
 	{
 		OnReset();
 	}
@@ -205,14 +205,11 @@ namespace O2
 		if (!IAndroid::Update(fElapsed))
 			return 0;
 
-		switch( m_wStaus )
+		SUser* pUser = GetUserInfo();
+		if (pUser && !m_bOffline)
 		{
-		case US_SIT:
-			{
-				UpdateOnline(fElapsed);
-				UpdateTimer(fElapsed);
-			}
-			break;
+			UpdateOnline(fElapsed);
+			UpdateTimer(fElapsed);
 		}
 
 		return 0;
@@ -223,28 +220,19 @@ namespace O2
 		m_fElapsed += fElapsed;
 		if ((m_fElapsed / 60) >= m_fOnlineTime)
 		{
-			if (isSelf(m_wCurBanker))
+			SUser* pUser = GetUserInfo();
+			if (pUser)
 			{
-				m_fOnlineTime	= AndroidTimer::rdit(5, 15);
-				m_fElapsed		= 0;
-			}
-			else
-			{
-				if (m_nChipInScore <= 0)
+				if (pUser->cbUserStatus == US_PLAY)
 				{
-					CString szMessage;
-					szMessage.Format("[%d][%d]到达在线时间, 立刻下线", GetUserID(), GetGameID());
-					LogEvent(szMessage, TraceLevel_Exception);
-
-					SetStatus(US_OFFLINE);
-				}
-				else
-				{
-					m_fOnlineTime	= AndroidTimer::rdit(5, 15);
-					m_fElapsed		= 0;
+					m_bOffline = TRUE;
+					return true;
 				}
 			}
+		
+			SetStatus(US_OFFLINE);
 		}
+
 		return true;
 	}
 
@@ -369,7 +357,7 @@ namespace O2
 				if (wDataSize!=sizeof(CMD_S_StatusCall)) 
 					return 0;
 
-				SUser* pUser = m_pUserManager->Search(m_dwUserID);
+				SUser* pUser = GetUserInfo();
 				if (pUser)
 				{
 					CMD_S_StatusCall* pStatusCall = (CMD_S_StatusCall*)(pBuffer);
@@ -391,7 +379,7 @@ namespace O2
 				CMD_S_StatusScore* pStatusScore = (CMD_S_StatusScore *)(pBuffer);
 				m_nTurnMaxScore					= pStatusScore->lTurnMaxScore;
 
-				SUser* pUser = m_pUserManager->Search(m_dwUserID);
+				SUser* pUser = GetUserInfo();
 				if (pUser)
 				{
 					//设置筹码
@@ -414,7 +402,7 @@ namespace O2
 				CMD_S_StatusPlay* pStatusPlay	= (CMD_S_StatusPlay *)(pBuffer);
 				m_nTurnMaxScore					= pStatusPlay->lTurnMaxScore;
 
-				SUser* pUser = m_pUserManager->Search(m_dwUserID);
+				SUser* pUser = GetUserInfo();
 				if (pUser)
 				{
 					CopyMemory(m_byCard, pStatusPlay->cbHandCardData[pUser->wChairID], MAX_COUNT);
@@ -439,39 +427,31 @@ namespace O2
 		{
 		case OXT_START_GAME:
 			{
-				if (m_wStaus == US_SIT)
-				{
-					SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
-				}
+				SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
 			}
 			break;
 		case OXT_CALL_BANKER:
 			{
-				if (m_wStaus == US_SIT)
+				SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+				if (pConfig)
 				{
-					SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
-					if (pConfig)
-					{
-						int nBankerRate = rand() % 100;
+					int nBankerRate = rand() % 100;
 
-						CMD_C_CallBanker CallBanker;
-						CallBanker.bBanker = pConfig->wBankerRate >= nBankerRate ? 1 : 0;
+					CMD_C_CallBanker CallBanker;
+					CallBanker.bBanker = pConfig->wBankerRate >= nBankerRate ? 1 : 0;
 
-						SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
-					}
+					SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
 				}
 			}
 			break;
 		case OXT_OPEN_CARD:
 			{
-				if (m_wStaus == US_SIT)
-				{
-					//发送消息
-					CMD_C_OxCard OxCard;
-					OxCard.bOX=(GetCardType(m_byCard, MAX_COUNT) > 0 ) ? TRUE : FALSE;
+				//发送消息
+				CMD_C_OxCard OxCard;
+				OxCard.bOX=(GetCardType(m_byCard, MAX_COUNT) > 0 ) ? TRUE : FALSE;
 
-					SendData(MDM_GF_GAME, SUB_C_OPEN_CARD, &OxCard, sizeof(OxCard));
-				}
+				SendData(MDM_GF_GAME, SUB_C_OPEN_CARD, &OxCard, sizeof(OxCard));
+
 			}
 			break;
 		case OXT_USER_ADD_SCORE:
@@ -576,17 +556,18 @@ namespace O2
 		if (wDataSize!=sizeof(CMD_S_GameStart)) 
 			return 0;
 
-		SUser* pUser = m_pUserManager->Search(m_dwUserID);
+		SUser* pUser = GetUserInfo();
 		if (pUser)
 		{
 			CMD_S_GameStart* pGameStart	= (CMD_S_GameStart *)pBuffer;
 
 			m_nTurnMaxScore				= pGameStart->lTurnMaxScore;
 			m_wCurBanker				= pGameStart->wBankerUser;
-			if (m_nTurnMaxScore > 0)
+
+			if (!isSelf(m_wCurBanker) && m_nTurnMaxScore > 0)
 			{
 				SetTimer(OXT_USER_ADD_SCORE, GetWorkTime());
-			}			
+			}		
 		}
 
 		return true;
@@ -609,7 +590,7 @@ namespace O2
 		if (wDataSize!=sizeof(CMD_S_SendCard)) 
 			return 0;
 
-		SUser* pUser = m_pUserManager->Search(m_dwUserID);
+		SUser* pUser = GetUserInfo();
 		if (pUser)
 		{
 			CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
@@ -648,25 +629,19 @@ namespace O2
 		if (wDataSize!=sizeof(CMD_S_GameEnd)) return false;
 		CMD_S_GameEnd * pGameEnd=(CMD_S_GameEnd *)pBuffer;
 		
+		if (m_bOffline)
+		{
+			SetStatus(US_OFFLINE);
+			return true;
+		}
+
 		SUser* pUser = GetUserInfo();
 		if (pUser)
 		{
 			SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
 			
-			if (pUser->nScore < pConfig->nMinScore)
-			{
-				SetStatus(US_OFFLINE);
-			}
-			else
-			{
-				OnBanker();
+			OnBanker();
 
-				if (m_wStaus == US_SIT)
-				{
-					SetTimer(OXT_START_GAME, GetWorkTime());
-				}
-			}
-			
 			pUser->nWinScore += pGameEnd->lGameScore[pUser->wChairID];
 			if (pUser->nWinScore >= pConfig->nMaxWinScore)
 			{
@@ -683,7 +658,8 @@ namespace O2
 				LogEvent(szMessage, TraceLevel_Debug);
 				SetStatus(US_OFFLINE);
 			}
-
+	
+			SetTimer(OXT_START_GAME, GetWorkTime());
 		}
 
 		//清理变量
@@ -749,6 +725,8 @@ namespace O2
 			it->second->fElapsed -= fElapsed;
 			if (it->second->fElapsed <= 0)
 			{
+				it->second->fElapsed = 2;
+
 				m_TimerItemDetive.insert(
 					TimerItemRegister::value_type(it->second->dwID, it->second)
 					);

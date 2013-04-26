@@ -16,7 +16,7 @@ namespace O2
 	//
 	//////////////////////////////////////////////////////////////////////////
 	IAndroid::IAndroid(DWORD dwUserID, double fOnlineTime)
-		: m_dwUserID(dwUserID), m_fOnlineTime(fOnlineTime), m_fElapsed(0), m_wSitReqCount(0), m_fSitReqTime(0), m_pUserManager(NULL), m_wStaus(US_NULL)
+		: m_dwUserID(dwUserID), m_fOnlineTime(fOnlineTime), m_fElapsed(0), m_wSitReqCount(0), m_fSitReqTime(0), m_pUserManager(NULL)
 	{
 		m_pUserManager = new UserManager();
 	}
@@ -216,13 +216,19 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	void			IAndroid::SetStatus(WORD wStatus)
 	{
-		m_wStaus = wStatus;
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+			pUser->cbUserStatus = wStatus;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	WORD			IAndroid::GetStatus() const
 	{
-		return m_wStaus;
+		SUser* pUser = GetUserInfo();
+		if (pUser)
+			return pUser->cbUserStatus;
+
+		return US_NULL;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -303,11 +309,11 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	bool			IAndroid::Update(float fElapsed)
 	{
-		if (m_wStaus == US_OFFLINE)
-			return 0;
-
 		SUser* pUser = GetUserInfo();
-		if (pUser != NULL && pUser->cbUserStatus == US_FREE)
+		if (pUser == NULL || pUser->cbUserStatus == US_OFFLINE || pUser->cbUserStatus == US_NULL)
+			return 0;
+		
+		if (pUser->cbUserStatus == US_FREE)
 		{
 			if (m_wSitReqCount <= MAX_REQ_SITDOWNCOUNT)
 			{
@@ -317,6 +323,7 @@ namespace O2
 					OnReset();
 					OnSwitchTable();
 					m_fSitReqTime = 0;
+					return 0;
 				}
 			}
 			else
@@ -647,15 +654,10 @@ namespace O2
 					if (pUserStatus->cbUserStatus == US_SIT && pUserStatus->dwUserID == m_dwUserID 
 						&& wNowTableID != INVALID_TABLE && ((wNowTableID!=wLastTableID) || (wNowChairID!=wLastChairID)))
 					{
-						// 设置为坐下状态
-						SetStatus(US_SIT);
-
 						CString szMessage;
 						szMessage.Format("[%d]已坐下", m_dwUserID);
 						LogEvent(szMessage, 
 							TraceLevel_Normal);	
-
-						OnBanker();
 					}
 				}
 			}
