@@ -182,6 +182,7 @@ private:
 	__int64 Get_User_DesktopScore(WORD wChairID);
 	//最大下注
 	__int64 GetMaxPutScore(WORD wChairID, BYTE cbJettonArea);
+	__int64 GetAreaDesktopScore(BYTE chJettonArea);
 	//计算得分
     void CalculateScore();
 	//推断赢家

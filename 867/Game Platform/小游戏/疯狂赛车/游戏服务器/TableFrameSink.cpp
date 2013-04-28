@@ -1265,8 +1265,9 @@ __int64 CTableFrameSink::GetMaxPutScore(WORD wChairID, BYTE cbJettonArea)
 		return 0L;
 
 	//大家已下注额
-	__int64 lAllDesktopJetton=Get_ALL_MultiDesktopScore();
-	__int64 lAllLeftSpace = m_CurrentBanker.lUserScore-lAllDesktopJetton;
+// 	__int64 lAllDesktopJetton=Get_ALL_MultiDesktopScore();
+	__int64 lAllAreaDesktopJetton = GetAreaDesktopScore(cbJettonArea);
+	__int64 lAllLeftSpace = m_CurrentBanker.lUserScore-lAllAreaDesktopJetton;
 	lAllLeftSpace=max(lAllLeftSpace, 0);
 	lAllLeftSpace=lAllLeftSpace/s_Multiple[cbJettonArea-ID_BIG_TIGER];
 
@@ -1578,5 +1579,33 @@ void CTableFrameSink::SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg)
 		IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
 		if (pIServerUserItem!=NULL) m_pITableFrame->SendGameMessage(pIServerUserItem,pszTipMsg,SMT_INFO|SMT_EJECT);
 	}
+}
+
+__int64 CTableFrameSink::GetAreaDesktopScore( BYTE chJettonArea )
+{
+	if ( chJettonArea<ID_BIG_TIGER || chJettonArea>ID_SML_SNAKE ) 
+		return 0;
+	switch(chJettonArea)
+	{
+	case ID_BIG_TIGER:
+		return m_lAllBigTigerScore;
+	case ID_SML_TIGER:
+		return m_lAllSmlTigerScore;
+	case ID_BIG_DOG:
+		return m_lAllBigBogScore;
+	case ID_SML_DOG:
+		return m_lAllSmlBogScore;
+	case ID_BIG_HORSE:
+		return m_lAllBigHorseScore;
+	case ID_SML_HORSE:
+		return m_lAllSmlHorseScore;
+	case ID_BIG_SNAKE:
+		return m_lAllBigSnakeScore;
+	case ID_SML_SNAKE:
+		return m_lAllSmlSnakeScore;
+	default:
+		return 0;
+	}
+	return 0;
 }
 
