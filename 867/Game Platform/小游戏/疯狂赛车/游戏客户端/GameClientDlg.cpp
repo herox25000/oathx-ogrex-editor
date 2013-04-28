@@ -8,9 +8,7 @@
 #define IDI_PLACE_JETTON			100									//下注时间
 #define IDI_OTHER_TIME				101									//开奖时间
 #define IDI_TIME_FREE				102									//空闲时间
-
 #define IDI_PLAY_ANIMAL				301									//发牌时间
-//#define IDI_SHOW_GAME_RESULT		302									//显示结果
 
 #define IDI_RAND_ANIMAL				401									//随机画图
 
@@ -153,6 +151,17 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 	{
 		if (nTimerID==IDI_PLACE_JETTON&&nElapse<=5)
 			PlayGameSound(AfxGetInstanceHandle(),TEXT("TIME_WARIMG"));
+	}
+
+	// 小于三秒显示结果
+	if(IDI_OTHER_TIME == nTimerID && nElapse<=3)
+	{	
+		if(m_iRunIndex!=m_iTotoalRun)
+		{
+			m_iRunIndex=m_iTotoalRun;
+			KillTimer(IDI_PLAY_ANIMAL);
+			FinishDispatchCard();
+		}
 	}
 
 
@@ -363,6 +372,7 @@ bool CGameClientDlg::OnGameSceneMessage(BYTE cbGameStation, bool bLookonOther, c
 			if (IsEnableSound()) m_DTSDBackground.Play(0,true);
 			else m_DTSDBackground.Stop();
 
+			m_iRunIndex=m_iTotoalRun=0;
 			//设置时间
 			SetGameTimer(GetMeChairID(),IDI_PLACE_JETTON, pStatusFree->cbTimeLeave);
 			m_GameClientView.m_bstate = Status_Jetton;
@@ -478,13 +488,10 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 	SetGameStatus(GS_PLAYING);
 	m_GameClientView.m_bstate = Status_DisCard;
 	KillGameTimer(IDI_PLACE_JETTON);
-
 	//更新控制
 	UpdateButtonContron();
-
 	//派发扑克
 	DispatchUserCard(pGameStart->cbAnimalBox,pGameStart->cbTimeLeave);
-
 	//环境设置
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_START"));
 	//停止声音
@@ -492,7 +499,6 @@ bool CGameClientDlg::OnSubGameStart(const void * pBuffer, WORD wDataSize)
 		m_DTSDCheer[i].Stop();
 
 	SetGameTimer(GetMeChairID(), IDI_OTHER_TIME, pGameStart->cbTimeLeave);
-
 	return true;
 }
 
@@ -536,7 +542,6 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	SetTimer(IDI_RAND_ANIMAL, 800, NULL);
 
 	KillTimer(IDI_PLAY_ANIMAL);
-	//KillTimer(IDI_SHOW_GAME_RESULT);
 	m_GameClientView.SetPlayAnimalFalg(false);
 
 	//设置变量
@@ -600,7 +605,6 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	m_GameClientView.CleanUserJetton();
 	m_GameClientView.SetWinnerSide(0xFF);
 
-	//KillTimer(IDI_SHOW_GAME_RESULT);
 	m_GameClientView.SetShowGameFlag(false);
 	m_GameClientView.SetHistoryScore(m_wDrawCount,m_lMeResultCount);
 
@@ -771,29 +775,32 @@ bool CGameClientDlg::DispatchUserCard(BYTE cbAnimalBox,int TimeLeave)
 	m_GameClientView.m_cbAnimalBox=cbAnimalBox;
 	m_GameClientView.m_cbNowAnimalBox=0;
 	m_GameClientView.SetPlayAnimalFalg(true);
-
 	StartRunCar(20);
-
 	return true;
 }
 
 void CGameClientDlg::StartRunCar( int iTimer )
 {
-	m_iTimerStep = 400;
+	m_iTimerStep = 400L;
 	SetTimer(IDI_PLAY_ANIMAL,iTimer,NULL);
 	m_iTotoalRun = m_GameClientView.m_cbAnimalBox;
 	m_iRunIndex = 0;
+	
 }
 
 void CGameClientDlg::RuningCar( int iTimer )
 {
-	if(m_iRunIndex<10)
+	if(m_iRunIndex<7)
 	{
-		m_iTimerStep-=43;
+		m_iTimerStep-=60L;
+	}
+	if (m_iTimerStep < 30)
+	{
+		m_iTimerStep = 30;
 	}
 	if(m_iRunIndex >= m_iTotoalRun-15)
 	{
-		m_iTimerStep+=47;
+		m_iTimerStep+=47L;
 	}
 	if(m_iRunIndex==m_iTotoalRun)
 	{
@@ -814,13 +821,8 @@ void CGameClientDlg::FinishDispatchCard()
 	m_GameClientView.SetWinnerSide(cbWinnerSide);
 	m_GameClientView.SetPlayAnimalFalg(false);
 	//设置时间
-	//m_nShowResultTime = 5;
-	//SetTimer(IDI_SHOW_GAME_RESULT, 1000, NULL);
 	m_GameClientView.SetShowGameFlag(true);
 	SetGameStatus(GS_SHOW_RESULT);
-	////庄家按钮
-	//m_GameClientView.m_btApplyBanker.EnableWindow( TRUE );
-	//m_GameClientView.m_btCancelBanker.EnableWindow( TRUE );
 	//播放剩余
 	PlayGameSound(AfxGetInstanceHandle(),TEXT("GAME_END"));
 }
@@ -839,6 +841,7 @@ void CGameClientDlg::OnTimer(UINT nIDEvent)
 			//更新界面
 			m_GameClientView.UpdateGameView(NULL);
 			PlayGameSound(AfxGetInstanceHandle(),TEXT("SEND_CARD"));
+			return;
 		}
 	case IDI_RAND_ANIMAL:
 		{
@@ -849,16 +852,6 @@ void CGameClientDlg::OnTimer(UINT nIDEvent)
 			m_GameClientView.UpdateGameView(NULL);
 			return;
 		}
-		//case IDI_SHOW_GAME_RESULT:
-		//	{
-		//		m_nShowResultTime--;
-		//		if ( m_nShowResultTime <= 0 )
-		//		{
-		//			KillTimer(IDI_SHOW_GAME_RESULT);
-		//			m_GameClientView.SetShowGameFlag(false);
-		//		}
-		//		return;
-		//	}
 	}
 
 	__super::OnTimer(nIDEvent);
