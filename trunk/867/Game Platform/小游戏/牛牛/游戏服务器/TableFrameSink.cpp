@@ -153,15 +153,15 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 //游戏结束
 bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pIServerUserItem, BYTE cbReason)
 {
-	//设置状态
-	KillAllTimer();
-	m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
-
 	switch (cbReason)
 	{
 	case GER_NORMAL:		//常规结束
 		{
+			//设置状态
+			KillAllTimer();
+			m_pITableFrame->SetGameStatus(GS_TK_FREE);
+			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
 			//定义变量
 			CMD_S_GameEnd GameEnd;
 			ZeroMemory(&GameEnd,sizeof(GameEnd));
@@ -281,238 +281,480 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 
 			return true;
 		}
-	case GER_USER_LEFT:		//用户强退
+	//case GER_USER_LEFT:		//用户强退
+	//	{
+	//		//效验参数
+	//		ASSERT(pIServerUserItem!=NULL);
+	//		ASSERT(wChairID<m_wPlayerCount && m_bPlayStatus[wChairID]==TRUE);
+	//		//设置状态
+	//		m_bPlayStatus[wChairID]=FALSE;
+	//		//定义变量
+	//		CMD_S_PlayerExit PlayerExit;
+	//		PlayerExit.wPlayerID=wChairID;
+	//		//发送信息
+	//		for (WORD i=0;i<m_wPlayerCount;i++)
+	//		{
+	//			if(i==wChairID || m_bPlayStatus[i]==FALSE)continue;
+	//			m_pITableFrame->SendTableData(i,SUB_S_PLAYER_EXIT,&PlayerExit,sizeof(PlayerExit));
+	//		}
+	//		m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_PLAYER_EXIT,&PlayerExit,sizeof(PlayerExit));
+
+	//		WORD m_wWinTimes[GAME_PLAYER];
+	//		if (m_pITableFrame->GetGameStatus()>GS_TK_CALL)
+	//		{
+	//			//设置状态
+	//			KillAllTimer();
+	//			m_pITableFrame->SetGameStatus(GS_TK_FREE);
+	//			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
+	//			if (wChairID==m_wBankerUser)	//庄家强退
+	//			{
+	//				//定义变量
+	//				CMD_S_GameEnd GameEnd;
+	//				ZeroMemory(&GameEnd,sizeof(GameEnd));
+	//				ZeroMemory(m_wWinTimes,sizeof(m_wWinTimes));
+
+	//				BYTE cbUserCardData[GAME_PLAYER][MAX_COUNT];
+	//				CopyMemory(cbUserCardData,m_cbHandCardData,sizeof(cbUserCardData));
+
+	//				//得分倍数
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					m_wWinTimes[i]=(m_pITableFrame->GetGameStatus()!=GS_TK_PLAYING)?(1):(m_GameLogic.GetTimes(cbUserCardData[i],MAX_COUNT));
+	//				}
+
+	//				//统计得分 已下或没下
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					GameEnd.lGameScore[i]=m_lTableScore[i]*m_wWinTimes[i];
+	//					GameEnd.lGameScore[m_wBankerUser]-=GameEnd.lGameScore[i];
+	//					m_lTableScore[i]=0;
+	//				}
+
+	//				//闲家强退分数 
+	//				GameEnd.lGameScore[m_wBankerUser]+=m_lExitScore;
+
+	//				//离开用户
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(m_lTableScore[i]>0)GameEnd.lGameScore[i]=-m_lTableScore[i];
+	//				}
+
+	//				//扣税变量
+	//				WORD cbRevenue=m_pGameServiceOption->wRevenue;
+
+	//				////积分税收
+	//				//for(WORD i=0;i<m_wPlayerCount;i++)
+	//				//{
+	//				//	if(GameEnd.lGameScore[i]>0L)
+	//				//	{
+	//				//		GameEnd.lGameTax[i]=GameEnd.lGameScore[i]*cbRevenue/1000L;
+	//				//		GameEnd.lGameScore[i]-=GameEnd.lGameTax[i];
+	//				//	}
+	//				//}
+
+	//				//发送信息
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					m_pITableFrame->SendTableData(i,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//				}
+	//				m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+
+	//				//修改积分
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(m_bPlayStatus[i]==FALSE && i!=m_wBankerUser)continue;
+	//					enScoreKind nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
+	//					m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,nScoreKind);
+	//				}
+
+	//				//获取用户
+	//				IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(m_wBankerUser);
+	//				
+	//				//库存累计
+	//				if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
+	//					m_lStockScore+=GameEnd.lGameScore[m_wBankerUser];
+	//
+	//				//库存回收
+	//				m_lStockScore=m_lStockScore-m_lStockScore*STOCK_TAX/100;
+
+	//				//结束游戏
+	//				m_pITableFrame->ConcludeGame();
+	//			}
+	//			else						//闲家强退
+	//			{
+	//				//已经下注
+	//				if (m_lTableScore[wChairID]>0L)
+	//				{
+	//					ZeroMemory(m_wWinTimes,sizeof(m_wWinTimes));
+
+	//					//用户扑克
+	//					BYTE cbUserCardData[MAX_COUNT];
+	//					CopyMemory(cbUserCardData,m_cbHandCardData[m_wBankerUser],MAX_COUNT);
+
+	//					//用户倍数
+	//					m_wWinTimes[m_wBankerUser]=(m_pITableFrame->GetGameStatus()==GS_TK_SCORE)?(1):(m_GameLogic.GetTimes(cbUserCardData,MAX_COUNT));
+
+	//					//修改积分
+	//					__int64 lScore=-m_lTableScore[wChairID]*m_wWinTimes[m_wBankerUser];
+	//					m_lExitScore+=(-1*lScore);
+	//					m_lTableScore[wChairID]=(-1*lScore);
+	//					m_pITableFrame->WriteUserScore(wChairID,lScore,0,enScoreKind_Lost);
+
+	//					//获取用户
+	//					IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(wChairID);
+	//					
+	//					//库存累计
+	//					if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
+	//						m_lStockScore+=lScore;		
+
+	//				}
+
+	//				//玩家人数
+	//				WORD wUserCount=0;
+	//				for (WORD i=0;i<m_wPlayerCount;i++)if(m_bPlayStatus[i]==TRUE)wUserCount++;
+
+	//				//结束游戏
+	//				if(wUserCount==1)
+	//				{
+	//					//设置状态
+	//					KillAllTimer();
+	//					m_pITableFrame->SetGameStatus(GS_TK_FREE);
+	//					m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
+	//					//定义变量
+	//					CMD_S_GameEnd GameEnd;
+	//					ZeroMemory(&GameEnd,sizeof(GameEnd));
+	//					ASSERT(m_lExitScore>=0L); 
+
+	//					//扣税变量
+	//					WORD cbRevenue=m_pGameServiceOption->wRevenue;
+
+	//					//统计得分
+	//					GameEnd.lGameScore[m_wBankerUser]+=m_lExitScore;
+	//					//GameEnd.lGameTax[m_wBankerUser]=GameEnd.lGameScore[m_wBankerUser]*cbRevenue/1000L;
+	//					GameEnd.lGameScore[m_wBankerUser]-=GameEnd.lGameTax[m_wBankerUser];
+
+	//					//离开用户
+	//					for (WORD i=0;i<m_wPlayerCount;i++)
+	//					{
+	//						if(m_lTableScore[i]>0)GameEnd.lGameScore[i]=-m_lTableScore[i];
+	//					}
+
+	//					//发送信息
+	//					m_pITableFrame->SendTableData(m_wBankerUser,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//					m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+
+	//					for (WORD Zero=0;Zero<m_wPlayerCount;Zero++)if(m_lTableScore[Zero]!=0)break;
+	//					if(Zero!=m_wPlayerCount)
+	//					{
+	//						//修改积分
+	//						//__int64 lRevenue = GameEnd.lGameTax[m_wBankerUser];
+	//						__int64 lScore=GameEnd.lGameScore[m_wBankerUser];
+	//						m_pITableFrame->WriteUserScore(m_wBankerUser,lScore,0,enScoreKind_Win);
+
+	//						//获取用户
+	//						IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(wChairID);
+	//						
+	//						//库存累计
+	//						if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
+	//							m_lStockScore+=lScore;
+	//					}
+
+	//					//库存回收
+	//					m_lStockScore=m_lStockScore-m_lStockScore*STOCK_TAX/100;
+
+	//					//结束游戏
+	//					m_pITableFrame->ConcludeGame();		
+	//				}
+	//				else if	(m_pITableFrame->GetGameStatus()==GS_TK_SCORE && m_lTableScore[wChairID]==0L)
+	//				{
+	//					OnUserAddScore(wChairID,m_lTurnMaxScore[i]/GAME_PLAYER);
+	//				}
+	//				else if (m_pITableFrame->GetGameStatus()==GS_TK_PLAYING && m_bOxCard[wChairID]==0xff)
+	//				{
+	//					OnUserOpenCard(wChairID,0);
+	//				}
+	//			}
+	//		}
+	//		else 
+	//		{
+	//			//玩家人数
+	//			WORD wUserCount=0;
+	//			for (WORD i=0;i<m_wPlayerCount;i++)
+	//				if(m_bPlayStatus[i]==TRUE)
+	//					wUserCount++;
+
+	//			//结束游戏
+	//			if(wUserCount==1)
+	//			{
+	//				//设置状态
+	//				KillAllTimer();
+	//				m_pITableFrame->SetGameStatus(GS_TK_FREE);
+	//				m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
+	//				//定义变量
+	//				CMD_S_GameEnd GameEnd;
+	//				ZeroMemory(&GameEnd,sizeof(GameEnd));
+
+	//				//发送信息
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					m_pITableFrame->SendTableData(i,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//				}
+	//				m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//				//结束游戏
+	//				m_pITableFrame->ConcludeGame();			
+	//			}
+	//			else if(m_wCurrentUser==wChairID)
+	//				OnUserCallBanker(wChairID,0);
+	//		}
+
+	//		return true;
+	//	}
+	//case GER_USER_LEFT:		//用户强退
+	//	{
+	//		//效验参数
+	//		ASSERT(pIServerUserItem!=NULL);
+	//		ASSERT(wChairID<m_wPlayerCount && m_bPlayStatus[wChairID]==TRUE);
+	//		//设置状态
+	//		m_bPlayStatus[wChairID]=FALSE;
+	//		WORD m_wWinTimes[GAME_PLAYER];
+	//		if (m_pITableFrame->GetGameStatus()>GS_TK_CALL)
+	//		{
+	//			//设置状态
+	//			KillAllTimer();
+	//			m_pITableFrame->SetGameStatus(GS_TK_FREE);
+	//			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
+	//			if (wChairID==m_wBankerUser)	//庄家强退
+	//			{
+	//				//定义变量
+	//				CMD_S_GameEnd GameEnd;
+	//				ZeroMemory(&GameEnd,sizeof(GameEnd));
+	//				ZeroMemory(m_wWinTimes,sizeof(m_wWinTimes));
+
+	//				BYTE cbUserCardData[GAME_PLAYER][MAX_COUNT];
+	//				CopyMemory(cbUserCardData,m_cbHandCardData,sizeof(cbUserCardData));
+
+	//				//得分倍数
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					m_wWinTimes[i]=(m_pITableFrame->GetGameStatus()!=GS_TK_PLAYING)?(1):(m_GameLogic.GetTimes(cbUserCardData[i],MAX_COUNT));
+	//				}
+
+	//				//统计得分 已下或没下
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					GameEnd.lGameScore[i]=m_lTableScore[i]*m_wWinTimes[i];
+	//					GameEnd.lGameScore[m_wBankerUser]-=GameEnd.lGameScore[i];
+	//					m_lTableScore[i]=0;
+	//				}
+
+	//				//闲家强退分数 
+	//				GameEnd.lGameScore[m_wBankerUser]+=m_lExitScore;
+
+	//				//离开用户
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(m_lTableScore[i]>0)GameEnd.lGameScore[i]=-m_lTableScore[i];
+	//				}
+
+	//				//扣税变量
+	//				WORD cbRevenue=m_pGameServiceOption->wRevenue;
+
+	//				////积分税收
+	//				//for(WORD i=0;i<m_wPlayerCount;i++)
+	//				//{
+	//				//	if(GameEnd.lGameScore[i]>0L)
+	//				//	{
+	//				//		GameEnd.lGameTax[i]=GameEnd.lGameScore[i]*cbRevenue/1000L;
+	//				//		GameEnd.lGameScore[i]-=GameEnd.lGameTax[i];
+	//				//	}
+	//				//}
+
+	//				//发送信息
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					m_pITableFrame->SendTableData(i,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//				}
+	//				m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+
+	//				//修改积分
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(m_bPlayStatus[i]==FALSE && i!=m_wBankerUser)continue;
+	//					enScoreKind nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
+	//					m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,nScoreKind);
+	//				}
+
+	//				//获取用户
+	//				IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(m_wBankerUser);
+
+	//				//库存累计
+	//				if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
+	//					m_lStockScore+=GameEnd.lGameScore[m_wBankerUser];
+
+	//				//库存回收
+	//				m_lStockScore=m_lStockScore-m_lStockScore*STOCK_TAX/100;
+
+	//				//结束游戏
+	//				m_pITableFrame->ConcludeGame();
+	//			}
+	//			else						//闲家强退
+	//			{
+	//				//已经下注
+	//				if (m_lTableScore[wChairID]>0L)
+	//				{
+	//					ZeroMemory(m_wWinTimes,sizeof(m_wWinTimes));
+
+	//					//用户扑克
+	//					BYTE cbUserCardData[MAX_COUNT];
+	//					CopyMemory(cbUserCardData,m_cbHandCardData[m_wBankerUser],MAX_COUNT);
+
+	//					//用户倍数
+	//					m_wWinTimes[m_wBankerUser]=(m_pITableFrame->GetGameStatus()==GS_TK_SCORE)?(1):(m_GameLogic.GetTimes(cbUserCardData,MAX_COUNT));
+
+	//					//修改积分
+	//					__int64 lScore=-m_lTableScore[wChairID]*m_wWinTimes[m_wBankerUser];
+	//					m_lExitScore+=(-1*lScore);
+	//					m_lTableScore[wChairID]=(-1*lScore);
+	//					m_pITableFrame->WriteUserScore(wChairID,lScore,0,enScoreKind_Lost);
+
+	//					//获取用户
+	//					IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(wChairID);
+
+	//					//库存累计
+	//					if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
+	//						m_lStockScore+=lScore;		
+
+	//				}
+
+	//				//玩家人数
+	//				WORD wUserCount=0;
+	//				for (WORD i=0;i<m_wPlayerCount;i++)if(m_bPlayStatus[i]==TRUE)wUserCount++;
+
+	//				//结束游戏
+	//				if(wUserCount==1)
+	//				{
+	//					//设置状态
+	//					KillAllTimer();
+	//					m_pITableFrame->SetGameStatus(GS_TK_FREE);
+	//					m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
+	//					//定义变量
+	//					CMD_S_GameEnd GameEnd;
+	//					ZeroMemory(&GameEnd,sizeof(GameEnd));
+	//					ASSERT(m_lExitScore>=0L); 
+
+	//					//扣税变量
+	//					WORD cbRevenue=m_pGameServiceOption->wRevenue;
+
+	//					//统计得分
+	//					GameEnd.lGameScore[m_wBankerUser]+=m_lExitScore;
+	//					//GameEnd.lGameTax[m_wBankerUser]=GameEnd.lGameScore[m_wBankerUser]*cbRevenue/1000L;
+	//					GameEnd.lGameScore[m_wBankerUser]-=GameEnd.lGameTax[m_wBankerUser];
+
+	//					//离开用户
+	//					for (WORD i=0;i<m_wPlayerCount;i++)
+	//					{
+	//						if(m_lTableScore[i]>0)GameEnd.lGameScore[i]=-m_lTableScore[i];
+	//					}
+
+	//					//发送信息
+	//					m_pITableFrame->SendTableData(m_wBankerUser,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//					m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+
+	//					for (WORD Zero=0;Zero<m_wPlayerCount;Zero++)if(m_lTableScore[Zero]!=0)break;
+	//					if(Zero!=m_wPlayerCount)
+	//					{
+	//						//修改积分
+	//						//__int64 lRevenue = GameEnd.lGameTax[m_wBankerUser];
+	//						__int64 lScore=GameEnd.lGameScore[m_wBankerUser];
+	//						m_pITableFrame->WriteUserScore(m_wBankerUser,lScore,0,enScoreKind_Win);
+
+	//						//获取用户
+	//						IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(wChairID);
+
+	//						//库存累计
+	//						if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
+	//							m_lStockScore+=lScore;
+	//					}
+
+	//					//库存回收
+	//					m_lStockScore=m_lStockScore-m_lStockScore*STOCK_TAX/100;
+
+	//					//结束游戏
+	//					m_pITableFrame->ConcludeGame();		
+	//				}
+	//				else if	(m_pITableFrame->GetGameStatus()==GS_TK_SCORE && m_lTableScore[wChairID]==0L)
+	//				{
+	//					OnUserAddScore(wChairID,m_lTurnMaxScore[i]/GAME_PLAYER);
+	//				}
+	//				else if (m_pITableFrame->GetGameStatus()==GS_TK_PLAYING && m_bOxCard[wChairID]==0xff)
+	//				{
+	//					OnUserOpenCard(wChairID,0);
+	//				}
+	//			}
+	//		}
+	//		else 
+	//		{
+	//			//玩家人数
+	//			WORD wUserCount=0;
+	//			for (WORD i=0;i<m_wPlayerCount;i++)
+	//				if(m_bPlayStatus[i]==TRUE)
+	//					wUserCount++;
+
+	//			//结束游戏
+	//			if(wUserCount==1)
+	//			{
+	//				//设置状态
+	//				KillAllTimer();
+	//				m_pITableFrame->SetGameStatus(GS_TK_FREE);
+	//				m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
+	//				//定义变量
+	//				CMD_S_GameEnd GameEnd;
+	//				ZeroMemory(&GameEnd,sizeof(GameEnd));
+
+	//				//发送信息
+	//				for (WORD i=0;i<m_wPlayerCount;i++)
+	//				{
+	//					if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
+	//					m_pITableFrame->SendTableData(i,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//				}
+	//				m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+	//				//结束游戏
+	//				m_pITableFrame->ConcludeGame();			
+	//			}
+	//			else if(m_wCurrentUser==wChairID)
+	//				OnUserCallBanker(wChairID,0);
+	//		}
+
+	//		return true;
+	//	}
+	case GER_DISMISS://解散
 		{
-			//效验参数
-			ASSERT(pIServerUserItem!=NULL);
-			ASSERT(wChairID<m_wPlayerCount && m_bPlayStatus[wChairID]==TRUE);
-
 			//设置状态
-			m_bPlayStatus[wChairID]=FALSE;
+			KillAllTimer();
+			m_pITableFrame->SetGameStatus(GS_TK_FREE);
+			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
 
-			//定义变量
-			CMD_S_PlayerExit PlayerExit;
-			PlayerExit.wPlayerID=wChairID;
-
-			//发送信息
-			for (WORD i=0;i<m_wPlayerCount;i++)
-			{
-				if(i==wChairID || m_bPlayStatus[i]==FALSE)continue;
-				m_pITableFrame->SendTableData(i,SUB_S_PLAYER_EXIT,&PlayerExit,sizeof(PlayerExit));
-			}
-			m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_PLAYER_EXIT,&PlayerExit,sizeof(PlayerExit));
-
-			WORD m_wWinTimes[GAME_PLAYER];
-			if (m_pITableFrame->GetGameStatus()>GS_TK_CALL)
-			{
-				if (wChairID==m_wBankerUser)	//庄家强退
-				{
-					//定义变量
-					CMD_S_GameEnd GameEnd;
-					ZeroMemory(&GameEnd,sizeof(GameEnd));
-					ZeroMemory(m_wWinTimes,sizeof(m_wWinTimes));
-
-					BYTE cbUserCardData[GAME_PLAYER][MAX_COUNT];
-					CopyMemory(cbUserCardData,m_cbHandCardData,sizeof(cbUserCardData));
-
-					//得分倍数
-					for (WORD i=0;i<m_wPlayerCount;i++)
-					{
-						if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
-						m_wWinTimes[i]=(m_pITableFrame->GetGameStatus()!=GS_TK_PLAYING)?(1):(m_GameLogic.GetTimes(cbUserCardData[i],MAX_COUNT));
-					}
-
-					//统计得分 已下或没下
-					for (WORD i=0;i<m_wPlayerCount;i++)
-					{
-						if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
-						GameEnd.lGameScore[i]=m_lTableScore[i]*m_wWinTimes[i];
-						GameEnd.lGameScore[m_wBankerUser]-=GameEnd.lGameScore[i];
-						m_lTableScore[i]=0;
-					}
-
-					//闲家强退分数 
-					GameEnd.lGameScore[m_wBankerUser]+=m_lExitScore;
-
-					//离开用户
-					for (WORD i=0;i<m_wPlayerCount;i++)
-					{
-						if(m_lTableScore[i]>0)GameEnd.lGameScore[i]=-m_lTableScore[i];
-					}
-
-					//扣税变量
-					WORD cbRevenue=m_pGameServiceOption->wRevenue;
-
-					////积分税收
-					//for(WORD i=0;i<m_wPlayerCount;i++)
-					//{
-					//	if(GameEnd.lGameScore[i]>0L)
-					//	{
-					//		GameEnd.lGameTax[i]=GameEnd.lGameScore[i]*cbRevenue/1000L;
-					//		GameEnd.lGameScore[i]-=GameEnd.lGameTax[i];
-					//	}
-					//}
-
-					//发送信息
-					for (WORD i=0;i<m_wPlayerCount;i++)
-					{
-						if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
-						m_pITableFrame->SendTableData(i,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-					}
-					m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-
-					//修改积分
-					for (WORD i=0;i<m_wPlayerCount;i++)
-					{
-						if(m_bPlayStatus[i]==FALSE && i!=m_wBankerUser)continue;
-						enScoreKind nScoreKind=(GameEnd.lGameScore[i]>0L)?enScoreKind_Win:enScoreKind_Lost;
-						m_pITableFrame->WriteUserScore(i,GameEnd.lGameScore[i],0,nScoreKind);
-					}
-
-					//获取用户
-					IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(m_wBankerUser);
-					
-					//库存累计
-					if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
-						m_lStockScore+=GameEnd.lGameScore[m_wBankerUser];
-	
-					//库存回收
-					m_lStockScore=m_lStockScore-m_lStockScore*STOCK_TAX/100;
-
-					//结束游戏
-					m_pITableFrame->ConcludeGame();
-				}
-				else						//闲家强退
-				{
-					//已经下注
-					if (m_lTableScore[wChairID]>0L)
-					{
-						ZeroMemory(m_wWinTimes,sizeof(m_wWinTimes));
-
-						//用户扑克
-						BYTE cbUserCardData[MAX_COUNT];
-						CopyMemory(cbUserCardData,m_cbHandCardData[m_wBankerUser],MAX_COUNT);
-
-						//用户倍数
-						m_wWinTimes[m_wBankerUser]=(m_pITableFrame->GetGameStatus()==GS_TK_SCORE)?(1):(m_GameLogic.GetTimes(cbUserCardData,MAX_COUNT));
-
-						//修改积分
-						__int64 lScore=-m_lTableScore[wChairID]*m_wWinTimes[m_wBankerUser];
-						m_lExitScore+=(-1*lScore);
-						m_lTableScore[wChairID]=(-1*lScore);
-						m_pITableFrame->WriteUserScore(wChairID,lScore,0,enScoreKind_Lost);
-
-						//获取用户
-						IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(wChairID);
-						
-						//库存累计
-						if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
-							m_lStockScore+=lScore;		
-
-					}
-
-					//玩家人数
-					WORD wUserCount=0;
-					for (WORD i=0;i<m_wPlayerCount;i++)if(m_bPlayStatus[i]==TRUE)wUserCount++;
-
-					//结束游戏
-					if(wUserCount==1)
-					{
-						//定义变量
-						CMD_S_GameEnd GameEnd;
-						ZeroMemory(&GameEnd,sizeof(GameEnd));
-						ASSERT(m_lExitScore>=0L); 
-
-						//扣税变量
-						WORD cbRevenue=m_pGameServiceOption->wRevenue;
-
-						//统计得分
-						GameEnd.lGameScore[m_wBankerUser]+=m_lExitScore;
-						//GameEnd.lGameTax[m_wBankerUser]=GameEnd.lGameScore[m_wBankerUser]*cbRevenue/1000L;
-						GameEnd.lGameScore[m_wBankerUser]-=GameEnd.lGameTax[m_wBankerUser];
-
-						//离开用户
-						for (WORD i=0;i<m_wPlayerCount;i++)
-						{
-							if(m_lTableScore[i]>0)GameEnd.lGameScore[i]=-m_lTableScore[i];
-						}
-
-						//发送信息
-						m_pITableFrame->SendTableData(m_wBankerUser,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-						m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-
-						for (WORD Zero=0;Zero<m_wPlayerCount;Zero++)if(m_lTableScore[Zero]!=0)break;
-						if(Zero!=m_wPlayerCount)
-						{
-							//修改积分
-							//__int64 lRevenue = GameEnd.lGameTax[m_wBankerUser];
-							__int64 lScore=GameEnd.lGameScore[m_wBankerUser];
-							m_pITableFrame->WriteUserScore(m_wBankerUser,lScore,0,enScoreKind_Win);
-
-							//获取用户
-							IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(wChairID);
-							
-							//库存累计
-							if ((pIServerUserIte!=NULL)&&(pIServerUserIte->IsAndroidUser()!=false)) 
-								m_lStockScore+=lScore;
-						}
-
-						//库存回收
-						m_lStockScore=m_lStockScore-m_lStockScore*STOCK_TAX/100;
-
-						//结束游戏
-						m_pITableFrame->ConcludeGame();		
-					}
-					else if	(m_pITableFrame->GetGameStatus()==GS_TK_SCORE && m_lTableScore[wChairID]==0L)
-					{
-						OnUserAddScore(wChairID,0);
-					}
-					else if (m_pITableFrame->GetGameStatus()==GS_TK_PLAYING && m_bOxCard[wChairID]==0xff)
-					{
-						OnUserOpenCard(wChairID,0);
-					}
-				}
-			}
-			else 
-			{
-				//玩家人数
-				WORD wUserCount=0;
-				for (WORD i=0;i<m_wPlayerCount;i++)if(m_bPlayStatus[i]==TRUE)wUserCount++;
-
-				//结束游戏
-				if(wUserCount==1)
-				{
-					//定义变量
-					CMD_S_GameEnd GameEnd;
-					ZeroMemory(&GameEnd,sizeof(GameEnd));
-
-					//发送信息
-					for (WORD i=0;i<m_wPlayerCount;i++)
-					{
-						if(i==m_wBankerUser || m_bPlayStatus[i]==FALSE)continue;
-						m_pITableFrame->SendTableData(i,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-					}
-					m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-
-					//结束游戏
-					m_pITableFrame->ConcludeGame();			
-				}
-				else if(m_wCurrentUser==wChairID)
-					OnUserCallBanker(wChairID,0);
-			}
-
+			CMD_S_GameEnd GameEnd;
+			ZeroMemory(&GameEnd,sizeof(GameEnd));
+			m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+			m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
+			//结束游戏
+			m_pITableFrame->ConcludeGame();	
 			return true;
 		}
-		case GER_DISMISS://解散
-			{
-				CMD_S_GameEnd GameEnd;
-				ZeroMemory(&GameEnd,sizeof(GameEnd));
-				m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-				m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
-				//结束游戏
-				m_pITableFrame->ConcludeGame();	
-				return true;
-			}
 	}
 
 	return false;
