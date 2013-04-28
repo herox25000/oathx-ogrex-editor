@@ -23,6 +23,7 @@ CTableFrame::CTableFrame()
 	m_dwTimeStart=0L;
 	m_bGameStatus=GS_FREE;
 	ZeroMemory(m_szPassword,sizeof(m_szPassword));
+	ZeroMemory(m_QiangTui,sizeof(m_QiangTui));
 
 	//分数信息
 	m_lGameTaxScore=0L;
@@ -159,10 +160,14 @@ bool __cdecl CTableFrame::PerformStandUpAction(IServerUserItem * pIServerUserIte
 		{
 			//结束游戏
 			m_pITableFrameSink->OnEventGameEnd(wChairID,pIServerUserItem,GER_USER_LEFT);
-
-			//离开判断
+			
 			tagServerUserData * pUserData=pIServerUserItem->GetUserData();
-			if ((pUserData->wTableID==INVALID_TABLE)||(pUserData->wChairID==INVALID_CHAIR)) return true;
+			m_QiangTui[pUserData->wChairID] = true;
+			if(m_pGameServiceOption->cbDistributeMode != DISTRIBUTE_MODE_NO_LOOK)
+				return true;
+			//离开判断
+			if ((pUserData->wTableID==INVALID_TABLE)||(pUserData->wChairID==INVALID_CHAIR))
+				return true;
 		}
 
 		//变量定义
@@ -221,7 +226,8 @@ bool __cdecl CTableFrame::PerformStandUpAction(IServerUserItem * pIServerUserIte
 		}
 
 		//起立处理
-		if (m_pITableUserAction!=NULL) m_pITableUserAction->OnActionUserStandUp(wChairID,pIServerUserItem,false);
+		if (m_pITableUserAction!=NULL) 
+			m_pITableUserAction->OnActionUserStandUp(wChairID,pIServerUserItem,false);
 
 		//变量定义
 		bool bMatchServer=((m_pGameServiceOption->wServerType&GAME_GENRE_MATCH)!=0);
@@ -844,6 +850,7 @@ bool __cdecl CTableFrame::OnEventSocketFrame(WORD wSubCmdID, const void * pDataB
 				tagServerUserData * pUserData=pIServerUserItem->GetUserData();
 				bool bLookonUser=(pUserData->cbUserStatus==US_LOOKON);
 
+				m_QiangTui[pUserData->wChairID] = false;
 				//效验状态
 				ASSERT(pUserData->wChairID<m_wChairCount);
 				if (pUserData->wChairID>=m_wChairCount) return false;
@@ -1509,7 +1516,18 @@ bool __cdecl CTableFrame::ConcludeGame()
 		if (m_pIUserItem[i]!=NULL)
 		{
 			tagServerUserData * pUserData=m_pIUserItem[i]->GetUserData();
-			if (pUserData->cbUserStatus!=US_OFFLINE) pUserData->cbUserStatus=US_SIT;
+			if (pUserData->cbUserStatus!=US_OFFLINE)
+			{
+				if(m_QiangTui[i])
+				{
+					IServerUserItem * pIServerUserItem=m_pIUserItem[i];
+					PerformStandUpAction(pIServerUserItem);
+				}
+				else
+				{
+					pUserData->cbUserStatus=US_SIT;
+				}
+			}
 		}
 	}
 

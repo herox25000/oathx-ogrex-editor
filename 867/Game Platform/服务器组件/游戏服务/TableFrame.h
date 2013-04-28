@@ -44,6 +44,8 @@ public:
 	WORD							m_wOffLineCount[MAX_CHAIR];			//断线次数
 	IServerUserItem	*				m_pIUserItem[MAX_CHAIR];			//用户指针
 	CUserItemPtrArray				m_LookonUserItemPtr;				//旁观用户
+protected:
+	bool							m_QiangTui[MAX_CHAIR];
 
 	//辅助变量
 protected:
