@@ -78,7 +78,6 @@ void __cdecl CPlatformResource::SetResourceType(BYTE cbResourceType)
 	GetVideoFrameImage(m_pVideoFrameImage);
 	GetPropertyMenuImage(m_pPropertyMenuImage);
 	GetGiftFlashImage(m_pGiftFlashImage);
-
 	return;
 }
 

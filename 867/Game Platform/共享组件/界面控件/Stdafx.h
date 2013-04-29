@@ -5,19 +5,19 @@
 #endif
 
 #ifndef WINVER				// 允许使用特定于 Windows 95 和 Windows NT 4 或更高版本的功能。
-#define WINVER 0x0400		// 将此更改为针对于 Windows 98 和 Windows 2000 或更高版本的合适的值。
+#define WINVER 0x0500		// 将此更改为针对于 Windows 98 和 Windows 2000 或更高版本的合适的值。
 #endif
 
 #ifndef _WIN32_WINNT		// 允许使用特定于 Windows NT 4 或更高版本的功能。
-#define _WIN32_WINNT 0x0400	// 将此更改为针对于 Windows 2000 或更高版本的合适的值。
+#define _WIN32_WINNT 0x0500	// 将此更改为针对于 Windows 2000 或更高版本的合适的值。
 #endif						
 
 #ifndef _WIN32_WINDOWS		// 允许使用特定于 Windows 98 或更高版本的功能。
-#define _WIN32_WINDOWS 0x0410 // 将此更改为针对于 Windows Me 或更高版本的合适的值。
+#define _WIN32_WINDOWS 0x0510 // 将此更改为针对于 Windows Me 或更高版本的合适的值。
 #endif
 
 #ifndef _WIN32_IE			// 允许使用特定于 IE 4.0 或更高版本的功能。
-#define _WIN32_IE 0x0400	// 将此更改为针对于 IE 5.0 或更高版本的合适的值。
+#define _WIN32_IE 0x0500	// 将此更改为针对于 IE 5.0 或更高版本的合适的值。
 #endif
 
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS	// 某些 CString 构造函数将为显式的
@@ -43,4 +43,13 @@
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// MFC 对 Windows 公共控件的支持
 #endif // _AFX_NO_AFXCMN_SUPPORT
+
+#include <winuser.h>
+
+//其他文件
+#include "Other\SkinSB.h"
+#include "Other\Detours.h"
+#pragma comment (lib,"Other/SkinSB.lib")
+#pragma comment (lib,"Other/Detours.lib")
+
 

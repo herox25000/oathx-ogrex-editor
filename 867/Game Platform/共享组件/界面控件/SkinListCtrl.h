@@ -7,6 +7,7 @@
 #include "SkinControls.h"
 //#include "SkinAttribute.h"
 #include "SkinResourceManager.h"
+#include "SkinScrollBar.h"
 
 //类说明
 class CSkinListCtrl;
@@ -148,6 +149,7 @@ class SKIN_CONTROL_CLASS CSkinListCtrl : public CListCtrl
 {
 	//变量定义
 protected:
+	//CSkinScrollBar						m_SkinScrollBar;					//滚动条类
 	CSkinHeaderCtrl						m_SkinHeadCtrl;					//列头控件
 	
 	//函数定义

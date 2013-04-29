@@ -26,6 +26,19 @@
 //////////////////////////////////////////////////////////////////////////
 //结构定义
 
+//对话框皮肤
+struct tagDlgImage
+{
+	UINT							uDlgML;							//资源标识
+	UINT							uDlgMR;							//资源标识
+	UINT							uDlgTL;							//资源标识
+	UINT							uDlgTM;							//资源标识
+	UINT							uDlgTR;							//资源标识
+	UINT							uDlgBL;							//资源标识
+	UINT							uDlgBM;							//资源标识
+	UINT							uDlgBR;							//资源标识
+};
+
 //框架资源
 struct tagPlatformFrameImage
 {

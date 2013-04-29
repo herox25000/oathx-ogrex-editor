@@ -414,6 +414,11 @@ public:
 	#include "SkinHyperLink.h"
 	#include "SkinAide.h"
 	#include "SkinResourceManager.h"
+	#include "SkinButtonEx.h"
+	#include "BitImage.h"
+	#include "GIFImage.h"
+	#include "SkinScrollBar.h"	
+	#include "SkinTabCtrl.h"
 #endif
 
 //////////////////////////////////////////////////////////////////////////
