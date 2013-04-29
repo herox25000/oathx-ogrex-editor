@@ -31,6 +31,16 @@
 #define IDD_MODIFY_INDIVIDUAL           277
 #define IDD_LOCKCOMPUTER                318
 #define IDD_BANK_DIALOG                 320
+#define IDB_BT_QUIT                     321
+#define IDB_BT_LOGON                    322
+#define IDB_BT_LOGON_ITEM               323
+#define IDB_BT_LOGON_LINK               324
+#define IDD_DLG_ENQUIRE                 324
+#define IDB_BT_REGISTER_CLOSE           325
+#define IDB_BT_REGISTER                 326
+#define IDB_BT_ENQUIRE_CANCEL			327    
+#define IDB_BK_ENQUIRE_BUTTON			328      
+
 #define IDC_CHAT_MESSAGE                1002
 #define IDC_TABLE_PASSWORD              1003
 #define IDC_SERVER                      1004
@@ -151,7 +161,16 @@
 #define IDC_BANK_PLYNAME                1113
 #define IDC_EDIT_PHONE                  1113
 #define IDC_BANK_PLYNICK                1114
+#define IDC_COMBO1                      1114
 #define IDC_BANK_BTNALL                 1115
+#define IDC_BT_MAINPAGE                 1115
+#define IDC_BT_NEWUSER                  1116
+#define IDC_BT_SERVER                   1117
+#define IDC_BUTTON4                     1118
+#define IDC_BT_FINDPASSWORD             1118
+#define IDC_SWITCH_ACCOUNTS             1119
+#define IDC_BUTTON1                     1120
+#define IDC_CLOSE_PLAZA                 1120
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32776
@@ -161,9 +180,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        324
+#define _APS_NEXT_RESOURCE_VALUE        325
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1114
+#define _APS_NEXT_CONTROL_VALUE         1121
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

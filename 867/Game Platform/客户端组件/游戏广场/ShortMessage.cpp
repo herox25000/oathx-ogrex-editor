@@ -37,7 +37,7 @@ CShortMessage::~CShortMessage()
 //控件绑定函数
 void CShortMessage::DoDataExchange(CDataExchange* pDX)
 {
-	CSkinDialogEx::DoDataExchange(pDX);
+	__super::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_SEND_SHORT, m_BtSend);
 	DDX_Control(pDX, IDC_EXPRESSION, m_BtExpression);
 	DDX_Control(pDX, IDC_CLOSE, m_BtClose);
@@ -49,7 +49,7 @@ void CShortMessage::DoDataExchange(CDataExchange* pDX)
 //初始化函数
 BOOL CShortMessage::OnInitDialog()
 {
-	CSkinDialogEx::OnInitDialog();
+	__super::OnInitDialog();
 
 	m_cbButtonState[BST_MAX]=BUT_EXIST|BUT_DISABLE;
 	m_cbButtonState[BST_MIN]=BUT_EXIST|BUT_NORMAL;

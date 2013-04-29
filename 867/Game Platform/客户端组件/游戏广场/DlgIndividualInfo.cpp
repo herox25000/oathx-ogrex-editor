@@ -5,12 +5,12 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CDlgIndividualInfo, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CDlgIndividualInfo, CSkinPngDialog)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
 //构造函数
-CDlgIndividualInfo::CDlgIndividualInfo() : CSkinDialogEx(IDD_MODIFY_INDIVIDUAL)
+CDlgIndividualInfo::CDlgIndividualInfo() : CSkinPngDialog(IDD_MODIFY_INDIVIDUAL)
 {
 
 	return;
@@ -40,9 +40,7 @@ BOOL CDlgIndividualInfo::OnInitDialog()
 	//m_BrowerAD.Navigate(TEXT("www.game541.com"),NULL,NULL,NULL,NULL);
 	//m_BrowerAD.ShowWindow(SW_HIDE);
 	//广告位置
-	int nXExcursion=GetXExcursionPos();
-	int nYExcursion=GetYExcursionPos();
-	m_BrowerAD.MoveWindow(nXExcursion+4,nYExcursion+5,327,248);
+	m_BrowerAD.MoveWindow(5+4,5+5,327,248);
 
 	return FALSE;
 }

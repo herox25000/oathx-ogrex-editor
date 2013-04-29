@@ -5,52 +5,20 @@
 #include "GlobalUnits.h"
 #include "Zip.h"
 
-////////////////////////////////////////////////////////////////////////////////////
-//宏定义
-#define DEF_INSIDEBORDER_COLOR	RGB(176,20,1)						//默认颜色
 
-#define BGROUND_COLOR			RGB(254,250,221)					//背景颜色
-#define FRAME_TL_COLOR1			RGB(128,128,128)					//边框颜色
-#define FRAME_TL_COLOR2			RGB(64,64,64)						//边框颜色
-#define FRAME_RB_COLOR2			RGB(212,208,200)					//边框颜色
-#define FRAME_RB_COLOR1			RGB(212,208,200)					//边框颜色
-
-#define SMALL_FACE_WIDTH		32									//图片大小
-#define SMALL_FACE_HEIGHT		32									//图片大小
-
-#define LARGE_FACE_WIDTH		100									//图片大小
-#define LARGE_FACE_HEIGHT		100									//图片大小
-
-#define SMALL_FRAME_LEFT		235									//边框位置
-#define SMALL_FRAME_RIGHT		(SMALL_FRAME_LEFT+SMALL_FACE_WIDTH)	//边框位置
-#define SMALL_FRAME_TOP			105									//边框位置
-#define SMALL_FRAME_BOTTOM		(SMALL_FRAME_TOP+SMALL_FACE_HEIGHT)	//边框位置
-
-#define LARGE_FRAME_LEFT		50									//边框位置
-#define LARGE_FRAME_RIGHT		(LARGE_FRAME_LEFT+LARGE_FACE_WIDTH)	//边框位置
-#define LARGE_FRAME_TOP			75									//边框位置
-#define LARGE_FRAME_BOTTOM		(LARGE_FRAME_TOP+LARGE_FACE_HEIGHT)	//边框位置
-
-#define FRAME_SPACE				2									//边框宽度
 
 ////////////////////////////////////////////////////////////////////////////////////
 
 
-BEGIN_MESSAGE_MAP(CDlgLockComputer, CDialog)
-	ON_WM_PAINT()
+BEGIN_MESSAGE_MAP(CDlgLockComputer, CSkinPngDialog)
 	ON_BN_CLICKED(IDOK,OnBnClickedOK) 
-	ON_WM_CTLCOLOR()
-	ON_WM_SHOWWINDOW()
 	ON_WM_CLOSE()
-	ON_WM_LBUTTONDOWN()
-	ON_WM_LBUTTONUP()
-	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 ////////////////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CDlgLockComputer::CDlgLockComputer(CWnd* pParent): CDialog(IDD_LOCKCOMPUTER, pParent), CSkinWndObject(this)
+CDlgLockComputer::CDlgLockComputer(CWnd* pParent): CSkinPngDialog(IDD_LOCKCOMPUTER, pParent)//, CSkinWndObject(this)
 {
 	//设置变量
 	m_pIClientSocket = NULL;
@@ -76,19 +44,13 @@ void CDlgLockComputer::DoDataExchange(CDataExchange* pDX)
 BOOL CDlgLockComputer::OnInitDialog()
 {
 	__super::OnInitDialog();
+	//设置标题
+	SetWindowText(TEXT("绑定机器设置"));
+
 	((CComboBox *)(GetDlgItem(IDC_LogonPws)))->LimitText(NAME_LEN-1);
 	SetDlgItemText(IDC_LogonPws,TEXT(""));
-	//创建刷子
-	m_brBkground.CreateSolidBrush(BGROUND_COLOR);
-
-	//设置标题
-	SetWindowText(TEXT("锁机"));
-
 	//更新控件
 	UpdateControls();
-
-	//初始化设置
-	__super::InitSkinObject();
 
 	return TRUE;  
 }
@@ -97,8 +59,6 @@ BOOL CDlgLockComputer::OnInitDialog()
 void CDlgLockComputer::OnPaint()
 {
 	CPaintDC dc(this);
-	//绘画标题
-	__super::DrawSkinView(&dc);
 }
 
 //确定
@@ -242,35 +202,11 @@ bool CDlgLockComputer::SendData()
 void CDlgLockComputer::UpdateControls()
 {
 	tagGlobalUserData &GlobalUserData = g_GlobalUnits.GetGolbalUserData();
-	//如果账号锁定
-	if(GlobalUserData.cbMoorMachine != 0)
-	{
-		SetDlgItemText(IDC_LOCKTEXT,"** 本账号已经使用了锁定功能！！");
-		SetDlgItemText(IDOK,"解除锁定");
-	}
-	else//没有锁定
-	{
-		SetDlgItemText(IDC_LOCKTEXT,"** 本账号还没有锁定！！");
-		SetDlgItemText(IDOK,"锁定");
-	}
+	m_btOk.SetWindowText((GlobalUserData.cbMoorMachine== 0 )?TEXT("绑定本机"):TEXT("解除绑定"));
 	//更新界面
 	InvalidateRect(NULL);
 }
 
-//颜色处理
-HBRUSH CDlgLockComputer::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
-{
-	return __super::OnCtlColor(pDC,pWnd,nCtlColor);
-}
-
-//显示消息
-void CDlgLockComputer::OnShowWindow(BOOL bShow, UINT nStatus)
-{
-	CDialog::OnShowWindow(bShow, nStatus);
-
-	//更新控件
-	if ( bShow ) UpdateControls();
-}
 
 //销毁消息
 void CDlgLockComputer::OnClose()
@@ -282,32 +218,14 @@ void CDlgLockComputer::OnClose()
 
 	m_enOperateStatus = enOperateStatus_NULL;
 
-	CDialog::OnClose();
+	__super::OnClose();
 }
 
 void CDlgLockComputer::OnCancel()
 {
-	CDialog::OnCancel();
+	__super::OnCancel();
 }
 
-//鼠标信息
-void CDlgLockComputer::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	CDialog::OnLButtonDown(nFlags, point);
-	OnLMouseDownEvent(point);
-}
 
-//鼠标信息
-void CDlgLockComputer::OnLButtonUp(UINT nFlags, CPoint point)
-{
-	CDialog::OnLButtonUp(nFlags, point);
-	OnLMouseUpEvent(point);
-}
 
-//鼠标信息
-void CDlgLockComputer::OnMouseMove(UINT nFlags, CPoint point)
-{
-	CDialog::OnMouseMove(nFlags, point);
-	OnMouseMoveEvent(point);
-}
 ////////////////////////////////////////////////////////////////////////////////////

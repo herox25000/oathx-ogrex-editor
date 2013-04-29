@@ -55,7 +55,9 @@ class CRoomViewItem : public CDialog, public IRoomViewItem, public ITCPSocketSin
 {
 	friend class CFindUserDlg;
 	friend class CShortMessage;
-
+protected:
+	WORD							m_nTryConnectCnt;					//尝试连接参数
+	bool							m_bTryConnerctState;				//是否重连状态
 	//应用变量
 protected:
 	CListServer	*					m_pListServer;						//房间信息
@@ -130,6 +132,7 @@ public:
 	CWebBrowser						m_BrowerAD;							//浏览窗口
 	CTableFrame						m_TableFrame;						//桌子框架
 	CUserListView					m_UserListView;						//用户列表
+	//CSkinScrollBar					m_SkinScrollBar;					//滚动条类
 
 	//管理控件
 public:
@@ -422,7 +425,8 @@ protected:
 	afx_msg BOOL OnEraseBkgnd(CDC * pDC);
 	//位置消息
 	afx_msg void OnSize(UINT nType, int cx, int cy);
-
+	//定时器
+	afx_msg void OnTimer(UINT nIDEvent);
 	//按钮消息
 protected:
 	//发送按钮

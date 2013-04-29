@@ -86,11 +86,11 @@ BOOL CPlazaViewItem::OnInitDialog()
 	m_WEB_HOME.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_WEB_HOME);
 	m_WEB_NEXT.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_WEB_NEXT);
 	m_WEB_STOP.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_WEB_STOP);
-	m_WEB_BEFORE.ShowWindow(SW_HIDE);
-	m_WEB_BRUSH.ShowWindow(SW_HIDE);
-	m_WEB_HOME.ShowWindow(SW_HIDE);
-	m_WEB_NEXT.ShowWindow(SW_HIDE);
-	m_WEB_STOP.ShowWindow(SW_HIDE);
+	m_WEB_BEFORE.ShowWindow(SW_SHOW);
+	m_WEB_BRUSH.ShowWindow(SW_SHOW);
+	m_WEB_HOME.ShowWindow(SW_SHOW);
+	m_WEB_NEXT.ShowWindow(SW_SHOW);
+	m_WEB_STOP.ShowWindow(SW_SHOW);
 
 	//加载资源
 	UpdateSkinResource();
@@ -529,24 +529,20 @@ bool CPlazaViewItem::OnSocketMainSystem(CMD_Command Command, void * pData, WORD 
 			CMD_GP_Version * pVersion=(CMD_GP_Version *)pData;
 			if (pVersion->bAllowConnect)
 			{
-				TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在的版本还可以继续使用，现在是否马上下载新版本？");
-				
-				int iResult=ShowInformationEx(szMessage,0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏广场"));
-				if (iResult==IDYES)
-				{
-					g_GlobalAttemper.DestroyStatusWnd(this);
-					m_ClientSocket->CloseSocket();
-					tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
-					memset(&GlobalUserData,0,sizeof(GlobalUserData));
-					g_GlobalAttemper.DownLoadClient(TEXT("游戏广场"),0,true);
-				}
-			}
-			else
-			{
+				//TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在的版本还可以继续使用，现在是否马上下载新版本？");
+				//
+				//int iResult=ShowInformationEx(szMessage,0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏广场"));
+				//if (iResult==IDYES)
+				//{
+				//	g_GlobalAttemper.DestroyStatusWnd(this);
+				//	m_ClientSocket->CloseSocket();
+				//	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+				//	memset(&GlobalUserData,0,sizeof(GlobalUserData));
+				//	g_GlobalAttemper.DownLoadClient(TEXT("游戏广场"),0,true);
+				//}
 				g_GlobalAttemper.DestroyStatusWnd(this);
 				m_ClientSocket->CloseSocket();
-				TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在的版本不可以继续使用，现在是否马上下载新版本？");
-				
+				TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在是否马上下载新版本？");
 				int iResult=ShowInformationEx(szMessage,0,MB_ICONSTOP|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏广场"));
 				if(iResult != IDYES)
 				{
@@ -559,7 +555,31 @@ bool CPlazaViewItem::OnSocketMainSystem(CMD_Command Command, void * pData, WORD 
 					g_GlobalAttemper.DownLoadClient(TEXT("游戏广场"),0,true);
 				}
 			}
-
+			else
+			{
+				//g_GlobalAttemper.DestroyStatusWnd(this);
+				//m_ClientSocket->CloseSocket();
+				//TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在的版本不可以继续使用，现在是否马上下载新版本？");
+				//
+				//int iResult=ShowInformationEx(szMessage,0,MB_ICONSTOP|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏广场"));
+				//if(iResult != IDYES)
+				//{
+				//	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+				//	memset(&GlobalUserData,0,sizeof(GlobalUserData));
+				//	AfxGetMainWnd()->PostMessage(WM_CLOSE);
+				//}
+				//else 
+				//{
+				//	g_GlobalAttemper.DownLoadClient(TEXT("游戏广场"),0,true);
+				//}
+				g_GlobalAttemper.DestroyStatusWnd(this);
+				m_ClientSocket->CloseSocket();
+				TCHAR szMessage[]=TEXT("因为您长时间没有更新版本，不能自动下载，请到官网下载最新安装包安装！");
+				int iResult=ShowInformationEx(szMessage,0,MB_ICONQUESTION,TEXT("游戏广场"));
+				tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+				memset(&GlobalUserData,0,sizeof(GlobalUserData));
+				AfxGetMainWnd()->PostMessage(WM_CLOSE);
+			}
 			return true;
 		}
 	case SUB_GP_MESSAGE:
@@ -994,10 +1014,10 @@ void CPlazaViewItem::OnSize(UINT nType, int cx, int cy)
 	CRect rcButton;
 	m_WEB_BEFORE.GetWindowRect(&rcButton);
 	DeferWindowPos(hDwp,m_WEB_BEFORE,NULL,10,3,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_WEB_NEXT,NULL,10+rcButton.Width(),3,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_WEB_BRUSH,NULL,10+rcButton.Width()*2,3,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_WEB_STOP,NULL,10+rcButton.Width()*3,3,0,0,uFlags|SWP_NOSIZE);
-	DeferWindowPos(hDwp,m_WEB_HOME,NULL,10+rcButton.Width()*4,3,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_WEB_NEXT,NULL,10+rcButton.Width()+2,3,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_WEB_BRUSH,NULL,10+(rcButton.Width()+2)*2,3,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_WEB_STOP,NULL,10+(rcButton.Width()+2)*3,3,0,0,uFlags|SWP_NOSIZE);
+	DeferWindowPos(hDwp,m_WEB_HOME,NULL,10+(rcButton.Width()+2)*4,3,0,0,uFlags|SWP_NOSIZE);
 
 	EndDeferWindowPos(hDwp);
 
@@ -1097,7 +1117,6 @@ void CPlazaViewItem::OnCommandLogon()
 	{
 		m_DlgLogon.Create(IDD_LOGON,this);
 	}
-
 	//显示登录框
 	m_DlgLogon.ShowWindow(SW_SHOW);
 	m_DlgLogon.SetActiveWindow();
@@ -1155,19 +1174,6 @@ void CPlazaViewItem::OnCommandConnect()
 	{
 		//连接服务器
 		m_ClientSocket->CloseSocket();
-		
-		//代理判断
-		if ( m_DlgLogon.EnableProxy() == true )
-		{
-			//获取代理
-			enProxyServerType ProxyServerType;
-			tagProxyServerInfo ProxyServerInfo;
-			m_DlgLogon.GetProxyInfo(ProxyServerType, ProxyServerInfo);	
-
-			//设置代理
-			m_ClientSocket->SetProxyServerInfo(ProxyServerType,ProxyServerInfo);
-		}
-
 		if (m_ClientSocket->Connect(pszServerIP,PORT_LOGON_SERVER)!=CONNECT_SUCCESS)
 		{
 			throw TEXT("服务器连接错误，可能是你的系统还没有成功连接上网络！");

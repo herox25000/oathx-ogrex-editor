@@ -107,7 +107,7 @@ public:
 	//操作接口
 public:
 	//关闭连接
-	virtual VOID __cdecl CloseSocket();
+	virtual VOID __cdecl CloseSocket(BYTE cbShutReason=SHUT_REASON_NORMAL);
 	//连接操作
 	virtual DWORD __cdecl Connect(DWORD dwServerIP, WORD wPort);
 	//连接操作
@@ -126,8 +126,6 @@ protected:
 
 	//辅助函数
 protected:
-	//关闭连接
-	VOID CloseSocket(BYTE cbShutReason);
 	//缓冲数据
 	VOID AmortizeBuffer(VOID * pData, WORD wDataSize);
 	//发送数据

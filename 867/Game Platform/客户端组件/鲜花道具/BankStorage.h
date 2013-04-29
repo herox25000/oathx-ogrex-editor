@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //兑换游戏币 
-class PROPERTY_MODULE_CLASS CBankStorage : public CSkinDialogEx
+class PROPERTY_MODULE_CLASS CBankStorage : public CSkinPngDialog
 {
 	//变量定义
 public:

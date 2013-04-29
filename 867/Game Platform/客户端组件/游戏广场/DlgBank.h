@@ -1,25 +1,6 @@
 #pragma once
 
-
-//////////////////////////////////////////////////////////////////////////
-//银行 TAB 控件
-class CTabCtrlBank : public CTabCtrl
-{
-public:
-	//构造函数
-	CTabCtrlBank();
-	//析够函数
-	virtual ~CTabCtrlBank();
-
-	//消息函数
-protected:
-	//重画函数	
-	afx_msg void OnPaint();
-
-	DECLARE_MESSAGE_MAP()
-};
-
-class CDlgBank : public CSkinDialogEx,ITCPSocketSink 
+class CDlgBank : public CSkinPngDialog,ITCPSocketSink 
 {
 public:
 	CDlgBank();
@@ -49,13 +30,17 @@ public:
 protected:
 	CTCPSocketHelper		m_BankSocketHelper;					//网络连接
 	ITCPSocket*				m_BankSocket;						//网络连接
-	CTabCtrlBank			m_TabBank;
+	CSkinTabCtrl			m_TabBank;
 	CSkinButton				m_btOK;								//确定按钮
 	CSkinButton				m_btAll;							//全部按钮
 	WORD					m_wOpt;
 	CString					m_strGameGold;						//携带金币
 	CString					m_strBankGold;						//银行金币
 	tagUserData				*m_pMeUserData;						//用户信息
+	//窗口函数
+protected:
+	//绘画消息
+	virtual VOID OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight);
 	//基础接口
 public:
 	//释放对象

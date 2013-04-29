@@ -377,6 +377,22 @@ typedef CArrayTemplate<tagGameResourceInfo> CGameResourceArray;
 //服务器列表视图
 class CServerItemView : public CTreeCtrl, public IServerListSink
 {
+	//位置变量
+protected:
+	INT									m_nXScroll;							//滚动偏移
+	INT									m_nYScroll;							//滚动偏移
+
+	//资源变量
+protected:
+	CFont								m_FontBold;							//粗体字体
+	CPngImage							m_ImageArrow;						//箭头图标
+	//CSkinScrollBar						m_SkinScrollBar;					//滚动条类
+
+	//辅助变量
+protected:
+	HTREEITEM							m_hItemMouseHover;					//盘旋子项
+	HTREEITEM							m_hTreeClickExpand;					//单击树项
+
 	//配置变量
 protected:
 	bool								m_bShowOnLineCount;				//显示人数
@@ -434,6 +450,33 @@ private:
 	LPCTSTR GetGameItemTitle(CListKind * pListKind, LPTSTR pszTitle, WORD wBufferSize);
 	//获取标题
 	LPCTSTR GetGameItemTitle(CListServer * pListServer, LPTSTR pszTitle, WORD wBufferSize);
+
+	//绘画函数
+private:
+	//绘画子项
+	VOID DrawTreeItem(CDC * pDC, CRect & rcClient, CRect & rcClipBox);
+	//绘画背景
+	VOID DrawTreeBack(CDC * pDC, CRect & rcClient, CRect & rcClipBox);
+
+	//绘画辅助
+private:
+	//绘制图标
+	VOID DrawListImage(CDC * pDC, CRect rcRect, HTREEITEM hTreeItem);
+	//绘制文本
+	VOID DrawItemString(CDC * pDC, CRect rcRect, HTREEITEM hTreeItem, bool bSelected);
+
+	//系统消息
+protected:
+	//重画消息
+	VOID OnPaint();
+	//时间消息
+	VOID OnTimer(UINT nIDEvent);
+	//绘画背景
+	BOOL OnEraseBkgnd(CDC * pDC);
+	//位置消息
+	VOID OnSize(UINT nType, INT cx, INT cy);
+	//光标消息
+	BOOL OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage);
 
 	//消息映射
 protected:

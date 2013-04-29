@@ -767,7 +767,7 @@ BOOL CVideoServiceControl::OnCommand(WPARAM wParam, LPARAM lParam)
 
 	if ( IDM_UM_FLOWER <= uCmd && uCmd <= IDM_UM_FLOWER + FLOWER_COUNT )
 	{
-		ShowInformation(TEXT("此功能暂时还没开放！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("此功能暂时还没开放！"),10,MB_ICONINFORMATION);
 		return FALSE;
 
 		//索引转换
@@ -785,7 +785,7 @@ BOOL CVideoServiceControl::OnCommand(WPARAM wParam, LPARAM lParam)
 		DWORD dwRcvUserID = GetVideoUserID();
 		if ( dwRcvUserID == 0 || m_dwTargerUserID != dwRcvUserID )
 		{
-			ShowInformation( TEXT("对方已经离开，赠送失败！"), 0, MB_ICONINFORMATION );
+			ShowInformation( TEXT("对方已经离开，赠送失败！"), 10, MB_ICONINFORMATION );
 			return TRUE;
 		}
 

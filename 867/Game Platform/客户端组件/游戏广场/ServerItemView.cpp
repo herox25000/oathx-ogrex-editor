@@ -2,12 +2,24 @@
 #include "Resource.h"
 #include "ServerItemView.h"
 
+
+//常量定义
+#define ITEM_SIZE					18									//子项高度
+#define ITEM_HEIGHT					26									//子项高度
+
 //宏定义
 #define WN_SET_LINE_COLOR				(TV_FIRST+40)		//设置颜色消息
 #define TOOLBOX_KINDID					1					// 工具箱唯一ID
 //////////////////////////////////////////////////////////////////////////
 
 BEGIN_MESSAGE_MAP(CServerItemView, CTreeCtrl)
+	//系统消息
+	ON_WM_SIZE()
+	ON_WM_PAINT()
+	ON_WM_TIMER()
+	ON_WM_SETCURSOR()
+	ON_WM_ERASEBKGND()
+
 	ON_NOTIFY_REFLECT(NM_CLICK, OnNMClick)
 	ON_NOTIFY_REFLECT(NM_RCLICK, OnNMRclick)
 	ON_NOTIFY_REFLECT(NM_DBLCLK, OnNMDblclk)
@@ -553,7 +565,19 @@ bool CServerListManager::UpdateGameServerOnLine(CListServer * pListServer, DWORD
 //构造函数
 CServerItemView::CServerItemView()
 {
+	//设置变量
+	m_nXScroll=0;
+	m_nYScroll=0;
+
 	m_bShowOnLineCount=false;
+	//辅助变量
+	m_hItemMouseHover=NULL;
+	m_hTreeClickExpand=NULL;
+
+	//加载资源
+	m_ImageArrow.LoadImage(AfxGetInstanceHandle(),TEXT("SERVER_LIST_ARROW"));
+	//创建字体
+	m_FontBold.CreateFont(-12,0,0,0,600,0,0,0,134,3,2,ANTIALIASED_QUALITY,2,TEXT("宋体"));
 }
 
 //析构函数
@@ -576,18 +600,19 @@ void CServerItemView::ShowOnLineCount(bool bShowOnLineCount)
 //配置函数
 bool CServerItemView::InitServerItemView(ITreeCtrlSink * pITreeCtrlSink)
 {	
-	//设置控件
-	SetItemHeight(20);
-	SetTextColor(RGB(0,0,0));
-	SetBkColor(RGB(230,249,255));
-	ModifyStyle(0,TVS_HASBUTTONS|TVS_HASLINES|TVS_SHOWSELALWAYS|TVS_TRACKSELECT);
-	SendMessage(WN_SET_LINE_COLOR,0,(LPARAM)RGB(72,79,63));
+	//设置属性
+	SetItemHeight(ITEM_HEIGHT);
+	//SetTextColor(RGB(0,0,0));
+	//SetBkColor(RGB(230,249,255));
+	//ModifyStyle(0,TVS_HASBUTTONS|TVS_HASLINES|TVS_SHOWSELALWAYS|TVS_TRACKSELECT);
+	ModifyStyle(0,TVS_HASBUTTONS|TVS_HASLINES|TVS_SHOWSELALWAYS|TVS_TRACKSELECT|TVS_FULLROWSELECT|TVS_HASLINES);
+	//SendMessage(WN_SET_LINE_COLOR,0,(LPARAM)RGB(72,79,63));
 
 	//设置变量
 	ASSERT(pITreeCtrlSink!=NULL);
 	m_pITreeCtrlSink=pITreeCtrlSink;
 
-	//加载图片
+	//加载标志
 	if (m_ImageList.GetSafeHandle()==NULL)
 	{
 		CBitmap ServerImage;
@@ -596,7 +621,8 @@ bool CServerItemView::InitServerItemView(ITreeCtrlSink * pITreeCtrlSink)
 		m_ImageList.Add(&ServerImage,RGB(255,0,255));
 		SetImageList(&m_ImageList,LVSIL_NORMAL);
 	}
-
+	//设置滚动
+	//m_SkinScrollBar.InitScroolBar(this);
 	return true;
 }
 
@@ -1109,5 +1135,299 @@ LPCTSTR CServerItemView::GetStateRoomOnLineCount(DWORD dwOnLineCount)
 		return TEXT("良好");
 	return TEXT("拥挤");
 }
+
+//绘画子项
+VOID CServerItemView::DrawTreeItem(CDC * pDC, CRect & rcClient, CRect & rcClipBox)
+{
+	//首项判断
+	HTREEITEM hItemCurrent=GetFirstVisibleItem();
+	if (hItemCurrent==NULL) return;
+
+	//获取属性
+	UINT uTreeStyte=GetWindowLong(m_hWnd,GWL_STYLE);
+
+	////获取对象
+	//ASSERT(CSkinRenderManager::GetInstance()!=NULL);
+	//CSkinRenderManager * pSkinRenderManager=CSkinRenderManager::GetInstance();
+
+	//绘画子项
+	do
+	{
+		//变量定义
+		CRect rcItem;
+		CRect rcRect;
+
+		//获取状态
+		HTREEITEM hParent=GetParentItem(hItemCurrent);
+		UINT uItemState=GetItemState(hItemCurrent,TVIF_STATE);
+
+		//获取属性
+		bool bDrawChildren=(ItemHasChildren(hItemCurrent)==TRUE);
+		bool bDrawSelected=(uItemState&TVIS_SELECTED)&&((this==GetFocus())||(uTreeStyte&TVS_SHOWSELALWAYS));
+
+		//获取区域
+		if (GetItemRect(hItemCurrent,rcItem,TRUE))
+		{
+			//绘画过滤
+			if (rcItem.top>=rcClient.bottom)
+				break;
+			if (rcItem.top>=rcClipBox.bottom)
+				continue;
+
+			//设置位置
+			rcRect.left=0;
+			rcRect.top=rcItem.top+1;
+			rcRect.bottom=rcItem.bottom;
+			rcRect.right=rcClient.Width();
+
+			//绘画选择
+			if (bDrawSelected==true)
+			{
+				pDC->FillSolidRect(&rcRect,RGB(253,231,161));
+			}
+
+			//绘画经过
+			if ((bDrawSelected==false)&&(m_hItemMouseHover==hItemCurrent))
+			{
+				pDC->FillSolidRect(&rcRect,RGB(157,182,249));
+			}
+
+			//绘制箭头
+			if (bDrawChildren==true)
+			{
+				//计算位置
+				INT nXPos=rcItem.left-m_ImageArrow.GetWidth()/2-25;
+				INT nYPos=rcItem.top+1+(rcItem.Height()-m_ImageArrow.GetHeight())/2;
+
+				//绘画图标
+				INT nIndex=(uItemState&TVIS_EXPANDED)?1L:0L;
+				m_ImageArrow.DrawImage(pDC,nXPos,nYPos,m_ImageArrow.GetWidth()/2,m_ImageArrow.GetHeight(),nIndex*m_ImageArrow.GetWidth()/2,0);
+			}
+
+			//绘制列表
+			DrawListImage(pDC,rcItem,hItemCurrent);	
+
+			//绘制文本
+			DrawItemString(pDC,rcItem,hItemCurrent,bDrawSelected);
+		}
+	} while ((hItemCurrent=GetNextVisibleItem(hItemCurrent))!= NULL);
+
+	return;
+}
+
+//绘画背景
+VOID CServerItemView::DrawTreeBack(CDC * pDC, CRect & rcClient, CRect & rcClipBox)
+{
+	//绘画背景
+	pDC->FillSolidRect(&rcClient,RGB(255,255,255));
+
+	//绘制横线
+	for (INT nYPos=m_nYScroll/ITEM_HEIGHT*ITEM_HEIGHT;nYPos<rcClient.Height();nYPos+=ITEM_HEIGHT)
+	{
+		pDC->FillSolidRect(0,nYPos,rcClient.Width(),1,RGB(223,223,223));
+	}
+
+	return;
+}
+
+//绘画图标
+VOID CServerItemView::DrawListImage(CDC * pDC, CRect rcRect, HTREEITEM hTreeItem)
+{
+	//获取属性
+	INT nImage,nSelectedImage;
+	GetItemImage(hTreeItem,nImage,nSelectedImage);
+
+	//获取信息
+	IMAGEINFO ImageInfo;
+	m_ImageList.GetImageInfo(nImage,&ImageInfo);
+
+	//绘画图标
+	INT nImageWidth=ImageInfo.rcImage.right-ImageInfo.rcImage.left;
+	INT nImageHeight=ImageInfo.rcImage.bottom-ImageInfo.rcImage.top;
+	m_ImageList.Draw(pDC,nImage,CPoint(rcRect.left-nImageWidth-3,rcRect.top+(rcRect.Height()-nImageHeight)/2+1),ILD_TRANSPARENT);
+
+	return;
+}
+
+//绘制文本
+VOID CServerItemView::DrawItemString(CDC * pDC, CRect rcRect, HTREEITEM hTreeItem, bool bSelected)
+{
+	//变量定义
+	COLORREF crString=RGB(150,150,150);
+	CListItem * pGameListItem=(CListItem *)GetItemData(hTreeItem);
+
+	//颜色定义
+	if (pGameListItem!=NULL)
+	{
+		//选择字体
+		switch (pGameListItem->GetItemGenre())
+		{
+		case ItemGenre_Type:		//种类子项
+			{
+				//设置颜色
+				crString=RGB(0,0,0);
+
+				//设置字体
+				pDC->SelectObject(m_FontBold);
+
+				break;
+			}
+		case ItemGenre_Inside:		//内部子项
+			{
+				//设置颜色
+				crString=RGB(0,0,0);
+
+				//设置字体
+				CListInside * pGameInsideItem=(CListInside *)pGameListItem;
+				pDC->SelectObject((pGameInsideItem->GetItemInfo()->dwSortID==0)?m_FontBold:CSkinResourceManager::GetDefaultFont());
+
+				break;
+			}
+		default:					//其他子项
+			{
+				//设置颜色
+				crString=RGB(0,0,0);
+
+				//设置字体
+				pDC->SelectObject(CSkinResourceManager::GetDefaultFont());
+			}
+		}
+	}
+	else
+	{
+		//设置颜色
+		crString=RGB(0,0,0);
+
+		//设置字体
+		pDC->SelectObject(CSkinResourceManager::GetDefaultFont());
+	}
+
+	//设置环境
+	pDC->SetBkMode(TRANSPARENT);
+	pDC->SetTextColor(crString);
+
+	//绘画字体
+	CString strString=GetItemText(hTreeItem);
+	pDC->DrawText(strString,rcRect,DT_LEFT|DT_VCENTER|DT_SINGLELINE);
+
+	return;
+}
+
+
+//重画消息
+VOID CServerItemView::OnPaint()
+{
+	CPaintDC dc(this);
+
+	//剪切位置
+	CRect rcClip;
+	dc.GetClipBox(&rcClip);
+
+	//获取位置
+	CRect rcClient;
+	GetClientRect(&rcClient);
+
+	//创建缓冲
+	CDC BufferDC;
+	CBitmap BufferImage;
+	BufferDC.CreateCompatibleDC(&dc);
+	BufferImage.CreateCompatibleBitmap(&dc,rcClient.Width(),rcClient.Height());
+
+	//设置 DC
+	BufferDC.SelectObject(&BufferImage);
+
+	//绘画控件
+	DrawTreeBack(&BufferDC,rcClient,rcClip);
+	DrawTreeItem(&BufferDC,rcClient,rcClip);
+
+	//绘画背景
+	dc.BitBlt(rcClip.left,rcClip.top,rcClip.Width(),rcClip.Height(),&BufferDC,rcClip.left,rcClip.top,SRCCOPY);
+
+	//删除资源
+	BufferDC.DeleteDC();
+	BufferImage.DeleteObject();
+
+	return;
+}
+
+//时间消息
+VOID CServerItemView::OnTimer(UINT nIDEvent)
+{
+	////更新人数
+	//if (nIDEvent==IDI_UPDATE_ONLINE)
+	//{
+	//	ASSERT(CMissionList::GetInstance()!=NULL);
+	//	CMissionList::GetInstance()->UpdateOnLineInfo();
+
+	//	return;
+	//}
+
+	__super::OnTimer(nIDEvent);
+}
+
+//绘画背景
+BOOL CServerItemView::OnEraseBkgnd(CDC * pDC)
+{
+	return TRUE;
+}
+
+//位置消息
+VOID CServerItemView::OnSize(UINT nType, INT cx, INT cy)
+{
+	__super::OnSize(nType, cx, cy);
+
+	//获取大小
+	CRect rcClient;
+	GetClientRect(&rcClient);
+
+	//获取信息
+	SCROLLINFO ScrollInfoH;
+	SCROLLINFO ScrollInfoV;
+	ZeroMemory(&ScrollInfoH,sizeof(ScrollInfoH));
+	ZeroMemory(&ScrollInfoV,sizeof(ScrollInfoV));
+
+	//获取信息
+	GetScrollInfo(SB_HORZ,&ScrollInfoH,SIF_POS|SIF_RANGE);
+	GetScrollInfo(SB_VERT,&ScrollInfoV,SIF_POS|SIF_RANGE);
+
+	//设置变量
+	m_nXScroll=-ScrollInfoH.nPos;
+	m_nYScroll=-ScrollInfoV.nPos;
+
+	return;
+}
+
+//光标消息
+BOOL CServerItemView::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
+{
+	//获取光标
+	CPoint MousePoint;
+	GetCursorPos(&MousePoint);
+	ScreenToClient(&MousePoint);
+
+	//子项测试
+	HTREEITEM hItemMouseHover=HitTest(MousePoint);
+
+	//重画判断
+	if ((hItemMouseHover!=NULL)&&(hItemMouseHover!=m_hItemMouseHover))
+	{
+		//设置变量
+		m_hItemMouseHover=hItemMouseHover;
+
+		//重画界面
+		Invalidate(FALSE);
+	}
+
+	//设置光标
+	if (hItemMouseHover!=NULL)
+	{
+		SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_HAND_CUR)));
+		return true;
+	}
+
+	return __super::OnSetCursor(pWnd,nHitTest,uMessage);
+}
+
+
 
 //////////////////////////////////////////////////////////////////////////

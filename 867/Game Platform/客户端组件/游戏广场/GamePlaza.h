@@ -19,7 +19,7 @@ class CGamePlazaApp : public CWinApp
 public:
 	//构造函数
 	CGamePlazaApp();
-
+	~CGamePlazaApp();
 	//重载函数
 public:
 	//初始化函数

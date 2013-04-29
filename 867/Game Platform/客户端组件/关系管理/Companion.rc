@@ -99,11 +99,11 @@ END
 // Dialog
 //
 
-IDD_COMPANION_MANAGER DIALOGEX 0, 0, 300, 232
+IDD_COMPANION_MANAGER DIALOGEX 0, 0, 300, 248
 STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_SYSMENU
 FONT 9, "宋体", 400, 0, 0x0
 BEGIN
-    PUSHBUTTON      "关闭",IDCANCEL,226,212,50,14
+    PUSHBUTTON      "关闭",IDCANCEL,228,222,50,14
     CONTROL         "",IDC_COMPANION_TREE,"SysTreeView32",TVS_HASBUTTONS | 
                     TVS_HASLINES | TVS_SHOWSELALWAYS | WS_BORDER | 
                     WS_TABSTOP,7,25,108,182,WS_EX_CLIENTEDGE
@@ -125,6 +125,22 @@ END
 
 IDB_TREE_IMAGE          BITMAP                  "Res\\TREE_IMAGE.bmp"
 IDB_LIST_IMAGE          BITMAP                  "res\\LIST_IMAGE.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_COMPANION_MANAGER, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 240
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 

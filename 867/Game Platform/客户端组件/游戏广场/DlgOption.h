@@ -220,7 +220,7 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 //设置对话框类
-class CDlgOption : public CSkinDialogEx
+class CDlgOption : public CSkinPngDialog
 {
 	//配置变量
 protected:
@@ -266,7 +266,7 @@ public:
 //////////////////////////////////////////////////////////////////////////
 
 //设置密码框类
-class CDlgEnterTablePass : public CSkinDialogEx
+class CDlgEnterTablePass : public CSkinPngDialog
 {
 	//密码变量
 private:

@@ -176,13 +176,15 @@ bool CTableResource::LoadFromFiles(LPCTSTR pszGameName)
 		_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s%s\\TablePlaying.BMP")
 			,g_GlobalUnits.GetWorkDirectory(),TAB_RES_BASE_DIR, pszGameName);
 		m_ImagePlay.Load(szResourcePath);
-		if (m_ImagePlay.IsNull()) throw 0;
+		if (m_ImagePlay.IsNull())
+			throw 0;
 
 		//加载桌子位图
 		_snprintf(szResourcePath,sizeof(szResourcePath),TEXT("%s%s%s\\TableNormal.BMP")
 			,g_GlobalUnits.GetWorkDirectory(),TAB_RES_BASE_DIR,pszGameName);
 		m_ImageTable.Load(szResourcePath);
-		if (m_ImageTable.IsNull()) throw 0;
+		if (m_ImageTable.IsNull())
+			throw 0;
 
 		//读取参数
 		m_wWidth=m_ImageTable.GetWidth();
@@ -595,8 +597,16 @@ bool __cdecl CTableFrame::CreateTableFrame(CWnd * pParentWnd, UINT uWndID)
 {
 	CRect rcFrameRect(0,0,0,0);
 	DWORD dwStyle=WS_CHILD|WS_VISIBLE|WS_VSCROLL|WS_TABSTOP|WS_CLIPSIBLINGS|WS_CLIPCHILDREN;
-	Create(NULL,NULL,dwStyle,rcFrameRect,pParentWnd,uWndID);
+	bool bcreate = Create(NULL,NULL,dwStyle,rcFrameRect,pParentWnd,uWndID);
+#ifdef _DEBUG
+	if(!bcreate)
+	{
+		::AfxMessageBox("桌子创建失败");
+	}
+#endif
+
 	SetClassLong(m_hWnd,GCL_HBRBACKGROUND,NULL);
+
 	return true;
 }
 
@@ -623,7 +633,8 @@ bool __cdecl CTableFrame::InitTableFrame(WORD wTableCount, WORD wChairCount, boo
 	m_wChairCount=wChairCount;
 	m_pTableViewArray=new CTableView[m_wTableCount];
 	if (m_pTableViewArray==NULL) throw TEXT("可能系统资源不足，无法创建游戏桌子！");
-	for (WORD i=0;i<m_wTableCount;i++) (m_pTableViewArray+i)->InitTableView(i,wChairCount,this);
+	for (WORD i=0;i<m_wTableCount;i++) 
+		(m_pTableViewArray+i)->InitTableView(i,wChairCount,this);
 
 	//设置接口
 	m_pITableFrameSink=(ITableFrameSink *)pIUnknownEx->QueryInterface(IID_ITableFrameSink,VER_ITableFrameSink);
@@ -632,6 +643,7 @@ bool __cdecl CTableFrame::InitTableFrame(WORD wTableCount, WORD wChairCount, boo
 
 	return true;
 }
+
 
 //销毁函数
 void __cdecl CTableFrame::DestroyTableFrame()
@@ -972,6 +984,12 @@ void CTableFrame::OnPaint()
 
 	return;
 }
+
+//void CTableFrame::OnEraseBkGnd()
+//{
+//	
+//	return;
+//}
 
 //位置消息
 void CTableFrame::OnSize(UINT nType, int cx, int cy)

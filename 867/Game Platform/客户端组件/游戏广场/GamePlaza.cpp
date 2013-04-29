@@ -8,7 +8,6 @@
 BEGIN_MESSAGE_MAP(CGamePlazaApp, CWinApp)
 END_MESSAGE_MAP()
 
-//////////////////////////////////////////////////////////////////////////
 
 //应用程序对象说明
 CGamePlazaApp theApp;
@@ -18,6 +17,9 @@ CGamePlazaApp::CGamePlazaApp()
 {
 }
 
+CGamePlazaApp::~CGamePlazaApp()
+{
+}
 //初始化函数
 BOOL CGamePlazaApp::InitInstance()
 {
@@ -82,7 +84,6 @@ BOOL CGamePlazaApp::InitInstance()
 	CGameFrame * pMainFrame=new CGameFrame();
 	pMainFrame->Create(MAIN_DLG_CLASSNAME,TEXT(""),WS_MINIMIZEBOX|WS_CLIPCHILDREN|WS_CLIPSIBLINGS,CRect(0,0,0,0));
 	m_pMainWnd=pMainFrame;
-
 	return TRUE;
 }
 

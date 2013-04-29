@@ -4,13 +4,13 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CDlgCompanionManager, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CDlgCompanionManager, CSkinPngDialog)
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
 
 //¹¹Ôìº¯Êý
-CDlgCompanionManager::CDlgCompanionManager() : CSkinDialogEx(IDD_COMPANION_MANAGER)
+CDlgCompanionManager::CDlgCompanionManager() : CSkinPngDialog(IDD_COMPANION_MANAGER)
 {
 	m_pICompanionManager=NULL;
 }

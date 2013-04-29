@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //登录对话框
-class CDlgIndividualInfo : public CSkinDialogEx
+class CDlgIndividualInfo : public CSkinPngDialog
 {
 	//控件变量
 public:

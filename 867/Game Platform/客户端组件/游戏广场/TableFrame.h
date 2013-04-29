@@ -375,7 +375,6 @@ protected:
 	WORD ChairHitTest(POINT MousePoint);
 	//资源目录
 	void GetGameResDirectory(const tagGameKind * pGameKind, TCHAR szResDirectory[], WORD wBufferCount);
-
 	//消息函数
 protected:
 	//重画消息

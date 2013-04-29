@@ -10,20 +10,18 @@
 
 //////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CBugleDlg, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CBugleDlg, CSkinPngDialog)
 	ON_BN_CLICKED(IDC_EXPRESSION, OnBnClickedExpression)
 	ON_BN_CLICKED(IDC_COLOR_SET, OnBnClickedColorSet)
 	ON_MESSAGE(WM_HIT_EXPMESSTION,OnHitExpression)
 	ON_BN_CLICKED(IDOK, OnBnClickedOk)
-	ON_WM_CTLCOLOR()
 	ON_WM_TIMER()
-	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////
 
 //构造函数
-CBugleDlg::CBugleDlg(CWnd* pParent): CSkinDialogEx(IDD_BUGLE,pParent)
+CBugleDlg::CBugleDlg(CWnd* pParent): CSkinPngDialog(IDD_BUGLE,pParent)
 {
 	//设置变量
 	m_pMeUserData=NULL;
@@ -40,7 +38,7 @@ CBugleDlg::~CBugleDlg()
 //控件绑定
 void CBugleDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	__super::DoDataExchange(pDX);
 
 	DDX_Control(pDX, IDOK, m_btOK);
 	DDX_Control(pDX, IDCANCEL, m_btCancel);
@@ -57,7 +55,7 @@ void CBugleDlg::DoDataExchange(CDataExchange* pDX)
 //初始框架
 BOOL CBugleDlg::OnInitDialog()
 {
-	CSkinDialogEx::OnInitDialog();
+	__super::OnInitDialog();
 
 	//加载资源
 	UpdateSkinResource();
@@ -167,17 +165,6 @@ void CBugleDlg::OnBnClickedOk()
 	return;
 }
 
-//控件颜色
-HBRUSH CBugleDlg::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
-{
-	HBRUSH hbr = CSkinDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
-
-	if ( nCtlColor == CTLCOLOR_EDIT )
-	{
-		pDC->SetTextColor(m_crChatTX);
-	}
-	return hbr;
-}
 
 //时间消息
 void CBugleDlg::OnTimer(UINT nIDEvent)
@@ -198,33 +185,7 @@ void CBugleDlg::OnTimer(UINT nIDEvent)
 		}
 	}
 
-	CSkinDialogEx::OnTimer(nIDEvent);
-}
-
-//绘画函数
-void CBugleDlg::OnPaint()
-{
-	CPaintDC dc(this); 
-
-	//绘画标题
-	DrawCaption(&dc);
-
-	CRect ClientRect;
-	GetClientRect(&ClientRect);
-	int nXExcursion=GetXExcursionPos();
-	int nYExcursion=GetYExcursionPos();
-
-	//绘画背景
-	COLORREF Color = RGB(161,212,226);
-	dc.FillSolidRect(nXExcursion,nYExcursion,ClientRect.Width()-2*nXExcursion,4,Color);
-	dc.FillSolidRect(nXExcursion,ClientRect.Height()-8,ClientRect.Width()-2*nXExcursion,7,Color);
-	dc.FillSolidRect(nXExcursion,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
-	dc.FillSolidRect(ClientRect.Width()-nXExcursion-12,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
-
-	//绘画边框
-	DrawBorder(&dc);
-
-	return;
+	__super::OnTimer(nIDEvent);
 }
 
 //更新资源

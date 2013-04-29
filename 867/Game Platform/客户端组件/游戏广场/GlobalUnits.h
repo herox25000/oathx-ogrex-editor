@@ -117,6 +117,8 @@ public:
 private:
 	//网卡地址
 	WORD GetMACAddress(BYTE cbMacBuffer[], WORD wBufferSize);
+	//读取大厅版本
+	DWORD ReadPlazaVersion();
 };
 
 //////////////////////////////////////////////////////////////////////////

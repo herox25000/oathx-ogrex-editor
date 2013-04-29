@@ -56,7 +56,7 @@ bool CUserListView::InitUserListView()
 	SetTextColor(RGB(10,10,10));
 	SetBkColor(RGB(230,249,255));
 	SetTextBkColor(RGB(230,249,255));
-
+	//m_SkinScrollBar.InitScroolBar(this);
 	return true;
 }
 
@@ -396,48 +396,69 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	CRect rcItem=lpDrawItemStruct->rcItem;
 	CDC * pDC=CDC::FromHandle(lpDrawItemStruct->hDC);
+	tagGlobalUserData & GlobalInfo=g_GlobalUnits.GetGolbalUserData();
 
 	int iItem=lpDrawItemStruct->itemID;
 	int iCount=GetHeaderCtrl()->GetItemCount();
 	int iBeen=rcItem.left;
 	TCHAR szBuffer[1024];
 	IUserItem *pIUserItem = (IUserItem *)GetItemData(iItem);
-
 	GetItemRect(iItem, rcItem, LVIR_LABEL);
-
 	for (int i=0;i<iCount;i++)
 	{
 		CRect rcSubItem;
 		int iWidth=GetColumnWidth(i);
-
 		GetSubItemRect(iItem,i,LVIR_LABEL,rcSubItem);
+		//用户名一列
 		if ( i == 0 )
 		{
 			GetSubItemRect(iItem,i,LVIR_ICON,rcSubItem);
-
+			//如果是焦点（被点击）
 			if (lpDrawItemStruct->itemState&ODS_FOCUS) 
-				pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
+				pDC->FillSolidRect(&rcSubItem,RGB(212,204,193)); 
 			else 
 				pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
+			//如果是焦点（被点击）
 			if (lpDrawItemStruct->itemState&ODS_FOCUS)
-				pDC->SetTextColor(RGB(255,255,255));
+				pDC->SetTextColor(RGB(0,0,0));
+			else if (pIUserItem->GetUserData()->dwUserID == GlobalInfo.dwUserID)
+			{
+				if(0 < pIUserItem->GetUserData()->cbMemberOrder)
+					pDC->SetTextColor(RGB(255,0,0));
+				else
+					pDC->SetTextColor(RGB(0,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(225,237,173)); 
+			}
 			else if ( 0 < pIUserItem->GetUserData()->cbMemberOrder /*&& DTP_USER_ACCOUNTS== m_wDataDescribe[i]*/)
+			{
 				pDC->SetTextColor(RGB(255,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(251,237,166)); 
+			}
 			else
 				pDC->SetTextColor(RGB(0,0,0));
 
 			//绘画标志
 			UINT uImageIndex=GetImageStation(pIUserItem);
 			m_StatusImage.Draw(pDC,uImageIndex,CPoint(rcSubItem.left,rcSubItem.top),ILD_TRANSPARENT);
-
 			GetItemText(iItem,i,szBuffer,sizeof(szBuffer));
-
 			GetSubItemRect(iItem,i,LVIR_LABEL,rcSubItem);
 
-			if (lpDrawItemStruct->itemState&ODS_FOCUS)
-				pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
-			else
+			if (lpDrawItemStruct->itemState&ODS_FOCUS) 
+				pDC->FillSolidRect(&rcSubItem,RGB(212,204,193));
+			else if (pIUserItem->GetUserData()->dwUserID == GlobalInfo.dwUserID)
+			{
+				if(0 < pIUserItem->GetUserData()->cbMemberOrder)
+					pDC->SetTextColor(RGB(255,0,0));
+				else
+					pDC->SetTextColor(RGB(0,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(225,237,173)); 
+			}
+			else if ( 0 < pIUserItem->GetUserData()->cbMemberOrder /*&& DTP_USER_ACCOUNTS== m_wDataDescribe[i]*/)
+			{
+				pDC->FillSolidRect(&rcSubItem,RGB(251,237,166)); 
+			}
+			else 
 				pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
 			rcSubItem.top+=3;
@@ -445,21 +466,31 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		}
 		else
 		{		
-			
+			//如果是焦点（被点击）
 			if (lpDrawItemStruct->itemState&ODS_FOCUS)
-				pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
+				pDC->FillSolidRect(&rcSubItem,RGB(212,204,193)); 
 			else
 				pDC->FillSolidRect(&rcSubItem,GetBkColor());
-
+			//如果是焦点（被点击）
 			if (lpDrawItemStruct->itemState&ODS_FOCUS)
-				pDC->SetTextColor(RGB(255,255,255));
+				pDC->SetTextColor(RGB(0,0,0));
+			else if (pIUserItem->GetUserData()->dwUserID == GlobalInfo.dwUserID)
+			{
+				if(0 < pIUserItem->GetUserData()->cbMemberOrder)
+					pDC->SetTextColor(RGB(255,0,0));
+				else
+					pDC->SetTextColor(RGB(0,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(225,237,173)); 
+			}
 			else if ( 0 < pIUserItem->GetUserData()->cbMemberOrder /*&& DTP_GAME_ID == m_wDataDescribe[i]*/)
+			{
 				pDC->SetTextColor(RGB(255,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(251,237,166)); 
+			}
 			else
 				pDC->SetTextColor(RGB(0,0,0));
 
 			GetItemText(iItem,i,szBuffer,sizeof(szBuffer));
-
 			CRect rcTempItem =rcSubItem;
 			rcTempItem.left +=2; 
 			rcTempItem.right +=2; 
@@ -469,7 +500,8 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 	}
 
 	//绘画选择
-	if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->DrawFocusRect(&rcItem);
+	if (lpDrawItemStruct->itemState&ODS_FOCUS)
+		pDC->DrawFocusRect(&rcItem);
 
 	return;
 }

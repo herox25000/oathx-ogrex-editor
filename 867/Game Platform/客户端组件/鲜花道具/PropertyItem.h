@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //道具项
-class PROPERTY_MODULE_CLASS CPropertyItem : public CSkinDialogEx
+class PROPERTY_MODULE_CLASS CPropertyItem : public CSkinPngDialog
 {
 	//变量定义
 protected:
@@ -42,7 +42,10 @@ public:
 protected:
 	//控件绑定
 	virtual void DoDataExchange(CDataExchange* pDX);
-
+	//窗口函数
+protected:
+	//绘画消息
+	virtual VOID OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight);
 	//功能函数
 public:
 	//设置道具
@@ -71,14 +74,14 @@ private:
 
 	//消息响应
 private:
-	//绘画函数
-	afx_msg void OnPaint();
 	//初始化函数
 	virtual BOOL OnInitDialog();
 	//确定信息
 	afx_msg void OnBnClickedOk();
-	//控件颜色
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
+	//
+	afx_msg void OnOK();
+	//
+	afx_msg void OnBnClickedCancel();
 	//按钮信息
 	afx_msg void OnCbnSelchangeTargetUser();
 	//按钮信息
@@ -97,7 +100,7 @@ private:
 ///////////////////////////////////////////////////////////////////////////////////
 
 //礼物项
-class PROPERTY_MODULE_CLASS CFlowerSetting :public CSkinDialogEx
+class PROPERTY_MODULE_CLASS CFlowerSetting :public CSkinPngDialog
 {
 	//变量定义
 public:
@@ -146,19 +149,16 @@ public:
 protected:
 	//绑定函数
 	virtual void DoDataExchange(CDataExchange* pDX);
-
 	//消息函数
 public:
-	//绘画函数
-	afx_msg void OnPaint();
 	//初始化函数
 	virtual BOOL OnInitDialog();
 	//按钮消息
 	afx_msg void OnBnClickedOk();
+	//
+	afx_msg void OnOK();
 	//关闭消息
 	afx_msg void OnBnClickedCancel();
-	//设置颜色
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	//时间消息
 	afx_msg void OnTimer(UINT nIDEvent);
 	//命令信息

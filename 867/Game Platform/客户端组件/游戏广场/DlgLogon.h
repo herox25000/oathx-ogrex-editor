@@ -25,28 +25,8 @@ enum enLogonMode
 
 //////////////////////////////////////////////////////////////////////////
 
-//登录 TAB 控件
-class CTabCtrlLogon : public CTabCtrl
-{
-	//函数定义
-public:
-	//构造函数
-	CTabCtrlLogon();
-	//析够函数
-	virtual ~CTabCtrlLogon();
-
-	//消息函数
-protected:
-	//重画函数	
-	afx_msg void OnPaint();
-
-	DECLARE_MESSAGE_MAP()
-};
-
-//////////////////////////////////////////////////////////////////////////
-
 //用户注册
-class CDlgRegister : public CSkinDialogEx
+class CDlgRegister : public CDialog
 {
 	friend class CDlgLogon;
 
@@ -61,15 +41,18 @@ public:
 	TCHAR								m_szSFZ[PASS_LEN];				//身份证号码
 	TCHAR								m_szPhone[PASS_LEN];			//电话号码
 
+protected:
+	CBrush							m_brBrush;							//背景画刷
+	CSkinLayered					m_SkinLayered;						//分层窗口
+
 	//控件变量
 public:
 	CImageList							m_ImageList;
 	CComboBoxEx							m_FaceSelect;
-	CSkinButton							m_btLogon;						//登录按钮
-	CSkinButton							m_btCancel;						//取消按钮
-	//CSkinHyperLink						m_LineRegWeb;					//网站注册
-	//CSkinHyperLink						m_LineMainPage;					//游戏主页
-	//CSkinHyperLink						m_LinePassWord;					//密码保护
+
+	CSkinButtonEx							m_btLogon;						//登录按钮
+	CSkinButtonEx							m_btCancel;						//取消按钮
+
 
 	//函数定义
 public:
@@ -84,10 +67,20 @@ protected:
 	virtual void DoDataExchange(CDataExchange * pDX);
 	//初始化函数
 	virtual BOOL OnInitDialog();
+	//绘画背景
+	BOOL OnEraseBkgnd(CDC * pDC);
 	//确定函数
 	virtual void OnOK();
 	//取消消息
 	virtual void OnCancel();
+	//显示消息
+	VOID OnShowWindow(BOOL bShow, UINT nStatus);
+	//鼠标消息
+	VOID OnLButtonDown(UINT nFlags, CPoint Point);
+	//位置改变
+	VOID OnWindowPosChanged(WINDOWPOS * lpWndPos);
+	//控件颜色
+	HBRUSH OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor);
 
 	DECLARE_MESSAGE_MAP()
 };
@@ -95,7 +88,7 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 
 //登录对话框
-class CDlgLogon : public CSkinDialogEx
+class CDlgLogon : public CDialog
 {
 	friend class CRoomViewItem;
 	friend class CPlazaViewItem;
@@ -117,7 +110,7 @@ protected:
 	INT									m_nFullWidth;					//全部宽度
 	INT									m_nFullHeight;					//全部高度
 	bool								m_bNetOption;					//网络设置
-	CRect								m_rcNormalFrame;				//框架位置
+	//CRect								m_rcNormalFrame;				//框架位置
 
 	//登录模式
 protected:
@@ -134,28 +127,26 @@ protected:
 
 	//按钮变量
 public:
-	CSkinButton							m_btLogon;						//登录按钮
-	CSkinButton							m_btCancel;						//取消按钮
-	CSkinButton							m_btDelete;						//删除按钮
-	CSkinButton							m_btRegister;					//注册按钮
-	CSkinButton							m_btNetOption;					//网络按钮
-	CSkinButton							m_btProxyTest;					//测试按钮
+	CSkinButtonEx							m_btLogon;						//登录按钮
+	CSkinButtonEx							m_btCancel;						//取消按钮
+	CSkinButtonEx							m_btDelete;						//删除按钮
+	CSkinButtonEx							m_btRegister;					//注册按钮
+	CSkinButtonEx							m_btNetOption;					//网络按钮
+	CSkinButtonEx							m_btMainPage;					//主页
+	CSkinButtonEx							m_btNewUser;					//新手指南
+	CSkinButtonEx							m_btSever;						//服务条款
+	CSkinButtonEx							m_btFindPassWord;				//找回密码
 
 	//控件变量
 public:
-	CWebBrowser							m_BrowerAD;						//浏览窗口
-	CTabCtrlLogon						m_TabLogonMode;					//登录选择
-	CSkinHyperLink						m_LineMainPage;					//游戏主页
-	CSkinHyperLink						m_LinePassWord;					//密码保护
-	CSkinHyperLink						m_LineGetPassWord;				//取回密码
+	CSkinLayered						m_SkinLayered;						//分层窗口
+	CWebBrowser							m_BrowerAD;							//浏览窗口
+	CSkinTabCtrl						m_TabLogonMode;						//登录选择
+	CBrush								m_brBrush;							//背景画刷
 
-	//编辑控件
-protected:
-	CSkinEdit							m_edProxyPort;					//代理端口
-	CSkinEdit							m_edProxyServer;				//代理地址
-	CSkinEdit							m_edProxyUserName;				//代理用户
-	CSkinEdit							m_edProxyPassword;				//代理密码
-	CComboBox							m_cmProxyServerType;			//代理类型
+	//输入框
+public:
+					
 
 	//函数定义
 public:
@@ -192,8 +183,6 @@ private:
 	void LoadLogonServer();
 	//读取帐号
 	void LoadAccountsInfo();
-	//代理信息
-	void LoadProxyServerInfo();
 	//效验输入
 	bool CheckLogonInput(bool bShowError);
 	//设置模式
@@ -209,10 +198,6 @@ private:
 	void UpdateUserComboBox(UINT uComboBoxID);
 	//查找字符
 	int ComboBoxFindString(CComboBox * pComboBox, LPCTSTR pszFindString);
-	//获取代理
-	void GetProxyInfo(enProxyServerType &ProxyServerType, tagProxyServerInfo &ProxyServerInfo);
-	//代理判断
-	bool EnableProxy() { return m_bNetOption;}
 
 	//消息函数
 public:
@@ -222,8 +207,6 @@ public:
 	afx_msg void OnDeleteAccounts();
 	//网络设置
 	afx_msg void OnBnClickedNetOption();
-	//代理测试
-	afx_msg void OnBnClickedProxyTest();
 	//密码改变
 	afx_msg void OnEnChangePassword();
 	//选择改变
@@ -232,8 +215,26 @@ public:
 	afx_msg void OnSelchangeUserID();
 	//类型改变
 	afx_msg void OnTcnSelchangeLogonType(NMHDR * pNMHDR, LRESULT * pResult);
+	//主页
+	afx_msg void OnMainPage();
+	//新手
+	afx_msg void OnNewUser();
+	//服务器条款
+	afx_msg void OnServer();
+	//找回密码
+	afx_msg void OnFindPassWord();
+	//显示消息
+	VOID OnShowWindow(BOOL bShow, UINT nStatus);
+	//位置改变
+	VOID OnWindowPosChanged(WINDOWPOS * lpWndPos);
 	//重画消息
 	afx_msg void OnPaint();
+	//绘画背景
+	BOOL OnEraseBkgnd(CDC * pDC);
+	//鼠标消息
+	VOID OnLButtonDown(UINT nFlags, CPoint Point);
+	//控件颜色
+	HBRUSH OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor);
 
 	DECLARE_MESSAGE_MAP()
 };
