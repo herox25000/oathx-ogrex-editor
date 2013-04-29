@@ -288,6 +288,9 @@ CSkinListCtrl::~CSkinListCtrl()
 void CSkinListCtrl::PreSubclassWindow()
 {
 	__super::PreSubclassWindow();
+	//设置滚动
+	//m_SkinScrollBar.InitScroolBar(this);
+	//设置颜色
 	m_SkinHeadCtrl.SubclassWindow(GetHeaderCtrl()->GetSafeHwnd());
 	SetExtendedStyle(LIST_STYTE);
 	return;
@@ -296,7 +299,11 @@ void CSkinListCtrl::PreSubclassWindow()
 //建立消息
 int CSkinListCtrl::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
-	if (__super::OnCreate(lpCreateStruct)==-1) return -1;
+	if (__super::OnCreate(lpCreateStruct)==-1) 
+		return -1;
+	//设置滚动
+	//m_SkinScrollBar.InitScroolBar(this);
+	//设置颜色
 	m_SkinHeadCtrl.SubclassWindow(GetHeaderCtrl()->GetSafeHwnd());
 	SetExtendedStyle(LIST_STYTE);
 	return 0;

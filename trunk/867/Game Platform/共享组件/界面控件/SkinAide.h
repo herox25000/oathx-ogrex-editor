@@ -5,7 +5,7 @@
 
 #include "SkinImage.h"
 #include "SkinControls.h"
-
+#include "PngImage.h"
 //////////////////////////////////////////////////////////////////////////
 
 //环绕信息
@@ -55,6 +55,20 @@ struct tagEncircleHandle
 	CImageHandle					ImageHandleBM;						//位图句柄
 	CImageHandle					ImageHandleBR;						//位图句柄
 };
+
+//环绕位图
+struct tagEncirclePNG
+{
+	CPngImage						ImageTL;							//位图对象
+	CPngImage						ImageTM;							//位图对象
+	CPngImage						ImageTR;							//位图对象
+	CPngImage						ImageML;							//位图对象
+	CPngImage						ImageMR;							//位图对象
+	CPngImage						ImageBL;							//位图对象
+	CPngImage						ImageBM;							//位图对象
+	CPngImage						ImageBR;							//位图对象
+};
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -118,6 +132,57 @@ public:
 	static bool DeferWindowPos(CWnd * pWnd, HDWP hDwp, INT nXPos, INT nYPos, INT nWidth, INT nHeight, tagEncircleInfo & EncircleInfo);
 	//环绕调整
 	static bool DeferWindowPos(CWnd * pWnd, HDWP hDwp, INT nXPos, INT nYPos, INT nWidth, INT nHeight, tagEncircleImage & EncircleImage);
+};
+
+
+//环绕界面
+class SKIN_CONTROL_CLASS CEncirclePNG
+{
+	//资源信息
+protected:
+	HINSTANCE						m_hResInstance;						//资源句柄
+	tagEncircleInfo					m_EncircleInfo;						//环绕信息
+	tagEncircleResource				m_EncircleResource;					//环绕资源
+
+	//函数定义
+public:
+	//构造函数
+	CEncirclePNG();
+	//析构函数
+	virtual ~CEncirclePNG();
+
+	//重载函数
+protected:
+	//加载资源
+	virtual bool LoadEncircleImage(tagEncirclePNG & EncircleImage);
+	//绘画处理
+	virtual bool PreDrawEncircleImage(tagEncirclePNG & EncircleImage) { return true; }
+
+	//资源管理
+public:
+	//默认资源
+	bool InitDefaultResource();
+	//设置资源
+	bool InitEncircleResource(tagEncircleResource & EncircleResource, HINSTANCE hResInstance);
+
+	//环绕绘画
+public:
+	//绘画环绕
+	bool DrawEncircleFrame(CDC * pDC, CRect & rcEncircle);
+
+	//位置函数
+public:
+	//获取位置
+	bool GetEncircleInfo(tagEncircleInfo & EncircleInfo);
+	//获取位置
+	bool GetEncircleRect(CRect & rcFrameBorad, CRect & rcControl);
+
+	//环绕调整
+public:
+	//环绕调整
+	bool SetWindowPos(CWnd * pWnd, CRect & rcEncircleBorad);
+	//环绕调整
+	bool DeferWindowPos(CWnd * pWnd, HDWP hDwp, CRect & rcEncircleBorad);
 };
 
 //////////////////////////////////////////////////////////////////////////

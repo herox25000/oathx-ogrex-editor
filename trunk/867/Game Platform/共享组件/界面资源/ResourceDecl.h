@@ -721,6 +721,16 @@
 #define DEF_IDB_VIDEO_SMALL_PHOTO       1191
 #define DEF_IDB_BT_GAME_BANK			1192
 
+//¶Ô»°¿òÆ¤·ô
+#define DEF_IDB_DLG_TL         1193
+#define DEF_IDB_DLG_TM         1194
+#define DEF_IDB_DLG_TR         1195
+#define DEF_IDB_DLG_ML         1196
+#define DEF_IDB_DLG_MR         1197
+#define DEF_IDB_DLG_BL         1198
+#define DEF_IDB_DLG_BM         1199
+#define DEF_IDB_DLG_BR         1200
+
 //////////////////////////////////////////////////////////////////////////
 
 
@@ -1423,4 +1433,5 @@
 #define RES_BLACK_IDB_GAME_FEMALE_FACE                   "Res\\BLACK_RESOURCE\\GAME_USER\\FEMALE.bmp"
 #define RES_BLACK_IDB_GAME_MALE_FACE                    "Res\\BLACK_RESOURCE\\GAME_USER\\MALE.bmp"
 #define RES_DEF_IDB_BT_GAME_BANK						"Res\\DEF_RESOURCE\\GAME_FRAME\\BT_BANK.bmp"
+
 #endif // ResourceDecl_h__

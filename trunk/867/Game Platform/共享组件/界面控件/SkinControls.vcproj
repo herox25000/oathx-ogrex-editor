@@ -152,6 +152,12 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			Name="源文件"
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm">
 			<File
+				RelativePath=".\BitImage.cpp">
+			</File>
+			<File
+				RelativePath=".\GIFImage.cpp">
+			</File>
+			<File
 				RelativePath=".\PngImage.cpp">
 			</File>
 			<File
@@ -159,6 +165,12 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 			<File
 				RelativePath="SkinButton.cpp">
+			</File>
+			<File
+				RelativePath=".\SkinButtonEx.cpp">
+			</File>
+			<File
+				RelativePath=".\SkinComboBox.cpp">
 			</File>
 			<File
 				RelativePath="SkinControls.cpp">
@@ -182,6 +194,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath="SkinListCtrl.cpp">
 			</File>
 			<File
+				RelativePath=".\SkinRenderManager.cpp">
+			</File>
+			<File
 				RelativePath=".\SkinResourceManager.cpp">
 			</File>
 			<File
@@ -200,7 +215,13 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\SkinScrollBar.cpp">
+			</File>
+			<File
 				RelativePath="SkinSplitter.cpp">
+			</File>
+			<File
+				RelativePath=".\SkinTabCtrl.cpp">
 			</File>
 			<File
 				RelativePath="SkinWndObject.cpp">
@@ -237,6 +258,12 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			Name="头文件"
 			Filter="h;hpp;hxx;hm;inl;inc">
 			<File
+				RelativePath=".\BitImage.h">
+			</File>
+			<File
+				RelativePath=".\GIFImage.h">
+			</File>
+			<File
 				RelativePath=".\PngImage.h">
 			</File>
 			<File
@@ -247,6 +274,12 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 			<File
 				RelativePath="SkinButton.h">
+			</File>
+			<File
+				RelativePath=".\SkinButtonEx.h">
+			</File>
+			<File
+				RelativePath=".\SkinComboBox.h">
 			</File>
 			<File
 				RelativePath="SkinControls.h">
@@ -270,13 +303,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath="SkinListCtrl.h">
 			</File>
 			<File
+				RelativePath=".\SkinRenderManager.h">
+			</File>
+			<File
 				RelativePath=".\SkinResourceManager.h">
 			</File>
 			<File
 				RelativePath=".\SkinRichEdit.h">
 			</File>
 			<File
+				RelativePath=".\SkinScrollBar.h">
+			</File>
+			<File
 				RelativePath="SkinSplitter.h">
+			</File>
+			<File
+				RelativePath=".\SkinTabCtrl.h">
 			</File>
 			<File
 				RelativePath="SkinWndObject.h">

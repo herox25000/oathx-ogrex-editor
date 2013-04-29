@@ -2,7 +2,6 @@
 
 #ifndef SKIN_BUTTON_HEAD_FILE
 #define SKIN_BUTTON_HEAD_FILE
-
 #include "SkinImage.h"
 #include "SkinControls.h"
 #include "SkinResourceManager.h"
@@ -204,6 +203,7 @@ protected:
 	DECLARE_DYNAMIC(CRgnButton)
 };
 
-//////////////////////////////////////////////////////////////////////////
+
+
 
 #endif

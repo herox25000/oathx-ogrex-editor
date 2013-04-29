@@ -99,7 +99,59 @@ END
 // Cursor
 //
 
-IDC_HAND_CUR            CURSOR                  ".\\res\\HAND_CUR.cur"
+IDC_SKIN_CURSOR         CURSOR                  "Res\\SKIN_CURSOR.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+SKIN_WND_TL             PNG                     "res\\SKIN_WND_TL.png"
+SKIN_WND_TM             PNG                     "res\\SKIN_WND_TM.png"
+SKIN_WND_TR             PNG                     "res\\SKIN_WND_TR.png"
+SKIN_WND_ML             PNG                     "res\\SKIN_WND_ML.png"
+SKIN_WND_MR             PNG                     "res\\SKIN_WND_MR.png"
+SKIN_WND_BL             PNG                     "res\\SKIN_WND_BL.png"
+SKIN_WND_BM             PNG                     "res\\SKIN_WND_BM.png"
+SKIN_WND_BR             PNG                     "res\\SKIN_WND_BR.png"
+SKIN_WND_LOGO           PNG                     "res\\SKIN_WND_LOGO.PNG"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_SKIN_ICON           ICON                    "res\\SKIN_ICON.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_ENCIRCLE_TR         BITMAP                  "res\\ENCIRCLE_TR.bmp"
+IDB_ENCIRCLE_BL         BITMAP                  "res\\ENCIRCLE_BL.bmp"
+IDB_ENCIRCLE_BM         BITMAP                  "res\\ENCIRCLE_BM.bmp"
+IDB_ENCIRCLE_BR         BITMAP                  "res\\ENCIRCLE_BR.bmp"
+IDB_ENCIRCLE_ML         BITMAP                  "res\\ENCIRCLE_ML.bmp"
+IDB_ENCIRCLE_MR         BITMAP                  "res\\ENCIRCLE_MR.bmp"
+IDB_ENCIRCLE_TL         BITMAP                  "res\\ENCIRCLE_TL.bmp"
+IDB_ENCIRCLE_TM         BITMAP                  "res\\ENCIRCLE_TM.bmp"
+IDB_SKIN_BUTTON         BITMAP                  "res\\SKIN_BUTTON.bmp"
+IDB_SKIN_WND_MAX        BITMAP                  "res\\SKIN_WND_MAX.bmp"
+IDB_SKIN_WND_MIN        BITMAP                  "res\\SKIN_WND_MIN.bmp"
+IDB_SKIN_WND_RESTORE    BITMAP                  "res\\SKIN_WND_RESTORE.bmp"
+IDB_SKIN_COMBOBOX_BUTTON BITMAP                  "res\\SKIN_COMBOBOX_BUTTON.bmp"
+IDB_SKIN_MENU_FLAGS     BITMAP                  "res\\SKIN_MENU_FLAGS.bmp"
+IDB_SKIN_HEADER_R       BITMAP                  "res\\SKIN_HEADER_R.bmp"
+IDB_SKIN_HEADER_L       BITMAP                  "res\\SKIN_HEADER_L.bmp"
+IDB_SKIN_HEADER_M       BITMAP                  "res\\SKIN_HEADER_M.bmp"
+IDB_SKIN_WND_CLOSE      BITMAP                  "res\\SKIN_WND_CLOSE.bmp"
+IDB_SKIN_SCROLL         BITMAP                  "res\\SKIN_SCROLL.bmp"
+IDB_SKIN_WND_BUTTON     BITMAP                  "res\\SKIN_WND_BUTTON.bmp"
+
+
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
