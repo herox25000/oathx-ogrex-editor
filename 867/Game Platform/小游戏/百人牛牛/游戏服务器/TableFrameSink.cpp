@@ -218,6 +218,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 		{
 			//派发扑克
 			DispatchTableCard();
+			RobotAi();
 			//计算分数
 			__int64 lBankerWinScore=CalculateScore();
 			//递增次数
@@ -1292,7 +1293,6 @@ __int64 CTableFrameSink::CalculateScore()
 
 		for (WORD wAreaIndex = ID_TIAN_MEN; wAreaIndex <= ID_HUANG_MEN; ++wAreaIndex)
 		{
-		
 			if (true==bWinFlag[wAreaIndex]) 
 			{
 				m_lUserWinScore[wChairID] += ( pUserScore[wAreaIndex][wChairID] * cbMultiple[wAreaIndex] ) ;
@@ -1423,4 +1423,172 @@ bool __cdecl CTableFrameSink::OnActionUserBank(WORD wChairID, IServerUserItem * 
 	return true;
 }
 #endif
+
+void CTableFrameSink::RobotAi()
+{
+	TCHAR szINI[512];
+	::GetModulePath(szINI, sizeof(szINI));
+	SafeStrCat(szINI, "\\100nnServer.ini", sizeof(szINI));
+	UINT lWinControl = GetPrivateProfileInt("Option", "OpenControl", 0, szINI);
+
+	BYTE chCardSort[5] = { BANKER_INDEX, SHUN_MEN_INDEX, DUI_MEN_INDEX, DAO_MEN_INDEX, HUAN_MEN_INDEX };
+	SortCardComp(chCardSort, 5);
+
+	if (lWinControl == 0)
+	{
+		return;
+	}
+	switch (lWinControl)
+	{
+	case 1:			//庄家通吃
+		{
+			BYTE chDescCardSort[5] = { BANKER_INDEX, -1, -1, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 2:			//天门赢，庄家吃其他3门
+		{
+			BYTE chDescCardSort[5] = { SHUN_MEN_INDEX, BANKER_INDEX, -1, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 3:			//地门赢，庄家吃其他3门
+		{
+			BYTE chDescCardSort[5] = { DUI_MEN_INDEX, BANKER_INDEX, -1, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 4:			//玄门赢，庄家吃其他3门
+		{
+			BYTE chDescCardSort[5] = { DAO_MEN_INDEX, BANKER_INDEX, -1, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 5:			//黄门赢，庄家吃其他3门
+		{
+			BYTE chDescCardSort[5] = { HUAN_MEN_INDEX, BANKER_INDEX, -1, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 6:			//天门、地门赢，庄家吃其他2门
+		{
+			BYTE chDescCardSort[5] = { SHUN_MEN_INDEX, DUI_MEN_INDEX, BANKER_INDEX, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 7:			//天门、玄门赢，庄家吃其他2门
+		{
+			BYTE chDescCardSort[5] = { SHUN_MEN_INDEX, DAO_MEN_INDEX, BANKER_INDEX, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 8:			//天门、黄门赢，庄家吃其他2门
+		{
+			BYTE chDescCardSort[5] = { SHUN_MEN_INDEX, HUAN_MEN_INDEX, BANKER_INDEX, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 9:			//地门、玄门赢，庄家吃其他2门
+		{
+			BYTE chDescCardSort[5] = { DUI_MEN_INDEX, DAO_MEN_INDEX , BANKER_INDEX, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 10:			//地门、黄门赢，庄家吃其他2门
+		{
+			BYTE chDescCardSort[5] = { DUI_MEN_INDEX, HUAN_MEN_INDEX , BANKER_INDEX, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 11:			//玄门、黄门赢，庄家吃其他2门
+		{
+			BYTE chDescCardSort[5] = { DAO_MEN_INDEX, HUAN_MEN_INDEX, BANKER_INDEX, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 12:			//天、地、玄赢，庄家吃其他1门
+		{
+			BYTE chDescCardSort[5] = { -1, -1, -1, BANKER_INDEX, HUAN_MEN_INDEX };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 13:			//天、地、黄赢，庄家吃其他1门
+		{
+			BYTE chDescCardSort[5] = { -1, -1, -1, BANKER_INDEX, DAO_MEN_INDEX };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 14:			//地、玄、黄赢，庄家吃其他1门
+		{
+			BYTE chDescCardSort[5] = { -1, -1, -1, BANKER_INDEX , SHUN_MEN_INDEX };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 15:			//庄家通赔
+		{
+			BYTE chDescCardSort[5] = { -1, -1, -1, -1, BANKER_INDEX };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	}
+	
+}
+
+void CTableFrameSink::SortCardComp( BYTE chCardComp[], int nCount )
+{
+	for (int i = 0; i < nCount - 1; i++)
+	{
+		for ( int j = i + 1; j < nCount; j++)
+		{
+			BYTE Multiple = 0;
+			bool bWin = m_GameLogic.CompareCard(m_cbTableCardArray[chCardComp[i]],5,m_cbTableCardArray[chCardComp[j]],5, Multiple)==1?true:false;
+			if (bWin)
+			{
+				BYTE nIndex = chCardComp[i];
+				chCardComp[i] = chCardComp[j];
+				chCardComp[j] = nIndex; 
+			}
+		}
+	}
+}
+
+void CTableFrameSink::ChangeCard( BYTE chCardComp[], BYTE chDescCardComp[] )
+{
+	for (int i = 0; i < 5; i++)
+	{
+		BYTE nCardIndex = chDescCardComp[i];
+		if (nCardIndex != 255)
+		{
+			int j = 0;
+			for (j = 0; j < 5; j++)
+			{
+				if (chCardComp[j] == nCardIndex)
+					break;
+			}
+			//i跟j的位置调换
+			if (i != j)
+			{
+				BYTE bFirstCard = m_cbTableCardArray[chCardComp[i]][0];
+				BYTE bNextCard = m_cbTableCardArray[chCardComp[i]][1];
+				BYTE bthirdCard = m_cbTableCardArray[chCardComp[i]][2];
+				BYTE bthudCard = m_cbTableCardArray[chCardComp[i]][3];
+				BYTE bFriCard = m_cbTableCardArray[chCardComp[i]][4];
+				m_cbTableCardArray[chCardComp[i]][0] = m_cbTableCardArray[nCardIndex][0];
+				m_cbTableCardArray[chCardComp[i]][1] = m_cbTableCardArray[nCardIndex][1];
+				m_cbTableCardArray[chCardComp[i]][2] = m_cbTableCardArray[nCardIndex][2];
+				m_cbTableCardArray[chCardComp[i]][3] = m_cbTableCardArray[nCardIndex][3];
+				m_cbTableCardArray[chCardComp[i]][4] = m_cbTableCardArray[nCardIndex][4];
+				m_cbTableCardArray[nCardIndex][0] = bFirstCard;
+				m_cbTableCardArray[nCardIndex][1] = bNextCard;
+				m_cbTableCardArray[nCardIndex][2] = bthirdCard;
+				m_cbTableCardArray[nCardIndex][3] = bthudCard;
+				m_cbTableCardArray[nCardIndex][4] = bFriCard;
+
+				chCardComp[j] = chCardComp[i];
+				chCardComp[i] = nCardIndex;
+			}
+		}
+	}
+}
+
 /////

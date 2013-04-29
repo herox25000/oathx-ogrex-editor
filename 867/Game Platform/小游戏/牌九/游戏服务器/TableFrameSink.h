@@ -203,6 +203,7 @@ private:
 	//推断赢家
 	void DeduceWinner(BYTE &cbWinner, BYTE &cbKingWinner);
 	void RobotAI();
+	void ChangeCard(BYTE chCardComp[], BYTE chDescCardComp[]);
 	//计算得分
 	__int64	PreCalculateBankerWin();
 

@@ -1740,62 +1740,102 @@ void CTableFrameSink::RobotAI()
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\PaiJiu.ini", sizeof(szINI));
-	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 18, szINI);
-// 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
-	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
-	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
-	LIMIT_VALUE(lWinRate, 1, 100);
 
-	//获取玩家
-	if (m_CurrentBanker.dwUserID != 0)
+	UINT lWinControl = GetPrivateProfileInt("Option", "OpenControl", 0, szINI);
+
+	BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
+	SortCardComp(chCardSort, 4);
+
+	if (lWinControl == 0)
 	{
-		//机器人30%的概率赢钱
-		BYTE chCardSort[4] = { INDEX_BANKER, INDEX_PLAYER1, INDEX_PLAYER2, INDEX_PLAYER3 };
-		SortCardComp(chCardSort, 4);
+		LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 5, szINI);
+		__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
+		__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
+		LIMIT_VALUE(lWinRate, 1, 100);
 
-		if ( m_CurrentBanker.dwUserType == 10 )
+		//获取玩家
+		if (m_CurrentBanker.dwUserID != 0)
 		{
-			int nRndWinRate = rand()%lWinRate;
-			int nRnd = rand()%100;
-// 			bool bWin = false;
-			if ( nRnd <= nRndWinRate || (lMaxLose > 0 && m_lBankerWinScore <= (-lMaxLose)) )
+			//机器人30%的概率赢钱
+			if ( m_CurrentBanker.dwUserType == 10 )
 			{
-				while(PreCalculateBankerWin() < 0)
+				int nRndWinRate = rand()%lWinRate;
+				int nRnd = rand()%100;
+				if ( nRnd <= nRndWinRate || (lMaxLose > 0 && m_lBankerWinScore <= (-lMaxLose)) )
 				{
-					SwapBankerCard(chCardSort, true);
+					while(PreCalculateBankerWin() < 0)
+					{
+						SwapBankerCard(chCardSort, true);
+					}
 				}
 			}
-// 			if (false == bWin)
-// 			{
-// 				while(PreCalculateBankerWin() < (-lMaxPerLose))
-// 				{
-// 					SwapBankerCard(chCardSort, true);
-// 				}
-// 			}
-		}
-		else
-		{
-			//玩家如果做庄
-			if (m_lBankerWinScore >= lPlayerMaxMin)
+			else
 			{
-				while(PreCalculateBankerWin() > 0)
+				//玩家如果做庄
+				if (m_lBankerWinScore >= lPlayerMaxMin)
 				{
-					SwapBankerCard(chCardSort, false);
+					while(PreCalculateBankerWin() > 0)
+					{
+						SwapBankerCard(chCardSort, false);
+					}
 				}
 			}
-// 			else if(m_lBankerWinScore > 0)
-// 			{
-// 				int nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
-// 				int nRand = rand()%100;
-// 				if (nRand < nLoseRate)
-// 				{
-// 					while(PreCalculateBankerWin() > 0)
-// 					{
-// 						SwapBankerCard(chCardSort, false);
-// 					}
-// 				}
-// 			}
 		}
+		return;
+	}
+	//INDEX_PLAYER1:顺门
+	//INDEX_PLAYER2:天门
+	//INDEX_PLAYER3:倒门
+	switch (lWinControl)
+	{
+	case 1:			//庄家通吃
+		{
+			BYTE chDescCardSort[4] = { INDEX_BANKER, -1, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 2:			//天门赢，庄家吃其他两门
+		{
+			BYTE chDescCardSort[4] = { INDEX_PLAYER2, INDEX_BANKER, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 3:			//倒门赢，庄家吃其他两门
+		{
+			BYTE chDescCardSort[4] = { INDEX_PLAYER3, INDEX_BANKER, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 4:			//顺门赢，庄家吃其他两门
+		{
+			BYTE chDescCardSort[4] = { INDEX_PLAYER1, INDEX_BANKER, -1, -1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 5:			//天门、倒门赢，庄家吃其他一门
+		{
+			BYTE chDescCardSort[4] = { -1, -1, INDEX_BANKER, INDEX_PLAYER1 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 6:			//天门、顺门赢，庄家吃其他一门
+		{
+			BYTE chDescCardSort[4] = { -1, -1, INDEX_BANKER, INDEX_PLAYER3 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 7:			//倒门、顺门赢，庄家吃其他一门
+		{
+			BYTE chDescCardSort[4] = { -1, -1, INDEX_BANKER, INDEX_PLAYER2 };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
+	case 8:			//庄家通赔
+		{
+			BYTE chDescCardSort[4] = { -1, -1, -1, INDEX_BANKER };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
 	}
 }
 
@@ -1955,6 +1995,36 @@ void CTableFrameSink::SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg)
 	{
 		IServerUserItem *pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
 		if (pIServerUserItem!=NULL) m_pITableFrame->SendGameMessage(pIServerUserItem,pszTipMsg,SMT_INFO|SMT_EJECT);
+	}
+}
+
+void CTableFrameSink::ChangeCard( BYTE chCardComp[], BYTE chDescCardComp[] )
+{
+	for (int i = 0; i < 4; i++)
+	{
+		BYTE nCardIndex = chDescCardComp[i];
+		if (nCardIndex != 255)
+		{
+			int j = 0;
+			for (j = 0; j < 4; j++)
+			{
+				if (chCardComp[j] == nCardIndex)
+					break;
+			}
+			//i跟j的位置调换
+			if (i != j)
+			{
+				BYTE bFirstCard = m_cbTableCardArray[chCardComp[i]][0];
+				BYTE bNextCard = m_cbTableCardArray[chCardComp[i]][1];
+				m_cbTableCardArray[chCardComp[i]][0] = m_cbTableCardArray[nCardIndex][0];
+				m_cbTableCardArray[chCardComp[i]][1] = m_cbTableCardArray[nCardIndex][1];
+				m_cbTableCardArray[nCardIndex][0] = bFirstCard;
+				m_cbTableCardArray[nCardIndex][1] = bNextCard;
+
+				chCardComp[j] = chCardComp[i];
+				chCardComp[i] = nCardIndex;
+			}
+		}
 	}
 }
 
