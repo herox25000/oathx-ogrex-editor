@@ -158,6 +158,7 @@ BEGIN
     LTEXT           "银行游戏币：       ，购买道具后剩余游戏币：",
                     IDC_GOLD_DESCRIBE,35,206,238,8
     EDITTEXT        IDC_PRO_USER_ID,35,122,97,12,ES_AUTOHSCROLL
+    LTEXT           "静态",IDC_STATIC_DESC,114,59,156,43
 END
 
 IDD_FLOWER_EFFECT DIALOGEX 0, 0, 186, 95

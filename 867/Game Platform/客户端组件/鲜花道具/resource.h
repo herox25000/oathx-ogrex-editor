@@ -27,6 +27,7 @@
 #define IDC_RADIO2                      6019
 #define IDC_DRAWOUT                     6019
 #define IDC_PRO_USER_ID                 6024
+#define IDC_STATIC_DESC                 6025
 #define IDD_DIALOG1                     6029
 #define IDD_FLOWER_EFFECT               6029
 #define DB_BLESSING                     6030
@@ -93,7 +94,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        6119
 #define _APS_NEXT_COMMAND_VALUE         32771
-#define _APS_NEXT_CONTROL_VALUE         6025
+#define _APS_NEXT_CONTROL_VALUE         6026
 #define _APS_NEXT_SYMED_VALUE           6000
 #endif
 #endif
