@@ -1588,21 +1588,21 @@ __int64 CTableFrameSink::GetAreaDesktopScore( BYTE chJettonArea )
 	switch(chJettonArea)
 	{
 	case ID_BIG_TIGER:
-		return m_lAllBigTigerScore;
+		return m_lAllBigTigerScore * s_Multiple[0];
 	case ID_SML_TIGER:
-		return m_lAllSmlTigerScore;
+		return m_lAllSmlTigerScore * s_Multiple[1];
 	case ID_BIG_DOG:
-		return m_lAllBigBogScore;
+		return m_lAllBigBogScore * s_Multiple[2];
 	case ID_SML_DOG:
-		return m_lAllSmlBogScore;
+		return m_lAllSmlBogScore * s_Multiple[3];
 	case ID_BIG_HORSE:
-		return m_lAllBigHorseScore;
+		return m_lAllBigHorseScore * s_Multiple[4];
 	case ID_SML_HORSE:
-		return m_lAllSmlHorseScore;
+		return m_lAllSmlHorseScore * s_Multiple[5];
 	case ID_BIG_SNAKE:
-		return m_lAllBigSnakeScore;
+		return m_lAllBigSnakeScore * s_Multiple[6];
 	case ID_SML_SNAKE:
-		return m_lAllSmlSnakeScore;
+		return m_lAllSmlSnakeScore * s_Multiple[7];
 	default:
 		return 0;
 	}
