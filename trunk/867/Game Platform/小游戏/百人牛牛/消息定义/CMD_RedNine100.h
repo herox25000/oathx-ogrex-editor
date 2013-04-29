@@ -3,6 +3,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //公共宏定义
+#define LIMIT_VALUE(x, min, max) {if ((x)<(min)) (x)=(min); if ((x)>(max)) (x)=(max);}
 
 #define KIND_ID						104									//游戏 I D
 #define GAME_PLAYER					100									//游戏人数

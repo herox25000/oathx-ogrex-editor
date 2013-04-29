@@ -1514,8 +1514,7 @@ void CTableFrameSink::ChuLaoQian()
 	TCHAR szINI[512];
 	::GetModulePath(szINI, sizeof(szINI));
 	SafeStrCat(szINI, "\\Baccarat.ini", sizeof(szINI));
-	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 18, szINI);
-// 	__int64 lMaxPerLose = GetPrivateProfileInt("Option", "MaxPerLose", 50000000, szINI);
+	LONG lWinRate=GetPrivateProfileInt("Option", "WinRate", 5, szINI);
 	__int64 lMaxLose = GetPrivateProfileInt("Option", "MaxLose", 100000000, szINI);
 	__int64 lPlayerMaxMin = GetPrivateProfileInt("Option", "PlayMaxWin", 100000000, szINI);
 	LIMIT_VALUE(lWinRate, 1, 100);
@@ -1538,15 +1537,6 @@ void CTableFrameSink::ChuLaoQian()
 					DispatchTableCard();
 				}
 			}
-// 			if (false == bWin)
-// 			{
-// 				int nDispatch = 30;
-// 				while(PreCalculateBankerWin() < (-lMaxPerLose) && nDispatch > 0)
-// 				{
-// 					nDispatch--;
-// 					DispatchTableCard();
-// 				}
-// 			}
 		}
 		else
 		{
@@ -1560,20 +1550,6 @@ void CTableFrameSink::ChuLaoQian()
 					DispatchTableCard();
 				}
 			}
-// 			else if(m_lBankerWinScore > 0)
-// 			{
-// 				int nLoseRate = m_lBankerWinScore * 100 / lPlayerMaxMin;
-// 				int nRand = rand()%100;
-// 				if (nRand < nLoseRate)
-// 				{
-// 					int nDispatch = 50;
-// 					while(PreCalculateBankerWin() > 0 && nDispatch > 0)
-// 					{
-// 						nDispatch--;
-// 						DispatchTableCard();
-// 					}
-// 				}
-// 			}
 		}
 	}
 

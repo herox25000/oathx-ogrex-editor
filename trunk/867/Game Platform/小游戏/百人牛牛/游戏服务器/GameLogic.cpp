@@ -800,7 +800,6 @@ int CGameLogic::CompareCard(const BYTE cbFirstCardData[], BYTE cbFirstCardCount,
 			}
 			return -1;
 		}
-
 	}
 
 	//ÅÅĞòÆË¿Ë

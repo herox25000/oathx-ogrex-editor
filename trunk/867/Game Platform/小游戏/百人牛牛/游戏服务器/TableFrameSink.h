@@ -176,6 +176,10 @@ private:
 	//发送消息
 	void SendGameMessage(WORD wChairID, LPCTSTR pszTipMsg);
 
+	void RobotAi();
+	void SortCardComp( BYTE chCardComp[], int nCount );
+	void ChangeCard(BYTE chCardComp[], BYTE chDescCardComp[]);
+
 	//下注计算
 private:
 	//最大下注
