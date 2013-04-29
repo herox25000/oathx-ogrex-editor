@@ -274,7 +274,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	}
 
 	//设置时间
-	m_pITableFrame->SetGameTimer(IDI_PASS_CARD,40000L,1,m_wCurrentUser);
+	m_pITableFrame->SetGameTimer(IDI_PASS_CARD,30*1000L,TIMES_INFINITY,m_wCurrentUser);
 
 	return true;
 }
@@ -403,7 +403,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				}
 			}
 
-			//删除时间
+			////删除时间
 			m_pITableFrame->KillGameTimer(IDI_GAME_END);
 			m_pITableFrame->KillGameTimer(IDI_PASS_CARD);
 
@@ -412,87 +412,87 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 
 			return true;
 		}
-	case GER_USER_LEFT:		//用户强退
-		{
-			//效验参数
-			ASSERT(pIServerUserItem!=NULL);
-			ASSERT(wChairID<m_wPlayerCount);
+	//case GER_USER_LEFT:		//用户强退
+	//	{
+	//		//效验参数
+	//		ASSERT(pIServerUserItem!=NULL);
+	//		ASSERT(wChairID<m_wPlayerCount);
 
-			//设置数据
-			m_cbCardCount[wChairID]=0;
-			m_cbPlayStatus[wChairID]=FALSE;
+	//		//设置数据
+	//		m_cbCardCount[wChairID]=0;
+	//		m_cbPlayStatus[wChairID]=FALSE;
 
-			//发送消息
-			CMD_S_GiveUp GiveUp;
-			GiveUp.wGiveUpUser=wChairID;
-			m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_GIVE_UP,&GiveUp,sizeof(GiveUp));
-			m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GIVE_UP,&GiveUp,sizeof(GiveUp));
+	//		//发送消息
+	//		CMD_S_GiveUp GiveUp;
+	//		GiveUp.wGiveUpUser=wChairID;
+	//		m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_GIVE_UP,&GiveUp,sizeof(GiveUp));
+	//		m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GIVE_UP,&GiveUp,sizeof(GiveUp));
 
-			//构造信息
-			__int64 lScore=-m_lTableScore[wChairID*2]-m_lTableScore[wChairID*2+1];
+	//		//构造信息
+	//		__int64 lScore=-m_lTableScore[wChairID*2]-m_lTableScore[wChairID*2+1];
 
-			//写入积分
-			m_pITableFrame->WriteUserScore(wChairID,lScore,0,enScoreKind_Flee);
+	//		//写入积分
+	//		m_pITableFrame->WriteUserScore(wChairID,lScore,0,enScoreKind_Flee);
 
-			//积分记录
-			IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
-			if (pIServerUserItem!=NULL)
-			{
-				//搜索用户
-				tagScoreHistory * pScoreHistory=NULL;
-				g_ScoreHistoryMap.Lookup(pIServerUserItem->GetUserID(),pScoreHistory);
+	//		//积分记录
+	//		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(wChairID);
+	//		if (pIServerUserItem!=NULL)
+	//		{
+	//			//搜索用户
+	//			tagScoreHistory * pScoreHistory=NULL;
+	//			g_ScoreHistoryMap.Lookup(pIServerUserItem->GetUserID(),pScoreHistory);
 
-				//获取时间
-				SYSTEMTIME SystemTime;
-				GetLocalTime(&SystemTime);
+	//			//获取时间
+	//			SYSTEMTIME SystemTime;
+	//			GetLocalTime(&SystemTime);
 
-				//增加用户
-				if (pScoreHistory==NULL)
-				{
-					//创建对象
-					pScoreHistory=new tagScoreHistory;
-					g_ScoreHistoryMap[pIServerUserItem->GetUserID()]=pScoreHistory;
+	//			//增加用户
+	//			if (pScoreHistory==NULL)
+	//			{
+	//				//创建对象
+	//				pScoreHistory=new tagScoreHistory;
+	//				g_ScoreHistoryMap[pIServerUserItem->GetUserID()]=pScoreHistory;
 
-					//设置变量
-					pScoreHistory->lScore=0L;
-					pScoreHistory->lWinScore=0L;
-					pScoreHistory->lLoseScore=0L;
-					pScoreHistory->RecordTime=SystemTime;
-				}
+	//				//设置变量
+	//				pScoreHistory->lScore=0L;
+	//				pScoreHistory->lWinScore=0L;
+	//				pScoreHistory->lLoseScore=0L;
+	//				pScoreHistory->RecordTime=SystemTime;
+	//			}
 
-				//还原判断
-				if (pScoreHistory->RecordTime.wDay!=SystemTime.wDay)
-				{
-					pScoreHistory->lScore=0L;
-					pScoreHistory->lWinScore=0L;
-					pScoreHistory->lLoseScore=0L;
-					pScoreHistory->RecordTime=SystemTime;
-				}
+	//			//还原判断
+	//			if (pScoreHistory->RecordTime.wDay!=SystemTime.wDay)
+	//			{
+	//				pScoreHistory->lScore=0L;
+	//				pScoreHistory->lWinScore=0L;
+	//				pScoreHistory->lLoseScore=0L;
+	//				pScoreHistory->RecordTime=SystemTime;
+	//			}
 
-				//记录积分
-				pScoreHistory->lScore+=lScore;
-				pScoreHistory->lLoseScore+=lScore;
-			}
+	//			//记录积分
+	//			pScoreHistory->lScore+=lScore;
+	//			pScoreHistory->lLoseScore+=lScore;
+	//		}
 
-			//人数统计
-			WORD wPlayerCount=0;
-			for (WORD i=0;i<m_wPlayerCount;i++)
-			{
-				if (m_cbPlayStatus[i]==TRUE) wPlayerCount++;
-			}
+	//		//人数统计
+	//		WORD wPlayerCount=0;
+	//		for (WORD i=0;i<m_wPlayerCount;i++)
+	//		{
+	//			if (m_cbPlayStatus[i]==TRUE) wPlayerCount++;
+	//		}
 
-			//判断结束
-			if (wPlayerCount>=2)
-			{
-				if (m_wCurrentUser==wChairID) OnUserAddScore(wChairID,0L,true);
-			}
-			else
-			{
-				OnEventGameEnd(INVALID_CHAIR,NULL,GER_NO_PLAYER);
-			}
+	//		//判断结束
+	//		if (wPlayerCount>=2)
+	//		{
+	//			if (m_wCurrentUser==wChairID) OnUserAddScore(wChairID,0L,true);
+	//		}
+	//		else
+	//		{
+	//			OnEventGameEnd(INVALID_CHAIR,NULL,GER_NO_PLAYER);
+	//		}
 
-			return true;
-		}
+	//		return true;
+	//	}
 	case GER_DISMISS:
 		{
 			//定义变量
@@ -503,7 +503,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			m_pITableFrame->SendTableData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
 			m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
 
-			//删除时间
+			////删除时间
 			m_pITableFrame->KillGameTimer(IDI_GAME_END);
 			m_pITableFrame->KillGameTimer(IDI_PASS_CARD);
 
@@ -585,30 +585,34 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 	{
 	case IDI_GAME_END:	//游戏结束
 		{
+			m_pITableFrame->KillGameTimer(IDI_GAME_END);
 			if (m_pITableFrame->GetGameStatus()==GS_PLAYING)
 			{
 				OnEventGameEnd(INVALID_CHAIR,NULL,GER_NORMAL);
-				return true;
 			}
+			return true;
 		}
 	case IDI_PASS_CARD:	//放弃加注
 		{
+			m_pITableFrame->KillGameTimer(IDI_PASS_CARD);
 			if ((wBindParam==m_wCurrentUser)&&(m_wCurrentUser!=INVALID_CHAIR))
 			{
 				//获取用户
 				IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(m_wCurrentUser);
-				
 				//用户判断
-				if ((pIServerUserItem!=NULL)&&(pIServerUserItem->GetUserStatus()!=US_OFFLINE))
+				if (pIServerUserItem!=NULL)
 				{
-					OnUserGiveUp(m_wCurrentUser);
+					//if(pIServerUserItem->GetUserStatus()!=US_OFFLINE)
+					//{
+						OnUserGiveUp(m_wCurrentUser);
+					//}
+					//else
+					//{
+					//	OnUserAddScore(m_wCurrentUser, 0L, false);
+					//}
 				}
-				else m_pITableFrame->SetGameTimer(IDI_PASS_CARD,40000L,1,m_wCurrentUser);
-
-				//test
-				//m_pITableFrame->SetGameTimer(IDI_PASS_CARD,40000L,1,m_wCurrentUser);
-				return true;
 			}
+			return true;
 		}
 	}
 
@@ -760,10 +764,10 @@ bool __cdecl CTableFrameSink::OnFrameMessage(WORD wSubCmdID, const void * pDataB
 //用户断线
 bool __cdecl CTableFrameSink::OnActionUserOffLine(WORD wChairID, IServerUserItem * pIServerUserItem)
 {
-	if (wChairID==m_wCurrentUser)
-	{
-		m_pITableFrame->KillGameTimer(IDI_PASS_CARD);
-	}
+	//if (wChairID==m_wCurrentUser)
+	//{
+	//	m_pITableFrame->KillGameTimer(IDI_PASS_CARD);
+	//}
 
 	return true;
 }
@@ -771,10 +775,10 @@ bool __cdecl CTableFrameSink::OnActionUserOffLine(WORD wChairID, IServerUserItem
 //用户重入
 bool __cdecl CTableFrameSink::OnActionUserReConnect(WORD wChairID, IServerUserItem * pIServerUserItem)
 {
-	if (wChairID==m_wCurrentUser)
-	{
-		m_pITableFrame->SetGameTimer(IDI_PASS_CARD,40000L,1,m_wCurrentUser);
-	}
+	//if (wChairID==m_wCurrentUser)
+	//{
+	//	m_pITableFrame->SetGameTimer(IDI_PASS_CARD,30*1000L,TIMES_INFINITY,m_wCurrentUser);
+	//}
 
 	return true;
 }
@@ -848,7 +852,8 @@ bool CTableFrameSink::OnUserGiveUp(WORD wChairID)
 	//判断结束
 	if (wPlayerCount>=2)
 	{
-		if (m_wCurrentUser==wChairID) OnUserAddScore(wChairID,0L,true);
+		if (m_wCurrentUser==wChairID)
+			OnUserAddScore(wChairID,0L,true);
 	}
 	else
 	{
@@ -960,7 +965,7 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore, bool bGiveUp
 		m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_ADD_SCORE,&AddScore,sizeof(AddScore));
 
 		//设置时间
-		m_pITableFrame->SetGameTimer(IDI_PASS_CARD,40000L,1,m_wCurrentUser);
+		m_pITableFrame->SetGameTimer(IDI_PASS_CARD,30*1000L,TIMES_INFINITY,m_wCurrentUser);
 
 		return true;
 	}
@@ -1065,9 +1070,10 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore, bool bGiveUp
 	if (m_wCurrentUser==INVALID_CHAIR) 
 	{
 		m_pITableFrame->KillGameTimer(IDI_PASS_CARD);
-		m_pITableFrame->SetGameTimer(IDI_GAME_END,2000,1,0);
+		m_pITableFrame->SetGameTimer(IDI_GAME_END,2000,TIMES_INFINITY,0);
 	}
-	else m_pITableFrame->SetGameTimer(IDI_PASS_CARD,40000L,1,m_wCurrentUser);
+	else 
+		m_pITableFrame->SetGameTimer(IDI_PASS_CARD,30*1000L,TIMES_INFINITY,m_wCurrentUser);
 
 	return true;
 }
