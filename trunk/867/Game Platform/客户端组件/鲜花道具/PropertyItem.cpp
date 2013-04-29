@@ -215,41 +215,48 @@ void CPropertyItem::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
 	//////绘画边框
 	//DrawBorder(&dc);
 
-	//道具图片
-	CBitmap Bitmap;
-
 	//加载图片
 	AfxSetResourceHandle(CPropertyBar::m_pPropertyBar->m_ReshInstance);
-	if ( Bitmap.LoadBitmap( MAKEINTRESOURCE(CPropertyBar::m_pPropertyBar->m_PropertyViewImage.uPropertyFormer[m_nPropertyID])) )
+	CString szPathName;
+	bool bResult = CSkinImage::ms_pImageMap->GetImageInfo(CPropertyBar::m_pPropertyBar->m_PropertyViewImage.uPropertyFormer[m_nPropertyID],szPathName);
+	if (bResult && !szPathName.IsEmpty())
 	{
-		//创建资源
-		CDC dcMem;
-		dcMem.CreateCompatibleDC(pDC);
-		CBitmap *pOldBitmap = dcMem.SelectObject(&Bitmap);
-		//绘画图片
-		BITMAP bm;
-		Bitmap.GetBitmap(&bm);
-		pDC->TransparentBlt(10, 28+5, bm.bmWidth, bm.bmHeight, &dcMem, 0, 0, bm.bmWidth, bm.bmHeight,RGB(255,255,255)); 
-		
-		//是否资源
-		dcMem.SelectObject(pOldBitmap);
-		Bitmap.DeleteObject();
-		dcMem.DeleteDC();
+		//道具图片
+		CSkinImage image;
+		image.SetLoadInfo(szPathName.GetBuffer());
+
+		CImageHandle h(&image);
+		HBITMAP hBitmap = h.GetBitmapHandle();
+		if (hBitmap)
+		{
+			CBitmap* pBmp = CBitmap::FromHandle(hBitmap);
+
+			//创建资源
+			CDC dcMem;
+			dcMem.CreateCompatibleDC(pDC);
+			CBitmap *pOldBitmap = dcMem.SelectObject(pBmp);
+			//绘画图片
+			BITMAP bm;
+			pBmp->GetBitmap(&bm);
+			pDC->TransparentBlt(10, 28+5, bm.bmWidth, bm.bmHeight, &dcMem, 0, 0, bm.bmWidth, bm.bmHeight,RGB(255,255,255)); 
+
+			//是否资源
+			dcMem.SelectObject(pOldBitmap);
+			pBmp->DeleteObject();
+			dcMem.DeleteDC();
+		}
 	}
+
 	AfxSetResourceHandle(GetModuleHandle(NULL));
 
 
 	//获取位置
-	CRect rcStaticName, rcStaticDes;
+	CRect rcStaticName;
 	GetDlgItem(IDC_PROPERTY_NAME)->GetWindowRect(rcStaticName);
-	GetDlgItem(IDC_PROPERTY_DESCRIBE)->GetWindowRect(rcStaticDes);
 	ScreenToClient(&rcStaticName);
-	ScreenToClient(&rcStaticDes);
 
 	//设置内容
 	CRect rcPropertyName(rcStaticName.right+3, rcStaticName.top, rcStaticName.right+200, rcStaticName.bottom+100);
-	CRect rcPropertyDes(rcStaticDes.right+3, rcStaticDes.top, rcStaticDes.right+200, rcStaticDes.bottom+70);
-	if(m_nPropertyID>=PROP_MEMBER_1)rcPropertyDes.right+=30;
 
 	//创建字体
 	CFont font;
@@ -269,14 +276,15 @@ void CPropertyItem::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
 		DEFAULT_PITCH | FF_SWISS,  // nPitchAndFamily
 		"Arial"));                 // lpszFacename
 
+	Invalidate(FALSE);
 	//设置属性
 	pDC->SetBkMode(TRANSPARENT);
 	CFont* def_font = pDC->SelectObject(&font);
 	//描述信息
 	UINT nFormat = DT_LEFT | DT_TOP | DT_WORDBREAK;
 	pDC->DrawText(g_PropertyDescribe[m_nPropertyID].szName, rcPropertyName, nFormat);
-	pDC->DrawText(g_PropertyDescribe[m_nPropertyID].szDescribe, rcPropertyDes, nFormat);
 
+	SetDlgItemText(IDC_STATIC_DESC, g_PropertyDescribe[m_nPropertyID].szDescribe);
 	//删除资源
 	pDC->SelectObject(def_font);
 	font.DeleteObject();
