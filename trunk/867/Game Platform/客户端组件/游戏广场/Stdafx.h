@@ -69,6 +69,10 @@
 #include "..\鲜花道具\PropertyModule.h"
 #include "..\..\共享组件\公共服务\ComService.h"
 #include "..\..\共享组件\界面控件\SkinControls.h"
+#include "..\..\共享组件\界面控件\PngImage.h"
 #include "..\..\共享组件\界面资源\SkinResourceModule.h"
+
+
+
 
 //////////////////////////////////////////////////////////////////////////

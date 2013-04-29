@@ -54,10 +54,10 @@ bool CUserListView::InitUserListView()
 	}
 	SetImageList(&m_StatusImage,LVSIL_SMALL);
 
-	//设置颜色
-	SetBkColor(RGB(10,130,180));
-	SetTextColor(RGB(232,249,253));
-	SetTextBkColor(RGB(10,130,180));
+	////设置颜色
+	//SetBkColor(RGB(10,130,180));
+	//SetTextColor(RGB(232,249,253));
+	//SetTextBkColor(RGB(10,130,180));
 
 	//命令行处理
 	WORD wGameType=GAME_GENRE_SCORE;
@@ -253,13 +253,13 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 {
 	CRect rcItem=lpDrawItemStruct->rcItem;
 	CDC * pDC=CDC::FromHandle(lpDrawItemStruct->hDC);
+	tagUserData const *pMeUserData = m_pIClientKernel->GetMeUserInfo();
 
 	int iItem=lpDrawItemStruct->itemID;
 	int iCount=GetHeaderCtrl()->GetItemCount();
 	int iBeen=rcItem.left;
 	TCHAR szBuffer[1024];
 	tagUserData *pIUserItem = (tagUserData *)GetItemData(iItem);
-
 	GetItemRect(iItem, rcItem, LVIR_LABEL);
 
 	for (int i=0;i<iCount;i++)
@@ -271,15 +271,29 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 		if ( i == 0 )
 		{
 			GetSubItemRect(iItem,i,LVIR_ICON,rcSubItem);
-
-			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
-			else pDC->FillSolidRect(&rcSubItem,GetBkColor());
-
-			if (lpDrawItemStruct->itemState&ODS_FOCUS)
-				pDC->SetTextColor(RGB(255,255,255));
-			else if ( 0 < pIUserItem->cbMemberOrder /*&& (DTP_USER_ACCOUNTS == m_wDataDescribe[i])*/)
-				pDC->SetTextColor(RGB(255,0,0));
+			//如果是焦点（被点击）
+			if (lpDrawItemStruct->itemState&ODS_FOCUS) 
+				pDC->FillSolidRect(&rcSubItem,RGB(212,204,193)); 
 			else 
+				pDC->FillSolidRect(&rcSubItem,GetBkColor());
+
+			//如果是焦点（被点击）
+			if (lpDrawItemStruct->itemState&ODS_FOCUS)
+				pDC->SetTextColor(RGB(0,0,0));
+			else if (pIUserItem->dwUserID == pMeUserData->dwUserID)
+			{
+				if(0 < pIUserItem->cbMemberOrder)
+					pDC->SetTextColor(RGB(255,0,0));
+				else
+					pDC->SetTextColor(RGB(0,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(225,237,173)); 
+			}
+			else if ( 0 < pIUserItem->cbMemberOrder /*&& DTP_USER_ACCOUNTS== m_wDataDescribe[i]*/)
+			{
+				pDC->SetTextColor(RGB(255,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(251,237,166)); 
+			}
+			else
 				pDC->SetTextColor(RGB(0,0,0));
 
 			//绘画标志
@@ -290,23 +304,49 @@ void CUserListView::DrawItem(LPDRAWITEMSTRUCT lpDrawItemStruct)
 
 			GetSubItemRect(iItem,i,LVIR_LABEL,rcSubItem);
 
-			if (lpDrawItemStruct->itemState&ODS_FOCUS) pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
-			else pDC->FillSolidRect(&rcSubItem,GetBkColor());
+			if (lpDrawItemStruct->itemState&ODS_FOCUS) 
+				pDC->FillSolidRect(&rcSubItem,RGB(212,204,193));
+			else if (pIUserItem->dwUserID == pMeUserData->dwUserID)
+			{
+				if(0 < pIUserItem->cbMemberOrder)
+					pDC->SetTextColor(RGB(255,0,0));
+				else
+					pDC->SetTextColor(RGB(0,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(225,237,173)); 
+			}
+			else if ( 0 < pIUserItem->cbMemberOrder /*&& DTP_USER_ACCOUNTS== m_wDataDescribe[i]*/)
+			{
+				pDC->FillSolidRect(&rcSubItem,RGB(251,237,166)); 
+			}
+			else 
+				pDC->FillSolidRect(&rcSubItem,GetBkColor());
 
 			rcSubItem.top+=3;
 			pDC->DrawText(szBuffer,lstrlen(szBuffer),&rcSubItem,DT_LEFT|DT_END_ELLIPSIS);
 		}
 		else
 		{		
+			//如果是焦点（被点击）
 			if (lpDrawItemStruct->itemState&ODS_FOCUS)
-				pDC->FillSolidRect(&rcSubItem,RGB(10,36,106)); 
+				pDC->FillSolidRect(&rcSubItem,RGB(212,204,193)); 
 			else
 				pDC->FillSolidRect(&rcSubItem,GetBkColor());
-
+			//如果是焦点（被点击）
 			if (lpDrawItemStruct->itemState&ODS_FOCUS)
-				pDC->SetTextColor(RGB(255,255,255));
-			else if ( 0 < pIUserItem->cbMemberOrder /*&& DTP_GAME_ID == m_wDataDescribe[i]*/) 
+				pDC->SetTextColor(RGB(0,0,0));
+			else if (pIUserItem->dwUserID == pMeUserData->dwUserID)
+			{
+				if(0 < pIUserItem->cbMemberOrder)
+					pDC->SetTextColor(RGB(255,0,0));
+				else
+					pDC->SetTextColor(RGB(0,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(225,237,173)); 
+			}
+			else if ( 0 < pIUserItem->cbMemberOrder /*&& DTP_GAME_ID == m_wDataDescribe[i]*/)
+			{
 				pDC->SetTextColor(RGB(255,0,0));
+				pDC->FillSolidRect(&rcSubItem,RGB(251,237,166)); 
+			}
 			else
 				pDC->SetTextColor(RGB(0,0,0));
 

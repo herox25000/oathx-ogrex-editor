@@ -41,14 +41,28 @@
 #define IDM_UM_CUT_USER				WM_USER+155							//用户下线
 #define IDM_UM_LIMIT_ACCOUN			WM_USER+156							//禁止帐户
 
+
+//
+#define TIMER_TRYCONNECT				1    //尝试重连定时器
 //////////////////////////////////////////////////////////////////////////
 
 BEGIN_MESSAGE_MAP(CRoomViewItem, CDialog)
-	ON_WM_SIZE()
-	ON_WM_PAINT()
+	//系统消息
 	ON_WM_COPYDATA()
 	ON_WM_ERASEBKGND()
 	ON_WM_SHOWWINDOW()
+	ON_WM_SIZE()
+	ON_WM_PAINT()
+	ON_WM_VSCROLL()
+	ON_WM_SETCURSOR()
+	ON_WM_LBUTTONUP()
+	ON_WM_RBUTTONUP()
+	ON_WM_MOUSEWHEEL()
+	ON_WM_LBUTTONDOWN()
+	ON_WM_RBUTTONDOWN()
+	ON_WM_LBUTTONDBLCLK()
+	ON_WM_TIMER()
+
 	ON_MESSAGE(WM_HIT_EXPMESSTION,	OnHitExpression)
 	ON_BN_CLICKED(IDC_TABLERULE,OnBnClickeTableRule)
 	ON_BN_CLICKED(IDC_AUTO_SIT,	OnBnClickedAutoSit)
@@ -112,7 +126,8 @@ CRoomViewItem::CRoomViewItem() : CDialog(IDD_GAME_ROOM), m_VorSplitter(VorSplite
 	m_ServiceStatus=ServiceStatus_Null;
 	memset(&m_OptionBuffer,0,sizeof(m_OptionBuffer));
 	m_pFindUserDlg=NULL;
-
+	m_nTryConnectCnt = 0;
+	m_bTryConnerctState = false;
 	return;
 }
 
@@ -295,6 +310,8 @@ BOOL CRoomViewItem::OnInitDialog()
 
 	//更新资源
 	UpdateSkinResource();
+	//设置滚动
+	//m_SkinScrollBar.InitScroolBar(this);
 
 	return TRUE;
 }
@@ -1905,7 +1922,7 @@ void CRoomViewItem::DrawTableFrame(CDC * pDC)
 	return;
 }
 
-//左视图区
+//右边视图区
 void CRoomViewItem::DrawLeftViewFrame(CDC * pDC)
 {
 	//获取位置
@@ -2400,12 +2417,26 @@ bool __cdecl CRoomViewItem::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 	//错误处理
 	if (nErrorCode!=0)
 	{
+		//如果是重连状态
+		if(m_bTryConnerctState)
+		{
+			if(m_nTryConnectCnt > 5)
+			{
+				ShowMessageBox(TEXT("结果5次尝试连接服务器依然失败，请退出房间！"),MB_ICONINFORMATION);
+				((CGameFrame*)AfxGetMainWnd())->CloseRoomViewItem(this);
+				return true;
+			}
+			SetTimer(TIMER_TRYCONNECT,3*1000,NULL);
+			return true;
+		}
+
 		g_GlobalAttemper.DestroyStatusWnd(this);
 		ShowMessageBox(TEXT("游戏房间连接失败，您暂时不能进入此游戏房间！"),MB_ICONINFORMATION);
 		((CGameFrame*)AfxGetMainWnd())->CloseRoomViewItem(this);
 		return true;
 	}
-
+	m_nTryConnectCnt = 0;
+	m_bTryConnerctState = false;
 	//发送登录信息
 	SendLogonPacket();
 	m_ServiceStatus=ServiceStatus_EfficacyUser;
@@ -2473,22 +2504,36 @@ bool __cdecl CRoomViewItem::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutReas
 	//关闭处理
 	CloseGameClient();
 	g_GlobalAttemper.DestroyStatusWnd(this);
-	m_ServiceStatus=ServiceStatus_NetShutDown;
 	if (cbShutReason!=SHUT_REASON_NORMAL)
 	{
-		if ((cbShutReason==SHUT_REASON_REMOTE)||(cbShutReason==SHUT_REASON_TIME_OUT))
+		if (m_ServiceStatus==ServiceStatus_Serviceing)
 		{
-			m_MessageProxyHelper->InsertSystemString("由于网络问题，您已经与服务器断开连接，请重新连接",0);
-			ShowMessageBox("由于网络问题，您已经与服务器断开连接，请重新连接",MB_ICONINFORMATION);
+			if ((cbShutReason==SHUT_REASON_REMOTE)||(cbShutReason==SHUT_REASON_TIME_OUT))
+			{
+				m_MessageProxyHelper->InsertSystemString("由于网络问题，您已经与服务器断开连接，3秒后自动重连",0);
+				SetTimer(TIMER_TRYCONNECT,3*1000,NULL);
+			}
+			else
+			{
+				ShowMessageBox("由于网络数据包处理失败，网络中断了",MB_ICONINFORMATION);
+			}
 		}
-		else
-		{
-			ShowMessageBox("由于网络数据包处理失败，网络中断了",MB_ICONINFORMATION);
-		}
+		//if ((cbShutReason==SHUT_REASON_REMOTE)||(cbShutReason==SHUT_REASON_TIME_OUT))
+		//{
+		//	m_MessageProxyHelper->InsertSystemString("由于网络问题，您已经与服务器断开连接，请重新连接",0);
+		//	m_TableFrame.DestroyWindow();
+		//	//重新连接到服务器
+		//	ConnectGameServer();
+		//}
+		//else
+		//{
+		//	ShowMessageBox("由于网络数据包处理失败，网络中断了",MB_ICONINFORMATION);
+		//}
 	}
-
+	m_ServiceStatus=ServiceStatus_NetShutDown;
 	//关闭房间
-	if (bCloseRoomView==true) ((CGameFrame*)AfxGetMainWnd())->CloseRoomViewItem(this);
+	if (bCloseRoomView==true) 
+		((CGameFrame*)AfxGetMainWnd())->CloseRoomViewItem(this);
 
 	return true;
 }
@@ -2640,6 +2685,10 @@ bool CRoomViewItem::OnSocketMainInfo(CMD_Command Command, void * pData, WORD wDa
 			{
 				m_TableFrame.CreateTableFrame(this,100);
 				m_TableFrame.InitTableFrame(pServerInfo->wTableCount,pServerInfo->wChairCount,(pServerInfo->cbHideUserInfo==TRUE),pGameKind,pIUnknownEx);
+				//调整界面
+				CRect rcClient;
+				GetClientRect(&rcClient);
+				RectifyControl(rcClient.Width(),rcClient.Height());
 			}
 			catch (...)
 			{
@@ -4169,4 +4218,25 @@ bool CRoomViewItem::SetChatObject(IUserItem * pIUserItem)
 	return true;
 }
 
+//定时器
+void CRoomViewItem::OnTimer(UINT nIDEvent)
+{
+	__super::OnTimer(nIDEvent);
+	switch(nIDEvent)
+	{
+	case TIMER_TRYCONNECT:
+		{
+			KillTimer(nIDEvent);
+			m_bTryConnerctState = true;
+			m_nTryConnectCnt++;
+			m_TableFrame.DestroyTableFrame();
+			ConnectGameServer();
+			CString strlog;
+			strlog.Format(TEXT("正在尝试重新连接服务器，5次不成功会关闭房间，当下第[%d]次"),m_nTryConnectCnt);
+			m_MessageProxyHelper->InsertSystemString(strlog,0);
+		}
+		break;
+	}
+
+}
 //////////////////////////////////////////////////////////////////////////

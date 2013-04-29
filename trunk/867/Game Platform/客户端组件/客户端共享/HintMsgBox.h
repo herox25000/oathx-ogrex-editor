@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //消息窗口
-class CLIENT_SHARE_CLASS CHintMsgBox : public CSkinDialogEx
+class CLIENT_SHARE_CLASS CHintMsgBox : public CSkinPngDialog//CSkinDialogEx
 {
 	//属性变量
 protected:
@@ -22,7 +22,6 @@ protected:
 	UINT							m_nBtCount;							//按钮数目
 	CRect							m_rcString;							//字符位置
 	HINSTANCE						m_hResInstance;						//资源句柄
-
 	//控件变量
 protected:
 	CSkinButton						m_btButton[3];						//按钮控件

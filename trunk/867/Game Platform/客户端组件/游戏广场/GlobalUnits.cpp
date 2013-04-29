@@ -52,7 +52,6 @@ bool CGlobalUnits::InitGlobalUnits()
 {
 	//设置随机种子
 	srand((UINT)time(NULL));
-
 	//设置工作目录
 	GetModuleFileName(AfxGetInstanceHandle(),m_szDirWork,sizeof(m_szDirWork));
 	int nModuleLen=lstrlen(m_szDirWork);
@@ -60,6 +59,7 @@ bool CGlobalUnits::InitGlobalUnits()
 	m_szDirWork[nModuleLen-nProcessLen]=0;
 	SetCurrentDirectory(m_szDirWork);
 
+	m_dwPlazaVersion = ReadPlazaVersion();
 	//设置界面目录
 	_snprintf(m_szDirSkin,sizeof(m_szDirSkin),TEXT("%s\\Skin"),m_szDirWork);
 
@@ -187,7 +187,6 @@ bool CGlobalUnits::DeleteUserCookie()
 	CInternetSession::SetCookie(szCookieUrl,TEXT("Accounts"),TEXT(""));
 	CInternetSession::SetCookie(szCookieUrl,TEXT("Password"),TEXT(""));
 	CInternetSession::SetCookie(szCookieUrl,TEXT("UserToken"),TEXT(""));
-
 	return true;
 }
 
@@ -334,5 +333,27 @@ bool CGlobalUnits::RegisterHotKey(HWND hWnd, UINT uKeyID, WORD wHotKey)
 	return (bSuccess==TRUE)?true:false;
 }
 
+//读取大厅版本
+DWORD CGlobalUnits::ReadPlazaVersion()
+{
+	//读取配置
+	TCHAR szFileName[MAX_PATH];
+	_snprintf(szFileName,sizeof(szFileName),TEXT("%s\\Version.ini"),m_szDirWork);
+	CString StrVer;
+	//系统消息
+	GetPrivateProfileString(TEXT("PLAZA"),TEXT("Version"),TEXT(""),StrVer.GetBuffer(MAX_PATH),MAX_PATH,szFileName);
+	StrVer.ReleaseBuffer();	
+
+	WORD HighV=0;
+	WORD LowV=0;
+	int n = StrVer.Find('.');
+	if (-1 != n)
+	{
+		HighV = atoi(StrVer.Left(n));
+	}
+	LowV = atoi(StrVer.Mid(n+1));
+	
+	return MAKELONG(LowV,HighV);
+}
 
 //////////////////////////////////////////////////////////////////////////

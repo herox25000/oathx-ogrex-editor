@@ -27,10 +27,10 @@ BEGIN_MESSAGE_MAP(CDlgOptionItem, CDialog)
 	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
-BEGIN_MESSAGE_MAP(CDlgOption, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CDlgOption, CSkinPngDialog)
 END_MESSAGE_MAP()
 
-BEGIN_MESSAGE_MAP(CDlgEnterTablePass, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CDlgEnterTablePass, CSkinPngDialog)
 END_MESSAGE_MAP()
 //////////////////////////////////////////////////////////////////////////
 
@@ -570,7 +570,7 @@ bool CDlgOptionTableRule::SaveOptions()
 	m_TableRuleParameter.lLessScore=GetDlgItemInt(IDC_SCORE_LESS,NULL,TRUE);
 	if ((m_TableRuleParameter.bLimitScore)&&(m_TableRuleParameter.lLessScore>=m_TableRuleParameter.lMaxScore))
 	{
-		ShowInformation(TEXT("积分限制范围参数不正确，请正确设置积分限制范围！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("积分限制范围参数不正确，请正确设置积分限制范围！"),20,MB_ICONINFORMATION);
 		GetDlgItem(IDC_SCORE_MAX)->SetFocus();
 		return false;
 	}
@@ -579,7 +579,7 @@ bool CDlgOptionTableRule::SaveOptions()
 	GetDlgItemText(IDC_TABLE_PASSWORD,m_TableRuleParameter.szPassword,CountArray(m_TableRuleParameter.szPassword));
 	if ((m_TableRuleParameter.bPassword==true)&&(m_TableRuleParameter.szPassword[0]==0))
 	{
-		ShowInformation(TEXT("桌子携带密码没有设置，请输入设置桌子携带密码！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("桌子携带密码没有设置，请输入设置桌子携带密码！"),20,MB_ICONINFORMATION);
 		GetDlgItem(IDC_TABLE_PASSWORD)->SetFocus();
 		return false;
 	}
@@ -602,7 +602,7 @@ LPCTSTR CDlgOptionTableRule::GetButtonText()
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CDlgOption::CDlgOption(CGameOption * pGameOption, CServerOption * pServerOption) : CSkinDialogEx(IDD_OPTION)
+CDlgOption::CDlgOption(CGameOption * pGameOption, CServerOption * pServerOption) : CSkinPngDialog(IDD_OPTION)
 {
 	//设置变量
 	m_pGameOption=pGameOption;
@@ -639,13 +639,13 @@ BOOL CDlgOption::OnInitDialog()
 	CRect rcClient,rcFrame;
 	GetClientRect(&rcClient);
 	rcFrame.left=BUTTON_BAR_WIDTH+15;
-	rcFrame.top=GetYExcursionPos()+8;
+	rcFrame.top=35;
 	rcFrame.right=rcClient.Width()-10;
 	rcFrame.bottom=rcClient.Height()-35;
 
 	//创建控件
 	m_ButtonBar.Create(NULL,NULL,WS_CHILD,CRect(0,0,0,0),this,10);
-	m_ButtonBar.MoveWindow(8,8+GetYExcursionPos(),BUTTON_BAR_WIDTH+2,BUTTON_BAR_HEIGHT);
+	m_ButtonBar.MoveWindow(8,35,BUTTON_BAR_WIDTH+2,BUTTON_BAR_HEIGHT);
 	m_ButtonBar.ShowWindow(SW_SHOW);
 	m_ButtonBar.InitButtonBar(rcFrame,this);
 
@@ -728,7 +728,7 @@ void CDlgOption::OnCancel()
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CDlgEnterTablePass::CDlgEnterTablePass() : CSkinDialogEx(IDD_ENTER_TABLE_PASS)
+CDlgEnterTablePass::CDlgEnterTablePass() : CSkinPngDialog(IDD_ENTER_TABLE_PASS)
 {
 	//设置变量
 	m_lpPassword=NULL;
@@ -781,7 +781,7 @@ void CDlgEnterTablePass::OnOK()
 	GetDlgItemText(IDC_ENTER_TABLE_PASSWORD,m_lpPassword,m_cbPasswordLen);
 	if (m_lpPassword[0]==0)
 	{
-		ShowInformation(TEXT("请输入桌子密码！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("请输入桌子密码！"),20,MB_ICONINFORMATION);
 		GetDlgItem(IDC_ENTER_TABLE_PASSWORD)->SetFocus();
 		return ;
 	}

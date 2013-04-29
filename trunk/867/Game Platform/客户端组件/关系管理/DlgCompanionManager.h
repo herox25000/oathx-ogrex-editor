@@ -10,7 +10,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //好友管理对话框类
-class CDlgCompanionManager : public CSkinDialogEx
+class CDlgCompanionManager : public CSkinPngDialog
 {
 	//变量定义
 protected:

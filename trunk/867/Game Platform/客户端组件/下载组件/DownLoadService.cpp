@@ -14,7 +14,7 @@ const TCHAR szErrorHtml2[]=TEXT("<!DOCTYPE HTML PUBLIC");
 
 //////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CDownLoadMission, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CDownLoadMission, CSkinPngDialog)
 	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_RETRY, OnBnClickedReTry)
 END_MESSAGE_MAP()
@@ -321,7 +321,7 @@ void CDownLoadThread::DownLoadCleanUp()
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CDownLoadMission::CDownLoadMission(IDownLoadMissionSink * pIDownLoadMissionSink) : CSkinDialogEx(IDD_DOWN_LOAD)
+CDownLoadMission::CDownLoadMission(IDownLoadMissionSink * pIDownLoadMissionSink) : CSkinPngDialog(IDD_DOWN_LOAD)
 {
 	//设置变量
 	m_dwMissionID=0;
@@ -351,7 +351,7 @@ void CDownLoadMission::DoDataExchange(CDataExchange* pDX)
 BOOL CDownLoadMission::OnInitDialog()
 {
 	__super::OnInitDialog();
-
+	SetWindowText("下载");
 	//设置描述
 	SetDlgItemText(IDC_DESCRIPTION,m_DownLoadRequest.szDescribe);
 
@@ -435,7 +435,7 @@ void CDownLoadMission::OnTimer(UINT_PTR nIDEvent)
 				DestroyWindow();
 				LPCTSTR pszLocalFile=m_DownLoadThread.GetDownLoadFileName();
 				ShellExecute(NULL,TEXT("open"),pszLocalFile,NULL,NULL,SW_SHOWDEFAULT);
-
+				
 				//事件通知
 				m_pIDownLoadMissionSink->OnMissionFinish(enDownLoadStatus_Finish,this);
 

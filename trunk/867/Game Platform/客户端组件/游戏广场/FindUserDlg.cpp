@@ -2,12 +2,12 @@
 #include "FindUserDlg.h"
 #include "RoomViewItem.h"
 
-BEGIN_MESSAGE_MAP(CFindUserDlg, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CFindUserDlg, CSkinPngDialog)
 	ON_NOTIFY(NM_RCLICK, IDC_LIST, OnNMRclickList)
 END_MESSAGE_MAP()
 
 //构造函数
-CFindUserDlg::CFindUserDlg(CWnd * pParentWnd, UINT uGameType) : CSkinDialogEx(IDD_FIND_USER)
+CFindUserDlg::CFindUserDlg(CWnd * pParentWnd, UINT uGameType) : CSkinPngDialog(IDD_FIND_USER)
 {
 	m_uGameType=uGameType;
 	m_pParentWnd=pParentWnd;
@@ -21,7 +21,7 @@ CFindUserDlg::~CFindUserDlg()
 // DDX/DDV 支持
 void CFindUserDlg::DoDataExchange(CDataExchange * pDX)
 {
-	CSkinDialogEx::DoDataExchange(pDX);
+	__super::DoDataExchange(pDX);
 	DDX_Control(pDX, IDOK, m_BtFind);
 	DDX_Control(pDX, IDCANCEL, m_BtCancel);
 	DDX_Control(pDX, IDC_LIST, m_UserList);
@@ -34,7 +34,7 @@ void CFindUserDlg::OnOK()
 {
 	if ((m_UserName.GetWindowTextLength()==0)&&(m_UserAcc.GetWindowTextLength()==0))
 	{
-		ShowInformation(TEXT("请输入要查找的 用户名字 或者游戏 ID 号码！"),0,MB_ICONQUESTION);
+		ShowInformation(TEXT("请输入要查找的 用户名字 或者游戏 ID 号码！"),20,MB_ICONQUESTION);
 		m_UserName.SetFocus();
 		return;
 	}

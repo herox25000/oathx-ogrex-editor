@@ -8,7 +8,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 //啦八道具
-class PROPERTY_MODULE_CLASS CBugleDlg : public CSkinDialogEx
+class PROPERTY_MODULE_CLASS CBugleDlg : public CSkinPngDialog
 {
 	//变量定义
 protected:
@@ -63,12 +63,8 @@ protected:
 	virtual BOOL OnInitDialog();
 	//确认消息
 	afx_msg void OnBnClickedOk();
-	//控件颜色
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
 	//时间消息
 	afx_msg void OnTimer(UINT nIDEvent);
-	//绘画函数
-	afx_msg void OnPaint();
 
 	DECLARE_MESSAGE_MAP()
 };

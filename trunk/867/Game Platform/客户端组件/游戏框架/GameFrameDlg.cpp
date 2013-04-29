@@ -668,7 +668,7 @@ void CGameFrameDlg::OnCancel()
 		}
 	}
 
-	if (IDYES != ShowInformation(TEXT("你确定要退出游戏吗?"),0,MB_ICONQUESTION|MB_YESNO))
+	if (IDYES != ShowInformation(TEXT("你确定要退出游戏吗?"),30,MB_ICONQUESTION|MB_YESNO))
 		return;
 
 	//保存配置
@@ -742,7 +742,7 @@ void CGameFrameDlg::OnSize(UINT nType, int cx, int cy)
 void CGameFrameDlg::UserOnBankBT(BYTE Type)
 {
 	if(Type!=2)
-		ShowInformation(TEXT("游戏中只能使用取钱功能！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("游戏中只能使用取钱功能！"),10,MB_ICONINFORMATION);
 
 	m_DlgFramBank.DoModal();
 	m_DlgFramBank.SetBankType(Type);

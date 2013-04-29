@@ -11,20 +11,16 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CCharmValueExchange, CSkinDialogEx)
-	ON_WM_LBUTTONDOWN()
-	ON_WM_MOUSEMOVE()
+BEGIN_MESSAGE_MAP(CCharmValueExchange, CSkinPngDialog)
 	ON_WM_TIMER()	
 	ON_EN_CHANGE(IDC_EXCHANGE_CHARM_VALUE, OnEnChangeExchangeCharmValue)
 	ON_BN_CLICKED(IDC_BT_EXCHANGE, OnBnClickedBtExchange)
-	ON_WM_CTLCOLOR()
-	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CCharmValueExchange::CCharmValueExchange(CWnd* pParent):CSkinDialogEx(IDD_CHARM_VALUE_EXCHANGE, pParent)
+CCharmValueExchange::CCharmValueExchange(CWnd* pParent):CSkinPngDialog(IDD_CHARM_VALUE_EXCHANGE, pParent)
 {
 	m_lExchangeCharmValue=0;
 	m_lLoveliness=0;
@@ -53,6 +49,8 @@ void CCharmValueExchange::DoDataExchange(CDataExchange* pDX)
 //确定信息
 void CCharmValueExchange::OnBnClickedBtExchange()
 {
+	ShowInformation("此功能暂时没开放！",10,MB_ICONINFORMATION);
+	return;
 	//参数验证
 	if(m_pMeUserData->lLoveliness==0)
 	{
@@ -89,22 +87,15 @@ void CCharmValueExchange::OnBnClickedBtExchange()
 //初始化函数
 BOOL CCharmValueExchange::OnInitDialog()
 {
-	CSkinDialogEx::OnInitDialog();
+	__super::OnInitDialog();
 
 	UpdateData(FALSE);
-
 	SetWindowText(TEXT("魅力兑换"));
-
 	//交换数值
 	CString strValue;
 	strValue.Format(TEXT("%ld"),m_lExchangeCharmValue);
 	GetDlgItem(IDC_EXCHANGE_CHARM_VALUE)->SetWindowText(strValue);
 	GetDlgItem(IDC_EXCHANGE_CHARM_VALUE)->SetFocus();
-
-	//按钮颜色
-	m_btOK.SetTextColor(RGB(0,0,0));
-	m_btCancel.SetTextColor(RGB(30,30,30));
-
 	//定时更新
 	SetTimer(IDI_CHARMVALUE_UPDATE_VIEW,TIME_CHARMVALUE_UPDATE_VIEW,NULL);
 
@@ -115,54 +106,15 @@ BOOL CCharmValueExchange::OnInitDialog()
 void CCharmValueExchange::UpdateView()
 {
 	UpdateData(TRUE);
-
 	//兑换信息
 	if(m_pMeUserData!=NULL)
 	{
 		m_lBankGoldValue = m_pMeUserData->lInsureScore;
 		m_lLoveliness = ((m_pMeUserData->lLoveliness<0)?0:m_pMeUserData->lLoveliness);
 	}
-
 	//设置信息
 	m_strExChangeValue.Format(TEXT("转换汇率：1魅力 = %d游戏币"), CHARM_EXCHANGE_RATE);
-
-	//InvalidateRect(NULL);
 	UpdateData(FALSE);
-}
-
-//绘画函数
-void CCharmValueExchange::OnPaint()
-{
-	CPaintDC dc(this); 
-
-	//绘画标题
-	DrawCaption(&dc);
-
-	//绘画背景
-	DrawBackGround(&dc);
-
-	//绘画边框
-	DrawBorder(&dc);
-
-	//绘画图片
-	CPngImage PngImage;
-	HINSTANCE hInstance = CPropertyBar::m_pPropertyBar->m_ReshInstance;
-	PngImage.LoadImage(hInstance,CPropertyBar::m_pPropertyBar->m_PropertyViewImage.pszExChagneArrowhead);
-	PngImage.DrawImage(&dc,168,46);
-
-	return;
-}
-
-//鼠标信息
-void CCharmValueExchange::OnLButtonDown(UINT nFlags, CPoint point)
-{
-	CSkinDialogEx::OnLButtonDown(nFlags, point);
-}
-
-//鼠标信息
-void CCharmValueExchange::OnMouseMove(UINT nFlags, CPoint point)
-{
-	CSkinDialogEx::OnMouseMove(nFlags, point);
 }
 
 //命令信息
@@ -207,35 +159,6 @@ void CCharmValueExchange::OnEnChangeExchangeCharmValue()
 	m_lExchangeCharmValue=_tstol(strCount);
 
 	return ;
-}
-
-//设置颜色
-HBRUSH CCharmValueExchange::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
-{
-	switch (nCtlColor)
-	{
-	case CTLCOLOR_DLG:
-	case CTLCOLOR_STATIC:
-		{
-			if(pWnd->m_hWnd==GetDlgItem(IDC_EXCHANGE_VALUE)->m_hWnd)
-			{
-				pDC->SetTextColor(RGB(255,0,0));
-			}
-			//else if(pWnd->m_hWnd==GetDlgItem(IDC_GOLD_VALUE)->m_hWnd || pWnd->m_hWnd==GetDlgItem(IDC_STATIC_1)->m_hWnd)
-			//{
-			//	pDC->SetTextColor(RGB(30,30,30));
-			//}
-			else
-			{
-				pDC->SetTextColor(RGB(0,0,0));
-			}
-			pDC->SetBkMode(TRANSPARENT);
-
-			return m_SkinAttribute.m_brBackGround;
-		}
-	}
-
-	return __super::OnCtlColor(pDC,pWnd,nCtlColor);
 }
 
 //设置信息

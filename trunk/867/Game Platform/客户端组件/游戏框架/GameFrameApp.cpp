@@ -59,7 +59,7 @@ BOOL CGameFrameApp::InitInstance()
 	{
 		CString strBuffer;
 		strBuffer.Format(TEXT("由于 [ %s ] 游戏程序即将退出。"),pszMesssage);
-		ShowInformation(strBuffer,0,MB_ICONSTOP);
+		ShowInformation(strBuffer,10,MB_ICONSTOP);
 		if (m_pGameFrame!=NULL) SafeDelete(m_pGameFrame);
 		return FALSE;
 	}

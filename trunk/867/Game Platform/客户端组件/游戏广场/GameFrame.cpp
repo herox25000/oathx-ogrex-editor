@@ -3,9 +3,11 @@
 #include "DlgOption.h"
 #include "GlobalUnits.h"
 #include "DlgIndividualInfo.h"
-
+#include "DlgEnquire.h"
 //////////////////////////////////////////////////////////////////////////
-
+//圆角大小
+#define ROUND_CX					4									//圆角宽度
+#define ROUND_CY					4									//圆角高度
 //框架偏移
 #define FRAME_EXALTATION			24									//提升高度
 
@@ -343,16 +345,17 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		{
 			if(m_DlgGamePlaza.m_ClientSocket.GetInterface() == NULL)
 				return TRUE;
-			//创建窗体
-			if ( m_DlgLockComputer.m_hWnd == NULL )
-			{
-				m_DlgLockComputer.Create(IDD_LOCKCOMPUTER, this);
-			}
-			//显示窗体
-			m_DlgLockComputer.CenterWindow();
-			m_DlgLockComputer.ShowWindow(SW_SHOW);
-			m_DlgLockComputer.SetActiveWindow();
-			m_DlgLockComputer.SetForegroundWindow();
+			////创建窗体
+			//if ( m_DlgLockComputer.m_hWnd == NULL )
+			//{
+			//	m_DlgLockComputer.Create(IDD_LOCKCOMPUTER, this);
+			//}
+			////显示窗体
+			//m_DlgLockComputer.CenterWindow();
+			//m_DlgLockComputer.ShowWindow(SW_SHOW);
+			//m_DlgLockComputer.SetActiveWindow();
+			//m_DlgLockComputer.SetForegroundWindow();
+			m_DlgLockComputer.DoModal();
 			return TRUE;
 		}
 	case IDC_BT_PLAZA	:				//大厅按钮
@@ -396,41 +399,41 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 
 			return TRUE;
 		}
-	case IDC_BT_SWITCH_ACCOUNTS :		//切换按钮
-		{
-			//状态判断
-			tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
-			if (GlobalUserData.dwUserID==0L) return TRUE;
+	//case IDC_BT_SWITCH_ACCOUNTS :		//切换按钮
+	//	{
+	//		//状态判断
+	//		tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+	//		if (GlobalUserData.dwUserID==0L) return TRUE;
 
-			//切换询问
-			if (m_pRoomViewItem[0]!=NULL)
-			{
-				const TCHAR szMessage[]=TEXT("切换用户帐号，将会关闭所有游戏房间，确实要切换用户帐号吗？ ");
-				int iResult=ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
-				if (iResult!=IDYES) return TRUE;
-			}
-			else
-			{
-				const TCHAR szMessage[]=TEXT("确实要注销当前用户，切换用户帐号吗？ ");
-				int iResult=ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
-				if (iResult!=IDYES) return TRUE;
-			}
+	//		//切换询问
+	//		if (m_pRoomViewItem[0]!=NULL)
+	//		{
+	//			const TCHAR szMessage[]=TEXT("切换用户帐号，将会关闭所有游戏房间，确实要切换用户帐号吗？ ");
+	//			int iResult=ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
+	//			if (iResult!=IDYES) return TRUE;
+	//		}
+	//		else
+	//		{
+	//			const TCHAR szMessage[]=TEXT("确实要注销当前用户，切换用户帐号吗？ ");
+	//			int iResult=ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
+	//			if (iResult!=IDYES) return TRUE;
+	//		}
 
-			//关闭房间
-			ActivePlazaViewItem();
-			CloseAllRoomViewItem();
+	//		//关闭房间
+	//		ActivePlazaViewItem();
+	//		CloseAllRoomViewItem();
 
-			//删除记录
-			g_GlobalUnits.DeleteUserCookie();
+	//		//删除记录
+	//		g_GlobalUnits.DeleteUserCookie();
 
-			//设置变量
-			memset(&GlobalUserData,0,sizeof(GlobalUserData));
+	//		//设置变量
+	//		memset(&GlobalUserData,0,sizeof(GlobalUserData));
 
-			//投递消息
-			m_DlgGamePlaza.SendLogonMessage();
+	//		//投递消息
+	//		m_DlgGamePlaza.SendLogonMessage();
 
-			return TRUE;
-		}
+	//		return TRUE;
+	//	}
 	case IDC_BT_LIST_CONTROL_1:			//列表按钮
 	case IDC_BT_LIST_CONTROL_2:			//列表按钮
 		{
@@ -820,7 +823,6 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 	if(pListServer!= NULL)
 		pListServer->m_GameServer.dwServerAddr = TranslateAddr(m_DlgGamePlaza.m_DlgLogon.GetLogonServer());
 
-
 	//效验参数
 	ASSERT(pListServer!=NULL);
 	CListKind * pListKind=pListServer->GetListKind();
@@ -861,6 +863,7 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName, pGameKind->wKindID,true);	
 		return NULL;
 	}
+
 
 	//获取版本
 	DWORD dwFileVerMS=0L,dwFileVerLS=0L;
@@ -1444,11 +1447,43 @@ void CGameFrame::OnActivate(UINT nState, CWnd* pWndOther, BOOL bMinimized)
 //关闭消息
 void CGameFrame::OnClose()
 {
+	//状态判断
+	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
 	//关闭提示
-	if (g_GlobalUnits.GetGolbalUserData().dwUserID!=0L)
+	if (GlobalUserData.dwUserID!=0L)
 	{
-		int nCode=ShowInformation(TEXT("您确实要关闭游戏广场吗？"),0,MB_YESNO|MB_DEFBUTTON2|MB_ICONQUESTION);
-		if (nCode!=IDYES) return;
+		//显示窗口
+		CDlgEnquire DlgEnquire;
+		INT_PTR nResult=DlgEnquire.DoModal();
+		//命令处理
+		switch (nResult)
+		{
+		case IDCANCEL:				//取消动作
+			{
+				return;
+			}
+		case IDC_SWITCH_ACCOUNTS:	//切换帐号
+			{
+				//切换询问
+				if (m_pRoomViewItem[0]!=NULL)
+				{
+					const TCHAR szMessage[]=TEXT("切换用户帐号，将会关闭所有游戏房间，确实要切换用户帐号吗？ ");
+					int iResult=ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
+					if (iResult!=IDYES)
+						return ;
+				}
+				//关闭房间
+				ActivePlazaViewItem();
+				CloseAllRoomViewItem();
+				//删除记录
+				g_GlobalUnits.DeleteUserCookie();
+				//设置变量
+				memset(&GlobalUserData,0,sizeof(GlobalUserData));
+				//投递消息
+				m_DlgGamePlaza.SendLogonMessage();
+				return;
+			}
+		}
 	}
 
 	//隐藏界面
@@ -1457,7 +1492,6 @@ void CGameFrame::OnClose()
 	::TerminateProcess(GameProcessInfo.hProcess,0);
 	//关闭房间
 	CloseAllRoomViewItem();
-
 	//保存配置
 	g_GlobalOption.SaveOptionParameter();
 	g_GlobalUnits.m_CompanionManager->SaveCompanion();
@@ -1483,6 +1517,12 @@ void CGameFrame::OnSize(UINT nType, int cx, int cy)
 	//调整拆分条
 	RectifyControl(cx,cy);
 
+	//创建区域
+	CRgn WindowRgn;
+	WindowRgn.CreateRoundRectRgn(0,0,cx+1,cy+1,ROUND_CX,ROUND_CY);
+
+	//设置区域
+	SetWindowRgn(WindowRgn,TRUE);
 	return;
 }
 
@@ -1634,6 +1674,5 @@ DWORD CGameFrame::TranslateAddr(LPCTSTR pszServerAddr)
 	}
 	return dwServerIP;
 }
-
 
 //////////////////////////////////////////////////////////////////////////

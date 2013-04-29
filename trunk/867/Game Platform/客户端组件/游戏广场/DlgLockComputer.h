@@ -6,8 +6,8 @@
 
 ////////////////////////////////////////////////////////////////////////////////////
 
-//自定义头像
-class CDlgLockComputer : public CDialog, CSkinWndObject
+//锁机功能
+class CDlgLockComputer : public CSkinPngDialog 
 {
 	//变量定义
 protected:
@@ -19,6 +19,7 @@ protected:
 	CSkinButton					m_btOk;								//确定锁机
 	ITCPSocket					* m_pIClientSocket;					//网络组件
 	TCHAR						m_szLogonPws[PASS_LEN];				//游戏密码
+
 	//函数定义
 public:
 	//构造函数
@@ -55,20 +56,9 @@ protected:
 	afx_msg void OnBnClickedOK();
 	//绘画函数
 	afx_msg void OnPaint();
-	//颜色处理
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	//显示消息
-	afx_msg void OnShowWindow(BOOL bShow, UINT nStatus);
-
 	afx_msg void OnCancel();
 	//销毁消息
 	afx_msg void OnClose();
-	//鼠标信息
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	//鼠标信息
-	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
-	//鼠标信息
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 
 	DECLARE_MESSAGE_MAP()
 };

@@ -305,7 +305,7 @@ DWORD __cdecl CTCPSocket::SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData
 
 
 //关闭连接
-void __cdecl CTCPSocket::CloseSocket()
+void __cdecl CTCPSocket::CloseSocket(BYTE cbShutReason)
 {
 	//关闭连接
 	bool bClose=(m_hSocket!=INVALID_SOCKET);
@@ -322,7 +322,7 @@ void __cdecl CTCPSocket::CloseSocket()
 		ASSERT(m_pITCPSocketSink!=NULL);
 		try 
 		{
-			m_pITCPSocketSink->OnEventTCPSocketShut(m_wSocketID,SHUT_REASON_NORMAL);
+			m_pITCPSocketSink->OnEventTCPSocketShut(m_wSocketID,cbShutReason);
 		}
 		catch (...)
 		{
@@ -846,7 +846,7 @@ LRESULT CTCPSocket::OnSocketNotifyClose(WPARAM wParam, LPARAM lParam)
 #ifdef _DEBUG
 	OutputDebugString("收到服务器socket断开\r\n");
 #endif
-	CloseSocket();
+	CloseSocket(SHUT_REASON_REMOTE);
 	return 1;
 }
 

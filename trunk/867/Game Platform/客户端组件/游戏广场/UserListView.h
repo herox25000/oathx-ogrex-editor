@@ -15,7 +15,7 @@ class CUserListView : public CSkinListCtrl
 public:
 	WORD								m_wGameGenre;						//游戏类型
 	WORD								m_wKindID;							//类型标识
-
+	//CSkinScrollBar						m_SkinScrollBar;					//滚动条类
 	//资源变量
 protected:
 	UINT								m_uImageSpace;						//位图间隔

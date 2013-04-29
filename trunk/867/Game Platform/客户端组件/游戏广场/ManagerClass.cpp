@@ -480,7 +480,7 @@ void CManagerMessage::OnPreViewMessage()
 	if (szMessage[0]==0)
 	{
 		
-		ShowInformation(TEXT("系统消息不能为空，请写入系统消息内容！"),0,MB_ICONQUESTION);
+		ShowInformation(TEXT("系统消息不能为空，请写入系统消息内容！"),20,MB_ICONQUESTION);
 		m_SystemMessage.SetFocus();
 		return;
 	}

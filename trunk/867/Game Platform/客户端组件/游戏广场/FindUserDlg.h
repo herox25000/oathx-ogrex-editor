@@ -6,7 +6,7 @@
 #include "UserListView.h"
 
 //用户查找对话框 
-class CFindUserDlg : public CSkinDialogEx
+class CFindUserDlg : public CSkinPngDialog
 {
 	//变量定义
 protected:

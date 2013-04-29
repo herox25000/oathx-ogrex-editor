@@ -143,6 +143,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\DlgCustomFace.cpp">
 			</File>
 			<File
+				RelativePath=".\DlgEnquire.cpp">
+			</File>
+			<File
 				RelativePath=".\DlgIndividualInfo.cpp">
 			</File>
 			<File
@@ -229,6 +232,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\DlgCustomFace.h">
 			</File>
 			<File
+				RelativePath=".\DlgEnquire.h">
+			</File>
+			<File
 				RelativePath=".\DlgIndividualInfo.h">
 			</File>
 			<File
@@ -306,6 +312,33 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
 			<File
+				RelativePath=".\Res\Plaza_enquire\BK_ENQUIRE_BUTTON.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_DeleteRecord.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_enquire\BT_ENQUIRE_CANCEL.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_LOGON.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_LOGON_ITEM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_LOGON_LINK.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_LOGON_QUIT.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_REGISTER.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_REGISTER_CLOSE.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\CONNECT_STATUS.bmp">
 			</File>
 			<File
@@ -337,10 +370,55 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\Res\Plaza_enquire\BT_ENQUIRE_CANCEL.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_enquire\BT_ENQUIRE_PLAZA.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_enquire\BT_ENQUIRE_SWITCH.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_ENTER.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_ITEM.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_LINK_1.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_LINK_2.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_LINK_3.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_LINK_4.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_REGISTER.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_REGISTER_ENTER.png">
+		</File>
+		<File
 			RelativePath=".\Res\BUGLE.wav">
 		</File>
 		<File
+			RelativePath=".\Res\Plaza_enquire\DLG_ENQUIRE_BACK.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\DLG_LOGON_BACK.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\DLG_REGISTER_BACK.png">
+		</File>
+		<File
 			RelativePath=".\res\GamePlaza.manifest">
+		</File>
+		<File
+			RelativePath=".\Res\Server_list\SERVER_LIST_ARROW.png">
 		</File>
 	</Files>
 	<Globals>

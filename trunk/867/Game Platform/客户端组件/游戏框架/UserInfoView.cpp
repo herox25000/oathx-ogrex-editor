@@ -320,6 +320,8 @@ void CUserInfoView::RectifyControl(int nWidth, int nHeight)
 //兑换消息
 void CUserInfoView::OnBtnClickedExchange()
 {
+	ShowInformation("此功能暂时没开放！",10,MB_ICONINFORMATION);
+	return;
 	//兑换窗口
 	const tagUserData *pMeUserData = m_pIClientKernel->GetMeUserInfo();
 	ShowCharmValueExchangeDlg(m_pIClientKernel,NULL,(tagUserData *)pMeUserData);

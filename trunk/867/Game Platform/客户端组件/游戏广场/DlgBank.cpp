@@ -5,99 +5,8 @@
 #include "GlobalUnits.h"
 #include "Zip.h"
 
-
-//颜色定义
-#define SELECT_COLOR		RGB(37,56,220)						//选择颜色
 //////////////////////////////////////////////////////////////////////////
-
-BEGIN_MESSAGE_MAP(CTabCtrlBank, CTabCtrl)
-	ON_WM_PAINT()
-END_MESSAGE_MAP()
-
-//////////////////////////////////////////////////////////////////////////
-
-//构造函数
-CTabCtrlBank::CTabCtrlBank()
-{
-
-}
-
-//析够函数
-CTabCtrlBank::~CTabCtrlBank()
-{
-}
-
-//重画消息
-void CTabCtrlBank::OnPaint()
-{
-	//变量定义
-	CPaintDC dc(this);
-	CSkinWndAttribute * pSkinAttribute=CSkinDialog::GetSkinAttribute();
-
-	//绘画背景
-	CRect ClipRect,ClientRect;
-	dc.GetClipBox(&ClipRect);
-	dc.FillSolidRect(&ClipRect,pSkinAttribute->m_crBackGround);
-
-	//设置 DC
-	dc.SetBkMode(TRANSPARENT);
-	dc.SelectObject(pSkinAttribute->GetDefaultFont());
-
-	//绘画边框
-	GetClientRect(&ClientRect);
-	ClientRect.top+=18;
-	dc.Draw3dRect(&ClientRect,pSkinAttribute->m_crInsideBorder,pSkinAttribute->m_crInsideBorder);
-
-	//获取信息
-	TCITEM ItemInfo;
-	TCHAR szBuffer[100];
-	memset(&ItemInfo,0,sizeof(ItemInfo));
-	ItemInfo.mask=TCIF_TEXT|TCIF_IMAGE;
-	ItemInfo.pszText=szBuffer;
-	ItemInfo.cchTextMax=sizeof(szBuffer);
-
-	//绘画按钮
-	CRect rcItem;
-	int iCursel=GetCurSel();
-	CPen LinePen(PS_SOLID,1,pSkinAttribute->m_crInsideBorder);
-	CPen * pOldPen=dc.SelectObject(&LinePen);
-	for (int i=0;i<GetItemCount();i++)
-	{
-		GetItem(i,&ItemInfo);
-		GetItemRect(i,&rcItem);
-		dc.FillSolidRect(&rcItem,pSkinAttribute->m_crBackGround);
-		dc.MoveTo(rcItem.left,rcItem.bottom-1);
-		dc.LineTo(rcItem.left,rcItem.top+2);
-		dc.LineTo(rcItem.left+2,rcItem.top);
-		dc.LineTo(rcItem.right-2,rcItem.top);
-		dc.LineTo(rcItem.right,rcItem.top+2);
-		dc.LineTo(rcItem.right,rcItem.bottom-1);
-
-		if (iCursel!=i)
-		{
-			rcItem.top+=2;
-			dc.MoveTo(rcItem.left,rcItem.bottom-1);
-			dc.LineTo(rcItem.right,rcItem.bottom-1);
-			dc.SetTextColor(pSkinAttribute->m_crControlTXColor);
-			DrawText(dc,szBuffer,lstrlen(szBuffer),&rcItem,DT_VCENTER|DT_SINGLELINE|DT_CENTER);
-		}
-		else 
-		{
-			rcItem.top+=3;
-			dc.SetTextColor(SELECT_COLOR);
-			DrawText(dc,szBuffer,lstrlen(szBuffer),&rcItem,DT_VCENTER|DT_SINGLELINE|DT_CENTER);
-		}
-	}
-
-	//清理资源
-	dc.SelectObject(pOldPen);
-	LinePen.DeleteObject();
-}
-
-
-
-//////////////////////////////////////////////////////////////////////////
-CDlgBank::CDlgBank() : CSkinDialogEx(IDD_BANK_DIALOG)
+CDlgBank::CDlgBank() : CSkinPngDialog(IDD_BANK_DIALOG)
 {
 	m_wOpt = OPT_SAVE; 
 	m_pMeUserData = NULL;
@@ -111,7 +20,7 @@ CDlgBank::~CDlgBank()
 
 void CDlgBank::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	__super::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_GAMEGOLD,		m_strGameGold);
 	DDX_Text(pDX, IDC_BANKGOLD,		m_strBankGold);
 	DDX_Control(pDX, IDC_TAB_BANK,		m_TabBank);
@@ -119,7 +28,7 @@ void CDlgBank::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_BANK_BTNALL,	m_btAll);
 }
 
-BEGIN_MESSAGE_MAP(CDlgBank, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CDlgBank, CSkinPngDialog)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_TAB_BANK, OnTcnSelchange)
 	ON_BN_CLICKED(IDC_BACNK_BTNOK, OnButtonOK)
 	ON_BN_CLICKED(IDC_BANK_BTNALL, OnButtonAll)
@@ -144,6 +53,8 @@ BOOL CDlgBank::PreTranslateMessage(MSG* pMsg)
 BOOL CDlgBank::OnInitDialog()
 {
 	__super::OnInitDialog();
+	SetWindowText("中心");
+	m_TabBank.SetItemSize(CSize(100,25));
 	//加入标签
 	m_TabBank.InsertItem(BANK_DLG_SAVE,TEXT("存钱"));
 	m_TabBank.InsertItem(BANK_DLG_GET,TEXT("取钱"));
@@ -155,17 +66,43 @@ BOOL CDlgBank::OnInitDialog()
 	return FALSE; 
 }
 
+//绘画消息
+VOID CDlgBank::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
+{
+	//获取位置
+	CRect rcTabControl;
+	m_TabBank.GetWindowRect(&rcTabControl);
+
+	//转换位置
+	ScreenToClient(&rcTabControl);
+
+	//绘画线条
+	INT nLBorder=m_SkinAttribute.m_EncircleInfoView.nLBorder;
+	INT nRBorder=m_SkinAttribute.m_EncircleInfoView.nRBorder;
+	pDC->FillSolidRect(nLBorder,rcTabControl.bottom-1L,nWidth-nLBorder-nRBorder,1,RGB(145,168,183));
+
+
+	//构造提示
+	TCHAR szString[128]=TEXT("");
+	_sntprintf(szString,CountArray(szString),TEXT("温馨提示：请妥善保管密码，警防盗号！"));
+	//温馨提示
+	pDC->SetTextColor(RGB(50,50,50));
+	pDC->TextOut(18,nHeight-28,szString,lstrlen(szString));
+
+	return;
+}
+
 //销毁消息
 void CDlgBank::OnClose()
 {
-	CDialog::OnClose();
+	__super::OnClose();
 }
 
 void CDlgBank:: OnCancel()
 {
+	__super::OnCancel();
 	if(m_BankSocketHelper.GetInterface()!=NULL)
 		m_BankSocketHelper->CloseSocket();
-	CDialog::OnCancel();
 }
 //显示消息
 int CDlgBank::ShowMessageBox(LPCTSTR pszMessage)

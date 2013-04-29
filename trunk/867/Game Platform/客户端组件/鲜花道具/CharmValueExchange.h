@@ -8,7 +8,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //兑换游戏币 
-class PROPERTY_MODULE_CLASS CCharmValueExchange : public CSkinDialogEx
+class PROPERTY_MODULE_CLASS CCharmValueExchange : public CSkinPngDialog
 {
 	//变量定义
 public:
@@ -48,20 +48,12 @@ protected:
 	virtual BOOL OnInitDialog();
 	//确定信息
 	afx_msg void OnBnClickedBtExchange();
-	//鼠标信息
-	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-	//鼠标信息
-	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 	//命令信息
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//时间消息
 	afx_msg void OnTimer(UINT nIDEvent);
 	//输入信息
 	afx_msg void OnEnChangeExchangeCharmValue();
-	//设置颜色
-	afx_msg HBRUSH OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor);
-	//绘画函数
-	afx_msg void OnPaint();
 
 	//功能函数
 public:

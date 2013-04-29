@@ -11,7 +11,7 @@
 
 //////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CBankStorage, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CBankStorage, CSkinPngDialog)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_MOUSEMOVE()
 	ON_WM_TIMER()	
@@ -22,7 +22,7 @@ END_MESSAGE_MAP()
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CBankStorage::CBankStorage(CWnd* pParent):CSkinDialogEx(IDD_BANK_STORAGE, pParent)
+CBankStorage::CBankStorage(CWnd* pParent):CSkinPngDialog(IDD_BANK_STORAGE, pParent)
 {
 	m_lInCount=0;
 	m_lGameGold=0;
@@ -120,7 +120,7 @@ void CBankStorage::OnBnClickedOk()
 //初始化函数
 BOOL CBankStorage::OnInitDialog()
 {
-	CSkinDialogEx::OnInitDialog();
+	__super::OnInitDialog();
 
 	UpdateData(FALSE);
 
@@ -172,13 +172,13 @@ void CBankStorage::UpdateView()
 //鼠标信息
 void CBankStorage::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	CSkinDialogEx::OnLButtonDown(nFlags, point);
+	__super::OnLButtonDown(nFlags, point);
 }
 
 //鼠标信息
 void CBankStorage::OnMouseMove(UINT nFlags, CPoint point)
 {
-	CSkinDialogEx::OnMouseMove(nFlags, point);
+	__super::OnMouseMove(nFlags, point);
 }
 
 //命令信息

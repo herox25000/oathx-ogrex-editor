@@ -393,6 +393,7 @@ bool __cdecl CClientKernel::KillGameTimer(UINT nTimerID)
 //信道数据处理
 bool __cdecl CClientKernel::OnChannelMessage(const IPC_Head * pHead, const void * pIPCBuffer, WORD wDataSize, HWND hWndSend)
 {
+				OutputDebugString("OnChannelMessage -------------------\r\n");
 	//特殊处理
 	ASSERT(m_pIClientKernelSink!=NULL);
 	if (m_pIClientKernelSink==NULL) return true;
@@ -417,6 +418,7 @@ bool __cdecl CClientKernel::OnChannelMessage(const IPC_Head * pHead, const void 
 		}
 	case IPC_MAIN_USER:		//用户信息
 		{
+			OutputDebugString("用户信息 -------------------\r\n");
 			return OnIPCUser(pHead,pIPCBuffer,wDataSize,hWndSend);
 		}
 	case IPC_MAIN_CONCTROL:	//控制消息

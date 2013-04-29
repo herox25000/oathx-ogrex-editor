@@ -1,6 +1,6 @@
 #pragma once
 
-class CFrameDlgBank : public CSkinDialogEx
+class CFrameDlgBank : public CSkinPngDialog
 {
 public:
 	CFrameDlgBank();

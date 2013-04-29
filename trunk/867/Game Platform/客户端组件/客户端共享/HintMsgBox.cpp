@@ -30,10 +30,11 @@
 #define SMB_BUTTON_SPACE			10									//按钮间隔
 #define SMB_BUTTON_WIDTH			70									//按钮偏移
 #define SMB_BUTTON_HEIGHT			22									//按钮偏移
+#define SMB_BUTTON_BOTTOM			12									//按钮偏移
 
 //////////////////////////////////////////////////////////////////////////
 
-BEGIN_MESSAGE_MAP(CHintMsgBox, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CHintMsgBox, CSkinPngDialog)
 	ON_WM_PAINT()
 	ON_WM_TIMER()
 END_MESSAGE_MAP()
@@ -41,7 +42,7 @@ END_MESSAGE_MAP()
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CHintMsgBox::CHintMsgBox(CWnd * pParentWnd) : CSkinDialogEx(IDD_HINT_MSG,pParentWnd)
+CHintMsgBox::CHintMsgBox(CWnd * pParentWnd) : CSkinPngDialog(IDD_HINT_MSG,pParentWnd)
 {
 	//设置变量
 	m_uType=MB_OK;
@@ -50,7 +51,6 @@ CHintMsgBox::CHintMsgBox(CWnd * pParentWnd) : CSkinDialogEx(IDD_HINT_MSG,pParent
 	m_nElapse=0;
 	m_nBtCount=0;
 	m_hResInstance=NULL;
-
 	return;
 }
 
@@ -58,6 +58,80 @@ CHintMsgBox::CHintMsgBox(CWnd * pParentWnd) : CSkinDialogEx(IDD_HINT_MSG,pParent
 CHintMsgBox::~CHintMsgBox()
 {
 }
+
+////初始化消息
+//BOOL CHintMsgBox::OnInitDialog()
+//{
+//	__super::OnInitDialog();
+//	//设置标题
+//	SetWindowText(m_strCaption);
+//	//关闭按钮
+//	if((m_uType&MB_DEFBUTTON2)!=0)m_cbButtonState[BST_CLOSE]&=(~BUT_EXIST);
+//	else m_cbButtonState[BST_CLOSE]|=BUT_EXIST;
+//	//按钮区域
+//	CreateBoxButton();
+//	INT nButtonAreaHeight=SMB_BUTTON_HEIGHT+SMB_BUTTON_TOP+SMB_BUTTON_BUTTOM;
+//	INT nButtonAreaWidth=m_nBtCount*SMB_BUTTON_WIDTH+(m_nBtCount+1)*SMB_BUTTON_SPACE+SMB_BUTTON_LEFT+SMB_BUTTON_RIGHT;
+//
+//	//字符空间
+//	CClientDC ClientDC(this);
+//	CRect rcString(0,0,SMB_STRING_WIDTH,SMB_STRING_HEIGHT);
+//	ClientDC.SelectObject(CSkinResourceManager::GetDefaultFont());
+//	ClientDC.DrawText(m_strString,rcString,DT_CALCRECT|DT_EXPANDTABS|DT_NOCLIP|DT_WORD_ELLIPSIS);
+//
+//	//字符区域
+//	INT nStringAreaHeight=rcString.Height()+SMB_STRING_TOP;
+//	INT nStringAreaWidth=rcString.Width()+SMB_ICON_LEFT+SMB_ICON_WIDTH+SMB_STRING_LEFT+SMB_STRING_RIGHT;
+//
+//	//窗口区域
+//	INT nWindowAreaHeight=nStringAreaHeight+nButtonAreaHeight;
+//	INT nWindowAreaWidth=__max(SMB_WINDOW_WIDTH,__max(nStringAreaWidth,nButtonAreaWidth));
+//
+//	//输出位置
+//	if (nWindowAreaWidth>nStringAreaWidth)
+//	{
+//		m_rcString.top=m_SkinAttribute.m_nCaptionHeigth+SMB_STRING_TOP;
+//		m_rcString.left=GetXBorder()+SMB_ICON_LEFT+SMB_ICON_WIDTH+SMB_STRING_LEFT+(nWindowAreaWidth-nStringAreaWidth)/2;
+//		m_rcString.right=m_rcString.left+rcString.Width();
+//		m_rcString.bottom=m_rcString.top+rcString.Height();
+//	}
+//	else
+//	{
+//		m_rcString.top=m_SkinAttribute.m_nCaptionHeigth+SMB_STRING_TOP;
+//		m_rcString.left=GetXBorder()+SMB_ICON_LEFT+SMB_ICON_WIDTH+SMB_STRING_LEFT;
+//		m_rcString.right=m_rcString.left+rcString.Width();
+//		m_rcString.bottom=m_rcString.top+rcString.Height();
+//	}
+//
+//	//调整窗口
+//	CRect rcWindow(0,0,0,0);
+//	rcWindow.right=nWindowAreaWidth+GetXBorder()*2;
+//	rcWindow.bottom=nWindowAreaHeight+m_SkinAttribute.m_nCaptionHeigth+GetYBorder();
+//	SetWindowPos(NULL,0,0,rcWindow.Width(),rcWindow.Height(),SWP_NOMOVE|SWP_NOZORDER);
+//
+//	//调整按钮
+//	INT nYButton=m_SkinAttribute.m_nCaptionHeigth+nWindowAreaHeight-SMB_BUTTON_BUTTOM-SMB_BUTTON_HEIGHT;
+//	INT nXButton=GetXBorder()+(nWindowAreaWidth-m_nBtCount*SMB_BUTTON_WIDTH-(m_nBtCount+1)*SMB_BUTTON_SPACE)/2+SMB_BUTTON_SPACE;
+//	for (UINT i=0;i<m_nBtCount;i++)
+//	{
+//		m_btButton[i].SetWindowPos(NULL,nXButton,nYButton,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_SHOWWINDOW);
+//		nXButton+=SMB_BUTTON_SPACE+SMB_BUTTON_WIDTH;
+//	}
+//
+//	//默认按钮
+//	UINT uDefaultIndex=(m_uType&MB_DEFMASK)>>8;
+//	if (uDefaultIndex>=m_nBtCount) uDefaultIndex=0;
+//	m_btButton[uDefaultIndex].SetFocus();
+//	m_btButton[uDefaultIndex].SetButtonStyle(m_btButton[uDefaultIndex].GetButtonStyle()|BS_DEFPUSHBUTTON);
+//
+//	//居中窗口
+//	CenterWindow(GetParent());
+//	//设置时间
+//	if (m_nElapse!=0) SetTimer(IDI_MESSAGE,1000,NULL);
+//
+//	return FALSE;
+//}
+
 
 //初始化消息
 BOOL CHintMsgBox::OnInitDialog()
@@ -67,13 +141,18 @@ BOOL CHintMsgBox::OnInitDialog()
 	//设置标题
 	SetWindowText(m_strCaption);
 
-	//关闭按钮
-	if((m_uType&MB_DEFBUTTON2)!=0)m_cbButtonState[BST_CLOSE]&=(~BUT_EXIST);
-	else m_cbButtonState[BST_CLOSE]|=BUT_EXIST;
+	//设置资源
+	AfxSetResourceHandle(GetModuleHandle(NULL));
+
+	//获取信息
+	INT nTBorder=m_SkinAttribute.m_EncircleInfoView.nTBorder;
+	INT nBBorder=m_SkinAttribute.m_EncircleInfoView.nBBorder;
+	INT nLBorder=m_SkinAttribute.m_EncircleInfoView.nLBorder;
+	INT nRBorder=m_SkinAttribute.m_EncircleInfoView.nRBorder;
 
 	//按钮区域
 	CreateBoxButton();
-	INT nButtonAreaHeight=SMB_BUTTON_HEIGHT+SMB_BUTTON_TOP+SMB_BUTTON_BUTTOM;
+	INT nButtonAreaHeight=SMB_BUTTON_HEIGHT+SMB_BUTTON_TOP+SMB_BUTTON_BOTTOM;
 	INT nButtonAreaWidth=m_nBtCount*SMB_BUTTON_WIDTH+(m_nBtCount+1)*SMB_BUTTON_SPACE+SMB_BUTTON_LEFT+SMB_BUTTON_RIGHT;
 
 	//字符空间
@@ -93,28 +172,29 @@ BOOL CHintMsgBox::OnInitDialog()
 	//输出位置
 	if (nWindowAreaWidth>nStringAreaWidth)
 	{
-		m_rcString.top=m_SkinAttribute.m_nCaptionHeigth+SMB_STRING_TOP;
-		m_rcString.left=GetXBorder()+SMB_ICON_LEFT+SMB_ICON_WIDTH+SMB_STRING_LEFT+(nWindowAreaWidth-nStringAreaWidth)/2;
+		m_rcString.top=SMB_STRING_TOP+nTBorder;
+		m_rcString.left=SMB_ICON_LEFT+SMB_ICON_WIDTH+SMB_STRING_LEFT+(nWindowAreaWidth-nStringAreaWidth)/2;
 		m_rcString.right=m_rcString.left+rcString.Width();
-		m_rcString.bottom=m_rcString.top+rcString.Height();
+		m_rcString.bottom=m_rcString.top+rcString.Height()+nTBorder;
 	}
 	else
 	{
-		m_rcString.top=m_SkinAttribute.m_nCaptionHeigth+SMB_STRING_TOP;
-		m_rcString.left=GetXBorder()+SMB_ICON_LEFT+SMB_ICON_WIDTH+SMB_STRING_LEFT;
+		m_rcString.top=SMB_STRING_TOP+nTBorder;
+		m_rcString.left=SMB_ICON_LEFT+SMB_ICON_WIDTH+SMB_STRING_LEFT;
 		m_rcString.right=m_rcString.left+rcString.Width();
 		m_rcString.bottom=m_rcString.top+rcString.Height();
 	}
 
 	//调整窗口
-	CRect rcWindow(0,0,0,0);
-	rcWindow.right=nWindowAreaWidth+GetXBorder()*2;
-	rcWindow.bottom=nWindowAreaHeight+m_SkinAttribute.m_nCaptionHeigth+GetYBorder();
-	SetWindowPos(NULL,0,0,rcWindow.Width(),rcWindow.Height(),SWP_NOMOVE|SWP_NOZORDER);
+	INT nWindowWidth=nWindowAreaWidth+nLBorder+nRBorder;
+	INT nWindowHeight=nWindowAreaHeight+nTBorder+nBBorder;
+	SetWindowPos(NULL,0,0,nWindowWidth,nWindowHeight,SWP_NOMOVE|SWP_NOZORDER|SWP_NOCOPYBITS);
+
+	//计算位置
+	INT nYButton=nTBorder+nBBorder+nWindowAreaHeight-SMB_BUTTON_BOTTOM-SMB_BUTTON_HEIGHT;
+	INT nXButton=(nWindowAreaWidth-m_nBtCount*SMB_BUTTON_WIDTH-(m_nBtCount+1)*SMB_BUTTON_SPACE)/2+SMB_BUTTON_SPACE;
 
 	//调整按钮
-	INT nYButton=m_SkinAttribute.m_nCaptionHeigth+nWindowAreaHeight-SMB_BUTTON_BUTTOM-SMB_BUTTON_HEIGHT;
-	INT nXButton=GetXBorder()+(nWindowAreaWidth-m_nBtCount*SMB_BUTTON_WIDTH-(m_nBtCount+1)*SMB_BUTTON_SPACE)/2+SMB_BUTTON_SPACE;
 	for (UINT i=0;i<m_nBtCount;i++)
 	{
 		m_btButton[i].SetWindowPos(NULL,nXButton,nYButton,0,0,SWP_NOSIZE|SWP_NOZORDER|SWP_SHOWWINDOW);
@@ -128,6 +208,8 @@ BOOL CHintMsgBox::OnInitDialog()
 	m_btButton[uDefaultIndex].SetButtonStyle(m_btButton[uDefaultIndex].GetButtonStyle()|BS_DEFPUSHBUTTON);
 
 	//居中窗口
+	SetActiveWindow();
+	SetForegroundWindow();
 	CenterWindow(GetParent());
 
 	//设置时间
@@ -136,25 +218,45 @@ BOOL CHintMsgBox::OnInitDialog()
 	return FALSE;
 }
 
+
 //命令消息
 BOOL CHintMsgBox::OnCommand(WPARAM wParam, LPARAM lParam)
 {
 	//按钮标识
 	UINT uButtonID=LOWORD(wParam);
 
-	//关闭处理
+	//存在判断
+	for (UINT i=0;i<m_nBtCount;i++)
+	{
+		//获取标识
+		UINT uExistID=GetWindowLong(m_btButton[i],GWL_ID);
+
+		//标识处理
+		if (uButtonID==uExistID)
+		{
+			EndDialog(uButtonID);
+			return TRUE;
+		}
+	}
+
+	//默认处理
 	if (uButtonID==IDOK)
 	{
 		UINT uDefaultIndex=(m_uType&MB_DEFMASK)>>8;
 		if (uDefaultIndex>=m_nBtCount) uDefaultIndex=0;
 		EndDialog(GetWindowLong(m_btButton[uDefaultIndex],GWL_ID));
+		return TRUE;
 	}
-	else if (uButtonID==IDCANCEL)
+
+	//取消处理
+	if (uButtonID==IDCANCEL)
 	{
 		EndDialog(GetWindowLong(m_btButton[m_nBtCount-1],GWL_ID));
+		return TRUE;
 	}
-	else EndDialog(uButtonID);
 
+	//默认处理
+	EndDialog(uButtonID);
 	return TRUE;
 }
 
@@ -249,7 +351,8 @@ VOID CHintMsgBox::CreateBoxButton()
 
 	//显示按钮
 	CRect rcButton(0,0,SMB_BUTTON_WIDTH,SMB_BUTTON_HEIGHT);
-	for (UINT i=0;i<m_nBtCount;i++) m_btButton[i].Create(pszString[i],WS_CHILD,rcButton,this,uButtonID[i]);
+	for (UINT i=0;i<m_nBtCount;i++) 
+		m_btButton[i].Create(pszString[i],WS_CHILD,rcButton,this,uButtonID[i]);
 
 	return;
 }
@@ -257,12 +360,8 @@ VOID CHintMsgBox::CreateBoxButton()
 //绘画消息
 VOID CHintMsgBox::OnPaint()
 {
-	CPaintDC dc(this);
 
-	//绘画界面
-	DrawCaption(&dc);
-	DrawBackGround(&dc);
-	DrawBorder(&dc);
+	CPaintDC dc(this);
 
 	//获取位置
 	CRect rcClient;
@@ -278,7 +377,7 @@ VOID CHintMsgBox::OnPaint()
 
 	//绘画图标
 	INT nYPos=(m_rcString.bottom+m_rcString.top)/2-SMB_ICON_HEIGHT/2;
-	DrawIconEx(dc,GetXBorder()+SMB_ICON_LEFT,nYPos,hIcon,SMB_ICON_WIDTH,SMB_ICON_HEIGHT,0,NULL,DI_NORMAL);
+	DrawIconEx(dc,SMB_ICON_LEFT,nYPos,hIcon,SMB_ICON_WIDTH,SMB_ICON_HEIGHT,0,NULL,DI_NORMAL);
 
 	//绘画字体
 	dc.SetBkMode(TRANSPARENT);
@@ -304,7 +403,7 @@ VOID CHintMsgBox::OnTimer(UINT_PTR nIDEvent)
 
 		//设置界面
 		TCHAR szTitle[32]=TEXT("");
-		_sntprintf(szTitle,CountArray(szTitle),TEXT("%s （%ld 秒）"),m_strCaption,m_nElapse--);
+		_sntprintf(szTitle,CountArray(szTitle),TEXT("%s(%ld秒)"),m_strCaption,m_nElapse--);
 		SetWindowText(szTitle);
 
 		return;

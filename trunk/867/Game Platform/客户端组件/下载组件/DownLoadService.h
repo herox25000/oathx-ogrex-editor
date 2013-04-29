@@ -113,7 +113,7 @@ interface IDownLoadMissionSink
 };
 
 //下载任务
-class CDownLoadMission : public CSkinDialogEx
+class CDownLoadMission : public CSkinPngDialog
 {
 	//变量定义
 protected:

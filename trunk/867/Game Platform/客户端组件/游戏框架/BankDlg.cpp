@@ -2,10 +2,8 @@
 #include "resource.h"
 #include "BankDlg.h"
 
-
-
 //////////////////////////////////////////////////////////////////////////
-CFrameDlgBank::CFrameDlgBank() : CSkinDialogEx(IDD_DLG_BANK)
+CFrameDlgBank::CFrameDlgBank() : CSkinPngDialog(IDD_DLG_BANK)
 {
 	m_strGameGold.Empty();
 	m_strBankGold.Empty();
@@ -20,14 +18,14 @@ CFrameDlgBank::~CFrameDlgBank()
 
 void CFrameDlgBank::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	__super::DoDataExchange(pDX);
 	DDX_Text(pDX, IDC_STATIC_GOLD,		m_strGameGold);
 	DDX_Text(pDX, IDC_STATIC_BANKGOLD,		m_strBankGold);
 	DDX_Control(pDX, IDC_BT_OK,	m_btOK);
 	DDX_Control(pDX, IDC_BT_ALL,m_btAll);
 }
 
-BEGIN_MESSAGE_MAP(CFrameDlgBank, CSkinDialogEx)
+BEGIN_MESSAGE_MAP(CFrameDlgBank, CSkinPngDialog)
 	ON_BN_CLICKED(IDC_BT_ALL, OnButtonAll)
 	ON_BN_CLICKED(IDC_BT_OK, OnButtonOK)
 END_MESSAGE_MAP()
@@ -59,14 +57,12 @@ BOOL CFrameDlgBank::OnInitDialog()
 //销毁消息
 void CFrameDlgBank::OnClose()
 {
-	//DestroyWindow();
-	CDialog::OnClose();
+	__super::OnClose();
 }
 
 void CFrameDlgBank:: OnCancel()
 {
-	//DestroyWindow();
-	CDialog::OnCancel();
+	__super::OnCancel();
 }
 //显示消息
 int CFrameDlgBank::ShowMessageBox(LPCTSTR pszMessage)

@@ -15,10 +15,9 @@
 ///////////////////////////////////////////////////////////////////////////////////
 
 //消息映射
-BEGIN_MESSAGE_MAP(CPropertyItem, CSkinDialogEx)
-	ON_WM_PAINT()
+BEGIN_MESSAGE_MAP(CPropertyItem, CSkinPngDialog)
 	ON_BN_CLICKED(IDOK, OnBnClickedOk)
-	ON_WM_CTLCOLOR()
+	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
 	ON_CBN_SELCHANGE(IDC_TARGET_USER, OnCbnSelchangeTargetUser)
 	ON_CBN_SELCHANGE(IDC_PROPERTY_TYPE, OnCbnSelchangePropType)
 	ON_EN_CHANGE(IDC_PURCHASE_COUNT, OnEnChangePurchaseCount)
@@ -28,19 +27,17 @@ END_MESSAGE_MAP()
 ///////////////////////////////////////////////////////////////////////////////////
 
 //消息映射
-BEGIN_MESSAGE_MAP(CFlowerSetting, CSkinDialogEx)
-	ON_WM_PAINT()
+BEGIN_MESSAGE_MAP(CFlowerSetting, CSkinPngDialog)
 	ON_BN_CLICKED(IDOK, OnBnClickedOk)
-	ON_WM_CTLCOLOR()
-	ON_WM_TIMER()	
 	ON_EN_CHANGE(IDC_FLOWER_COUNT, OnEnChangeFlowerCount)
 	ON_BN_CLICKED(IDCANCEL, OnBnClickedCancel)
+	ON_WM_TIMER()	
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CPropertyItem::CPropertyItem(CWnd* pParent): CSkinDialogEx(IDD_PROPERTY_ITEM, pParent)
+CPropertyItem::CPropertyItem(CWnd* pParent): CSkinPngDialog(IDD_PROPERTY_ITEM, pParent)
 {
 	m_nPropertyID=PROPERTY_COUNT;
 	m_pIPurchaseInfo=NULL;
@@ -56,7 +53,7 @@ CPropertyItem::~CPropertyItem()
 //控件绑定
 void CPropertyItem::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	__super::DoDataExchange(pDX);
 	DDX_Control(pDX, IDOK, m_btOK);
 	DDX_Control(pDX, IDCANCEL, m_btCancel);
 	DDX_Control(pDX, IDC_TARGET_USER, m_ComboBoxTargetUser);
@@ -199,45 +196,40 @@ void CPropertyItem::SetPropertyID(int nPropertyID)
 }
 
 //绘画函数
-void CPropertyItem::OnPaint()
+void CPropertyItem::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
 {
-	CPaintDC dc(this); 
-
-	//绘画标题
-	DrawCaption(&dc);
+	////绘画标题
+	//DrawCaption(&dc);
 
 	//获取位置
-	CRect ClientRect;
-	GetClientRect(&ClientRect);
-	int nXExcursion=GetXExcursionPos();
-	int nYExcursion=GetYExcursionPos();
-
-	//绘画背景
-	COLORREF Color = RGB(161,212,226);
-	dc.FillSolidRect(nXExcursion,nYExcursion,ClientRect.Width()-2*nXExcursion,4,Color);
-	dc.FillSolidRect(nXExcursion,ClientRect.Height()-8,ClientRect.Width()-2*nXExcursion,7,Color);
-	dc.FillSolidRect(nXExcursion,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
-	dc.FillSolidRect(ClientRect.Width()-nXExcursion-12,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
-
-	//绘画边框
-	DrawBorder(&dc);
+	//CRect ClientRect;
+	//GetClientRect(&ClientRect);
+	//int nXExcursion=1;
+	//int nYExcursion=5;
+	////绘画背景
+	//COLORREF Color = RGB(161,212,226);
+	//dc.FillSolidRect(nXExcursion,nYExcursion,ClientRect.Width()-2*nXExcursion,4,Color);
+	//dc.FillSolidRect(nXExcursion,ClientRect.Height()-8,ClientRect.Width()-2*nXExcursion,7,Color);
+	//dc.FillSolidRect(nXExcursion,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
+	//dc.FillSolidRect(ClientRect.Width()-nXExcursion-12,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
+	//////绘画边框
+	//DrawBorder(&dc);
 
 	//道具图片
 	CBitmap Bitmap;
 
 	//加载图片
 	AfxSetResourceHandle(CPropertyBar::m_pPropertyBar->m_ReshInstance);
-	if ( Bitmap.LoadBitmap(CPropertyBar::m_pPropertyBar->m_PropertyViewImage.uPropertyFormer[m_nPropertyID]) )
+	if ( Bitmap.LoadBitmap( MAKEINTRESOURCE(CPropertyBar::m_pPropertyBar->m_PropertyViewImage.uPropertyFormer[m_nPropertyID])) )
 	{
 		//创建资源
 		CDC dcMem;
-		dcMem.CreateCompatibleDC(&dc);
+		dcMem.CreateCompatibleDC(pDC);
 		CBitmap *pOldBitmap = dcMem.SelectObject(&Bitmap);
-
 		//绘画图片
 		BITMAP bm;
 		Bitmap.GetBitmap(&bm);
-		dc.TransparentBlt(10, 28+5, bm.bmWidth, bm.bmHeight, &dcMem, 0, 0, bm.bmWidth, bm.bmHeight,RGB(255,255,255)); 
+		pDC->TransparentBlt(10, 28+5, bm.bmWidth, bm.bmHeight, &dcMem, 0, 0, bm.bmWidth, bm.bmHeight,RGB(255,255,255)); 
 		
 		//是否资源
 		dcMem.SelectObject(pOldBitmap);
@@ -245,6 +237,7 @@ void CPropertyItem::OnPaint()
 		dcMem.DeleteDC();
 	}
 	AfxSetResourceHandle(GetModuleHandle(NULL));
+
 
 	//获取位置
 	CRect rcStaticName, rcStaticDes;
@@ -277,23 +270,22 @@ void CPropertyItem::OnPaint()
 		"Arial"));                 // lpszFacename
 
 	//设置属性
-	dc.SetBkMode(TRANSPARENT);
-	CFont* def_font = dc.SelectObject(&font);
-	
+	pDC->SetBkMode(TRANSPARENT);
+	CFont* def_font = pDC->SelectObject(&font);
 	//描述信息
 	UINT nFormat = DT_LEFT | DT_TOP | DT_WORDBREAK;
-	dc.DrawText(g_PropertyDescribe[m_nPropertyID].szName, rcPropertyName, nFormat);
-	dc.DrawText(g_PropertyDescribe[m_nPropertyID].szDescribe, rcPropertyDes, nFormat);
+	pDC->DrawText(g_PropertyDescribe[m_nPropertyID].szName, rcPropertyName, nFormat);
+	pDC->DrawText(g_PropertyDescribe[m_nPropertyID].szDescribe, rcPropertyDes, nFormat);
 
 	//删除资源
-	dc.SelectObject(def_font);
+	pDC->SelectObject(def_font);
 	font.DeleteObject();
 }
 
 //初始函数
 BOOL CPropertyItem::OnInitDialog()
 {
-	CSkinDialogEx::OnInitDialog();
+	__super::OnInitDialog();
 
 	//设置标题
 	SetWindowText(TEXT("道具"));
@@ -310,6 +302,21 @@ void CPropertyItem::SetPurchaseInfoSink(IPurchaseInfo *pIPurchaseInfo)
 	m_pIPurchaseInfo = pIPurchaseInfo;
 
 	return;
+}
+
+//
+void CPropertyItem::OnOK()
+{
+	OnShowWindow(FALSE,1);
+	KillTimer(IDI_PRO_ITEM_UPDATE_VIEW);
+	__super::OnOK();
+}
+
+void CPropertyItem::OnBnClickedCancel()
+{
+	OnShowWindow(FALSE,1);
+	KillTimer(IDI_PRO_ITEM_UPDATE_VIEW);
+	OnCancel();
 }
 
 //确认道具
@@ -363,13 +370,13 @@ void CPropertyItem::OnBnClickedOk()
 
 	if ( wGameGenre == GAME_GENRE_GOLD && ( m_nPropertyID==PROP_NEGAGIVE || m_nPropertyID == PROP_DOUBLE || m_nPropertyID == PROP_FOURDOLD ))
 	{
-		ShowInformation(TEXT("游戏币房间不可以使用此功能！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("游戏币房间不可以使用此功能！"),10,MB_ICONINFORMATION);
 		return ;
 	}
 	if ( wGameGenre == GAME_GENRE_MATCH && ( m_nPropertyID==PROP_NEGAGIVE || m_nPropertyID == PROP_DOUBLE ||
 		m_nPropertyID == PROP_FOURDOLD || m_nPropertyID == PROP_BUGLE ))
 	{
-		ShowInformation(TEXT("比赛房间不可以使用此功能！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("比赛房间不可以使用此功能！"),10,MB_ICONINFORMATION);
 		return ;
 	}
 
@@ -385,7 +392,7 @@ void CPropertyItem::OnBnClickedOk()
 	__int64 lMeScore = pMeUserData->lInsureScore;
 	if ( lMeScore < lMePrice )
 	{
-		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2) )	
+		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),20,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2) )	
 		{
 			ShellExecute(NULL,TEXT("open"),TEXT("www.game541.com"),NULL,NULL,SW_SHOWDEFAULT);
 		}
@@ -416,18 +423,6 @@ void CPropertyItem::ShowMessage(TCHAR *pszMessage)
 	ShowInformationEx(pszMessage,0,MB_ICONINFORMATION,TEXT("道具"));
 
 	return;
-}
-
-//设置颜色
-HBRUSH CPropertyItem::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
-{
-	HBRUSH hbr = CSkinDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
-
-	if ( nCtlColor == CTLCOLOR_EDIT )
-	{
-		pDC->SetTextColor(RGB(0,0,0));
-	}
-	return hbr;
 }
 
 //更新控件
@@ -571,7 +566,7 @@ void CPropertyItem::OnCbnSelchangeTargetUser()
 		CString strMessage, strTargetName;
 		m_ComboBoxTargetUser.GetLBText(nSelectItem, strTargetName);
 		strMessage.Format(TEXT("[ % ]已经离开，请重新选择！"), strTargetName);
-		ShowInformation(strMessage,0,MB_ICONINFORMATION);
+		ShowInformation(strMessage,10,MB_ICONINFORMATION);
 		return;
 	}
 
@@ -608,12 +603,11 @@ void CPropertyItem::OnTimer(UINT nIDEvent)
 		{
 			//更新界面
 			UpdateView();
-
 			return;
 		}
 	}
 
-	CSkinDialogEx::OnTimer(nIDEvent);
+	__super::OnTimer(nIDEvent);
 }
 
 //命令信息
@@ -718,7 +712,7 @@ void CPropertyItem::GetPropertyPrice(LONG &lNormalPrice, LONG &lMemberPrice)
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 //构造函数
-CFlowerSetting::CFlowerSetting(CWnd* pParent): CSkinDialogEx(IDD_PROPERTY_ITEM, pParent)
+CFlowerSetting::CFlowerSetting(CWnd* pParent): CSkinPngDialog(IDD_PROPERTY_ITEM, pParent)
 {
 	m_nFlowerID=FLOWER_COUNT;
 	m_pIPurchaseInfo=NULL;
@@ -729,12 +723,13 @@ CFlowerSetting::CFlowerSetting(CWnd* pParent): CSkinDialogEx(IDD_PROPERTY_ITEM, 
 //析构函数
 CFlowerSetting::~CFlowerSetting()
 {
+	
 }
 
 //绑定函数
 void CFlowerSetting::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+	__super::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_TARGET_USER, m_ComboBoxTargetUser);
 	DDX_Text(pDX, IDC_NORMAL_USER_PRICE, m_strNormalUserPrice);
 	DDX_Text(pDX, IDC_MENBER_USER_PRICE, m_strMemberUserPrice);
@@ -832,9 +827,8 @@ void CFlowerSetting::SetFlowerID(int nFlowerID)
 //按钮消息
 void CFlowerSetting::OnBnClickedOk()
 {
-	ShowInformation(TEXT("此功能暂时还没开放！"),0,MB_ICONINFORMATION);
+	ShowInformation(TEXT("此功能暂时还没开放！"),10,MB_ICONINFORMATION);
 	return ;
-
 
 	//合法判断
 	if ( m_nFlowerCount <= 0 || m_nFlowerCount > MAX_FLOWER_COUNT )
@@ -860,14 +854,14 @@ void CFlowerSetting::OnBnClickedOk()
 			if ( pTargetUserData == NULL )
 			{
 				m_ComboBoxTargetUser.DeleteString(nSelectedItem);
-				ShowInformation(TEXT("您要赠送的玩家已经离开，请重新选择赠送玩家"),0,MB_ICONINFORMATION);
+				ShowInformation(TEXT("您要赠送的玩家已经离开，请重新选择赠送玩家"),10,MB_ICONINFORMATION);
 				m_ComboBoxTargetUser.SetFocus();
 				return;
 			}
 		}
 		else
 		{
-			ShowInformation(TEXT("请选择赠送玩家"),0,MB_ICONINFORMATION);
+			ShowInformation(TEXT("请选择赠送玩家"),10,MB_ICONINFORMATION);
 			m_ComboBoxTargetUser.SetFocus();
 		}
 		pSelectedUserData = m_pIPurchaseInfo->SearchUserItem(dwTargetUserID) ;
@@ -885,7 +879,7 @@ void CFlowerSetting::OnBnClickedOk()
 	//存在判断
 	if ( pSelectedUserData == NULL )
 	{
-		ShowInformation(TEXT("对方已经离开，赠送失败！"),0,MB_ICONINFORMATION);
+		ShowInformation(TEXT("对方已经离开，赠送失败！"),10,MB_ICONINFORMATION);
 		return ;
 	}
 
@@ -900,7 +894,7 @@ void CFlowerSetting::OnBnClickedOk()
 	__int64 lMeScore = pMeUserData->lInsureScore;
 	if ( lMeScore < lMePrice )
 	{
-		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),0,MB_ICONQUESTION |MB_YESNO|MB_DEFBUTTON2))	
+		if ( IDYES == ShowInformation(TEXT("您的游戏币不足，是否充值？"),20,MB_ICONQUESTION |MB_YESNO|MB_DEFBUTTON2))	
 		{
 			ShellExecute(NULL,TEXT("open"),TEXT("www.game541.com"),NULL,NULL,SW_SHOWDEFAULT);
 		}
@@ -924,9 +918,19 @@ void CFlowerSetting::OnBnClickedOk()
 	return;
 }
 
+//
+void CFlowerSetting::OnOK()
+{
+	OnShowWindow(FALSE,1);
+	KillTimer(IDI_PRO_ITEM_UPDATE_VIEW);
+	__super::OnOK();
+}
+
 //关闭消息
 void CFlowerSetting::OnBnClickedCancel()
 {
+	OnShowWindow(FALSE,1);
+	KillTimer(IDI_PRO_ITEM_UPDATE_VIEW);
 	OnCancel();
 	return;
 }
@@ -934,27 +938,13 @@ void CFlowerSetting::OnBnClickedCancel()
 //初始函数
 BOOL CFlowerSetting::OnInitDialog()
 {
-	CSkinDialogEx::OnInitDialog();
-
+	__super::OnInitDialog();
 	//设置标题
-	SetWindowText(TEXT("道具"));
-
+	SetWindowText(TEXT("礼物"));
 	//定时更新
 	SetTimer(IDI_PRO_ITEM_UPDATE_VIEW,TIME_PRO_ITEM_UPDATE_VIEW,NULL);
 
 	return TRUE; 
-}
-
-//设置颜色
-HBRUSH CFlowerSetting::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor)
-{
-	HBRUSH hbr = CSkinDialogEx::OnCtlColor(pDC, pWnd, nCtlColor);
-
-	if ( nCtlColor == CTLCOLOR_EDIT )
-	{
-		pDC->SetTextColor(RGB(0,0,0));
-	}
-	return hbr;
 }
 
 //更新界面
@@ -1032,29 +1022,6 @@ void CFlowerSetting::SetUserDataInfo(tagUserData *pUserData)
 	return;
 }
 
-//绘画函数
-void CFlowerSetting::OnPaint()
-{
-	CPaintDC dc(this); 
-
-	//绘画标题
-	DrawCaption(&dc);
-
-	CRect ClientRect;
-	GetClientRect(&ClientRect);
-	int nXExcursion=GetXExcursionPos();
-	int nYExcursion=GetYExcursionPos();
-
-	//绘画背景
-	COLORREF Color = RGB(161,212,226);
-	dc.FillSolidRect(nXExcursion,nYExcursion,ClientRect.Width()-2*nXExcursion,4,Color);
-	dc.FillSolidRect(nXExcursion,ClientRect.Height()-8,ClientRect.Width()-2*nXExcursion,7,Color);
-	dc.FillSolidRect(nXExcursion,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
-	dc.FillSolidRect(ClientRect.Width()-nXExcursion-12,nYExcursion+4,12,ClientRect.Height()-nYExcursion-9,Color);
-
-	//绘画边框
-	DrawBorder(&dc);
-}
 
 //时间消息
 void CFlowerSetting::OnTimer(UINT nIDEvent)
@@ -1066,12 +1033,11 @@ void CFlowerSetting::OnTimer(UINT nIDEvent)
 		{
 			//更新界面
 			UpdateView();
-
 			return;
 		}
 	}
 
-	CSkinDialogEx::OnTimer(nIDEvent);
+	__super::OnTimer(nIDEvent);
 }
 
 //命令信息
