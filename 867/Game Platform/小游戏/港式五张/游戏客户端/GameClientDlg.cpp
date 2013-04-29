@@ -133,33 +133,36 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 			//中止判断
 			if (nElapse==0)
 			{
-				PostMessage(WM_CLOSE,0,0);
+				CloseClientDlg();
 				return false;
 			}
 
 			//警告通知
-			if (nElapse<=5) PlayGameSound(AfxGetInstanceHandle(),TEXT("START_WARN"));
+			if (nElapse<=5) 
+				PlayGameSound(AfxGetInstanceHandle(),TEXT("START_WARN"));
 
 			return true;
 		}
 	case IDI_USER_ADD_SCORE:	//加注定时器
 		{
-			//获取位置
-			WORD wViewChairID=SwitchViewChairID(wChairID);
+			////获取位置
+			//WORD wViewChairID=SwitchViewChairID(wChairID);
+			////中止判断
+			//if (nElapse==0)
+			//{
+			//	if ((IsLookonMode()==false)&&(wViewChairID==2)) 
+			//		OnGiveUp(1,1);
+			//	return false;
+			//}
+			////警告通知
+			//if ((nElapse<=3)&&(wViewChairID==2)&&(IsLookonMode()==false))
+			//{
+			//	PlayGameSound(AfxGetInstanceHandle(),TEXT("TIME_END"));
+			//	return true;
+			//}
 
-			//中止判断
-			if (nElapse==0)
-			{
-				if ((IsLookonMode()==false)&&(wViewChairID==2)) OnGiveUp(1,1);
-				return false;
-			}
-
-			//警告通知
-			if ((nElapse<=3)&&(wViewChairID==2)&&(IsLookonMode()==false))
-			{
-				PlayGameSound(AfxGetInstanceHandle(),TEXT("TIME_END"));
-				return true;
-			}
+			if (nElapse<=5) 
+				PlayGameSound(AfxGetInstanceHandle(),TEXT("START_WARN"));
 
 			return true;
 		}
