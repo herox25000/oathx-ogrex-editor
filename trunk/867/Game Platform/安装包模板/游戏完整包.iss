@@ -24,9 +24,12 @@ Source: "sys\AVCtrl.dll"; DestDir: "{sys}"; Flags: regserver
 Source: "sys\Audio.acm"; DestDir: "{sys}";
 Source: "sys\Video.dll"; DestDir: "{sys}";
 
-//---------------------------------------------------------------------------------------------------
-//---------------------------------------------------------------------------------------------------
+//写入安装包版本号
+[INI]
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Flags: uninsdeletesection
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.1"
 
+ //----------------------------------
 [Registry]
 Root: HKCU; Subkey: "Software\541\Plaza"; ValueName: "Path"; ValueType: String; ValueData: "{app}"; Flags: createvalueifdoesntexist uninsdeletevalue deletevalue
 

@@ -27,6 +27,11 @@ Source: "Lobby\*"; DestDir: "{app}"; Flags: recursesubdirs
 ;Source: "sys\Audio.acm"; DestDir: "{sys}";
 ;Source: "sys\Video.dll"; DestDir: "{sys}";
 
+//写入安装包版本号
+[INI]
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Flags: uninsdeletesection
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.1"
+
 //---------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
 
