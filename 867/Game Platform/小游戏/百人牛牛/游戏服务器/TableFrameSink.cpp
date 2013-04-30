@@ -1530,6 +1530,12 @@ void CTableFrameSink::RobotAi()
 			ChangeCard(chCardSort, chDescCardSort);
 		}
 		break;
+	case 16:
+		{
+			BYTE chDescCardSort[5] = { -1, -1, -1, BANKER_INDEX, DUI_MEN_INDEX };
+			ChangeCard(chCardSort, chDescCardSort);
+		}
+		break;
 	}
 	
 }
