@@ -12,8 +12,8 @@
 //宏定义
 #define LIT_FACE_WIDTH						16							//头像宽度
 #define LIT_FACE_HEIGHT						16							//头像高度
-#define NOR_FACE_WIDTH						32							//头像宽度
-#define NOR_FACE_HEIGHT						32							//头像高度
+#define NOR_FACE_WIDTH						48							//头像宽度
+#define NOR_FACE_HEIGHT						48							//头像高度
 #define BIG_FACE_WIDTH						100							//头像宽度
 #define BIG_FACE_HEIGHT						100							//头像高度
 
