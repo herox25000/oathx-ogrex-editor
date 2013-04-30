@@ -27,7 +27,7 @@ CUserFaceRes::CUserFaceRes(void)
 
 	//Í·ÏñÃû³Æ
 	CString strDirName;
-	strDirName.Format(TEXT("%s\\CustomFace\\USER_FACE_IMAGE.png"),m_szDirWork);
+	strDirName.Format(TEXT("%s\\Res\\DEF_RESOURCE\\GLOBAL_USER\\USER_FACE_IMAGE.png"),m_szDirWork);
 
 	m_pImage = Image::FromFile(CT2W(strDirName.GetBuffer()));
 	m_wCount = m_pImage->GetWidth()/NOR_FACE_WIDTH * m_pImage->GetHeight()/NOR_FACE_HEIGHT;
