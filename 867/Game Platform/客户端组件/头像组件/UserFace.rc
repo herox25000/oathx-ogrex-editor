@@ -79,10 +79,13 @@ BEGIN
     BEGIN
         BLOCK "080403a8"
         BEGIN
+            VALUE "Comments", "深圳市网狐科技有限公司"
+            VALUE "CompanyName", "深圳市网狐科技有限公司"
             VALUE "FileDescription", "头像资源组件"
             VALUE "FileVersion", "6, 5, 1, 0"
-            VALUE "InternalName", "plugin_head.dll"
-            VALUE "OriginalFilename", "plugin_head.dll"
+            VALUE "InternalName", "UserFace.dll"
+            VALUE "LegalCopyright", "深圳市网狐科技有限公司保留所有权利。"
+            VALUE "OriginalFilename", "UserFace.dll"
             VALUE "ProductName", "头像资源组件"
             VALUE "ProductVersion", "6, 5, 1, 0"
         END
@@ -100,6 +103,7 @@ END
 //
 
 IDB_FACE_NORMAL         BITMAP                  "Res\\FACE_NORMAL.bmp"
+IDB_USER_FACE_IMAGE         PNG						"Res\\USER_FACE_IMAGE.png"
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 

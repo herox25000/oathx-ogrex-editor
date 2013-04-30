@@ -16,6 +16,9 @@ CUserFaceRes::CUserFaceRes(void)
 	HINSTANCE hInstancle=GetModuleHandle(USER_FACE_DLL_NAME);
 	m_NormalFace.LoadFromResource(hInstancle,IDB_FACE_NORMAL);
 
+	m_HeadImage.LoadImage(hInstancle, "IDB_USER_FACE_IMAGE");
+	//设置变量
+	m_wCount=m_NormalFace.GetWidth()/NOR_FACE_WIDTH;
 	m_NormalSize.SetSize(NOR_FACE_WIDTH,NOR_FACE_HEIGHT);
 	m_szDirWork[0]=0;
 
@@ -24,13 +27,6 @@ CUserFaceRes::CUserFaceRes(void)
 	int nModuleLen=lstrlen(m_szDirWork);
 	int nProcessLen=lstrlen(USER_FACE_DLL_NAME);
 	m_szDirWork[nModuleLen-nProcessLen]=0;
-
-	//头像名称
-	CString strDirName;
-	strDirName.Format(TEXT("%s\\Res\\DEF_RESOURCE\\GLOBAL_USER\\USER_FACE_IMAGE.png"),m_szDirWork);
-
-	m_pImage = Image::FromFile(CT2W(strDirName.GetBuffer()));
-	m_wCount = m_pImage->GetWidth()/NOR_FACE_WIDTH * m_pImage->GetHeight()/NOR_FACE_HEIGHT;
 
 	return;
 }
@@ -57,7 +53,7 @@ WORD __cdecl CUserFaceRes::FillImageList(CImageList & ImageList)
 	//加载头像
 	CBitmap Image;
 	Image.LoadBitmap(IDB_FACE_NORMAL);
-	ImageList.Create(NOR_FACE_WIDTH,NOR_FACE_HEIGHT,ILC_COLOR32|ILC_MASK,0,0);
+	ImageList.Create(NOR_FACE_WIDTH,NOR_FACE_HEIGHT,ILC_COLOR16|ILC_MASK,0,0);
 	ImageList.Add(&Image,RGB(255,0,255));
 
 	//设置资源
@@ -114,24 +110,9 @@ void __cdecl CUserFaceRes::DrawNormalFace(CDC * pDC, int nXPos, int nYPos, WORD 
 	//正常头像
 	if(!bDrawFace) 
 	{
-		WORD wCol = wFaceID / (m_NormalFace.GetWidth() / NOR_FACE_WIDTH);
-		if (wCol)
-		{
-			wCol = (wCol % 2) == 0 ? wCol : wCol + 1;
-		}
-
-		WORD wRow = wFaceID % (m_NormalFace.GetWidth() / NOR_FACE_WIDTH);
-	
-		Graphics graphics(pDC->GetSafeHdc());
-		//构造位置
-		RectF rcDrawRect;
-		rcDrawRect.X=(REAL)nXPos;
-		rcDrawRect.Y=(REAL)nYPos;
-		rcDrawRect.Width=(REAL)m_NormalSize.cx;
-		rcDrawRect.Height=(REAL)m_NormalSize.cy;
-
-		//绘画图像
-		graphics.DrawImage(m_pImage,rcDrawRect,wRow*m_NormalSize.cx,wCol*m_NormalSize.cy,(REAL)m_NormalSize.cx,(REAL)m_NormalSize.cy,UnitPixel);
+		m_HeadImage.DrawImage(pDC, nXPos, nYPos, m_NormalSize.cx,m_NormalSize.cy,
+			wFaceID*m_NormalSize.cx, 0, m_NormalSize.cx,m_NormalSize.cy);
+		//AlphaDrawImage(pDC,nXPos,nYPos,m_NormalSize.cx,m_NormalSize.cy,&DCFace,wFaceID*m_NormalSize.cx,0);
 	}
 
 	return;

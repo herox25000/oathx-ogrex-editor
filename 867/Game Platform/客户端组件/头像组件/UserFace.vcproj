@@ -20,6 +20,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+				AdditionalIncludeDirectories="..\..\开发库\Include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG;_AFXEXT;USER_FACE_DLL"
 				MinimalRebuild="TRUE"
 				BasicRuntimeChecks="3"
@@ -33,6 +34,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../开发库/Lib/plugin_ui_d.lib"
 				OutputFile="../../运行/Debug/plugin_head_d.dll"
 				LinkIncremental="2"
 				ModuleDefinitionFile=".\UserFaceD.def"
