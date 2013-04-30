@@ -10,7 +10,7 @@
 #define ROUND_CY					5									//圆角高度
 
 //屏幕位置
-#define LAYERED_SIZE				5									//分层大小
+#define LAYERED_SIZE				15									//分层大小
 #define CAPTION_SIZE				60									//标题大小
 
 //控件标识

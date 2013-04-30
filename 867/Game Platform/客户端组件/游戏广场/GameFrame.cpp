@@ -441,7 +441,7 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 			if(m_bHideGameList)
 			{
 				//隐藏按钮
-				m_btListControl1.ShowWindow(SW_HIDE);
+				//m_btListControl1.ShowWindow(SW_HIDE);
 				//m_btListControl2.ShowWindow(SW_HIDE);
 				m_ServerItemView.ShowWindow(SW_HIDE);
 				m_UserCompanionList.ShowWindow(SW_HIDE);
@@ -453,11 +453,11 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 				m_wShowListType = nCommandID;
 
 				//设置按钮
-				m_btListControl1.ShowWindow(SW_SHOW);
+				//m_btListControl1.ShowWindow(SW_SHOW);
 				//m_btListControl2.ShowWindow(SW_SHOW);
 				UINT uControl1=((IDC_BT_LIST_CONTROL_1==m_wShowListType)?GetPlatformRes().uFrameServiceBtShow1:GetPlatformRes().uFrameServiceBtHide1);
 				//UINT uControl2=((IDC_BT_LIST_CONTROL_2==m_wShowListType)?GetPlatformRes().uFrameServiceBtShow2:GetPlatformRes().uFrameServiceBtHide2);
-				m_btListControl1.SetButtonImage(uControl1,GetResInstanceHandle(),false);
+				//m_btListControl1.SetButtonImage(uControl1,GetResInstanceHandle(),false);
 				//m_btListControl2.SetButtonImage(uControl2,GetResInstanceHandle(),false);
 
 				//判断显示
@@ -628,7 +628,7 @@ bool CGameFrame::UpdateSkinResource()
 	//列表按钮
 	UINT uControl1=((IDC_BT_LIST_CONTROL_1==m_wShowListType)?PlatformFrameImage.uFrameServiceBtShow1:PlatformFrameImage.uFrameServiceBtHide1);
 	//UINT uControl2=((IDC_BT_LIST_CONTROL_2==m_wShowListType)?PlatformFrameImage.uFrameServiceBtShow2:PlatformFrameImage.uFrameServiceBtHide2);
-	m_btListControl1.SetButtonImage(uControl1,hResInstance,false);
+	//m_btListControl1.SetButtonImage(uControl1,hResInstance,false);
 	//m_btListControl2.SetButtonImage(uControl2,hResInstance,false);
 
 	//设置图片
@@ -1162,9 +1162,9 @@ void CGameFrame::RectifyControl(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_btExChangeSkin,NULL,nWidth-132,3,0,0,uFlags|SWP_NOSIZE);
 
 	//列表按钮
-	m_btListControl1.GetWindowRect(&rcItemRect);
-	INT nY = m_ImageInfoFrame.nTBorder-FRAME_EXALTATION+uUserTitleHeight+5;
-	DeferWindowPos(hDwp,m_btListControl1,NULL,m_ImageInfoFrame.nLBorder+5,nY,0,0,uFlags|SWP_NOSIZE);
+	//m_btListControl1.GetWindowRect(&rcItemRect);
+	//INT nY = m_ImageInfoFrame.nTBorder-FRAME_EXALTATION+uUserTitleHeight+5;
+	//DeferWindowPos(hDwp,m_btListControl1,NULL,m_ImageInfoFrame.nLBorder+5,nY,0,0,uFlags|SWP_NOSIZE);
 	//DeferWindowPos(hDwp,m_btListControl2,NULL,m_ImageInfoFrame.nLBorder+5,nY+rcItemRect.Height()+1,0,0,uFlags|SWP_NOSIZE);
 
 	//按钮位置
@@ -1330,7 +1330,7 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btSwitchUser.ShowWindow(SW_HIDE);
 	m_btGlobalOption.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SYSTEM_OPTION);
 	m_btGlobalOption.ShowWindow(SW_HIDE);
-	m_btListControl1.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_1);
+	//m_btListControl1.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_1);
 	//m_btListControl2.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_2);
 	for (WORD i=0;i<CountArray(m_btViewItem);i++)
 	{

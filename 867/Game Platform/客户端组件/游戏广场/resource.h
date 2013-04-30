@@ -38,8 +38,14 @@
 #define IDD_DLG_ENQUIRE                 324
 #define IDB_BT_REGISTER_CLOSE           325
 #define IDB_BT_REGISTER                 326
-#define IDB_BT_ENQUIRE_CANCEL			327    
-#define IDB_BK_ENQUIRE_BUTTON			328      
+#define IDB_BT_ENQUIRE_CANCEL           327
+#define IDB_BK_ENQUIRE_BUTTON           328
+#define IDB_BT_Register					329
+#define IDB_BT_Delete					330
+#define IDB_BT_NetOption				331
+#define IDB_BT_Close					332
+#define IDB_BT_REGISTER_ENTER			333
+#define IDB_BT_REGISTER_QUIT			334
 
 #define IDC_CHAT_MESSAGE                1002
 #define IDC_TABLE_PASSWORD              1003
@@ -171,6 +177,8 @@
 #define IDC_SWITCH_ACCOUNTS             1119
 #define IDC_BUTTON1                     1120
 #define IDC_CLOSE_PLAZA                 1120
+#define IDC_BT_                         1120
+#define IDC_BT_QUIT                     1120
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32776
