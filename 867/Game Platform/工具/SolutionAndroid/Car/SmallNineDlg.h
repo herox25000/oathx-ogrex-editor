@@ -32,6 +32,8 @@ protected:
 	virtual void			DoDataExchange(CDataExchange* pDX);	
 	virtual	BOOL			OnUpdateListView();
 	virtual DWORD			GetUserID();
+
+	void					LoadControlConfig();
 protected:
 	afx_msg void			OnSysCommand(UINT nID, LPARAM lParam);
 	afx_msg void			OnPaint();
@@ -50,4 +52,13 @@ public:
 	afx_msg void OnParticulars();
 	afx_msg void OnSaveScore();
 	afx_msg void OnGetScore();
+	afx_msg void OnBnClickedRadio1();
+	afx_msg void OnBnClickedRadio2();
+	afx_msg void OnBnClickedRadio3();
+	afx_msg void OnBnClickedRadio4();
+	afx_msg void OnBnClickedRadio5();
+	afx_msg void OnBnClickedRadio6();
+	afx_msg void OnBnClickedRadio7();
+	afx_msg void OnBnClickedRadio8();
+	afx_msg void OnBnClickedRadio9();
 };

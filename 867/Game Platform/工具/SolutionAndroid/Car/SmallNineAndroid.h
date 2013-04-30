@@ -10,7 +10,7 @@ namespace O2
 #define MIN_UPBANKER				2
 #define MIN_LINUP					2
 
-#define MAX_PLACE_JETTON_TIME		25
+#define MAX_PLACE_JETTON_TIME		20
 #define MIN_PLACE_REMAIN			103000
 
 	//////////////////////////////////////////////////////////////////////////
@@ -36,7 +36,7 @@ namespace O2
 		/*
 		* 获取下注金钱
 		*/
-		virtual INT64			GetRandScore(INT64 nLeftJettonScore);
+		virtual INT64			GetRandScore(INT64 nLeftJettonScore, BYTE nJettonArea);
 		/*
 		* 是否能下线
 		*/
@@ -120,6 +120,8 @@ namespace O2
 		*押注开始
 		*/
 		virtual	bool			OnStartJetton(const void* pBuffer, WORD wDataSize);
+		virtual bool			OnSubPlaceJetton(const void* pBuffer, WORD wDataSize);
+		INT64					GetPutJettonScore(BYTE nArea);
 	protected:
 		// 当前庄家
 		WORD					m_wCurBanker;
@@ -132,6 +134,17 @@ namespace O2
 		BOOL					m_bChipIn;
 		float					m_fChipTime;
 		int						m_nPlaceRate;
+
+		INT64					m_nBankerScore;
+
+		__int64					m_lAllBigTigerScore;						//买大虎总注
+		__int64					m_lAllSmlTigerScore;						//买小虎总注
+		__int64					m_lAllBigBogScore;							//买大狗总注
+		__int64					m_lAllSmlBogScore;							//买大狗总注
+		__int64					m_lAllBigHorseScore;						//买大马总注
+		__int64					m_lAllSmlHorseScore;						//买小马总注
+		__int64					m_lAllBigSnakeScore;						//买大蛇总注
+		__int64					m_lAllSmlSnakeScore;						//买小蛇总注
 	};
 
 	//////////////////////////////////////////////////////////////////////////

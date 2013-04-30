@@ -140,6 +140,8 @@ namespace O2
 					szMessage.Format("[%d][%d]到达在线时间, 立刻下线", GetUserID(), GetGameID());
 					LogEvent(szMessage, TraceLevel_Exception);
 
+					BankerManager::GetSingleton().Remove(m_dwUserID);
+
 					SetStatus(US_OFFLINE);
 				}
 				else
@@ -647,7 +649,9 @@ namespace O2
 			LogEvent(szMessage, TraceLevel_Debug);
 
 			pUser->wCurUpBanker		= 0;
-			pUser->nBankerCurWin	= 0;			
+			pUser->nBankerCurWin	= 0;	
+
+			BankerManager::GetSingleton().Remove(pUser->dwUserID);
 		}
 
 		m_wCurBanker	= pChangeBanker->wChairID;

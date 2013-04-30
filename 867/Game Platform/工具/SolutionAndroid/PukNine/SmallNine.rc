@@ -188,6 +188,42 @@ BEGIN
     LTEXT           "存入金额：",IDC_STATIC_BANKER,10,13,42,10
 END
 
+IDD_DIALOG_SERVERCONFIG DIALOGEX 0, 0, 298, 130
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "牌九服务配置"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,95,112,50,14
+    PUSHBUTTON      "取消",IDCANCEL,148,112,50,14
+    GROUPBOX        "控制器",IDC_STATIC,0,2,297,48
+    GROUPBOX        "庄配置",IDC_STATIC,0,53,297,53
+    CONTROL         "不控制",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,6,17,40,
+                    10
+    CONTROL         "庄通吃",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,50,17,40,
+                    10
+    CONTROL         "天门赢",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,94,17,40,
+                    10
+    CONTROL         "倒门赢",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,138,17,
+                    40,10
+    CONTROL         "顺门赢",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,182,17,
+                    40,10
+    CONTROL         "顺门输",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON,6,33,40,
+                    10
+    CONTROL         "倒门输",IDC_RADIO7,"Button",BS_AUTORADIOBUTTON,50,33,40,
+                    10
+    CONTROL         "天门赢",IDC_RADIO8,"Button",BS_AUTORADIOBUTTON,94,33,40,
+                    10
+    CONTROL         "庄通赔",IDC_RADIO9,"Button",BS_AUTORADIOBUTTON,138,33,
+                    40,10
+    LTEXT           "机器人必赢随机概率：",IDC_STATIC,6,69,81,8
+    LTEXT           "机器人输多少必赢：",IDC_STATIC,136,69,73,8
+    LTEXT           "玩家赢多少必输：",IDC_STATIC,22,88,65,8
+    EDITTEXT        IDC_EDIT1,87,66,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,208,65,85,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,87,85,89,14,ES_AUTOHSCROLL
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -266,6 +302,12 @@ BEGIN
         RIGHTMARGIN, 179
         TOPMARGIN, 7
         BOTTOMMARGIN, 48
+    END
+
+    IDD_DIALOG_SERVERCONFIG, DIALOG
+    BEGIN
+        RIGHTMARGIN, 297
+        TOPMARGIN, 1
     END
 END
 #endif    // APSTUDIO_INVOKED

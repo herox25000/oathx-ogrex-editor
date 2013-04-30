@@ -16,6 +16,8 @@
 #define IDD_DIALOG_CONFIG               129
 #define IDR_MENU_ANDROID                130
 #define IDD_DIALOG_BANKER               131
+#define IDD_DIALOG1                     132
+#define IDD_DIALOG_SERVERCONFIG         132
 #define IDC_LIST1                       1000
 #define IDC_RICHEDIT21                  1002
 #define IDC_EDIT1                       1004
@@ -38,14 +40,23 @@
 #define IDC_EDIT6                       1019
 #define IDC_EDIT17                      1020
 #define IDC_EDIT18                      1021
+#define IDC_RADIO1                      1021
 #define IDC_EDIT19                      1022
+#define IDC_RADIO2                      1022
 #define IDC_EDIT20                      1023
+#define IDC_RADIO3                      1023
 #define IDC_EDIT21                      1024
+#define IDC_RADIO4                      1024
 #define IDC_EDIT22                      1025
+#define IDC_RADIO5                      1025
 #define IDC_EDIT23                      1026
+#define IDC_RADIO6                      1026
 #define IDC_EDIT24                      1027
+#define IDC_RADIO7                      1027
 #define IDC_EDIT25                      1028
+#define IDC_RADIO8                      1028
 #define IDC_EDIT26                      1029
+#define IDC_RADIO9                      1029
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID__32773                       32773
@@ -57,9 +68,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        132
+#define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1021
+#define _APS_NEXT_CONTROL_VALUE         1022
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

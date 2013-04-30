@@ -191,7 +191,7 @@ namespace O2
 		while( it != m_AndroidRegister.end() )
 		{
 			WORD wStatus = it->second->GetStatus();
-			if (wStatus != US_OFFLINE)
+			if (wStatus != US_OFFLINE && wStatus != US_NULL)
 			{
 				INT64 nScore = it->second->GetScore();
 				if (nScore >= 100000000)

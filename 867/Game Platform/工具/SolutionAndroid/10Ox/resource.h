@@ -16,6 +16,8 @@
 #define IDD_DIALOG_CONFIG               129
 #define IDR_MENU_ANDROID                130
 #define IDD_DIALOG_BANKER               131
+#define IDD_DIALOG1                     132
+#define IDD_DIALOG_SERVERCONFIG         132
 #define IDC_LIST1                       1000
 #define IDC_RICHEDIT21                  1002
 #define IDC_EDIT1                       1004
@@ -30,16 +32,33 @@
 #define IDC_EDIT12                      1012
 #define IDC_STATIC_BANKER               1012
 #define IDC_EDIT13                      1013
+#define IDC_RADIO1                      1013
 #define IDC_EDIT16                      1014
+#define IDC_RADIO2                      1014
 #define IDC_EDIT14                      1015
+#define IDC_RADIO3                      1015
 #define IDC_EDIT15                      1016
+#define IDC_RADIO4                      1016
 #define IDC_EDIT4                       1017
+#define IDC_RADIO5                      1017
 #define IDC_EDIT5                       1018
+#define IDC_RADIO6                      1018
 #define IDC_EDIT6                       1019
+#define IDC_RADIO7                      1019
 #define IDC_EDIT17                      1020
+#define IDC_RADIO8                      1020
 #define IDC_EDIT18                      1021
+#define IDC_RADIO9                      1021
 #define IDC_EDIT19                      1022
+#define IDC_RADIO10                     1022
+#define IDC_RADIO11                     1023
 #define IDC_EDIT20                      1024
+#define IDC_RADIO12                     1024
+#define IDC_RADIO13                     1025
+#define IDC_RADIO14                     1026
+#define IDC_RADIO15                     1027
+#define IDC_RADIO16                     1028
+#define IDC_RADIO17                     1029
 #define ID_32771                        32771
 #define ID_32772                        32772
 #define ID__32773                       32773
@@ -51,9 +70,9 @@
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        132
+#define _APS_NEXT_RESOURCE_VALUE        133
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1013
+#define _APS_NEXT_CONTROL_VALUE         1030
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif

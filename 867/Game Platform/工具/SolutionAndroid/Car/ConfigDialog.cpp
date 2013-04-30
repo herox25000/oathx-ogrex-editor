@@ -40,13 +40,13 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT5,	"1070");
 		SetDlgItemText(IDC_EDIT6,	"30");
 		SetDlgItemText(IDC_EDIT7,	"4");
-		SetDlgItemText(IDC_EDIT8,	"4");
+		SetDlgItemText(IDC_EDIT8,	"6");
 		SetDlgItemText(IDC_EDIT9,	"50000000");
 		SetDlgItemText(IDC_EDIT10,	"30");
 		SetDlgItemText(IDC_EDIT11,	"180");
 		SetDlgItemText(IDC_EDIT12,	"3");
 		SetDlgItemText(IDC_EDIT13,	"12");
-		SetDlgItemText(IDC_EDIT14,	"2000000");
+		SetDlgItemText(IDC_EDIT14,	"1000000");
 		SetDlgItemText(IDC_EDIT15,	"150000000");
 		SetDlgItemText(IDC_EDIT16,	"2");
 		SetDlgItemText(IDC_EDIT17,  "4");
@@ -54,10 +54,10 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT19,  "30");
 		SetDlgItemText(IDC_EDIT20,  "12");
 
-		SetDlgItemText(IDC_EDIT21,	"1");
-		SetDlgItemText(IDC_EDIT22,  "1");
-		SetDlgItemText(IDC_EDIT23,	"1");
-		SetDlgItemText(IDC_EDIT24,  "1");
+		SetDlgItemText(IDC_EDIT21,	"2");
+		SetDlgItemText(IDC_EDIT22,  "4");
+		SetDlgItemText(IDC_EDIT23,	"6");
+		SetDlgItemText(IDC_EDIT24,  "12");
 		SetDlgItemText(IDC_EDIT25,  "24");
 		SetDlgItemText(IDC_EDIT26,	"24");
 		SetDlgItemText(IDC_EDIT27,  "24");
