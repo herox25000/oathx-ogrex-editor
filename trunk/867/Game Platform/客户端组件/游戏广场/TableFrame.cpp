@@ -203,7 +203,11 @@ bool CTableResource::LoadFromFiles(LPCTSTR pszGameName)
 		{
 			m_ptReady[i]=pResourceInfo->ptReady[i];
 			m_rcName[i]=pResourceInfo->rcName[i];
-			m_rcChair[i]=pResourceInfo->rcChair[i];
+
+			CRect rcTmp = pResourceInfo->rcChair[i];
+			rcTmp.right = rcTmp.left + 48;
+			rcTmp.bottom= rcTmp.top + 48; 
+			m_rcChair[i]=rcTmp;
 			m_nDrawStyle[i]=pResourceInfo->nDrawStyle[i];
 		}
 
