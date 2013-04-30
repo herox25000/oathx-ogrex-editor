@@ -177,6 +177,11 @@ public:
 	CSkinImage							m_ImageTable;						//桌子位图
 	CSkinImage							m_ImagePeople;						//用户位图
 
+	//桌子分配方式
+public:
+	BYTE							m_cbDistributeMode;					//座位分配模式	
+	//设置位置分配方式
+	void SetDistributeMode(BYTE bMode) {m_cbDistributeMode = bMode;}
 	//函数定义
 protected:
 	//构造函数
@@ -300,6 +305,12 @@ protected:
 protected:
 	static int							m_iScrollPos;						//滚动象素
 	static int							m_iWhellTimes;						//滚轮倍数
+
+	//桌子分配方式
+public:
+	BYTE							m_cbDistributeMode;					//座位分配模式	
+	//设置位置分配方式
+	void SetDistributeMode(BYTE bMode) ;
 
 	//函数定义
 public:

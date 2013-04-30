@@ -82,6 +82,7 @@ CTableResource::CTableResource()
 	m_crTableID=RGB(0,0,0);
 	m_crBackGround=RGB(0,0,0);
 	memset(m_nDrawStyle,0,sizeof(m_nDrawStyle));
+	m_cbDistributeMode=DISTRIBUTE_MODE_NONE;
 	return;
 }
 
@@ -205,8 +206,11 @@ bool CTableResource::LoadFromFiles(LPCTSTR pszGameName)
 			m_rcName[i]=pResourceInfo->rcName[i];
 
 			CRect rcTmp = pResourceInfo->rcChair[i];
-			rcTmp.right = rcTmp.left + 48;
-			rcTmp.bottom= rcTmp.top + 48; 
+			if ( m_cbDistributeMode!=DISTRIBUTE_MODE_NO_LOOK )
+			{
+				rcTmp.right = rcTmp.left + 48;
+				rcTmp.bottom= rcTmp.top + 48; 
+			}
 			m_rcChair[i]=rcTmp;
 			m_nDrawStyle[i]=pResourceInfo->nDrawStyle[i];
 		}
@@ -577,7 +581,7 @@ CTableFrame::CTableFrame()
 	//设置指针
 	m_pTableViewArray=NULL;
 	m_pITableFrameSink=NULL;
-
+	m_cbDistributeMode=DISTRIBUTE_MODE_NONE;
 	return;
 }
 
@@ -1399,6 +1403,13 @@ void CTableFrame::GetGameResDirectory(const tagGameKind * pGameKind, TCHAR szRes
 	szResDirectory[wStringIndex]=0;
 
 	return;
+}
+
+//设置位置分配方式
+void CTableFrame::SetDistributeMode(BYTE bMode) 
+{
+	m_cbDistributeMode = bMode;
+	m_TableResource.SetDistributeMode(bMode);
 }
 
 //////////////////////////////////////////////////////////////////////////

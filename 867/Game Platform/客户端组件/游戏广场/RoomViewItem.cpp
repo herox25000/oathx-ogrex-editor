@@ -2684,6 +2684,7 @@ bool CRoomViewItem::OnSocketMainInfo(CMD_Command Command, void * pData, WORD wDa
 			try
 			{
 				m_TableFrame.CreateTableFrame(this,100);
+				m_TableFrame.SetDistributeMode(m_cbDistributeMode);
 				m_TableFrame.InitTableFrame(pServerInfo->wTableCount,pServerInfo->wChairCount,(pServerInfo->cbHideUserInfo==TRUE),pGameKind,pIUnknownEx);
 				//调整界面
 				CRect rcClient;
