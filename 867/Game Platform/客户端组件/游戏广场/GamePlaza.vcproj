@@ -436,6 +436,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			RelativePath=".\res\GamePlaza.manifest">
 		</File>
 		<File
+			RelativePath=".\Res\Plaza_logon\PASSWORD_LEVEL.png">
+		</File>
+		<File
 			RelativePath=".\Res\Server_list\SERVER_LIST_ARROW.png">
 		</File>
 	</Files>

@@ -206,8 +206,7 @@ BEGIN
     EDITTEXT        IDC_PASSWORD2,58,149,82,12,ES_PASSWORD | ES_AUTOHSCROLL | 
                     NOT WS_BORDER
     CONTROL         "",IDC_USER_FACE,"ComboBoxEx32",CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,57,294,39,194,
-                    WS_EX_CLIENTEDGE
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,57,294,46,194
     PUSHBUTTON      "",IDOK,58,383,43,14
     PUSHBUTTON      "",IDCANCEL,283,8,17,14
     RTEXT           "帐号名称：",IDC_TYPE_NAME,15,102,41,8,NOT WS_VISIBLE | 
@@ -218,7 +217,7 @@ BEGIN
                     WS_DISABLED
     RTEXT           "用户性别：",IDC_STATIC,12,271,41,8,NOT WS_VISIBLE | 
                     WS_DISABLED
-    COMBOBOX        IDC_GENDER,58,268,39,80,CBS_DROPDOWNLIST | 
+    COMBOBOX        IDC_GENDER,58,268,46,80,CBS_DROPDOWNLIST | 
                     CBS_AUTOHSCROLL | WS_VSCROLL | WS_TABSTOP
     RTEXT           "推荐人：",IDC_STATIC,19,354,33,8,NOT WS_VISIBLE | 
                     WS_DISABLED
@@ -633,7 +632,7 @@ IDB_BK_ENQUIRE_BUTTON   BITMAP                  "res\\PLAZA_ENQUIRE\\BK_ENQUIRE_
 
 DLG_LOGON_BACK          PNG                     "res\\PLAZA_LOGON\\DLG_LOGON_BACK.PNG"
 DLG_REGISTER_BACK       PNG                     "res\\PLAZA_LOGON\\DLG_REGISTER_BACK.png"
-PASSWORD_LEVEL		PNG                     "res\\PLAZA_LOGON\\PASSWORD_LEVEL.png"
+PASSWORD_LEVEL          PNG                     "res\\PLAZA_LOGON\\PASSWORD_LEVEL.png"
 DLG_ENQUIRE_BACK        PNG                     "res\\PLAZA_ENQUIRE\\DLG_ENQUIRE_BACK.png"
 BT_ENQUIRE_CANCEL       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_CANCEL.png"
 BT_ENQUIRE_PLAZA        PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_PLAZA.png"

@@ -635,8 +635,6 @@ BOOL CDlgLogon::OnInitDialog()
 	m_btNetOption.SetButtonImage(IDB_BT_NetOption,hInstance,false,false);
 	m_btQuit.SetButtonImage(IDB_BT_QUIT,hInstance,false,false);
 
-
-
 	//居中窗口
 	CenterWindow(this);
 	//设置区域
