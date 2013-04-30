@@ -30,14 +30,18 @@ Source: "Lobby\plugin_head.dll"; DestDir: "{app}"; Flags: ignoreversion recurses
 Source: "Lobby\plugin_channel.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Lobby\plugin_common.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Lobby\plugin_share.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Lobby\plugin_property.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_ui.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\Lobby.ini"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Game\Baccarat.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "Lobby\plugin_ui.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Game\Baccarat.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Game\PaiJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 Source: "Game\XiaoJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs                
 ;Source: "Lobby\DownLoad\*"; DestDir: "{app}\DownLoad\"; Flags: recursesubdirs;Source: "Lobby\Res\*.*"; DestDir: "{app}\Res\"; Flags: recursesubdirs
 Source: "sys\AVCtrl.dll"; DestDir: "{sys}"; Flags: regserver
 Source: "sys\Audio.acm"; DestDir: "{sys}";
 Source: "sys\Video.dll"; DestDir: "{sys}";
+
+//写入安装包版本号
+[INI]
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Flags: uninsdeletesection
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.1"
 
 //---------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
