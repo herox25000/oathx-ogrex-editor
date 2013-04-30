@@ -233,6 +233,9 @@ public:
 	//得到自己下注的积分
 	__int64 Get_Me_DesktopJetton();
 
+	__int64 GetAllAreaScore(BYTE cbJettonArea);
+	__int64 GetMaxDesktopPutScore(BYTE& cbJettonArea);
+
 	//界面函数
 public:
 	//清理筹码

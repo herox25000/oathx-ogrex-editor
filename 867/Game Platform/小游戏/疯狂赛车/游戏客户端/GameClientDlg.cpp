@@ -684,8 +684,9 @@ void CGameClientDlg::UpdateButtonContron()
 		//计算积分
 		__int64 lCurrentJetton=m_GameClientView.GetCurrentJetton();
 		__int64 lLeaveScore=pMeInfo->lScore - m_GameClientView.Get_Me_DesktopJetton();	
-		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.Get_ALL_MultiDesktopScore();
-		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore/5);
+		BYTE cbJettonArea = 0;
+		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.GetMaxDesktopPutScore(cbJettonArea);
+		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore/s_Multiple[cbJettonArea]);
 		//设置光标
 		if (lCurrentJetton>lLeaveScore)
 		{

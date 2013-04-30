@@ -1489,7 +1489,7 @@ __int64 CGameClientView::GetMaxPutScore(BYTE cbJettonArea, BOOL bDebug)
 	if ( cbJettonArea<ID_BIG_TIGER || cbJettonArea>ID_SML_SNAKE ) return 0;
 
 	//大家已下注额
-	__int64 sxAllDesktopJetton=Get_ALL_MultiDesktopScore();
+	__int64 sxAllDesktopJetton=GetAllAreaScore(cbJettonArea);
 	__int64 sxAllLeftSpace = m_lBankerTreasure-sxAllDesktopJetton;
 	sxAllLeftSpace = max(sxAllLeftSpace, 0);
 	sxAllLeftSpace=sxAllLeftSpace/s_Multiple[cbJettonArea-ID_BIG_TIGER];
@@ -1503,6 +1503,55 @@ __int64 CGameClientView::GetMaxPutScore(BYTE cbJettonArea, BOOL bDebug)
 	__int64 sxMinJetton = min(sxMeLeftJetton, sxAllLeftSpace);
 
 	return sxMinJetton;
+}
+
+__int64 CGameClientView::GetAllAreaScore(BYTE cbJettonArea)
+{
+	if ( cbJettonArea<ID_BIG_TIGER || cbJettonArea>ID_SML_SNAKE ) return 0;
+	switch(cbJettonArea)
+	{
+	case ID_BIG_TIGER:
+		return m_lAllBigTigerScore * s_Multiple[0];
+	case ID_SML_TIGER:
+		return m_lAllSmlTigerScore * s_Multiple[1];
+	case ID_BIG_DOG:
+		return m_lAllBigBogScore * s_Multiple[2];
+	case ID_SML_DOG:
+		return m_lAllSmlBogScore * s_Multiple[3];
+	case ID_BIG_HORSE:
+		return m_lAllBigHorseScore * s_Multiple[4];
+	case ID_SML_HORSE:
+		return m_lAllSmlHorseScore * s_Multiple[5];
+	case ID_BIG_SNAKE:
+		return m_lAllBigSnakeScore * s_Multiple[6];
+	case ID_SML_SNAKE:
+		return m_lAllSmlSnakeScore * s_Multiple[7];
+	}
+	return 0;
+}
+
+__int64 CGameClientView::GetMaxDesktopPutScore(BYTE& cbJettonArea)
+{
+	__int64 nMaxScore = 0;
+	__int64 nLeftScore[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+	nLeftScore[0] = m_lAllBigTigerScore * s_Multiple[0];
+	nLeftScore[1] = m_lAllSmlTigerScore * s_Multiple[1];
+	nLeftScore[2] = m_lAllBigBogScore * s_Multiple[2];
+	nLeftScore[3] = m_lAllSmlBogScore * s_Multiple[3];
+	nLeftScore[4] = m_lAllBigHorseScore * s_Multiple[4];
+	nLeftScore[5] = m_lAllSmlHorseScore * s_Multiple[5];
+	nLeftScore[6] = m_lAllBigSnakeScore * s_Multiple[6];
+	nLeftScore[7] = m_lAllSmlSnakeScore * s_Multiple[7];
+
+	for (int i = 0; i < 8; i++)
+	{
+		if ( nMaxScore == 0 || nMaxScore > nLeftScore[i] )
+		{
+			nMaxScore = nLeftScore[i];
+			cbJettonArea = i;
+		}
+	}
+	return nMaxScore;
 }
 
 //成绩设置
