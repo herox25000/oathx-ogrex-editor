@@ -34,7 +34,7 @@
 			<Tool
 				Name="VCLinkerTool"
 				AdditionalDependencies="../../开发库/Lib/plugin_common_d.lib ../../开发库/Lib/plugin_share_d.lib ../../开发库/Lib/plugin_ui_d.lib ../../开发库/Lib/plugin_channel_d.lib ../../开发库/Lib/plugin_property_d.lib Winmm.lib Zipd.lib"
-				OutputFile="../../运行/Debug/PLQGame.exe"
+				OutputFile="../../运行/Debug/541Game.exe"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				ProgramDatabaseFile="$(SolutionDir)\objs\$(ProjectName)\$(ConfigurationName)\$(ProjectName).pdb"
@@ -137,6 +137,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\BitmapDialog.cpp">
+			</File>
+			<File
 				RelativePath=".\DlgBank.cpp">
 			</File>
 			<File
@@ -225,6 +228,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			Name="头文件"
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
+			<File
+				RelativePath=".\BitmapDialog.h">
+			</File>
 			<File
 				RelativePath=".\DlgBank.h">
 			</File>
@@ -315,6 +321,12 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Plaza_enquire\BK_ENQUIRE_BUTTON.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\Plaza_logon\BT_Close.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_Delete.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\Plaza_logon\BT_DeleteRecord.bmp">
 			</File>
 			<File
@@ -333,13 +345,25 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Plaza_logon\BT_LOGON_QUIT.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\Plaza_logon\BT_NetOption.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\Plaza_logon\BT_REGISTER.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Plaza_logon\BT_REGISTER_CLOSE.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\Plaza_logon\BT_REGISTER_ENTER.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_REGISTER_QUIT.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\CONNECT_STATUS.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\DLG_LOGON_BACK.bmp">
 			</File>
 			<File
 				RelativePath=".\res\GamePlaza.ico">

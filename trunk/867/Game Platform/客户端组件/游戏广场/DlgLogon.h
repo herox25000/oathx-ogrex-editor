@@ -45,6 +45,8 @@ protected:
 	CBrush							m_brBrush;							//背景画刷
 	CSkinLayered					m_SkinLayered;						//分层窗口
 
+	BYTE							m_cbLogonPassLevel;					//密码强度
+	BYTE							m_cbInsurePassLevel;				//密码强度
 	//控件变量
 public:
 	CImageList							m_ImageList;
@@ -52,7 +54,7 @@ public:
 
 	CSkinButtonEx							m_btLogon;						//登录按钮
 	CSkinButtonEx							m_btCancel;						//取消按钮
-
+	CSkinButtonEx							m_btClose;						//关闭按钮
 
 	//函数定义
 public:
@@ -60,6 +62,12 @@ public:
 	CDlgRegister();
 	//析构函数
 	virtual ~CDlgRegister();
+	//密码等级
+	BYTE GetPasswordLevel(LPCTSTR pszPassword);
+	//登陆密码输入
+	VOID OnEnChangeLogonPass();
+	//银行密码输入
+	VOID OnEnChangeInsurePass();
 
 	//重载函数
 protected:
@@ -81,6 +89,7 @@ protected:
 	VOID OnWindowPosChanged(WINDOWPOS * lpWndPos);
 	//控件颜色
 	HBRUSH OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor);
+
 
 	DECLARE_MESSAGE_MAP()
 };
@@ -132,10 +141,7 @@ public:
 	CSkinButtonEx							m_btDelete;						//删除按钮
 	CSkinButtonEx							m_btRegister;					//注册按钮
 	CSkinButtonEx							m_btNetOption;					//网络按钮
-	CSkinButtonEx							m_btMainPage;					//主页
-	CSkinButtonEx							m_btNewUser;					//新手指南
-	CSkinButtonEx							m_btSever;						//服务条款
-	CSkinButtonEx							m_btFindPassWord;				//找回密码
+	CSkinButtonEx							m_btQuit;
 
 	//控件变量
 public:
@@ -143,10 +149,6 @@ public:
 	CWebBrowser							m_BrowerAD;							//浏览窗口
 	CSkinTabCtrl						m_TabLogonMode;						//登录选择
 	CBrush								m_brBrush;							//背景画刷
-
-	//输入框
-public:
-					
 
 	//函数定义
 public:

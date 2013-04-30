@@ -3,12 +3,17 @@
 #include "DlgLogon.h"
 #include "GlobalUnits.h"
 //圆角大小
-#define ROUND_CX					7									//圆角宽度
-#define ROUND_CY					7									//圆角高度
+#define ROUND_CX					50									//圆角宽度
+#define ROUND_CY					50									//圆角高度
 //屏幕位置
-#define LAYERED_SIZE				5									//分层大小
-#define CAPTION_SIZE				35									//标题大小
+#define LAYERED_SIZE				4									//分层大小
+#define CAPTION_SIZE				50									//标题大小
 
+//密码等级
+#define PASSWORD_LEVEL_0			0									//没有等级
+#define PASSWORD_LEVEL_1			1									//没有等级
+#define PASSWORD_LEVEL_2			2									//没有等级
+#define PASSWORD_LEVEL_3			3									//没有等级
 
 static BOOL GetOptionItem(LPCTSTR lpAppName, LPCTSTR lpKey, LPSTR lpText, int iLen)
 {
@@ -29,6 +34,10 @@ static BOOL GetOptionItem(LPCTSTR lpAppName, LPCTSTR lpKey, LPSTR lpText, int iL
 #define LESS_SCREEN_H					720						//最小高度
 //////////////////////////////////////////////////////////////////////////////////////////
 BEGIN_MESSAGE_MAP(CDlgRegister, CDialog)
+	//取消按钮
+	ON_BN_CLICKED(IDC_BT_QUIT, OnCancel)
+	ON_EN_CHANGE(IDC_PASSWORD, OnEnChangeLogonPass)
+	ON_EN_CHANGE(IDC_BANKPASS, OnEnChangeInsurePass)
 	//系统消息
 	ON_WM_CTLCOLOR()
 	ON_WM_ERASEBKGND()
@@ -48,6 +57,9 @@ CDlgRegister::CDlgRegister() : CDialog(IDD_REGISTER)
 	m_szPassword[0]=0;
 	//创建画刷
 	m_brBrush.CreateSolidBrush(RGB(215,223,228));
+
+	m_cbLogonPassLevel = PASSWORD_LEVEL_0;		//密码等级
+	m_cbInsurePassLevel = PASSWORD_LEVEL_0;		//密码等级
 	return;
 }
 
@@ -61,7 +73,8 @@ void CDlgRegister::DoDataExchange(CDataExchange * pDX)
 {
 	__super::DoDataExchange(pDX);
 	DDX_Control(pDX, IDOK, m_btLogon);
-	DDX_Control(pDX, IDCANCEL, m_btCancel);
+	DDX_Control(pDX, IDC_BT_QUIT, m_btCancel);
+	DDX_Control(pDX, IDCANCEL, m_btClose);
 	DDX_Control(pDX, IDC_USER_FACE, m_FaceSelect);
 }
 
@@ -87,8 +100,9 @@ BOOL CDlgRegister::OnInitDialog()
 	((CEdit *)(GetDlgItem(IDC_BANKPASS2)))->LimitText(PASS_LEN-1);
 
 	HINSTANCE hInstance=AfxGetInstanceHandle();
-	m_btCancel.SetButtonImage(IDB_BT_REGISTER_CLOSE,hInstance,false,false);
-	m_btLogon.SetButtonImage(IDB_BT_REGISTER,TEXT("BT_REGISTER_ENTER"),hInstance,false,false);
+	m_btClose.SetButtonImage(IDB_BT_REGISTER_CLOSE,hInstance,false,false);
+	m_btLogon.SetButtonImage(IDB_BT_REGISTER_ENTER,hInstance,false,false);
+	m_btCancel.SetButtonImage(IDB_BT_REGISTER_QUIT,hInstance,false,false);
 
 	//加载头像
 	g_GlobalUnits.m_UserFaceRes->FillImageList(m_ImageList);
@@ -178,7 +192,7 @@ void CDlgRegister::OnOK()
 	GetDlgItemText(IDC_ACCOUNTS,strBuffer);
 	strBuffer.TrimLeft();
 	strBuffer.TrimRight();
-	if (strBuffer.GetLength()<4 || strBuffer.GetLength() > 26)
+	if (strBuffer.GetLength()<6 || strBuffer.GetLength() > 26)
 	{
 		ShowInformation(TEXT("帐号名字的长度最短4个字符,最长13个字符,请重新输入注册帐号！"),10,MB_ICONQUESTION);
 		GetDlgItem(IDC_ACCOUNTS)->SetFocus();
@@ -299,31 +313,28 @@ BOOL CDlgRegister::OnEraseBkgnd(CDC * pDC)
 	//ImageLogo.DrawImage(pBufferDC,11,6);
 	//ImageTitle.DrawImage(pBufferDC,40,6);
 
-	////加载资源
-	//CPngImage ImagePassword;
-	//ImagePassword.LoadImage(AfxGetInstanceHandle(),TEXT("PASSWORD_LEVEL"));
-
-	////获取大小
-	//CSize SizePassword;
-	//SizePassword.SetSize(ImagePassword.GetWidth()/3,ImagePassword.GetHeight()/2);
-
-	////绘画等级
-	//ImagePassword.DrawImage(pBufferDC,249,258,SizePassword.cx*3,SizePassword.cy,0,0);
-	//ImagePassword.DrawImage(pBufferDC,249,311,SizePassword.cx*3,SizePassword.cy,0,0);
-
-	////绘画叠加
-	//if (m_cbLogonPassLevel>=PASSWORD_LEVEL_1)
-	//{
-	//	INT nImagePos=(m_cbLogonPassLevel-PASSWORD_LEVEL_1)*SizePassword.cx;
-	//	ImagePassword.DrawImage(pBufferDC,249+nImagePos,258,SizePassword.cx,SizePassword.cy,nImagePos,SizePassword.cy);
-	//}
-
-	////绘画叠加
-	//if (m_cbInsurePassLevel>=PASSWORD_LEVEL_1)
-	//{
-	//	INT nImagePos=(m_cbInsurePassLevel-PASSWORD_LEVEL_1)*SizePassword.cx;
-	//	ImagePassword.DrawImage(pBufferDC,249+nImagePos,311,SizePassword.cx,SizePassword.cy,nImagePos,SizePassword.cy);
-	//}
+	//绘制密码等级
+	//加载资源
+	CPngImage ImagePassword;
+	ImagePassword.LoadImage(AfxGetInstanceHandle(),TEXT("PASSWORD_LEVEL"));
+	//获取大小
+	CSize SizePassword;
+	SizePassword.SetSize(ImagePassword.GetWidth()/3,ImagePassword.GetHeight()/2);
+	//绘画等级
+	ImagePassword.DrawImage(pBufferDC,225,190,SizePassword.cx*3,SizePassword.cy,0,0);
+	ImagePassword.DrawImage(pBufferDC,225,255,SizePassword.cx*3,SizePassword.cy,0,0);
+	//绘画叠加
+	if (m_cbLogonPassLevel>=PASSWORD_LEVEL_1)
+	{
+		INT nImagePos=(m_cbLogonPassLevel-PASSWORD_LEVEL_1)*SizePassword.cx;
+		ImagePassword.DrawImage(pBufferDC,225+nImagePos,190,SizePassword.cx,SizePassword.cy,nImagePos,SizePassword.cy);
+	}
+	//绘画叠加
+	if (m_cbInsurePassLevel>=PASSWORD_LEVEL_1)
+	{
+		INT nImagePos=(m_cbInsurePassLevel-PASSWORD_LEVEL_1)*SizePassword.cx;
+		ImagePassword.DrawImage(pBufferDC,225+nImagePos,255,SizePassword.cx,SizePassword.cy,nImagePos,SizePassword.cy);
+	}
 
 	//绘画界面
 	pDC->BitBlt(0,0,rcClient.Width(),rcClient.Height(),pBufferDC,0,0,SRCCOPY);
@@ -390,6 +401,95 @@ HBRUSH CDlgRegister::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor)
 	return __super::OnCtlColor(pDC,pWnd,nCtlColor);
 }
 
+//密码等级
+BYTE CDlgRegister::GetPasswordLevel(LPCTSTR pszPassword)
+{
+	//变量定义
+	BYTE cbPasswordInfo[4]={0,0,0,0};
+	UINT uPasswordLength=lstrlen(pszPassword);
+
+	//长度判断
+	if (lstrlen(pszPassword)<6)
+	{
+		return PASSWORD_LEVEL_0;
+	}
+
+	//小写字母
+	for (UINT i=0;i<uPasswordLength;i++)
+	{
+		//小写字母
+		if ((pszPassword[i]>=TEXT('a'))&&((pszPassword[i]<=TEXT('z'))))
+		{
+			cbPasswordInfo[0]=1;
+			continue;
+		}
+
+		//大写字母
+		if ((pszPassword[i]>=TEXT('A'))&&((pszPassword[i]<=TEXT('Z'))))
+		{
+			cbPasswordInfo[1]=1;
+			continue;
+		}
+
+		//数字字符
+		if ((pszPassword[i]>=TEXT('0'))&&((pszPassword[i]<=TEXT('9'))))
+		{
+			cbPasswordInfo[2]=1;
+			continue;
+		}
+
+		//其他字符
+		cbPasswordInfo[3]=1;
+	}
+
+	//判断等级
+	BYTE cbLevelCount=0;
+	for (BYTE i=0;i<CountArray(cbPasswordInfo);i++)
+	{
+		if (cbPasswordInfo[i]>0)
+		{
+			cbLevelCount++;
+		}
+	}
+
+	return PASSWORD_LEVEL_0+__min(cbLevelCount,(PASSWORD_LEVEL_3-PASSWORD_LEVEL_0));
+}
+
+
+//登陆密码输入
+VOID CDlgRegister::OnEnChangeLogonPass()
+{
+	//获取密码
+	TCHAR szPassword[PASS_LEN]=TEXT("");
+	GetDlgItemText(IDC_PASSWORD,szPassword,CountArray(szPassword));
+	//等级判断
+	BYTE cbPasswordLevel=GetPasswordLevel(szPassword);
+	//更新窗口
+	if (m_cbLogonPassLevel!=cbPasswordLevel)
+	{
+		//设置变量
+		m_cbLogonPassLevel=cbPasswordLevel;
+		//更新窗口
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_ERASE|RDW_ERASENOW);
+	}
+}
+
+//银行密码输入
+VOID CDlgRegister::OnEnChangeInsurePass()
+{
+	//获取密码
+	TCHAR szPassword[PASS_LEN]=TEXT("");
+	GetDlgItemText(IDC_BANKPASS,szPassword,CountArray(szPassword));
+	BYTE cbPasswordLevel=GetPasswordLevel(szPassword);
+	//更新窗口
+	if (m_cbInsurePassLevel!=cbPasswordLevel)
+	{
+		//设置变量
+		m_cbInsurePassLevel=cbPasswordLevel;
+		//更新窗口
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_ERASE|RDW_ERASENOW);
+	}
+}
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -408,13 +508,8 @@ BEGIN_MESSAGE_MAP(CDlgLogon, CDialog)
 	ON_BN_CLICKED(IDC_REGISTER, OnRegisterAccounts)
 	ON_BN_CLICKED(IDC_DELETE_RECORD, OnDeleteAccounts)
 	ON_BN_CLICKED(IDC_NET_OPTION, OnBnClickedNetOption)
+	ON_BN_CLICKED(IDC_BT_QUIT, OnCancel)
 	ON_NOTIFY(TCN_SELCHANGE, IDC_LOGON_TYPE, OnTcnSelchangeLogonType)
-
-	//链接地址
-	ON_BN_CLICKED(IDC_BT_MAINPAGE, OnMainPage)
-	ON_BN_CLICKED(IDC_BT_NEWUSER, OnNewUser)
-	ON_BN_CLICKED(IDC_BT_SERVER, OnServer)
-	ON_BN_CLICKED(IDC_BT_FINDPASSWORD, OnFindPassWord)
 
 	ON_WM_PAINT()
 END_MESSAGE_MAP()
@@ -441,7 +536,7 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 	m_nFullHeight=0;
 	m_bNetOption=false;
 	//创建画刷
-	m_brBrush.CreateSolidBrush(RGB(215,223,228));
+	m_brBrush.CreateSolidBrush(RGB(0,0,255));
 	return;
 }
 
@@ -467,11 +562,7 @@ void CDlgLogon::DoDataExchange(CDataExchange * pDX)
 	DDX_Control(pDX, IDC_DELETE_RECORD, m_btDelete);
 	DDX_Control(pDX, IDC_LOGON_TYPE, m_TabLogonMode);
 	DDX_Control(pDX, IDC_NET_OPTION, m_btNetOption);
-	//链接地址
-	DDX_Control(pDX, IDC_BT_MAINPAGE, m_btMainPage);
-	DDX_Control(pDX, IDC_BT_NEWUSER, m_btNewUser);
-	DDX_Control(pDX, IDC_BT_SERVER, m_btSever);
-	DDX_Control(pDX, IDC_BT_FINDPASSWORD, m_btFindPassWord);
+	DDX_Control(pDX, IDC_BT_QUIT, m_btQuit);
 }
 
 //初始化函数
@@ -492,15 +583,16 @@ BOOL CDlgLogon::OnInitDialog()
 	//m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
 	//m_BrowerAD.Navigate(TEXT("http://www.game541.com/images/login_Ad.jpg"),NULL,NULL,NULL,NULL);
 	//m_BrowerAD.SetWindowPos(NULL,LAYERED_SIZE,37,SizeWindow.cx-2*LAYERED_SIZE,84,SWP_NOZORDER|SWP_NOCOPYBITS|SWP_NOACTIVATE);
-	////m_BrowerAD.ShowWindow(SW_HIDE);
+	//m_BrowerAD.ShowWindow(SW_HIDE);
+
 
 	//加入标签
 	m_TabLogonMode.SetItemSize(CSize(100,25));
 	m_TabLogonMode.InsertItem(LOGON_BY_ACCOUNTS,TEXT("帐号登录"));
 	m_TabLogonMode.InsertItem(LOGON_BY_USERID,TEXT("ＩＤ登录"));
 	//设置控件
-	m_TabLogonMode.SetRenderImage(false);
-	m_TabLogonMode.SetTabCtrlColor(RGB(215,223,228),RGB(145,168,183));
+	m_TabLogonMode.SetRenderImage(true);
+	m_TabLogonMode.SetTabCtrlColor(RGB(53,181,255),RGB(145,168,183));
 
 	//限制输入
 	((CComboBox *)(GetDlgItem(IDC_USER_ID)))->LimitText(11);
@@ -536,37 +628,33 @@ BOOL CDlgLogon::OnInitDialog()
 
 	////设置按钮
 	HINSTANCE hInstance=AfxGetInstanceHandle();
-	m_btCancel.SetButtonImage(IDB_BT_QUIT,hInstance,false,false);
-	m_btLogon.SetButtonImage(IDB_BT_LOGON,TEXT("BT_LOGON_ENTER"),hInstance,false,false);
-	m_btRegister.SetButtonImage(IDB_BT_LOGON,TEXT("BT_LOGON_REGISTER"),hInstance,false,false);
-	m_btDelete.SetButtonImage(IDB_BT_LOGON_ITEM,TEXT("BT_LOGON_ITEM"),hInstance,false,false);
-	//m_btNetOption.SetButtonImage(IDB_BT_LOGON_ITEM,TEXT("BT_LOGON_ITEM"),hInstance,false,false);
-	m_btNetOption.ShowWindow(SW_HIDE);
-	//设置链接按钮
-	m_btMainPage.SetButtonImage(IDB_BT_LOGON_LINK,TEXT("BT_LOGON_LINK_1"),hInstance,false,false);
-	m_btNewUser.SetButtonImage(IDB_BT_LOGON_LINK,TEXT("BT_LOGON_LINK_2"),hInstance,false,false);
-	m_btSever.SetButtonImage(IDB_BT_LOGON_LINK,TEXT("BT_LOGON_LINK_3"),hInstance,false,false);
-	m_btFindPassWord.SetButtonImage(IDB_BT_LOGON_LINK,TEXT("BT_LOGON_LINK_4"),hInstance,false,false);
+	m_btCancel.SetButtonImage(IDB_BT_Close,hInstance,false,false);
+	m_btLogon.SetButtonImage(IDB_BT_LOGON,hInstance,false,false);
+	m_btRegister.SetButtonImage(IDB_BT_Register,hInstance,false,false);
+	m_btDelete.SetButtonImage(IDB_BT_Delete,hInstance,false,false);
+	m_btNetOption.SetButtonImage(IDB_BT_NetOption,hInstance,false,false);
+	m_btQuit.SetButtonImage(IDB_BT_QUIT,hInstance,false,false);
+
+
 
 	//居中窗口
 	CenterWindow(this);
 	//设置区域
 	CRgn RgnWindow;
-	RgnWindow.CreateRoundRectRgn(LAYERED_SIZE,LAYERED_SIZE,SizeWindow.cx-LAYERED_SIZE+1,SizeWindow.cy-LAYERED_SIZE+1,ROUND_CX,ROUND_CY);
+	RgnWindow.CreateRoundRectRgn(LAYERED_SIZE+1,LAYERED_SIZE,SizeWindow.cx-LAYERED_SIZE,SizeWindow.cy-LAYERED_SIZE,ROUND_CX,ROUND_CY);
 	//设置区域
 	SetWindowRgn(RgnWindow,FALSE);
 
-	//分层窗口
-	//获取窗口
-	CRect rcWindow;
-	GetWindowRect(&rcWindow);
-	CRect rcUnLayered;
-	rcUnLayered.top=LAYERED_SIZE;
-	rcUnLayered.left=LAYERED_SIZE;
-	rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
-	rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
-	m_SkinLayered.CreateLayered(this,rcWindow);
-	m_SkinLayered.InitLayeredArea(ImageBack,255,rcUnLayered,CPoint(ROUND_CX,ROUND_CY),false);
+	////分层窗口
+	//CRect rcWindow;
+	//GetWindowRect(&rcWindow);
+	//CRect rcUnLayered;
+	//rcUnLayered.top=LAYERED_SIZE;
+	//rcUnLayered.left=LAYERED_SIZE;
+	//rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
+	//rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
+	//m_SkinLayered.CreateLayered(this,rcWindow);
+	//m_SkinLayered.InitLayeredArea(ImageBack,255,rcUnLayered,CPoint(ROUND_CX,ROUND_CY),false);
 
 	return FALSE;
 }
@@ -1247,7 +1335,6 @@ void CDlgLogon::OnBnClickedNetOption()
 {
 	//设置模式
 	//SwitchNetOption(!m_bNetOption);
-
 	return;
 }
 
@@ -1268,6 +1355,7 @@ VOID CDlgLogon::OnLButtonDown(UINT nFlags, CPoint Point)
 //绘画背景
 BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 {
+	__super::OnEraseBkgnd(pDC);
 	//获取位置
 	CRect rcClient;
 	GetClientRect(&rcClient);
@@ -1301,6 +1389,7 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 
 	//绘画界面
 	pDC->BitBlt(0,0,rcClient.Width(),rcClient.Height(),pBufferDC,0,0,SRCCOPY);
+
 	return TRUE;
 }
 
@@ -1319,11 +1408,11 @@ VOID CDlgLogon::OnShowWindow(BOOL bShow, UINT nStatus)
 {
 	__super::OnShowWindow(bShow, nStatus);
 
-	//显示分层
-	if (m_SkinLayered.m_hWnd!=NULL)
-	{
-		m_SkinLayered.ShowWindow((bShow==FALSE)?SW_HIDE:SW_SHOW);
-	}
+	////显示分层
+	//if (m_SkinLayered.m_hWnd!=NULL)
+	//{
+	//	m_SkinLayered.ShowWindow((bShow==FALSE)?SW_HIDE:SW_SHOW);
+	//}
 
 	return;
 }
@@ -1334,11 +1423,11 @@ VOID CDlgLogon::OnWindowPosChanged(WINDOWPOS * lpWndPos)
 {
 	__super::OnWindowPosChanging(lpWndPos);
 
-	//移动分层
-	if ((m_SkinLayered.m_hWnd!=NULL)&&(lpWndPos->cx>=0)&&(lpWndPos->cy>0))
-	{
-		m_SkinLayered.SetWindowPos(NULL,lpWndPos->x,lpWndPos->y,lpWndPos->cx,lpWndPos->cy,SWP_NOZORDER);
-	}
+	////移动分层
+	//if ((m_SkinLayered.m_hWnd!=NULL)&&(lpWndPos->cx>=0)&&(lpWndPos->cy>0))
+	//{
+	//	m_SkinLayered.SetWindowPos(NULL,lpWndPos->x,lpWndPos->y,lpWndPos->cx,lpWndPos->cy,SWP_NOZORDER);
+	//}
 
 	return;
 }
@@ -1353,11 +1442,10 @@ HBRUSH CDlgLogon::OnCtlColor(CDC * pDC, CWnd * pWnd, UINT nCtlColor)
 	case CTLCOLOR_STATIC:
 		{
 			pDC->SetBkMode(TRANSPARENT);
-			pDC->SetTextColor(RGB(10,10,10));
+			pDC->SetTextColor(RGB(0,10,255));
 			return m_brBrush;
 		}
 	}
-
 	return __super::OnCtlColor(pDC,pWnd,nCtlColor);
 }
 
