@@ -81,6 +81,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 			CharacterSet="2">
 			<Tool
 				Name="VCCLCompilerTool"
+				AdditionalIncludeDirectories="..\..\开发库\Include"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;USER_FACE_DLL"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
@@ -92,6 +93,7 @@ copy /y ..\..\运行\Debug\$(TargetFileName) ..\..\发布组件\客户端组件\Debug\$(Tar
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="../../开发库/Lib/plugin_ui.lib"
 				OutputFile="../../运行/Release/plugin_head.dll"
 				LinkIncremental="1"
 				ModuleDefinitionFile=".\UserFace.def"
