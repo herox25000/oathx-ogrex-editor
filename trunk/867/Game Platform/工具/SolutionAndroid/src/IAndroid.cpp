@@ -277,6 +277,7 @@ namespace O2
 		CopyMemory(tb.szPassword, m_Password.GetBuffer(), sizeof(tb.szPassword));
 
 		m_ClientSocket->SendData(MDM_TOOLBOX, SUB_TOOLBOX_BANKOPERATING, &tb, sizeof(tb));
+
 		return true;
 	}
 
@@ -396,7 +397,7 @@ namespace O2
 			return m_ClientSocket->SendData(wMainCmdID, wSubCmdID)  > 0 ? true : 0;
 		}
 
-		return 0;
+		return true;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -637,7 +638,7 @@ namespace O2
 		case SUB_GR_USER_STATUS:
 			{
 				if (wDataSize<sizeof(CMD_GR_UserStatus)) 
-					return 0;
+					return true;
 				//处理数据
 				CMD_GR_UserStatus* pUserStatus  = (CMD_GR_UserStatus *)pBuffer;
 				SUser* pUser = m_pUserManager->Search(pUserStatus->dwUserID);
@@ -737,7 +738,7 @@ namespace O2
 	bool			IAndroid::OnSocketMainGameFrame(CMD_Command Command, void* pBuffer, WORD wDataSize)
 	{
 		if (wDataSize>SOCKET_PACKET) 
-			return 0;
+			return true;
 
 		//构造数据
 		IPC_SocketPackage SocketPackage;
@@ -822,7 +823,7 @@ namespace O2
 			}
 		}
 
-		return 0;
+		return true;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -867,11 +868,11 @@ namespace O2
 				//效验参数
 				CMD_GR_Message * pMessage=(CMD_GR_Message *)pBuffer;
 				if (wDataSize<=(sizeof(CMD_GR_Message)-sizeof(pMessage->szContent)))
-					return 0;
+					return true;
 				//消息处理
 				WORD wHeadSize=sizeof(CMD_GR_Message)-sizeof(pMessage->szContent);
 				if (wDataSize!=(wHeadSize+pMessage->wMessageLength*sizeof(TCHAR))) 
-					return 0;
+					return true;
 				pMessage->szContent[pMessage->wMessageLength-1]=0;
 				LogEvent(pMessage->szContent, TraceLevel_Normal);
 			}

@@ -70,6 +70,7 @@ BEGIN_MESSAGE_MAP(CSmallNineDlg, CDialog)
 	ON_COMMAND(ID__32776, OnParticulars)
 	ON_COMMAND(ID__32774, OnSaveScore)
 	ON_COMMAND(ID__, OnGetScore)
+	ON_BN_CLICKED(IDB_ADVANCED, OnBnClickedAdvanced)
 END_MESSAGE_MAP()
 
 BOOL CSmallNineDlg::OnInitDialog()
@@ -98,6 +99,7 @@ BOOL CSmallNineDlg::OnInitDialog()
 	// 创建配置对话框
 	m_ConfigDlg.Create(IDD_DIALOG_CONFIG);
 	m_BankerDialog.Create(IDD_DIALOG_BANKER);
+	m_ServerDlg.Create(IDD_DIALOG_SERVERCONFIG);
 	
 	m_ListView.SetExtendedStyle(
 		m_ListView.GetExtendedStyle()|0x00010000|LVS_EX_FULLROWSELECT
@@ -499,3 +501,9 @@ void CSmallNineDlg::OnDestroy()
 	}
 }
 
+
+void CSmallNineDlg::OnBnClickedAdvanced()
+{
+	m_ServerDlg.CenterWindow();
+	m_ServerDlg.ShowWindow(SW_SHOW);
+}

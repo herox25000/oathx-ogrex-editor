@@ -175,6 +175,44 @@ BEGIN
     LTEXT           "存入金额：",IDC_STATIC_BANKER,10,13,42,10
 END
 
+IDD_DIALOG_SERVERCONFIG DIALOGEX 0, 0, 294, 131
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "小九服务器配置"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,93,112,50,14
+    PUSHBUTTON      "取消",IDCANCEL,147,112,50,14
+    GROUPBOX        "控制器",IDC_STATIC,0,2,293,49
+    GROUPBOX        "默认配置",IDC_STATIC,0,54,293,51
+    CONTROL         "不控制",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,4,17,40,
+                    10
+    CONTROL         "天门输",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON,4,33,40,
+                    10
+    CONTROL         "天门赢",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,98,17,40,
+                    10
+    CONTROL         "庄通吃",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,51,17,40,
+                    10
+    CONTROL         "倒门输",IDC_RADIO8,"Button",BS_AUTORADIOBUTTON,98,33,40,
+                    10
+    CONTROL         "倒门赢",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,145,17,
+                    40,10
+    CONTROL         "庄通赔",IDC_RADIO9,"Button",BS_AUTORADIOBUTTON,145,33,
+                    40,10
+    CONTROL         "顺门输",IDC_RADIO7,"Button",BS_AUTORADIOBUTTON,51,33,40,
+                    10
+    CONTROL         "顺门赢",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,192,17,
+                    40,10
+    LTEXT           "机器人坐庄必赢率：",IDC_STATIC,6,70,73,8
+    LTEXT           "机器人输多少必赢：",IDC_STATIC,128,70,73,8
+    LTEXT           "玩家输多少必输：",IDC_STATIC,14,87,65,8
+    EDITTEXT        IDC_EDIT1,78,67,40,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT2,200,67,87,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT3,78,84,77,14,ES_AUTOHSCROLL
+    CONTROL         "注：该控制立即更新",IDC_STATIC,"Static",
+                    SS_LEFTNOWORDWRAP | WS_GROUP,212,33,73,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

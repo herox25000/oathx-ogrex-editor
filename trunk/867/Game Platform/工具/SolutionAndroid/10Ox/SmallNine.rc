@@ -175,6 +175,51 @@ BEGIN
     LTEXT           "存入金额：",IDC_STATIC_BANKER,10,13,42,10
 END
 
+IDD_DIALOG_SERVERCONFIG DIALOGEX 0, 0, 329, 99
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "百人牛牛服务配置"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,107,77,50,14
+    PUSHBUTTON      "取消",IDCANCEL,163,77,50,14
+    GROUPBOX        "控制器",IDC_STATIC,1,1,325,70
+    CONTROL         "不控制",IDC_RADIO1,"Button",BS_AUTORADIOBUTTON,9,17,40,
+                    10
+    CONTROL         "庄通吃",IDC_RADIO2,"Button",BS_AUTORADIOBUTTON,60,17,40,
+                    10
+    CONTROL         "天门赢",IDC_RADIO3,"Button",BS_AUTORADIOBUTTON,111,17,
+                    40,10
+    CONTROL         "地门赢",IDC_RADIO4,"Button",BS_AUTORADIOBUTTON,162,17,
+                    40,10
+    CONTROL         "玄门赢",IDC_RADIO5,"Button",BS_AUTORADIOBUTTON,213,17,
+                    40,10
+    CONTROL         "黄门赢",IDC_RADIO6,"Button",BS_AUTORADIOBUTTON,264,17,
+                    40,10
+    CONTROL         "天地门赢",IDC_RADIO7,"Button",BS_AUTORADIOBUTTON,9,33,
+                    48,10
+    CONTROL         "天玄门赢",IDC_RADIO8,"Button",BS_AUTORADIOBUTTON,60,33,
+                    48,10
+    CONTROL         "天黄门赢",IDC_RADIO9,"Button",BS_AUTORADIOBUTTON,111,33,
+                    48,10
+    CONTROL         "地玄门赢",IDC_RADIO10,"Button",BS_AUTORADIOBUTTON,162,
+                    33,48,10
+    CONTROL         "地黄门赢",IDC_RADIO11,"Button",BS_AUTORADIOBUTTON,213,
+                    33,48,10
+    CONTROL         "玄黄门赢",IDC_RADIO12,"Button",BS_AUTORADIOBUTTON,264,
+                    33,48,10
+    CONTROL         "黄门输",IDC_RADIO13,"Button",BS_AUTORADIOBUTTON,9,51,40,
+                    10
+    CONTROL         "玄门输",IDC_RADIO14,"Button",BS_AUTORADIOBUTTON,60,51,
+                    40,10
+    CONTROL         "天门输",IDC_RADIO15,"Button",BS_AUTORADIOBUTTON,111,51,
+                    40,10
+    CONTROL         "庄通赔",IDC_RADIO16,"Button",BS_AUTORADIOBUTTON,213,51,
+                    40,10
+    CONTROL         "地门输",IDC_RADIO17,"Button",BS_AUTORADIOBUTTON,162,51,
+                    40,10
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -253,6 +298,14 @@ BEGIN
         RIGHTMARGIN, 179
         TOPMARGIN, 7
         BOTTOMMARGIN, 48
+    END
+
+    IDD_DIALOG_SERVERCONFIG, DIALOG
+    BEGIN
+        LEFTMARGIN, 1
+        RIGHTMARGIN, 326
+        TOPMARGIN, 1
+        BOTTOMMARGIN, 98
     END
 END
 #endif    // APSTUDIO_INVOKED

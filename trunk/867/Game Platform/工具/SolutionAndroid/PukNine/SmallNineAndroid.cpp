@@ -195,6 +195,8 @@ namespace O2
 					szMessage.Format("[%d][%d]到达在线时间, 立刻下线", GetUserID(), GetGameID());
 					LogEvent(szMessage, TraceLevel_Exception);
 
+					BankerManager::GetSingleton().Remove(m_dwUserID);
+
 					SetStatus(US_OFFLINE);
 				}
 				else
@@ -481,6 +483,7 @@ namespace O2
 				m_wCurBanker		= pStatus->wCurrentBankerChairID;
 				m_nReqBankerScore	= pStatus->lApplyBankerCondition;
 				m_fChipTime			= 0;
+				m_bChipIn			= FALSE;
 
 				OnUpdateBank();
 			}
@@ -692,6 +695,8 @@ namespace O2
 			szMessage.Format("[%d][%d]下庄完成 做庄次数%d 成绩%I64d", pUser->dwUserID, 
 				pUser->dwGameID, pUser->wCurUpBanker, pUser->nBankerCurWin);
 			LogEvent(szMessage, TraceLevel_Debug);
+
+			BankerManager::GetSingleton().Remove(pUser->dwUserID);
 
 			pUser->wCurUpBanker		= 0;
 			pUser->nBankerCurWin	= 0;			

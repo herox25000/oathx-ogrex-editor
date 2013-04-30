@@ -3,6 +3,7 @@
 #include "ConfigFile.h"
 #include "BankerManager.h"
 #include "AndroidTimer.h"
+#include <algorithm>
 
 namespace O2
 {
@@ -11,6 +12,15 @@ namespace O2
 		: IAndroid(dwUserID, fOnlineTime), m_bChipIn(FALSE)
 	{
 		m_nPlaceRate = 0;
+
+		m_lAllBigTigerScore = 0;
+		m_lAllSmlTigerScore = 0;
+		m_lAllBigBogScore	= 0;
+		m_lAllSmlBogScore	= 0;
+		m_lAllBigHorseScore = 0;
+		m_lAllSmlHorseScore = 0;
+		m_lAllBigSnakeScore = 0;
+		m_lAllSmlSnakeScore = 0;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -28,7 +38,7 @@ namespace O2
 		m_bChipIn			= FALSE;
 		m_fChipTime			= MAX_PLACE_JETTON_TIME;
 		m_nChipInScore		= 0;
-		m_fAddChipTime		= AndroidTimer::rdft(1, 3);
+		m_fAddChipTime		= AndroidTimer::rdft(1, 5);
 		m_fElapsedTime		= 0;
 		m_nBankerWinScore	= 0;
 		m_nPlaceRate		= 0;
@@ -37,59 +47,159 @@ namespace O2
 	}
 
 	//////////////////////////////////////////////////////////////////////////
-	INT64		SmallNineAndroid::GetRandScore(INT64 nLeftJettonScore)
+	BYTE		SmallNineAndroid::GetRandArea()
 	{
 		// 获取庄配置
 		SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
 
-		float nTenMillionRate = 0, nFiveMillionRate = 0, nOneMillionRate = 0, nFiveLakhRate = 0, nTenLakhRate = 0, nOneW = 0, nOneQ = 0;
+		INT64 chJetton[8] = {0, 0, 0, 0, 0, 0, 0, 0};
+		chJetton[0] = pConfig->wShunMenRate * m_nBankerScore / 100;
+		chJetton[1] = pConfig->wYouJiaoRate * m_nBankerScore / 100;
+		chJetton[2] = pConfig->wTianMenRate * m_nBankerScore / 100;
+		chJetton[3] = pConfig->wQiaoRate * m_nBankerScore / 100;
+		chJetton[4] = pConfig->wDaoMenRate * m_nBankerScore / 100;
+		chJetton[5] = pConfig->wExtraRate1 * m_nBankerScore / 100;
+		chJetton[6] = pConfig->wZuoJiaoRate * m_nBankerScore / 100;
+		chJetton[7] = pConfig->wExtraRate2 * m_nBankerScore / 100;
 
-		if (nLeftJettonScore >= 10000000)
-			nTenMillionRate = 10000000.0 / nLeftJettonScore * 100;
-		if (nLeftJettonScore >= 5000000)
-			nFiveMillionRate = 5000000.0 / nLeftJettonScore * 100;
-		if (nLeftJettonScore >= 1000000)
-			nOneMillionRate = 1000000.0 / nLeftJettonScore * 100;
-		if (nLeftJettonScore >= 500000)
-			nFiveLakhRate = 500000.0 / nLeftJettonScore * 100;
-		if (nLeftJettonScore >= 100000)
-			nTenLakhRate = 100000.0 / nLeftJettonScore * 100;
-		if (nLeftJettonScore >= 10000)
-			nOneW = 10000.0 / nLeftJettonScore * 100;
-		if (nLeftJettonScore >= 1000)
-			nOneQ = 1000.0 / nLeftJettonScore * 100;
-
-		float nTotal		= nTenMillionRate + nFiveMillionRate + nOneMillionRate + nFiveLakhRate + nTenLakhRate + nOneW + nOneQ;
-		nTenMillionRate		= nTenMillionRate / nTotal * 100;
-		nFiveMillionRate	= nFiveMillionRate / nTotal * 100;
-		nFiveLakhRate		= nFiveLakhRate / nTotal * 100;
-		nOneMillionRate		= nOneMillionRate / nTotal * 100;
-		nTenLakhRate		= nTenLakhRate / nTotal * 100;
-		nOneW				= nOneW / nTotal * 100;
-		nOneQ				= nOneQ / nTotal * 100;
-
-		// 随机压住金币
-		static __int64 JScore[] = 
+		//根据庄家的金额进行配置
+		float fRndArea[8] = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};
+		float fTotal = 0.0f;
+		int i = 0;
+		for (i = 0; i < 8; i++)
 		{
-			1000, 10000, 100000, 500000, 1000000, 5000000, 10000000
+			if (chJetton[i] > GetPutJettonScore( i+ID_BIG_TIGER ) * s_Multiple[i])
+			{
+				int nLeftJetton = chJetton[i] - GetPutJettonScore( i+ID_BIG_TIGER ) * s_Multiple[i];
+				fRndArea[i] = nLeftJetton * 1.0 / m_nBankerScore;
+				fTotal += fRndArea[i];
+			}
+		}
+
+		if (fTotal <= 0.0f)
+		{
+			return 0;
+		}
+		
+		for (i = 0; i < 8; i++)
+		{
+			fRndArea[i] /= fTotal;
+		}
+
+		// 随机压注门
+		static BYTE cbArea[] = {
+			ID_BIG_TIGER,
+				ID_SML_TIGER,
+				ID_BIG_DOG,
+				ID_SML_DOG,
+				ID_BIG_HORSE,
+				ID_SML_HORSE,
+				ID_BIG_SNAKE,
+				ID_SML_SNAKE
 		};
 
-		float JettonRate[] = { nTenMillionRate, nFiveMillionRate, nFiveLakhRate, nOneMillionRate, nTenLakhRate, nOneW, nOneQ };
-
-		float nRandRate = AndroidTimer::rdft(0, 100);
-		int nCurIndex = 0;
-
-		float nFlase = 0;
-		for (int i = 0; i < 7; i++)
+		float fRand		= AndroidTimer::rdft(0, 1);
+		float nIndex = 0;
+		for (i = 0; i < 8; i++)
 		{
-			if (nRandRate < nFlase + JettonRate[i])
+			if ( nIndex <= fRand && fRand < nIndex + fRndArea[i])
 			{
-				nCurIndex = 6 - i;
 				break;
 			}
-			nFlase += JettonRate[i];
+			nIndex += fRndArea[i];
 		}
-		return JScore[nCurIndex];
+		if (i >= 8)
+		{
+			return 0;
+		}
+		return cbArea[i];
+	}
+	//////////////////////////////////////////////////////////////////////////
+
+	INT64		SmallNineAndroid::GetRandScore(INT64 nLeftJettonScore, BYTE nJettonArea)
+	{
+		//获取要下的门能下多少
+		INT64 nLeftScore = (m_nBankerScore - GetPutJettonScore( nJettonArea ) * s_Multiple[nJettonArea-1]) / s_Multiple[nJettonArea-1];
+		INT64 nCanJetton = max(0, nLeftScore);
+
+		if (nCanJetton <= 0)
+			return 0;
+
+		std::vector<INT64 > vJetton;
+		if (nCanJetton >= 5000000 && nLeftJettonScore >= 5000000)
+			vJetton.push_back(5000000);
+		if (nCanJetton >= 1000000 && nLeftJettonScore >= 1000000)
+			vJetton.push_back(1000000);
+		if (nCanJetton >= 100000 && nLeftJettonScore >= 100000)
+			vJetton.push_back(100000);
+		if (nCanJetton >= 10000 && nLeftJettonScore >= 10000)
+			vJetton.push_back(10000);
+		if (nCanJetton >= 1000 && nLeftJettonScore >= 1000)
+			vJetton.push_back(1000);
+		if (nCanJetton >= 100 && nLeftJettonScore >= 100)
+			vJetton.push_back(100);
+
+		if (vJetton.size() > 0)
+		{
+			for (int i = 0; i < 3; i++)
+			{
+				random_shuffle(vJetton.begin(), vJetton.end());
+			}
+			return vJetton[0];
+		}
+		return 0;
+		
+		// 获取庄配置
+// 		SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
+// 
+// 		float nTenMillionRate = 0, nFiveMillionRate = 0, nOneMillionRate = 0, nFiveLakhRate = 0, nTenLakhRate = 0, nOneW = 0, nOneQ = 0;
+// 
+// 		if (nLeftJettonScore >= 10000000)
+// 			nTenMillionRate = 10000000.0 / nLeftJettonScore * 100;
+// 		if (nLeftJettonScore >= 5000000)
+// 			nFiveMillionRate = 5000000.0 / nLeftJettonScore * 100;
+// 		if (nLeftJettonScore >= 1000000)
+// 			nOneMillionRate = 1000000.0 / nLeftJettonScore * 100;
+// 		if (nLeftJettonScore >= 500000)
+// 			nFiveLakhRate = 500000.0 / nLeftJettonScore * 100;
+// 		if (nLeftJettonScore >= 100000)
+// 			nTenLakhRate = 100000.0 / nLeftJettonScore * 100;
+// 		if (nLeftJettonScore >= 10000)
+// 			nOneW = 10000.0 / nLeftJettonScore * 100;
+// 		if (nLeftJettonScore >= 1000)
+// 			nOneQ = 1000.0 / nLeftJettonScore * 100;
+// 
+// 		float nTotal		= nTenMillionRate + nFiveMillionRate + nOneMillionRate + nFiveLakhRate + nTenLakhRate + nOneW + nOneQ;
+// 		nTenMillionRate		= nTenMillionRate / nTotal * 100;
+// 		nFiveMillionRate	= nFiveMillionRate / nTotal * 100;
+// 		nFiveLakhRate		= nFiveLakhRate / nTotal * 100;
+// 		nOneMillionRate		= nOneMillionRate / nTotal * 100;
+// 		nTenLakhRate		= nTenLakhRate / nTotal * 100;
+// 		nOneW				= nOneW / nTotal * 100;
+// 		nOneQ				= nOneQ / nTotal * 100;
+// 
+// 		// 随机压住金币
+// 		static __int64 JScore[] = 
+// 		{
+// 			1000, 10000, 100000, 500000, 1000000, 5000000, 10000000
+// 		};
+// 
+// 		float JettonRate[] = { nTenMillionRate, nFiveMillionRate, nFiveLakhRate, nOneMillionRate, nTenLakhRate, nOneW, nOneQ };
+// 
+// 		float nRandRate = AndroidTimer::rdft(0, 100);
+// 		int nCurIndex = 0;
+// 
+// 		float nFlase = 0;
+// 		for (int i = 0; i < 7; i++)
+// 		{
+// 			if (nRandRate < nFlase + JettonRate[i])
+// 			{
+// 				nCurIndex = 6 - i;
+// 				break;
+// 			}
+// 			nFlase += JettonRate[i];
+// 		}
+// 		return JScore[nCurIndex];
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -139,6 +249,8 @@ namespace O2
 					CString szMessage;
 					szMessage.Format("[%d][%d]到达在线时间, 立刻下线", GetUserID(), GetGameID());
 					LogEvent(szMessage, TraceLevel_Exception);
+
+					BankerManager::GetSingleton().Remove(m_dwUserID);
 
 					SetStatus(US_OFFLINE);
 				}
@@ -204,7 +316,6 @@ namespace O2
 		ZeroMemory(&Info,sizeof(Info));
 		Info.bAllowLookon=true;
 
-		//发送消息
 		m_ClientSocket->SendData(MDM_GF_FRAME,SUB_GF_INFO,&Info,sizeof(Info));
 
 		return true;
@@ -336,14 +447,15 @@ namespace O2
 	bool		SmallNineAndroid::OnChipIn(float fElapsed)
 	{
 		if (!m_bChipIn || m_wCurBanker == INVALID_CHAIR)
-			return 0;
+			return true;
 
-		float nPlaceRand = m_fChipTime * 100 / MAX_PLACE_JETTON_TIME;
+		float nPlaceRand = m_fChipTime * 100.0 / MAX_PLACE_JETTON_TIME;
 		if (nPlaceRand < 10)
 		{
 			m_bChipIn = FALSE;
 			m_nPlaceRate = 0;
-			return 0;
+			m_fChipTime = 0;
+			return true;
 		}
 
 		m_fChipTime -= fElapsed;
@@ -363,21 +475,19 @@ namespace O2
 					ZeroMemory(&PlaceJetton, sizeof(PlaceJetton));
 
 					PlaceJetton.cbJettonArea = GetRandArea();
+					if (PlaceJetton.cbJettonArea == 0)
+						return true;
 					if (m_nPlaceRate == 0)
 						m_nPlaceRate = AndroidTimer::rdit(pConfig->wPlaceRate, pConfig->wMaxPlaceRate);
 					INT64 nLeftScore = pUser->nScore * m_nPlaceRate / 100 - m_nChipInScore;
-					PlaceJetton.lJettonScore = GetRandScore(nLeftScore);
+					PlaceJetton.lJettonScore = GetRandScore(nLeftScore, PlaceJetton.cbJettonArea);
 
 					if (pUser->nScore >= PlaceJetton.lJettonScore)
 					{
-						WORD nPlaceRate = (m_nChipInScore + PlaceJetton.lJettonScore) / pUser->nScore * 100;
-						if (nPlaceRate < pConfig->wPlaceRate)
-						{
-							SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, 
-								&PlaceJetton, sizeof(PlaceJetton));
+						SendData(MDM_GF_GAME, SUB_C_PLACE_JETTON, 
+							&PlaceJetton, sizeof(PlaceJetton));
 
-							m_nChipInScore += PlaceJetton.lJettonScore;
-						}
+						m_nChipInScore += PlaceJetton.lJettonScore;
 					}
 				}
 			
@@ -404,6 +514,7 @@ namespace O2
 				m_wCurBanker		= pStatus->wCurrentBankerChairID;
 				m_nReqBankerScore	= pStatus->lApplyBankerCondition;
 				m_fChipTime			= 0;
+				m_nBankerScore		= pStatus->lBankerTreasure;
 
 				OnUpdateBank();
 			}
@@ -419,6 +530,18 @@ namespace O2
 				m_fChipTime			= pStatus->cbTimeLeave;
 
 				m_wCurBanker		= pStatus->wCurrentBankerChairID;
+
+				m_nBankerScore		= pStatus->lBankerTreasure;
+
+				m_lAllBigTigerScore = pStatus->lBigTigerScore;
+				m_lAllSmlTigerScore = pStatus->lSmlTigerScore;
+				m_lAllBigBogScore	= pStatus->lBigBogScore;
+				m_lAllSmlBogScore	= pStatus->lSmlBogScore;
+				m_lAllBigHorseScore = pStatus->lBigHorseScore;
+				m_lAllSmlHorseScore = pStatus->lSmlHorseScore;
+				m_lAllBigSnakeScore = pStatus->lBigSnakeScore;
+				m_lAllSmlSnakeScore = pStatus->lSmlSnakeScore;
+
 				if (m_wCurBanker != INVALID_CHAIR)
 				{
 					if (isSelf(m_wCurBanker))
@@ -439,7 +562,7 @@ namespace O2
 				CMD_S_StatusPlay* pStatus = (CMD_S_StatusPlay*)(pBuffer);
 				m_wCurBanker		= pStatus->wCurrentBankerChairID;
 				m_nReqBankerScore	= pStatus->lApplyBankerCondition;
-				m_fChipTime			= pStatus->cbTimeLeave;
+				m_fChipTime			= 0;
 				m_bChipIn			= FALSE;
 				m_nPlaceRate		= 0;
 			}
@@ -463,7 +586,7 @@ namespace O2
 			//用户加注
 		case SUB_S_PLACE_JETTON:	
 			{
-
+				OnSubPlaceJetton(pBuffer, wDataSize);
 			}
 			break;
 
@@ -568,6 +691,7 @@ namespace O2
 	{
 		m_bChipIn = FALSE;
 		m_nPlaceRate = 0;
+		m_fChipTime = 0;
 		return true;
 	}
 
@@ -575,7 +699,7 @@ namespace O2
 	bool		SmallNineAndroid::OnGameScore(const void* pBuffer, WORD wDataSize)
 	{
 		if (wDataSize!=sizeof(CMD_S_GameScore)) 
-			return 0;
+			return true;
 
 		CMD_S_GameScore* pGameScore = (CMD_S_GameScore *)pBuffer;
 		
@@ -615,6 +739,17 @@ namespace O2
 			}
 		}
 
+		m_nBankerScore = pGameEnd->lBankerTreasure;
+
+		m_lAllBigTigerScore = 0;
+		m_lAllSmlTigerScore = 0;
+		m_lAllBigBogScore	= 0;
+		m_lAllSmlBogScore	= 0;
+		m_lAllBigHorseScore = 0;
+		m_lAllSmlHorseScore = 0;
+		m_lAllBigSnakeScore = 0;
+		m_lAllSmlSnakeScore = 0;
+
 		OnDownBankerRequest();
 		OnUpdateBank();
 		OnUpdateRobotScoreStart();
@@ -626,7 +761,7 @@ namespace O2
 	bool		SmallNineAndroid::OnChangeBanker(const void* pBuffer, WORD wDataSize)
 	{
 		if (wDataSize!=sizeof(CMD_S_ChangeBanker)) 
-			return 0;
+			return true;
 
 		CMD_S_ChangeBanker* pChangeBanker = (CMD_S_ChangeBanker *)pBuffer;
 		if (isSelf(m_wCurBanker))
@@ -639,10 +774,13 @@ namespace O2
 			LogEvent(szMessage, TraceLevel_Debug);
 
 			pUser->wCurUpBanker		= 0;
-			pUser->nBankerCurWin	= 0;			
+			pUser->nBankerCurWin	= 0;	
+
+			BankerManager::GetSingleton().Remove(pUser->dwUserID);
 		}
 
 		m_wCurBanker	= pChangeBanker->wChairID;
+		m_nBankerScore  = pChangeBanker->lBankerTreasure;
 
 		return true;
 	}
@@ -653,56 +791,68 @@ namespace O2
 		CMD_S_JettonStart* pJettonStart = (CMD_S_JettonStart*)(pBuffer);
 		m_fChipTime	= pJettonStart->cbTimeLeave;
 		m_bChipIn	= TRUE;
+		m_fElapsedTime = 0;
 
 		OnUpdateRobotScoreEnd();
 		return true;
 	}
 
-	BYTE		SmallNineAndroid::GetRandArea()
+	bool SmallNineAndroid::OnSubPlaceJetton( const void* pBuffer, WORD wDataSize )
 	{
-		// 获取庄配置
-		SAppConfig* pConfig = ConfigFile::GetSingleton().GetAppConfig();
-		
-		int chJetton[8] = {0, 0, 0, 0, 0, 0, 0, 0};
-		chJetton[0] = pConfig->wShunMenRate;
-		chJetton[1] = pConfig->wYouJiaoRate;
-		chJetton[2] = pConfig->wTianMenRate;
-		chJetton[3] = pConfig->wQiaoRate;
-		chJetton[4] = pConfig->wDaoMenRate;
-		chJetton[5] = pConfig->wExtraRate1;
-		chJetton[6] = pConfig->wZuoJiaoRate;
-		chJetton[7] = pConfig->wExtraRate2;
+		CMD_S_PlaceJetton* pPlaceJetton = (CMD_S_PlaceJetton*)(pBuffer);
 
-		int nTotal = 0;
-		int i = 0;
-		for (i = 0; i < 8; i++)
+		switch(pPlaceJetton->cbJettonArea)
 		{
-			nTotal += chJetton[i];
+		case ID_BIG_TIGER:
+			m_lAllBigTigerScore += pPlaceJetton->lJettonScore;
+			break;
+		case ID_SML_TIGER:
+			m_lAllSmlTigerScore += pPlaceJetton->lJettonScore;
+			break;
+		case ID_BIG_DOG:
+			m_lAllBigBogScore += pPlaceJetton->lJettonScore;
+			break;
+		case ID_SML_DOG:
+			m_lAllSmlBogScore += pPlaceJetton->lJettonScore;
+			break;
+		case ID_BIG_HORSE:
+			m_lAllBigHorseScore += pPlaceJetton->lJettonScore;
+			break;
+		case ID_SML_HORSE:
+			m_lAllSmlHorseScore += pPlaceJetton->lJettonScore;
+			break;
+		case ID_BIG_SNAKE:
+			m_lAllBigSnakeScore += pPlaceJetton->lJettonScore;
+			break;
+		case ID_SML_SNAKE:
+			m_lAllSmlSnakeScore += pPlaceJetton->lJettonScore;
+			break;
 		}
+		return true;
+	}
 
-		// 随机压注门
-		static BYTE cbArea[] = {
-			ID_BIG_TIGER,
-			ID_SML_TIGER,
-			ID_BIG_DOG,
-			ID_SML_DOG,
-			ID_BIG_HORSE,
-			ID_SML_HORSE,
-			ID_BIG_SNAKE,
-			ID_SML_SNAKE
-		};
-
-		int nRandRate = rand() % nTotal;
-		int nIndex = 0;
-		for (i = 0; i < 8; i++)
+	INT64 SmallNineAndroid::GetPutJettonScore(BYTE nArea)
+	{
+		switch(nArea)
 		{
-			if ( nIndex <= nRandRate && nRandRate < nIndex + chJetton[i])
-			{
-				break;
-			}
-			nIndex += chJetton[i];
+		case ID_BIG_TIGER:
+			return m_lAllBigTigerScore;
+		case ID_SML_TIGER:
+			return m_lAllSmlTigerScore;
+		case ID_BIG_DOG:
+			return m_lAllBigBogScore;
+		case ID_SML_DOG:
+			return m_lAllSmlBogScore;
+		case ID_BIG_HORSE:
+			return m_lAllBigHorseScore;
+		case ID_SML_HORSE:
+			return m_lAllSmlHorseScore;
+		case ID_BIG_SNAKE:
+			return m_lAllBigSnakeScore;
+		case ID_SML_SNAKE:
+			return m_lAllSmlSnakeScore;
 		}
-		return cbArea[i];
+		return 0;
 	}
 
 }

@@ -106,8 +106,9 @@ namespace O2
 		/*
 		* 网络协议发送
 		*/		
-		virtual bool			SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData=NULL, 
-			WORD wDataSize=0);
+		virtual bool			SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData=NULL, WORD wDataSize=0);
+
+		virtual bool			OnUpdateBank() { return true; }
 	public:
 		/*
 		* 查询接口

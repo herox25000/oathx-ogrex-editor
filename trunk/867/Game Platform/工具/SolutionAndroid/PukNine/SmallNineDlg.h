@@ -5,6 +5,7 @@
 #include "SmallNineAndroid.h"
 #include "AndroidManager.h"
 #include "BankerDialog.h"
+#include "ServerConfig.h"
 
 class CSmallNineDlg : public CDialog
 {
@@ -22,6 +23,7 @@ protected:
 	CListCtrl				m_ListView;
 	CRichEditTrace			m_AndroidLog;
 	CConfigDialog			m_ConfigDlg;
+	CServerConfig			m_ServerConfigDlg;
 	O2::AndroidManager*		m_pManager;
 	double					m_fLostTime;
 	O2::SmallNineFactroy*	m_pFactroy;
@@ -50,4 +52,5 @@ public:
 	afx_msg void OnParticulars();
 	afx_msg void OnSaveScore();
 	afx_msg void OnGetScore();
+	afx_msg void OnBnClickedAdvanced();
 };
