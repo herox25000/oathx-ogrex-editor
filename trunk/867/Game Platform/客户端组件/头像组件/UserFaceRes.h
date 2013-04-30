@@ -8,6 +8,8 @@
 #include "Stdafx.h"
 #include "AtlImage.h"
 #include "UserFace.h"
+#include <GdiPlus.h>
+using namespace Gdiplus;
 
 //用户头像资源类
 class CUserFaceRes : public IUserFaceRes
@@ -18,7 +20,7 @@ protected:
 	WORD								m_wCount;						//头像数目
 	CSize								m_NormalSize;					//头像大小
 	CImage								m_NormalFace;					//普通头像
-
+	Image*								m_pImage;
 	//函数定义
 public:
 	//构造函数
