@@ -864,45 +864,67 @@ CRoomViewItem * CGameFrame::CreateRoomViewItem(CListServer * pListServer)
 		return NULL;
 	}
 
-
-	//获取版本
-	DWORD dwFileVerMS=0L,dwFileVerLS=0L;
-	WinFileInfo.GetFileVersion(dwFileVerMS,dwFileVerLS);
-
-	//版本分析
-	BYTE cbFileVer1=(BYTE)(HIWORD(dwFileVerMS));
-	BYTE cbFileVer2=(BYTE)(LOWORD(dwFileVerMS));
-	BYTE cbFileVer3=(BYTE)(HIWORD(dwFileVerLS));
-	BYTE cbFileVer4=(BYTE)(LOWORD(dwFileVerLS));
-	BYTE cbListVer1=(BYTE)(LOWORD(LOWORD(pGameKind->dwMaxVersion)));
-	BYTE cbListVer2=(BYTE)(HIBYTE(LOWORD(pGameKind->dwMaxVersion)));
-	BYTE cbListVer3=(BYTE)(LOBYTE(HIWORD(pGameKind->dwMaxVersion)));
-	BYTE cbListVer4=(BYTE)(HIBYTE(HIWORD(pGameKind->dwMaxVersion)));
-
-	//判断版本
-	if ((cbFileVer1!=cbListVer1)||(cbFileVer2!=cbListVer2)||(cbFileVer3!=cbListVer3))
+	//得到游戏版本号
+	TCHAR szFileName[MAX_PATH];
+	_snprintf(szFileName,sizeof(szFileName),TEXT("%s\\Version.ini"),g_GlobalUnits.GetWorkDirectory());
+	CString StrType;
+	StrType.Format(TEXT("%d"),pGameKind->wKindID);
+	CString StrVer;
+	GetPrivateProfileString(StrType,TEXT("Version"),TEXT("0.0"),StrVer.GetBuffer(MAX_PATH),MAX_PATH,szFileName);
+	StrVer.ReleaseBuffer();	
+	WORD HighV=0;
+	WORD LowV=0;
+	int n = StrVer.Find('.');
+	if (-1 != n)
+	{
+		HighV = atoi(StrVer.Left(n));
+	}
+	LowV = atoi(StrVer.Mid(n+1));
+	DWORD Version = MAKELONG(LowV,HighV);
+	if(pGameKind->dwMaxVersion != Version)
 	{
 		TCHAR szBuffer[512]=TEXT("");
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，你的版本不能继续使用，现在是否下载？"),pGameKind->szKindName,
-			cbListVer1,cbListVer2,cbListVer3,cbListVer4);
+		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新，现在是否下载？"),pGameKind->szKindName);
 		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
 		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
 		return NULL;
 	}
 
-	//兼容版本
-	if (cbFileVer4!=cbListVer4)
-	{
-		TCHAR szBuffer[512]=TEXT("");
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，现在是否下载升级？"),pGameKind->szKindName,
-			cbListVer1,cbListVer2,cbListVer3,cbListVer4);
-		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
-		if (nResult==IDYES) 
-		{
-			g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
-			return NULL;
-		}
-	}
+	//获取版本
+	//DWORD dwFileVerMS=0L,dwFileVerLS=0L;
+	//WinFileInfo.GetFileVersion(dwFileVerMS,dwFileVerLS);
+	////版本分析
+	//BYTE cbFileVer1=(BYTE)(HIWORD(dwFileVerMS));
+	//BYTE cbFileVer2=(BYTE)(LOWORD(dwFileVerMS));
+	//BYTE cbFileVer3=(BYTE)(HIWORD(dwFileVerLS));
+	//BYTE cbFileVer4=(BYTE)(LOWORD(dwFileVerLS));
+	//BYTE cbListVer1=(BYTE)(LOWORD(LOWORD(pGameKind->dwMaxVersion)));
+	//BYTE cbListVer2=(BYTE)(HIBYTE(LOWORD(pGameKind->dwMaxVersion)));
+	//BYTE cbListVer3=(BYTE)(LOBYTE(HIWORD(pGameKind->dwMaxVersion)));
+	//BYTE cbListVer4=(BYTE)(HIBYTE(HIWORD(pGameKind->dwMaxVersion)));
+	////判断版本
+	//if ((cbFileVer1!=cbListVer1)||(cbFileVer2!=cbListVer2)||(cbFileVer3!=cbListVer3))
+	//{
+	//	TCHAR szBuffer[512]=TEXT("");
+	//	_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，你的版本不能继续使用，现在是否下载？"),pGameKind->szKindName,
+	//		cbListVer1,cbListVer2,cbListVer3,cbListVer4);
+	//	int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
+	//	if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
+	//	return NULL;
+	//}
+	////兼容版本
+	//if (cbFileVer4!=cbListVer4)
+	//{
+	//	TCHAR szBuffer[512]=TEXT("");
+	//	_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，现在是否下载升级？"),pGameKind->szKindName,
+	//		cbListVer1,cbListVer2,cbListVer3,cbListVer4);
+	//	int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
+	//	if (nResult==IDYES) 
+	//	{
+	//		g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
+	//		return NULL;
+	//	}
+	//}
 
 	//创建房间
 	try
