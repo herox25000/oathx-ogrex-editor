@@ -269,7 +269,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					for (int nAreaIndex=1; nAreaIndex<=AREA_COUNT; ++nAreaIndex)
 					{
 						lScore += m_lUserJettonScore[nAreaIndex][wChairID];
-						m_lAllJettonScore[nAreaIndex]-=lScore;
+						m_lAllJettonScore[nAreaIndex]-=m_lUserJettonScore[nAreaIndex][wChairID];
 						m_lUserJettonScore[nAreaIndex][wChairID]=0;
 					}
 					lScore*=-10;
@@ -280,8 +280,8 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				}
 
 				//防止超过用户携带金币
-				if(lScore > pIServerUserItem->GetUserScore()->lScore)
-					lScore = pIServerUserItem->GetUserScore()->lScore;
+				if(lScore < 0 && -lScore > pIServerUserItem->GetUserScore()->lScore)
+					lScore = -(pIServerUserItem->GetUserScore()->lScore);
 
 				if (lScore != 0 )
 					m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,0, ScoreKind);
