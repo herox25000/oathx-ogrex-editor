@@ -111,7 +111,7 @@ VOID CUserInfoView::OnPaint()
 	CRect rcPhotoFram(PHOTO_FRAME_EXCURSION_X, PHOTO_FRAME_EXCURSION_Y, PHOTO_FRAME_EXCURSION_X+PHOTO_FRAME_WIDTH, PHOTO_FRAME_EXCURSION_Y+PHOTO_FRAME_HEIGHT);
 	CPen BorderPen(PS_SOLID,2,COLOR_PHOTO_FRAM);
 	CPen * pOldPen=BufferDC.SelectObject(&BorderPen);
-	BufferDC.RoundRect(&rcPhotoFram,CPoint(0,00));
+	BufferDC.RoundRect(&rcPhotoFram,CPoint(0,0));
 	BufferDC.SelectObject(pOldPen);
 
 	//创建字体
@@ -130,19 +130,22 @@ VOID CUserInfoView::OnPaint()
 		//绘画标识
 		if ( m_pCurrentUserData->dwCustomFaceVer == 0 )
 		{
-			//设置大小
-			rcPhotoFram.DeflateRect(1, 1, 2, 2);
+			////设置大小
+			//rcPhotoFram.DeflateRect(1, 1, 2, 2);
+			//if ( m_pCurrentUserData->cbGender != 2 )
+			//{
+			//	CImageHandle ImageHandleMaleFace(&m_ImageMaleFace);
+			//	m_ImageMaleFace.BitBlt(BufferDC.GetSafeHdc(), rcPhotoFram.left, rcPhotoFram.top);
+			//}
+			//else
+			//{
+			//	CImageHandle ImageHandleFemaleFace(&m_ImageFemaleFace);
+			//	m_ImageFemaleFace.BitBlt(BufferDC.GetSafeHdc(), rcPhotoFram.left, rcPhotoFram.top);
+			//}
+			//用户头像
+			m_pIUserFaceRes->DrawNormalFace(&BufferDC,rcPhotoFram.left+20, rcPhotoFram.top+20,
+				m_pCurrentUserData->wFaceID,m_pCurrentUserData->dwUserID,m_pCurrentUserData->dwCustomFaceVer);
 
-			if ( m_pCurrentUserData->cbGender != 2 )
-			{
-				CImageHandle ImageHandleMaleFace(&m_ImageMaleFace);
-				m_ImageMaleFace.BitBlt(BufferDC.GetSafeHdc(), rcPhotoFram.left, rcPhotoFram.top);
-			}
-			else
-			{
-				CImageHandle ImageHandleFemaleFace(&m_ImageFemaleFace);
-				m_ImageFemaleFace.BitBlt(BufferDC.GetSafeHdc(), rcPhotoFram.left, rcPhotoFram.top);
-			}
 		}
 		//用户头像
 		else
@@ -260,7 +263,6 @@ VOID CUserInfoView::OnPaint()
 
 	//绘画界面
 	dc.BitBlt(0,0,rcClient.Width(),rcClient.Height(),&BufferDC,0,0,SRCCOPY);
-
 	//清理资源	
 	BufferDC.SelectObject(pOldFont);
 	BufferDC.DeleteDC();
