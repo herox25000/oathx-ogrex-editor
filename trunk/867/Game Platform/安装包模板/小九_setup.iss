@@ -2,7 +2,7 @@
 AppName=541游戏中心-小九安装包
 AppVerName=541游戏中心-小九
 DefaultDirName={code:GetInstallDir}
-OutputBaseFilename=XiaoJiu_Setup
+OutputBaseFilename=小九_Setup
 WizardImageFile=embedded\WizardImage.bmp
 WizardSmallImageFile=embedded\WizardSmallImage.bmp
 UsePreviousAppDir=no
@@ -19,8 +19,14 @@ Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
 
 [Files]
 ;拷贝单目录下的文件
-Source: "Game\XiaoJiu.exe"; DestDir: "{app}"; Flags: ignoreversion
+Source: "Game\XiaoJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 ;能拷贝目录下的子文件夹Source: "Game\Resource\Games\XiaoJiu\*"; DestDir: "{app}\Resource\Games\XiaoJiu\"; Flags:ignoreversion recursesubdirs
+
+//写入安装包版本号
+[INI]
+Filename: "{app}\Version.ini"; Section: "102"; Flags: uninsdeletesection
+Filename: "{app}\Version.ini"; Section: "102"; Key: "GameName"; String: "小九"
+Filename: "{app}\Version.ini"; Section: "102"; Key: "Version"; String: "1.1"
 
 [Code]
 function InitializeSetup(): Boolean;
