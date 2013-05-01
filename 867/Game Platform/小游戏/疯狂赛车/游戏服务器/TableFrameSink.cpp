@@ -324,8 +324,8 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 				}
 
 				//防止超过用户携带金币
-				if(lScore > pIServerUserItem->GetUserScore()->lScore)
-					lScore = pIServerUserItem->GetUserScore()->lScore;
+				if(lScore < 0 && -lScore > pIServerUserItem->GetUserScore()->lScore)
+					lScore = -(pIServerUserItem->GetUserScore()->lScore);
 
 				if (lScore != 0 )
 					m_pITableFrame->WriteUserScore(pIServerUserItem, lScore,0, ScoreKind);
