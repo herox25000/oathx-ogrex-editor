@@ -51,7 +51,6 @@ protected:
 public:
 	CImageList							m_ImageList;
 	CComboBoxEx							m_FaceSelect;
-
 	CSkinButtonEx							m_btLogon;						//登录按钮
 	CSkinButtonEx							m_btCancel;						//取消按钮
 	CSkinButtonEx							m_btClose;						//关闭按钮
