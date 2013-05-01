@@ -3,8 +3,8 @@
 #include "DlgLogon.h"
 #include "GlobalUnits.h"
 //圆角大小
-#define ROUND_CX					50									//圆角宽度
-#define ROUND_CY					50									//圆角高度
+#define ROUND_CX					12									//圆角宽度
+#define ROUND_CY					12									//圆角高度
 //屏幕位置
 #define LAYERED_SIZE				4									//分层大小
 #define CAPTION_SIZE				50									//标题大小
@@ -1398,10 +1398,16 @@ void CDlgLogon::OnPaint()
 	CPaintDC dc(this);
 	CRect rcClient;
 	GetClientRect(&rcClient);
+
 	CImage ImageBuffer;
 	ImageBuffer.Create(rcClient.Width(),rcClient.Height(),32);
+
 	CImageDC BufferDC(ImageBuffer);
 	CDC * pBufferDC=CDC::FromHandle(BufferDC);
+
+	pBufferDC->SetBkMode(TRANSPARENT);
+	pBufferDC->SelectObject(CSkinResourceManager::GetDefaultFont());
+
 	//加载资源
 	CPngImage ImageBack;
 	ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_LOGON_BACK"));
