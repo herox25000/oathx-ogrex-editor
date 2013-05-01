@@ -268,7 +268,7 @@ BOOL CRoomViewItem::OnInitDialog()
 	m_ChatMessage.SetBackgroundColor(FALSE,RGB(230,249,255));
 
 	//创建控件
-	m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
+	//m_BrowerAD.Create(NULL,NULL,WS_VISIBLE|WS_CHILD,CRect(0,0,0,0),this,100,NULL);
 	//m_BrowerAD.Navigate(TEXT("www.game541.com"),NULL,NULL,NULL,NULL);
 
 	//道具控件
@@ -704,7 +704,8 @@ void CRoomViewItem::OnPaint()
 	DrawTableFrame(&dc);
 
 	//左边视图
-	if(!m_bHideUserList)DrawLeftViewFrame(&dc);
+	if(!m_bHideUserList)
+		DrawLeftViewFrame(&dc);
 
 	return;
 }
@@ -1949,6 +1950,20 @@ void CRoomViewItem::DrawLeftViewFrame(CDC * pDC)
 	rcList.bottom=rcHorSplitter.top+rcHorSplitter.Height()/2;
 	CSkinAide::DrawEncircleFrame(pDC,rcList,m_EncircleList);
 
+	//给宣传图绘画一个边框
+	CRect rcFram(rcVorSplitter.right+5, rcVorSplitter.top+5, rcClient.Width()-3, rcVorSplitter.top+80);
+	CPen BorderPen(PS_SOLID,2,RGB(3,48,255));
+	CPen * pOldPen=pDC->SelectObject(&BorderPen);
+	pDC->RoundRect(&rcFram,CPoint(0,0));
+	pDC->SelectObject(pOldPen);
+	//绘制宣传图
+	CString strDir;
+	strDir.Format("%s//Res//RoomPropagandaImage.png",g_GlobalUnits.GetWorkDirectory());
+	CPngImage PropagandaImage;
+	PropagandaImage.LoadImage(strDir);
+	PropagandaImage.DrawImage(pDC,rcVorSplitter.right+5,rcVorSplitter.top+5,rcClient.Width()-rcVorSplitter.right-10,73,0,0);
+
+
 	return;
 }
 
@@ -2105,7 +2120,7 @@ void CRoomViewItem::RectifyControl(int nWidth, int nHeight)
 	DeferWindowPos(hDwp,m_VorSplitter,NULL,rcVorSplitter.left,0,rcVorSplitter.Width(),nHeight,uFlags);
 
 	//广告区域
-	DeferWindowPos(hDwp,m_BrowerAD,NULL,rcVorSplitter.right+m_ImageInfoList.nLBorder,8,nWidth-rcVorSplitter.right-m_ImageInfoList.nLBorder-m_ImageInfoList.nRBorder,75,uFlags);
+	//DeferWindowPos(hDwp,m_BrowerAD,NULL,rcVorSplitter.right+m_ImageInfoList.nLBorder,8,nWidth-rcVorSplitter.right-m_ImageInfoList.nLBorder-m_ImageInfoList.nRBorder,75,uFlags);
 
 	//桌子区域
 	DeferWindowPos(hDwp,m_TableFrame,NULL,m_ImageInfoTable.nLBorder,m_ImageInfoTable.nTBorder,rcVorSplitter.left-m_ImageInfoTable.nRBorder-m_ImageInfoTable.nLBorder,
