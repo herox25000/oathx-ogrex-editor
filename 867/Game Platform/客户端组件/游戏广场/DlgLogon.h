@@ -150,6 +150,8 @@ public:
 	CSkinTabCtrl						m_TabLogonMode;						//登录选择
 	CBrush								m_brBrush;							//背景画刷
 
+	CPngImage							m_BackImage;
+
 	//函数定义
 public:
 	//构造函数

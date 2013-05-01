@@ -630,7 +630,7 @@ IDB_BK_ENQUIRE_BUTTON   BITMAP                  "res\\PLAZA_ENQUIRE\\BK_ENQUIRE_
 // PNG
 //
 
-DLG_LOGON_BACK          PNG                     "res\\PLAZA_LOGON\\DLG_LOGON_BACK.PNG"
+DLG_LOGON_BACK          PNG                     "res\\PLAZA_LOGON\\DLG_LOGON_BACK.png"
 DLG_REGISTER_BACK       PNG                     "res\\PLAZA_LOGON\\DLG_REGISTER_BACK.png"
 PASSWORD_LEVEL          PNG                     "res\\PLAZA_LOGON\\PASSWORD_LEVEL.png"
 DLG_ENQUIRE_BACK        PNG                     "res\\PLAZA_ENQUIRE\\DLG_ENQUIRE_BACK.png"

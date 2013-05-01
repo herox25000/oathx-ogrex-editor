@@ -644,17 +644,17 @@ BOOL CDlgLogon::OnInitDialog()
 	SetWindowRgn(RgnWindow,FALSE);
 
 	////分层窗口
-	//CRect rcWindow;
-	//GetWindowRect(&rcWindow);
-	//CRect rcUnLayered;
-	//rcUnLayered.top=LAYERED_SIZE;
-	//rcUnLayered.left=LAYERED_SIZE;
-	//rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
-	//rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
-	//m_SkinLayered.CreateLayered(this,rcWindow);
-	//m_SkinLayered.InitLayeredArea(ImageBack,255,rcUnLayered,CPoint(ROUND_CX,ROUND_CY),false);
+// 	CRect rcWindow;
+// 	GetWindowRect(&rcWindow);
+// 	CRect rcUnLayered;
+// 	rcUnLayered.top=LAYERED_SIZE;
+// 	rcUnLayered.left=LAYERED_SIZE;
+// 	rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
+// 	rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
+// 	m_SkinLayered.CreateLayered(this,rcWindow);
+// 	m_SkinLayered.InitLayeredArea(ImageBack,255,rcUnLayered,CPoint(ROUND_CX,ROUND_CY),false);
 
-	return FALSE;
+	return TRUE;
 }
 
 //消息解释
@@ -1353,7 +1353,7 @@ VOID CDlgLogon::OnLButtonDown(UINT nFlags, CPoint Point)
 //绘画背景
 BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 {
-	__super::OnEraseBkgnd(pDC);
+	//__super::OnEraseBkgnd(pDC);
 	//获取位置
 	CRect rcClient;
 	GetClientRect(&rcClient);
@@ -1372,8 +1372,8 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 
 	//加载资源
 	CPngImage ImageBack;
-	//CPngImage ImageTitle;
-	//ImageTitle.LoadImage(AfxGetInstanceHandle(),TEXT("LOGON_TITILE"));
+		//CPngImage ImageTitle;
+		//ImageTitle.LoadImage(AfxGetInstanceHandle(),TEXT("LOGON_TITILE"));
 	ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_LOGON_BACK"));
 
 	////加载图标
@@ -1396,7 +1396,18 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 void CDlgLogon::OnPaint()
 {
 	CPaintDC dc(this);
-
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	CImage ImageBuffer;
+	ImageBuffer.Create(rcClient.Width(),rcClient.Height(),32);
+	CImageDC BufferDC(ImageBuffer);
+	CDC * pBufferDC=CDC::FromHandle(BufferDC);
+	//加载资源
+	CPngImage ImageBack;
+	ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_LOGON_BACK"));
+	//绘画背景
+	ImageBack.DrawImage(pBufferDC,0,0);
+	dc.BitBlt(0,0,rcClient.Width(),rcClient.Height(),pBufferDC,0,0,SRCCOPY);
 	return;
 }
 
