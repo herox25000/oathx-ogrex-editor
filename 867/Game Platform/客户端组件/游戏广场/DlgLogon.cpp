@@ -1396,25 +1396,6 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 void CDlgLogon::OnPaint()
 {
 	CPaintDC dc(this);
-	CRect rcClient;
-	GetClientRect(&rcClient);
-
-	CImage ImageBuffer;
-	ImageBuffer.Create(rcClient.Width(),rcClient.Height(),32);
-
-	CImageDC BufferDC(ImageBuffer);
-	CDC * pBufferDC=CDC::FromHandle(BufferDC);
-
-	pBufferDC->SetBkMode(TRANSPARENT);
-	pBufferDC->SelectObject(CSkinResourceManager::GetDefaultFont());
-
-	//º”‘ÿ◊ ‘¥
-	CPngImage ImageBack;
-	ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_LOGON_BACK"));
-	//ªÊª≠±≥æ∞
-	ImageBack.DrawImage(pBufferDC,0,0);
-	dc.BitBlt(0,0,rcClient.Width(),rcClient.Height(),pBufferDC,0,0,SRCCOPY);
-	return;
 }
 
 
