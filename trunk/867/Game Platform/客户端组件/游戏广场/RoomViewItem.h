@@ -129,7 +129,7 @@ public:
 
 	//用户控件
 public:
-	CWebBrowser						m_BrowerAD;							//浏览窗口
+	//CWebBrowser						m_BrowerAD;							//浏览窗口
 	CTableFrame						m_TableFrame;						//桌子框架
 	CUserListView					m_UserListView;						//用户列表
 	//CSkinScrollBar					m_SkinScrollBar;					//滚动条类
