@@ -31,12 +31,6 @@ namespace O2
 		{
 			delete itA->second; itA = m_TimerItemActive.erase(itA);
 		}
-
-		TimerItemRegister::iterator itD = m_TimerItemDetive.begin();
-		while ( itD != m_TimerItemDetive.end() )
-		{
-			delete itD->second; itD = m_TimerItemDetive.erase(itD);
-		}
 	}
 
 	//////////////////////////////////////////////////////////////////////////
@@ -410,7 +404,7 @@ namespace O2
 					//¿Ø¼þ´¦Àí
 					if(pStatusPlay->bOxCard[pUser->wChairID] == 0xff)
 					{
-						SetTimer(OXT_OPEN_CARD, GetWorkTime());
+						SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(3, 6));
 					}
 				}
 			}
@@ -596,7 +590,7 @@ namespace O2
 			CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
 			CopyMemory(m_byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
 
-			SetTimer(OXT_OPEN_CARD, GetWorkTime());
+			SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(3, 6));
 		}
 
 		return true;
@@ -673,29 +667,17 @@ namespace O2
 
 	bool		Ox::SetTimer(DWORD dwID, double fElapsed)
 	{
-		TimerItemRegister::iterator itA = m_TimerItemActive.find(dwID);
-		if ( itA != m_TimerItemActive.end())
+		TimerItemRegister::iterator it = m_TimerItemActive.find(dwID);
+		if ( it == m_TimerItemActive.end() )
 		{
-			itA->second->fElapsed	= fElapsed;
-			return true;
-		}
-
-		TimerItemRegister::iterator itD = m_TimerItemDetive.find(dwID);
-		if ( itD != m_TimerItemDetive.end() )
-		{
-			itD->second->fElapsed	= fElapsed;
-			
 			m_TimerItemActive.insert(
-				TimerItemRegister::value_type(dwID, itD->second)
+				TimerItemRegister::value_type(dwID, new STimerItem(dwID, fElapsed, TRUE))
 				);
-			m_TimerItemDetive.erase(itD);
 		}
 		else
 		{
-			STimerItem* pItem = new STimerItem(dwID, fElapsed);
-			m_TimerItemActive.insert(
-				TimerItemRegister::value_type(dwID, pItem)
-				);
+			it->second->fElapsed	= fElapsed;
+			it->second->bActive		= TRUE;
 		}
 
 		return true;
@@ -709,34 +691,23 @@ namespace O2
 			delete itA->second; m_TimerItemActive.erase(itA);
 		}
 
-		TimerItemRegister::iterator itD = m_TimerItemDetive.find(dwID);
-		if ( itD != m_TimerItemDetive.end() )
-		{
-			delete itD->second; m_TimerItemDetive.erase(itD);
-		}
 		return 0;
 	}
 
 	void		Ox::UpdateTimer(float fElapsed)
 	{
-		TimerItemRegister::iterator it = m_TimerItemActive.begin();
-		while ( it != m_TimerItemActive.end() )
+		for (TimerItemRegister::iterator it=m_TimerItemActive.begin();
+			it!=m_TimerItemActive.end(); it++)
 		{
-			it->second->fElapsed -= fElapsed;
-			if (it->second->fElapsed <= 0)
+			if (it->second->bActive)
 			{
-				it->second->fElapsed = 2;
-
-				m_TimerItemDetive.insert(
-					TimerItemRegister::value_type(it->second->dwID, it->second)
-					);
-				OnTimerEvent(it->second->dwID);
-
-				it = m_TimerItemActive.erase(it);
-			}
-			else
-			{
-				it ++;
+				it->second->fElapsed -= fElapsed;
+				if ( it->second->fElapsed <= 0)
+				{
+					OnTimerEvent(it->second->dwID);
+					
+					it->second->bActive	= FALSE;
+				}
 			}
 		}
 	}

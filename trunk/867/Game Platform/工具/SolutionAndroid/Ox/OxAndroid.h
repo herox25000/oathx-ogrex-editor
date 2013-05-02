@@ -9,7 +9,7 @@ namespace O2
 #define	LOGIC_MASK_VALUE			0x0F								//数值掩码
 
 #define MAX_COUNT					5
-#define MIN_CHAIR_COUNT				1
+#define MIN_CHAIR_COUNT				2
 
 	//扑克类型
 #define OX_VALUE0					0									//混合牌型
@@ -22,9 +22,10 @@ namespace O2
 	{
 		DWORD						dwID;
 		float						fElapsed;
+		BOOL						bActive;
 
-		STimerItem(DWORD id, float fTime)
-			: dwID(id), fElapsed(fTime)
+		STimerItem(DWORD id, float fTime, BOOL bInvalid)
+			: dwID(id), fElapsed(fTime), bActive(bInvalid)
 		{
 
 		}
@@ -126,7 +127,6 @@ namespace O2
 		WORD					m_wTableCount;
 		WORD					m_wChairCount;
 		TimerItemRegister		m_TimerItemActive;
-		TimerItemRegister		m_TimerItemDetive;
 		INT64					m_nTurnMaxScore;
 		BYTE					m_byCard[MAX_COUNT];
 		INT64					m_nChipInScore;
