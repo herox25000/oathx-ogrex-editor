@@ -401,8 +401,6 @@ void CDownLoadMission::OnBnClickedReTry()
 //定时器消息
 void CDownLoadMission::OnTimer(UINT_PTR nIDEvent)
 {
-	__super::OnTimer(nIDEvent);
-
 	//更新状态
 	if (nIDEvent==IDI_UPDATE_TIMER)
 	{
