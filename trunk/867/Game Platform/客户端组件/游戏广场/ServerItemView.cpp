@@ -1032,18 +1032,25 @@ DWORD CServerItemView::GetGameImageIndex(LPCTSTR pszProcess, WORD wKindID)
 	for (INT_PTR i=0;i<m_GameResourceArray.GetCount();i++)
 	{
 		pGameResourceInfo=&m_GameResourceArray[i];
-		if (pGameResourceInfo->wKindID==wKindID) return pGameResourceInfo->dwImageIndex;
+		if (pGameResourceInfo->wKindID==wKindID)
+			return pGameResourceInfo->dwImageIndex;
 	}
+
 
 	//加载资源
 	HINSTANCE hInstance=AfxLoadLibrary(pszProcess);
-	if (hInstance==NULL) return IND_KIND_UNKNOW;
+	if (hInstance==NULL)
+	{
+		return IND_KIND_UNKNOW;
+	}
 	
 	//加载标志
 	CBitmap GameLogo;
 	DWORD dwImagePos=0L;
 	AfxSetResourceHandle(hInstance);
-	if (GameLogo.LoadBitmap(TEXT("GAME_LOGO"))) dwImagePos=m_ImageList.Add(&GameLogo,RGB(255,0,255));
+	if (GameLogo.LoadBitmap(TEXT("GAME_LOGO")))
+		dwImagePos=m_ImageList.Add(&GameLogo,RGB(255,0,255));
+
 	AfxSetResourceHandle(GetModuleHandle(NULL));
 	AfxFreeLibrary(hInstance);
 
@@ -1207,6 +1214,7 @@ VOID CServerItemView::DrawTreeItem(CDC * pDC, CRect & rcClient, CRect & rcClipBo
 			//绘制列表
 			DrawListImage(pDC,rcItem,hItemCurrent);	
 
+			rcItem.right+=20;
 			//绘制文本
 			DrawItemString(pDC,rcItem,hItemCurrent,bDrawSelected);
 		}
