@@ -606,13 +606,6 @@ bool __cdecl CTableFrame::CreateTableFrame(CWnd * pParentWnd, UINT uWndID)
 	CRect rcFrameRect(0,0,0,0);
 	DWORD dwStyle=WS_CHILD|WS_VISIBLE|WS_VSCROLL|WS_TABSTOP|WS_CLIPSIBLINGS|WS_CLIPCHILDREN;
 	bool bcreate = Create(NULL,NULL,dwStyle,rcFrameRect,pParentWnd,uWndID);
-#ifdef _DEBUG
-	if(!bcreate)
-	{
-		::AfxMessageBox("×À×Ó´´½¨Ê§°Ü");
-	}
-#endif
-
 	SetClassLong(m_hWnd,GCL_HBRBACKGROUND,NULL);
 
 	return true;
