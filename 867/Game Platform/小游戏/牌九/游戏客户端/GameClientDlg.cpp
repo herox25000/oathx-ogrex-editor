@@ -577,6 +577,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 	for(int i=0;i<4;i++)
 	{
 		m_GameClientView.m_DrawCard[i].SetTuiPai(false);
+		m_GameClientView.m_DrawCard[i].SetPreCard(false);
 	}
 
 	m_GameClientView.m_nJettonScoreDec[0] = 0;
