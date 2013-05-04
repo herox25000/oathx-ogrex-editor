@@ -115,7 +115,7 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	KillAllTimer();
 	m_pITableFrame->SetGameStatus(GS_TK_CALL);
 	m_pITableFrame->KillGameTimer(TIMER_WAITSTATR);
-	m_pITableFrame->SetGameTimer(TIMER_WAITCALLBANKER,TIMER_WAITCALLBANKER_Continued,20,NULL);
+	m_pITableFrame->SetGameTimer(TIMER_WAITCALLBANKER,TIMER_WAITCALLBANKER_Continued,TIMES_INFINITY,NULL);
 	//用户状态
 	for (WORD i=0;i<m_wPlayerCount;i++)
 	{
@@ -949,9 +949,9 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 	//如果不是当前叫分的玩家
 	if(wChairID != m_wCurrentUser)
 		return false;
+	m_pITableFrame->KillGameTimer(TIMER_WAITCALLBANKER);
 	//玩家人数
 	WORD wUserCount=0;
-
 	//叫庄人数
 	WORD wCallUserCount=0;
 	for (WORD i=0;i<m_wPlayerCount;i++)
@@ -967,7 +967,6 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 	{
 		//设置状态
 		m_pITableFrame->SetGameStatus(GS_TK_SCORE);
-		m_pITableFrame->KillGameTimer(TIMER_WAITCALLBANKER);
 		m_pITableFrame->SetGameTimer(TIMER_WAITSETSCORE,TIMER_WAITSETSCORE_Continued,1,NULL);
 		//始叫用户
 		m_wBankerUser=wChairID;
@@ -1019,7 +1018,6 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 		m_wCallBankerCount++;
 		if(m_wCallBankerCount >= wUserCount*2)
 		{
-			m_pITableFrame->KillGameTimer(TIMER_WAITCALLBANKER);
 			OnEventGameEnd(INVALID_CHAIR,NULL,GER_DISMISS);
 			return true;
 		}
@@ -1038,6 +1036,8 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 			m_pITableFrame->SendTableData(i,SUB_S_CALL_BANKER,&CallBanker,sizeof(CallBanker));
 		}
 		m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+		//设置叫庄定时器
+		m_pITableFrame->SetGameTimer(TIMER_WAITCALLBANKER,TIMER_WAITCALLBANKER_Continued,TIMES_INFINITY,NULL);
 	}
 	return true;
 }
@@ -1052,11 +1052,11 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 	//庄家不能下注
 	if(wChairID==m_wBankerUser)
 		return false;
-	if (m_pITableFrame->GetGameStatus()!=GS_TK_SCORE) return false;
+	if (m_pITableFrame->GetGameStatus()!=GS_TK_SCORE)
+		return false;
 	//金币效验
 	if(m_bPlayStatus[wChairID]==TRUE)
 	{
-
 		ASSERT(lScore>0 && lScore<=m_lTurnMaxScore[wChairID]);
 		if (lScore<=0 || lScore>m_lTurnMaxScore[wChairID])
 			return false;
@@ -1079,7 +1079,8 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 		//发送数据
 		for (WORD i=0;i<m_wPlayerCount;i++)
 		{
-			if(m_bPlayStatus[i]==FALSE)continue;
+			if(m_bPlayStatus[i]==FALSE)
+				continue;
 			m_pITableFrame->SendTableData(i,SUB_S_ADD_SCORE,&AddScore,sizeof(AddScore));
 		}
 		m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_ADD_SCORE,&AddScore,sizeof(AddScore));
