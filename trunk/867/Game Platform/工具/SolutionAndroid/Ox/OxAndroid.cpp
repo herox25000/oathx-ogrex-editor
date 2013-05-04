@@ -404,7 +404,7 @@ namespace O2
 					//¿Ø¼þ´¦Àí
 					if(pStatusPlay->bOxCard[pUser->wChairID] == 0xff)
 					{
-						SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(3, 6));
+						SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(6, 10));
 					}
 				}
 			}
@@ -590,7 +590,7 @@ namespace O2
 			CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
 			CopyMemory(m_byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
 
-			SetTimer(OXT_OPEN_CARD, AndroidTimer::rdft(3, 6));
+			SetTimer(OXT_OPEN_CARD, AndroidTimer::rdit(6, 10));
 		}
 
 		return true;
