@@ -147,6 +147,11 @@ bool __cdecl CTableFrameSink::OnEventGameStart()
 	}
 	m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_CALL_BANKER,&CallBanker,sizeof(CallBanker));
 
+#ifdef _DEBUG
+	CString str;
+	str.Format("游戏开始，当前叫庄凳子：%d \r\n",m_wCurrentUser);
+	OutputDebugString(str);
+#endif
 	return true;
 }
 
@@ -161,6 +166,12 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			KillAllTimer();
 			m_pITableFrame->SetGameStatus(GS_TK_FREE);
 			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+
+#ifdef _DEBUG
+			CString str;
+			str.Format("游戏正常结束 \r\n");
+			OutputDebugString(str);
+#endif
 
 			//定义变量
 			CMD_S_GameEnd GameEnd;
@@ -742,6 +753,11 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//	}
 	case GER_DISMISS://解散
 		{
+#ifdef _DEBUG
+			CString str;
+			str.Format("游戏解散 \r\n");
+			OutputDebugString(str);
+#endif
 			//设置状态
 			KillAllTimer();
 			m_pITableFrame->SetGameStatus(GS_TK_FREE);
@@ -763,6 +779,12 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 //发送场景
 bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIServerUserItem, BYTE cbGameStatus, bool bSendSecret)
 {
+#ifdef _DEBUG
+	CString str;
+	str.Format("SendGameScene进入，玩家凳子:%d  状态：%d \r\n",wChiarID,cbGameStatus);
+	OutputDebugString(str);
+#endif
+
 	switch (cbGameStatus)
 	{
 	case GS_FREE:		//空闲状态
@@ -832,6 +854,11 @@ bool __cdecl CTableFrameSink::SendGameScene(WORD wChiarID, IServerUserItem * pIS
 //定时器事件
 bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 {
+#ifdef _DEBUG
+	CString str;
+	str.Format("定时器 %d 进入 \r\n",wTimerID);
+	OutputDebugString(str);
+#endif
 	switch(wTimerID)
 	{
 	case TIMER_WAITSTATR:
@@ -877,6 +904,11 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 	{
 	case SUB_C_CALL_BANKER:			//用户叫庄
 		{
+#ifdef _DEBUG
+			CString str;
+			str.Format("收到消息 SUB_C_CALL_BANKER  \r\n");
+			OutputDebugString(str);
+#endif
 			//效验数据
 			ASSERT(wDataSize==sizeof(CMD_C_CallBanker));
 			if (wDataSize!=sizeof(CMD_C_CallBanker)) return false;
@@ -884,7 +916,8 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 			CMD_C_CallBanker * pCallBanker=(CMD_C_CallBanker *)pDataBuffer;
 			//用户效验
 			tagServerUserData * pUserData=pIServerUserItem->GetUserData();
-			if (pUserData->cbUserStatus!=US_PLAY) return true;
+			if (pUserData->cbUserStatus!=US_PLAY)
+				return true;
 			//状态判断
 			ASSERT(IsUserPlaying(pUserData->wChairID));
 			if (!IsUserPlaying(pUserData->wChairID)) 
@@ -894,6 +927,11 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 		}
 	case SUB_C_ADD_SCORE:			//用户加注
 		{
+#ifdef _DEBUG
+			CString str;
+			str.Format("收到消息 SUB_C_ADD_SCORE  \r\n");
+			OutputDebugString(str);
+#endif
 			//效验数据
 			ASSERT(wDataSize==sizeof(CMD_C_AddScore));
 			if (wDataSize!=sizeof(CMD_C_AddScore)) return false;
@@ -910,6 +948,11 @@ bool __cdecl CTableFrameSink::OnGameMessage(WORD wSubCmdID, const void * pDataBu
 		}
 	case SUB_C_OPEN_CARD:			//用户摊牌
 		{
+#ifdef _DEBUG
+			CString str;
+			str.Format("收到消息 SUB_C_OPEN_CARD  \r\n");
+			OutputDebugString(str);
+#endif
 			//效验数据
 			ASSERT(wDataSize==sizeof(CMD_C_OxCard));
 			if (wDataSize!=sizeof(CMD_C_OxCard)) return false;
@@ -939,12 +982,23 @@ bool __cdecl CTableFrameSink::OnFrameMessage(WORD wSubCmdID, const void * pDataB
 //叫庄事件
 bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 {
+#ifdef _DEBUG
+	CString str;
+	str.Format("OnUserCallBanker（111） 玩家凳子%d ,是否将庄%d \r\n",wChairID,bBanker);
+	OutputDebugString(str);
+#endif
+
 	//状态效验
 	ASSERT(m_pITableFrame->GetGameStatus()==GS_TK_CALL);
 	if (m_pITableFrame->GetGameStatus()!=GS_TK_CALL)
 		return false;
 	if (m_pITableFrame->GetGameStatus()!=GS_TK_CALL)
 		return false;
+
+#ifdef _DEBUG
+	str.Format("OnUserCallBanker（2222） 玩家凳子%d ,是否将庄%d \r\n",wChairID,bBanker);
+	OutputDebugString(str);
+#endif
 
 	//如果不是当前叫分的玩家
 	if(wChairID != m_wCurrentUser)
@@ -965,6 +1019,12 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 	//下注开始
 	if(bBanker==1 )
 	{
+#ifdef _DEBUG
+		CString str;
+		str.Format("确定庄家 准备下注 \r\n");
+		OutputDebugString(str);
+#endif
+
 		//设置状态
 		m_pITableFrame->SetGameStatus(GS_TK_SCORE);
 		m_pITableFrame->SetGameTimer(TIMER_WAITSETSCORE,TIMER_WAITSETSCORE_Continued,1,NULL);
@@ -1045,10 +1105,19 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 //加注事件
 bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 {
+#ifdef _DEBUG
+	CString str;
+	str.Format("OnUserAddScore（111） 玩家凳子%d ,分数%I64d \r\n",wChairID,lScore);
+	OutputDebugString(str);
+#endif
 	//状态效验
 	ASSERT(m_pITableFrame->GetGameStatus()==GS_TK_SCORE);
 	if (m_pITableFrame->GetGameStatus()!=GS_TK_SCORE) 
 		return false;
+#ifdef _DEBUG
+	str.Format("OnUserAddScore（2222） 玩家凳子%d ,分数%I64d \r\n",wChairID,lScore);
+	OutputDebugString(str);
+#endif
 	//庄家不能下注
 	if(wChairID==m_wBankerUser)
 		return false;
@@ -1099,6 +1168,12 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 	//所有人都叫庄 开始发牌
 	if(bUserCount==m_wPlayerCount)
 	{
+#ifdef _DEBUG
+		CString str;
+		str.Format("所有人都下注  准备发牌 \r\n");
+		OutputDebugString(str);
+#endif
+
 		m_pITableFrame->KillGameTimer(TIMER_WAITSETSCORE);
 		m_pITableFrame->SetGameTimer(TIMER_WAITKAIPAI,TIMER_WAITKAIPAI_Continued,2,NULL);
 		//设置状态
@@ -1143,6 +1218,12 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 //摊牌事件
 bool CTableFrameSink::OnUserOpenCard(WORD wChairID, BYTE bOx)
 {
+#ifdef _DEBUG
+	CString str;
+	str.Format("OnUserOpenCard（1111）凳子:%d   是否摊：%d\r\n",wChairID,bOx);
+	OutputDebugString(str);
+#endif
+
 	//状态效验
 	ASSERT (m_pITableFrame->GetGameStatus()==GS_TK_PLAYING);
 	if (m_pITableFrame->GetGameStatus()!=GS_TK_PLAYING) return false;
@@ -1150,6 +1231,11 @@ bool CTableFrameSink::OnUserOpenCard(WORD wChairID, BYTE bOx)
 	ASSERT(bOx==FALSE || bOx==TRUE);
 	if(bOx!=FALSE && bOx!=TRUE)
 		return false;
+
+#ifdef _DEBUG
+	str.Format("OnUserOpenCard（2222）凳子:%d   是否摊：%d\r\n",wChairID,bOx);
+	OutputDebugString(str);
+#endif
 	//效验数据
 	if(bOx)
 	{
@@ -1187,6 +1273,13 @@ bool CTableFrameSink::OnUserOpenCard(WORD wChairID, BYTE bOx)
 	//结束游戏
 	if(bUserCount == m_wPlayerCount)
 	{
+
+#ifdef _DEBUG
+		CString str;
+		str.Format("所有人都摊牌 \r\n");
+		OutputDebugString(str);
+#endif
+
 		return OnEventGameEnd(INVALID_CHAIR,NULL,GER_NORMAL);
 	}
 
