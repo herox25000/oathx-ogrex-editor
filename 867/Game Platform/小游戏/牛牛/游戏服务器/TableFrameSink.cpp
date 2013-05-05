@@ -165,7 +165,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//设置状态
 			KillAllTimer();
 			m_pITableFrame->SetGameStatus(GS_TK_FREE);
-			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 #ifdef _DEBUG
 			CString str;
@@ -316,7 +316,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//			//设置状态
 	//			KillAllTimer();
 	//			m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	//			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+	//			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 	//			if (wChairID==m_wBankerUser)	//庄家强退
 	//			{
@@ -434,7 +434,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//					//设置状态
 	//					KillAllTimer();
 	//					m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	//					m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+	//					m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 	//					//定义变量
 	//					CMD_S_GameEnd GameEnd;
@@ -505,7 +505,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//				//设置状态
 	//				KillAllTimer();
 	//				m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	//				m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+	//				m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 	//				//定义变量
 	//				CMD_S_GameEnd GameEnd;
@@ -540,7 +540,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//			//设置状态
 	//			KillAllTimer();
 	//			m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	//			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+	//			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 	//			if (wChairID==m_wBankerUser)	//庄家强退
 	//			{
@@ -658,7 +658,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//					//设置状态
 	//					KillAllTimer();
 	//					m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	//					m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+	//					m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 	//					//定义变量
 	//					CMD_S_GameEnd GameEnd;
@@ -729,7 +729,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 	//				//设置状态
 	//				KillAllTimer();
 	//				m_pITableFrame->SetGameStatus(GS_TK_FREE);
-	//				m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+	//				m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 	//				//定义变量
 	//				CMD_S_GameEnd GameEnd;
@@ -761,7 +761,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//设置状态
 			KillAllTimer();
 			m_pITableFrame->SetGameStatus(GS_TK_FREE);
-			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,1,NULL);
+			m_pITableFrame->SetGameTimer(TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
 
 			CMD_S_GameEnd GameEnd;
 			ZeroMemory(&GameEnd,sizeof(GameEnd));
@@ -859,6 +859,8 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 	str.Format("定时器 %d 进入 \r\n",wTimerID);
 	OutputDebugString(str);
 #endif
+
+	m_pITableFrame->KillGameTimer(wTimerID);
 	switch(wTimerID)
 	{
 	case TIMER_WAITSTATR:
@@ -1027,7 +1029,7 @@ bool CTableFrameSink::OnUserCallBanker(WORD wChairID, BYTE bBanker)
 
 		//设置状态
 		m_pITableFrame->SetGameStatus(GS_TK_SCORE);
-		m_pITableFrame->SetGameTimer(TIMER_WAITSETSCORE,TIMER_WAITSETSCORE_Continued,1,NULL);
+		m_pITableFrame->SetGameTimer(TIMER_WAITSETSCORE,TIMER_WAITSETSCORE_Continued,TIMES_INFINITY,NULL);
 		//始叫用户
 		m_wBankerUser=wChairID;
 		//过滤最后一个叫庄用户强退情况
@@ -1175,7 +1177,7 @@ bool CTableFrameSink::OnUserAddScore(WORD wChairID, __int64 lScore)
 #endif
 
 		m_pITableFrame->KillGameTimer(TIMER_WAITSETSCORE);
-		m_pITableFrame->SetGameTimer(TIMER_WAITKAIPAI,TIMER_WAITKAIPAI_Continued,2,NULL);
+		m_pITableFrame->SetGameTimer(TIMER_WAITKAIPAI,TIMER_WAITKAIPAI_Continued,TIMES_INFINITY,NULL);
 		//设置状态
 		m_pITableFrame->SetGameStatus(GS_TK_PLAYING);
 
