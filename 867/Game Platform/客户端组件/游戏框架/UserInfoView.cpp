@@ -111,7 +111,12 @@ VOID CUserInfoView::OnPaint()
 	CRect rcPhotoFram(PHOTO_FRAME_EXCURSION_X, PHOTO_FRAME_EXCURSION_Y, PHOTO_FRAME_EXCURSION_X+PHOTO_FRAME_WIDTH, PHOTO_FRAME_EXCURSION_Y+PHOTO_FRAME_HEIGHT);
 	CPen BorderPen(PS_SOLID,2,COLOR_PHOTO_FRAM);
 	CPen * pOldPen=BufferDC.SelectObject(&BorderPen);
-	BufferDC.RoundRect(&rcPhotoFram,CPoint(0,0));
+	//BufferDC.RoundRect(&rcPhotoFram,CPoint(0,0));
+	BufferDC.MoveTo(rcPhotoFram.left,rcPhotoFram.top);
+	BufferDC.LineTo(rcPhotoFram.right,rcPhotoFram.top);
+	BufferDC.LineTo(rcPhotoFram.right,rcPhotoFram.bottom);
+	BufferDC.LineTo(rcPhotoFram.left,rcPhotoFram.bottom);
+	BufferDC.LineTo(rcPhotoFram.left,rcPhotoFram.top);
 	BufferDC.SelectObject(pOldPen);
 
 	//´´½¨×ÖÌå

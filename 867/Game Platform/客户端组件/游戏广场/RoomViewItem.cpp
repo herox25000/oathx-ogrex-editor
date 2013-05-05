@@ -1950,19 +1950,13 @@ void CRoomViewItem::DrawLeftViewFrame(CDC * pDC)
 	rcList.bottom=rcHorSplitter.top+rcHorSplitter.Height()/2;
 	CSkinAide::DrawEncircleFrame(pDC,rcList,m_EncircleList);
 
-	//给宣传图绘画一个边框
-	CRect rcFram(rcVorSplitter.right+5, rcVorSplitter.top+5, rcClient.Width()-3, rcVorSplitter.top+80);
-	CPen BorderPen(PS_SOLID,2,RGB(3,48,255));
-	CPen * pOldPen=pDC->SelectObject(&BorderPen);
-	pDC->RoundRect(&rcFram,CPoint(0,0));
-	pDC->SelectObject(pOldPen);
 	//绘制宣传图
 	CString strDir;
 	strDir.Format("%s//Res//RoomPropagandaImage.png",g_GlobalUnits.GetWorkDirectory());
 	CPngImage PropagandaImage;
 	PropagandaImage.LoadImage(strDir);
-	PropagandaImage.DrawImage(pDC,rcVorSplitter.right+5,rcVorSplitter.top+5,rcClient.Width()-rcVorSplitter.right-10,73,0,0);
-
+	int nXdest =rcVorSplitter.right + (rcClient.Width()-rcVorSplitter.right-PropagandaImage->GetWidth())/2;
+	PropagandaImage.DrawImage(pDC,rcVorSplitter.right+5,rcVorSplitter.top+5,PropagandaImage->GetWidth(),73,0,0);
 
 	return;
 }
@@ -2159,9 +2153,9 @@ void CRoomViewItem::RectifyControl(int nWidth, int nHeight)
 			DeferWindowPos(hDwp,pButtonArray[i]->m_hWnd,NULL,rcVorSplitter.right+m_ImageInfoChat.nLBorder+(rcButton.Width()+5)*i,nHeight-54,rcButton.Width(),rcButton.Height(),uFlags);
 		}
 		m_btSendChat.GetWindowRect(&rcButton);
-		DeferWindowPos(hDwp,m_btSendChat,NULL,nWidth-rcButton.Width()-8,nHeight-33,rcButton.Width(),rcButton.Height(),uFlags);
-		DeferWindowPos(hDwp,m_ChatObject,NULL,rcVorSplitter.right+8,nHeight-33,70,200,uFlags);
-		DeferWindowPos(hDwp,m_ChatInput,NULL,rcVorSplitter.right+81,nHeight-33,nWidth-rcVorSplitter.right-rcButton.Width()-93,19,uFlags);
+		DeferWindowPos(hDwp,m_btSendChat,NULL,nWidth-rcButton.Width()-8,nHeight-30,rcButton.Width(),rcButton.Height(),uFlags);
+		DeferWindowPos(hDwp,m_ChatObject,NULL,rcVorSplitter.right+8,nHeight-30,70,200,uFlags);
+		DeferWindowPos(hDwp,m_ChatInput,NULL,rcVorSplitter.right+81,nHeight-30,nWidth-rcVorSplitter.right-rcButton.Width()-93,19,uFlags);
 	}
 
 	//控制区域

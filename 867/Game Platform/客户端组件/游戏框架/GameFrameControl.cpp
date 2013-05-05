@@ -664,9 +664,9 @@ void CGameFrameControl::RectifyControl(int nWidth, int nHeight)
 		DeferWindowPos(hDwp,pButtonArray[i]->m_hWnd,NULL,m_ImageInfoList.nLBorder+(rcButton.Width()+5)*i,nHeight-53,rcButton.Width(),rcButton.Height(),uFlags);
 	}
 	m_btSendChat.GetWindowRect(&rcButton);
-	DeferWindowPos(hDwp,m_btSendChat,NULL,nWidth-rcButton.Width()-8,nHeight-33,rcButton.Width(),rcButton.Height(),uFlags);
-	DeferWindowPos(hDwp,m_ChatObject,NULL,8,nHeight-33,70,200,uFlags);
-	DeferWindowPos(hDwp,m_ChatInput,NULL,81,nHeight-33,nWidth-rcButton.Width()-93,19,uFlags);
+	DeferWindowPos(hDwp,m_btSendChat,NULL,nWidth-rcButton.Width()-8,nHeight-30,rcButton.Width(),rcButton.Height(),uFlags);
+	DeferWindowPos(hDwp,m_ChatObject,NULL,8,nHeight-30,70,200,uFlags);
+	DeferWindowPos(hDwp,m_ChatInput,NULL,81,nHeight-30,nWidth-rcButton.Width()-93,19,uFlags);
 
 	//¹¦ÄÜ°´Å¥
 	m_btSound.GetWindowRect(&rcButton);
