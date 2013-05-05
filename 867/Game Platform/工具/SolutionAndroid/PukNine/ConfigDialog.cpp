@@ -36,8 +36,8 @@ BOOL CConfigDialog::OnInitDialog()
 		SetDlgItemText(IDC_EDIT1,	"125.90.64.21");
 		SetDlgItemText(IDC_EDIT2,	"11011");
 		SetDlgItemText(IDC_EDIT3,	"d746e3733dff946b0db30eb3fb0069c4");
-		SetDlgItemText(IDC_EDIT4,	"241");
-		SetDlgItemText(IDC_EDIT5,	"440");
+		SetDlgItemText(IDC_EDIT4,	"10");
+		SetDlgItemText(IDC_EDIT5,	"240");
 		SetDlgItemText(IDC_EDIT6,	"44");
 		SetDlgItemText(IDC_EDIT7,	"5");
 		SetDlgItemText(IDC_EDIT8,	"8");
