@@ -454,6 +454,8 @@ namespace O2
 		CString szMessage;
 		szMessage.Format("[%d]网络连接已断开", m_dwUserID);
 		LogEvent(szMessage, TraceLevel_Warning);
+
+		BankerManager::GetSingleton().Remove(m_dwUserID);
 		
 		// 设置机器人为无效的
 		SetStatus(US_OFFLINE);
@@ -685,6 +687,8 @@ namespace O2
 					{
 						// 设置为坐下状态
 						SetStatus(US_SIT);
+
+						m_wSitReqCount = 0;
 
 						CString szMessage;
 						szMessage.Format("[%d]已坐下", m_dwUserID);
