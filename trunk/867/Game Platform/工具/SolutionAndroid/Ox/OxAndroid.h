@@ -33,6 +33,25 @@ namespace O2
 	
 	typedef std::map<DWORD, STimerItem*> TimerItemRegister;
 
+	struct SDesk{
+		WORD						wChairID[4];
+		WORD						wTableID;
+		BYTE						bPlayStatus;
+		BYTE						bTableLock;
+
+		SDesk()
+			: wTableID(INVALID_TABLE)
+		{
+			for (int i=0; i<4; i++)
+			{
+				wChairID[i] = INVALID_CHAIR;
+			}
+
+			bPlayStatus	= FALSE;
+			bTableLock	= FALSE;
+		}
+	};
+
 	//////////////////////////////////////////////////////////////////////////
 	// 牛牛机器人
 	//////////////////////////////////////////////////////////////////////////
@@ -67,6 +86,10 @@ namespace O2
 		*/
 		virtual bool			OnSocketServerInfo(CMD_Command Command, void* pBuffer, 
 			WORD wDataSize);
+		/*
+		* 房价服务信息
+		*/
+		virtual bool			OnGameStatus(CMD_Command Command, void* pBuffer, WORD wDataSize);
 
 		/*
 		* 重置机器人数据
@@ -131,6 +154,7 @@ namespace O2
 		BYTE					m_byCard[MAX_COUNT];
 		WORD					m_wCurBanker;
 		BOOL					m_bOffline;
+		SDesk*					m_pDesk;
 	};
 
 	class OxFactory : public IAndroidFactroy

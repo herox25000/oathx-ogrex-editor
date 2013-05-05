@@ -12,13 +12,13 @@ namespace O2
 		OXT_START_GAME,
 	};
 
-	static WORD		oxCurTableID =  0;
+	static WORD		oxCurTableID =  4;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
 	//////////////////////////////////////////////////////////////////////////
 	Ox::Ox(DWORD dwUserID, double fOnlineTime)
-		: IAndroid(dwUserID, fOnlineTime), m_bOffline(FALSE)
+		: IAndroid(dwUserID, fOnlineTime), m_bOffline(FALSE),m_pDesk(NULL), m_wTableCount(0), m_wChairCount(0)
 	{
 		OnReset();
 	}
@@ -123,7 +123,10 @@ namespace O2
 			
 			if (pUser->nScore >= pConfig->nMinScore && pUser->nScore <= pConfig->nMaxScore)
 			{
-				do 
+				WORD wBegin = pConfig->wMinTableID;
+				WORD wEnd	= pConfig->wMaxTableID;
+
+				while( wBegin < wEnd )
 				{
 					int nCount = m_pUserManager->GetTableChairCount(oxCurTableID);
 					if (nCount < 4)
@@ -135,12 +138,16 @@ namespace O2
 					{
 						oxCurTableID = AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
 					}
-				} while (wTableID == INVALID_TABLE || wChairID == INVALID_CHAIR);
+
+					if (wTableID != INVALID_TABLE && wChairID != INVALID_CHAIR)
+						return true;
+
+					wBegin ++;
+				}
 			}
 		}
 
-		if (wTableID != INVALID_TABLE && wChairID != INVALID_CHAIR)
-			return true;
+
 
 		return 0;
 	}
@@ -230,8 +237,6 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	bool		Ox::OnReset()
 	{	
-		m_wTableCount		= 0;
-		m_wChairCount		= 0;
 		m_nTurnMaxScore		= 0;
 		m_wCurBanker		= INVALID_CHAIR;
 		ZeroMemory(m_byCard, sizeof(m_byCard));
@@ -278,7 +283,52 @@ namespace O2
 				CMD_GR_ServerInfo* pServerInfo = (CMD_GR_ServerInfo*)(pBuffer);
 
 				m_wTableCount	= pServerInfo->wTableCount;
-				m_wChairCount	= pServerInfo->wChairCount;
+				m_pDesk			= new SDesk[m_wTableCount];
+			}
+			break;
+		}
+		return true;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	bool		Ox::OnGameStatus(CMD_Command Command, void* pBuffer, WORD wDataSize)
+	{
+		switch (Command.wSubCmdID)
+		{
+		case SUB_GR_TABLE_INFO:		//桌子信息
+			{
+				//变量定义
+				CMD_GR_TableInfo * pTableInfo	= (CMD_GR_TableInfo *)pBuffer;
+				const WORD wHeadSize			= sizeof(CMD_GR_TableInfo) - sizeof(pTableInfo->TableStatus);
+
+				if (wDataSize<wHeadSize)
+					return 0;
+				if ((wHeadSize+pTableInfo->wTableCount*sizeof(pTableInfo->TableStatus[0]))!=wDataSize) 
+					return 0;
+
+				m_wTableCount = pTableInfo->wTableCount;
+
+				//消息处理
+				for (WORD i=0;i<pTableInfo->wTableCount;i++)
+				{
+					m_pDesk[i].wTableID		= i;
+					m_pDesk[i].bPlayStatus	= pTableInfo->TableStatus[i].bPlayStatus ? true : 0;
+					m_pDesk[i].bTableLock	= pTableInfo->TableStatus[i].bTableLock ? true : 0;
+				}
+			}
+			break;
+
+		case SUB_GR_TABLE_STATUS:	//桌子状态
+			{
+				CMD_GR_TableStatus * pTableStatus = (CMD_GR_TableStatus *)pBuffer;
+				for (int i=0; i<m_wTableCount; i++)
+				{
+					if (m_pDesk[i].wTableID == pTableStatus->wTableID)
+					{
+						m_pDesk[i].bPlayStatus = pTableStatus->bPlayStatus;
+						m_pDesk[i].bTableLock	= pTableStatus->bTableLock;
+					}
+				}
 			}
 			break;
 		}
