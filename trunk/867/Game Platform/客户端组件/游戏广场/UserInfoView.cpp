@@ -153,8 +153,8 @@ BOOL CUserInfoView::OnEraseBkgnd(CDC * pDC)
 
 		//构造位置
 		TCHAR szBuffer[255]=TEXT("");
-		CRect rcAccounts(135, 23, rcClient.Width()-20, 37);
-		CRect rcID(135, 64,rcClient.Width()-20, 37);
+		CRect rcAccounts(150, 23, rcClient.Width()-20, 37);
+		CRect rcID(150, 64,rcClient.Width()-20, 37);
 		CRect rcUnderWrite(135,104,rcClient.Width()-20, 44);
 
 		//用户帐号
@@ -163,13 +163,13 @@ BOOL CUserInfoView::OnEraseBkgnd(CDC * pDC)
 		_sntprintf(szBuffer,CountArray(szBuffer),TEXT("%d"),GlobalUserInfo.dwGameID);
 		BufferDC.DrawText(szBuffer,lstrlen(szBuffer),&rcID,DT_VCENTER|DT_WORD_ELLIPSIS|DT_SINGLELINE);
 
-		//会员信息
-		LPCTSTR pszMemberOrder[]={TEXT("非会员"),TEXT("红钻会员"),TEXT("蓝钻会员"),TEXT("黄钻会员"),TEXT("紫钻会员")};
-		if (GlobalUserInfo.cbMember<CountArray(pszMemberOrder))
-		{
-			_sntprintf(szBuffer,CountArray(szBuffer),TEXT("%s"),pszMemberOrder[GlobalUserInfo.cbMember]);
-			BufferDC.DrawText(szBuffer,lstrlen(szBuffer),&rcUnderWrite,DT_VCENTER|DT_WORD_ELLIPSIS|DT_SINGLELINE);
-		}
+		////会员信息
+		//LPCTSTR pszMemberOrder[]={TEXT("非会员"),TEXT("红钻会员"),TEXT("蓝钻会员"),TEXT("黄钻会员"),TEXT("紫钻会员")};
+		//if (GlobalUserInfo.cbMember<CountArray(pszMemberOrder))
+		//{
+		//	_sntprintf(szBuffer,CountArray(szBuffer),TEXT("%s"),pszMemberOrder[GlobalUserInfo.cbMember]);
+		//	BufferDC.DrawText(szBuffer,lstrlen(szBuffer),&rcUnderWrite,DT_VCENTER|DT_WORD_ELLIPSIS|DT_SINGLELINE);
+		//}
 	}
 
 	//绘画界面
