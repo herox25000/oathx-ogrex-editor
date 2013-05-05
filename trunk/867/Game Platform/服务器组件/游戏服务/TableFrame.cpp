@@ -376,7 +376,10 @@ bool __cdecl CTableFrame::PerformSitDownAction(WORD wChairID, IServerUserItem * 
 			//发送消息
 			TCHAR szDescribe[128]=TEXT("");
 			pTableUserData=m_pIUserItem[wChairID]->GetUserData();
-			_snprintf(szDescribe,sizeof(szDescribe),TEXT("椅子已经被 [ %s ] 捷足先登了，下次动作要快点了！"),pTableUserData->szAccounts);
+			if (pTableUserData)
+				_snprintf(szDescribe,sizeof(szDescribe),TEXT("椅子已经被 [ %s ] 捷足先登了，下次动作要快点了！"),pTableUserData->szAccounts);
+			else
+				_snprintf(szDescribe,sizeof(szDescribe),TEXT("椅子已经被捷足先登了，下次动作要快点了！"));
 			SendSitFailedPacket(pIServerUserItem,szDescribe);
 		}
 		else
