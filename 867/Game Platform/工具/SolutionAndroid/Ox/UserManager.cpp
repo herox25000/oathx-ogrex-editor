@@ -131,14 +131,21 @@ namespace O2
 			it++;
 		}
 
-		for (int i=0; i<4; i++)
+		if (vEmpty.size() > 0)
 		{
-			std::vector<WORD>::iterator it = std::find(vEmpty.begin(), vEmpty.end(), i);
-			if ( it == vEmpty.end() )
-				return i;
+			for (int i=0; i<4; i++)
+			{
+				std::vector<WORD>::iterator it = std::find(vEmpty.begin(), vEmpty.end(), i);
+				if ( it == vEmpty.end() )
+					return i;
+			}
+		}
+		else
+		{
+			return rand() % 4;
 		}
 
-		return rand() % 4;
+		return INVALID_CHAIR;
 	}
 
 	//////////////////////////////////////////////////////////////////////////

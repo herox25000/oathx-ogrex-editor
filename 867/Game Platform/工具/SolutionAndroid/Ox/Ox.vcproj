@@ -170,9 +170,6 @@
 				RelativePath=".\ConfigFile.cpp">
 			</File>
 			<File
-				RelativePath=".\ConfigFile.h">
-			</File>
-			<File
 				RelativePath=".\IAndroid.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -242,6 +239,9 @@
 			</File>
 			<File
 				RelativePath=".\ConfigDialog.h">
+			</File>
+			<File
+				RelativePath=".\ConfigFile.h">
 			</File>
 			<File
 				RelativePath=".\IAndroid.h">
