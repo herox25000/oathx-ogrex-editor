@@ -12,7 +12,7 @@ namespace O2
 		OXT_START_GAME,
 	};
 
-	static WORD		oxCurTableID = INVALID_TABLE;
+	static WORD		oxCurTableID =  0;
 
 	//////////////////////////////////////////////////////////////////////////
 	//
@@ -123,72 +123,24 @@ namespace O2
 			
 			if (pUser->nScore >= pConfig->nMinScore && pUser->nScore <= pConfig->nMaxScore)
 			{
-				if (oxCurTableID == INVALID_TABLE)
+				do 
 				{
-					oxCurTableID	= AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
-
-					wTableID		= oxCurTableID;
-					wChairID		= m_pUserManager->GetEmptyChairID(wTableID);
-					return true;
-				}
-				else
-				{
-					int nCount		= m_pUserManager->GetTableChairCount(oxCurTableID);
-					if (nCount <= MIN_CHAIR_COUNT)
+					int nCount = m_pUserManager->GetTableChairCount(oxCurTableID);
+					if (nCount < 4)
 					{
 						wTableID	= oxCurTableID;
 						wChairID	= m_pUserManager->GetEmptyChairID(wTableID);
-						return true;
 					}
 					else
 					{
-						std::vector<WORD>	vT;
-
-						int nCur	= pConfig->wMinTableID;
-						int nEnd	= pConfig->wMaxTableID;
-						while( nCur <= nEnd )
-						{
-							nCount = m_pUserManager->GetTableChairCount( nCur );
-							if (nCount == MIN_CHAIR_COUNT)
-							{
-								vT.push_back(nCur);
-							}
-							nCur ++;
-						}
-
-						if (vT.size() > 0)
-						{
-							int idx			= rand() % (vT.size());
-							if (idx == vT.size())
-								idx = vT.size() - 1;
-
-							wTableID		= vT[idx];
-							wChairID		= m_pUserManager->GetEmptyChairID(wTableID);
-							oxCurTableID	= vT[idx];
-							return true;
-						}
-						else
-						{
-							nCur = pConfig->wMinTableID;
-							while( nCur <= nEnd)
-							{
-								oxCurTableID	= AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
-
-								nCount			= m_pUserManager->GetTableChairCount( oxCurTableID );
-								if (nCount != 4)
-								{
-									wTableID	= oxCurTableID;
-									wChairID	= m_pUserManager->GetEmptyChairID(wTableID);
-									return true;
-								}
-
-								nCur ++;
-							}
-						}
+						oxCurTableID = AndroidTimer::rdit(pConfig->wMinTableID, pConfig->wMaxTableID);
 					}
-				}
+				} while (wTableID == INVALID_TABLE || wChairID == INVALID_CHAIR);
 			}
 		}
+
+		if (wTableID != INVALID_TABLE && wChairID != INVALID_CHAIR)
+			return true;
 
 		return 0;
 	}
@@ -243,8 +195,8 @@ namespace O2
 
 		OnBanker();
 
-		WORD wTableID;
-		WORD wChairID;
+		WORD wTableID = INVALID_TABLE;
+		WORD wChairID = INVALID_CHAIR;
 		if (!GetTableID(wTableID, wChairID))
 			return 0;
 
@@ -281,7 +233,6 @@ namespace O2
 		m_wTableCount		= 0;
 		m_wChairCount		= 0;
 		m_nTurnMaxScore		= 0;
-		m_nChipInScore		= 0;
 		m_wCurBanker		= INVALID_CHAIR;
 		ZeroMemory(m_byCard, sizeof(m_byCard));
 
@@ -422,6 +373,10 @@ namespace O2
 		case OXT_START_GAME:
 			{
 				SendData(MDM_GF_FRAME, SUB_GF_USER_READY);
+				
+				CString szMessage;
+				szMessage.Format("[%d] 准备", GetUserID());
+				LogEvent(szMessage, TraceLevel_Normal);
 			}
 			break;
 		case OXT_CALL_BANKER:
@@ -435,6 +390,10 @@ namespace O2
 					CallBanker.bBanker = pConfig->wBankerRate >= nBankerRate ? 1 : 0;
 
 					SendData(MDM_GF_GAME, SUB_C_CALL_BANKER,&CallBanker,sizeof(CallBanker));
+
+					CString szMessage;
+					szMessage.Format("[%d] 叫庄", GetUserID());
+					LogEvent(szMessage, TraceLevel_Normal);
 				}
 			}
 			break;
@@ -445,6 +404,11 @@ namespace O2
 				OxCard.bOX=(GetCardType(m_byCard, MAX_COUNT) > 0 ) ? TRUE : FALSE;
 
 				SendData(MDM_GF_GAME, SUB_C_OPEN_CARD, &OxCard, sizeof(OxCard));
+
+
+				CString szMessage;
+				szMessage.Format("[%d] 开牌", GetUserID());
+				LogEvent(szMessage, TraceLevel_Normal);
 
 			}
 			break;
@@ -467,7 +431,9 @@ namespace O2
 				AddScore.lScore = nUserMaxScore[rand()%4];
 				SendData(MDM_GF_GAME, SUB_C_ADD_SCORE, &AddScore, sizeof(AddScore));
 
-				m_nChipInScore	+= AddScore.lScore;
+				CString szMessage;
+				szMessage.Format("[%d] 下注(%I64d, %I64d)", GetUserID(), AddScore.lScore, m_nTurnMaxScore);
+				LogEvent(szMessage, TraceLevel_Normal);
 			}
 			break;
 		}
@@ -558,7 +524,7 @@ namespace O2
 			m_nTurnMaxScore				= pGameStart->lTurnMaxScore;
 			m_wCurBanker				= pGameStart->wBankerUser;
 
-			if (!isSelf(m_wCurBanker) && m_nTurnMaxScore > 0)
+			if (pUser->wChairID != m_wCurBanker && m_nTurnMaxScore > 0)
 			{
 				SetTimer(OXT_USER_ADD_SCORE, GetWorkTime());
 			}		
@@ -659,7 +625,6 @@ namespace O2
 		//清理变量
 		m_wCurBanker	= INVALID_CHAIR;
 		m_nTurnMaxScore = 0;
-		m_nChipInScore	= 0;
 		ZeroMemory(m_byCard,sizeof(m_byCard));
 
 		return true;
