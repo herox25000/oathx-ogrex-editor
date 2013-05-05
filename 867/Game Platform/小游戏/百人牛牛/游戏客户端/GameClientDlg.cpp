@@ -425,6 +425,7 @@ bool CGameClientDlg::OnSubGameFree(const void * pBuffer, WORD wDataSize)
 	ASSERT(wDataSize==sizeof(CMD_S_GameFree));
 	if (wDataSize!=sizeof(CMD_S_GameFree)) return false;
 
+
 	//消息处理
 	CMD_S_GameFree * pGameFree=(CMD_S_GameFree *)pBuffer;
 
@@ -447,6 +448,10 @@ bool CGameClientDlg::OnSubGameFree(const void * pBuffer, WORD wDataSize)
 
 	//完成发牌
 	m_GameClientView.FinishDispatchCard();
+	m_GameClientView.KillCardTime();
+	m_GameClientView.m_blMoveFinish = false;
+	m_GameClientView.m_bFlashResult = false;
+	m_GameClientView.m_cbAreaFlash = 0xff;
 
 	//更新成绩
 	for (WORD wUserIndex = 0; wUserIndex < MAX_CHAIR; ++wUserIndex)
@@ -506,6 +511,7 @@ bool CGameClientDlg::OnSubGameEnd(const void * pBuffer, WORD wDataSize)
 
 	//消息处理
 	CMD_S_GameEnd * pGameEnd=(CMD_S_GameEnd *)pBuffer;
+
 
 	m_GameClientView.m_blMoveFinish = false;
 

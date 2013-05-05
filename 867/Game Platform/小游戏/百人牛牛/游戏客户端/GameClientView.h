@@ -131,10 +131,13 @@ protected:
 	int								m_nRecordFirst;						//开始记录
 	int								m_nRecordLast;						//最后记录
 
+public:
+	bool							m_bFlashResult;						//显示结果
+	BYTE							m_cbAreaFlash;						//胜利玩家
+
 	//状态变量
 protected:
 	WORD							m_wMeChairID;						//我的位置
-	BYTE							m_cbAreaFlash;						//胜利玩家
 	LONG							m_lCurrentJetton;					//当前筹码
 	bool							m_bShowChangeBanker;				//轮换庄家
 	bool							m_bNeedSetGameRecord;				//完成设置
@@ -142,7 +145,6 @@ protected:
 	bool							m_bWinHuangMen;						//胜利标识
 	bool                            m_bWinDiMen;
 	bool							m_bWinXuanMen;						//胜利标识
-	bool							m_bFlashResult;						//显示结果
 	bool							m_bShowGameResult;					//显示结果
 	enDispatchCardTip				m_enDispatchCardTip;				//发牌提示
 
