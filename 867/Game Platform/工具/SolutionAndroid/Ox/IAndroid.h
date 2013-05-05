@@ -142,6 +142,8 @@ namespace O2
 		virtual bool			OnSocketMainUser(CMD_Command Command, void* pBuffer, 
 			WORD wDataSize);
 
+		virtual bool			OnGameStatus(CMD_Command Command, void* pBuffer, WORD wDataSize);
+
 		/*
 		*”Œœ∑œ˚œ¢
 		*/

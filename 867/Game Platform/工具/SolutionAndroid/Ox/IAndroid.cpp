@@ -453,7 +453,7 @@ namespace O2
 			}
 		case MDM_GR_STATUS:			//状态信息
 			{
-				return true;
+				return OnGameStatus(Command, pBuffer, wDataSize);
 			}
 		case MDM_GR_SYSTEM:			//系统消息
 			{
@@ -876,6 +876,12 @@ namespace O2
 
 	//////////////////////////////////////////////////////////////////////////
 	bool			IAndroid::OnSocketServerInfo(CMD_Command Command, void* pBuffer, WORD wDataSize)
+	{
+		return true;
+	}
+
+	//////////////////////////////////////////////////////////////////////////
+	bool			IAndroid::OnGameStatus(CMD_Command Command, void* pBuffer, WORD wDataSize)
 	{
 		return true;
 	}
