@@ -656,6 +656,7 @@ namespace O2
 					{
 						CString szMessage;
 						szMessage.Format("[%d]已坐下", m_dwUserID);
+						m_wSitReqCount = 0;
 						LogEvent(szMessage, 
 							TraceLevel_Normal);	
 					}
@@ -774,6 +775,10 @@ namespace O2
 
 						case SUB_GF_MESSAGE:		//系统消息
 							{
+								CMD_GR_Message* pMessage = (CMD_GR_Message*)pSocketPackage->cbBuffer;
+								CString szMessage;
+								szMessage.Format("%s", pMessage->szContent);
+								LogEvent(szMessage, TraceLevel_Debug);
 								return true;
 							}
 						}
