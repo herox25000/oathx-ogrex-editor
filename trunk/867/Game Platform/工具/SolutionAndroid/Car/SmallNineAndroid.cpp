@@ -454,14 +454,13 @@ namespace O2
 		{
 			m_bChipIn = FALSE;
 			m_nPlaceRate = 0;
-			m_fChipTime = 0;
 			return true;
 		}
 
 		m_fChipTime -= fElapsed;
 
-		float nRnd = AndroidTimer::rdft(0, 100);
-		if (nRnd < nPlaceRand)
+		//float nRnd = AndroidTimer::rdft(0, 100);
+		//if (nRnd < nPlaceRand)
 		{
 			m_fElapsedTime		+= fElapsed;
 
@@ -628,7 +627,7 @@ namespace O2
 			//ÓÎÏ·¼ÇÂ¼
 		case SUB_S_SEND_RECORD:		
 			{
-
+				
 			}
 			break;
 
