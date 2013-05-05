@@ -305,7 +305,7 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 					m_dwJettonTime=(DWORD)time(NULL);
 					m_pITableFrame->SetGameStatus(GS_GAME_END);
 					m_pITableFrame->KillGameTimer(IDI_PLACE_JETTON);
-					m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,1,0L);
+					m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,TIMES_INFINITY,0L);
 					//派发扑克
 					DispatchTableCard();
 					//计算分数
@@ -485,17 +485,19 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 	{
 	case IDI_FREE:		//空闲时间
 		{
+			m_pITableFrame->KillGameTimer(IDI_FREE);
 			//开始游戏
 			m_pITableFrameControl->StartGame();
 			//设置时间
 			m_dwJettonTime=(DWORD)time(NULL);
-			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON,TIME_PLACE_JETTON*1000,1,0L);
+			m_pITableFrame->SetGameTimer(IDI_PLACE_JETTON,TIME_PLACE_JETTON*1000,TIMES_INFINITY,0L);
 			//设置状态
 			m_pITableFrame->SetGameStatus(GS_PLACE_JETTON);
 			return true;
 		}
 	case IDI_PLACE_JETTON:		//下注时间
 		{
+			m_pITableFrame->KillGameTimer(IDI_PLACE_JETTON);
 			//状态判断(防止强退重复设置)
 			if (m_pITableFrame->GetGameStatus()!=GS_GAME_END)
 			{
@@ -505,12 +507,13 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 				OnEventGameEnd(INVALID_CHAIR,NULL,GER_NORMAL);
 				//设置时间
 				m_dwJettonTime=(DWORD)time(NULL);
-				m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,1,0L);			
+				m_pITableFrame->SetGameTimer(IDI_GAME_END,TIME_GAME_END*1000,TIMES_INFINITY,0L);			
 			}
 			return true;
 		}
 	case IDI_GAME_END:			//结束游戏
 		{
+			m_pITableFrame->KillGameTimer(IDI_GAME_END);
 			//写入积分
 			for ( WORD wUserChairID = 0; wUserChairID < GAME_PLAYER; ++wUserChairID )
 			{
@@ -561,7 +564,7 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 			//设置时间
 			m_pITableFrame->SetGameStatus(GS_FREE);
 			m_dwJettonTime=(DWORD)time(NULL);
-			m_pITableFrame->SetGameTimer(IDI_FREE,TIME_FREE*1000,1,0L);
+			m_pITableFrame->SetGameTimer(IDI_FREE,TIME_FREE*1000,TIMES_INFINITY,0L);
 
 			//切换庄家
 			ChangeBanker(false);
@@ -649,7 +652,7 @@ bool __cdecl CTableFrameSink::OnActionUserSitDown(WORD wChairID, IServerUserItem
 	if ((bLookonUser==false)&&(m_dwJettonTime==0L))
 	{
 		m_dwJettonTime=(DWORD)time(NULL);
-		m_pITableFrame->SetGameTimer(IDI_FREE,TIME_FREE*1000,1,NULL);
+		m_pITableFrame->SetGameTimer(IDI_FREE,TIME_FREE*1000,TIMES_INFINITY,NULL);
 		m_pITableFrame->SetGameStatus(GS_FREE);
 	}
 
