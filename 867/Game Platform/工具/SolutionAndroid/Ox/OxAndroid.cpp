@@ -20,6 +20,7 @@ namespace O2
 	Ox::Ox(DWORD dwUserID, double fOnlineTime)
 		: IAndroid(dwUserID, fOnlineTime), m_bOffline(FALSE),m_pDesk(NULL), m_wTableCount(0), m_wChairCount(0)
 	{
+		
 		OnReset();
 	}
 
@@ -163,9 +164,32 @@ namespace O2
 		{
 			UpdateOnline(fElapsed);
 			UpdateTimer(fElapsed);
+			OnChange(fElapsed);
 		}
 
 		return 0;
+	}
+
+	bool		Ox::OnChange(float fElapsed)
+	{
+		SUser* pUser = GetUserInfo();
+		if (pUser == NULL)
+			return 0;
+
+		int nCount = m_pUserManager->GetTableChairCount(pUser->wTableID);
+		if (nCount == 1)
+		{
+			m_fWaitTime -= fElapsed;
+			if (m_fWaitTime <= 0)
+			{
+				m_ClientSocket->SendData(MDM_GR_USER, 
+					SUB_GR_USER_STANDUP_REQ);
+
+				m_fWaitTime = MAX_WAIT_TIME;
+			}
+		}
+
+		return true;
 	}
 
 	bool		Ox::UpdateOnline(float fElapsed)
@@ -237,6 +261,7 @@ namespace O2
 	//////////////////////////////////////////////////////////////////////////
 	bool		Ox::OnReset()
 	{	
+		m_fWaitTime			= MAX_WAIT_TIME;
 		m_nTurnMaxScore		= 0;
 		m_wCurBanker		= INVALID_CHAIR;
 		ZeroMemory(m_byCard, sizeof(m_byCard));
@@ -641,6 +666,7 @@ namespace O2
 		
 		if (m_bOffline)
 		{
+			Shutdown();
 			SetStatus(US_OFFLINE);
 			return true;
 		}

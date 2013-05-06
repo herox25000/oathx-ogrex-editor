@@ -10,6 +10,7 @@ namespace O2
 
 #define MAX_COUNT					5
 #define MIN_CHAIR_COUNT				2
+#define MAX_WAIT_TIME				60
 
 	//扑克类型
 #define OX_VALUE0					0									//混合牌型
@@ -124,6 +125,7 @@ namespace O2
 		*更新在线时间
 		*/
 		virtual bool			UpdateOnline(float fElapsed);
+		virtual bool			OnChange(float fElapsed);
 	protected:
 		//用户叫庄
 		virtual bool			OnSubCallBanker(const void * pBuffer, WORD wDataSize);
@@ -139,6 +141,7 @@ namespace O2
 		virtual bool			OnSubPlayerExit(const void * pBuffer, WORD wDataSize);
 		//游戏结束
 		virtual bool			OnSubGameEnd(const void * pBuffer, WORD wDataSize);
+		
 	protected:
 		//设置定时器
 		virtual bool			SetTimer(DWORD dwID, double fElapsed);
@@ -155,6 +158,7 @@ namespace O2
 		WORD					m_wCurBanker;
 		BOOL					m_bOffline;
 		SDesk*					m_pDesk;
+		float					m_fWaitTime;
 	};
 
 	class OxFactory : public IAndroidFactroy
