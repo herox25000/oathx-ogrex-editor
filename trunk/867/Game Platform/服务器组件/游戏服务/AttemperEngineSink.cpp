@@ -1496,7 +1496,7 @@ bool CAttemperEngineSink::OnEventTCPNetworkShut(DWORD dwClientIP, DWORD dwActive
 
 			//¶ÏÏß×¢²á
 			WORD wChairID=pIServerUserItem->GetChairID();
-			if ((pTableFrame->IsUserPlaying(pIServerUserItem)==true)&&(pTableFrame->OnUserReqOffLine(wChairID)==true))
+			if ((pTableFrame->IsUserPlaying(pIServerUserItem)==true)/*&&(pTableFrame->OnUserReqOffLine(wChairID)==true)*/)
 			{
 				bOffLine=m_ServerUserManager.RegOffLineUserItem(pIServerUserItem);
 			}
