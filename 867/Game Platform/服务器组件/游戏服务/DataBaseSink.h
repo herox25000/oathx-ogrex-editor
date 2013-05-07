@@ -46,6 +46,8 @@ struct tagDataBaseSinkParameter
 #define DBR_GR_BANK_TASK				22								//存取钱操作
 #define DBR_GR_QUERYUSERNAME			23								
 #define DBR_GR_UPDATEONLINECOUNT		24								//统计房间在线人数
+#define DBR_GR_MODIFY_UNDERWRITE        25								//修改签名
+
 
 //数据库输出标识
 #define DBR_GR_LOGON_SUCCESS			100								//登录成功
@@ -65,6 +67,8 @@ struct tagDataBaseSinkParameter
 #define DBR_GR_MODIFY_NICKNAME_OUT   		116							//修改昵称
 #define DBR_GR_BANK_TASK_OUT				117							//存取钱操作
 #define DBR_GR_QUERYUSERNAME_OUT			118
+
+
 
 //赠送鲜花
 struct DBR_GR_SendGift
@@ -404,7 +408,14 @@ struct DBR_GR_UpdateOnLineCount
 	UINT			lCount;		//人数
 };
 
-
+//修改签名
+struct DBR_GR_ModifyUnderWrite
+{
+	DWORD								dwUserID;						//用户 I D
+	TCHAR								szUnderWrite[UNDER_WRITE_LEN];	//签名
+	LONG								lErrorCode;						//返回代码
+	TCHAR								szErrorDescribe[256];			//错误提示
+};
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -524,7 +535,8 @@ private:
 	bool OnRequsetQueryUserName(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//更新房间人数
 	bool OnUpdateOnLineCount(DWORD dwContextID, VOID * pData, WORD wDataSize);
-
+	//修改签名
+	bool OnRequestModifyUnderWrite(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存储过程
 protected:
 	//I D 存储过程
