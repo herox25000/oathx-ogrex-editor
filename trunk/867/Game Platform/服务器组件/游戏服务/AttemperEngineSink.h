@@ -287,8 +287,9 @@ private:
 	bool OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//数据库查询用户名返回
 	bool OnDBQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	// 锁定本机
-	bool OnDBLockComputer(DWORD dwContextID, VOID * pData, WORD wDataSize);
+	//数据库修改签名
+	bool OnDBModifyUnderWriteOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
+
 	//网络函数
 private:
 	//登录消息处理
@@ -325,6 +326,9 @@ private:
 	bool OnEventModifyLoginPassword(const void * pData, WORD wDataSize, DWORD dwSocketID);
 	//socket 响应 修改银行密码
 	bool OnEventModifyBankPassword(const void * pData, WORD wDataSize, DWORD dwSocketID);
+	//socket 响应修改签名
+	bool OnEventModifyUnderWrite(const void * pData, WORD wDataSize, DWORD dwSocketID);
+
 	//辅助函数
 private:
 	//发送失败

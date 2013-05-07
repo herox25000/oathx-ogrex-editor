@@ -997,6 +997,10 @@ bool __cdecl CAttemperEngineSink::OnEventDataBase(WORD wRequestID, DWORD dwConte
 		{
 			return OnDBQueryUserNameOver(dwContextID,pData,wDataSize);
 		}
+	case DBR_GR_MODIFY_UNDERWRITE: //修改签名
+		{
+			return OnDBModifyUnderWriteOver(dwContextID,pData,wDataSize);
+		}
 	}
 
 	return false;
@@ -2520,6 +2524,8 @@ bool CAttemperEngineSink::OnSocketToolBox(WORD wSubCmdID, VOID * pData, WORD wDa
 		return OnEventModifyLoginPassword(pData,wDataSize,dwSocketID);
 	case  SUB_TOOLBOX_TMODIFYBANKPASSWORD:
 		return OnEventModifyBankPassword(pData,wDataSize,dwSocketID);
+	case SUB_TOOLBOX_TMODIFYUNDERWRITE:
+		return OnEventModifyUnderWrite(pData,wDataSize,dwSocketID);
 	}
 	return false;
 }
@@ -3980,6 +3986,23 @@ bool CAttemperEngineSink::OnEventModifyBankPassword(const void * pData, WORD wDa
 	return m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_MODIFY_BANK_PASSWORD, 0, &dbr, sizeof(dbr));
 }
 
+//socket 响应修改签名
+bool CAttemperEngineSink::OnEventModifyUnderWrite(const void * pData, WORD wDataSize, DWORD dwSocketID)
+{
+	ASSERT( sizeof(CMD_TOOLBOX_ModifyUnderWrite) == wDataSize );
+	if ( sizeof(CMD_TOOLBOX_ModifyUnderWrite) != wDataSize ) 
+		return false;
+	CMD_TOOLBOX_ModifyUnderWrite* pWrite = (CMD_TOOLBOX_ModifyUnderWrite*)pData;
+
+	DBR_GR_ModifyUnderWrite DbWrite;
+	ZeroMemory(&DbWrite,sizeof(DbWrite));
+	DbWrite.dwUserID = pWrite->dwUserID;
+	CopyMemory(DbWrite.szUnderWrite, pWrite->szUnderWrite, sizeof(DbWrite.szUnderWrite));
+	return m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_MODIFY_UNDERWRITE, dwSocketID, &DbWrite, sizeof(DbWrite));
+
+}
+
+
 //数据库返回
 bool CAttemperEngineSink::OnDBQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
@@ -4092,6 +4115,20 @@ bool CAttemperEngineSink::OnDBModifyPassword(DWORD dwContextID, VOID * pData, WO
 	return true;
 }
 
+//数据库修改签名
+bool CAttemperEngineSink::OnDBModifyUnderWriteOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	DBR_GR_ModifyUnderWrite* pDBR=(DBR_GR_ModifyUnderWrite*)pData;
+
+	CMD_TOOLBOX_OperateReturn OperateReturn;
+	ZeroMemory(&OperateReturn,sizeof(OperateReturn));
+	OperateReturn.lResultCode = pDBR->lErrorCode;
+	CopyMemory(OperateReturn.szDescribeString, pDBR->szErrorDescribe, sizeof(OperateReturn.szDescribeString));
+	m_pITCPNetworkEngine->SendData(dwContextID,MDM_TOOLBOX,SUB_TOOLBOX_OPERATERETURN,&OperateReturn,sizeof(OperateReturn));
+	//关闭链接
+	m_pITCPNetworkEngine->ShutDownSocket(dwContextID);
+	return true;
+}
 
 
 //////////////////////////////////////////////////////////////////////////

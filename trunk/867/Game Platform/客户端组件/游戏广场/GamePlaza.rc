@@ -637,6 +637,10 @@ BT_ENQUIRE_CANCEL       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_
 BT_ENQUIRE_PLAZA        PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_PLAZA.png"
 BT_ENQUIRE_SWITCH       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_SWITCH.png"
 SERVER_LIST_ARROW       PNG                     "res\\SERVER_LIST\\SERVER_LIST_ARROW.png"
+UNDER_WRITE_L           PNG                     "res\\USER_INFO\\UNDER_WRITE_L.PNG"
+UNDER_WRITE_M           PNG                     "res\\USER_INFO\\UNDER_WRITE_M.PNG"
+UNDER_WRITE_R           PNG                     "res\\USER_INFO\\UNDER_WRITE_R.PNG"
+
 
 /////////////////////////////////////////////////////////////////////////////
 //

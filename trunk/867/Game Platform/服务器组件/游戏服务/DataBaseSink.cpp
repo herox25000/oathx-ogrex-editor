@@ -217,6 +217,10 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineRequest(WORD wRequestID, DWORD dwCon
 		{
 			return OnUpdateOnLineCount(dwContextID,pData,wDataSize);
 		}
+	case DBR_GR_MODIFY_UNDERWRITE://修改签名
+		{
+			return OnRequestModifyUnderWrite(dwContextID,pData,wDataSize);
+		}
 	}
 
 	return false;
@@ -1662,6 +1666,35 @@ bool CDataBaseSink::OnUpdateOnLineCount(DWORD dwContextID, VOID * pData, WORD wD
 	CATCH_ADO_SHOW(lpszProc);
 	return true;
 }
+
+//修改签名
+bool CDataBaseSink::OnRequestModifyUnderWrite(DWORD dwContextID, VOID * pData, WORD wDataSize)
+{
+	ASSERT(wDataSize == sizeof(DBR_GR_ModifyUnderWrite));
+	if (wDataSize!=sizeof(DBR_GR_ModifyUnderWrite)) 
+		return false;
+	DBR_GR_ModifyUnderWrite* pUnderWrite = (DBR_GR_ModifyUnderWrite*)pData;
+	LPCTSTR lpszProc = _T("GSP_GP_ModifyUnderWrite");
+	TRY_BEGIN()
+	//执行存储过程
+	m_AccountsDBModule->ClearParameters();
+	m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
+	m_AccountsDBModule->AddParameter(TEXT("@dwUserID"),adInteger,adParamInput,sizeof(long),_variant_t((long)pUnderWrite->dwUserID));
+	m_AccountsDBModule->AddParameter(TEXT("@UnderWrite"), adChar, adParamInput,lstrlen(pUnderWrite->szUnderWrite), _variant_t(pUnderWrite->szUnderWrite));
+	m_AccountsDBModule->ExecuteProcess(lpszProc,true);
+	LONG lReturn=m_AccountsDBModule->GetReturnValue();
+	pUnderWrite->lErrorCode=lReturn;
+	if (lReturn!=0 )
+	{
+		m_AccountsDBModule->GetFieldValue(TEXT("@ErrorDescribe"), pUnderWrite->szErrorDescribe, sizeof(pUnderWrite->szErrorDescribe) );
+	}
+	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_MODIFY_UNDERWRITE,
+		dwContextID , pUnderWrite, sizeof(DBR_GR_ModifyUnderWrite));
+	return true;
+	CATCH_ADO_SHOW(lpszProc);
+	return true;	
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////
