@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////
 
 //游戏桌子类
-class CTableFrameSink : public ITableFrameSink
+class CTableFrameSink : public ITableFrameSink, public ITableUserAction
 {
 	//游戏变量
 protected:
@@ -108,6 +108,20 @@ protected:
 	//扑克分析
 	void AnalyseCard();
 	void KillAllTimer();
+
+	//动作事件
+public:
+	//用户断线
+	virtual bool __cdecl OnActionUserOffLine(WORD wChairID, IServerUserItem * pIServerUserItem) ;
+	//用户重入
+	virtual bool __cdecl OnActionUserReConnect(WORD wChairID, IServerUserItem * pIServerUserItem);
+	//用户坐下
+	virtual bool __cdecl OnActionUserSitDown(WORD wChairID, IServerUserItem * pIServerUserItem, bool bLookonUser);
+	//用户起来
+	virtual bool __cdecl OnActionUserStandUp(WORD wChairID, IServerUserItem * pIServerUserItem, bool bLookonUser);
+	//用户同意
+	virtual bool __cdecl OnActionUserReady(WORD wChairID, IServerUserItem * pIServerUserItem, VOID * pData, WORD wDataSize);
+
 };
 
 //////////////////////////////////////////////////////////////////////////

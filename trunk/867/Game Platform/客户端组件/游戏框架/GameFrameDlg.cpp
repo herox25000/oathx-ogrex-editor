@@ -668,9 +668,6 @@ void CGameFrameDlg::OnCancel()
 		}
 	}
 
-	if (IDYES != ShowInformation(TEXT("你确定要退出游戏吗?"),30,MB_ICONQUESTION|MB_YESNO))
-		return;
-
 	//保存配置
 	g_GlobalOption.SaveOptionParameter();
 	//注销接口

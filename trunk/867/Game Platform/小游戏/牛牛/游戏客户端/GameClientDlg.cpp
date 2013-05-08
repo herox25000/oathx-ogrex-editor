@@ -170,12 +170,12 @@ bool CGameClientDlg::OnTimerMessage(WORD wChairID, UINT nElapse, UINT nTimerID)
 	{
 	case IDI_START_GAME:		//开始定时器
 		{
-			//中止判断
-			if (nElapse==0)
-			{
-				CloseClientDlg();
-				return false;
-			}
+			////中止判断
+			//if (nElapse==0)
+			//{
+			//	CloseClientDlg();
+			//	return false;
+			//}
 
 			//警告通知
 			if (nElapse<=5) 

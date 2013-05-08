@@ -51,6 +51,7 @@ CTableFrameSink::~CTableFrameSink(void)
 void * __cdecl CTableFrameSink::QueryInterface(const IID & Guid, DWORD dwQueryVer)
 {
 	QUERYINTERFACE(ITableFrameSink,Guid,dwQueryVer);
+	QUERYINTERFACE(ITableUserAction,Guid,dwQueryVer);
 	QUERYINTERFACE_IUNKNOWNEX(ITableFrameSink,Guid,dwQueryVer);
 	return NULL;
 }
@@ -290,6 +291,13 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			//结束游戏
 			m_pITableFrame->ConcludeGame();
 
+			//设置等待开始定时器
+			for(int iChairID=0;iChairID<GAME_PLAYER;++iChairID)
+			{
+				IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(iChairID);
+				if(pIServerUserIte!=NULL)
+					m_pITableFrame->SetGameTimer(iChairID+TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
+			}
 			return true;
 		}
 	//case GER_USER_LEFT:		//用户强退
@@ -769,6 +777,14 @@ bool __cdecl CTableFrameSink::OnEventGameEnd(WORD wChairID, IServerUserItem * pI
 			m_pITableFrame->SendLookonData(INVALID_CHAIR,SUB_S_GAME_END,&GameEnd,sizeof(GameEnd));
 			//结束游戏
 			m_pITableFrame->ConcludeGame();	
+
+			//设置等待开始定时器
+			for(int iChairID=0;iChairID<GAME_PLAYER;++iChairID)
+			{
+				IServerUserItem * pIServerUserIte=m_pITableFrame->GetServerUserItem(iChairID);
+				if(pIServerUserIte!=NULL)
+					m_pITableFrame->SetGameTimer(iChairID+TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
+			}
 			return true;
 		}
 	}
@@ -860,13 +876,24 @@ bool __cdecl CTableFrameSink::OnTimerMessage(WORD wTimerID, WPARAM wBindParam)
 	OutputDebugString(str);
 #endif
 
+	// 准备定时器
+	int retIDEvent = wTimerID - TIMER_WAITSTATR;
+	if( retIDEvent >= 0)
+	{
+		m_pITableFrame->KillGameTimer(TIMER_WAITSTATR+retIDEvent);
+		//获取用户
+		IServerUserItem * pIServerUserItem=m_pITableFrame->GetServerUserItem(retIDEvent);
+		if(pIServerUserItem != NULL)
+		{
+			if(pIServerUserItem->GetUserStatus() != US_READY)
+				m_pITableFrame->GetOutUser(retIDEvent);
+		}
+		return true;
+	}
+
 	m_pITableFrame->KillGameTimer(wTimerID);
 	switch(wTimerID)
 	{
-	case TIMER_WAITSTATR:
-		{
-			return true;
-		}
 	case TIMER_WAITCALLBANKER:
 		{
 			////如果时间到了不叫庄就不叫
@@ -1435,8 +1462,51 @@ void CTableFrameSink::KillAllTimer()
 {
 	m_pITableFrame->KillGameTimer(TIMER_WAITKAIPAI);
 	m_pITableFrame->KillGameTimer(TIMER_WAITSETSCORE);
-	m_pITableFrame->KillGameTimer(TIMER_WAITSTATR);
 	m_pITableFrame->KillGameTimer(TIMER_WAITCALLBANKER);
+	for (int wChairID=0;wChairID<GAME_PLAYER;++wChairID)
+	{
+		m_pITableFrame->KillGameTimer(TIMER_WAITSTATR+wChairID);
+	}
 }
+
+//用户断线
+bool __cdecl CTableFrameSink::OnActionUserOffLine(WORD wChairID, 
+												  IServerUserItem * pIServerUserItem) 
+{
+	return true;
+}
+//用户重入
+bool __cdecl CTableFrameSink::OnActionUserReConnect(WORD wChairID,
+													IServerUserItem * pIServerUserItem)
+{
+	return true;
+}
+
+//用户坐下
+bool __cdecl CTableFrameSink::OnActionUserSitDown(WORD wChairID,
+												  IServerUserItem * pIServerUserItem,
+												  bool bLookonUser)
+{
+	m_pITableFrame->SetGameTimer(wChairID+TIMER_WAITSTATR,TIMER_WAITSTATR_Continued,TIMES_INFINITY,NULL);
+	return true;
+}
+//用户起来
+bool __cdecl CTableFrameSink::OnActionUserStandUp(WORD wChairID, 
+												  IServerUserItem * pIServerUserItem,
+												  bool bLookonUser)
+{
+	m_pITableFrame->KillGameTimer(wChairID+TIMER_WAITSTATR);
+	return true;
+}
+//用户同意
+bool __cdecl CTableFrameSink::OnActionUserReady(WORD wChairID, 
+									   IServerUserItem * pIServerUserItem, 
+									   VOID * pData,
+									   WORD wDataSize)
+{
+	m_pITableFrame->KillGameTimer(wChairID+TIMER_WAITSTATR);
+	return true;
+}
+
 
 //////////////////////////////////////////////////////////////////////////
