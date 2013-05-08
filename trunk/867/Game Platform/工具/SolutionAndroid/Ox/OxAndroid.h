@@ -9,7 +9,7 @@ namespace O2
 #define	LOGIC_MASK_VALUE			0x0F								//数值掩码
 
 #define MAX_COUNT					5
-#define MIN_CHAIR_COUNT				2
+#define MIN_CHAIR_COUNT				1
 #define MAX_WAIT_TIME				60
 
 	//扑克类型
