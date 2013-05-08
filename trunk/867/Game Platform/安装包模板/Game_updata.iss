@@ -3,11 +3,12 @@ AppName=541游戏中心大厅更新包
 AppVerName=541游戏中心
 DefaultDirName={code:GetInstallDir}
 DefaultGroupName=541游戏中心
-OutputBaseFilename=541游戏中心大厅_Updata
+OutputBaseFilename=541Update
 WizardImageFile=embedded\WizardImage.bmp
 WizardSmallImageFile=embedded\WizardSmallImage.bmp
 UsePreviousAppDir=no
-
+//不生成卸载exe
+Uninstallable=no 
 //---------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
 
@@ -19,29 +20,16 @@ Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
 [Files]
 ;拷贝单目录下的文件;Source: "Lobby\*"; DestDir: "{app}"; Flags: ignoreversion
 ;能拷贝目录下的子文件夹;;;;;;;;修改日期：2013.4.21
-Source: "Lobby\541Game.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Lobby\plugin_relation.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_framework.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_network.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_downLoad.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_skinResource.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_level.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_video.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_head.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_channel.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_common.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Lobby\plugin_share.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_property.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Lobby\plugin_ui.dll"; DestDir: "{app}"; Flags: ignoreversion recursesubdirsSource: "Game\Baccarat.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Game\PaiJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
-Source: "Game\XiaoJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs                
-;Source: "Lobby\DownLoad\*"; DestDir: "{app}\DownLoad\"; Flags: recursesubdirs;Source: "Lobby\Res\*.*"; DestDir: "{app}\Res\"; Flags: recursesubdirs
-Source: "sys\AVCtrl.dll"; DestDir: "{sys}"; Flags: regserver
-Source: "sys\Audio.acm"; DestDir: "{sys}";
-Source: "sys\Video.dll"; DestDir: "{sys}";
+Source: "Lobby\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs              
+
+;Source: "sys\AVCtrl.dll"; DestDir: "{sys}"; Flags: regserver
+;Source: "sys\Audio.acm"; DestDir: "{sys}";
+;Source: "sys\Video.dll"; DestDir: "{sys}";
 
 //写入安装包版本号
 [INI]
 Filename: "{app}\Version.ini"; Section: "PLAZA"; Flags: uninsdeletesection
-Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.2"
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.3"
 
 //---------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------

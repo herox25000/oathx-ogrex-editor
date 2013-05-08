@@ -686,13 +686,20 @@ void CGameClientDlg::UpdateButtonContron()
 		__int64 lLeaveScore=pMeInfo->lScore - m_GameClientView.Get_Me_DesktopJetton();	
 		BYTE cbJettonArea = 0;
 		__int64 uCurrntReamtionScore = pBankerInfo->lScore - m_GameClientView.GetMaxDesktopPutScore(cbJettonArea);
-		lLeaveScore=min(lLeaveScore, uCurrntReamtionScore/s_Multiple[cbJettonArea]);
+	
+		__int64 KexiaScore = 0;//uCurrntReamtionScore/ s_Multiple[cbJettonArea];
+		for (int i = 0; i < 8; i++)
+		{
+			__int64 Myvalue = uCurrntReamtionScore / s_Multiple[i];
+			if(KexiaScore < Myvalue)
+				KexiaScore = Myvalue;
+		}
+		lLeaveScore=min(lLeaveScore, KexiaScore);
 		//ÉèÖÃ¹â±ê
 		if (lCurrentJetton>lLeaveScore)
 		{
 			if (lLeaveScore>=5000000L) m_GameClientView.SetCurrentJetton(5000000L);
 			else if (lLeaveScore>=1000000L) m_GameClientView.SetCurrentJetton(1000000L);
-			else if (lLeaveScore>=500000L)  m_GameClientView.SetCurrentJetton(500000L);
 			else if (lLeaveScore>=100000L)  m_GameClientView.SetCurrentJetton(100000L);
 			else if (lLeaveScore>=10000L)   m_GameClientView.SetCurrentJetton(10000L);
 			else if (lLeaveScore>=1000L)    m_GameClientView.SetCurrentJetton(1000L);
