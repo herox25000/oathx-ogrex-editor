@@ -385,6 +385,9 @@ public:
 	virtual WORD __cdecl GetNowPlayerCount()=NULL;
 	//得到从游戏启动以来玩了多少局
 	virtual LONG __cdecl GetRoundCount()=NULL;
+	//踢掉玩家
+	virtual bool __cdecl GetOutUser(int lChairID)=NULL;
+
 	//用户接口
 public:
 	//枚举用户

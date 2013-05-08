@@ -93,7 +93,8 @@ public:
 	virtual WORD __cdecl GetNowPlayerCount();
 	//得到从游戏启动以来玩了多少局
 	virtual LONG __cdecl GetRoundCount(){return m_dwGameRound;}
-
+	//踢掉玩家
+	virtual bool __cdecl GetOutUser(int lChairID);
 	//用户接口
 public:
 	//枚举用户

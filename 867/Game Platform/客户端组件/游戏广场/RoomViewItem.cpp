@@ -2431,7 +2431,7 @@ bool __cdecl CRoomViewItem::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
 		{
 			if(m_nTryConnectCnt > 5)
 			{
-				ShowMessageBox(TEXT("结果5次尝试连接服务器依然失败，请退出房间！"),MB_ICONINFORMATION);
+				ShowMessageBox(TEXT("经过5次尝试依然失败,服务器可能已关闭,请稍等片刻后再进入！"),MB_ICONINFORMATION);
 				((CGameFrame*)AfxGetMainWnd())->CloseRoomViewItem(this);
 				return true;
 			}

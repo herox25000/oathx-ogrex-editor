@@ -200,7 +200,8 @@ bool __cdecl CTableFrame::PerformStandUpAction(IServerUserItem * pIServerUserIte
 		WORD wUserCount=0;
 		for (WORD i=0;i<m_wChairCount;i++)
 		{
-			if (m_pIUserItem[i]!=NULL) wUserCount++;
+			if (m_pIUserItem[i]!=NULL)
+				wUserCount++;
 		}
 
 		//设置密码
@@ -256,7 +257,8 @@ bool __cdecl CTableFrame::PerformStandUpAction(IServerUserItem * pIServerUserIte
 				m_pIGameServiceFrame->SendUserStatus(pIServerUserItem);
 
 				//起立处理
-				if (m_pITableUserAction!=NULL) m_pITableUserAction->OnActionUserStandUp(wChairID,pIServerUserItem,true);
+				if (m_pITableUserAction!=NULL)
+					m_pITableUserAction->OnActionUserStandUp(wChairID,pIServerUserItem,true);
 
 				return true;
 			}
@@ -2121,6 +2123,18 @@ WORD __cdecl CTableFrame::GetNowPlayerCount()
 		}
 	}
 	return wCount;
+}
+
+//踢掉玩家
+bool __cdecl CTableFrame::GetOutUser(int lChairID)
+{
+	IServerUserItem * pIServerUserItem=m_pIUserItem[lChairID];
+	if(pIServerUserItem != NULL)
+	{
+		SendGameMessage(pIServerUserItem,TEXT("因为长时间没准备,被踢出本桌！"),SMT_CLOSE_GAME|SMT_EJECT|SMT_INFO);
+		return PerformStandUpAction(pIServerUserItem);
+	}
+	return false;
 }
 
 //转账

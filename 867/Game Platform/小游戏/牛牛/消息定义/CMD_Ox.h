@@ -29,12 +29,12 @@
 #define GS_TK_SCORE					GS_PLAYING+1							//下注状态
 #define GS_TK_PLAYING				GS_PLAYING+2							//游戏进行
 
-//定时器ID(1-30之内)
-#define TIMER_WAITSTATR					10 //等待开始	
+//定时器ID(1-30之内)	
 #define TIMER_WAITCALLBANKER			11 //等待叫庄
 #define TIMER_WAITSETSCORE				12//等待下分
 #define TIMER_WAITKAIPAI				13//等待开牌
 
+#define TIMER_WAITSTATR					20 //等待开始
 //定时器时长（毫秒）
 #define TIMER_WAITSTATR_Continued				20*1000
 #define TIMER_WAITCALLBANKER_Continued			20*1000 
