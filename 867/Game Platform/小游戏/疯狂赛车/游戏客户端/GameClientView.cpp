@@ -97,7 +97,7 @@ BEGIN_MESSAGE_MAP(CGameClientView, CGameFrameView)
 	ON_BN_CLICKED(IDC_JETTON_BUTTON_1000, OnJettonButton1000)
 	ON_BN_CLICKED(IDC_JETTON_BUTTON_10000, OnJettonButton10000)
 	ON_BN_CLICKED(IDC_JETTON_BUTTON_100000, OnJettonButton100000)
-	ON_BN_CLICKED(IDC_JETTON_BUTTON_500000, OnJettonButton500000)
+	//ON_BN_CLICKED(IDC_JETTON_BUTTON_500000, OnJettonButton500000)
 	ON_BN_CLICKED(IDC_JETTON_BUTTON_1000000, OnJettonButton1000000)
 	ON_BN_CLICKED(IDC_JETTON_BUTTON_5000000, OnJettonButton5000000)
 	ON_BN_CLICKED(IDC_APPY_BANKER, OnApplyBanker)
@@ -1222,19 +1222,14 @@ BOOL CGameClientView::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
 				SetCursor(m_AllhCursor[3]);
 				return TRUE;
 			}
-		case 500000:
+		case 1000000:
 			{
 				SetCursor(m_AllhCursor[4]);
 				return TRUE;
 			}
-		case 1000000:
-			{
-				SetCursor(m_AllhCursor[5]);
-				return TRUE;
-			}
 		case 5000000:
 			{
-				SetCursor(m_AllhCursor[6]);
+				SetCursor(m_AllhCursor[5]);
 				return TRUE;
 			}
 		}

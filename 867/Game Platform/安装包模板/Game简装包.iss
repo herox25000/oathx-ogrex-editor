@@ -4,7 +4,7 @@ AppVerName=541游戏中心
 DefaultDirName={code:GetInstallDir}
 ;DefaultDirName={pf}\541
 DefaultGroupName=541游戏中心
-OutputBaseFilename=541游戏中心大厅简装包
+OutputBaseFilename=541Game
 WizardImageFile=embedded\WizardImage.bmp
 WizardSmallImageFile=embedded\WizardSmallImage.bmp
 UsePreviousAppDir=no
@@ -29,7 +29,7 @@ Source: "Lobby\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 //写入安装包版本号
 [INI]
 Filename: "{app}\Version.ini"; Section: "PLAZA"; Flags: uninsdeletesection
-Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.2"
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.3"
 
 //---------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------

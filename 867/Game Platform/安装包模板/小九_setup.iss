@@ -1,13 +1,17 @@
+//游戏ID
+#define GameID 102
 [Setup]
 AppName=541游戏中心-小九安装包
 AppVerName=541游戏中心-小九
 DefaultDirName={code:GetInstallDir}
-OutputBaseFilename=小九_Setup
+OutputBaseFilename=XiaoJiu
 WizardImageFile=embedded\WizardImage.bmp
 WizardSmallImageFile=embedded\WizardSmallImage.bmp
 UsePreviousAppDir=no
 Compression=zip/9
 SolidCompression=yes
+//不生成卸载exe
+Uninstallable=no 
 
 //---------------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------------
@@ -24,9 +28,9 @@ Source: "Game\XiaoJiu.exe"; DestDir: "{app}"; Flags: ignoreversion recursesubdir
 
 //写入安装包版本号
 [INI]
-Filename: "{app}\Version.ini"; Section: "102"; Flags: uninsdeletesection
-Filename: "{app}\Version.ini"; Section: "102"; Key: "GameName"; String: "小九"
-Filename: "{app}\Version.ini"; Section: "102"; Key: "Version"; String: "1.1"
+Filename: "{app}\Version.ini"; Section: {#GameID}; Flags: uninsdeletesection
+Filename: "{app}\Version.ini"; Section: {#GameID}; Key: "GameName"; String: "小九"
+Filename: "{app}\Version.ini"; Section: {#GameID}; Key: "Version"; String: "1.3"
 
 [Code]
 function InitializeSetup(): Boolean;
@@ -53,7 +57,7 @@ begin
     begin
       hWnd := FindWindowByClassName('MGLGame541Plaza');
       begin
-        PostMessage(hWnd, 1124, 303, 0);
+        PostMessage(hWnd, 1124,{#GameID}, 0);
       end
     end
 end;

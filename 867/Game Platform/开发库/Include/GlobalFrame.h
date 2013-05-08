@@ -296,7 +296,8 @@ struct CMD_GF_ResidualProperty
 #define SUB_TOOLBOX_TMODIFYLOGINPASSWORD	5				//修改登录密码
 #define SUB_TOOLBOX_TMODIFYBANKPASSWORD		6				//修改银行密码
 #define SUB_TOOLBOX_MESSAGE					7				//消息
-
+#define SUB_TOOLBOX_TMODIFYUNDERWRITE		8				//修改个性签名
+#define SUB_TOOLBOX_OPERATERETURN			9				//操作返回，适用于任何消息
 
 //查询用户名
 struct CMD_TOOLBOX_QueryUserName
@@ -365,6 +366,22 @@ struct CMD_TOOLBOX_ModifyPassword
 	TCHAR								szNEWPassword[PASS_LEN];			//新密码
 };
 
+//修改签名
+struct CMD_TOOLBOX_ModifyUnderWrite
+{
+	DWORD							dwUserID;							//用户 I D
+	TCHAR							szUnderWrite[UNDER_WRITE_LEN];		//个性签名
+};
+
+//操作返回
+struct CMD_TOOLBOX_OperateReturn
+{
+	LONG							lResultCode;						//返回状态，1、成功，2、失败
+	TCHAR							szDescribeString[128];				//描述消息
+};
+
+
+
 struct CMD_GF_Transfer_Log_Out
 {
 	DWORD								dwUserID;						//用户 I D
@@ -390,7 +407,6 @@ struct CMD_GF_Modify_Nickname
 	TCHAR								szNickname[NAME_LEN];			//新昵称
 	TCHAR								szErrorDescribe[256];			//错误说明
 };
-
 
 //////////////////////////////////////////////////////////////////////////
 #endif
