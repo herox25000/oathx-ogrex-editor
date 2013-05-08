@@ -148,8 +148,6 @@ namespace O2
 			}
 		}
 
-
-
 		return 0;
 	}
 
@@ -253,7 +251,7 @@ namespace O2
 		Info.bAllowLookon	= true;
 
 		//发送消息
-		m_ClientSocket->SendData(MDM_GF_FRAME,SUB_GF_INFO, &Info, sizeof(Info));
+		m_ClientSocket->SendData(MDM_GF_FRAME, SUB_GF_INFO, &Info, sizeof(Info));
 
 		return true;
 	}
@@ -631,7 +629,8 @@ namespace O2
 			CMD_S_SendCard * pSendCard=(CMD_S_SendCard *)pBuffer;
 			CopyMemory(m_byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
 
-			SetTimer(OXT_OPEN_CARD, AndroidTimer::rdit(6, 10));
+			int nCount = m_pUserManager->GetTableChairCount(pUser->wTableID);
+			SetTimer(OXT_OPEN_CARD, nCount * AndroidTimer::rdit(2, 6));
 		}
 
 		return true;
@@ -685,6 +684,7 @@ namespace O2
 				szMessage.Format("[%d][%s]已赢取了额定金币，立刻下线", GetUserID(), pUser->szName);
 				LogEvent(szMessage, TraceLevel_Debug);
 				SetStatus(US_OFFLINE);
+				return true;
 			}
 
 			if (pUser->nWinScore <= (-pConfig->nMaxWinScore))
@@ -693,6 +693,7 @@ namespace O2
 				szMessage.Format("[%d][%s]已输掉额定金币，立刻下线", GetUserID(), pUser->szName);
 				LogEvent(szMessage, TraceLevel_Debug);
 				SetStatus(US_OFFLINE);
+				return true;
 			}
 	
 			SetTimer(OXT_START_GAME, GetWorkTime());

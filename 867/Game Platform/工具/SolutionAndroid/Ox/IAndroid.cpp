@@ -421,8 +421,24 @@ namespace O2
 	*/
 	bool	__cdecl	IAndroid::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutReason)
 	{
+
+/*#define SHUT_REASON_INSIDE			0									
+#define SHUT_REASON_NORMAL			1									
+#define SHUT_REASON_REMOTE			2									
+#define SHUT_REASON_TIME_OUT		3									
+#define SHUT_REASON_EXCEPTION		4	*/								
+
+		static const char* chDescribe[] = 
+		{
+			"内部原因",
+			"正常关闭",
+			"远程关闭",
+			"网络超时",
+			"异常关闭"
+		};
+
 		CString szMessage;
-		szMessage.Format("[%d]网络连接已断开", m_dwUserID);
+		szMessage.Format("[%d]网络连接已断开(%s)", m_dwUserID, chDescribe[cbShutReason]);
 		LogEvent(szMessage, TraceLevel_Warning);
 		
 		// 设置机器人为无效的
