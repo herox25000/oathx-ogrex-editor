@@ -10,7 +10,7 @@ namespace O2
 
 #define MAX_COUNT					5
 #define MIN_CHAIR_COUNT				1
-#define MAX_WAIT_TIME				60
+#define MAX_WAIT_TIME				30
 
 	//扑克类型
 #define OX_VALUE0					0									//混合牌型
