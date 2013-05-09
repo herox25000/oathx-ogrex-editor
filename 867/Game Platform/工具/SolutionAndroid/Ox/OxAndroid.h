@@ -159,6 +159,8 @@ namespace O2
 		BOOL					m_bOffline;
 		SDesk*					m_pDesk;
 		float					m_fWaitTime;
+		int						m_nPlayCount;
+		int						m_nMaxPlayCount;
 	};
 
 	class OxFactory : public IAndroidFactroy
