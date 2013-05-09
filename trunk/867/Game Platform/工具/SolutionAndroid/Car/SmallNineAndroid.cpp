@@ -459,8 +459,8 @@ namespace O2
 
 		m_fChipTime -= fElapsed;
 
-		//float nRnd = AndroidTimer::rdft(0, 100);
-		//if (nRnd < nPlaceRand)
+		float nRnd = AndroidTimer::rdft(0, 100);
+		if (nRnd < nPlaceRand)
 		{
 			m_fElapsedTime		+= fElapsed;
 
