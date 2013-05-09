@@ -459,7 +459,7 @@ BOOL CUserInfoView::OnEraseBkgnd(CDC * pDC)
 		pBufferDC->DrawText(szBuffer,lstrlen(szBuffer),&rcID,DT_VCENTER|DT_WORD_ELLIPSIS|DT_SINGLELINE);
 
 		//变量定义
-		TCHAR pszUnderWrite[UNDER_WRITE_LEN]=TEXT("");
+		LPCTSTR pszUnderWrite=NULL;
 		COLORREF crUnderWrite=RGB(0,0,0);
 		//签名位置
 		CRect rcUnderWrite(153,68,rcClient.Width()-20,80);
@@ -467,23 +467,19 @@ BOOL CUserInfoView::OnEraseBkgnd(CDC * pDC)
 		if ((m_EditUnderWrite.IsModifyStatus()==false)&&(GlobalUserInfo.szUnderWrite[0]!=0))
 		{
 			crUnderWrite=RGB(0,0,0);
-			_sntprintf(pszUnderWrite,CountArray(pszUnderWrite),TEXT("%s"),GlobalUserInfo.szUnderWrite);
+			pszUnderWrite=GlobalUserInfo.szUnderWrite;
 		}
 		//修改状态
 		if ((m_EditUnderWrite.IsModifyStatus()==true)&&(m_EditUnderWrite.m_szUnderWrite[0]!=0))
 		{
 			crUnderWrite=RGB(100,100,100);
-			//pszUnderWrite=m_EditUnderWrite.m_szUnderWrite;
-			_sntprintf(pszUnderWrite,CountArray(pszUnderWrite),TEXT("%s"),m_EditUnderWrite.m_szUnderWrite);
-
+			pszUnderWrite=m_EditUnderWrite.m_szUnderWrite;
 		}
 		//提示状态
 		if (pszUnderWrite==NULL)
 		{
 			crUnderWrite=RGB(255,150,150);
-			//pszUnderWrite=TEXT("编辑个性签名");
-			_sntprintf(pszUnderWrite,CountArray(pszUnderWrite),TEXT("编辑个性签名"));
-
+			pszUnderWrite=TEXT("编辑个性签名");
 		}
 		//输出签名
 		pBufferDC->SetTextColor(crUnderWrite);
