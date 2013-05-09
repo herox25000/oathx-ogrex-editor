@@ -262,6 +262,9 @@ namespace O2
 		m_fWaitTime			= MAX_WAIT_TIME;
 		m_nTurnMaxScore		= 0;
 		m_wCurBanker		= INVALID_CHAIR;
+		m_nPlayCount		= 0;
+		m_nMaxPlayCount		= AndroidTimer::rdit(5, 20);
+
 		ZeroMemory(m_byCard, sizeof(m_byCard));
 
 		return IAndroid::OnReset();
@@ -695,8 +698,18 @@ namespace O2
 				SetStatus(US_OFFLINE);
 				return true;
 			}
-	
-			SetTimer(OXT_START_GAME, GetWorkTime());
+
+			m_nPlayCount ++;
+			if (m_nPlayCount >= m_nMaxPlayCount)
+			{
+				m_ClientSocket->SendData(MDM_GR_USER, 
+					SUB_GR_USER_STANDUP_REQ);
+				
+			}
+			else
+			{
+				SetTimer(OXT_START_GAME, GetWorkTime());
+			}
 		}
 
 		//清理变量
