@@ -633,7 +633,7 @@ namespace O2
 			CopyMemory(m_byCard, pSendCard->cbCardData[pUser->wChairID], MAX_COUNT);
 
 			int nCount = m_pUserManager->GetTableChairCount(pUser->wTableID);
-			SetTimer(OXT_OPEN_CARD, nCount * AndroidTimer::rdit(2, 6));
+			SetTimer(OXT_OPEN_CARD, nCount * AndroidTimer::rdft(1, 4));
 		}
 
 		return true;
