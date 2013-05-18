@@ -136,22 +136,28 @@ struct CMD_GP_Version
 #define SUB_GP_UPLOAD_FACE_RESULT		102								//上传结果
 #define SUB_GP_DELETE_FACE_RESULT		103								//删除结果
 #define SUB_GP_CUSTOM_FACE_DELETE		104								//删除头像
-#define SUB_GP_MODIFY_INDIVIDUAL		105								//个人资料
+#define SUB_GP_MODIFY_INDIVIDUAL		105								//修改个人资料
 #define SUB_GP_MODIFY_INDIVIDUAL_RESULT	106								//修改结果
 #define SUB_GP_LOCKCOMPUTER				107								//锁定本机
 #define SUB_GP_LOCKCOMPUTER_RESULT		108								//锁定本机
+#define SUB_GP_TMODIFYUNDERWRITE		109								//修改个性签名
+#define SUB_GP_TMODIFYUNDERWRITE_RESULT			110						//修改签名返回
+#define SUB_GP_MODIFYPASSWORD			111								//修改密码	
+#define SUB_GP_MODIFYPASSWORD_RESULT	112								//修改密码返回
+#define SUB_GP_QUERYUSERINDIVIDUAL		113								//查询用户信息
 
-
-//个人资料
-struct CMD_GP_ModifyIndividual
+//修改用户资料时候携带的数据
+enum DTP
 {
-	DWORD							dwUserID;							//玩家 ID
-	TCHAR							szNickname[NAME_LEN];				//玩家昵称
-	int								nGender;							//玩家性别
-	int								nAge;								//玩家年龄
-	TCHAR							szAddress[64];						//玩家地址
-	TCHAR							szUnderWrite[32];					//个性签名
-	TCHAR							szPassword[33];						//玩家密码
+	DTP_GP_UI_ACCOUNTS		=1,		//用户名
+	DTP_GP_UI_USER_NOTE		=2,		//用户说明
+	DTP_GP_UI_UNDER_WRITE	=3,		//个性签名
+	DTP_GP_UI_QQ			=4,		//Q Q 号码
+	DTP_GP_UI_EMAIL			=5,		//电子邮件
+	DTP_GP_UI_SFZ			=6,		//身份证
+	DTP_GP_UI_MOBILE_PHONE	=7,		//移动电话
+	DTP_GP_UI_COMPELLATION	=8,		//真实名字
+	DTP_GP_UI_DWELLING_PLACE=9,		//联系地址
 };
 
 //定义头像
@@ -202,13 +208,6 @@ struct CMD_GP_CustomFaceDelete
 	DWORD							dwFaceVer;							//头像版本
 };
 
-//修改结果
-struct CMD_GP_ModifyIndividualResult
-{
-	TCHAR							szDescribeMsg[128];					//描述信息
-	bool							bOperateSuccess;					//成功标识
-};
-
 //锁定本机
 struct CMD_GP_LockComputer
 {
@@ -221,6 +220,58 @@ struct CMD_GP_LockComputerResult
 {
 	BYTE								cbMoorMachine;					//账号是否锁定							
 	TCHAR								szRetDescribe[128];				//返回消息
+};
+
+//修改签名
+struct CMD_GP_ModifyUnderWrite
+{
+	DWORD							dwUserID;							//用户 I D
+	TCHAR							szUnderWrite[UNDER_WRITE_LEN];		//个性签名
+};
+
+//修改签名返回
+struct CMD_GP_ModifyUnderWrite_Ret
+{
+	LONG							lResultCode;						//返回状态，0、成功，!0、失败
+	TCHAR							szDescribeString[128];				//描述消息
+};
+
+//修改密码
+struct CMD_GP_ModifyPassword
+{
+	LONG							lUserID;
+	LONG							lType;								//修改的类型，1、登陆密码，2、银行密码
+	TCHAR							szOLDPassword[PASS_LEN];			//旧密码
+	TCHAR							szNEWPassword[PASS_LEN];			//新密码
+};
+
+//修改密码返回
+struct CMD_GP_ModifyPassword_Ret
+{
+	LONG							lResultCode;						//返回状态，0、成功，!0、失败
+	TCHAR							szDescribeString[128];				//描述消息
+};
+
+//查询信息
+struct CMD_GP_QueryIndividual
+{
+	DWORD							dwUserID;							//用户 I D
+};
+
+//修改个人资料
+struct CMD_GP_ModifyIndividual
+{
+	DWORD							dwUserID;						//用户 I D
+	BYTE							cbGender;						//用户性别
+	int								cbFaceID;						//头像ID
+	TCHAR							szPassword[PASS_LEN];			//用户密码
+};
+
+//修改个人资料返回结果
+struct CMD_GP_ModifyIndividual_Ret
+{
+	LONG							lResultCode;						//返回状态，0、成功，!0、失败
+	TCHAR							szDescribeString[128];				//描述消息
 };
 
 //////////////////////////////////////////////////////////////////////////

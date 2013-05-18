@@ -37,16 +37,11 @@ struct tagDataBaseSinkParameter
 #define DBR_GR_BANK_GET_GOLD			13								//提取金币
 #define DBR_GR_BANK_STORAGE_GOLD		14								//存储金币
 #define DBR_GR_CLEARSCORELOCKER			15								//清理被房间锁定的用户
-#define DBR_GR_USER_ROUND_SCORE			16								//每局的积分
 #define DBR_GR_TRANSFER_MONEY			17								//转账
-#define DBR_GR_QUERY_TRANSFER_LOG		18								//转账记录
-#define DBR_GR_MODIFY_LOGIN_PASSWOR		19								//修改登录密码
-#define DBR_GR_MODIFY_BANK_PASSWORD		20								//修改银行密码
-#define DBR_GR_MODIFY_NICKNAME   		21								//修改昵称
 #define DBR_GR_BANK_TASK				22								//存取钱操作
 #define DBR_GR_QUERYUSERNAME			23								
 #define DBR_GR_UPDATEONLINECOUNT		24								//统计房间在线人数
-#define DBR_GR_MODIFY_UNDERWRITE        25								//修改签名
+#define DBR_GR_FLASHUSERINFO			26								//刷新玩家信息
 
 
 //数据库输出标识
@@ -59,14 +54,6 @@ struct tagDataBaseSinkParameter
 //#define DBR_GR_EXCHANGE_RESULT			108								//兑换结果
 #define DBR_GR_LOAD_PROP_FINISHI		109								//完成加载
 #define DBR_GR_FLOWER_ATTRIBUTE			110								//完成加载
-#define DBR_GR_TRANSFER_MONEY_OUT		111								//转账返回
-#define DBR_GR_QUERY_TRANSFER_LOG_OUT	112								//查询转账记录完成
-#define DBR_GR_QUERY_TRANSFER_ITEM		113								//查询转账记录返回
-#define DBR_GR_MODIFY_LOGIN_PASSWORD_OUT	114							//修改登录密码完成
-#define DBR_GR_MODIFY_BANK_PASSWORD_OUT		115							//修改银行密码
-#define DBR_GR_MODIFY_NICKNAME_OUT   		116							//修改昵称
-#define DBR_GR_BANK_TASK_OUT				117							//存取钱操作
-#define DBR_GR_QUERYUSERNAME_OUT			118
 
 
 
@@ -337,8 +324,9 @@ struct DBR_GR_User_Round_Score
 //转账
 struct DBR_GR_TransferMoney
 {
-	DWORD								dwUserID;					//转出用户 I D
-	DWORD								dwGameID_IN;					//转入的用户 I D
+	DWORD								dwUserID;						//转出用户ID
+	DWORD								dwGameID_IN;					//转入的游戏ID
+	LONG								lUserID_IN;						//转入的用户ID
 	DWORD								dwClientIP;						//转出的用户IP
 	TCHAR								szAccount_Out[NAME_LEN];		//自己的账户名
 	TCHAR								szAccount_In[NAME_LEN];			//对方的账户名
@@ -355,16 +343,6 @@ struct DBR_GR_Query_Transfer_Log
 	DWORD								dwUserID;						//用户 I D
 	WORD								wTableID;						//桌子ID
 	LONG								lErrorCode;						//返回代码
-};
-
-//修改密码
-struct DBR_GR_ModifyPassword
-{
-	DWORD								dwUserID;						//用户 I D
-	LONG								lErrorCode;						//返回代码
-	TCHAR								szOLDPassword[PASS_LEN];		//旧密码
-	TCHAR								szNEWPassword[PASS_LEN];		//新密码
-	TCHAR								szErrorDescribe[256];			//错误提示
 };
 
 //修改昵称
@@ -408,13 +386,39 @@ struct DBR_GR_UpdateOnLineCount
 	UINT			lCount;		//人数
 };
 
-//修改签名
-struct DBR_GR_ModifyUnderWrite
+//刷新用户信息
+struct DBR_GR_FlashUserInfo
 {
+	LONG     lUserID;
+};
+
+//刷新用户信息返回
+struct DBR_GR_FlashUserInfo_Ret
+{
+	//基本信息
 	DWORD								dwUserID;						//用户 I D
-	TCHAR								szUnderWrite[UNDER_WRITE_LEN];	//签名
-	LONG								lErrorCode;						//返回代码
-	TCHAR								szErrorDescribe[256];			//错误提示
+	DWORD								dwGameID;						//用户 I D
+	DWORD								dwGroupID;						//社团索引
+	TCHAR								szAccounts[NAME_LEN];			//登录帐号
+	TCHAR								szUnderWrite[UNDER_WRITE_LEN];	//个性签名
+	WORD								wFaceID;						//头像索引
+	DWORD								dwCustomFaceVer;				//自定头像
+	BYTE								cbGender;						//用户性别
+	TCHAR								szGroupName[GROUP_LEN];			//社团名字
+	DWORD								dwUserRight;					//用户等级
+	DWORD								dwMasterRight;					//管理权限
+	BYTE								cbMemberOrder;					//会员等级
+	BYTE								cbMasterOrder;					//管理等级
+	LONG								lLoveliness;					//用户魅力
+	LONG								lExperience;					//用户经验
+	//积分信息
+	__int64								lScore;							//用户分数
+	__int64								lInsureScore;					//存储金币
+	//	__int64								lGameGold;						//游戏金币
+	LONG								lWinCount;						//胜利盘数
+	LONG								lLostCount;						//失败盘数
+	LONG								lDrawCount;						//和局盘数
+	LONG								lFleeCount;						//断线数目
 };
 
 //////////////////////////////////////////////////////////////////////////
@@ -511,32 +515,18 @@ private:
 	bool OnLoadProperty(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//魅力兑换
 	bool OnExchangeCharm(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//提取金币
-	bool OnBankDrawoutGold(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//存储金币
-	bool OnBankStorageGold(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//清理房间锁定的用户
 	bool OnClearScoreLocker(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//每局记录存储
-	bool OnRequestRoundScore(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//转账
 	bool OnRequestTransferMoney(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//查询转账记录
-	bool CDataBaseSink::OnRequestQueryTransferLog(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//修改登录密码
-	bool OnRequestModifyLoginPassword(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//修改银行密码
-	bool OnRequestModifyBankPassword(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//修改昵称
-	bool OnRequestModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存取钱操作
 	bool OnRequestBankTask(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//查询用户名
 	bool OnRequsetQueryUserName(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//更新房间人数
 	bool OnUpdateOnLineCount(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//修改签名
-	bool OnRequestModifyUnderWrite(DWORD dwContextID, VOID * pData, WORD wDataSize);
+	//处理刷新用户信息
+	bool OnRequsetFlashUserInfo(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存储过程
 protected:
 	//I D 存储过程

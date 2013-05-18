@@ -37,16 +37,20 @@
 #define IDB_BT_LOGON_LINK               324
 #define IDD_DLG_ENQUIRE                 324
 #define IDB_BT_REGISTER_CLOSE           325
+#define IDD_DIALOG1                     325
+#define IDD_DLG_SERVICE                 325
 #define IDB_BT_REGISTER                 326
 #define IDB_BT_ENQUIRE_CANCEL           327
 #define IDB_BK_ENQUIRE_BUTTON           328
-#define IDB_BT_Register					329
-#define IDB_BT_Delete					330
-#define IDB_BT_NetOption				331
-#define IDB_BT_Close					332
-#define IDB_BT_REGISTER_ENTER			333
-#define IDB_BT_REGISTER_QUIT			334
-
+#define IDB_BT_Register                 329
+#define IDB_BT_Delete                   330
+#define IDB_BT_NetOption                331
+#define IDB_BT_Close                    332
+#define IDB_BT_REGISTER_ENTER           333
+#define IDB_BT_REGISTER_QUIT            334
+#define IDD_DLG_SERVICE_BROWSER         350
+#define IDD_DLG_SERVICE_PASSWORD        351
+#define IDD_DLG_SERVICE_INDIVIDUAL      352
 #define IDC_CHAT_MESSAGE                1002
 #define IDC_TABLE_PASSWORD              1003
 #define IDC_SERVER                      1004
@@ -179,6 +183,27 @@
 #define IDC_CLOSE_PLAZA                 1120
 #define IDC_BT_                         1120
 #define IDC_BT_QUIT                     1120
+#define IDC_SELECT_FACE                 1121
+#define IDC_GENDER_MANKIND              1123
+#define IDC_GENDER_FEMALE               1124
+#define IDC_UNDER_WRITE                 1125
+#define IDC_COMPELLATION                1126
+#define IDC_SFZ                         1127
+#define IDC_MOBILE_PHONE                1128
+#define IDC_QQ                          1129
+#define IDC_EMAIL                       1130
+#define IDC_DWELLING_PLACE              1131
+#define IDC_USER_NOTE                   1132
+#define IDC_NOTE                        1133
+#define IDC_LOGON_PASSWORD1             1135
+#define IDC_GAMEID                      1135
+#define IDC_LOGON_PASSWORD2             1136
+#define IDC_LOGON_PASSWORD3             1137
+#define IDC_MODIFY_LOGON_PASSWORD       1138
+#define IDC_INSURE_PASSWORD1            1139
+#define IDC_INSURE_PASSWORD2            1140
+#define IDC_INSURE_PASSWORD3            1141
+#define IDC_MODIFY_INSURE_PASSWORD      1142
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32776
@@ -188,9 +213,9 @@
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NO_MFC                     1
-#define _APS_NEXT_RESOURCE_VALUE        325
+#define _APS_NEXT_RESOURCE_VALUE        326
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1121
+#define _APS_NEXT_CONTROL_VALUE         1136
 #define _APS_NEXT_SYMED_VALUE           105
 #endif
 #endif

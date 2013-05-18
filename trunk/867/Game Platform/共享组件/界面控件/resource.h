@@ -3,6 +3,8 @@
 // Used by SkinControls.rc
 //
 #define IDC_HAND_CUR                    1010
+#define IDD_DIALOG1                     1024
+#define IDD_PASSWORD_KEYBOARD           1024
 #define IDC_SKIN_CURSOR                 2000
 #define IDI_SKIN_ICON                   2002
 #define IDB_ENCIRCLE_TR                 2003
@@ -30,12 +32,18 @@
 #define IDR_PNG2                        2034
 #define IDB_BITMAP2                     2039
 #define IDB_SKIN_WND_BUTTON             2039
+#define IDB_BT_KEYBOARD                 2040
+#define IDB_BT_KEYBOARD_CLOSE           2041
+#define IDB_KEYBOARD_ITEM1              2042
+#define IDB_KEYBOARD_ITEM2              2043
+#define IDB_KEYBOARD_ITEM3              2044
+#define IDB_PASSWORD_KEYBORAD_BK        2045
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        1024
+#define _APS_NEXT_RESOURCE_VALUE        1025
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           1000

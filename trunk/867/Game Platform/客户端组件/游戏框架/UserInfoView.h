@@ -22,7 +22,7 @@ private:
 protected:
 	CSkinImage						m_ImageMaleFace;					//头像图片
 	CSkinImage						m_ImageFemaleFace;					//头像图片
-
+	CPngImage						m_ImageFaceFrame;
 	//控件变量
 protected:
 	CSkinButton						m_btExchange;						//兑换按钮

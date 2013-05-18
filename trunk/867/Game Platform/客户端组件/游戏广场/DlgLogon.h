@@ -110,8 +110,8 @@ protected:
 	TCHAR								m_szAccounts[NAME_LEN];			//游戏帐号
 	TCHAR								m_szPassword[PASS_LEN];			//游戏密码
 	TCHAR								m_szBankPassword[PASS_LEN];		//银行密码
-	TCHAR								m_szSFZ[PASS_LEN];		//身份证
-	TCHAR								m_szPhone[PASS_LEN];		//电话
+	TCHAR								m_szSFZ[IDCARD_LEN];		//身份证
+	TCHAR								m_szPhone[MOBILE_PHONE_LEN];		//电话
 
 	//位置变量
 protected:

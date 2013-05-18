@@ -316,6 +316,8 @@ protected:
 	bool OnSocketSubWisper(CMD_Command Command, void * pBuffer, WORD wDataSize);
 	//邀请玩家
 	bool OnSocketSubUserInvite(CMD_Command Command, void * pBuffer, WORD wDataSize);
+	//刷新用户信息
+	bool OnSocketSubFlashUserInfo(CMD_Command Command, void * pBuffer, WORD wDataSize);
 
 	//IPC 事件处理
 protected:

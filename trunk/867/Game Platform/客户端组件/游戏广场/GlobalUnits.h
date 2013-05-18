@@ -25,9 +25,24 @@ struct tagGlobalUserData
 	TCHAR								szPassWord[PASS_LEN];			//登录密码
 	TCHAR								szGroupName[GROUP_LEN];			//社团信息
 	TCHAR								szUnderWrite[UNDER_WRITE_LEN];	//个性签名
-
-	//扩展信息
 	DWORD								dwCustomFaceVer;				//头像版本
+};
+
+
+//扩展资料
+struct tagIndividualUserData
+{
+	//用户信息
+	DWORD							dwUserID;							//用户 I D
+	TCHAR							szUserNote[USER_NOTE_LEN];			//用户说明
+	TCHAR							szCompellation[COMPELLATION_LEN];	//真实名字
+	TCHAR							szSFZ[IDCARD_LEN];					//身份证
+	//电话号码
+	TCHAR							szMobilePhone[MOBILE_PHONE_LEN];	//移动电话
+	//联系资料
+	TCHAR							szQQ[QQ_LEN];						//Q Q 号码
+	TCHAR							szEMail[EMAIL_LEN];					//电子邮件
+	TCHAR							szDwellingPlace[DWELLING_PLACE_LEN];//联系地址
 };
 
 //全局信息类
@@ -37,7 +52,7 @@ class CGlobalUnits
 protected:
 	TCHAR								m_szStationPage[32];			//站点页面
 	tagGlobalUserData					m_GloblaUserData;				//用户信息
-
+	tagIndividualUserData				m_IndividualUserData;			//扩展资料
 	//系统变量
 protected:
 	DWORD								m_dwPlazaVersion;				//大厅版本
@@ -47,6 +62,9 @@ protected:
 	//组件变量
 public:
 	CServerListManager					m_ServerListManager;			//列表管理
+public:
+	LPCTSTR								m_LogonServerIP;				//登陆服务器地址
+	WORD								m_LogonServerPort;				//登陆服务器端口
 
 	//资源变量
 public:
@@ -82,7 +100,8 @@ public:
 	void GetClientSerial(tagClientSerial & ClientSerial);
 	//注册热键
 	bool RegisterHotKey(HWND hWnd, UINT uKeyID, WORD wHotKey);
-
+	//记录登陆服务器端口和地址
+	void SetLogonServerInfo(LPCTSTR IP,WORD Port){m_LogonServerIP=IP;m_LogonServerPort=Port;}
 	//查询函数
 public:
 	//大厅版本
@@ -100,7 +119,10 @@ public:
 	LPCTSTR GetStationPage() { return m_szStationPage; }
 	//获取用户信息
 	tagGlobalUserData & GetGolbalUserData() { return m_GloblaUserData; }
-
+	//获得用户信息地址
+	tagGlobalUserData*  GetGolbalUserDataEx() { return &m_GloblaUserData; }
+	//扩展资料
+	tagIndividualUserData * GetIndividualUserData() { return &m_IndividualUserData; }
 	//组件函数
 public:
 	//头像接口

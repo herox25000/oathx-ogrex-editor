@@ -1,5 +1,7 @@
 #pragma once
 
+#define  UPDATE_TIMER  1
+
 class CFrameDlgBank : public CSkinPngDialog
 {
 public:
@@ -30,6 +32,8 @@ public:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	//销毁消息
+	//时间消息
+	VOID OnTimer(UINT_PTR nIDEvent);
 	afx_msg void OnClose();
 	afx_msg void OnCancel();
 	afx_msg void OnButtonOK();

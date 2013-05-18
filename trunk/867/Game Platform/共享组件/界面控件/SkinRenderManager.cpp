@@ -40,6 +40,9 @@ VOID CSkinRenderManager::RenderImage(CDC * pDC)
 	ASSERT((pDC!=NULL)&&(pDC->m_hDC!=NULL));
 	if ((pDC==NULL)||(pDC->m_hDC==NULL)) return;
 
+	//
+	return;
+
 	//‰÷»æ≈–∂œ
 	if ((m_SkinRenderInfo.wColorH==DEF_COLOR_H)&&(m_SkinRenderInfo.dRectifyS==DEF_COLOR_S)&&(m_SkinRenderInfo.dRectifyB==DEF_COLOR_B))
 	{
@@ -71,6 +74,8 @@ VOID CSkinRenderManager::RenderImage(CImage & ImageSource)
 	//◊ ‘¥–ß—È
 	ASSERT(ImageSource.IsNull()==false);
 	if (ImageSource.IsNull()==true) return;
+
+	return ;
 
 	//‰÷»æ≈–∂œ
 	if ((m_SkinRenderInfo.wColorH==DEF_COLOR_H)&&(m_SkinRenderInfo.dRectifyS==DEF_COLOR_S)&&(m_SkinRenderInfo.dRectifyB==DEF_COLOR_B))

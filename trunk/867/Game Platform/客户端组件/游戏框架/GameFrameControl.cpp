@@ -435,10 +435,18 @@ void CGameFrameControl::OnBnClickedOption()
 //游戏规则
 void CGameFrameControl::OnBnClickedRule()
 {
-	TCHAR szRuleUrl[128];
-	_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("www.game541.com/GameRule.asp?KindID=%ld"),m_UserListView.m_wKindID);
+	tagServerAttribute const *pServerAttribute = m_pIClientKernel->GetServerAttribute();
+	//连接规则
+	TCHAR szRuleUrl[256]=TEXT("");
+	int nTypeID = 0;
+	if (pServerAttribute->wTypeID == 1)
+		nTypeID = 74;
+	else if (pServerAttribute->wTypeID == 2)
+		nTypeID = 9;
+	else if (pServerAttribute->wTypeID == 3)
+		nTypeID = 8;
+	_snprintf(szRuleUrl,sizeof(szRuleUrl),TEXT("http://www.game541.com/downCenter.php?colm=7&cata=%d&content=%d"),nTypeID, pServerAttribute->wKindID);
 	ShellExecute(NULL,TEXT("open"),szRuleUrl,NULL,NULL,SW_SHOWDEFAULT);
-
 	return;
 }
 
@@ -670,8 +678,8 @@ void CGameFrameControl::RectifyControl(int nWidth, int nHeight)
 
 	//功能按钮
 	m_btSound.GetWindowRect(&rcButton);
-	int nBeginPos=5,nEndPos=nWidth-3;
-	int nButtonSpace=(nEndPos-nBeginPos-4*rcButton.Width())/4,nYPosButton=nComminutePos+5;
+	int nBeginPos=10,nEndPos=nWidth-10;
+	int nButtonSpace=(nEndPos-nBeginPos-rcButton.Width()*4)/3,nYPosButton=nComminutePos+5;
 	DeferWindowPos(hDwp,m_btSound,NULL,nBeginPos,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btLookOn,NULL,nBeginPos+nButtonSpace+rcButton.Width(),nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);
 	DeferWindowPos(hDwp,m_btGameRule,NULL,nBeginPos+nButtonSpace*2+rcButton.Width()*2,nYPosButton,rcButton.Width(),rcButton.Height(),uFlags);

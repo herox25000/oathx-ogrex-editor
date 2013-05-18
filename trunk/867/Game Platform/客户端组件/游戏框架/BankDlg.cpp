@@ -26,6 +26,7 @@ void CFrameDlgBank::DoDataExchange(CDataExchange* pDX)
 }
 
 BEGIN_MESSAGE_MAP(CFrameDlgBank, CSkinPngDialog)
+	ON_WM_TIMER()
 	ON_BN_CLICKED(IDC_BT_ALL, OnButtonAll)
 	ON_BN_CLICKED(IDC_BT_OK, OnButtonOK)
 END_MESSAGE_MAP()
@@ -51,7 +52,17 @@ BOOL CFrameDlgBank::OnInitDialog()
 	__super::OnInitDialog();
 	SetWindowText(TEXT("银行"));
 	UpdateView();
+	SetTimer(UPDATE_TIMER,3*1000,NULL);
 	return TRUE; 
+}
+
+void CFrameDlgBank::OnTimer(UINT_PTR nIDEvent)
+{
+	__super::OnTimer(nIDEvent);
+	if (nIDEvent == UPDATE_TIMER)
+	{
+		UpdateView();
+	}
 }
 
 //销毁消息

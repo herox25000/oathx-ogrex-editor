@@ -61,7 +61,6 @@ CAttemperEngineSink::~CAttemperEngineSink()
 	SafeDeleteArray(m_pTableFrame);
 	SafeDeleteArray(m_pNormalParameter);
 	SafeDeleteArray(m_pAndroidParameter);
-
 	return;
 }
 
@@ -968,38 +967,21 @@ bool __cdecl CAttemperEngineSink::OnEventDataBase(WORD wRequestID, DWORD dwConte
 		{
 			return OnDBLadPropFinish(dwContextID,pData,wDataSize);
 		}
-	case DBR_GR_TRANSFER_MONEY_OUT:		//转账返回
+	case DBR_GR_TRANSFER_MONEY:		//转账返回
 		{
 			return OnDBTransferMoneyOver(dwContextID,pData,wDataSize);
 		}
-	case DBR_GR_QUERY_TRANSFER_LOG_OUT:		//转账记录查询完成
-		{
-			return OnDBTransferLogOver(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_QUERY_TRANSFER_ITEM:		//转账记录
-		{
-			return OnDBTransferLogItem(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_MODIFY_LOGIN_PASSWORD_OUT:		//修改登录密码完成
-	case DBR_GR_MODIFY_BANK_PASSWORD_OUT:		//修改银行密码完成
-		{
-			return OnDBModifyPassword(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_MODIFY_NICKNAME_OUT:		//修改昵称完成
-		{
-			return OnDBModifyNickname(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_BANK_TASK_OUT:		//存取钱操作
+	case DBR_GR_BANK_TASK:		//存取钱操作
 		{
 			return OnDBBankTaskOver(dwContextID,pData,wDataSize);
 		}
-	case DBR_GR_QUERYUSERNAME_OUT:
+	case DBR_GR_QUERYUSERNAME:
 		{
 			return OnDBQueryUserNameOver(dwContextID,pData,wDataSize);
 		}
-	case DBR_GR_MODIFY_UNDERWRITE: //修改签名
+	case DBR_GR_FLASHUSERINFO:  //刷新用户信息
 		{
-			return OnDBModifyUnderWriteOver(dwContextID,pData,wDataSize);
+			return OnDBFlashUserInfoOver(dwContextID,pData,wDataSize);
 		}
 	}
 
@@ -1468,10 +1450,6 @@ bool CAttemperEngineSink::OnEventTCPNetworkRead(CMD_Command Command, VOID * pDat
 		{
 			return OnSocketPresent(Command.wSubCmdID,pData,wDataSize,dwSocketID);
 		}
-	case MDM_GF_BANK:	//银行消息
-		{
-			return OnSocketBank(Command.wSubCmdID,pData,wDataSize,dwSocketID);
-		}
 	case MDM_TOOLBOX:  //工具箱操作
 		{
 			return OnSocketToolBox(Command.wSubCmdID,pData,wDataSize,dwSocketID);
@@ -1573,6 +1551,10 @@ bool __cdecl CAttemperEngineSink::OnEventTCPSocketRead(WORD wServiceID, CMD_Comm
 	case MDM_CS_SERVER_LIST:	//列表消息
 		{
 			return OnCenterMainServerList(Command,pData,wDataSize);
+		}
+	case MDM_CS_USER_MANAGER:
+		{
+			return OnCenterMainUserManager(Command,pData,wDataSize);
 		}
 	}
 	return true;
@@ -2477,35 +2459,6 @@ bool CAttemperEngineSink::OnSocketPresent(WORD wSubCmdID, VOID * pData, WORD wDa
 	return bReturnValue;
 }
 
-//银行消息处理
-bool CAttemperEngineSink::OnSocketBank(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID)
-{
-	//获取用户
-	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
-	if (pIServerUserItem==NULL) return false;
-	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
-	if(pServerUserData->wTableID!=INVALID_TABLE)
-		SendGameMessage(dwSocketID,TEXT("此功能暂时不能使用!"),SMT_INFO|SMT_EJECT);
-	else
-		SendRoomMessage(dwSocketID,TEXT("此功能暂时不能使用!"),SMT_INFO|SMT_EJECT);
-	return true;
-
-	////消息处理
-	//switch ( wSubCmdID )
-	//{
-	//case SUB_GF_BANK_GET:					//提取事件
-	//	{
-	//		return OnEventBankDrawoutGold(pData,wDataSize,dwSocketID);
-	//	}
-	//case SUB_GF_BANK_STORAGE:				//存储事件
-	//	{
-	//		return OnEventBankStorage(pData,wDataSize,dwSocketID);
-	//	}
-	//}
-
-	//return false;
-}
-
 // 工具箱操作
 bool CAttemperEngineSink::OnSocketToolBox(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID)
 {
@@ -2520,12 +2473,6 @@ bool CAttemperEngineSink::OnSocketToolBox(WORD wSubCmdID, VOID * pData, WORD wDa
 		return OnEventTransferMoney(pData,wDataSize,dwSocketID);
 	case SUB_TOOLBOX_TRANSFERMONEY_LOG:
 		return OnEventTransferMoneyLog(pData,wDataSize,dwSocketID);
-	case SUB_TOOLBOX_TMODIFYLOGINPASSWORD:
-		return OnEventModifyLoginPassword(pData,wDataSize,dwSocketID);
-	case  SUB_TOOLBOX_TMODIFYBANKPASSWORD:
-		return OnEventModifyBankPassword(pData,wDataSize,dwSocketID);
-	case SUB_TOOLBOX_TMODIFYUNDERWRITE:
-		return OnEventModifyUnderWrite(pData,wDataSize,dwSocketID);
 	}
 	return false;
 }
@@ -2807,6 +2754,60 @@ bool CAttemperEngineSink::OnCenterMainServerList(CMD_Command Command, VOID * pDa
 				m_AndroidUserManager.SendDataToClient(MDM_GR_SERVER_INFO,SUB_GR_ONLINE_COUNT_INFO,&m_OnLineCountInfo,m_wOnLineInfoSize);
 			}
 
+			return true;
+		}
+	}
+
+	return true;
+}
+
+//处理中心服务器的用户管理
+bool CAttemperEngineSink::OnCenterMainUserManager(CMD_Command Command, VOID * pData, WORD wDataSize)
+{
+	switch (Command.wSubCmdID)
+	{
+	case SUB_CS_FLASHUSERINFO:		//刷新用户信息
+		{
+			//效验参数
+			ASSERT(wDataSize==sizeof(CMD_CS_FLASHUSERINFO));
+			if (wDataSize!=sizeof(CMD_CS_FLASHUSERINFO)) 
+				return false;
+			CMD_CS_FLASHUSERINFO* info = (CMD_CS_FLASHUSERINFO*)pData;
+			//是否已经找到
+			bool bFind = false;
+			//查找用户是否存在（在线列表）
+			WORD wEnumIndex=0;
+			IServerUserItem * pIServerUserItemSend=NULL;
+			while (true)
+			{
+				if(bFind)
+					break;
+				pIServerUserItemSend=m_ServerUserManager.EnumOnLineUser(wEnumIndex++);
+				if (pIServerUserItemSend==NULL)
+					break;
+				if(pIServerUserItemSend->GetUserID() == info->lUserID)
+					bFind = true;
+			}
+
+			//查找用户是否存在(断线列表)
+			while (true)
+			{
+				if(bFind)
+					break;
+				pIServerUserItemSend=m_ServerUserManager.EnumOffLineUser(wEnumIndex++);
+				if (pIServerUserItemSend==NULL)
+					break;
+				if(pIServerUserItemSend->GetUserID() == info->lUserID)
+					bFind = true;
+			}
+
+			if(bFind)
+			{
+				//到数据库中取数据
+				DBR_GR_FlashUserInfo userinfo;
+				userinfo.lUserID = info->lUserID;
+				m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_FLASHUSERINFO,0,&userinfo, sizeof(userinfo));
+			}
 			return true;
 		}
 	}
@@ -3430,158 +3431,6 @@ bool CAttemperEngineSink::OnEventBugle(const void * pData, WORD wDataSize, IServ
 	return true;
 }
 
-//提取事件
-bool CAttemperEngineSink::OnEventBankDrawoutGold(const void * pData, WORD wDataSize, DWORD dwSocketID)
-{
-	//参数验证
-	ASSERT( sizeof(CMD_GF_BankGet) == wDataSize );
-	if ( sizeof(CMD_GF_BankGet) != wDataSize ) return false;
-
-	//获取玩家
-	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
-	ASSERT(pIServerUserItem!=NULL);
-	if(pIServerUserItem==NULL) return false;
-	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
-
-	//判断状态
-	if(m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
-	{
-		if(pServerUserData->cbUserStatus==US_PLAY )
-		{
-			if(pServerUserData->wTableID!=INVALID_TABLE)
-				SendGameMessage(dwSocketID,TEXT("请在游戏结束以后再进行此操作!"),SMT_INFO|SMT_EJECT);
-			else
-				SendRoomMessage(dwSocketID,TEXT("请在游戏结束以后再进行此操作!"),SMT_INFO|SMT_EJECT);
-			return true;
-		}
-	}
-	else
-	{
-		if(pServerUserData->wTableID!=INVALID_TABLE)
-			SendGameMessage(dwSocketID,TEXT("请在金币房间进行本操作！"),SMT_INFO|SMT_EJECT);
-		else
-			SendRoomMessage(dwSocketID,TEXT("请在金币房间进行本操作！"),SMT_INFO|SMT_EJECT);
-		return true;
-	}
-
-
-	//类型转换
-	CMD_GF_BankGet *pBankGet= (CMD_GF_BankGet*)pData;
-	__int64 lStorageGold = pServerUserData->UserScoreInfo.lInsureScore;
-
-	//效验数据
-	ASSERT(pBankGet->lGetValue>0 && pBankGet->lGetValue<=lStorageGold);
-	if(!(pBankGet->lGetValue>0 && pBankGet->lGetValue<=lStorageGold))return false;
-
-	//密码效验
-	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankGet->szPassword)!=0)
-	{
-		if(pServerUserData->wTableID!=INVALID_TABLE)
-			SendGameMessage(dwSocketID,TEXT("密码有误，请查证后再次尝试操作！"),SMT_EJECT);
-		else
-			SendRoomMessage(dwSocketID,TEXT("密码有误，请查证后再次尝试操作！"),SMT_EJECT);
-		return true;
-	}
-
-	//修改金币
-	ModifyGameGold(pIServerUserItem,pBankGet->lGetValue);
-
-	//修改帐款
-	ModifyBankStorageGold(pIServerUserItem,-pBankGet->lGetValue);
-	if(pServerUserData->wTableID!=INVALID_TABLE)
-		SendGameMessage(dwSocketID,TEXT("提取成功!"),SMT_EJECT);
-	else
-		SendRoomMessage(dwSocketID,TEXT("提取成功!"),SMT_EJECT);
-
-	//变量定义
-	DBR_GR_BankDrawoutGold BankDrawoutGold;
-	ZeroMemory(&BankDrawoutGold, sizeof(BankDrawoutGold));
-	BankDrawoutGold.DrawoutGoldCount = pBankGet->lGetValue;
-	BankDrawoutGold.dwUserID = pServerUserData->dwUserID;
-	BankDrawoutGold.dwClientIP = pIServerUserItem->GetClientIP();
-
-	//投递请求
-	m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_BANK_GET_GOLD,0,&BankDrawoutGold, sizeof(BankDrawoutGold));
-
-	return true;
-}
-
-//存储事件
-bool CAttemperEngineSink::OnEventBankStorage(const void * pData, WORD wDataSize, DWORD dwSocketID)
-{
-	//参数验证
-	ASSERT( sizeof(CMD_GF_BankStorage) == wDataSize );
-	if ( sizeof(CMD_GF_BankStorage) != wDataSize ) return false;
-
-	//获取玩家
-	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
-	ASSERT(pIServerUserItem!=NULL);
-	if(pIServerUserItem==NULL) return false;
-	tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
-
-	//判断状态
-	if(m_pGameServiceOption->wServerType==GAME_GENRE_GOLD)
-	{
-		//
-		if(pServerUserData->cbUserStatus==US_PLAY )
-		{
-			if(pServerUserData->wTableID!=INVALID_TABLE)
-				SendGameMessage(dwSocketID,TEXT("请在游戏结束以后再进行此操作!"),SMT_INFO|SMT_EJECT);
-			else
-				SendRoomMessage(dwSocketID,TEXT("请在游戏结束以后再进行此操作!"),SMT_INFO|SMT_EJECT);
-			return true;
-		}
-	}
-	else
-	{
-		if(pServerUserData->wTableID!=INVALID_TABLE)
-			SendGameMessage(dwSocketID,TEXT("请在金币房间进行本操作！"),SMT_INFO|SMT_EJECT);
-		else
-			SendRoomMessage(dwSocketID,TEXT("请在金币房间进行本操作！"),SMT_INFO|SMT_EJECT);
-		return true;
-	}
-
-	//类型转换
-	CMD_GF_BankStorage *pBankStorage= (CMD_GF_BankStorage*)pData;
-	__int64 lScore = pServerUserData->UserScoreInfo.lScore;
-
-	//效验数据
-	ASSERT(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lScore);
-	if(!(pBankStorage->lStorageValue>0 && pBankStorage->lStorageValue<=lScore))return false;
-
-	//密码效验
-	if (lstrcmp(pIServerUserItem->GetBankPassword(),pBankStorage->szPassword)!=0)
-	{
-		if(pServerUserData->wTableID!=INVALID_TABLE)
-			SendGameMessage(dwSocketID,TEXT("密码有误，请查证后再次尝试操作！"),SMT_EJECT);
-		else
-			SendRoomMessage(dwSocketID,TEXT("密码有误，请查证后再次尝试操作！"),SMT_EJECT);
-		return true;
-	}
-
-	//修改金币
-	ModifyGameGold(pIServerUserItem,-pBankStorage->lStorageValue);
-
-	//修改帐款
-	ModifyBankStorageGold(pIServerUserItem,pBankStorage->lStorageValue);
-	if(pServerUserData->wTableID!=INVALID_TABLE)
-		SendGameMessage(dwSocketID,TEXT("存储成功!"),SMT_EJECT);
-	else
-		SendRoomMessage(dwSocketID,TEXT("存储成功!"),SMT_EJECT);
-
-	//变量定义
-	DBR_GR_BankStorage BankStorage;
-	ZeroMemory(&BankStorage, sizeof(BankStorage));
-	BankStorage.lStorageCount = pBankStorage->lStorageValue;
-	BankStorage.dwUserID = pServerUserData->dwUserID;
-	BankStorage.dwClientIP = pIServerUserItem->GetClientIP();
-
-	//投递请求
-	m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_BANK_STORAGE_GOLD,0,&BankStorage, sizeof(BankStorage));
-
-	return true;
-}
-
 //使用权限
 bool CAttemperEngineSink::IsPropertyUseRight(INT nPropertyID,IServerUserItem *pIServerUserItem,IServerUserItem *pTargetUserItem)
 {
@@ -3947,62 +3796,6 @@ bool CAttemperEngineSink::OnEventBankOperation(const void * pData, WORD wDataSiz
 	return  m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_BANK_TASK, 0, &BankTask, sizeof(DBR_GR_BankTask));
 }
 
-//socket 响应 修改登录密码
-bool CAttemperEngineSink::OnEventModifyLoginPassword(const void * pData, WORD wDataSize, DWORD dwSocketID)
-{
-	ASSERT( sizeof(CMD_TOOLBOX_ModifyPassword) == wDataSize );
-	if ( sizeof(CMD_TOOLBOX_ModifyPassword) != wDataSize ) 
-		return false;
-	//获取用户
-	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
-	if(pIServerUserItem==NULL)
-		return false;
-	CMD_TOOLBOX_ModifyPassword *pModify = (CMD_TOOLBOX_ModifyPassword*)pData;
-
-	DBR_GR_ModifyPassword dbr;
-	memset(&dbr,0,sizeof(DBR_GR_ModifyPassword));
-	dbr.dwUserID=pIServerUserItem->GetUserID();
-	CopyMemory(dbr.szOLDPassword, pModify->szOLDPassword, sizeof(dbr.szOLDPassword));
-	CopyMemory(dbr.szNEWPassword, pModify->szNEWPassword, sizeof(dbr.szNEWPassword));
-	return m_pIDataBaseEngine->PostDataBaseRequest( DBR_GR_MODIFY_LOGIN_PASSWOR, 0, &dbr, sizeof(dbr));
-}
-
-//socket 响应 修改银行密码
-bool CAttemperEngineSink::OnEventModifyBankPassword(const void * pData, WORD wDataSize, DWORD dwSocketID)
-{
-	ASSERT( sizeof(CMD_TOOLBOX_ModifyPassword) == wDataSize );
-	if ( sizeof(CMD_TOOLBOX_ModifyPassword) != wDataSize ) 
-		return false;
-	//获取用户
-	IServerUserItem * pIServerUserItem=GetServerUserItem(LOWORD(dwSocketID));
-	if(pIServerUserItem==NULL)
-		return false;
-	CMD_TOOLBOX_ModifyPassword *pModify = (CMD_TOOLBOX_ModifyPassword*)pData;
-	DBR_GR_ModifyPassword dbr;
-	memset(&dbr,0,sizeof(DBR_GR_ModifyPassword));
-	dbr.dwUserID=pIServerUserItem->GetUserID();
-	CopyMemory(dbr.szOLDPassword, pModify->szOLDPassword, sizeof(dbr.szOLDPassword));
-	CopyMemory(dbr.szNEWPassword, pModify->szNEWPassword, sizeof(dbr.szNEWPassword));
-	return m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_MODIFY_BANK_PASSWORD, 0, &dbr, sizeof(dbr));
-}
-
-//socket 响应修改签名
-bool CAttemperEngineSink::OnEventModifyUnderWrite(const void * pData, WORD wDataSize, DWORD dwSocketID)
-{
-	ASSERT( sizeof(CMD_TOOLBOX_ModifyUnderWrite) == wDataSize );
-	if ( sizeof(CMD_TOOLBOX_ModifyUnderWrite) != wDataSize ) 
-		return false;
-	CMD_TOOLBOX_ModifyUnderWrite* pWrite = (CMD_TOOLBOX_ModifyUnderWrite*)pData;
-
-	DBR_GR_ModifyUnderWrite DbWrite;
-	ZeroMemory(&DbWrite,sizeof(DbWrite));
-	DbWrite.dwUserID = pWrite->dwUserID;
-	CopyMemory(DbWrite.szUnderWrite, pWrite->szUnderWrite, sizeof(DbWrite.szUnderWrite));
-	return m_pIDataBaseEngine->PostDataBaseRequest(DBR_GR_MODIFY_UNDERWRITE, dwSocketID, &DbWrite, sizeof(DbWrite));
-
-}
-
-
 //数据库返回
 bool CAttemperEngineSink::OnDBQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
@@ -4082,51 +3875,83 @@ bool CAttemperEngineSink::OnDBTransferMoneyOver(DWORD dwContextID, VOID * pData,
 			SendUserScore(pIServerUserItem);
 		}
 	}
-	return true;
-}
-//修改密码完成
-bool CAttemperEngineSink::OnDBModifyPassword(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//发送消息
-	DBR_GR_ModifyPassword* pDBR=(DBR_GR_ModifyPassword*)pData;
-	IServerUserItem * pIServerUserItem=m_ServerUserManager.SearchOnLineUser(pDBR->dwUserID);
-	if ( pIServerUserItem )
+
+	// 刷新别的房间用户信息
+	if ( pTransferMoney->lErrorCode==0)
 	{
-		tagServerUserData *pServerUserData = pIServerUserItem->GetUserData();
-		//发送数据
-		WORD wIndex=pIServerUserItem->GetUserIndex();
-		tagConnectItemInfo * pConnectItemInfo=GetBindParameter(wIndex);
-		DWORD dwSocketID=pConnectItemInfo->dwSocketID;
-		if(pDBR->lErrorCode == 0)
-		{
-			if(pServerUserData->wTableID != INVALID_TABLE)
-				SendGameMessage(dwSocketID,"修改成功！请及时重新登录，不然部分功能不可用！",SMT_EJECT|SMT_INFO);
-			else
-				SendRoomMessage(dwSocketID,"修改成功！请及时重新登录，不然部分功能不可用！",SMT_EJECT|SMT_INFO);
-		}
-		else
-		{	
-			if(pServerUserData->wTableID != INVALID_TABLE)
-				SendGameMessage(pIServerUserItem,pDBR->szErrorDescribe,SMT_EJECT|SMT_INFO);
-			else
-				SendRoomMessage(pIServerUserItem,pDBR->szErrorDescribe,SMT_EJECT|SMT_INFO);
-		}	
+		CMD_CS_FLASHUSERINFO info;
+		info.lUserID = pTransferMoney->lUserID_IN;
+		m_pITCPSocketCorrespond->SendData(MDM_CS_USER_MANAGER,SUB_CS_FLASHUSERINFO,&info,sizeof(info));
 	}
 	return true;
 }
 
-//数据库修改签名
-bool CAttemperEngineSink::OnDBModifyUnderWriteOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
+//刷新用户信息
+bool CAttemperEngineSink::OnDBFlashUserInfoOver(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
-	DBR_GR_ModifyUnderWrite* pDBR=(DBR_GR_ModifyUnderWrite*)pData;
+	if(wDataSize != sizeof(DBR_GR_FlashUserInfo_Ret) || pData==NULL)
+	{
+		ASSERT(FALSE);
+		return true;
+	}
+	DBR_GR_FlashUserInfo_Ret* pInfoRet = (DBR_GR_FlashUserInfo_Ret*)pData;
+	//目标玩家
+	IServerUserItem *pIRcvUserItem = NULL;
+	pIRcvUserItem = m_ServerUserManager.SearchOnLineUser(pInfoRet->dwUserID);
+	if ( pIRcvUserItem == NULL )
+		pIRcvUserItem = m_ServerUserManager.SearchOffLineUser(pInfoRet->dwUserID);
+	if(pIRcvUserItem == NULL)
+		return true;
+	//更改服务器保存的信息
+	tagServerUserData *pFlashUserData = pIRcvUserItem->GetUserData();
+	pFlashUserData->dwUserID = pInfoRet->dwUserID;
+	pFlashUserData->dwGameID = pInfoRet->dwGameID;
+	pFlashUserData->dwCustomFaceVer = pInfoRet->dwCustomFaceVer;
+	pFlashUserData->wFaceID = pInfoRet->wFaceID;
+	pFlashUserData->dwGroupID = pInfoRet->dwGroupID;
+	pFlashUserData->UserScoreInfo.lExperience = pInfoRet->lExperience;
+	pFlashUserData->dwUserRight = pInfoRet->dwUserRight;
+	pFlashUserData->lLoveliness = pInfoRet->lLoveliness;
+	pFlashUserData->dwMasterRight = pInfoRet->dwMasterRight;
+	pFlashUserData->cbGender = pInfoRet->cbGender;
+	pFlashUserData->cbMemberOrder = pInfoRet->cbMemberOrder;
+	pFlashUserData->cbMasterOrder = pInfoRet->cbMasterOrder;
+	pFlashUserData->UserScoreInfo.lScore = pInfoRet->lScore;
+	pFlashUserData->UserScoreInfo.lInsureScore = pInfoRet->lInsureScore;
+	pFlashUserData->UserScoreInfo.lWinCount = pInfoRet->lWinCount;
+	pFlashUserData->UserScoreInfo.lLostCount = pInfoRet->lLostCount;
+	pFlashUserData->UserScoreInfo.lDrawCount = pInfoRet->lDrawCount;
+	pFlashUserData->UserScoreInfo.lFleeCount = pInfoRet->lFleeCount;
+	lstrcpyn(pFlashUserData->szAccounts,pInfoRet->szAccounts,CountArray(pFlashUserData->szAccounts));
+	lstrcpyn(pFlashUserData->szGroupName,pInfoRet->szGroupName,CountArray(pFlashUserData->szGroupName));
+	lstrcpyn(pFlashUserData->szUnderWrite,pInfoRet->szUnderWrite,CountArray(pFlashUserData->szUnderWrite));
 
-	CMD_TOOLBOX_OperateReturn OperateReturn;
-	ZeroMemory(&OperateReturn,sizeof(OperateReturn));
-	OperateReturn.lResultCode = pDBR->lErrorCode;
-	CopyMemory(OperateReturn.szDescribeString, pDBR->szErrorDescribe, sizeof(OperateReturn.szDescribeString));
-	m_pITCPNetworkEngine->SendData(dwContextID,MDM_TOOLBOX,SUB_TOOLBOX_OPERATERETURN,&OperateReturn,sizeof(OperateReturn));
-	//关闭链接
-	m_pITCPNetworkEngine->ShutDownSocket(dwContextID);
+	//刷新客户端的信息
+	CMD_GR_FlashUserInfo UseInfo;
+	ZeroMemory(&UseInfo,sizeof(UseInfo));
+	UseInfo.dwUserID = pInfoRet->dwUserID;
+	UseInfo.dwGameID = pInfoRet->dwGameID;
+	UseInfo.dwCustomFaceVer = pInfoRet->dwCustomFaceVer;
+	UseInfo.wFaceID = pInfoRet->wFaceID;
+	UseInfo.dwGroupID = pInfoRet->dwGroupID;
+	UseInfo.lExperience = pInfoRet->lExperience;
+	UseInfo.dwUserRight = pInfoRet->dwUserRight;
+	UseInfo.lLoveliness = pInfoRet->lLoveliness;
+	UseInfo.dwMasterRight = pInfoRet->dwMasterRight;
+	UseInfo.cbGender = pInfoRet->cbGender;
+	UseInfo.cbMemberOrder = pInfoRet->cbMemberOrder;
+	UseInfo.cbMasterOrder = pInfoRet->cbMasterOrder;
+	UseInfo.lScore = pInfoRet->lScore;
+	UseInfo.lInsureScore = pInfoRet->lInsureScore;
+	UseInfo.lWinCount = pInfoRet->lWinCount;
+	UseInfo.lLostCount = pInfoRet->lLostCount;
+	UseInfo.lDrawCount = pInfoRet->lDrawCount;
+	UseInfo.lFleeCount = pInfoRet->lFleeCount;
+	lstrcpyn(UseInfo.szAccounts,pInfoRet->szAccounts,CountArray(UseInfo.szAccounts));
+	lstrcpyn(UseInfo.szGroupName,pInfoRet->szGroupName,CountArray(UseInfo.szGroupName));
+	lstrcpyn(UseInfo.szUnderWrite,pInfoRet->szUnderWrite,CountArray(UseInfo.szUnderWrite));
+
+	m_pITCPNetworkEngine->SendDataBatch(MDM_GR_USER,SUB_GR_FLASHUSERINFO,&UseInfo,sizeof(UseInfo));
 	return true;
 }
 

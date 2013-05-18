@@ -99,6 +99,13 @@ public:
 	CRect							m_rcUnderWrite;						//签名区域
 	CEditUnderWrite					m_EditUnderWrite;					//编辑控件
 
+	//头像（用户中心）
+public:
+	bool							m_bClickFace;						//点击标志
+	bool							m_bHoverFace;						//盘旋标志
+	CRect							m_rcFaceArea;						//头像区域
+	CSize							m_SizeItemFrame;					//框架大小
+	CPngImage						m_ImageItemFrame;					//头像框架
 	//函数定义
 public:
 	//构造函数

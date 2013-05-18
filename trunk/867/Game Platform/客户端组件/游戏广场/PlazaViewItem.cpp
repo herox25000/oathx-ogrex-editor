@@ -1178,6 +1178,7 @@ void CPlazaViewItem::OnCommandConnect()
 		{
 			throw TEXT("服务器连接错误，可能是你的系统还没有成功连接上网络！");
 		}
+		g_GlobalUnits.SetLogonServerInfo(pszServerIP,PORT_LOGON_SERVER);
 	}
 	catch (LPCTSTR pszError)
 	{

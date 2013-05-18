@@ -9,18 +9,29 @@
 #define WEB_HOME	"www.baidu.com"										//平台主页			
 
 
-//公共定义
+//长度宏定义
 #define NAME_LEN						32								//名字长度
 #define IDCARD_LEN						19								//身份证号长度
 #define PASS_LEN						33								//密码长度
+#define NICKNAME_LEN					32								//昵称长度
+#define PASS_LEN						33								//密码长度
+#define EMAIL_LEN						32								//邮箱长度
+#define QQ_LEN							16								//QQ长度
+#define GROUP_LEN						32								//社团长度
+#define COMPUTER_ID_LEN					33								//机器序列
+#define UNDER_WRITE_LEN					32								//个性签名
+#define USER_NOTE_LEN					200								//用户备注
+#define MOBILE_PHONE_LEN				12								//移动电话
+#define COMPELLATION_LEN				16								//真实名字
+#define DWELLING_PLACE_LEN				128								//联系地址
+
+/////////////////////////////////////////////////////////////////////////////////////////
+//宏定义
 #define MAX_CHAIR						100								//最大椅子
 #define MAX_CHAIR_NORMAL				8								//最大人数
 #define MAX_ANDROID						256								//最大机器
 #define MAX_CHAT_LEN					128								//聊天长度
 #define LIMIT_CHAT_TIMES				1200							//限时聊天
-
-/////////////////////////////////////////////////////////////////////////////////////////
-//宏定义
 
 //端口定义
 #define PORT_VIDEO_SERVER				7600								//视频服务器
@@ -38,6 +49,14 @@
 #define MDM_KN_COMMAND					0									//内核命令
 #define SUB_KN_DETECT_SOCKET			1									//检测命令
 #define SUB_KN_SHUT_DOWN_SOCKET			2									//中断网络
+
+
+//密码等级
+#define PASSWORD_LEVEL_0			0									//没有等级
+#define PASSWORD_LEVEL_1			1									//没有等级
+#define PASSWORD_LEVEL_2			2									//没有等级
+#define PASSWORD_LEVEL_3			3									//没有等级
+
 
 enum enOperateStatus
 {
@@ -203,13 +222,6 @@ struct tagLevelItem
 #define US_PLAY							0x05								//游戏状态
 #define US_OFFLINE						0x06								//断线状态
 
-//长度宏定义
-#define NAME_LEN						32									//名字长度
-#define PASS_LEN						33									//密码长度
-#define EMAIL_LEN						32									//邮箱长度
-#define GROUP_LEN						32									//社团长度
-#define COMPUTER_ID_LEN					33									//机器序列
-#define UNDER_WRITE_LEN					32									//个性签名
 
 //用户积分信息
 struct tagUserScore

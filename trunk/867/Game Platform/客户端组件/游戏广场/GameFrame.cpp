@@ -4,6 +4,7 @@
 #include "GlobalUnits.h"
 #include "DlgIndividualInfo.h"
 #include "DlgEnquire.h"
+#include "DlgService.h"
 //////////////////////////////////////////////////////////////////////////
 //圆角大小
 #define ROUND_CX					4									//圆角宽度
@@ -28,10 +29,8 @@
 
 //控件标识
 #define IDC_BT_PLAZA				1038								//游戏广场
-#define IDC_BT_SWITCH_ACCOUNTS		1009								//切换帐号
 #define IDC_BT_SYSTEM_OPTION		1010								//系统配置
 #define IDC_BT_SELF_OPTION			1011								//个人配置
-#define IDC_BT_QUIT_GAME			1012								//退出游戏
 #define IDC_BT_VIEW_ITEM			1013								//房间控件
 #define IDC_BT_LIST_CONTROL_1		21015								//控制按钮
 #define IDC_BT_LIST_CONTROL_2		21016								//控制按钮
@@ -306,18 +305,8 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		}
 	case IDC_BT_BUTTON_3:				//上传头像
 		{
-			////创建窗体
-			//if ( m_DlgCustomFace.m_hWnd == NULL )
-			//{
-			//	m_DlgCustomFace.Create(IDD_CUSTOM_FACE, this);
-			//}
-			//m_DlgLockComputer.UpdateControls();
-			////显示窗体
-			//m_DlgCustomFace.CenterWindow();
-			//m_DlgCustomFace.ShowWindow(SW_SHOW);
-			//m_DlgCustomFace.SetActiveWindow();
-			//m_DlgCustomFace.SetForegroundWindow();
-			ShowMessageBox(TEXT("此功能暂时不能使用！"),MB_ICONQUESTION);
+			CDlgService DlgService;
+			DlgService.DoModal();
 			return TRUE;
 		}
 	case IDC_BT_BUTTON_4: // 银行功能
@@ -345,23 +334,12 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 		{
 			if(m_DlgGamePlaza.m_ClientSocket.GetInterface() == NULL)
 				return TRUE;
-			////创建窗体
-			//if ( m_DlgLockComputer.m_hWnd == NULL )
-			//{
-			//	m_DlgLockComputer.Create(IDD_LOCKCOMPUTER, this);
-			//}
-			////显示窗体
-			//m_DlgLockComputer.CenterWindow();
-			//m_DlgLockComputer.ShowWindow(SW_SHOW);
-			//m_DlgLockComputer.SetActiveWindow();
-			//m_DlgLockComputer.SetForegroundWindow();
 			m_DlgLockComputer.DoModal();
 			return TRUE;
 		}
 	case IDC_BT_PLAZA	:				//大厅按钮
 		{
 			ActivePlazaViewItem();
-
 			return TRUE;
 		}
 	case IDC_BT_EXCHANGE_SINK:			//换肤按钮
@@ -379,10 +357,8 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 			return TRUE;
 		}
 	case IDC_BT_CLOSE	:				//关闭房间
-	case IDC_BT_QUIT_GAME	:			//退出游戏
 		{
 			CloseCurrentViewItem();
-
 			return TRUE;
 		}
 	case IDC_BT_SYSTEM_OPTION	:		//系统配置
@@ -392,48 +368,6 @@ BOOL CGameFrame::OnCommand(WPARAM wParam, LPARAM lParam)
 
 			return TRUE;
 		}
-	case IDC_BT_SELF_OPTION:			//个人配置
-		{
-			CDlgIndividualInfo DlgIndividualInfo;
-			DlgIndividualInfo.DoModal();
-
-			return TRUE;
-		}
-	//case IDC_BT_SWITCH_ACCOUNTS :		//切换按钮
-	//	{
-	//		//状态判断
-	//		tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
-	//		if (GlobalUserData.dwUserID==0L) return TRUE;
-
-	//		//切换询问
-	//		if (m_pRoomViewItem[0]!=NULL)
-	//		{
-	//			const TCHAR szMessage[]=TEXT("切换用户帐号，将会关闭所有游戏房间，确实要切换用户帐号吗？ ");
-	//			int iResult=ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
-	//			if (iResult!=IDYES) return TRUE;
-	//		}
-	//		else
-	//		{
-	//			const TCHAR szMessage[]=TEXT("确实要注销当前用户，切换用户帐号吗？ ");
-	//			int iResult=ShowMessageBox(szMessage,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2);
-	//			if (iResult!=IDYES) return TRUE;
-	//		}
-
-	//		//关闭房间
-	//		ActivePlazaViewItem();
-	//		CloseAllRoomViewItem();
-
-	//		//删除记录
-	//		g_GlobalUnits.DeleteUserCookie();
-
-	//		//设置变量
-	//		memset(&GlobalUserData,0,sizeof(GlobalUserData));
-
-	//		//投递消息
-	//		m_DlgGamePlaza.SendLogonMessage();
-
-	//		return TRUE;
-	//	}
 	case IDC_BT_LIST_CONTROL_1:			//列表按钮
 	case IDC_BT_LIST_CONTROL_2:			//列表按钮
 		{
@@ -621,7 +555,6 @@ bool CGameFrame::UpdateSkinResource()
 	m_btButton3.SetButtonImage(PlatformFrameImage.uFrameNavigation[2],hResInstance,false);
 	m_btButton4.SetButtonImage(PlatformFrameImage.uFrameNavigation[3],hResInstance,false);
 	m_btButton5.SetButtonImage(PlatformFrameImage.uFrameNavigation[4],hResInstance,false);
-	m_btSwitchUser.SetButtonImage(PlatformFrameImage.uBtFrameSwitch,hResInstance,false);
 	m_btGlobalOption.SetButtonImage(PlatformFrameImage.uBtFrameOption,hResInstance,false);
 	m_btSelfOption.SetButtonImage(PlatformFrameImage.uBtFrameSelfSet,hResInstance,false);
 
@@ -1216,7 +1149,7 @@ void CGameFrame::RectifyControl(int nWidth, int nHeight)
 
 	//移动控件
 	nYPos = m_ImageInfoFrame.nTBorder-FRAME_EXALTATION-4;
-	CButton * pButton[]={/*&m_btQuitGame,*/&m_btSelfOption,&m_btGlobalOption,&m_btSwitchUser};
+	CButton * pButton[]={&m_btSelfOption,&m_btGlobalOption};
 	for (int i=0;i<CountArray(pButton);i++)
 		DeferWindowPos(hDwp,pButton[i]->m_hWnd,NULL,nWidth-(rcButtonRect.Width()+6)*(i+1)-8,nYPos,0,0,uFlags|SWP_NOSIZE);
 
@@ -1348,8 +1281,6 @@ int CGameFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btGamePlaza.Create(TEXT("游戏大厅"),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_PLAZA);
 	m_btSelfOption.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SELF_OPTION);
 	m_btSelfOption.ShowWindow(SW_HIDE);
-	m_btSwitchUser.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SWITCH_ACCOUNTS);
-	m_btSwitchUser.ShowWindow(SW_HIDE);
 	m_btGlobalOption.Create(TEXT(""),WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_SYSTEM_OPTION);
 	m_btGlobalOption.ShowWindow(SW_HIDE);
 	//m_btListControl1.Create(NULL,WS_CHILD|WS_VISIBLE,CRect(0,0,0,0),this,IDC_BT_LIST_CONTROL_1);

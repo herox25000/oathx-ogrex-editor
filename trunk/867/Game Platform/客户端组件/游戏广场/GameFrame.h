@@ -79,9 +79,7 @@ public:
 	CSkinButton							m_btExChangeSkin;				//换肤按钮
 	CSkinButton							m_btGamePlaza;					//游戏广场
 	CSkinButton							m_btViewItem[MAX_SERVER];		//房间按钮
-	//CSkinButton						m_btQuitGame;					//退出游戏
 	CSkinButton							m_btSelfOption;					//个人配置
-	CSkinButton							m_btSwitchUser;					//切换帐号
 	CSkinButton							m_btGlobalOption;				//系统配置
 
 	//列表按钮

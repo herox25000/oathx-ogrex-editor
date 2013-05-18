@@ -279,17 +279,14 @@ private:
 	bool OnDBTransferLogOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//转账记录返回
 	bool OnDBTransferLogItem(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//修改密码
-	bool OnDBModifyPassword(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//修改昵称
 	bool OnDBModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//存取钱操作完成
 	bool OnDBBankTaskOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//数据库查询用户名返回
 	bool OnDBQueryUserNameOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
-	//数据库修改签名
-	bool OnDBModifyUnderWriteOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
-
+	//刷新用户信息
+	bool OnDBFlashUserInfoOver(DWORD dwContextID, VOID * pData, WORD wDataSize);
 	//网络函数
 private:
 	//登录消息处理
@@ -306,9 +303,6 @@ private:
 	bool OnSocketMainVideo(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID);
 	//礼物消息处理
 	bool OnSocketPresent(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID);
-	//银行消息处理
-	bool OnSocketBank(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID);
-
 	// 工具箱操作
 	bool OnSocketToolBox(WORD wSubCmdID, VOID * pData, WORD wDataSize, DWORD dwSocketID);
 
@@ -322,13 +316,6 @@ private:
 	bool OnEventTransferMoneyLog(const void * pData, WORD wDataSize, DWORD dwSocketID);
 	//银行操作
 	bool OnEventBankOperation(const void * pData, WORD wDataSize, DWORD dwSocketID);
-	//socket 响应 修改登录密码
-	bool OnEventModifyLoginPassword(const void * pData, WORD wDataSize, DWORD dwSocketID);
-	//socket 响应 修改银行密码
-	bool OnEventModifyBankPassword(const void * pData, WORD wDataSize, DWORD dwSocketID);
-	//socket 响应修改签名
-	bool OnEventModifyUnderWrite(const void * pData, WORD wDataSize, DWORD dwSocketID);
-
 	//辅助函数
 private:
 	//发送失败
@@ -344,6 +331,8 @@ private:
 private:
 	//列表消息处理
 	bool OnCenterMainServerList(CMD_Command Command, VOID * pData, WORD wDataSize);
+	//处理中心服务器的用户管理
+	bool OnCenterMainUserManager(CMD_Command Command, VOID * pData, WORD wDataSize);
 
 	//辅助函数
 protected:
@@ -363,10 +352,7 @@ protected:
 	bool OnEventExchangeCharm(const void * pData, WORD wDataSize, IServerUserItem * pIServerUserItem);
 	//喇叭事件
 	bool OnEventBugle(const void * pData, WORD wDataSize, IServerUserItem * pIServerUserItem);
-	//提取事件
-	bool OnEventBankDrawoutGold(const void * pData, WORD wDataSize, DWORD dwSocketID);
-	//存储事件
-	bool OnEventBankStorage(const void * pData, WORD wDataSize, DWORD dwSocketID);
+
 
 	//辅助函数
 protected:

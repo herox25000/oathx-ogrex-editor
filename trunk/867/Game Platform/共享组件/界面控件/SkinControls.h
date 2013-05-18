@@ -12,7 +12,7 @@ using namespace Gdiplus;
 
 //平台头文件
 #include "..\..\开发库\Include\Template.h"
-
+#include "..\..\开发库\Include\GlobalDef.h"
 //QQ控件
 #import "ImageOle.dll" named_guids
 //////////////////////////////////////////////////////////////////////////
@@ -419,6 +419,7 @@ public:
 	#include "GIFImage.h"
 	#include "SkinScrollBar.h"	
 	#include "SkinTabCtrl.h"
+	#include "PasswordControl.h"
 #endif
 
 //////////////////////////////////////////////////////////////////////////

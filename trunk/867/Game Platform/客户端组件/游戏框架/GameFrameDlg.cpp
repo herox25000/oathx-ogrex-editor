@@ -183,9 +183,6 @@ void __cdecl CGameFrameDlg::OnEventUserScore(tagUserData * pUserData, WORD wChai
 	tagUserData* Medata = m_ClientKernelHelper->GetMeUserInfo();
 	if(Medata==NULL)
 		return;
-	if(pUserData->dwUserID == Medata->dwUserID && m_DlgFramBank.m_hWnd!=NULL)
-		m_DlgFramBank.UpdateView();
-
 	UpdateView();
 	return;
 }
