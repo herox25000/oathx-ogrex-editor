@@ -7,7 +7,7 @@
 //宏定义
 #define CR_BACK_GROUND					RGB(57,162,214)					//背景颜色
 
-#define BTM_BUTTON_Y					41									//按钮位置
+#define BTM_BUTTON_Y					39									//按钮位置
 #define TOP_BUTTON_Y					6									//按钮位置
 #define BUTTON_EXCUSION_X				8									//偏移位置
 #define BUTTON_DISTANCE_X				5									//按钮间距
