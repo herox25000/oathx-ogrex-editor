@@ -43,6 +43,7 @@ struct IPC_GF_ServerInfo
 	WORD								wTableID;						//桌子号码
 	WORD								wChairID;						//椅子号码
 	WORD								wKindID;						//类型标识
+	WORD								wTypeID;						//游戏类型
 	WORD								wServerID;						//房间标识
 	WORD								wGameGenre;						//游戏类型
 	WORD								wChairCount;					//椅子数目
@@ -63,7 +64,9 @@ struct IPC_GF_ServerInfo
 #define IPC_SUB_GAME_START				4								//游戏开始
 #define IPC_SUB_GAME_FINISH				5								//游戏结束
 #define IPC_SUB_UPDATE_FACE				6								//更新头像
-#define IPC_SUB_MEMBERORDER				7								//更新头像
+#define IPC_SUB_MEMBERORDER				7								//会员等级
+#define IPC_SUB_FLASHUSERINFO			8								//刷新用户信息
+
 
 //用户状态
 struct IPC_UserStatus
@@ -293,11 +296,7 @@ struct CMD_GF_ResidualProperty
 #define SUB_TOOLBOX_BANKOPERATING			2				//银行操作
 #define SUB_TOOLBOX_TRANSFERMONEY			3				//转账
 #define SUB_TOOLBOX_TRANSFERMONEY_LOG		4				//转账日志
-#define SUB_TOOLBOX_TMODIFYLOGINPASSWORD	5				//修改登录密码
-#define SUB_TOOLBOX_TMODIFYBANKPASSWORD		6				//修改银行密码
 #define SUB_TOOLBOX_MESSAGE					7				//消息
-#define SUB_TOOLBOX_TMODIFYUNDERWRITE		8				//修改个性签名
-#define SUB_TOOLBOX_OPERATERETURN			9				//操作返回，适用于任何消息
 
 //查询用户名
 struct CMD_TOOLBOX_QueryUserName
@@ -358,29 +357,6 @@ struct CMD_TOOLBOX_BankTask_Ret
 	LONG								lErrorCode;						//
 	TCHAR								szErrorDescribe[256];			//错误说明
 };
-
-//修改密码
-struct CMD_TOOLBOX_ModifyPassword
-{
-	TCHAR								szOLDPassword[PASS_LEN];			//旧密码
-	TCHAR								szNEWPassword[PASS_LEN];			//新密码
-};
-
-//修改签名
-struct CMD_TOOLBOX_ModifyUnderWrite
-{
-	DWORD							dwUserID;							//用户 I D
-	TCHAR							szUnderWrite[UNDER_WRITE_LEN];		//个性签名
-};
-
-//操作返回
-struct CMD_TOOLBOX_OperateReturn
-{
-	LONG							lResultCode;						//返回状态，1、成功，2、失败
-	TCHAR							szDescribeString[128];				//描述消息
-};
-
-
 
 struct CMD_GF_Transfer_Log_Out
 {

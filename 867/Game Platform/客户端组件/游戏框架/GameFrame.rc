@@ -155,14 +155,6 @@ BEGIN
     PUSHBUTTON      "全部",IDC_BT_ALL,188,72,36,14
 END
 
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// Bitmap
-//
-
-IDB_USER_STATUS         BITMAP                  "Res\\USER_STATUS.bmp"
-
 /////////////////////////////////////////////////////////////////////////////
 //
 // DESIGNINFO
@@ -189,12 +181,20 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
-// PNG
+// Bitmap
 //
 
+IDB_USER_STATUS         BITMAP                  "Res\\USER_STATUS.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
 USER_READY              PNG                     "res\\USER_READY.PNG"
 TIME_NUMBER             PNG                     "res\\TIME_NUMBER.PNG"
 TIME_BACK               PNG                     "res\\TIME_BACK.PNG"
+FACEFRAME               PNG                     "res\\FaceFrame.PNG"
+
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 

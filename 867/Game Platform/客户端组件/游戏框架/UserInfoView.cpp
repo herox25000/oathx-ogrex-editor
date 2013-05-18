@@ -34,7 +34,7 @@ CUserInfoView::CUserInfoView()
 	m_pIUserFaceRes=NULL;
 	m_pIClientKernel=NULL;
 	m_pCurrentUserData=NULL;
-
+	m_ImageFaceFrame.LoadImage(GetModuleHandle(GAME_FRAME_DLL_NAME),TEXT("FACEFRAME"));
 	return;
 }
 
@@ -109,15 +109,19 @@ VOID CUserInfoView::OnPaint()
 
 	//绘画边框
 	CRect rcPhotoFram(PHOTO_FRAME_EXCURSION_X, PHOTO_FRAME_EXCURSION_Y, PHOTO_FRAME_EXCURSION_X+PHOTO_FRAME_WIDTH, PHOTO_FRAME_EXCURSION_Y+PHOTO_FRAME_HEIGHT);
-	CPen BorderPen(PS_SOLID,2,COLOR_PHOTO_FRAM);
-	CPen * pOldPen=BufferDC.SelectObject(&BorderPen);
-	//BufferDC.RoundRect(&rcPhotoFram,CPoint(0,0));
-	BufferDC.MoveTo(rcPhotoFram.left,rcPhotoFram.top);
-	BufferDC.LineTo(rcPhotoFram.right,rcPhotoFram.top);
-	BufferDC.LineTo(rcPhotoFram.right,rcPhotoFram.bottom);
-	BufferDC.LineTo(rcPhotoFram.left,rcPhotoFram.bottom);
-	BufferDC.LineTo(rcPhotoFram.left,rcPhotoFram.top);
-	BufferDC.SelectObject(pOldPen);
+	//CPen BorderPen(PS_SOLID,2,COLOR_PHOTO_FRAM);
+	//CPen * pOldPen=BufferDC.SelectObject(&BorderPen);
+	////BufferDC.RoundRect(&rcPhotoFram,CPoint(0,0));
+	//BufferDC.MoveTo(rcPhotoFram.left,rcPhotoFram.top);
+	//BufferDC.LineTo(rcPhotoFram.right,rcPhotoFram.top);
+	//BufferDC.LineTo(rcPhotoFram.right,rcPhotoFram.bottom);
+	//BufferDC.LineTo(rcPhotoFram.left,rcPhotoFram.bottom);
+	//BufferDC.LineTo(rcPhotoFram.left,rcPhotoFram.top);
+	//BufferDC.SelectObject(pOldPen);
+
+	//绘制宣传图
+	m_ImageFaceFrame.DrawImage(&BufferDC,rcPhotoFram.left,rcPhotoFram.top,m_ImageFaceFrame->GetWidth(),m_ImageFaceFrame->GetHeight(),0,0);
+
 
 	//创建字体
 	CFont Font;
@@ -134,23 +138,10 @@ VOID CUserInfoView::OnPaint()
 
 		//绘画标识
 		if ( m_pCurrentUserData->dwCustomFaceVer == 0 )
-		{
-			////设置大小
-			//rcPhotoFram.DeflateRect(1, 1, 2, 2);
-			//if ( m_pCurrentUserData->cbGender != 2 )
-			//{
-			//	CImageHandle ImageHandleMaleFace(&m_ImageMaleFace);
-			//	m_ImageMaleFace.BitBlt(BufferDC.GetSafeHdc(), rcPhotoFram.left, rcPhotoFram.top);
-			//}
-			//else
-			//{
-			//	CImageHandle ImageHandleFemaleFace(&m_ImageFemaleFace);
-			//	m_ImageFemaleFace.BitBlt(BufferDC.GetSafeHdc(), rcPhotoFram.left, rcPhotoFram.top);
-			//}
+		{		
 			//用户头像
-			m_pIUserFaceRes->DrawNormalFace(&BufferDC,rcPhotoFram.left+20, rcPhotoFram.top+20,
+			m_pIUserFaceRes->DrawNormalFace(&BufferDC,rcPhotoFram.left+25, rcPhotoFram.top+25,
 				m_pCurrentUserData->wFaceID,m_pCurrentUserData->dwUserID,m_pCurrentUserData->dwCustomFaceVer);
-
 		}
 		//用户头像
 		else

@@ -169,41 +169,13 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineRequest(WORD wRequestID, DWORD dwCon
 		{
 			return OnExchangeCharm(dwContextID,pData,wDataSize);
 		}
-	case DBR_GR_BANK_GET_GOLD:			//提取金币
-		{
-			return OnBankDrawoutGold(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_BANK_STORAGE_GOLD:		//存储金币
-		{
-			return OnBankStorageGold(dwContextID,pData,wDataSize);
-		}
 	case DBR_GR_CLEARSCORELOCKER:		//清理房间锁定的用户
 		{
 			return OnClearScoreLocker(dwContextID,pData,wDataSize);
 		}
-	//case DBR_GR_USER_ROUND_SCORE:			//每局记录存储
-	//	{
-	//		return OnRequestRoundScore(dwContextID,pData,wDataSize);
-	//	}
 	case DBR_GR_TRANSFER_MONEY:		//转账
 		{
 			return OnRequestTransferMoney(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_QUERY_TRANSFER_LOG:	//查询拨款日志
-		{
-			return OnRequestQueryTransferLog(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_MODIFY_LOGIN_PASSWOR:		//修改登陆密码
-		{
-			return OnRequestModifyLoginPassword(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_MODIFY_BANK_PASSWORD:	//修改银行密码
-		{
-			return OnRequestModifyBankPassword(dwContextID,pData,wDataSize);
-		}
-	case DBR_GR_MODIFY_NICKNAME:		//修改昵称
-		{
-			return OnRequestModifyNickname(dwContextID,pData,wDataSize);
 		}
 	case DBR_GR_BANK_TASK:			//银行操作
 		{
@@ -217,9 +189,9 @@ bool __cdecl CDataBaseSink::OnDataBaseEngineRequest(WORD wRequestID, DWORD dwCon
 		{
 			return OnUpdateOnLineCount(dwContextID,pData,wDataSize);
 		}
-	case DBR_GR_MODIFY_UNDERWRITE://修改签名
+	case DBR_GR_FLASHUSERINFO:
 		{
-			return OnRequestModifyUnderWrite(dwContextID,pData,wDataSize);
+			return OnRequsetFlashUserInfo(dwContextID,pData,wDataSize);
 		}
 	}
 
@@ -767,58 +739,6 @@ bool CDataBaseSink::OnExchangeCharm(DWORD dwContextID, VOID * pData, WORD wDataS
 	return true;
 }
 
-//提取金币
-bool CDataBaseSink::OnBankDrawoutGold(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//效验参数
-	ASSERT(wDataSize==sizeof(DBR_GR_BankDrawoutGold));
-	if (wDataSize!=sizeof(DBR_GR_BankDrawoutGold)) return false;
-
-	//参数转换
-	DBR_GR_BankDrawoutGold * pBankGet=(DBR_GR_BankDrawoutGold *)pData;
-
-	LONG lReturnValue = -1;
-	try
-	{
-		//提取金币
-		lReturnValue = SPBankDrawoutGold(pBankGet->dwUserID,pBankGet->DrawoutGoldCount,pBankGet->dwClientIP);
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
-
-	return true;
-}
-
-//存储金币
-bool CDataBaseSink::OnBankStorageGold(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//效验参数
-	ASSERT(wDataSize==sizeof(DBR_GR_BankStorage));
-	if (wDataSize!=sizeof(DBR_GR_BankStorage)) return false;
-
-	//参数转换
-	DBR_GR_BankStorage * pBankStorage=(DBR_GR_BankStorage *)pData;
-
-	LONG lReturnValue = -1;
-	try
-	{
-		//提取金币
-		lReturnValue = SPBankStorageGold(pBankStorage->dwUserID,pBankStorage->lStorageCount,pBankStorage->dwClientIP);
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
-
-	return true;
-}
-
 //I D 存储过程
 LONG CDataBaseSink::SPLogonByUserID(DWORD dwUserID, LPCTSTR pszPassword, DWORD dwClientIP, LPCTSTR pszComputerID)
 {
@@ -1280,339 +1200,103 @@ bool CDataBaseSink::OnClearScoreLocker(DWORD dwContextID, VOID * pData, WORD wDa
 	ASSERT(wDataSize==0);
 	if (wDataSize!=0)
 		return false;
-	try
-	{
-		//执行存储过程
-		m_GameScoreDBAide.ResetParameter();
-		m_GameScoreDBAide.AddParameter(TEXT("@dwServerID"),m_pGameServiceOption->wServerID);
-		m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_ClearScoreLocker"),false);
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
+	LPCTSTR lpszProc = _T("GSP_GR_ClearScoreLocker");
+	TRY_BEGIN()
+	//执行存储过程
+	m_GameScoreDBAide.ResetParameter();
+	m_GameScoreDBAide.AddParameter(TEXT("@dwServerID"),m_pGameServiceOption->wServerID);
+	m_GameScoreDBAide.ExecuteProcess(lpszProc,false);
+	return true;
+	CATCH_ADO_SHOW(lpszProc);
 	return true;
 }
 
-//每局记录存储
-bool CDataBaseSink::OnRequestRoundScore(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	//try
-	//{
-	//	ASSERT(wDataSize==sizeof(DBR_GR_User_Round_Score));
-	//	if (wDataSize!=sizeof(DBR_GR_User_Round_Score)) return false;
-	//	DBR_GR_User_Round_Score* pRoundScore=(DBR_GR_User_Round_Score*)pData;
-	//	//执行存储过程
-	//	m_GameScoreDBAide.ResetParameter();
-	//	m_GameScoreDBAide.AddParameter(TEXT("@dwUserID"),pRoundScore->dwUserID);
-	//	m_GameScoreDBAide.AddParameter(TEXT("@dwGameID"),pRoundScore->wGameID);
-	//	m_GameScoreDBAide.AddParameter(TEXT("@dwTableID"),pRoundScore->wTableID);
-	//	m_GameScoreDBAide.AddParameter(TEXT("@dwGameRound"),pRoundScore->dwGameRound);
-	//	m_GameScoreDBAide.AddParameter(TEXT("@lScore"),pRoundScore->sfScore);
-	//	m_GameScoreDBAide.AddParameter(TEXT("@lRevenue"),pRoundScore->sfRevenue);
-	//	m_GameScoreDBAide.AddParameter(TEXT("@szQuitType"),pRoundScore->szQuitType);
-	//	m_GameScoreDBAide.AddParameter(TEXT("@szJetton"),pRoundScore->szJetton);
-	//	m_GameScoreDBAide.ExecuteProcess(TEXT("GSP_GR_Round_Score"),false);
-	//}
-	//catch (IDataBaseException * pIException)
-	//{
-	//	//错误信息
-	//	LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-	//	CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	//}
-	return true;
-
-}
 //转账
 bool CDataBaseSink::OnRequestTransferMoney(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
-	try
+
+	ASSERT(wDataSize==sizeof(DBR_GR_TransferMoney));
+	if (wDataSize!=sizeof(DBR_GR_TransferMoney))
+		return false;
+	//执行查询
+	DBR_GR_TransferMoney * pTransferMoney=(DBR_GR_TransferMoney *)pData;
+	LPCTSTR lpszProc = _T("GSP_GR_TransferMoney");
+	TRY_BEGIN()
+	//转化地址
+	TCHAR szClientIP[16]=TEXT("");
+	BYTE * pClientIP=(BYTE *)&pTransferMoney->dwClientIP;
+	_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
+
+	//执行查询
+	m_GameScoreDBModule->ClearParameters();
+	m_GameScoreDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
+	m_GameScoreDBModule->AddParameter(TEXT("@dwUserID_Out"),adInteger,adParamInput,sizeof(long),_variant_t((long)pTransferMoney->dwUserID));
+	m_GameScoreDBModule->AddParameter(TEXT("@dwGameID_In"),adInteger,adParamInput,sizeof(long),_variant_t((long)pTransferMoney->dwGameID_IN));
+	m_GameScoreDBModule->AddParameter(TEXT("@Account_Out"),adVarChar, adParamInput,lstrlen(pTransferMoney->szAccount_Out),_variant_t(pTransferMoney->szAccount_Out));
+	m_GameScoreDBModule->AddParameter(TEXT("@Account_In"),adVarChar,adParamInput, lstrlen(pTransferMoney->szAccount_In),_variant_t(pTransferMoney->szAccount_In));
+	m_GameScoreDBModule->AddParameter(TEXT("@MoneyNumber"),adBigInt,adParamInput,sizeof(__int64),_variant_t(pTransferMoney->sfMoneyNumber));
+	m_GameScoreDBModule->AddParameter(TEXT("@strClientIP"),adVarChar,adParamInput,lstrlen(szClientIP),_variant_t(szClientIP));
+	m_GameScoreDBModule->ExecuteProcess(lpszProc,true);
+	//结果判断
+	LONG lReturnCode=m_GameScoreDBModule->GetReturnValue();
+	pTransferMoney->lErrorCode=lReturnCode;
+	if ( lReturnCode!=0L )
 	{
-		ASSERT(wDataSize==sizeof(DBR_GR_TransferMoney));
-		if (wDataSize!=sizeof(DBR_GR_TransferMoney))
-			return false;
-		//执行查询
-		DBR_GR_TransferMoney * pTransferMoney=(DBR_GR_TransferMoney *)pData;
-
-		//转化地址
-		TCHAR szClientIP[16]=TEXT("");
-		BYTE * pClientIP=(BYTE *)&pTransferMoney->dwClientIP;
-		_snprintf(szClientIP,sizeof(szClientIP),TEXT("%d.%d.%d.%d"),pClientIP[0],pClientIP[1],pClientIP[2],pClientIP[3]);
-
-		//执行查询
-		m_GameScoreDBModule->ClearParameters();
-		m_GameScoreDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
-		m_GameScoreDBModule->AddParameter(TEXT("@dwUserID_Out"),adInteger,adParamInput,sizeof(long),_variant_t((long)pTransferMoney->dwUserID));
-		m_GameScoreDBModule->AddParameter(TEXT("@dwGameID_In"),adInteger,adParamInput,sizeof(long),_variant_t((long)pTransferMoney->dwGameID_IN));
-		m_GameScoreDBModule->AddParameter(TEXT("@Account_Out"),adVarChar, adParamInput,lstrlen(pTransferMoney->szAccount_Out),_variant_t(pTransferMoney->szAccount_Out));
-		m_GameScoreDBModule->AddParameter(TEXT("@Account_In"),adVarChar,adParamInput, lstrlen(pTransferMoney->szAccount_In),_variant_t(pTransferMoney->szAccount_In));
-		m_GameScoreDBModule->AddParameter(TEXT("@MoneyNumber"),adBigInt,adParamInput,sizeof(__int64),_variant_t(pTransferMoney->sfMoneyNumber));
-		m_GameScoreDBModule->AddParameter(TEXT("@strClientIP"),adVarChar,adParamInput,lstrlen(szClientIP),_variant_t(szClientIP));
-		m_GameScoreDBModule->ExecuteProcess("GSP_GR_TransferMoney",true);
-		//结果判断
-		LONG lReturnCode=m_GameScoreDBModule->GetReturnValue();
-		pTransferMoney->lErrorCode=lReturnCode;
-		if ( lReturnCode!=0L )
-		{
-			TCHAR szErrorDescribe[256]=TEXT("");
-			m_GameScoreDBModule->GetFieldValue(TEXT("ErrorDescribe"), szErrorDescribe, sizeof(szErrorDescribe));
-			CTraceService::TraceString(szErrorDescribe,TraceLevel_Exception);
-			lstrcpyn(pTransferMoney->szErrorDescribe, szErrorDescribe, CountArray(pTransferMoney->szErrorDescribe));
-		}
-		else
-		{
-			m_GameScoreDBModule->GetFieldValue(TEXT("MoneyNumber"), pTransferMoney->sfMoneyNumber);
-			m_GameScoreDBModule->GetFieldValue(TEXT("Score_Out"), pTransferMoney->sfLeftMoney);
-			m_GameScoreDBModule->GetFieldValue(TEXT("Tax"), pTransferMoney->sfTax);
-		}
-
-		//发送信息
-		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_TRANSFER_MONEY_OUT,dwContextID,
-			pTransferMoney,sizeof( DBR_GR_TransferMoney ));
+		TCHAR szErrorDescribe[256]=TEXT("");
+		m_GameScoreDBModule->GetFieldValue(TEXT("ErrorDescribe"), szErrorDescribe, sizeof(szErrorDescribe));
+		CTraceService::TraceString(szErrorDescribe,TraceLevel_Exception);
+		lstrcpyn(pTransferMoney->szErrorDescribe, szErrorDescribe, CountArray(pTransferMoney->szErrorDescribe));
 	}
-	catch (IDataBaseException * pIException)
+	else
 	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
+		m_GameScoreDBModule->GetFieldValue(TEXT("MoneyNumber"), pTransferMoney->sfMoneyNumber);
+		m_GameScoreDBModule->GetFieldValue(TEXT("Score_Out"), pTransferMoney->sfLeftMoney);
+		m_GameScoreDBModule->GetFieldValue(TEXT("Tax"), pTransferMoney->sfTax);
+		m_GameScoreDBModule->GetFieldValue(TEXT("UserID_IN"), pTransferMoney->lUserID_IN);
 	}
+
+	//发送信息
+	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_TRANSFER_MONEY,dwContextID,
+		pTransferMoney,sizeof( DBR_GR_TransferMoney ));
 	return true;
-}
-
-//查询转账记录
-bool CDataBaseSink::OnRequestQueryTransferLog(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	try
-	{
-		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_Query_Transfer_Log));
-		if (wDataSize!=sizeof(DBR_GR_Query_Transfer_Log)) return false;
-
-		//执行查询
-		DBR_GR_Query_Transfer_Log * dbr=(DBR_GR_Query_Transfer_Log *)pData;
-
-		//执行查询
-		m_GameScoreDBModule->ClearParameters();
-		m_GameScoreDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
-		m_GameScoreDBModule->AddParameter(TEXT("@dwUserID"),adInteger,adParamInput,sizeof(long),_variant_t((long)dbr->dwUserID));
-		m_GameScoreDBModule->ExecuteProcess("GSP_GR_Query_Transfer",true);
-
-		while ( m_GameScoreDBModule->IsRecordsetEnd()==false)
-		{
-			CMD_GF_Transfer_Log_Item cmd;
-			ZeroMemory(&cmd, sizeof(CMD_GF_Transfer_Log_Item));
-			COleDateTime  temp;
-			memset(&cmd, 0, sizeof(CMD_GF_Transfer_Log_Item));
-			m_GameScoreDBModule->GetFieldValue(TEXT("Account_Out"),cmd.szOutAccount,sizeof(cmd.szOutAccount));
-			m_GameScoreDBModule->GetFieldValue(TEXT("Account_In"),cmd.szInAccount,sizeof(cmd.szInAccount));
-			m_GameScoreDBModule->GetFieldValue(TEXT("MoneyNumber"),cmd.sfMoney);
-			m_GameScoreDBModule->GetFieldValue(TEXT("Tax"),cmd.sfTax);
-			m_GameScoreDBModule->GetFieldValue(TEXT("CreateDate"), temp);
-			m_GameScoreDBModule->GetFieldValue(TEXT("ClientIP"), cmd.szIP, sizeof(cmd.szIP));
-
-			temp.GetAsSystemTime(cmd.TransTime);
-			cmd.wTableID=dbr->wTableID;
-			cmd.dwUserID=dbr->dwUserID;
-
-			m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_QUERY_TRANSFER_ITEM,
-				dwContextID, &cmd, sizeof(CMD_GF_Transfer_Log_Item));
-
-			m_GameScoreDBModule->MoveToNext();
-		}
-
-		CMD_GF_Transfer_Log_Out LogOut;
-		ZeroMemory(&LogOut, sizeof(CMD_GF_Transfer_Log_Out));
-		LogOut.dwUserID=dbr->dwUserID;
-		LogOut.wTableID=dbr->wTableID;
-
-		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_QUERY_TRANSFER_LOG_OUT,
-			dwContextID, &LogOut, sizeof(CMD_GF_Transfer_Log_Out));
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
-	return true;
-}
-
-//修改登录密码
-bool CDataBaseSink::OnRequestModifyLoginPassword(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	try
-	{
-		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_ModifyPassword));
-		if (wDataSize!=sizeof(DBR_GR_ModifyPassword)) return false;
-
-		//执行查询
-		DBR_GR_ModifyPassword * pDBR=(DBR_GR_ModifyPassword *)pData;
-
-		//执行查询
-		m_AccountsDBModule->ClearParameters();
-		m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"), adInteger,adParamReturnValue,  sizeof(long), _variant_t((long)0) );
-		m_AccountsDBModule->AddParameter(TEXT("@dwUserID"), adInteger,adParamInput,  sizeof(long), _variant_t((long)pDBR->dwUserID) );
-		m_AccountsDBModule->AddParameter(TEXT("@OLDPassword"),  adChar,adParamInput, PASS_LEN, _variant_t(pDBR->szOLDPassword) );
-		m_AccountsDBModule->AddParameter(TEXT("@NEWPassword"), adChar, adParamInput, PASS_LEN, _variant_t(pDBR->szNEWPassword) );
-		m_AccountsDBModule->ExecuteProcess("GSP_GP_Modify_PassWord",true);
-
-		//结果判断
-		LONG lReturnCode=m_AccountsDBModule->GetReturnValue();
-		if ( lReturnCode!=0L )
-		{
-			TCHAR szErrorDescribe[256]=TEXT("");
-			m_AccountsDBModule->GetFieldValue(TEXT("ErrorDescribe"), szErrorDescribe, sizeof(szErrorDescribe));
-			CTraceService::TraceString(szErrorDescribe,TraceLevel_Exception);
-			lstrcpyn(pDBR->szErrorDescribe, szErrorDescribe, CountArray(pDBR->szErrorDescribe));
-		}
-
-		pDBR->lErrorCode=lReturnCode;
-
-		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_MODIFY_LOGIN_PASSWORD_OUT, 
-			dwContextID, pDBR, sizeof(DBR_GR_ModifyPassword));
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
-	return true;
-}
-
-//修改银行密码
-bool CDataBaseSink::OnRequestModifyBankPassword(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	try
-	{
-		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_ModifyPassword));
-		if (wDataSize!=sizeof(DBR_GR_ModifyPassword)) return false;
-
-		//执行查询
-		DBR_GR_ModifyPassword * pDBR=(DBR_GR_ModifyPassword *)pData;
-
-		//执行查询
-		m_AccountsDBModule->ClearParameters();
-		m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
-		m_AccountsDBModule->AddParameter(TEXT("@dwUserID"),adInteger,adParamInput,sizeof(long),_variant_t((long)pDBR->dwUserID));
-		m_AccountsDBModule->AddParameter(TEXT("@OLDPassword"),  adChar, adParamInput,PASS_LEN, _variant_t(pDBR->szOLDPassword));
-		m_AccountsDBModule->AddParameter(TEXT("@NEWPassword"),  adChar, adParamInput,PASS_LEN, _variant_t(pDBR->szNEWPassword));
-		m_AccountsDBModule->ExecuteProcess("GSP_GP_Modify_Bank_PassWord",true);
-
-		//结果判断
-		LONG lReturnCode=m_AccountsDBModule->GetReturnValue();
-		if ( lReturnCode!=0L )
-		{
-			TCHAR szErrorDescribe[256]=TEXT("");
-			m_AccountsDBModule->GetFieldValue(TEXT("ErrorDescribe"), szErrorDescribe, sizeof(szErrorDescribe));
-			CTraceService::TraceString(szErrorDescribe,TraceLevel_Exception);
-			lstrcpyn(pDBR->szErrorDescribe, szErrorDescribe, CountArray(pDBR->szErrorDescribe));
-		}
-
-		pDBR->lErrorCode=lReturnCode;
-
-		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_MODIFY_BANK_PASSWORD_OUT, 
-			dwContextID, pDBR, sizeof(DBR_GR_ModifyPassword));
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
-	return true;
-}
-
-//修改昵称
-bool CDataBaseSink::OnRequestModifyNickname(DWORD dwContextID, VOID * pData, WORD wDataSize)
-{
-	try
-	{
-		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_Modify_Nickname));
-		if (wDataSize!=sizeof(DBR_GR_Modify_Nickname)) return false;
-
-		//执行查询
-		DBR_GR_Modify_Nickname * pDBR=(DBR_GR_Modify_Nickname *)pData;
-
-		//执行查询
-		m_AccountsDBModule->ClearParameters();
-		m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
-		m_AccountsDBModule->AddParameter(TEXT("@dwUserID"),adInteger,adParamInput,sizeof(long),_variant_t((long)pDBR->dwUserID));
-		m_AccountsDBModule->AddParameter(TEXT("@NickName"),  adVarChar, adParamInput,lstrlen(pDBR->szNickname), _variant_t(pDBR->szNickname));
-		m_AccountsDBModule->ExecuteProcess("GSP_GP_Modify_Nickname",true);
-
-		//结果判断
-		LONG lReturnCode=m_AccountsDBModule->GetReturnValue();
-		if ( lReturnCode!=0L )
-		{
-			TCHAR szErrorDescribe[256]=TEXT("");
-			m_AccountsDBModule->GetFieldValue(TEXT("ErrorDescribe"), szErrorDescribe, sizeof(szErrorDescribe));
-			CTraceService::TraceString(szErrorDescribe,TraceLevel_Exception);
-			lstrcpyn(pDBR->szErrorDescribe, szErrorDescribe, CountArray(pDBR->szErrorDescribe));
-		}
-
-		pDBR->lErrorCode=lReturnCode;
-
-		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_MODIFY_NICKNAME_OUT,
-			dwContextID, pDBR, sizeof(DBR_GR_Modify_Nickname));
-	}
-	catch (IDataBaseException * pIException)
-	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
-	}
+	CATCH_ADO_SHOW(lpszProc);
 	return true;
 }
 
 //银行操作
 bool CDataBaseSink::OnRequestBankTask(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
-	try
+	//效验参数
+	ASSERT(wDataSize==sizeof(DBR_GR_BankTask));
+	if (wDataSize!=sizeof(DBR_GR_BankTask)) return false;
+	//执行查询
+	DBR_GR_BankTask * pBankTask=(DBR_GR_BankTask *)pData;
+	LPCTSTR lpszProc = _T("GSP_GR_Bank");
+	TRY_BEGIN()
+	//执行存储过程
+	m_GameScoreDBModule->ClearParameters();
+	m_GameScoreDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
+	m_GameScoreDBModule->AddParameter(TEXT("@dwUserID"),adInteger,adParamInput,sizeof(long),_variant_t((long)pBankTask->dwUserID));
+	m_GameScoreDBModule->AddParameter(TEXT("@Password"), adChar, adParamInput,PASS_LEN, _variant_t(pBankTask->szPassword));
+	m_GameScoreDBModule->AddParameter(TEXT("@BankTask"),adInteger,adParamInput,sizeof(long),_variant_t((long)pBankTask->lBankTask));
+	m_GameScoreDBModule->AddParameter(TEXT("@MoneyNumber"),adBigInt,adParamInput,sizeof(__int64),_variant_t(pBankTask->lMoneyNumber));
+	m_GameScoreDBModule->ExecuteProcess(lpszProc,true);
+	LONG lReturn=m_GameScoreDBModule->GetReturnValue();
+	pBankTask->lErrorCode=lReturn;
+	if ( lReturn==0 )
 	{
-		//效验参数
-		ASSERT(wDataSize==sizeof(DBR_GR_BankTask));
-		if (wDataSize!=sizeof(DBR_GR_BankTask)) return false;
-		//执行查询
-		DBR_GR_BankTask * pBankTask=(DBR_GR_BankTask *)pData;
-
-		//执行存储过程
-		m_GameScoreDBModule->ClearParameters();
-		m_GameScoreDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
-		m_GameScoreDBModule->AddParameter(TEXT("@dwUserID"),adInteger,adParamInput,sizeof(long),_variant_t((long)pBankTask->dwUserID));
-		m_GameScoreDBModule->AddParameter(TEXT("@Password"), adChar, adParamInput,PASS_LEN, _variant_t(pBankTask->szPassword));
-		m_GameScoreDBModule->AddParameter(TEXT("@BankTask"),adInteger,adParamInput,sizeof(long),_variant_t((long)pBankTask->lBankTask));
-		m_GameScoreDBModule->AddParameter(TEXT("@MoneyNumber"),adBigInt,adParamInput,sizeof(__int64),_variant_t(pBankTask->lMoneyNumber));
-		m_GameScoreDBModule->ExecuteProcess("GSP_GR_Bank",true);
-
-		LONG lReturn=m_GameScoreDBModule->GetReturnValue();
-		pBankTask->lErrorCode=lReturn;
-		if ( lReturn==0 )
-		{
-			m_GameScoreDBModule->GetFieldValue(TEXT("MoneyNumber"), pBankTask->lMoneyNumber);
-			m_GameScoreDBModule->GetFieldValue(TEXT("NewScore"), pBankTask->lNewScore);
-			m_GameScoreDBModule->GetFieldValue(TEXT("MoneyInBank"), pBankTask->lMoneyInBank);
-		}
-		else
-		{
-			m_GameScoreDBModule->GetFieldValue(TEXT("ErrorDescribe"), pBankTask->szErrorDescribe, sizeof(pBankTask->szErrorDescribe) );
-		}
-
-		m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_BANK_TASK_OUT,
-			dwContextID , pBankTask, sizeof(DBR_GR_BankTask));
-		return true;
+		m_GameScoreDBModule->GetFieldValue(TEXT("MoneyNumber"), pBankTask->lMoneyNumber);
+		m_GameScoreDBModule->GetFieldValue(TEXT("NewScore"), pBankTask->lNewScore);
+		m_GameScoreDBModule->GetFieldValue(TEXT("MoneyInBank"), pBankTask->lMoneyInBank);
 	}
-	catch (IDataBaseException * pIException)
+	else
 	{
-		//错误信息
-		LPCTSTR pszDescribe=pIException->GetExceptionDescribe();
-		CTraceService::TraceString(pszDescribe,TraceLevel_Exception);
+		m_GameScoreDBModule->GetFieldValue(TEXT("ErrorDescribe"), pBankTask->szErrorDescribe, sizeof(pBankTask->szErrorDescribe) );
 	}
+	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_BANK_TASK,
+		dwContextID , pBankTask, sizeof(DBR_GR_BankTask));
+	return true;
+	CATCH_ADO_SHOW(lpszProc);
 	return true;
 }
 
@@ -1641,7 +1325,7 @@ bool CDataBaseSink::OnRequsetQueryUserName(DWORD dwContextID, VOID * pData, WORD
 	{
 		m_AccountsDBModule->GetFieldValue(TEXT("@ErrorDescribe"), QuserName->szErrorDescribe, sizeof(QuserName->szErrorDescribe) );
 	}
-	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_QUERYUSERNAME_OUT,
+	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_QUERYUSERNAME,
 		dwContextID , QuserName, sizeof(DBR_GR_Query_UserName));
 	return true;
 	CATCH_ADO_SHOW(lpszProc);
@@ -1667,34 +1351,51 @@ bool CDataBaseSink::OnUpdateOnLineCount(DWORD dwContextID, VOID * pData, WORD wD
 	return true;
 }
 
-//修改签名
-bool CDataBaseSink::OnRequestModifyUnderWrite(DWORD dwContextID, VOID * pData, WORD wDataSize)
+//处理刷新用户信息
+bool CDataBaseSink::OnRequsetFlashUserInfo(DWORD dwContextID, VOID * pData, WORD wDataSize)
 {
-	ASSERT(wDataSize == sizeof(DBR_GR_ModifyUnderWrite));
-	if (wDataSize!=sizeof(DBR_GR_ModifyUnderWrite)) 
+	ASSERT(wDataSize == sizeof(DBR_GR_FlashUserInfo));
+	if (wDataSize!=sizeof(DBR_GR_FlashUserInfo)) 
 		return false;
-	DBR_GR_ModifyUnderWrite* pUnderWrite = (DBR_GR_ModifyUnderWrite*)pData;
-	LPCTSTR lpszProc = _T("GSP_GP_ModifyUnderWrite");
+	DBR_GR_FlashUserInfo* info = (DBR_GR_FlashUserInfo*)pData;
+	LPCTSTR lpszProc = _T("GSP_GP_FlashUserInfo");
 	TRY_BEGIN()
 	//执行存储过程
-	m_AccountsDBModule->ClearParameters();
-	m_AccountsDBModule->AddParameter(TEXT("RETURN_VALUE"),adInteger,adParamReturnValue,sizeof(long),_variant_t((long)0));
-	m_AccountsDBModule->AddParameter(TEXT("@dwUserID"),adInteger,adParamInput,sizeof(long),_variant_t((long)pUnderWrite->dwUserID));
-	m_AccountsDBModule->AddParameter(TEXT("@UnderWrite"), adChar, adParamInput,lstrlen(pUnderWrite->szUnderWrite), _variant_t(pUnderWrite->szUnderWrite));
-	m_AccountsDBModule->ExecuteProcess(lpszProc,true);
-	LONG lReturn=m_AccountsDBModule->GetReturnValue();
-	pUnderWrite->lErrorCode=lReturn;
-	if (lReturn!=0 )
-	{
-		m_AccountsDBModule->GetFieldValue(TEXT("@ErrorDescribe"), pUnderWrite->szErrorDescribe, sizeof(pUnderWrite->szErrorDescribe) );
-	}
-	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_MODIFY_UNDERWRITE,
-		dwContextID , pUnderWrite, sizeof(DBR_GR_ModifyUnderWrite));
+	m_AccountsDBAide.ResetParameter();
+	m_AccountsDBAide.AddParameter(TEXT("@dwUserID"),info->lUserID);
+	m_AccountsDBAide.ExecuteProcess(lpszProc,true);
+	DBR_GR_FlashUserInfo_Ret infoRet;
+	ZeroMemory(&infoRet,sizeof(infoRet));
+	//读取用户信息
+	infoRet.dwUserID=m_AccountsDBAide.GetValue_DWORD(TEXT("UserID"));
+	infoRet.dwCustomFaceVer=m_AccountsDBAide.GetValue_DWORD(TEXT("CustomFaceVer"));
+	infoRet.dwGameID=m_AccountsDBAide.GetValue_DWORD(TEXT("GameID"));
+	infoRet.wFaceID=m_AccountsDBAide.GetValue_WORD(TEXT("FaceID"));
+	infoRet.dwGroupID=m_AccountsDBAide.GetValue_DWORD(TEXT("GroupID"));
+	infoRet.lExperience=m_AccountsDBAide.GetValue_LONG(TEXT("Experience"));
+	infoRet.dwUserRight=m_AccountsDBAide.GetValue_DWORD(TEXT("UserRight"));
+	infoRet.lLoveliness=m_AccountsDBAide.GetValue_DWORD(TEXT("Loveliness"));
+	infoRet.dwMasterRight=m_AccountsDBAide.GetValue_DWORD(TEXT("MasterRight"));
+	infoRet.cbGender=m_AccountsDBAide.GetValue_UINT(TEXT("Gender"));
+	infoRet.cbMemberOrder=m_AccountsDBAide.GetValue_BYTE(TEXT("MemberOrder"));
+	infoRet.cbMasterOrder=m_AccountsDBAide.GetValue_BYTE(TEXT("MasterOrder"));
+	m_AccountsDBAide.GetValue_String(TEXT("Accounts"),infoRet.szAccounts,CountArray(infoRet.szAccounts));
+	m_AccountsDBAide.GetValue_String(TEXT("GroupName"),infoRet.szGroupName,CountArray(infoRet.szGroupName));
+	m_AccountsDBAide.GetValue_String(TEXT("UnderWrite"),infoRet.szUnderWrite,CountArray(infoRet.szUnderWrite));
+	//读取游戏信息
+	infoRet.lScore=m_AccountsDBAide.GetValue_LONGLONG(TEXT("Score"));
+	infoRet.lInsureScore=m_AccountsDBAide.GetValue_LONGLONG(TEXT("InsureScore"));
+	//LogonSuccess.lGameGold=m_AccountsDBModule.GetValue_LONGLONG(TEXT("GameGold"));
+	infoRet.lWinCount=m_AccountsDBAide.GetValue_LONG(TEXT("WinCount"));
+	infoRet.lLostCount=m_AccountsDBAide.GetValue_LONG(TEXT("LostCount"));
+	infoRet.lDrawCount=m_AccountsDBAide.GetValue_LONG(TEXT("DrawCount"));
+	infoRet.lFleeCount=m_AccountsDBAide.GetValue_LONG(TEXT("FleeCount"));
+
+	m_pIDataBaseEngineEvent->OnEventDataBaseResult(DBR_GR_FLASHUSERINFO,
+		dwContextID , &infoRet, sizeof(infoRet));
 	return true;
 	CATCH_ADO_SHOW(lpszProc);
-	return true;	
+	return true;
 }
-
-
 
 //////////////////////////////////////////////////////////////////////////

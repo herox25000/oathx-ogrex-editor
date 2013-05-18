@@ -28,6 +28,7 @@ CGlobalUnits::CGlobalUnits(void)
 	m_szDirWork[0]=0;
 	m_dwPlazaVersion=VER_PLAZA_FRAME;
 	memset(&m_GloblaUserData,0,sizeof(m_GloblaUserData));
+	memset(&m_IndividualUserData,0,sizeof(m_IndividualUserData));
 	lstrcpyn(m_szStationPage,szStationPage,sizeof(m_szStationPage));
 
 	//资源变量
@@ -38,7 +39,8 @@ CGlobalUnits::CGlobalUnits(void)
 	ZeroMemory(&m_PlatformFrameImage,sizeof(m_PlatformFrameImage));
 	ZeroMemory(&m_ChatExpViewImage,sizeof(m_ChatExpViewImage));
 	ZeroMemory(&m_PropertyViewImage,sizeof(m_PropertyViewImage));
-
+	m_LogonServerIP = NULL;				//登陆服务器地址
+	m_LogonServerPort = 0;				//登陆服务器端口
 	return;
 }
 
@@ -182,6 +184,8 @@ bool CGlobalUnits::WriteUserCookie()
 bool CGlobalUnits::DeleteUserCookie()
 {
 	//删除信息
+	memset(&m_GloblaUserData,0,sizeof(m_GloblaUserData));
+	memset(&m_IndividualUserData,0,sizeof(m_IndividualUserData));
 	CInternetSession::SetCookie(szCookieUrl,TEXT("UserID"),TEXT(""));
 	CInternetSession::SetCookie(szCookieUrl,TEXT("GameID"),TEXT(""));
 	CInternetSession::SetCookie(szCookieUrl,TEXT("Accounts"),TEXT(""));

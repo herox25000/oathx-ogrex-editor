@@ -158,6 +158,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\GIFImage.cpp">
 			</File>
 			<File
+				RelativePath=".\PasswordControl.cpp">
+			</File>
+			<File
 				RelativePath=".\PngImage.cpp">
 			</File>
 			<File
@@ -264,6 +267,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\GIFImage.h">
 			</File>
 			<File
+				RelativePath=".\PasswordControl.h">
+			</File>
+			<File
 				RelativePath=".\PngImage.h">
 			</File>
 			<File
@@ -334,13 +340,85 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\bitmap1.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\Other\BT_KEYBOARD.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Other\BT_KEYBOARD_CLOSE.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_BL.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_BM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_BR.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_ML.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_MR.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_TL.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_TM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\ENCIRCLE_TR.bmp">
+			</File>
+			<File
 				RelativePath="Res\HAND_CUR.cur">
+			</File>
+			<File
+				RelativePath=".\Res\Other\KEYBOARD_ITEM1.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Other\KEYBOARD_ITEM2.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Other\KEYBOARD_ITEM3.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Other\PASSWORD_KEYBORAD_BK.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_BUTTON.bmp">
 			</File>
 			<File
 				RelativePath="res\SKIN_BUTTON_BACK.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\SKIN_COMBOBOX_BUTTON.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_CURSOR.cur">
+			</File>
+			<File
 				RelativePath="res\SKIN_HEAD_TITLE.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_HEADER_L.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_HEADER_M.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_HEADER_R.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_ICON.ico">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_MENU_FLAGS.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_SCROLL.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_WND_BUTTON.bmp">
 			</File>
 			<File
 				RelativePath="res\SKIN_WND_CLOSE.BMP">
@@ -359,6 +437,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 			<File
 				RelativePath="res\SKIN_WND_RESORE.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_WND_RESTORE.bmp">
 			</File>
 			<File
 				RelativePath="res\SKIN_WND_RIGHT.bmp">
@@ -384,6 +465,33 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 		</File>
 		<File
 			RelativePath="ReadMe.txt">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_BL.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_BM.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_BR.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_LOGO.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_ML.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_MR.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_TL.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_TM.png">
+		</File>
+		<File
+			RelativePath=".\Res\SKIN_WND_TR.png">
 		</File>
 	</Files>
 	<Globals>

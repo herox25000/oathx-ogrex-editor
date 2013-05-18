@@ -758,6 +758,7 @@ bool CClientKernel::OnIPCConfig(const IPC_Head * pHead, const void * pIPCBuffer,
 			m_wChairID=pServerInfo->wChairID;
 			m_dwUserID=pServerInfo->dwUserID;
 			m_ServerAttribute.wKindID=pServerInfo->wKindID;
+			m_ServerAttribute.wTypeID=pServerInfo->wTypeID;
 			m_ServerAttribute.wServerID=pServerInfo->wServerID;
 			m_ServerAttribute.wGameGenre=pServerInfo->wGameGenre;
 			m_ServerAttribute.wChairCount=pServerInfo->wChairCount;
@@ -974,6 +975,19 @@ bool CClientKernel::OnIPCUser(const IPC_Head * pHead, const void * pIPCBuffer, W
 			tagUserData *pUserData = SearchUserItem(m_dwUserID);
 			pUserData->dwCustomFaceVer = pUpdateFace->dwCustomFace;
 
+			return true;
+		}
+	case IPC_SUB_FLASHUSERINFO:  //刷新用户信息
+		{
+			ASSERT(wDataSize>=sizeof(tagUserData));
+			if (wDataSize<sizeof(tagUserData)) 
+				return false;
+			tagUserData* pInfo = (tagUserData*)pIPCBuffer;
+			tagUserData * pRecvUserData=NULL;
+			pRecvUserData=SearchUserItem(pInfo->dwUserID);
+			if (pRecvUserData==NULL) 
+				return true;
+			*pRecvUserData = *pInfo;
 			return true;
 		}
 	}

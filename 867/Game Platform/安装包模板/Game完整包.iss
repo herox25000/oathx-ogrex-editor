@@ -27,7 +27,7 @@ Name: "chinesesimp"; MessagesFile: "compiler:Default.isl"
 //写入安装包版本号
 [INI]
 Filename: "{app}\Version.ini"; Section: "PLAZA"; Flags: uninsdeletesection
-Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.3"
+Filename: "{app}\Version.ini"; Section: "PLAZA"; Key: "Version"; String: "3.4"
 
  //----------------------------------
 [Registry]

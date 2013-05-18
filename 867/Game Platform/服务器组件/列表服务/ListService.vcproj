@@ -169,6 +169,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\服务器组件\Release\$
 				RelativePath=".\ListService.h">
 			</File>
 			<File
+				RelativePath="..\登陆服务器\resource.h">
+			</File>
+			<File
 				RelativePath=".\Resource.h">
 			</File>
 			<File

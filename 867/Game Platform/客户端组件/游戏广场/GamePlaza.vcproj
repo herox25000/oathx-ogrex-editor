@@ -158,6 +158,18 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\DlgOption.cpp">
 			</File>
 			<File
+				RelativePath=".\DlgService.cpp">
+			</File>
+			<File
+				RelativePath=".\dlgserviceindividual.cpp">
+			</File>
+			<File
+				RelativePath=".\DlgServiceItem.cpp">
+			</File>
+			<File
+				RelativePath=".\DlgServicePassword.cpp">
+			</File>
+			<File
 				RelativePath=".\DlgStatus.cpp">
 			</File>
 			<File
@@ -245,6 +257,18 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 			<File
 				RelativePath=".\DlgOption.h">
+			</File>
+			<File
+				RelativePath=".\DlgService.h">
+			</File>
+			<File
+				RelativePath=".\dlgserviceindividual.h">
+			</File>
+			<File
+				RelativePath=".\DlgServiceItem.h">
+			</File>
+			<File
+				RelativePath=".\DlgServicePassword.h">
 			</File>
 			<File
 				RelativePath=".\DlgStatus.h">
@@ -433,6 +457,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			RelativePath=".\Res\Plaza_logon\DLG_REGISTER_BACK.png">
 		</File>
 		<File
+			RelativePath=".\Res\User_info\FACE_ITEM_FRAME.png">
+		</File>
+		<File
 			RelativePath=".\res\GamePlaza.manifest">
 		</File>
 		<File
@@ -440,6 +467,24 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 		</File>
 		<File
 			RelativePath=".\Res\Server_list\SERVER_LIST_ARROW.png">
+		</File>
+		<File
+			RelativePath=".\Res\User_info\SERVICE_BAR_BT.png">
+		</File>
+		<File
+			RelativePath=".\Res\User_info\SERVICE_BAR_IMAGE.png">
+		</File>
+		<File
+			RelativePath=".\Res\User_info\SERVICE_BAR_LOGO.png">
+		</File>
+		<File
+			RelativePath=".\Res\User_info\Under_write_l.png">
+		</File>
+		<File
+			RelativePath=".\Res\User_info\Under_write_m.png">
+		</File>
+		<File
+			RelativePath=".\Res\User_info\Under_write_r.png">
 		</File>
 	</Files>
 	<Globals>

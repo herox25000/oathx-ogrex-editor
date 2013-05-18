@@ -150,7 +150,42 @@ IDB_SKIN_HEADER_M       BITMAP                  "res\\SKIN_HEADER_M.bmp"
 IDB_SKIN_WND_CLOSE      BITMAP                  "res\\SKIN_WND_CLOSE.bmp"
 IDB_SKIN_SCROLL         BITMAP                  "res\\SKIN_SCROLL.bmp"
 IDB_SKIN_WND_BUTTON     BITMAP                  "res\\SKIN_WND_BUTTON.bmp"
+IDB_BT_KEYBOARD         BITMAP                  "res\\Other\\BT_KEYBOARD.bmp"
+IDB_BT_KEYBOARD_CLOSE   BITMAP                  "res\\Other\\BT_KEYBOARD_CLOSE.bmp"
+IDB_KEYBOARD_ITEM1      BITMAP                  "res\\Other\\KEYBOARD_ITEM1.bmp"
+IDB_KEYBOARD_ITEM2      BITMAP                  "res\\Other\\KEYBOARD_ITEM2.bmp"
+IDB_KEYBOARD_ITEM3      BITMAP                  "res\\Other\\KEYBOARD_ITEM3.bmp"
+IDB_PASSWORD_KEYBORAD_BK BITMAP                  "res\\Other\\PASSWORD_KEYBORAD_BK.bmp"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_PASSWORD_KEYBOARD DIALOGEX 0, 0, 186, 93
+STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_BORDER | WS_SYSMENU
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_PASSWORD_KEYBOARD, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+END
+#endif    // APSTUDIO_INVOKED
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////

@@ -98,11 +98,11 @@ bool __cdecl CEditUnderWrite::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCod
 	tagGlobalUserData & GlobalUserInfo=g_GlobalUnits.GetGolbalUserData();
 
 	//发送更改请求
-	CMD_TOOLBOX_ModifyUnderWrite Write;
+	CMD_GP_ModifyUnderWrite Write;
 	ZeroMemory(&Write,sizeof(Write));
 	Write.dwUserID = GlobalUserInfo.dwUserID;
 	lstrcpyn(Write.szUnderWrite,m_szUnderWrite,CountArray(Write.szUnderWrite));
-	m_SocketHelper->SendData(MDM_TOOLBOX,SUB_TOOLBOX_TMODIFYUNDERWRITE,&Write,sizeof(Write));
+	m_SocketHelper->SendData(MDM_GP_USER,SUB_GP_TMODIFYUNDERWRITE,&Write,sizeof(Write));
 
 	return true;
 }
@@ -115,15 +115,15 @@ bool __cdecl CEditUnderWrite::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutRe
 //读取事件
 bool __cdecl CEditUnderWrite::OnEventTCPSocketRead(WORD wSocketID, CMD_Command Command, VOID * pData, WORD wDataSize)
 {
-	if(Command.wMainCmdID == MDM_TOOLBOX)
+	if(Command.wMainCmdID == MDM_GP_USER)
 	{
 		switch (Command.wSubCmdID)
 		{
-		case SUB_TOOLBOX_OPERATERETURN:	
+		case SUB_GP_TMODIFYUNDERWRITE_RESULT:	
 			{
-				if(wDataSize != sizeof(CMD_TOOLBOX_OperateReturn))
+				if(wDataSize != sizeof(CMD_GP_ModifyUnderWrite_Ret))
 					return true;
-				CMD_TOOLBOX_OperateReturn* pReturn = (CMD_TOOLBOX_OperateReturn*)pData;
+				CMD_GP_ModifyUnderWrite_Ret* pReturn = (CMD_GP_ModifyUnderWrite_Ret*)pData;
 
 				//如果返回成功
 				if(pReturn->lResultCode == 0)
@@ -237,18 +237,10 @@ VOID CEditUnderWrite::UpdateUnderWrite()
 
 			if (m_SocketHelper.GetInterface()!=NULL)
 				m_SocketHelper->CloseSocket();
-
-			DWORD dwIP = g_GlobalUnits.m_ServerListManager.m_dwToolServerAddr;
-			WORD wPort = g_GlobalUnits.m_ServerListManager.m_wToolServerPort;
-			if (dwIP!=0 && wPort!=0)
+			if(m_SocketHelper->Connect( g_GlobalUnits.m_LogonServerIP, g_GlobalUnits.m_LogonServerPort) != CONNECT_SUCCESS)
 			{
-				m_SocketHelper->Connect( dwIP, wPort);
+				ShowInformationEx(TEXT("网络连接失败4，抱歉"),0,MB_ICONQUESTION,TEXT("签名"));
 			}
-			else
-			{
-				ShowInformationEx("抱歉，此功能暂时不能使用！",0,MB_ICONQUESTION,TEXT("签名"));
-				return ;
-			}	
 			//隐藏控件
 			ShowWindow(SW_HIDE);
 			//更新界面
@@ -298,7 +290,16 @@ CUserInfoView::CUserInfoView() : CDialog(IDD_USER_INFO)
 	m_bShowInfo=false;
 	m_bCreateFlag=false;
 	m_bHoverUnderWrite = false;
+	m_bHoverFace = false;
+
+	m_bClickFace=false;
+	//设置区域
+	m_rcFaceArea.SetRect(30,21,30+59,21+58);
 	m_EditUnderWrite.SetParentWindow(this);
+
+	m_ImageItemFrame.LoadImage(GetModuleHandle(0),TEXT("FACE_ITEM_FRAME"));
+	//设置大小
+	m_SizeItemFrame.SetSize(m_ImageItemFrame.GetWidth()/3,m_ImageItemFrame.GetHeight());
 	return;
 }
 
@@ -445,6 +446,14 @@ BOOL CUserInfoView::OnEraseBkgnd(CDC * pDC)
 			}
 		}
 
+		//绘画边框
+		if (m_bHoverFace==true)
+		{
+			//绘画框架
+			INT nXImagePos=m_SizeItemFrame.cx*2;
+			m_ImageItemFrame.DrawImage(pBufferDC,m_rcFaceArea.left,m_rcFaceArea.top,m_SizeItemFrame.cx,m_SizeItemFrame.cy,nXImagePos,0);
+		}
+
 		//用户头像
 		g_GlobalUnits.m_UserFaceRes->DrawNormalFace(pBufferDC,37,27,GlobalUserInfo.wFaceID,GlobalUserInfo.dwUserID,GlobalUserInfo.dwCustomFaceVer);
 
@@ -512,6 +521,21 @@ VOID CUserInfoView::RectifyControl(INT nWidth, INT nHeight)
 //鼠标消息
 VOID CUserInfoView::OnLButtonUp(UINT nFlags, CPoint MousePoint)
 {
+	__super::OnLButtonUp(nFlags,MousePoint);
+
+	if ((m_bHoverFace==true)&&(m_bClickFace==true))
+	{
+		//释放捕获
+		ReleaseCapture();
+		//设置变量
+		m_bClickFace=false;
+		//个人信息
+		if (m_rcFaceArea.PtInRect(MousePoint)==TRUE)
+		{
+
+		}
+	}
+	return;
 }
 //鼠标消息
 VOID CUserInfoView::OnLButtonDown(UINT nFlags, CPoint MousePoint)
@@ -519,6 +543,17 @@ VOID CUserInfoView::OnLButtonDown(UINT nFlags, CPoint MousePoint)
 	__super::OnLButtonDown(nFlags,MousePoint);
 	//设置焦点
 	SetFocus();
+
+	//动作处理
+	if ((m_bHoverFace==true)&&(m_bClickFace==false))
+	{
+		//鼠标扑获
+		SetCapture();
+		//设置变量
+		m_bClickFace=true;
+	}
+
+
 	//编辑签名
 	if (m_bHoverUnderWrite==true)
 	{
@@ -559,6 +594,24 @@ BOOL CUserInfoView::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
 	bool bRedrawWindow=false;
 
 	//盘旋判断
+	if ((m_bHoverFace==false)&&(m_rcFaceArea.PtInRect(MousePoint)==TRUE))
+	{
+		//设置变量
+		bRedrawWindow=true;
+		//设置变量
+		m_bHoverFace=true;
+	}
+
+	//离开判断
+	if ((m_bHoverFace==true)&&(m_rcFaceArea.PtInRect(MousePoint)==FALSE))
+	{
+		//设置变量
+		bRedrawWindow=true;
+		//设置变量
+		m_bHoverFace=false;
+	}
+
+	//盘旋判断
 	if ((m_bHoverUnderWrite==false)&&(m_rcUnderWrite.PtInRect(MousePoint)==TRUE))
 	{
 		//设置变量
@@ -582,12 +635,28 @@ BOOL CUserInfoView::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
 	{
 		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_ERASE|RDW_UPDATENOW|RDW_ERASENOW);
 	}
+
+	//设置光标
+	if (m_bHoverFace==true)
+	{
+		SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_HAND_CUR)));
+		return true;
+	}
+
 	return __super::OnSetCursor(pWnd,nHitTest,uMessage);
 }
 
 //鼠标离开
 LRESULT CUserInfoView::OnMouseLeave(WPARAM wParam, LPARAM lParam)
 {
+	//离开处理
+	if (m_bHoverFace==true)
+	{
+		//更新界面
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_ERASE|RDW_UPDATENOW|RDW_ERASENOW);
+	}
+
+
 	//离开处理
 	if (m_bHoverUnderWrite==true)
 	{

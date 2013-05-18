@@ -14,8 +14,6 @@ public:
 		BANK_DLG_SAVE=0,
 		BANK_DLG_GET,
 		BANK_DLG_PTN,
-		BANK_DLG_MODIFYBANKPW,
-		BANK_DLG_MODIFYLOGINPW,
 	};
 
 	enum OPT
@@ -104,10 +102,6 @@ public:
 	void GetGoldOk();
 	//转账确定
 	void PtnGoldOK();
-	//修改登录密码确定
-	void ModifyLoginPWOK();
-	//修改银行密码OK
-	void ModifyBankPWOK();
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);
 	virtual BOOL PreTranslateMessage(MSG* pMsg);

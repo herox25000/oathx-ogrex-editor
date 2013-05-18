@@ -53,14 +53,12 @@ BOOL CDlgBank::PreTranslateMessage(MSG* pMsg)
 BOOL CDlgBank::OnInitDialog()
 {
 	__super::OnInitDialog();
-	SetWindowText("中心");
+	SetWindowText("银行");
 	m_TabBank.SetItemSize(CSize(100,25));
 	//加入标签
 	m_TabBank.InsertItem(BANK_DLG_SAVE,TEXT("存钱"));
 	m_TabBank.InsertItem(BANK_DLG_GET,TEXT("取钱"));
 	m_TabBank.InsertItem(BANK_DLG_PTN,TEXT("赠送"));
-	m_TabBank.InsertItem(BANK_DLG_MODIFYBANKPW,TEXT("修改银行密码"));
-	m_TabBank.InsertItem(BANK_DLG_MODIFYLOGINPW,TEXT("修改登录密码"));
 	m_TabBank.SetCurSel(BANK_DLG_SAVE);
 	OnTcnSelchange(NULL, NULL);
 	return FALSE; 
@@ -336,9 +334,25 @@ bool CDlgBank::OnSocketMainUser(CMD_Command Command, void * pData, WORD wDataSiz
 		{
 			return OnSocketSubScore(Command,pData,wDataSize);
 		}
-
+	case SUB_GR_FLASHUSERINFO:
+		{
+			//效验参数
+			ASSERT(Command.wMainCmdID==MDM_GR_USER);
+			ASSERT(Command.wSubCmdID==SUB_GR_FLASHUSERINFO);
+			//效验参数
+			ASSERT(wDataSize==sizeof(CMD_GR_FlashUserInfo));
+			if (wDataSize!=sizeof(CMD_GR_FlashUserInfo))
+				return false;
+			//处理数据
+			CMD_GR_FlashUserInfo* pUserInfo = (CMD_GR_FlashUserInfo*)pData;
+			if(pUserInfo->dwUserID == g_GlobalUnits.GetGolbalUserData().dwUserID)
+			{
+				m_strGameGold = GetString(pUserInfo->lScore);
+				m_strBankGold = GetString(pUserInfo->lInsureScore);
+				UpdateData(FALSE);
+			}
+		}
 	}
-
 	return true;
 }
 
@@ -377,7 +391,6 @@ bool CDlgBank::OnSocketSubScore(CMD_Command Command, void * pData, WORD wDataSiz
 		m_strBankGold = GetString(pUserScore->UserScore.lInsureScore);
 		UpdateData(FALSE);
 	}
-	
 	return true;
 }
 
@@ -495,40 +508,6 @@ void CDlgBank::OnTcnSelchange(NMHDR * pNMHDR, LRESULT * pResult)
 			SetOptType(OPT_PTN);
 		}
 		break;
-	case BANK_DLG_MODIFYLOGINPW:
-		{
-			m_TabBank.SetCurSel(BANK_DLG_MODIFYLOGINPW);
-			SetDlgItemText(IDC_BANK_PLYNAME,TEXT("旧密码："));
-			SetDlgItemText(IDC_BANK_TEXT,TEXT("新密码："));
-			SetDlgItemText(IDC_BANKPW_TEXT,TEXT("确认新密码："));
-			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_SHOW);
-		}
-		break;
-	case BANK_DLG_MODIFYBANKPW:
-		{
-			m_TabBank.SetCurSel(BANK_DLG_MODIFYBANKPW);
-			SetDlgItemText(IDC_BANK_PLYNAME,TEXT("旧密码："));
-			SetDlgItemText(IDC_BANK_TEXT,TEXT("新密码："));
-			SetDlgItemText(IDC_BANKPW_TEXT,TEXT("确认新密码："));
-			GetDlgItem(IDC_BANK_BTNALL)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_BANK_PLYNICK)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_BANK_PLYNAME)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_EDIT1)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT2)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT3)->ShowWindow(SW_HIDE);
-			GetDlgItem(IDC_EDIT4)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_EDIT5)->ShowWindow(SW_SHOW);
-			GetDlgItem(IDC_EDIT6)->ShowWindow(SW_SHOW);
-		}
-		break;
 	}
 }
 
@@ -557,12 +536,6 @@ void CDlgBank::OnButtonOK()
 		break;
 	case BANK_DLG_PTN:
 		PtnGoldOK();
-		break;
-	case BANK_DLG_MODIFYLOGINPW:
-		ModifyLoginPWOK();
-		break;
-	case BANK_DLG_MODIFYBANKPW:
-		ModifyBankPWOK();
 		break;
 	}
 }
@@ -717,64 +690,4 @@ void CDlgBank::PtnGoldOK()
 		CopyMemory(cmd.szPassword,szPassword,sizeof(cmd.szPassword));
 		m_BankSocket->SendData(MDM_TOOLBOX, SUB_TOOLBOX_TRANSFERMONEY, &cmd, sizeof(cmd));
 	}
-}
-
-//修改登录密码确定
-void CDlgBank::ModifyLoginPWOK()
-{
-	CString strNewPW1;
-	CString strNewPW2;
-	CString strOldPW;
-	GetDlgItemText(IDC_EDIT5, strOldPW);
-	GetDlgItemText(IDC_EDIT6, strNewPW1);
-	GetDlgItemText(IDC_EDIT4, strNewPW2);
-	strOldPW.Trim();
-	strNewPW1.Trim();
-	strNewPW2.Trim();
-	if (strOldPW.IsEmpty() || strNewPW1.IsEmpty() || strNewPW2.IsEmpty())
-	{
-		ShowMessageBox("密码不能为空！");
-		return;
-	}
-	if (strNewPW1!=strNewPW2)
-	{
-		ShowMessageBox("两个新银行密码不一致！");
-		return;
-	}
-
-	CMD_TOOLBOX_ModifyPassword cmd;
-	memset(&cmd, 0, sizeof(CMD_TOOLBOX_ModifyPassword));
-	CMD5Encrypt::EncryptData(strOldPW, cmd.szOLDPassword);
-	CMD5Encrypt::EncryptData(strNewPW2, cmd.szNEWPassword);
-	m_BankSocket->SendData(MDM_TOOLBOX,SUB_TOOLBOX_TMODIFYLOGINPASSWORD, &cmd, sizeof(cmd));
-
-}
-//修改银行密码OK
-void CDlgBank::ModifyBankPWOK()
-{
-	CString strNewPW1;
-	CString strNewPW2;
-	CString strOldPW;
-	GetDlgItemText(IDC_EDIT5, strOldPW);
-	GetDlgItemText(IDC_EDIT6, strNewPW1);
-	GetDlgItemText(IDC_EDIT4, strNewPW2);
-	strOldPW.Trim();
-	strNewPW1.Trim();
-	strNewPW2.Trim();
-	if (strOldPW.IsEmpty() || strNewPW1.IsEmpty() || strNewPW2.IsEmpty())
-	{
-		ShowMessageBox("密码不能为空！");
-		return;
-	}
-	if (strNewPW1!=strNewPW2)
-	{
-		ShowMessageBox("两个新银行密码不一致！");
-		return;
-	}
-
-	CMD_TOOLBOX_ModifyPassword cmd;
-	memset(&cmd, 0, sizeof(CMD_TOOLBOX_ModifyPassword));
-	CMD5Encrypt::EncryptData(strOldPW, cmd.szOLDPassword);
-	CMD5Encrypt::EncryptData(strNewPW2, cmd.szNEWPassword);
-	m_BankSocket->SendData(MDM_TOOLBOX,SUB_TOOLBOX_TMODIFYBANKPASSWORD, &cmd, sizeof(cmd));
 }

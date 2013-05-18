@@ -52,6 +52,7 @@
 struct tagServerAttribute
 {
 	WORD							wKindID;							//类型标识
+	WORD							wTypeID;							//游戏类型
 	WORD							wServerID;							//房间标识
 	WORD							wGameGenre;							//游戏类型
 	WORD							wChairCount;						//椅子数目

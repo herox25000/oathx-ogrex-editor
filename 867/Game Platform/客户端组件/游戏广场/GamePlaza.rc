@@ -473,6 +473,88 @@ BEGIN
     PUSHBUTTON      "",IDC_CLOSE_PLAZA,117,73,44,14
 END
 
+IDD_DLG_SERVICE_BROWSER DIALOGEX 0, 0, 239, 169
+STYLE DS_SETFONT | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU
+FONT 9, "宋体", 400, 0, 0x0
+BEGIN
+END
+
+IDD_DLG_SERVICE DIALOGEX 0, 0, 383, 281
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU
+FONT 9, "宋体", 400, 0, 0x0
+BEGIN
+END
+
+IDD_DLG_SERVICE_INDIVIDUAL DIALOGEX 0, 0, 266, 249
+STYLE DS_SETFONT | WS_CHILD | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU
+FONT 9, "宋体", 400, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_ACCOUNTS,54,24,89,12,ES_AUTOHSCROLL
+    CONTROL         "男",IDC_GENDER_MANKIND,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT | WS_GROUP,55,42,24,10
+    CONTROL         "女",IDC_GENDER_FEMALE,"Button",BS_AUTORADIOBUTTON | 
+                    BS_FLAT,90,42,24,10
+    EDITTEXT        IDC_UNDER_WRITE,53,58,200,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_COMPELLATION,54,75,88,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_SFZ,54,93,88,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_MOBILE_PHONE,54,110,88,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_QQ,54,127,88,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EMAIL,54,143,88,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_DWELLING_PLACE,54,160,200,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_USER_NOTE,54,177,200,26,ES_MULTILINE | 
+                    ES_AUTOVSCROLL
+    EDITTEXT        IDC_PASSWORD,54,230,138,12,ES_PASSWORD | ES_AUTOHSCROLL
+    PUSHBUTTON      "确 定",IDOK,199,229,41,14
+    EDITTEXT        IDC_GAMEID,54,7,89,12,ES_AUTOHSCROLL | ES_READONLY
+    LTEXT           "登录密码：",IDC_STATIC,9,232,41,8
+    CONTROL         "",IDC_STATIC,"Static",SS_ETCHEDFRAME,18,209,229,1
+    LTEXT           "游戏 ID：",IDC_STATIC,13,9,37,8
+    LTEXT           "为了保障您的帐号安全，修改资料需提供帐号密码进行身份验证",
+                    IDC_NOTE,10,216,225,8
+    LTEXT           "个性签名：",IDC_STATIC,9,60,41,8
+    LTEXT           "用户名：",IDC_STATIC,17,26,33,8
+    LTEXT           "真实名字：",IDC_STATIC,9,77,41,8
+    LTEXT           "个人说明：",IDC_STATIC,9,179,41,8
+    LTEXT           "联系地址：",IDC_STATIC,9,162,41,8
+    LTEXT           "手机号码：",IDC_STATIC,9,111,41,8
+    LTEXT           " 身份证：",IDC_STATIC,13,94,37,8
+    LTEXT           "电子邮件：",IDC_STATIC,9,145,41,8
+    LTEXT           "QQ 号码：",IDC_STATIC,13,128,37,8
+    LTEXT           "用户性别：",IDC_STATIC,9,43,41,8
+    CONTROL         "",IDC_SELECT_FACE,"ComboBoxEx32",CBS_DROPDOWNLIST | 
+                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,187,7,46,194
+END
+
+IDD_DLG_SERVICE_PASSWORD DIALOGEX 0, 0, 277, 248
+STYLE DS_SETFONT | WS_CHILD | WS_SYSMENU
+FONT 9, "宋体", 400, 0, 0x0
+BEGIN
+    LTEXT           "",IDC_LOGON_PASSWORD1,64,28,82,15,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    LTEXT           "",IDC_LOGON_PASSWORD2,64,49,82,15,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    LTEXT           "",IDC_LOGON_PASSWORD3,64,69,82,15,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    PUSHBUTTON      "修 改",IDC_MODIFY_LOGON_PASSWORD,64,92,50,14
+    LTEXT           "",IDC_INSURE_PASSWORD1,64,149,82,15,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    LTEXT           "",IDC_INSURE_PASSWORD2,64,169,82,15,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    LTEXT           "",IDC_INSURE_PASSWORD3,64,189,82,15,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    PUSHBUTTON      "修 改",IDC_MODIFY_INSURE_PASSWORD,64,212,50,14
+    LTEXT           "原密码：",IDC_STATIC,28,32,33,8
+    LTEXT           "确认密码：",IDC_STATIC,20,73,41,8
+    LTEXT           "新密码：",IDC_STATIC,28,53,33,8
+    LTEXT           "原密码：",IDC_STATIC,28,153,33,8
+    LTEXT           "确认密码：",IDC_STATIC,20,193,41,8
+    LTEXT           "新密码：",IDC_STATIC,28,173,33,8
+    GROUPBOX        "修改登录密码：",IDC_STATIC,6,10,265,108
+    GROUPBOX        "修改银行密码：",IDC_STATIC,5,130,265,108
+    LTEXT           "请再次输入新密码",IDC_STATIC,154,73,65,8
+    LTEXT           "请再次输入新密码",IDC_STATIC,154,193,65,8
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -591,6 +673,14 @@ BEGIN
         TOPMARGIN, 6
         BOTTOMMARGIN, 190
     END
+
+    IDD_DLG_SERVICE, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 304
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 253
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -637,10 +727,13 @@ BT_ENQUIRE_CANCEL       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_
 BT_ENQUIRE_PLAZA        PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_PLAZA.png"
 BT_ENQUIRE_SWITCH       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_SWITCH.png"
 SERVER_LIST_ARROW       PNG                     "res\\SERVER_LIST\\SERVER_LIST_ARROW.png"
+FACE_ITEM_FRAME         PNG                     "res\\USER_INFO\\FACE_ITEM_FRAME.png"
 UNDER_WRITE_L           PNG                     "res\\USER_INFO\\UNDER_WRITE_L.PNG"
 UNDER_WRITE_M           PNG                     "res\\USER_INFO\\UNDER_WRITE_M.PNG"
 UNDER_WRITE_R           PNG                     "res\\USER_INFO\\UNDER_WRITE_R.PNG"
-
+SERVICE_BAR_BT          PNG                     "res\\USER_INFO\\SERVICE_BAR_BT.png"
+SERVICE_BAR_LOGO        PNG                     "res\\USER_INFO\\SERVICE_BAR_LOGO.png"
+SERVICE_BAR_IMAGE       PNG                     "res\\USER_INFO\\SERVICE_BAR_IMAGE.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

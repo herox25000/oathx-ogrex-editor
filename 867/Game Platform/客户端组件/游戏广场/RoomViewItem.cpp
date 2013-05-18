@@ -1742,6 +1742,7 @@ bool CRoomViewItem::IPCSendGameInfo(CIPCSendCopyData * pSendCopyData)
 	ServerInfo.wTableID=pUserData->wTableID;
 	ServerInfo.wChairID=pUserData->wChairID;
 	ServerInfo.wKindID=pGameKind->wKindID;
+	ServerInfo.wTypeID=pGameKind->wTypeID;
 	ServerInfo.wServerID=pGameServer->wServerID;
 	ServerInfo.wGameGenre=m_wGameGenre;
 	ServerInfo.dwVideoAddr=m_dwVideoAddr;
@@ -2621,7 +2622,6 @@ bool CRoomViewItem::OnSocketMainUser(CMD_Command Command, void * pData, WORD wDa
 	{
 	case SUB_GR_USER_COME:			//用户进入
 		{
-
 			return OnSocketSubUserCome(Command,pData,wDataSize);
 		}
 	case SUB_GR_USER_STATUS:		//用户状态
@@ -2655,6 +2655,10 @@ bool CRoomViewItem::OnSocketMainUser(CMD_Command Command, void * pData, WORD wDa
 	case SUB_GR_USER_INVITE:		//邀请玩家
 		{
 			return OnSocketSubUserInvite(Command,pData,wDataSize);
+		}
+	case SUB_GR_FLASHUSERINFO:		//刷新用户信息
+		{
+			return OnSocketSubFlashUserInfo(Command,pData,wDataSize);
 		}
 	}
 
@@ -3730,6 +3734,76 @@ bool CRoomViewItem::OnSocketSubUserInvite(CMD_Command Command, void * pData, WOR
 		PerformSitDownAction(pUserInvite->wTableID,wChairID);
 	}
 
+	return true;
+}
+
+//刷新用户信息
+bool CRoomViewItem::OnSocketSubFlashUserInfo(CMD_Command Command, void * pBuffer, WORD wDataSize)
+{
+	//效验参数
+	ASSERT(Command.wMainCmdID==MDM_GR_USER);
+	ASSERT(Command.wSubCmdID==SUB_GR_FLASHUSERINFO);
+	//效验参数
+	ASSERT(wDataSize==sizeof(CMD_GR_FlashUserInfo));
+	if (wDataSize!=sizeof(CMD_GR_FlashUserInfo)) return false;
+	//处理数据
+	CMD_GR_FlashUserInfo* pUserInfo = (CMD_GR_FlashUserInfo*)pBuffer;
+	IUserItem * pIUserItem=m_ClientUserManager.SearchUserByUserID(pUserInfo->dwUserID);
+	ASSERT(pIUserItem!=NULL);
+	if (pIUserItem==NULL)
+		return true;
+	tagUserData * pUserData=pIUserItem->GetUserData();
+	pUserData->dwGameID = pUserInfo->dwGameID;
+	pUserData->dwGroupID = pUserInfo->dwGroupID;
+	pUserData->wFaceID = pUserInfo->wFaceID;
+	pUserData->dwCustomFaceVer = pUserInfo->dwCustomFaceVer;
+	pUserData->cbGender = pUserInfo->cbGender;
+	pUserData->dwUserRight = pUserInfo->dwUserRight;
+	pUserData->dwMasterRight = pUserInfo->dwMasterRight;
+	pUserData->cbMasterOrder = pUserInfo->cbMasterOrder;
+	pUserData->cbMemberOrder = pUserInfo->cbMemberOrder;
+	pUserData->lLoveliness = pUserInfo->lLoveliness;
+	pUserData->lExperience = pUserInfo->lExperience;
+	pUserData->lScore = pUserInfo->lScore;
+	pUserData->lInsureScore = pUserInfo->lInsureScore;
+	pUserData->lWinCount = pUserInfo->lWinCount;
+	pUserData->lLostCount = pUserInfo->lLostCount;
+	pUserData->lDrawCount = pUserInfo->lDrawCount;
+	pUserData->lFleeCount = pUserInfo->lFleeCount;
+	lstrcpyn(pUserData->szName,pUserInfo->szAccounts,CountArray(pUserData->szName));
+	lstrcpyn(pUserData->szGroupName,pUserInfo->szGroupName,CountArray(pUserData->szGroupName));
+	lstrcpyn(pUserData->szUnderWrite,pUserInfo->szUnderWrite,CountArray(pUserData->szUnderWrite));
+
+	//更新积分
+	tagUserScore UserScore;
+	UserScore.lScore = pUserInfo->lScore;
+	UserScore.lInsureScore = pUserInfo->lInsureScore;
+	UserScore.lWinCount = pUserInfo->lWinCount;
+	UserScore.lLostCount = pUserInfo->lLostCount;
+	UserScore.lDrawCount = pUserInfo->lDrawCount;
+	UserScore.lFleeCount = pUserInfo->lFleeCount;
+	UserScore.lExperience = pUserInfo->lExperience;
+	m_ClientUserManager.UpdateUserItemScore(pIUserItem,&UserScore);
+
+	//如果玩家在游戏，更新游戏里面的信息
+	if ((pUserData->wTableID!=INVALID_TABLE)&&(pUserData->wChairID!=INVALID_CHAIR))
+	{
+		SendProcessData(IPC_MAIN_USER,IPC_SUB_FLASHUSERINFO,pUserData,sizeof(tagUserData));
+	}
+	//如果是自己，更新全局变量
+	if(pUserInfo->dwUserID == g_GlobalUnits.GetGolbalUserData().dwUserID)
+	{
+		tagGlobalUserData* pGolbalUserData = g_GlobalUnits.GetGolbalUserDataEx();
+		pGolbalUserData->dwGameID = pUserInfo->dwGameID;
+		pGolbalUserData->wFaceID = pUserInfo->wFaceID;
+		pGolbalUserData->dwCustomFaceVer = pUserInfo->dwCustomFaceVer;
+		pGolbalUserData->cbGender = pUserInfo->cbGender;
+		pGolbalUserData->cbMember = pUserInfo->cbMemberOrder;
+		pGolbalUserData->dwExperience = pUserInfo->lExperience;
+		lstrcpyn(pGolbalUserData->szAccounts,pUserInfo->szAccounts,CountArray(pGolbalUserData->szAccounts));
+		lstrcpyn(pGolbalUserData->szGroupName,pUserInfo->szGroupName,CountArray(pGolbalUserData->szGroupName));
+		lstrcpyn(pGolbalUserData->szUnderWrite,pUserInfo->szUnderWrite,CountArray(pGolbalUserData->szUnderWrite));
+	}
 	return true;
 }
 
