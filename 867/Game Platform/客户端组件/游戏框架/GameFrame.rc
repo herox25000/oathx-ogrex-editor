@@ -137,23 +137,19 @@ BEGIN
     PUSHBUTTON      "",IDC_BUGLE,80,288,12,12
 END
 
-IDD_DLG_BANK DIALOGEX 0, 0, 254, 141
+IDD_DLG_BANK DIALOGEX 0, 0, 299, 173
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EDIT_GOLD,78,72,102,14,ES_AUTOHSCROLL | ES_NUMBER
-    RTEXT           "金额：",IDC_STATIC,47,73,25,8
-    EDITTEXT        IDC_EDIT_BANKPW,78,93,102,14,ES_PASSWORD | 
+    EDITTEXT        IDC_EDIT_GOLD,94,80,102,14,ES_AUTOHSCROLL | ES_NUMBER
+    RTEXT           "金额：",IDC_STATIC,63,81,25,8
+    EDITTEXT        IDC_EDIT_BANKPW,94,101,102,14,ES_PASSWORD | 
                     ES_AUTOHSCROLL
-    RTEXT           "银行密码：",IDC_STATIC,31,95,41,8
-    PUSHBUTTON      "确定",IDC_BT_OK,93,119,50,14
-    GROUPBOX        "",IDC_STATIC,27,22,195,42
-    RTEXT           "银行：",IDC_STATIC,39,50,25,8
-    RTEXT           "金币：",IDC_STATIC,39,33,25,8
-    LTEXT           "...",IDC_STATIC_GOLD,71,34,121,8
-    LTEXT           "...",IDC_STATIC_BANKGOLD,71,49,126,8
-    PUSHBUTTON      "全部",IDC_BT_ALL,188,72,36,14
+    RTEXT           "银行密码：",IDC_STATIC,47,103,41,8
+    PUSHBUTTON      "确定",IDC_BT_OK,109,127,50,14
+    PUSHBUTTON      "全部",IDC_BT_ALL,204,80,36,14
 END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -172,8 +168,8 @@ BEGIN
     IDD_DLG_BANK, DIALOG
     BEGIN
         LEFTMARGIN, 7
-        RIGHTMARGIN, 251
-        BOTTOMMARGIN, 139
+        RIGHTMARGIN, 296
+        BOTTOMMARGIN, 171
     END
 END
 #endif    // APSTUDIO_INVOKED
@@ -190,11 +186,14 @@ IDB_USER_STATUS         BITMAP                  "Res\\USER_STATUS.bmp"
 //
 // PNG
 //
+
 USER_READY              PNG                     "res\\USER_READY.PNG"
 TIME_NUMBER             PNG                     "res\\TIME_NUMBER.PNG"
 TIME_BACK               PNG                     "res\\TIME_BACK.PNG"
 FACEFRAME               PNG                     "res\\FaceFrame.PNG"
-
+BANK_BK                 PNG                     "res\\BankBK.png"
+BANK_FRAME              PNG                     "res\\INFO_FRAME.png"
+BANK_SCORE              PNG                     "res\\SCORE_NUMBER.png"
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
