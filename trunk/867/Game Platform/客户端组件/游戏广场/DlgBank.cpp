@@ -9,9 +9,9 @@
 CDlgBank::CDlgBank() : CSkinPngDialog(IDD_BANK_DIALOG)
 {
 	m_wOpt = OPT_SAVE; 
-	m_pMeUserData = NULL;
-	m_strGameGold.Empty();
-	m_strBankGold.Empty();
+	m_lGameGold=0;
+	m_lBankGold=0;
+	m_bInitInfo=false;
 }
 
 CDlgBank::~CDlgBank()
@@ -21,8 +21,6 @@ CDlgBank::~CDlgBank()
 void CDlgBank::DoDataExchange(CDataExchange* pDX)
 {
 	__super::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_GAMEGOLD,		m_strGameGold);
-	DDX_Text(pDX, IDC_BANKGOLD,		m_strBankGold);
 	DDX_Control(pDX, IDC_TAB_BANK,		m_TabBank);
 	DDX_Control(pDX, IDC_BACNK_BTNOK,	m_btOK);
 	DDX_Control(pDX, IDC_BANK_BTNALL,	m_btAll);
@@ -61,6 +59,7 @@ BOOL CDlgBank::OnInitDialog()
 	m_TabBank.InsertItem(BANK_DLG_PTN,TEXT("赠送"));
 	m_TabBank.SetCurSel(BANK_DLG_SAVE);
 	OnTcnSelchange(NULL, NULL);
+
 	return FALSE; 
 }
 
@@ -70,7 +69,6 @@ VOID CDlgBank::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
 	//获取位置
 	CRect rcTabControl;
 	m_TabBank.GetWindowRect(&rcTabControl);
-
 	//转换位置
 	ScreenToClient(&rcTabControl);
 
@@ -79,6 +77,26 @@ VOID CDlgBank::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
 	INT nRBorder=m_SkinAttribute.m_EncircleInfoView.nRBorder;
 	pDC->FillSolidRect(nLBorder,rcTabControl.bottom-1L,nWidth-nLBorder-nRBorder,1,RGB(145,168,183));
 
+	//图片绘制指标
+	int Dex = 5;
+	int Dey = 80;
+	//背景
+	CPngImage ImageBankBK;
+	ImageBankBK.LoadImage(AfxGetInstanceHandle(),TEXT("PLAZA_BANK_BK"));
+	Dex = (nWidth-ImageBankBK.GetWidth())/2L;
+	ImageBankBK.DrawImage(pDC,Dex,Dey);
+	//框架
+	CPngImage ImageBankFrame;
+	ImageBankFrame.LoadImage(AfxGetInstanceHandle(),TEXT("PLAZA_BANK_FRAME"));
+	Dex = (nWidth-ImageBankFrame.GetWidth())/2L;
+	ImageBankFrame.DrawImage(pDC,Dex,Dey);
+
+	if(m_bInitInfo)
+	{
+		//数字
+		DrawNumberString(pDC,m_lGameGold,Dex+55,Dey+13);
+		DrawNumberString(pDC,m_lBankGold,Dex+55,Dey+37);
+	}
 
 	//构造提示
 	TCHAR szString[128]=TEXT("");
@@ -89,6 +107,90 @@ VOID CDlgBank::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
 
 	return;
 }
+
+//绘画数字
+VOID CDlgBank::DrawNumberString(CDC * pDC, __int64 lScore, INT nXPos, INT nYPos)
+{
+	//转换逗号
+	TCHAR szControl[128]=TEXT("");
+	SwitchScoreFormat(lScore,3L,szControl,CountArray(szControl));
+
+	//变量定义
+	INT nXDrawPos=nXPos;
+	INT nScoreLength=lstrlen(szControl);
+
+	//绘画判断
+	if (nScoreLength>0L)
+	{
+		//加载资源
+		CPngImage ImageNumber;
+		ImageNumber.LoadImage(AfxGetInstanceHandle(),TEXT("PLAZA_BANK_SCORE"));
+
+		//获取大小
+		CSize SizeNumber;
+		SizeNumber.SetSize(ImageNumber.GetWidth()/12L,ImageNumber.GetHeight());
+
+		//绘画数字
+		for (INT i=0;i<nScoreLength;i++)
+		{
+			//绘画逗号
+			if (szControl[i]==TEXT(','))
+			{
+				ImageNumber.DrawImage(pDC,nXDrawPos,nYPos,SizeNumber.cx,SizeNumber.cy,SizeNumber.cx*10L,0L);
+			}
+
+			//绘画点号
+			if (szControl[i]==TEXT('.'))
+			{
+				ImageNumber.DrawImage(pDC,nXDrawPos,nYPos,SizeNumber.cx,SizeNumber.cy,SizeNumber.cx*11L,0L);
+			}
+
+			//绘画数字
+			if (szControl[i]>=TEXT('0')&&szControl[i]<=TEXT('9'))
+			{
+				ImageNumber.DrawImage(pDC,nXDrawPos,nYPos,SizeNumber.cx,SizeNumber.cy,SizeNumber.cx*(szControl[i]-TEXT('0')),0L);
+			}
+
+			//设置位置
+			nXDrawPos+=SizeNumber.cx;
+		}
+	}
+
+	return;
+}
+
+
+//转换字符
+VOID CDlgBank::SwitchScoreFormat(__int64 lScore, UINT uSpace, LPTSTR pszBuffer, WORD wBufferSize)
+{
+	//转换数值
+	TCHAR szSwitchScore[16]=TEXT("");
+	_sntprintf(szSwitchScore,CountArray(szSwitchScore),TEXT("%I64d"),lScore);
+
+	//变量定义
+	WORD wTargetIndex=0;
+	WORD wSourceIndex=0;
+	UINT uSwitchLength=lstrlen(szSwitchScore);
+
+	//转换字符
+	while (szSwitchScore[wSourceIndex]!=0)
+	{
+		//拷贝字符
+		pszBuffer[wTargetIndex++]=szSwitchScore[wSourceIndex++];
+
+		//插入逗号
+		if ((uSwitchLength!=wSourceIndex)&&(((uSwitchLength-wSourceIndex)%uSpace)==0L))
+		{
+			pszBuffer[wTargetIndex++]=TEXT(',');
+		}
+	}
+
+	//结束字符
+	pszBuffer[wTargetIndex++]=0;
+
+	return;
+}
+
 
 //销毁消息
 void CDlgBank::OnClose()
@@ -115,6 +217,7 @@ __int64 CDlgBank::GetDlgItemInt64(UINT uID)
 	buffer.Remove(',');
 	return _atoi64(buffer.GetBuffer());
 };
+
 
 void CDlgBank::SetDlgItemInt64(UINT uID, __int64 value)
 {
@@ -143,8 +246,11 @@ CString CDlgBank::GetString(__int64 nNumber)
 //更新用户的分数
 void CDlgBank::UpdataUserScore(__int64 Score,__int64 BankScore)
 {
-	m_strGameGold = GetString(Score);
-	m_strBankGold = GetString(BankScore);
+	m_lGameGold = Score;
+	m_lBankGold = BankScore;
+	m_bInitInfo = true;
+	//更新界面
+	RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 }
 
 //设置socket指针
@@ -347,9 +453,11 @@ bool CDlgBank::OnSocketMainUser(CMD_Command Command, void * pData, WORD wDataSiz
 			CMD_GR_FlashUserInfo* pUserInfo = (CMD_GR_FlashUserInfo*)pData;
 			if(pUserInfo->dwUserID == g_GlobalUnits.GetGolbalUserData().dwUserID)
 			{
-				m_strGameGold = GetString(pUserInfo->lScore);
-				m_strBankGold = GetString(pUserInfo->lInsureScore);
-				UpdateData(FALSE);
+				m_lGameGold = pUserInfo->lScore;
+				m_lBankGold = pUserInfo->lInsureScore;
+				m_bInitInfo = true;
+				//更新界面
+				RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 			}
 		}
 	}
@@ -368,9 +476,11 @@ bool CDlgBank::OnSocketSubUserCome(CMD_Command Command, void * pData, WORD wData
 	tagUserInfoHead * pUserInfoHead=(tagUserInfoHead *)pData;
 	if (pUserInfoHead->dwUserID==g_GlobalUnits.GetGolbalUserData().dwUserID)
 	{
-		m_strGameGold = GetString(pUserInfoHead->UserScoreInfo.lScore);
-		m_strBankGold = GetString(pUserInfoHead->UserScoreInfo.lInsureScore);
-		UpdateData(FALSE);
+		m_lGameGold = pUserInfoHead->UserScoreInfo.lScore;
+		m_lBankGold = pUserInfoHead->UserScoreInfo.lInsureScore;
+		m_bInitInfo = true;
+		//更新界面
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 	}
 	return true;
 
@@ -387,9 +497,11 @@ bool CDlgBank::OnSocketSubScore(CMD_Command Command, void * pData, WORD wDataSiz
 	CMD_GR_UserScore * pUserScore=(CMD_GR_UserScore *)pData;
 	if(pUserScore->dwUserID == g_GlobalUnits.GetGolbalUserData().dwUserID)
 	{
-		m_strGameGold = GetString(pUserScore->UserScore.lScore);
-		m_strBankGold = GetString(pUserScore->UserScore.lInsureScore);
-		UpdateData(FALSE);
+		m_lGameGold = pUserScore->UserScore.lScore;
+		m_lBankGold = pUserScore->UserScore.lInsureScore;
+		m_bInitInfo = true;
+		//更新界面
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 	}
 	return true;
 }
@@ -544,10 +656,11 @@ void CDlgBank::OnButtonOK()
 void CDlgBank::OnButtonAll()
 {
 	if(m_TabBank.GetCurSel() == BANK_DLG_SAVE)
-		SetDlgItemText(IDC_EDIT3,m_strGameGold);
+		SetDlgItemText(IDC_EDIT3,GetString(m_lGameGold));
 	else
-		SetDlgItemText(IDC_EDIT3,m_strBankGold);
-	UpdateData(FALSE);
+		SetDlgItemText(IDC_EDIT3,GetString(m_lBankGold));
+	//更新界面
+	RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 }
 
 // 用户ID输入改变

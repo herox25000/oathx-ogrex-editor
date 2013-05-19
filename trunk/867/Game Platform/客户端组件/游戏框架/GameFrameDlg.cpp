@@ -739,8 +739,7 @@ void CGameFrameDlg::UserOnBankBT(BYTE Type)
 		ShowInformation(TEXT("游戏中只能使用取钱功能！"),10,MB_ICONINFORMATION);
 
 	m_DlgFramBank.DoModal();
-	m_DlgFramBank.SetBankType(Type);
-
+	m_DlgFramBank.SetBankType(2);
 }
 
 //关闭客户端（直接关闭，没有提示）

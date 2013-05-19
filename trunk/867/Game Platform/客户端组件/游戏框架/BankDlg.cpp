@@ -5,10 +5,11 @@
 //////////////////////////////////////////////////////////////////////////
 CFrameDlgBank::CFrameDlgBank() : CSkinPngDialog(IDD_DLG_BANK)
 {
-	m_strGameGold.Empty();
-	m_strBankGold.Empty();
+	m_lGameGold = 0;
+	m_lBankGold = 0;
 	m_BankType=0;
 	m_pIClientKernel = NULL;
+	m_bInitInfo = false;
 }
 
 CFrameDlgBank::~CFrameDlgBank()
@@ -19,8 +20,6 @@ CFrameDlgBank::~CFrameDlgBank()
 void CFrameDlgBank::DoDataExchange(CDataExchange* pDX)
 {
 	__super::DoDataExchange(pDX);
-	DDX_Text(pDX, IDC_STATIC_GOLD,		m_strGameGold);
-	DDX_Text(pDX, IDC_STATIC_BANKGOLD,		m_strBankGold);
 	DDX_Control(pDX, IDC_BT_OK,	m_btOK);
 	DDX_Control(pDX, IDC_BT_ALL,m_btAll);
 }
@@ -52,7 +51,7 @@ BOOL CFrameDlgBank::OnInitDialog()
 	__super::OnInitDialog();
 	SetWindowText(TEXT("银行"));
 	UpdateView();
-	SetTimer(UPDATE_TIMER,3*1000,NULL);
+	SetTimer(UPDATE_TIMER,2*1000,NULL);
 	return TRUE; 
 }
 
@@ -61,9 +60,133 @@ void CFrameDlgBank::OnTimer(UINT_PTR nIDEvent)
 	__super::OnTimer(nIDEvent);
 	if (nIDEvent == UPDATE_TIMER)
 	{
-		UpdateView();
+		//更新界面
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 	}
 }
+
+//绘画消息
+VOID CFrameDlgBank::OnDrawClientArea(CDC * pDC, INT nWidth, INT nHeight)
+{
+	//图片绘制指标
+	int Dex = 5;
+	int Dey = 50;
+	//背景
+	CPngImage ImageBankBK;
+	ImageBankBK.LoadImage(GetModuleHandle(GAME_FRAME_DLL_NAME),TEXT("BANK_BK"));
+	Dex = (nWidth-ImageBankBK.GetWidth())/2L;
+	ImageBankBK.DrawImage(pDC,Dex,Dey);
+	//框架
+	CPngImage ImageBankFrame;
+	ImageBankFrame.LoadImage(GetModuleHandle(GAME_FRAME_DLL_NAME),TEXT("BANK_FRAME"));
+	Dex = (nWidth-ImageBankFrame.GetWidth())/2L;
+	ImageBankFrame.DrawImage(pDC,Dex,Dey);
+
+	if(m_bInitInfo)
+	{
+		tagUserData* Medata = m_pIClientKernel->GetMeUserInfo();
+		if(Medata != NULL)
+		{
+			//数字
+			DrawNumberString(pDC,Medata->lScore,Dex+55,Dey+13);
+			DrawNumberString(pDC,Medata->lInsureScore,Dex+55,Dey+37);
+		}
+	}
+
+	//构造提示
+	TCHAR szString[128]=TEXT("");
+	_sntprintf(szString,CountArray(szString),TEXT("温馨提示：请妥善保管密码，警防盗号！"));
+	//温馨提示
+	pDC->SetTextColor(RGB(50,50,50));
+	pDC->TextOut(18,nHeight-28,szString,lstrlen(szString));
+
+	return;
+}
+
+//绘画数字
+VOID CFrameDlgBank::DrawNumberString(CDC * pDC, __int64 lScore, INT nXPos, INT nYPos)
+{
+	//转换逗号
+	TCHAR szControl[128]=TEXT("");
+	SwitchScoreFormat(lScore,3L,szControl,CountArray(szControl));
+
+	//变量定义
+	INT nXDrawPos=nXPos;
+	INT nScoreLength=lstrlen(szControl);
+
+	//绘画判断
+	if (nScoreLength>0L)
+	{
+		//加载资源
+		CPngImage ImageNumber;
+		ImageNumber.LoadImage(GetModuleHandle(GAME_FRAME_DLL_NAME),TEXT("BANK_SCORE"));
+
+		//获取大小
+		CSize SizeNumber;
+		SizeNumber.SetSize(ImageNumber.GetWidth()/12L,ImageNumber.GetHeight());
+
+		//绘画数字
+		for (INT i=0;i<nScoreLength;i++)
+		{
+			//绘画逗号
+			if (szControl[i]==TEXT(','))
+			{
+				ImageNumber.DrawImage(pDC,nXDrawPos,nYPos,SizeNumber.cx,SizeNumber.cy,SizeNumber.cx*10L,0L);
+			}
+
+			//绘画点号
+			if (szControl[i]==TEXT('.'))
+			{
+				ImageNumber.DrawImage(pDC,nXDrawPos,nYPos,SizeNumber.cx,SizeNumber.cy,SizeNumber.cx*11L,0L);
+			}
+
+			//绘画数字
+			if (szControl[i]>=TEXT('0')&&szControl[i]<=TEXT('9'))
+			{
+				ImageNumber.DrawImage(pDC,nXDrawPos,nYPos,SizeNumber.cx,SizeNumber.cy,SizeNumber.cx*(szControl[i]-TEXT('0')),0L);
+			}
+
+			//设置位置
+			nXDrawPos+=SizeNumber.cx;
+		}
+	}
+
+	return;
+}
+
+
+//转换字符
+VOID CFrameDlgBank::SwitchScoreFormat(__int64 lScore, UINT uSpace, LPTSTR pszBuffer, WORD wBufferSize)
+{
+	//转换数值
+	TCHAR szSwitchScore[16]=TEXT("");
+	_sntprintf(szSwitchScore,CountArray(szSwitchScore),TEXT("%I64d"),lScore);
+
+	//变量定义
+	WORD wTargetIndex=0;
+	WORD wSourceIndex=0;
+	UINT uSwitchLength=lstrlen(szSwitchScore);
+
+	//转换字符
+	while (szSwitchScore[wSourceIndex]!=0)
+	{
+		//拷贝字符
+		pszBuffer[wTargetIndex++]=szSwitchScore[wSourceIndex++];
+
+		//插入逗号
+		if ((uSwitchLength!=wSourceIndex)&&(((uSwitchLength-wSourceIndex)%uSpace)==0L))
+		{
+			pszBuffer[wTargetIndex++]=TEXT(',');
+		}
+	}
+
+	//结束字符
+	pszBuffer[wTargetIndex++]=0;
+
+	return;
+}
+
+
 
 //销毁消息
 void CFrameDlgBank::OnClose()
@@ -148,27 +271,26 @@ void CFrameDlgBank::OnButtonOK()
 
 void CFrameDlgBank::OnButtonAll()
 {
-	//存钱
-	if(m_BankType==1)
-	{	
-		SetDlgItemText(IDC_EDIT_GOLD,m_strGameGold);
-	}
-	else if(m_BankType==2) //取钱
-	{
-		SetDlgItemText(IDC_EDIT_GOLD,m_strBankGold);
-	}
-	UpdateData(FALSE);
+	tagUserData* Medata = m_pIClientKernel->GetMeUserInfo();
+	if(Medata == NULL)
+		return;
+	////存钱
+	//if(m_BankType==1)
+	//{	
+	//	SetDlgItemText(IDC_EDIT_GOLD,GetString(m_lGameGold));
+	//}
+	//else if(m_BankType==2) //取钱
+	//{
+		SetDlgItemText(IDC_EDIT_GOLD,GetString(Medata->lInsureScore));
+	//}
+	//更新界面
+	RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 }
 
 
 void CFrameDlgBank::UpdateView()
 {
-	if(m_pIClientKernel == NULL)
-		return;
-	tagUserData* Medata = m_pIClientKernel->GetMeUserInfo();
-	if(Medata == NULL)
-		return;
-	m_strGameGold = GetString(Medata->lScore);
-	m_strBankGold = GetString(Medata->lInsureScore);
-	UpdateData(FALSE);
+	m_bInitInfo = true;
+	//更新界面
+	RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_UPDATENOW|RDW_ERASE|RDW_ERASENOW);
 }

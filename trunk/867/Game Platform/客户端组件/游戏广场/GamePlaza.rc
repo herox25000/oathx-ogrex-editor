@@ -445,10 +445,6 @@ STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
     CONTROL         "",IDC_TAB_BANK,"SysTabControl32",0x0,20,32,237,18
-    RTEXT           "金币：",IDC_STATIC,28,60,31,11
-    RTEXT           "银行：",IDC_STATIC,28,77,31,13
-    LTEXT           "...",IDC_GAMEGOLD,67,60,133,12
-    LTEXT           "...",IDC_BANKGOLD,66,77,138,12
     RTEXT           "存入数目：",IDC_BANK_TEXT,22,119,55,9
     EDITTEXT        IDC_EDIT3,79,118,116,12,ES_AUTOHSCROLL | ES_NUMBER
     RTEXT           "银行密码：",IDC_BANKPW_TEXT,21,136,57,9
@@ -734,6 +730,9 @@ UNDER_WRITE_R           PNG                     "res\\USER_INFO\\UNDER_WRITE_R.P
 SERVICE_BAR_BT          PNG                     "res\\USER_INFO\\SERVICE_BAR_BT.png"
 SERVICE_BAR_LOGO        PNG                     "res\\USER_INFO\\SERVICE_BAR_LOGO.png"
 SERVICE_BAR_IMAGE       PNG                     "res\\USER_INFO\\SERVICE_BAR_IMAGE.png"
+PLAZA_BANK_BK           PNG                     "res\\PLAZA_BANK\\BankBK.png"
+PLAZA_BANK_FRAME        PNG                     "res\\PLAZA_BANK\\INFO_FRAME.png"
+PLAZA_BANK_SCORE        PNG                     "res\\PLAZA_BANK\\SCORE_NUMBER.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
