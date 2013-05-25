@@ -86,4 +86,23 @@ namespace Ogre
 	{
 		return m_pSelectPlugin;
 	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorPluginManager::injectMouseMove(const Vector2& vPos)
+	{
+		if (m_pSelectPlugin != NULL)
+		{
+			bool bResult = m_pSelectPlugin->OnMouseMove(vPos);
+			if (!bResult)
+			{
+				
+			}
+		}
+
+		return true;
+	}
 }

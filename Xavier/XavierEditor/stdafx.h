@@ -42,6 +42,7 @@
 #include "OgreEventSetStdAfx.h"
 #include "OgreAny.h"
 #include "OgrePropertySet.h"
+#include "tinyxml.h"
 #include "EditorPluginTypes.h"
 #include "EditorPluginUtil.h"
 

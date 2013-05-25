@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm174"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\XavierEventSet\include;.\control;"
+				AdditionalIncludeDirectories="..\XavierEventSet\include;.\control;.\tinyxml"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -631,6 +631,66 @@
 			<File
 				RelativePath=".\TerrainToolView.h"
 				>
+			</File>
+		</Filter>
+		<Filter
+			Name="tinyxml"
+			>
+			<File
+				RelativePath=".\tinyxml\tinystr.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinystr.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxml.h"
+				>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlerror.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
+			</File>
+			<File
+				RelativePath=".\tinyxml\tinyxmlparser.cpp"
+				>
+				<FileConfiguration
+					Name="Debug|Win32"
+					>
+					<Tool
+						Name="VCCLCompilerTool"
+						UsePrecompiledHeader="0"
+					/>
+				</FileConfiguration>
 			</File>
 		</Filter>
 		<File

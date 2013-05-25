@@ -1,67 +1,62 @@
 
-// XavierEditorDoc.cpp : CXavierEditorDoc 类的实现
-//
-
 #include "stdafx.h"
 #include "XavierEditor.h"
-
 #include "XavierEditorDoc.h"
+#include "XavierEditorInclude.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
-
-
-// CXavierEditorDoc
 
 IMPLEMENT_DYNCREATE(CXavierEditorDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CXavierEditorDoc, CDocument)
 END_MESSAGE_MAP()
 
-
-// CXavierEditorDoc 构造/析构
-
+/**
+ *
+ * \return 
+ */
 CXavierEditorDoc::CXavierEditorDoc()
 {
-	// TODO: 在此添加一次性构造代码
 
 }
 
+/**
+ *
+ * \return 
+ */
 CXavierEditorDoc::~CXavierEditorDoc()
 {
 }
 
+/**
+ *
+ * \return 
+ */
 BOOL CXavierEditorDoc::OnNewDocument()
 {
 	if (!CDocument::OnNewDocument())
 		return FALSE;
 
-	// TODO: 在此添加重新初始化代码
-	// (SDI 文档将重用该文档)
-
 	return TRUE;
 }
 
-
-
-
-// CXavierEditorDoc 序列化
-
+/**
+ *
+ * \param ar 
+ */
 void CXavierEditorDoc::Serialize(CArchive& ar)
 {
 	if (ar.IsStoring())
 	{
-		// TODO: 在此添加存储代码
+		
 	}
 	else
 	{
-		// TODO: 在此添加加载代码
+
 	}
 }
-
-
-// CXavierEditorDoc 诊断
 
 #ifdef _DEBUG
 void CXavierEditorDoc::AssertValid() const
@@ -73,7 +68,5 @@ void CXavierEditorDoc::Dump(CDumpContext& dc) const
 {
 	CDocument::Dump(dc);
 }
-#endif //_DEBUG
+#endif
 
-
-// CXavierEditorDoc 命令

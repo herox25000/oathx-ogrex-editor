@@ -1,29 +1,46 @@
-
-// XavierEditorDoc.h : CXavierEditorDoc 类的接口
-//
-
-
 #pragma once
 
 
+/**
+* \ingroup : XavierEditor
+*
+* \os&IDE  : Microsoft Windows XP (SP2)  &  Microsoft Visual C++ .NET 2008
+*
+* \VERSION : 1.0
+*
+* \date    : 2013-02-04
+*
+* \Author  : lp
+*
+* \Desc    : 
+*
+* \bug     : 
+*
+* \Copyright (c) 2012 lp All rights reserved.
+*/
 class CXavierEditorDoc : public CDocument
 {
-protected: // 仅从序列化创建
+protected:
+	/**
+	 *
+	 * \return 
+	 */
 	CXavierEditorDoc();
 	DECLARE_DYNCREATE(CXavierEditorDoc)
 
-// 属性
 public:
-
-// 操作
-public:
-
-// 重写
-public:
+	/**
+	 *
+	 * \return 
+	 */
 	virtual BOOL OnNewDocument();
+
+	/**
+	 *
+	 * \param ar 
+	 */
 	virtual void Serialize(CArchive& ar);
 
-// 实现
 public:
 	virtual ~CXavierEditorDoc();
 #ifdef _DEBUG
@@ -31,9 +48,6 @@ public:
 	virtual void Dump(CDumpContext& dc) const;
 #endif
 
-protected:
-
-// 生成的消息映射函数
 protected:
 	DECLARE_MESSAGE_MAP()
 };

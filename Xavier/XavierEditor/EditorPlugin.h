@@ -211,6 +211,13 @@ namespace Ogre
 		virtual	bool					OnPropertyChanged(const String& parentName, const String& name, 
 			const Any& anyValue, int nType);
 
+		/**
+		 *
+		 * \param pluginName 
+		 * \param pParent 
+		 * \return 
+		 */
+		virtual	bool					OnSave(const String& pluginName, TiXmlElement* pParent);
 	protected:
 		HashMapEditorPlugin				m_HashMapEditorPlugin;
 		String							m_Name;
