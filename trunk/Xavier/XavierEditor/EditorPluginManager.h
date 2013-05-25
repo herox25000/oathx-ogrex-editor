@@ -78,10 +78,10 @@ namespace Ogre
 
 		/**
 		 *
-		 * \param vPois 
+		 * \param vPos 
 		 * \return 
 		 */
-		virtual	bool					injectMouseMove(const Vector2& vPos);
+		virtual	EditorPlugin*			getPlugin(const Vector2& vPos);
 	protected:
 		// ¸ù²å¼þ
 		EditorPlugin*					m_pRootPlugin;

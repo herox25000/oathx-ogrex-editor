@@ -52,6 +52,12 @@ namespace Ogre
 		 */
 		virtual	SceneManager*		getSceneManager() const;
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual RaySceneQuery*		getRaySceneQuery() const;
+
 	public:
 		/** 处理属性改变事件
 		 *
@@ -80,6 +86,7 @@ namespace Ogre
 
 	protected:
 		SceneManager*				m_pSceneManager;
+		RaySceneQuery*				m_pRayQuery;
 	};
 
 	// 场景插件适配器

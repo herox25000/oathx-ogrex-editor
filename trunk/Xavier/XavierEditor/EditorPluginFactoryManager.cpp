@@ -29,6 +29,7 @@ namespace Ogre
 		"Factory/EditorViewport",
 		"Factory/EditorTerrain",
 		"Factory/EditorTerrainPage",
+		"Factory/EditorUnit",
 	};
 
 	//////////////////////////////////////////////////////////////////////////
@@ -52,6 +53,9 @@ namespace Ogre
 			);
 		registerEditorPluginFactory(
 			new EditorTerrainPageFactory(EditorPluginFoctoryName[EPF_TERRAINPAGE])
+			);
+		registerEditorPluginFactory(
+			new EditorUnitFactory(EditorPluginFoctoryName[EPF_UNIT])
 			);
 	}
 

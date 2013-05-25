@@ -8,6 +8,9 @@
 #define IDS_TAB_BRUSH                   102
 #define IDS_TERRAIN_VIEW                103
 #define IDS_TAB_OPT                     104
+#define IDS_UNIT_VIEW                   105
+#define IDS_TAB_UNIT                    106
+#define IDS_TAB_MODULE                  106
 #define IDR_POPUP_EDIT                  119
 #define ID_STATUSBAR_PANE1              120
 #define ID_STATUSBAR_PANE2              121
@@ -97,7 +100,6 @@
 #define IDC_RADIO_PAINT                 1010
 #define IDC_RADIO_STAMP                 1011
 #define IDC_STATIC_DESC                 1014
-#define IDC_STATIC_DECAL                1017
 
 // Next default values for new objects
 // 

@@ -420,6 +420,24 @@ namespace Ogre
 
 	/**
 	 *
+	 * \return 
+	 */
+	bool					EditorPlugin::OnSetFocus()
+	{
+		return true;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	bool					EditorPlugin::OnLoseFocus()
+	{
+		return true;
+	}
+
+	/**
+	 *
 	 * \param parentName 
 	 * \param name 
 	 * \param anyValue 
@@ -448,7 +466,6 @@ namespace Ogre
 	 */
 	bool					EditorPlugin::OnSave(const String& pluginName, TiXmlElement* pParent)
 	{
-
 		return true;
 	}
 

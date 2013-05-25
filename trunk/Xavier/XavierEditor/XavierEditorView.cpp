@@ -346,10 +346,25 @@ void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
 {
-	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pRootPlugin)
+	EditorPluginManager* pPluginManager = EditorPluginManager::getSingletonPtr();
+	if (pPluginManager)
 	{
-		pRootPlugin->OnMouseMove(Vector2(point.x, point.y));
+		bool bResult = 0;
+
+		EditorPlugin* pSelectPlugin = pPluginManager->getSelectPlugin();
+		if (pSelectPlugin)
+		{
+			bResult = pSelectPlugin->OnMouseMove(Vector2(point.x, point.y));
+		}
+
+		if (!bResult)
+		{
+			EditorPlugin* pRootPlugin = pPluginManager->getRootPlugin();
+			if (pRootPlugin)
+			{
+				pRootPlugin->OnMouseMove(Vector2(point.x, point.y));
+			}
+		}
 	}
 
 	CView::OnMouseMove(nFlags, point);

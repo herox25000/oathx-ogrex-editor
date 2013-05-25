@@ -100,8 +100,18 @@ void CWizardDialog::OnBnClickedOk()
 		adp.pluginName					= szPluginName;
 
 		pPageFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN));
-	
+	}
 
+	EditorPluginFactory* pUnitFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_UNIT);
+	if (pUnitFactory)
+	{
+		SEditorUnitAdp adp;
+		adp.szFileName	= "tudorhouse.mesh";
+		adp.vPos		= Vector3(0, 2, 0);
+		adp.vScale		= Vector3(0.1, 0.1, 0.1);
+		adp.fDegree		= 0;
+
+		pUnitFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_SCENEPLUGIN_NAME));
 	}
 	
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());

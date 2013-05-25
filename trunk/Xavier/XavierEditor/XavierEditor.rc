@@ -438,6 +438,8 @@ BEGIN
     IDS_TAB_BRUSH           "画刷"
     IDS_TERRAIN_VIEW        "地形工具"
     IDS_TAB_OPT             "操作"
+    IDS_UNIT_VIEW           "单位视图"
+    IDS_TAB_MODULE          "模型文件"
 END
 
 STRINGTABLE 
