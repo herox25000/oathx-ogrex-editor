@@ -30,6 +30,7 @@ static UINT indicators[] =
 };
 
 #define ID_VIEW_TERRAIN		9998
+#define ID_VIEW_RESOURCE	9997
 
 /**
  *
@@ -122,6 +123,8 @@ int		CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockPane(&m_wndProperties);
 	m_wndTerrainView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wndTerrainView);
+	m_wndResourceView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wndResourceView);
 
 	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
 
@@ -236,7 +239,15 @@ BOOL			CMainFrame::CreateDockingWindows()
 	if (!m_wndTerrainView.Create(strTerrainWnd, this, CRect(0,0,200,200),
 		TRUE, ID_VIEW_TERRAIN, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
 	{
-		TRACE0("未能创建“地形视图”窗口\n");
+		return FALSE;
+	}
+
+	CString strResourceView;
+	bNameValid = strResourceView.LoadString(IDS_RESOUCE_VIEW);
+	ASSERT(bNameValid);
+	if (!m_wndResourceView.Create(strResourceView, this, CRect(0,0,200,200),
+		TRUE, ID_VIEW_RESOURCE, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	{
 		return FALSE;
 	}
 
@@ -270,6 +281,9 @@ void			CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 		MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wndTerrainView.SetIcon(hTerrainViewIcon, FALSE);
 
+	HICON hResourceViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(),
+		MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	m_wndResourceView.SetIcon(hResourceViewIcon, FALSE);
 }
 
 

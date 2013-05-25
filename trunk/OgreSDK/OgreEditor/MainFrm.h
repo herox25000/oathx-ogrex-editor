@@ -7,6 +7,7 @@
 #include "WizardDialog.h"
 #include "TerrainEditorView.h"
 #include "TerrainCrtDialog.h"
+#include "ResourceView.h"
 
 class CMainFrame : public CFrameWndEx
 {
@@ -41,6 +42,7 @@ protected:
 	CWizardDialog		m_dWizardDialog;
 	CTerrainEditorView	m_wndTerrainView;
 	CTerrainCrtDialog	m_wndCrtDialog;
+	CResourceView		m_wndResourceView;
 protected:
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void		OnViewCustomize();
