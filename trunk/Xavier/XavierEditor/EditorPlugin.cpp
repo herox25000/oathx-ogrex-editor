@@ -440,4 +440,16 @@ namespace Ogre
 		return 0;
 	}
 
+	/**
+	 *
+	 * \param pluginName 
+	 * \param pParent 
+	 * \return 
+	 */
+	bool					EditorPlugin::OnSave(const String& pluginName, TiXmlElement* pParent)
+	{
+
+		return true;
+	}
+
 }

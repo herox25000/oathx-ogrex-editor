@@ -46,6 +46,10 @@ BEGIN_MESSAGE_MAP(CTerrainOptDialog, CDialog)
 	ON_BN_CLICKED(IDC_RADIO_STAMP, &CTerrainOptDialog::OnBnClickedRadioStamp)
 END_MESSAGE_MAP()
 
+/**
+ *
+ * \return 
+ */
 BOOL CTerrainOptDialog::OnInitDialog()
 {
 	CDialog::OnInitDialog();

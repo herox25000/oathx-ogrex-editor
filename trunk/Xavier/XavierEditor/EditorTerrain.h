@@ -5,103 +5,8 @@
 
 namespace Ogre
 {
-	/**
-	* \ingroup : XavierEditor
-	*
-	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
-	*
-	* \VERSION : 1.0
-	*
-	* \date    : 2013-01-28
-	*
-	* \Author  : lp
-	*
-	* \Desc    :
-	*
-	* \bug     : 
-	*
-	* \Copyright (c) 2012 lp All rights reserved.
-	*/
-	class MeshBrush
-	{
-	public:
-		/**
-		 *
-		 * \param pSceneManager 
-		 * \param materialName 
-		 * \param fRaidus 
-		 * \param fIntensity 
-		 * \param texture 
-		 * \return 
-		 */
-		MeshBrush(SceneManager* pSceneManager, const String& materialName, float fRaidus,
-			float fIntensity, const String& texture);
+	class MeshBrush;
 
-		/**
-		 *
-		 * \return 
-		 */
-		virtual ~MeshBrush();
-
-		/**
-		 *
-		 * \param pTerrain 
-		 * \param vPos 
-		 */
-		virtual	void			setPosition(Terrain* pTerrain, const Vector3& vPos);
-		
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	Vector3			getPosition() const;
-
-		/**
-		 *
-		 * \param fRadius 
-		 */
-		virtual	void			setRadius(float fRadius);
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	float			getRadius() const;
-
-		/**
-		 *
-		 * \param name 
-		 */
-		virtual	void			setBrushTexture(const String& texture);
-
-		/**
-		 *
-		 * \param fIntensity 
-		 */
-		virtual	void			setIntensity(float fIntensity);
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	float			getIntensity() const;
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual	float*			getBrushData() const;
-		
-	protected:
-		SceneManager*			m_pSceneManager;
-		SceneNode*				m_pBrushNode;
-		ManualObject*			m_pBrushMesh;
-		Vector3					m_vBrushPos;
-		float					m_fRaidus;
-		float*					m_pBrushData;
-		TexturePtr				m_pBrushTexture;
-		float					m_fIntensity;
-	};
 	// 地形编辑模式
 	enum{
 		ETM_NONE,   
@@ -413,6 +318,105 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	EditorPlugin*			createPlugin(const SEditorPluginAdp& ssadp, EditorPlugin* pParent);
+	};
+
+	//////////////////////////////////////////////////////////////////////////
+	/**
+	* \ingroup : XavierEditor
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+	*
+	* \VERSION : 1.0
+	*
+	* \date    : 2013-01-28
+	*
+	* \Author  : lp
+	*
+	* \Desc    :
+	*
+	* \bug     : 
+	*
+	* \Copyright (c) 2012 lp All rights reserved.
+	*/
+	class MeshBrush
+	{
+	public:
+		/**
+		 *
+		 * \param pSceneManager 
+		 * \param materialName 
+		 * \param fRaidus 
+		 * \param fIntensity 
+		 * \param texture 
+		 * \return 
+		 */
+		MeshBrush(SceneManager* pSceneManager, const String& materialName, float fRaidus,
+			float fIntensity, const String& texture);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual ~MeshBrush();
+
+		/**
+		 *
+		 * \param pTerrain 
+		 * \param vPos 
+		 */
+		virtual	void			setPosition(Terrain* pTerrain, const Vector3& vPos);
+		
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Vector3			getPosition() const;
+
+		/**
+		 *
+		 * \param fRadius 
+		 */
+		virtual	void			setRadius(float fRadius);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	float			getRadius() const;
+
+		/**
+		 *
+		 * \param name 
+		 */
+		virtual	void			setBrushTexture(const String& texture);
+
+		/**
+		 *
+		 * \param fIntensity 
+		 */
+		virtual	void			setIntensity(float fIntensity);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	float			getIntensity() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	float*			getBrushData() const;
+		
+	protected:
+		SceneManager*			m_pSceneManager;
+		SceneNode*				m_pBrushNode;
+		ManualObject*			m_pBrushMesh;
+		Vector3					m_vBrushPos;
+		float					m_fRaidus;
+		float*					m_pBrushData;
+		TexturePtr				m_pBrushTexture;
+		float					m_fIntensity;
 	};
 }
 

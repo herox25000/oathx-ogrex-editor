@@ -31,8 +31,6 @@ void CWizardDialog::OnBnClickedOk()
 	EditorPluginFactory* pSceneFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_SCENEMANAGER);
 	if (pSceneFactory)
 	{
-		//mSceneMgr->setFog(Ogre::FOG_LINEAR, ColourValue(1.0f, 1.0f, 0.8f), 0, 15, 50);
-
 		SEditorPluginSceneManagerAdp adp;
 		adp.pluginName			= EDITOR_SCENEPLUGIN_NAME;
 		adp.typeMask			= ST_EXTERIOR_FAR;
@@ -40,7 +38,7 @@ void CWizardDialog::OnBnClickedOk()
 		adp.clrFog				= ColourValue(1.0f, 1.0f, 0.8f);
 		adp.expDensity			= 0.001;
 		adp.linearStart			= 15;
-		adp.linearEnd			= 50;
+		adp.linearEnd			= 500;
 		adp.clrAmbientLight		= ColourValue::White;
 
 		pSceneFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->getRootPlugin());
