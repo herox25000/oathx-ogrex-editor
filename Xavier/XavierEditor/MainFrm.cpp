@@ -31,6 +31,7 @@ static UINT indicators[] =
 
 #define	ID_VIEW_DECAVIEW	9999
 #define ID_VIEW_TERRAIN		9998
+#define ID_UNIT_TERRAIN		9997
 
 /**
  *
@@ -125,6 +126,8 @@ int		CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	DockPane(&m_wProperties);
 	m_wTerrainView.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wTerrainView);
+	m_wUnitView.EnableDocking(CBRS_ALIGN_ANY);
+	DockPane(&m_wUnitView);
 
 	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
 
@@ -244,6 +247,16 @@ BOOL	CMainFrame::CreateDockingWindows()
 		return FALSE;
 	}
 
+	CString strUnitWnd;
+	bNameValid = strUnitWnd.LoadString(IDS_UNIT_VIEW);
+	ASSERT(bNameValid);
+	if (!m_wUnitView.Create(strUnitWnd, this, CRect(0,0,200,200),
+		TRUE, IDS_UNIT_VIEW, WS_CHILD | WS_VISIBLE | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | CBRS_LEFT| CBRS_FLOAT_MULTI))
+	{
+		TRACE0("未能创建“地形视图”窗口\n");
+		return FALSE;
+	}
+
 	SetDockingWindowIcons(theApp.m_bHiColorIcons);
 	return TRUE;
 }
@@ -266,14 +279,11 @@ void	CMainFrame::SetDockingWindowIcons(BOOL bHiColorIcons)
 	HICON hPropertiesBarIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_PROPERTIES_WND_HC : IDI_PROPERTIES_WND), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wProperties.SetIcon(hPropertiesBarIcon, FALSE);
 
-	HICON hTerrainViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(),
-		MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), 
-		IMAGE_ICON, 
-		::GetSystemMetrics(SM_CXSMICON), 
-		::GetSystemMetrics(SM_CYSMICON), 
-		0);
+	HICON hTerrainViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
 	m_wTerrainView.SetIcon(hTerrainViewIcon, FALSE);
 
+	HICON hUnitViewIcon = (HICON) ::LoadImage(::AfxGetResourceHandle(), MAKEINTRESOURCE(bHiColorIcons ? IDI_CLASS_VIEW_HC : IDI_CLASS_VIEW), IMAGE_ICON, ::GetSystemMetrics(SM_CXSMICON), ::GetSystemMetrics(SM_CYSMICON), 0);
+	m_wUnitView.SetIcon(hUnitViewIcon, FALSE);
 }
 
 #ifdef _DEBUG

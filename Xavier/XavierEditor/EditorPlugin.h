@@ -202,6 +202,18 @@ namespace Ogre
 
 		/**
 		 *
+		 * \return 
+		 */
+		virtual	bool					OnSetFocus();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	bool					OnLoseFocus();
+
+		/**
+		 *
 		 * \param parentName 
 		 * \param name 
 		 * \param anyValue 

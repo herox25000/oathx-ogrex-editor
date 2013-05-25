@@ -588,6 +588,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\EditorUnit.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorUnit.h"
+					>
+				</File>
+				<File
 					RelativePath=".\EditorViewport.cpp"
 					>
 				</File>
@@ -630,6 +638,22 @@
 			</File>
 			<File
 				RelativePath=".\TerrainToolView.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitListBox.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitListBox.h"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitView.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\UnitView.h"
 				>
 			</File>
 		</Filter>

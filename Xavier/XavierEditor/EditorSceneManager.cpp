@@ -63,7 +63,7 @@ namespace Ogre
 	 */
 	EditorSceneManager::EditorSceneManager(const String& pluginName, const SceneTypeMask& typeMask, 
 		const ColourValue& clrAmbientLight, FogMode fogMode, const ColourValue& clrFog, float expDensity, float linearStart, float linearEnd)
-		: EditorPlugin(pluginName)
+		: EditorPlugin(pluginName), m_pSceneManager(NULL), m_pRayQuery(NULL)
 	{
 		if (configure(pluginName, typeMask, clrAmbientLight, fogMode, clrFog, expDensity, linearStart, linearEnd))
 		{
@@ -96,6 +96,9 @@ namespace Ogre
 
 		if (m_pSceneManager)
 		{
+			if (m_pRayQuery != NULL)
+				m_pSceneManager->destroyQuery(m_pRayQuery);
+		
 			Root::getSingletonPtr()->destroySceneManager(m_pSceneManager);
 		}
 	}
@@ -114,6 +117,13 @@ namespace Ogre
 		m_pSceneManager = Root::getSingletonPtr()->createSceneManager(typeMask, pluginName);
 		if (m_pSceneManager)
 		{
+			m_pRayQuery = m_pSceneManager->createRayQuery(Ogre::Ray());
+			if (m_pRayQuery == NULL)
+			{
+				TKLogEvent("Can't create ogre scene query : " + pluginName,
+					LML_CRITICAL);
+			}
+
 			// ÉèÖÃÂþ·´Éä
 			m_pSceneManager->setAmbientLight(clrAmbientLight);
 
@@ -139,6 +149,15 @@ namespace Ogre
 	SceneManager*	EditorSceneManager::getSceneManager() const
 	{
 		return m_pSceneManager;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	RaySceneQuery*	EditorSceneManager::getRaySceneQuery() const
+	{
+		return m_pRayQuery;
 	}
 
 	/**

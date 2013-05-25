@@ -6,6 +6,7 @@
 #include "EditorViewport.h"
 #include "EditorTerrain.h"
 #include "EditorTerrainPage.h"
+#include "EditorUnit.h"
 
 namespace Ogre
 {
@@ -15,6 +16,7 @@ namespace Ogre
 		EPF_VIEWPORT,
 		EPF_TERRAIN,
 		EPF_TERRAINPAGE,
+		EPF_UNIT,
 	};
 	/**
 	* \ingroup : XavierEditor

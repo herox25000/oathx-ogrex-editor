@@ -74,8 +74,18 @@ namespace Ogre
 	 */
 	void			EditorPluginManager::setSelectPlugin(EditorPlugin* pPlugin)
 	{
+		// 丢失焦点
 		if (m_pSelectPlugin != pPlugin)
+		{
+			if (m_pSelectPlugin != NULL)
+				m_pSelectPlugin->OnLoseFocus();
+
 			m_pSelectPlugin = pPlugin;
+
+			// 获取焦点
+			if (m_pSelectPlugin)
+				m_pSelectPlugin->OnSetFocus();
+		}
 	}
 
 	/**
@@ -92,17 +102,8 @@ namespace Ogre
 	 * \param vPos 
 	 * \return 
 	 */
-	bool			EditorPluginManager::injectMouseMove(const Vector2& vPos)
+	EditorPlugin*	EditorPluginManager::getPlugin(const Vector2& vPos)
 	{
-		if (m_pSelectPlugin != NULL)
-		{
-			bool bResult = m_pSelectPlugin->OnMouseMove(vPos);
-			if (!bResult)
-			{
-				
-			}
-		}
-
-		return true;
+		return NULL;
 	}
 }
