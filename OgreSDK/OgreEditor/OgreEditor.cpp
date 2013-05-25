@@ -52,7 +52,7 @@ BOOL	COgreEditorApp::InitInstance()
 	}
 	AfxEnableControlContainer();
 
-	SetRegistryKey(_T("OGRE_EDITOR_VERSION_0.0.1"));
+	SetRegistryKey(_T("OgreGameEditor"));
 
 	LoadStdProfileSettings(4);
 	InitContextMenuManager();
@@ -242,3 +242,4 @@ void	COgreEditorApp::ShowSplashDialog()
 	delete pCsw;
 	pCsw = NULL;
 }
+

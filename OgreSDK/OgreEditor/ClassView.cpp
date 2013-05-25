@@ -1,4 +1,3 @@
-
 #include "stdafx.h"
 #include "MainFrm.h"
 #include "ClassView.h"
