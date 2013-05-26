@@ -282,16 +282,27 @@ BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
  */
 void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	EditorPluginManager* pEditorPluginManager = EditorPluginManager::getSingletonPtr();
-	if (pEditorPluginManager)
+	EditorPluginManager* pManager = EditorPluginManager::getSingletonPtr();
+	if (pManager)
 	{
 		Vector2 vPos(point.x, 
 			point.y);
 
-		EditorPlugin* pPlugin = pEditorPluginManager->getPlugin(vPos);
-		pEditorPluginManager->setSelectPlugin(pPlugin);
+		EditorPlugin* pPlugin = pManager->getPlugin(vPos);
+		if (pPlugin == NULL)
+		{
+			EditorPlugin* pTerrain = pManager->findPlugin(EDITOR_TERRAIN);
+			if (pTerrain)
+				pManager->setSelectPlugin(pTerrain);	
+		}
+		else
+		{
+			pManager->setSelectPlugin(pPlugin);
+		}
 
-		pEditorPluginManager->getRootPlugin()->OnLButtonDown(vPos);
+		EditorPlugin* pSelect = pManager->getSelectPlugin();
+		if (pSelect)
+			pSelect->OnLButtonDown(vPos);
 	}
 
 	CView::OnLButtonDown(nFlags, point);
@@ -304,10 +315,13 @@ void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pRootPlugin)
+	EditorPlugin* pSelect = EditorPluginManager::getSingletonPtr()->getSelectPlugin();
+	if (pSelect)
 	{
-		pRootPlugin->OnLButtonUp(Vector2(point.x, point.y));
+		Vector2 vPos(point.x, 
+			point.y);
+
+		pSelect->OnLButtonUp(vPos);
 	}
 
 	CView::OnLButtonUp(nFlags, point);
@@ -320,10 +334,13 @@ void	CXavierEditorView::OnLButtonUp(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
 {
-	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pRootPlugin)
+	EditorPlugin* pCamera = EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_VIEWPORT_CAMER);
+	if (pCamera)
 	{
-		pRootPlugin->OnRButtonDown(Vector2(point.x, point.y));
+		Vector2 vPos(point.x, 
+			point.y);
+
+		pCamera->OnRButtonDown(vPos);
 	}
 
 	CView::OnRButtonDown(nFlags, point);
@@ -336,10 +353,13 @@ void	CXavierEditorView::OnRButtonDown(UINT nFlags, CPoint point)
  */
 void CXavierEditorView::OnRButtonUp(UINT nFlags, CPoint point)
 {
-	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pRootPlugin)
+	EditorPlugin* pCamera = EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_VIEWPORT_CAMER);
+	if (pCamera)
 	{
-		pRootPlugin->OnRButtonUp(Vector2(point.x, point.y));
+		Vector2 vPos(point.x, 
+			point.y);
+
+		pCamera->OnRButtonUp(vPos);
 	}
 
 	CView::OnRButtonUp(nFlags, point);
@@ -355,21 +375,19 @@ void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
 	EditorPluginManager* pPluginManager = EditorPluginManager::getSingletonPtr();
 	if (pPluginManager)
 	{
-		bool bResult = 0;
+		Vector2 vPos(point.x, 
+			point.y);
 
 		EditorPlugin* pSelectPlugin = pPluginManager->getSelectPlugin();
 		if (pSelectPlugin)
 		{
-			bResult = pSelectPlugin->OnMouseMove(Vector2(point.x, point.y));
+			pSelectPlugin->OnMouseMove(vPos);
 		}
-
-		if (!bResult)
+	
+		EditorPlugin* pCamera = EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_VIEWPORT_CAMER);
+		if (pCamera)
 		{
-			EditorPlugin* pRootPlugin = pPluginManager->getRootPlugin();
-			if (pRootPlugin)
-			{
-				pRootPlugin->OnMouseMove(Vector2(point.x, point.y));
-			}
+			pCamera->OnMouseMove(vPos);
 		}
 	}
 
@@ -385,10 +403,22 @@ void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
  */
 void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pRootPlugin)
+	EditorPluginManager* pPluginManager = EditorPluginManager::getSingletonPtr();
+	if (pPluginManager)
 	{
-		pRootPlugin->OnKeyDown(nChar, nRepCnt, nFlags);
+		EditorPlugin* pSelectPlugin = pPluginManager->getSelectPlugin();
+		if (pSelectPlugin)
+		{
+			pSelectPlugin->OnKeyDown(nChar, nRepCnt, nFlags);
+		}
+		else
+		{
+			EditorPlugin* pCamera = EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_VIEWPORT_CAMER);
+			if (pCamera)
+			{
+				pCamera->OnKeyDown(nChar, nRepCnt, nFlags);
+			}
+		}
 	}
 
 	CView::OnKeyDown(nChar, nRepCnt, nFlags);
@@ -402,10 +432,22 @@ void	CXavierEditorView::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
  */
 void	CXavierEditorView::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
 {
-	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pRootPlugin)
+	EditorPluginManager* pPluginManager = EditorPluginManager::getSingletonPtr();
+	if (pPluginManager)
 	{
-		pRootPlugin->OnKeyUp(nChar, nRepCnt, nFlags);
+		EditorPlugin* pSelectPlugin = pPluginManager->getSelectPlugin();
+		if (pSelectPlugin)
+		{
+			pSelectPlugin->OnKeyUp(nChar, nRepCnt, nFlags);
+		}
+		else
+		{
+			EditorPlugin* pCamera = EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_VIEWPORT_CAMER);
+			if (pCamera)
+			{
+				pCamera->OnKeyUp(nChar, nRepCnt, nFlags);
+			}
+		}
 	}
 
 	CView::OnKeyUp(nChar, nRepCnt, nFlags);
