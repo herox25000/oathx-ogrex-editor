@@ -832,6 +832,24 @@ namespace Ogre
 		return 0;
 	}
 
+	/**
+	 *
+	 * \return 
+	 */
+	bool			EditorTerrain::OnSetFocus()
+	{
+		return 0;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	bool			EditorTerrain::OnLoseFocus()
+	{
+		return 0;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *

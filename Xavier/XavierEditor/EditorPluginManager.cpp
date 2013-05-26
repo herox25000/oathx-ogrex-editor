@@ -1,8 +1,14 @@
 #include "stdafx.h"
+#include "EditorSceneManager.h"
+#include "EditorCamera.h"
+#include "EditorViewport.h"
+#include "EditorTerrain.h"
 #include "EditorPluginManager.h"
 
 namespace Ogre
 {
+	static const uint QUERYFLAG_MOVABLE = 1;
+
 	template<>	EditorPluginManager*	Singleton<EditorPluginManager>::msSingleton = NULL;
 	/**
 	 *
@@ -28,10 +34,10 @@ namespace Ogre
 	 * \return 
 	 */
 	EditorPluginManager::EditorPluginManager(const String& rootName)
-		: m_pRootPlugin(NULL), m_pSelectPlugin(NULL)
+		: m_pRootEditor(NULL), m_pSelectEdtior(NULL)
 	{
-		m_pRootPlugin = new EditorPlugin(rootName);
-		if (m_pRootPlugin)
+		m_pRootEditor = new EditorPlugin(rootName);
+		if (m_pRootEditor)
 		{
 			TKLogEvent("Init root plugin : " + rootName, LML_NORMAL);
 		}
@@ -43,7 +49,7 @@ namespace Ogre
 	 */
 	EditorPluginManager::~EditorPluginManager()
 	{
-		delete m_pRootPlugin;
+		delete m_pRootEditor;
 	}
 
 	/**
@@ -52,7 +58,7 @@ namespace Ogre
 	 */
 	EditorPlugin*	EditorPluginManager::getRootPlugin() const
 	{
-		return m_pRootPlugin;
+		return m_pRootEditor;
 	}
 
 	/**
@@ -62,10 +68,10 @@ namespace Ogre
 	 */
 	EditorPlugin*	EditorPluginManager::findPlugin(const String& name)
 	{
-		if (name == m_pRootPlugin->getName())
-			return m_pRootPlugin;
+		if (name == m_pRootEditor->getName())
+			return m_pRootEditor;
 
-		return m_pRootPlugin->findPlugin(name);
+		return m_pRootEditor->findPlugin(name);
 	}
 
 	/**
@@ -75,16 +81,16 @@ namespace Ogre
 	void			EditorPluginManager::setSelectPlugin(EditorPlugin* pPlugin)
 	{
 		// 丢失焦点
-		if (m_pSelectPlugin != pPlugin)
+		if (m_pSelectEdtior != pPlugin)
 		{
-			if (m_pSelectPlugin != NULL)
-				m_pSelectPlugin->OnLoseFocus();
+			if (m_pSelectEdtior != NULL)
+				m_pSelectEdtior->OnLoseFocus();
 
-			m_pSelectPlugin = pPlugin;
+			m_pSelectEdtior = pPlugin;
 
 			// 获取焦点
-			if (m_pSelectPlugin)
-				m_pSelectPlugin->OnSetFocus();
+			if (m_pSelectEdtior)
+				m_pSelectEdtior->OnSetFocus();
 		}
 	}
 
@@ -94,7 +100,7 @@ namespace Ogre
 	 */
 	EditorPlugin*	EditorPluginManager::getSelectPlugin() const
 	{
-		return m_pSelectPlugin;
+		return m_pSelectEdtior;
 	}
 
 	/**
@@ -104,6 +110,38 @@ namespace Ogre
 	 */
 	EditorPlugin*	EditorPluginManager::getPlugin(const Vector2& vPos)
 	{
+		EditorSceneManager* pSceneEditor = static_cast<EditorSceneManager*>(
+			m_pRootEditor->findPlugin(EDITOR_SCENEPLUGIN_NAME)
+			);
+		if (pSceneEditor)
+		{
+			EditorViewport*	pViewportEditor = static_cast<EditorViewport*>(findPlugin(EDITOR_VIEWPORT));
+			if (pViewportEditor)
+			{
+				RaySceneQuery* pRaySceneQuery = pSceneEditor->getRaySceneQuery();
+				if (pRaySceneQuery)
+				{
+					Ray ray;
+					if (!pViewportEditor->getMouseRay(vPos, ray))
+						return NULL;
+
+					pRaySceneQuery->setRay(ray);
+					pRaySceneQuery->setQueryMask(QUERYFLAG_MOVABLE);
+					pRaySceneQuery->setSortByDistance(true);
+
+					RaySceneQueryResult& result = pRaySceneQuery->execute(); 
+					for (RaySceneQueryResult::iterator it=result.begin();
+						it!=result.end(); it++)
+					{
+						if (it->movable != NULL)
+						{
+							return m_pRootEditor->findPlugin(it->movable->getName());
+						}
+					}
+				}
+			}
+		}
+
 		return NULL;
 	}
 }

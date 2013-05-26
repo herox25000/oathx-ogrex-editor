@@ -112,6 +112,13 @@ void CWizardDialog::OnBnClickedOk()
 		adp.fDegree		= 0;
 
 		pUnitFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_SCENEPLUGIN_NAME));
+
+		adp.szFileName	= "tudorhouse.mesh";
+		adp.vPos		= Vector3(100, 5, 0);
+		adp.vScale		= Vector3(0.05, 0.05, 0.05);
+		adp.fDegree		= 90;
+
+		pUnitFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_SCENEPLUGIN_NAME));
 	}
 	
 	CMainFrame* pMainFrame = (CMainFrame*)(AfxGetMainWnd());

@@ -91,4 +91,11 @@ namespace Ogre
 		return 0;
 	}
 	//////////////////////////////////////////////////////////////////////////
+
+	
+	static int	QueryAutoID()
+	{
+		static int nAutoID;
+		return nAutoID ++;
+	}
 }
