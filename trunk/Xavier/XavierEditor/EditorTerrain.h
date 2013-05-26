@@ -165,6 +165,18 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	bool			OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual bool			OnSetFocus();
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	bool			OnLoseFocus();
 	protected:
 		/**
 		 *

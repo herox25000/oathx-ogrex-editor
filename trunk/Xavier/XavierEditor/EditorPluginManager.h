@@ -83,10 +83,8 @@ namespace Ogre
 		 */
 		virtual	EditorPlugin*			getPlugin(const Vector2& vPos);
 	protected:
-		// 根插件
-		EditorPlugin*					m_pRootPlugin;
-		// 当前选择插件
-		EditorPlugin*					m_pSelectPlugin;
+		EditorPlugin*					m_pRootEditor;
+		EditorPlugin*					m_pSelectEdtior;
 	};
 }
 

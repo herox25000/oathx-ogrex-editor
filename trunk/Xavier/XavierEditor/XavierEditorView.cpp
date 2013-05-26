@@ -282,10 +282,16 @@ BOOL	CXavierEditorView::OnMouseWheel(UINT nFlags, short zDelta, CPoint pt)
  */
 void	CXavierEditorView::OnLButtonDown(UINT nFlags, CPoint point)
 {
-	EditorPlugin* pRootPlugin = EditorPluginManager::getSingletonPtr()->getRootPlugin();
-	if (pRootPlugin)
+	EditorPluginManager* pEditorPluginManager = EditorPluginManager::getSingletonPtr();
+	if (pEditorPluginManager)
 	{
-		pRootPlugin->OnLButtonDown(Vector2(point.x, point.y));
+		Vector2 vPos(point.x, 
+			point.y);
+
+		EditorPlugin* pPlugin = pEditorPluginManager->getPlugin(vPos);
+		pEditorPluginManager->setSelectPlugin(pPlugin);
+
+		pEditorPluginManager->getRootPlugin()->OnLButtonDown(vPos);
 	}
 
 	CView::OnLButtonDown(nFlags, point);

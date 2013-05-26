@@ -49,21 +49,15 @@ namespace Ogre
 		 * \param vPos 
 		 * \return 
 		 */
-		virtual	bool			OnLButtonDown(const Vector2& vPos);
+		virtual	bool			OnSetFocus();
 
 		/**
 		 *
 		 * \param vPos 
 		 * \return 
 		 */
-		virtual	bool			OnMouseMove(const Vector2& vPos);
+		virtual	bool			OnLoseFocus();
 
-		/**
-		 *
-		 * \param vPos 
-		 * \return 
-		 */
-		virtual	bool			OnLButtonUp(const Vector2& vPos);
 	protected:
 		/**
 		 *
@@ -78,8 +72,6 @@ namespace Ogre
 			const Vector3& vPos, const Vector3& vScale, float fDegree);
 
 	protected:
-		EditorViewport*			m_pViewporPlugin;
-		EditorSceneManager*		m_pEditorSceneManager;
 		Entity*					m_pEntity;
 		SceneManager*			m_pSceneManager;
 		SceneNode*				m_pNode;

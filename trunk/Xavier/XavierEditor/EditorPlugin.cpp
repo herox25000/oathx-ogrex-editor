@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include "EditorPluginUtil.h"
 #include "EditorPlugin.h"
 
 namespace Ogre
@@ -58,30 +59,27 @@ namespace Ogre
 		}
 
 		HashMapEditorPlugin::iterator it = m_HashMapEditorPlugin.find(pPlugin->getName());
-		if ( it == m_HashMapEditorPlugin.end() )
+		if ( it != m_HashMapEditorPlugin.end() )
 		{
-			LogManager::getSingleton().logMessage(LML_NORMAL, 
-				m_Name + "->Register editor plugin : " + pPlugin->getName());
-			
-			EditorPlugin* pParent = pPlugin->getParent();
-			if (pParent)
-				pParent->unregisterPlugin(pPlugin, 0);
-			
-			pPlugin->setParent(this);
-
-			m_HashMapEditorPlugin.insert(
-				HashMapEditorPlugin::value_type(pPlugin->getName(), pPlugin)
-				);
-
-			return true;
-		}
-		else
-		{
-			LogManager::getSingleton().logMessage(LML_CRITICAL, 
-				"This plugin tool has been exist : " + pPlugin->getName());	
+			char szID[MAX_PATH];
+			sprintf(szID, "%s/%d", pPlugin->getName(), QueryAutoID());
+			pPlugin->setName(szID);
 		}
 
-		return 0;
+		LogManager::getSingleton().logMessage(LML_NORMAL, 
+			m_Name + "->Register editor plugin : " + pPlugin->getName());
+		
+		EditorPlugin* pParent = pPlugin->getParent();
+		if (pParent)
+			pParent->unregisterPlugin(pPlugin, 0);
+		
+		pPlugin->setParent(this);
+
+		m_HashMapEditorPlugin.insert(
+			HashMapEditorPlugin::value_type(pPlugin->getName(), pPlugin)
+			);
+
+		return true;
 	}
 
 	/**
