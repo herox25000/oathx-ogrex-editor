@@ -75,18 +75,6 @@ namespace Ogre
 			m_pNode->attachObject(
 				m_pEntity);
 		}
-
-		m_pAxisNode = m_pSceneManager->createSceneNode("axis");
-		if (m_pAxisNode)
-		{
-			m_pAxis = m_pSceneManager->createEntity("axes.mesh");
-
-			m_pAxis->getWorldBoundingBox();
-			m_pAxisNode->setScale(vScale * 500);
-			m_pAxisNode->attachObject(
-				m_pAxis);
-			m_pNode->addChild(m_pAxisNode);
-		}
 		
 		return true;
 	}
@@ -100,6 +88,7 @@ namespace Ogre
 	{
 		if (m_pNode)
 		{
+			Grizmo::getSingletonPtr()->show(m_pNode);
 			m_pNode->showBoundingBox(true);
 		}
 
@@ -115,6 +104,7 @@ namespace Ogre
 	{
 		if (m_pNode)
 		{
+			Grizmo::getSingletonPtr()->hide(m_pNode);
 			m_pNode->showBoundingBox(0);
 		}
 

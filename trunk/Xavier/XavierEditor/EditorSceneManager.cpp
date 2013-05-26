@@ -96,6 +96,12 @@ namespace Ogre
 
 		if (m_pSceneManager)
 		{
+			if (m_pGrizemo)
+			{
+				delete m_pGrizemo;
+				m_pGrizemo = NULL;
+			}
+
 			if (m_pRayQuery != NULL)
 				m_pSceneManager->destroyQuery(m_pRayQuery);
 		
@@ -131,6 +137,9 @@ namespace Ogre
 			m_pSceneManager->setFog(fogMode, clrFog, 
 				expDensity, linearStart, linearEnd);
 			
+
+			m_pGrizemo = new Grizmo(m_pSceneManager,
+				"axes.mesh", Vector3::ZERO, Vector3(80, 80, 80));
 			return true;
 		}
 		else
