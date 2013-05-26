@@ -90,8 +90,10 @@ namespace Ogre
 
 	protected:
 		Entity*					m_pEntity;
+		Entity*					m_pAxis;
 		SceneManager*			m_pSceneManager;
 		SceneNode*				m_pNode;
+		SceneNode*				m_pAxisNode;
 	};
 
 	struct SEditorUnitAdp : public SEditorPluginAdp

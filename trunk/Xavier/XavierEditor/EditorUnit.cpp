@@ -14,7 +14,7 @@ namespace Ogre
 	 */
 	EditorUnit::EditorUnit(const String& pluginName, const String& szFileName, 
 		const Vector3& vPos, const Vector3& vScale, float fDegree) 
-		: EditorPlugin(pluginName), m_pNode(NULL), m_pEntity(NULL), m_pSceneManager(NULL)
+		: EditorPlugin(pluginName), m_pNode(NULL), m_pEntity(NULL), m_pSceneManager(NULL), m_pAxis(NULL)
 	{
 		// 获取场景插件
 		EditorSceneManager* pSceneMgrEditor = static_cast<EditorSceneManager*>(
@@ -74,7 +74,19 @@ namespace Ogre
 			m_pNode->setScale(vScale);
 			m_pNode->attachObject(
 				m_pEntity);
-		}	
+		}
+
+		m_pAxisNode = m_pSceneManager->createSceneNode("axis");
+		if (m_pAxisNode)
+		{
+			m_pAxis = m_pSceneManager->createEntity("axes.mesh");
+
+			m_pAxis->getWorldBoundingBox();
+			m_pAxisNode->setScale(vScale * 500);
+			m_pAxisNode->attachObject(
+				m_pAxis);
+			m_pNode->addChild(m_pAxisNode);
+		}
 		
 		return true;
 	}
