@@ -500,6 +500,14 @@
 					>
 				</File>
 				<File
+					RelativePath=".\EditorGizmo.cpp"
+					>
+				</File>
+				<File
+					RelativePath=".\EditorGizmo.h"
+					>
+				</File>
+				<File
 					RelativePath=".\EditorMessageDef.h"
 					>
 				</File>
