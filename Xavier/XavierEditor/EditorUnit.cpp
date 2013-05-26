@@ -109,6 +109,62 @@ namespace Ogre
 		return true;
 	}
 
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 * \return 
+	 */
+	bool			EditorUnit::OnKeyDown(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
+	{
+		switch (nChar)
+		{
+		case VK_UP:
+			{
+				Vector3 vPos = m_pNode->getPosition();
+				vPos.y ++;
+				m_pNode->setPosition(vPos);
+			}
+			break;
+		case VK_DOWN:
+			{
+				Vector3 vPos = m_pNode->getPosition();
+				vPos.y --;
+				m_pNode->setPosition(vPos);
+			}
+			break;
+		case VK_LEFT:
+			{
+				Vector3 vPos = m_pNode->getPosition();
+				vPos.x --;
+				m_pNode->setPosition(vPos);
+			}
+			break;
+		case VK_RIGHT:
+			{
+				Vector3 vPos = m_pNode->getPosition();
+				vPos.x ++;
+				m_pNode->setPosition(vPos);
+			}
+			break;
+		}
+
+		return true;
+	}
+
+	/**
+	 *
+	 * \param nChar 
+	 * \param nRepCnt 
+	 * \param nFlags 
+	 * \return 
+	 */
+	bool			EditorUnit::OnKeyUp(uint32 nChar, uint32 nRepCnt, uint32 nFlags)
+	{
+		return true;
+	}
+
 	//////////////////////////////////////////////////////////////////////////
 	/**
 	 *

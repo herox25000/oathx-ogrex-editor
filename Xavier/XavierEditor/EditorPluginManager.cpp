@@ -135,7 +135,9 @@ namespace Ogre
 					{
 						if (it->movable != NULL)
 						{
-							return m_pRootEditor->findPlugin(it->movable->getName());
+							String name = it->movable->getName();
+							if (!name.empty())
+								return m_pRootEditor->findPlugin(it->movable->getName());
 						}
 					}
 				}
