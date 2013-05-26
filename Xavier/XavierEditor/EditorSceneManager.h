@@ -2,6 +2,7 @@
 #define _____EditorSceneManager_H
 
 #include "EditorPlugin.h"
+#include "EditorGizmo.h"
 
 namespace Ogre
 {
@@ -87,6 +88,7 @@ namespace Ogre
 	protected:
 		SceneManager*				m_pSceneManager;
 		RaySceneQuery*				m_pRayQuery;
+		Grizmo*						m_pGrizemo;
 	};
 
 	// ≥°æ∞≤Âº˛  ≈‰∆˜
