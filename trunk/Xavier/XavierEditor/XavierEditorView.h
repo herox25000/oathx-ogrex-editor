@@ -43,6 +43,7 @@ public:
 
 	BOOL				m_bRMouseDown;
 	CPoint				m_cRigthDwon;
+	CPoint				m_cMousePoint;
 public:
 	/**
 	 *
@@ -221,6 +222,14 @@ public:
 	 * \param nFlags 
 	 */
 	afx_msg void		OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	/**
+	 *
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
+	afx_msg LRESULT		OnCreateUnit(WPARAM wParam, LPARAM lParam);
 };
 
 #ifndef _DEBUG 
