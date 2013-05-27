@@ -1,4 +1,7 @@
 #include "stdafx.h"
+#include "EditorCamera.h"
+#include "EditorViewport.h"
+#include "EditorTerrain.h"
 #include "EditorSceneManager.h"
 #include "EditorPluginManager.h"
 #include "EditorUnit.h"
@@ -14,7 +17,7 @@ namespace Ogre
 	 */
 	EditorUnit::EditorUnit(const String& pluginName, const String& szFileName, 
 		const Vector3& vPos, const Vector3& vScale, float fDegree) 
-		: EditorPlugin(pluginName), m_pNode(NULL), m_pEntity(NULL), m_pSceneManager(NULL), m_pAxis(NULL)
+		: EditorPlugin(pluginName), m_pNode(NULL), m_pEntity(NULL), m_pSceneManager(NULL), m_pAxis(NULL), m_bLDown(0), m_nRot(0)
 	{
 		// 获取场景插件
 		EditorSceneManager* pSceneMgrEditor = static_cast<EditorSceneManager*>(
@@ -88,7 +91,6 @@ namespace Ogre
 	{
 		if (m_pNode)
 		{
-			Grizmo::getSingletonPtr()->show(m_pNode);
 			m_pNode->showBoundingBox(true);
 		}
 
@@ -104,9 +106,70 @@ namespace Ogre
 	{
 		if (m_pNode)
 		{
-			Grizmo::getSingletonPtr()->hide(m_pNode);
 			m_pNode->showBoundingBox(0);
 		}
+
+		return true;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorUnit::OnLButtonDown(const Vector2& vPos)
+	{
+		m_bLDown = true;
+		return true;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorUnit::OnMouseMove(const Vector2& vPos)
+	{
+		if (!m_bLDown)
+			return true;
+
+		EditorViewport* pViewportEditor = static_cast<EditorViewport*>(
+			EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_VIEWPORT)
+			);
+		if (pViewportEditor)
+		{
+			EditorTerrain* pTerrain = static_cast<EditorTerrain*>(
+				EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN)
+				);
+			if (pTerrain)
+			{
+				TerrainGroup* pGroup = pTerrain->getTerrainGroup();
+				if (pGroup)
+				{
+					Ray ray;
+					if (pViewportEditor->getMouseRay(vPos, ray))
+					{
+						TerrainGroup::RayResult rayResult = pGroup->rayIntersects(ray);
+						if (rayResult.hit)
+						{
+							m_pNode->setPosition(rayResult.position);
+						}
+					}
+				}
+			}
+		}
+
+		return true;
+	}
+
+	/**
+	 *
+	 * \param vPos 
+	 * \return 
+	 */
+	bool			EditorUnit::OnLButtonUp(const Vector2& vPos)
+	{
+		m_bLDown = false;
 
 		return true;
 	}
@@ -122,34 +185,65 @@ namespace Ogre
 	{
 		switch (nChar)
 		{
-		case VK_UP:
+		case 'W':
 			{
 				Vector3 vPos = m_pNode->getPosition();
 				vPos.y ++;
 				m_pNode->setPosition(vPos);
 			}
 			break;
-		case VK_DOWN:
+		case 'S':
 			{
 				Vector3 vPos = m_pNode->getPosition();
 				vPos.y --;
 				m_pNode->setPosition(vPos);
 			}
 			break;
-		case VK_LEFT:
+		case 'A':
 			{
 				Vector3 vPos = m_pNode->getPosition();
 				vPos.x --;
 				m_pNode->setPosition(vPos);
 			}
 			break;
-		case VK_RIGHT:
+		case 'D':
 			{
 				Vector3 vPos = m_pNode->getPosition();
 				vPos.x ++;
 				m_pNode->setPosition(vPos);
 			}
 			break;
+		case 'Q':
+			{
+				Quaternion rot = m_pNode->getOrientation();
+				m_nRot ++;
+				rot.FromAngleAxis(Degree(m_nRot), Vector3::UNIT_Y);
+				m_pNode->setOrientation(rot);
+			}
+			break;
+		case 'E':
+			{
+				Quaternion rot = m_pNode->getOrientation();
+				m_nRot --;
+				rot.FromAngleAxis(Degree(m_nRot), Vector3::UNIT_Y);
+				m_pNode->setOrientation(rot);
+			}
+			break;
+		case VK_OEM_PLUS:
+			{
+				Vector3 vScale = m_pNode->getScale();
+				vScale += 0.01;
+				m_pNode->setScale(vScale);
+			}
+			break;
+		case VK_OEM_MINUS:
+			{
+				Vector3 vScale = m_pNode->getScale();
+				vScale -= 0.01;
+				m_pNode->setScale(vScale);
+			}
+			break;
+
 		}
 
 		return true;
