@@ -17,6 +17,7 @@ BEGIN_MESSAGE_MAP(CXavierEditorView, CView)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CXavierEditorView::OnFilePrintPreview)
 	ON_MESSAGE(WM_WIZARD_FNISHED, &CXavierEditorView::OnWizardFnished)
+	ON_MESSAGE(WM_CREATE_UNIT, &CXavierEditorView::OnCreateUnit)
 	ON_MESSAGE(WM_HOTKEY, OnHotKey)
 	ON_WM_CREATE()
 	ON_WM_TIMER()
@@ -389,6 +390,8 @@ void	CXavierEditorView::OnMouseMove(UINT nFlags, CPoint point)
 		{
 			pCamera->OnMouseMove(vPos);
 		}
+
+		m_cMousePoint = point;
 	}
 
 	CView::OnMouseMove(nFlags, point);
@@ -472,6 +475,70 @@ LONG	CXavierEditorView::OnHotKey(WPARAM wParam,LPARAM lParam)
 	{  
 		EditorActionManager::getSingleton().undo();
 	}
+
+	return 0;
+}
+
+/**
+ *
+ * \param wParam 
+ * \param lParam 
+ * \return 
+ */
+LRESULT	CXavierEditorView::OnCreateUnit(WPARAM wParam, LPARAM lParam)
+{
+	wmCreateUnit* pEvent = (wmCreateUnit*)(wParam);
+	if (pEvent)
+	{
+		EditorPluginFactory* pUnitFactory = EditorPluginFactoryManager::getSingletonPtr()->getEditorPluginFactory(EPF_UNIT);
+		if (pUnitFactory)
+		{
+			Vector3 vPos;
+
+			EditorViewport* pViewportEditor = static_cast<EditorViewport*>(
+				EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_VIEWPORT)
+				);
+			if (pViewportEditor)
+			{
+				EditorTerrain* pTerrain = static_cast<EditorTerrain*>(
+					EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_TERRAIN)
+					);
+				if (pTerrain)
+				{
+					TerrainGroup* pGroup = pTerrain->getTerrainGroup();
+					if (pGroup)
+					{
+						POINT cur;
+						::GetCursorPos(&cur);
+
+						CRect crc;
+						ScreenToClient(&crc); 
+						ScreenToClient(&cur);
+
+						Ray ray;
+						if (pViewportEditor->getMouseRay(Vector2(cur.x, cur.y), ray))
+						{
+							TerrainGroup::RayResult rayResult = pGroup->rayIntersects(ray);
+							if (rayResult.hit)
+							{
+								vPos = rayResult.position;
+							}
+						}
+					}
+				}
+
+				SEditorUnitAdp adp;
+				adp.szFileName	= pEvent->Name;
+				adp.vPos		= vPos;
+				adp.vScale		= Vector3(0.1, 0.1, 0.1);
+				adp.fDegree		= 0;
+
+				pUnitFactory->createPlugin(adp, EditorPluginManager::getSingletonPtr()->findPlugin(EDITOR_SCENEPLUGIN_NAME));
+			}
+		}
+
+	}
+
 
 	return 0;
 }

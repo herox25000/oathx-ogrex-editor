@@ -50,6 +50,29 @@ public:
 	 * \param *pResult 
 	 */
 	afx_msg void	OnNMClick(NMHDR *pNMHDR, LRESULT *pResult);
+
+	/**
+	 *
+	 * \param *pNMHDR 
+	 * \param *pResult 
+	 */
+	afx_msg void	OnLvnBegindrag(NMHDR *pNMHDR, LRESULT *pResult);
+	/**
+	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void	OnMouseMove(UINT nFlags, CPoint point);
+	/**
+	 *
+	 * \param nFlags 
+	 * \param point 
+	 */
+	afx_msg void	OnLButtonUp(UINT nFlags, CPoint point);
+protected:
+	CImageList*		m_pDragImage;
+	BOOL			m_bDragging;
+	CString			m_szFileName;
 };
 
 
