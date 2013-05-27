@@ -60,6 +60,27 @@ namespace Ogre
 		
 		/**
 		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual bool			OnLButtonDown(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnMouseMove(const Vector2& vPos);
+
+		/**
+		 *
+		 * \param vPos 
+		 * \return 
+		 */
+		virtual	bool			OnLButtonUp(const Vector2& vPos);
+
+		/**
+		 *
 		 * \param nChar 
 		 * \param nRepCnt 
 		 * \param nFlags 
@@ -94,6 +115,8 @@ namespace Ogre
 		SceneManager*			m_pSceneManager;
 		SceneNode*				m_pNode;
 		SceneNode*				m_pAxisNode;
+		bool					m_bLDown;
+		int						m_nRot;
 	};
 
 	struct SEditorUnitAdp : public SEditorPluginAdp
