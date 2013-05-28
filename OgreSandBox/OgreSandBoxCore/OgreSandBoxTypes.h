@@ -25,6 +25,8 @@
 #include <OgrePlugin.h>
 #include <OgreDynLib.h>
 #include <OgreDynLibManager.h>
+#include <OgreAny.h>
+#include <OgreIteratorWrapper.h>
 
 namespace Ogre
 {

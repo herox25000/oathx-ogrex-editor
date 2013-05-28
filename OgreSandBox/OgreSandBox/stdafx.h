@@ -28,6 +28,7 @@
 #include <afxcontrolbars.h>
 #include "OgreSandBoxCore.h"
 #include "SplashDialog.h"
+#include "GraphDC.h"
 
 using namespace Ogre;
 
