@@ -16,6 +16,7 @@ BEGIN_MESSAGE_MAP(COgreSandBoxView, CView)
 	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
+
 COgreSandBoxView::COgreSandBoxView()
 {
 
@@ -93,6 +94,22 @@ BOOL COgreSandBoxView::OnEraseBkgnd(CDC* pDC)
 	CGraphDC dc(GetDC());
 	dc.FillRect(&rcView, 
 		&CBrush(RGB(0,0,0)));
+
+	dc.SetTextColor(RGB(100,255,0));
+	dc.SetBkMode(TRANSPARENT);
+
+	CRect rcText;
+	rcText.left		= rcView.Width() / 2 - 500;
+	rcText.right	= rcView.Width() / 2 + 500;
+	rcText.top		= rcView.Height() / 2 - 100;
+	rcText.bottom	= rcView.Height() / 2 + 100;
+
+	CFont cFont;
+	cFont.CreatePointFont(200, "»ªÎÄÐÐ¿¬");
+	dc.SelectObject(&cFont);
+	CString welcome("Welcome to Xanvier Game Editor\nversion 0.0.0.1\n<ogre 1.8.1>\nCopyright (c) 2013-2014 lp All rights reserved.");
+	dc.DrawText(welcome, welcome.GetLength(), 
+		&rcText, DT_CENTER|DT_VCENTER);
 
 	return CView::OnEraseBkgnd(pDC);
 }
