@@ -1,7 +1,7 @@
 #include "stdafx.h"
 #include "afxwinappex.h"
-#include "OgreSandBox.h"
 #include "MainFrm.h"
+#include "OgreSandBox.h"
 #include "OgreSandBoxDoc.h"
 #include "OgreSandBoxView.h"
 
@@ -42,7 +42,6 @@ BOOL	COgreSandBoxApp::InitInstance()
 
 	ShowSplashDialog();
 
-	// ≥ı ºªØ OLE ø‚
 	if (!AfxOleInit())
 	{
 		AfxMessageBox(IDP_OLE_INIT_FAILED);
