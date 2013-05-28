@@ -177,11 +177,43 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
+				RelativePath=".\OgreBoundSlot.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEvent.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventArgs.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventSet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreGlobalEventSet.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreProperty.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgrePropertySet.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreSandBox.cpp"
 				>
 			</File>
 			<File
 				RelativePath=".\OgreSandBoxCore.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSubscriberSlot.cpp"
 				>
 			</File>
 			<File
@@ -211,6 +243,62 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
+				RelativePath=".\OgreBoundSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEvent.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventArgs.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEventSet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFreeFunctionSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorCopySlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorPointerSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorReferenceBinder.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreFunctorReferenceSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreGlobalEventSet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreMemberFunctionSlot.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreProperty.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgrePropertySet.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreRefCounted.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreSandBox.h"
 				>
 			</File>
@@ -220,6 +308,14 @@
 			</File>
 			<File
 				RelativePath=".\OgreSandBoxTypes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSlotFunctorBase.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSubscriberSlot.h"
 				>
 			</File>
 			<File
