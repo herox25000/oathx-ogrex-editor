@@ -28,6 +28,10 @@
 #include <OgreAny.h>
 #include <OgreIteratorWrapper.h>
 
+#ifndef SAFE_DELETE
+#	define SAFE_DELETE(p) if (p != NULL) {delete p; p=NULL;}
+#endif
+
 namespace Ogre
 {
 

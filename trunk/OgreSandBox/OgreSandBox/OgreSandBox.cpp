@@ -20,7 +20,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
-COgreSandBoxApp::COgreSandBoxApp() : m_pSandBox(NULL)
+COgreSandBoxApp::COgreSandBoxApp() : m_pEditSystem(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -93,10 +93,10 @@ int		COgreSandBoxApp::ExitInstance()
 	/*
 	* 销毁系统
 	*/
-	if (m_pSandBox != NULL)
+	if (m_pEditSystem != NULL)
 	{
-		m_pSandBox->clearUp();
-		delete m_pSandBox;
+		m_pEditSystem->clearUp();
+		delete m_pEditSystem;
 	}
 
 	return CWinAppEx::ExitInstance();
@@ -210,11 +210,11 @@ void	COgreSandBoxApp::ShowSplashDialog()
 	
 	try{
 		// 创建编辑系统
-		m_pSandBox = new SandBox();
+		m_pEditSystem = new EditSystem();
 #ifndef _DEBUG
-		m_pSandBox->createSandBox("plugins.cfg", "resources.cfg", false);
+		m_pEditSystem->createEditSystem("plugins.cfg", "resources.cfg", false);
 #else
-		m_pSandBox->createSandBox("plugins_d.cfg", "resources_d.cfg", false);
+		m_pEditSystem->createEditSystem("plugins_d.cfg", "resources_d.cfg", false);
 #endif
 	}
 	catch(Exception& e)

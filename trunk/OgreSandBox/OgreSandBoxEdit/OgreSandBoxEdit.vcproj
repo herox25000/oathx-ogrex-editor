@@ -2,9 +2,9 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="OgreSandBoxCore"
-	ProjectGUID="{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}"
-	RootNamespace="OgreSandBoxCore"
+	Name="OgreSandBoxEdit"
+	ProjectGUID="{D387A8E2-ED27-4D46-B90D-D3F21F55642C}"
+	RootNamespace="OgreSandBoxEdit"
 	Keyword="Win32Proj"
 	TargetFrameworkVersion="196613"
 	>
@@ -40,9 +40,10 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm129"
+				AdditionalOptions="-Zm131"
 				Optimization="0"
-				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGRESANDBOXCORE_EXPORTS"
+				AdditionalIncludeDirectories="..\OgreSandBoxCore;"
+				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;OGRESANDBOXEDIT_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -61,9 +62,10 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain_d.lib"
+				AdditionalDependencies="OgreMain_d.lib OgreSandBoxCore_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.dll"
 				LinkIncremental="2"
+				AdditionalLibraryDirectories="..\Lib\Debug"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				ImportLibrary="..\Lib\Debug\$(TargetName).lib"
@@ -93,10 +95,10 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="..\Bin\Release"
+			OutputDirectory="$(SolutionDir)$(ConfigurationName)"
 			IntermediateDirectory="$(ConfigurationName)"
 			ConfigurationType="2"
-			CharacterSet="0"
+			CharacterSet="1"
 			WholeProgramOptimization="1"
 			>
 			<Tool
@@ -118,7 +120,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGRESANDBOXCORE_EXPORTS"
+				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;OGRESANDBOXEDIT_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="2"
@@ -136,13 +138,11 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="OgreMain.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
 				EnableCOMDATFolding="2"
-				ImportLibrary="..\Lib\Release\$(TargetName).lib"
 				TargetMachine="1"
 			/>
 			<Tool
@@ -177,43 +177,11 @@
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}"
 			>
 			<File
-				RelativePath=".\OgreBoundSlot.cpp"
+				RelativePath=".\OgreSandBoxEdit.cpp"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreEvent.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreEventArgs.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreEventSet.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreGlobalEventSet.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreProperty.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgrePropertySet.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSandBox.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSandBoxCore.cpp"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSubscriberSlot.cpp"
+				RelativePath=".\OgreSandBoxEditSystem.cpp"
 				>
 			</File>
 			<File
@@ -243,79 +211,15 @@
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}"
 			>
 			<File
-				RelativePath=".\OgreBoundSlot.h"
+				RelativePath=".\OgreSandBoxEdit.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreEvent.h"
+				RelativePath=".\OgreSandBoxEditSystem.h"
 				>
 			</File>
 			<File
-				RelativePath=".\OgreEventArgs.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreEventSet.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreFreeFunctionSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreFunctorCopySlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreFunctorPointerSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreFunctorReferenceBinder.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreFunctorReferenceSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreGlobalEventSet.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreMemberFunctionSlot.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreProperty.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgrePropertySet.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreRefCounted.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSandBox.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSandBoxCore.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSandBoxTypes.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSlotFunctorBase.h"
-				>
-			</File>
-			<File
-				RelativePath=".\OgreSubscriberSlot.h"
+				RelativePath=".\OgreSandBoxEditTypes.h"
 				>
 			</File>
 			<File
