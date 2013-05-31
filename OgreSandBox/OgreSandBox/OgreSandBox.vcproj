@@ -44,9 +44,9 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
-				AdditionalOptions="-Zm154"
+				AdditionalOptions="-Zm170"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OgreSandBoxCore;.\VCDepend"
+				AdditionalIncludeDirectories="..\OgreSandBoxEdit;..\OgreSandBoxCore;.\VCDepend"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -69,7 +69,7 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
-				AdditionalDependencies="mfc90d.lib OgreSandBoxCore_d.lib"
+				AdditionalDependencies="mfc90d.lib OgreSandBoxCore_d.lib OgreSandBoxEdit_d.lib"
 				OutputFile="$(OutDir)\$(ProjectName)_d.exe"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="..\Lib\Debug"

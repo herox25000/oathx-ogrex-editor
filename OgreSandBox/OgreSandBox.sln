@@ -8,6 +8,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBox", "OgreSandBox\
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBoxCore", "OgreSandBoxCore\OgreSandBoxCore.vcproj", "{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBoxEdit", "OgreSandBoxEdit\OgreSandBoxEdit.vcproj", "{D387A8E2-ED27-4D46-B90D-D3F21F55642C}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B} = {6B3AEF7A-442C-49F3-85EB-2D0129482E7B}
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -22,6 +27,10 @@ Global
 		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}.Debug|Win32.Build.0 = Debug|Win32
 		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}.Release|Win32.ActiveCfg = Release|Win32
 		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}.Release|Win32.Build.0 = Release|Win32
+		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Debug|Win32.Build.0 = Debug|Win32
+		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Release|Win32.ActiveCfg = Release|Win32
+		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

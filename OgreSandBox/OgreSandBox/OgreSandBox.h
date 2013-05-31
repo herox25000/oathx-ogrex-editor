@@ -8,7 +8,7 @@
 
 namespace Ogre
 {
-	class SandBox;
+	class EditSystem;
 }
 
 /**
@@ -39,7 +39,7 @@ public:
 
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
-	Ogre::SandBox*			m_pSandBox;
+	Ogre::EditSystem*		m_pEditSystem;
 public:
 	/**
 	 *

@@ -26,9 +26,10 @@
 #endif
 
 #include <afxcontrolbars.h>
-#include "OgreSandBoxCore.h"
+#include "OgreSandBoxEdit.h"
 #include "SplashDialog.h"
 #include "GraphDC.h"
+
 using namespace Ogre;
 
 #ifdef _UNICODE
