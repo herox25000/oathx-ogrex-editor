@@ -1,17 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBox", "OgreSandBox\OgreSandBox.vcproj", "{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B} = {6B3AEF7A-442C-49F3-85EB-2D0129482E7B}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreEventSet", "OgreEventSet\OgreEventSet.vcproj", "{52AD2F7D-B88F-48F5-989D-37256D261AC7}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBoxCore", "OgreSandBoxCore\OgreSandBoxCore.vcproj", "{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}"
-EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBoxEdit", "OgreSandBoxEdit\OgreSandBoxEdit.vcproj", "{D387A8E2-ED27-4D46-B90D-D3F21F55642C}"
-	ProjectSection(ProjectDependencies) = postProject
-		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B} = {6B3AEF7A-442C-49F3-85EB-2D0129482E7B}
-	EndProjectSection
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreEditor", "OgreEditor\OgreEditor.vcproj", "{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,18 +11,14 @@ Global
 		Release|Win32 = Release|Win32
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{52AD2F7D-B88F-48F5-989D-37256D261AC7}.Debug|Win32.ActiveCfg = Debug|Win32
+		{52AD2F7D-B88F-48F5-989D-37256D261AC7}.Debug|Win32.Build.0 = Debug|Win32
+		{52AD2F7D-B88F-48F5-989D-37256D261AC7}.Release|Win32.ActiveCfg = Release|Win32
+		{52AD2F7D-B88F-48F5-989D-37256D261AC7}.Release|Win32.Build.0 = Release|Win32
 		{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}.Debug|Win32.ActiveCfg = Debug|Win32
 		{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}.Debug|Win32.Build.0 = Debug|Win32
 		{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}.Release|Win32.ActiveCfg = Release|Win32
 		{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}.Release|Win32.Build.0 = Release|Win32
-		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}.Debug|Win32.ActiveCfg = Debug|Win32
-		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}.Debug|Win32.Build.0 = Debug|Win32
-		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}.Release|Win32.ActiveCfg = Release|Win32
-		{6B3AEF7A-442C-49F3-85EB-2D0129482E7B}.Release|Win32.Build.0 = Release|Win32
-		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Debug|Win32.ActiveCfg = Debug|Win32
-		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Debug|Win32.Build.0 = Debug|Win32
-		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Release|Win32.ActiveCfg = Release|Win32
-		{D387A8E2-ED27-4D46-B90D-D3F21F55642C}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
