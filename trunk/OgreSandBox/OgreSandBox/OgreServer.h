@@ -107,7 +107,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual bool			configure(const SSAdp& ssadp);
-
+		
+		/**
+		 *
+		 * \param szPropertyFilePath 
+		 */
+		virtual	bool			loadProperty(const String& szPropertyFilePath);
 	protected:
 		Server*					m_pParent;
 		ServerRegister			m_ServerRegister;

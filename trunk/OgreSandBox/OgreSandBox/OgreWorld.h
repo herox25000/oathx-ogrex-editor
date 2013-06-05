@@ -6,7 +6,8 @@ namespace Ogre
 	// world create adapter param
 	struct SWorldAdp : public SSAdp
 	{
-		
+		SceneTypeMask	typeMask;
+		ColourValue		clrAmbientLight;
 	};
 
 	/**
