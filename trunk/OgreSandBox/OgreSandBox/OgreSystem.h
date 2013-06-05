@@ -4,9 +4,11 @@
 namespace Ogre
 {
 	// plugin register table
-	typedef vector<Plugin*>::type	PluginRegister;
+	typedef vector<Plugin*>::type			PluginRegister;
 	// dynlib register table 
-	typedef vector<DynLib*>::type	DynlibRegister;
+	typedef vector<DynLib*>::type			DynlibRegister;
+	// server factory manager
+	typedef HashMap<String, ServerFactory*>	HashMapServerFactory;
 
 	/**
 	* \ingroup : OgreSandBoxCore
@@ -121,11 +123,32 @@ namespace Ogre
 		 *
 		 */
 		virtual void				destoryAllPlugin();
+	public:
+		/** register a server factory
+		 *
+		 * \param pServerFactory 
+		 */
+		virtual	void				registerServerFactory(ServerFactory* pServerFactory);
+
+		/** get a server factory
+		 *
+		 * \param tyepName 
+		 * \return 
+		 */
+		virtual ServerFactory*		getServerFactory(const String& tyepName);
+
+		/** unregsiter a server factory
+		 *
+		 * \param pServerFactory 
+		 */
+		virtual	void				unregisterServerFactory(ServerFactory* pServerFactory);
 	protected:
 		Root*						m_pRoot;				// ogre root object
 		RenderWindow*				m_pWindow;				// ogre auto render window
+		HashMapServerFactory		m_HashMapServerFactory;
 		PluginRegister				m_vPluginRegister;		// plugin register table
 		DynlibRegister				m_vDynlibRegister;		// dynlib register table
+		
 	};
 }
 

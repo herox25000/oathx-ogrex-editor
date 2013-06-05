@@ -1,4 +1,4 @@
 #pragma once
-#pragma once
 
-#include "OgreSandBoxConfig.h"
+#include "OgreSandBoxTypes.h"
+#include "OgreServer.h"

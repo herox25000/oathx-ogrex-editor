@@ -284,6 +284,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgrePropertyEvent.h"
+				>
+			</File>
+			<File
 				RelativePath=".\OgrePropertySet.h"
 				>
 			</File>

@@ -6,6 +6,11 @@
 
 #include "resource.h" 
 
+namespace Ogre
+{
+	class	System;
+}
+
 /**
 * \ingroup : OgreEditor
 *
@@ -34,6 +39,7 @@ public:
 
 	UINT					m_nAppLook;
 	BOOL					m_bHiColorIcons;
+	Ogre::System*			m_pSystem;
 public:
 	/**
 	 *
