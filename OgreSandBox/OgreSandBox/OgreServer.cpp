@@ -148,6 +148,16 @@ namespace Ogre
 	 */
 	bool			Server::configure(const SSAdp& ssadp)
 	{
+		return loadProperty(ssadp.szPropertyFilePath);
+	}
+
+	/**
+	 *
+	 * \param szPropertyFilePath 
+	 * \return 
+	 */
+	bool			Server::loadProperty(const String& szPropertyFilePath)
+	{
 		return true;
 	}
 }
