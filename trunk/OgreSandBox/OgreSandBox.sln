@@ -5,6 +5,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreEventSet", "OgreEventSe
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreEditor", "OgreEditor\OgreEditor.vcproj", "{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBox", "OgreSandBox\OgreSandBox.vcproj", "{52A361EC-C977-4B0F-AC04-71B5A1C1B627}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -19,6 +21,10 @@ Global
 		{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}.Debug|Win32.Build.0 = Debug|Win32
 		{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}.Release|Win32.ActiveCfg = Release|Win32
 		{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}.Release|Win32.Build.0 = Release|Win32
+		{52A361EC-C977-4B0F-AC04-71B5A1C1B627}.Debug|Win32.ActiveCfg = Debug|Win32
+		{52A361EC-C977-4B0F-AC04-71B5A1C1B627}.Debug|Win32.Build.0 = Debug|Win32
+		{52A361EC-C977-4B0F-AC04-71B5A1C1B627}.Release|Win32.ActiveCfg = Release|Win32
+		{52A361EC-C977-4B0F-AC04-71B5A1C1B627}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
