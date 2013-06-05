@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "OgreSystem.h"
+#include "OgreWorld.h"
 
 namespace Ogre
 {
@@ -42,7 +43,7 @@ namespace Ogre
 	 */
 	System::~System()
 	{
-
+		clearUp();
 	}
 
 	/**
@@ -102,6 +103,8 @@ namespace Ogre
 		rsys->setConfigOption("FSAA",			"2");
 		m_pRoot->setRenderSystem( rsys );
 		
+		registerServerFactory(new WorldFactory("Factory/World"));
+
 		// create render window
 		m_pWindow = m_pRoot->initialise(bAutoCreateWindow);
 		if (m_pWindow)
@@ -157,6 +160,14 @@ namespace Ogre
 	 */
 	void			System::clearUp()
 	{
+		HashMapServerFactory::iterator it = m_HashMapServerFactory.begin();
+		while( it != m_HashMapServerFactory.end() )
+		{
+			TKLogEvent("Unregister server factory: " + it->second->getTypeName());
+
+			delete it->second; it = m_HashMapServerFactory.erase(it);
+		}
+
 		// destory all sand box plugin
 		destoryAllPlugin();
 
@@ -321,6 +332,54 @@ namespace Ogre
 			call();
 
 			DynLibManager::getSingleton().unload(*it);
+		}
+	}
+
+	/**
+	 *
+	 * \param pServerFactory 
+	 */
+	void			System::registerServerFactory(ServerFactory* pServerFactory)
+	{
+		HashMapServerFactory::iterator it = m_HashMapServerFactory.find(pServerFactory->getTypeName());
+		if ( it == m_HashMapServerFactory.end() )
+		{
+			TKLogEvent("Register server factory: " + pServerFactory->getTypeName());
+
+			m_HashMapServerFactory.insert(
+				HashMapServerFactory::value_type(pServerFactory->getTypeName(), pServerFactory)
+				);
+		}
+	}
+
+	/**
+	 *
+	 * \param tyepName 
+	 * \return 
+	 */
+	ServerFactory*	System::getServerFactory(const String& tyepName)
+	{
+		HashMapServerFactory::iterator it = m_HashMapServerFactory.find(tyepName);
+		if ( it != m_HashMapServerFactory.end() )
+		{
+			return it->second;
+		}
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \param pServerFactory 
+	 */
+	void			System::unregisterServerFactory(ServerFactory* pServerFactory)
+	{
+		HashMapServerFactory::iterator it = m_HashMapServerFactory.find(pServerFactory->getTypeName());
+		if ( it != m_HashMapServerFactory.end() )
+		{
+			TKLogEvent("Unregister server factory: " + pServerFactory->getTypeName());
+
+			delete it->second; it = m_HashMapServerFactory.erase(it);
 		}
 	}
 }

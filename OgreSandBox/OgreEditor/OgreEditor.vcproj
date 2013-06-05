@@ -46,7 +46,7 @@
 				Name="VCCLCompilerTool"
 				AdditionalOptions="-Zm170"
 				Optimization="0"
-				AdditionalIncludeDirectories="..\OgreSandBoxEdit;..\OgreSandBoxCore;.\VCDepend"
+				AdditionalIncludeDirectories="..\OgreSandBox;..\OgreEventSet;.\VCDepend"
 				PreprocessorDefinitions="WIN32;_WINDOWS;_DEBUG"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"

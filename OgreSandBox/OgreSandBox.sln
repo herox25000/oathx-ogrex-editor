@@ -4,8 +4,14 @@ Microsoft Visual Studio Solution File, Format Version 10.00
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreEventSet", "OgreEventSet\OgreEventSet.vcproj", "{52AD2F7D-B88F-48F5-989D-37256D261AC7}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreEditor", "OgreEditor\OgreEditor.vcproj", "{5AF3A4E7-4BA6-4431-824C-96006DE6C46D}"
+	ProjectSection(ProjectDependencies) = postProject
+		{52A361EC-C977-4B0F-AC04-71B5A1C1B627} = {52A361EC-C977-4B0F-AC04-71B5A1C1B627}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OgreSandBox", "OgreSandBox\OgreSandBox.vcproj", "{52A361EC-C977-4B0F-AC04-71B5A1C1B627}"
+	ProjectSection(ProjectDependencies) = postProject
+		{52AD2F7D-B88F-48F5-989D-37256D261AC7} = {52AD2F7D-B88F-48F5-989D-37256D261AC7}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -20,7 +20,7 @@ END_MESSAGE_MAP()
  *
  * \return 
  */
-CEditorApp::CEditorApp()
+ CEditorApp::CEditorApp() : m_pSystem(NULL)
 {
 	m_bHiColorIcons = TRUE;
 }
@@ -90,6 +90,12 @@ BOOL	CEditorApp::InitInstance()
  */
 int		CEditorApp::ExitInstance()
 {
+	if (m_pSystem)
+	{
+		delete m_pSystem;
+		m_pSystem = NULL;
+	}
+
 	return CWinAppEx::ExitInstance();
 }
 
@@ -199,19 +205,19 @@ void	CEditorApp::ShowSplashDialog()
 	CSplashDialog* pCsw = new CSplashDialog("../media/depend/Splash.bmp");
 	pCsw->ShowSplash();
 	
-//	try{
-//		// 创建编辑系统
-//		m_pEditSystem = new EditSystem();
-//#ifndef _DEBUG
-//		m_pEditSystem->createEditSystem("plugins.cfg", "resources.cfg", false);
-//#else
-//		m_pEditSystem->createEditSystem("plugins_d.cfg", "resources_d.cfg", false);
-//#endif
-//	}
-//	catch(Exception& e)
-//	{
-//		AfxMessageBox(_T(e.getFullDescription().c_str()));
-//	}
+	try{
+		// 创建编辑系统
+		m_pSystem = new System();
+#ifndef _DEBUG
+		m_pSystem->createSystem("plugins.cfg", "resources.cfg", false);
+#else
+		m_pSystem->createSystem("plugins_d.cfg", "resources_d.cfg", false);
+#endif
+	}
+	catch(Exception& e)
+	{
+		AfxMessageBox(_T(e.getFullDescription().c_str()));
+	}
 
 	pCsw->CloseSplash();
 	delete pCsw;
