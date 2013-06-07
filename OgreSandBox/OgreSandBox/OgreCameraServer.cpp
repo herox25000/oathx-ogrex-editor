@@ -23,4 +23,16 @@ namespace Ogre
 	{
 
 	}
+
+	/**
+	 *
+	 * \param ssadp 
+	 * \return 
+	 */
+	bool			CameraServer::configure(const SSAdp& ssadp)
+	{
+		const SCameraAdp& adp	= static_cast<const SCameraAdp&>(ssadp);
+
+		return true;
+	}
 }

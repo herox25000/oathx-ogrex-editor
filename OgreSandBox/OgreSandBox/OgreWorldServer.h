@@ -30,6 +30,9 @@ namespace Ogre
 	class Ogre_SandBox_Export_API WorldServer : public Server
 	{
 	public:
+		static const String		EventNamespace;
+		static const String		ServerTypeName;
+	public:
 		/**
 		 *
 		 * \param nID 

@@ -3,6 +3,9 @@
 
 namespace Ogre
 {
+	const String	WorldServer::EventNamespace			= "World";
+	const String	WorldServer::ServerTypeName			= "ServerType/World";
+
 	/**
 	 *
 	 * \param nID 
