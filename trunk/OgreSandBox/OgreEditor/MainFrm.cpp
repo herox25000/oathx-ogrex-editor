@@ -25,6 +25,7 @@ BEGIN_MESSAGE_MAP(CMainFrame, CFrameWndEx)
 	ON_REGISTERED_MESSAGE(AFX_WM_CREATETOOLBAR, &CMainFrame::OnToolbarCreateNew)
 	ON_COMMAND_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnApplicationLook)
 	ON_UPDATE_COMMAND_UI_RANGE(ID_VIEW_APPLOOK_WIN_2000, ID_VIEW_APPLOOK_OFF_2007_AQUA, &CMainFrame::OnUpdateApplicationLook)
+	ON_COMMAND(ID_FILE_NEW, &CMainFrame::OnFileNew)
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -35,11 +36,8 @@ static UINT indicators[] =
 	ID_INDICATOR_SCRL,
 };
 
-// CMainFrame 构造/析构
-
 CMainFrame::CMainFrame()
 {
-	// TODO: 在此添加成员初始化代码
 	theApp.m_nAppLook = theApp.GetInt(_T("ApplicationLook"), ID_VIEW_APPLOOK_VS_2005);
 }
 
@@ -53,25 +51,23 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		return -1;
 
 	BOOL bNameValid;
-	// 基于持久值设置视觉管理器和样式
 	OnApplicationLook(theApp.m_nAppLook);
 
 	if (!m_wMenuBar.Create(this))
 	{
 		TRACE0("未能创建菜单栏\n");
-		return -1;      // 未能创建
+		return -1;
 	}
 
 	m_wMenuBar.SetPaneStyle(m_wMenuBar.GetPaneStyle() | CBRS_SIZE_DYNAMIC | CBRS_TOOLTIPS | CBRS_FLYBY);
 
-	// 防止菜单栏在激活时获得焦点
 	CMFCPopupMenu::SetForceMenuFocus(FALSE);
 
 	if (!m_wToolBar.CreateEx(this, TBSTYLE_FLAT, WS_CHILD | WS_VISIBLE | CBRS_TOP | CBRS_GRIPPER | CBRS_TOOLTIPS | CBRS_FLYBY | CBRS_SIZE_DYNAMIC) ||
 		!m_wToolBar.LoadToolBar(theApp.m_bHiColorIcons ? IDR_MAINFRAME_256 : IDR_MAINFRAME))
 	{
 		TRACE0("未能创建工具栏\n");
-		return -1;      // 未能创建
+		return -1; 
 	}
 
 	CString strToolBarName;
@@ -84,33 +80,26 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ASSERT(bNameValid);
 	m_wToolBar.EnableCustomizeButton(TRUE, ID_VIEW_CUSTOMIZE, strCustomize);
 
-	// 允许用户定义的工具栏操作:
 	InitUserToolbars(NULL, uiFirstUserToolBarId, uiLastUserToolBarId);
 
 	if (!m_wStatusBar.Create(this))
 	{
 		TRACE0("未能创建状态栏\n");
-		return -1;      // 未能创建
+		return -1; 
 	}
 	m_wStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
 
-	// TODO: 如果您不希望工具栏和菜单栏可停靠，请删除这五行
 	m_wMenuBar.EnableDocking(CBRS_ALIGN_ANY);
 	m_wToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wMenuBar);
 	DockPane(&m_wToolBar);
 
-
-	// 启用 Visual Studio 2005 样式停靠窗口行为
 	CDockingManager::SetDockingMode(DT_SMART);
-	// 启用 Visual Studio 2005 样式停靠窗口自动隐藏行为
 	EnableAutoHidePanes(CBRS_ALIGN_ANY);
 
-	// 加载菜单项图像(不在任何标准工具栏上):
 	CMFCToolBar::AddToolBarForImageCollection(IDR_MENU_IMAGES, theApp.m_bHiColorIcons ? IDB_MENU_IMAGES_24 : 0);
 
-	// 创建停靠窗口
 	if (!CreateDockingWindows())
 	{
 		TRACE0("未能创建停靠窗口\n");
@@ -127,16 +116,12 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wPropertySet.EnableDocking(CBRS_ALIGN_ANY);
 	DockPane(&m_wPropertySet);
 
-
-	// 启用工具栏和停靠窗口菜单替换
 	EnablePaneMenu(TRUE, ID_VIEW_CUSTOMIZE, strCustomize, ID_VIEW_TOOLBAR);
 
-	// 启用快速(按住 Alt 拖动)工具栏自定义
 	CMFCToolBar::EnableQuickCustomization();
 
 	if (CMFCToolBar::GetUserImages() == NULL)
 	{
-		// 加载用户定义的工具栏图像
 		if (m_UserImages.Load(_T(".\\UserImages.bmp")))
 		{
 			m_UserImages.SetImageSize(CSize(16, 16), FALSE);
@@ -144,8 +129,6 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		}
 	}
 
-	// 启用菜单个性化(最近使用的命令)
-	// TODO: 定义您自己的基本命令，确保每个下拉菜单至少有一个基本命令。
 	CList<UINT, UINT> lstBasicCommands;
 
 	lstBasicCommands.AddTail(ID_FILE_NEW);
@@ -171,6 +154,11 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	lstBasicCommands.AddTail(ID_SORTING_GROUPBYTYPE);
 
 	CMFCToolBar::SetBasicCommands(lstBasicCommands);
+
+	if (!m_dWizard.Create(IDD_DIALOG_WIZARD))
+	{
+		return -1;
+	}
 
 	return 0;
 }
@@ -358,15 +346,11 @@ void CMainFrame::OnUpdateApplicationLook(CCmdUI* pCmdUI)
 
 BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParentWnd, CCreateContext* pContext) 
 {
-	// 基类将执行真正的工作
-
 	if (!CFrameWndEx::LoadFrame(nIDResource, dwDefaultStyle, pParentWnd, pContext))
 	{
 		return FALSE;
 	}
 
-
-	// 为所有用户工具栏启用自定义按钮
 	BOOL bNameValid;
 	CString strCustomize;
 	bNameValid = strCustomize.LoadString(IDS_TOOLBAR_CUSTOMIZE);
@@ -384,3 +368,34 @@ BOOL CMainFrame::LoadFrame(UINT nIDResource, DWORD dwDefaultStyle, CWnd* pParent
 	return TRUE;
 }
 
+BOOL	CMainFrame::SendMessage(INT nWndID, DWORD dwMsgID, WPARAM wParam, LPARAM lParam)
+{
+	switch( nWndID )
+	{
+	case TARGET_FILEVIEW:
+		{
+			return ::SendMessage(m_wFileView.m_hWnd, 
+				dwMsgID, wParam, lParam);
+		}
+		
+	case TARGET_PROPERTY:
+		{
+			return ::SendMessage(m_wPropertySet.m_hWnd, 
+				dwMsgID, wParam, lParam);
+		}
+		
+	case TARGET_RESOURCE:
+		{
+			return ::SendMessage(m_wTreeView.m_hWnd, 
+				dwMsgID, wParam, lParam);
+		}
+	}
+
+	return 0;
+}
+
+void CMainFrame::OnFileNew()
+{
+	m_dWizard.CenterWindow();
+	m_dWizard.ShowWindow(SW_SHOW);
+}

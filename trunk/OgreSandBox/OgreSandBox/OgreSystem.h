@@ -75,6 +75,25 @@ namespace Ogre
 		 */
 		virtual	void				clearUp();
 
+		/**
+		 *
+		 * \param nID 
+		 * \param szName 
+		 * \param adp 
+		 * \return 
+		 */
+		virtual	bool				createScheme(const String& szName, const SSchemeAdp& adp);
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	Scheme*				getScheme() const;
+
+		/**
+		 *
+		 */
+		virtual	void				destroyScheme();
 	public:
 		/** create ogre render window
 		 *
@@ -147,10 +166,12 @@ namespace Ogre
 	protected:
 		GlobalEventSet*				m_pGlobalEventSet;
 		Root*						m_pRoot;				// ogre root object
+		Scheme*						m_pScheme;
 		RenderWindow*				m_pWindow;				// ogre auto render window
 		HashMapServerFactory		m_HashMapServerFactory;
 		PluginRegister				m_vPluginRegister;		// plugin register table
 		DynlibRegister				m_vDynlibRegister;		// dynlib register table
+		
 	};
 }
 

@@ -164,6 +164,14 @@ namespace Ogre
 
 	/**
 	 *
+	 * \return 
+	 */
+	ServerIterator	Server::getServerIterator()
+	{
+		return ServerIterator(m_ServerRegister.begin(), m_ServerRegister.end());
+	}
+	/**
+	 *
 	 * \param ssadp 
 	 * \return 
 	 */

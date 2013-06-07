@@ -4,10 +4,10 @@
 #include "ResourceView.h"
 #include "OutputWnd.h"
 #include "PropertySetWnd.h"
+#include "WizardDialog.h"
 
 class CMainFrame : public CFrameWndEx
-{
-	
+{	
 protected: 
 	CMainFrame();
 	DECLARE_DYNCREATE(CMainFrame)
@@ -21,7 +21,15 @@ public:
 	virtual void AssertValid() const;
 	virtual void Dump(CDumpContext& dc) const;
 #endif
-
+	
+	/**
+	 *
+	 * \param nWndID 
+	 * \param wParam 
+	 * \param lParam 
+	 * \return 
+	 */
+	virtual	BOOL		SendMessage(INT nWndID, DWORD dwMsgID, WPARAM wParam, LPARAM lParam);
 
 protected:
 	BOOL				CreateDockingWindows();
@@ -36,6 +44,7 @@ protected:
 	CResourceView		m_wTreeView;
 	COutputWnd			m_wOutput;
 	CPropertySetWnd		m_wPropertySet;
+	CWizardDialog		m_dWizard;
 protected:
 	afx_msg int			OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg void		OnViewCustomize();
@@ -43,6 +52,8 @@ protected:
 	afx_msg void		OnApplicationLook(UINT id);
 	afx_msg void		OnUpdateApplicationLook(CCmdUI* pCmdUI);
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnFileNew();
 };
 
 

@@ -39,9 +39,9 @@
 namespace Ogre
 {
 	class Server;
+		class Scheme;
 		class WorldServer;
-		class SchemeServer;
-
+		
 	class ServerFactory;
 }
 #endif

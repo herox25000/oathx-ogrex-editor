@@ -76,6 +76,7 @@ namespace Ogre
 
 	// child server table
 	typedef map<uint32, Server*>::type	ServerRegister;
+	typedef MapIterator<ServerRegister>	ServerIterator;
 
 	/**
 	* \ingroup : OgreSandBox
@@ -173,6 +174,11 @@ namespace Ogre
 		 */
 		virtual void			unregisterServer(Server* pServer, bool bDestory=true);
 
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	ServerIterator	getServerIterator();
 		/**
 		 *
 		 * \param ssadp 

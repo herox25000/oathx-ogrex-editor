@@ -1,7 +1,7 @@
 #include "stdafx.h"
-#include "OgreSystem.h"
-#include "OgreSchemeServer.h"
+#include "OgreScheme.h"
 #include "OgreWorldServer.h"
+#include "OgreSystem.h"
 
 namespace Ogre
 {
@@ -33,7 +33,7 @@ namespace Ogre
 	 * \return 
 	 */
 	System::System()
-		: m_pRoot(NULL), m_pWindow(NULL), m_pGlobalEventSet(NULL)
+		: m_pRoot(NULL), m_pWindow(NULL), m_pGlobalEventSet(NULL), m_pScheme(NULL)
 	{
 		m_pGlobalEventSet = new GlobalEventSet();
 	}
@@ -113,9 +113,9 @@ namespace Ogre
 		m_pRoot->setRenderSystem( rsys );
 		
 		// register server factory
+		registerServerFactory(new TemplateServerFactory<Scheme>());
 		registerServerFactory(new TemplateServerFactory<WorldServer>());
-		registerServerFactory(new TemplateServerFactory<SchemeServer>());
-
+		
 		// create render window
 		m_pWindow = m_pRoot->initialise(bAutoCreateWindow);
 		if (m_pWindow)
@@ -179,6 +179,9 @@ namespace Ogre
 			delete it->second; it = m_HashMapServerFactory.erase(it);
 		}
 
+		// destroy scheme
+		destroyScheme();
+
 		// destory all sand box plugin
 		destoryAllPlugin();
 
@@ -187,6 +190,55 @@ namespace Ogre
 		{
 			delete m_pRoot;
 			m_pRoot = NULL;
+		}
+	}
+
+	/**
+	 *
+	 * \param szName 
+	 * \param adp 
+	 * \return 
+	 */
+	bool			System::createScheme(const String& szName, const SSchemeAdp& adp)
+	{
+		ServerFactory* pFactory = getServerFactory(Scheme::ServerTypeName);
+		if (pFactory)
+		{
+			if (m_pScheme != NULL)
+			{
+				delete m_pScheme;
+				m_pScheme = NULL;
+			}
+			
+			m_pScheme = static_cast<Scheme*>(pFactory->createServer(0, szName, adp, NULL));
+			if (m_pScheme)
+			{
+				TKLogEvent("create scheme : " + szName);
+				return true;
+			}
+		}
+
+		return 0;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	Scheme*			System::getScheme() const
+	{
+		return m_pScheme;
+	}
+
+	/**
+	 *
+	 */
+	void			System::destroyScheme()
+	{
+		if (m_pScheme)
+		{
+			delete m_pScheme;
+			m_pScheme = NULL;
 		}
 	}
 
