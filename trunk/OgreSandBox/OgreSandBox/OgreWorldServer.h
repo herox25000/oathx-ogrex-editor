@@ -27,7 +27,7 @@ namespace Ogre
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class Ogre_SandBox_Export_API World : public Server
+	class Ogre_SandBox_Export_API WorldServer : public Server
 	{
 	public:
 		/**
@@ -35,13 +35,26 @@ namespace Ogre
 		 * \param nID 
 		 * \return 
 		 */
-		World(const uint32 nID, const String& szName);
+		WorldServer(const uint32 nID, const String& szName);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual ~World();
+		virtual ~WorldServer();
+
+	public:
+		/**
+		 *
+		 * \return 
+		 */
+		virtual	SceneManager*	getSceneManager() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual RaySceneQuery*	getRaySceneQuery() const;
 
 	public:
 		/**
@@ -72,7 +85,7 @@ namespace Ogre
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class Ogre_SandBox_Export_API WorldFactory : public ServerFactory
+	class Ogre_SandBox_Export_API WorldServerFactory : public ServerFactory
 	{
 	public:
 		/**
@@ -80,7 +93,7 @@ namespace Ogre
 		 * \param typeName 
 		 * \return 
 		 */
-		WorldFactory(const String& typeName)
+		WorldServerFactory(const String& typeName)
 			: ServerFactory(typeName)
 		{
 
@@ -90,7 +103,7 @@ namespace Ogre
 		 *
 		 * \return 
 		 */
-		virtual ~WorldFactory()
+		virtual ~WorldServerFactory()
 		{
 
 		}
@@ -105,7 +118,7 @@ namespace Ogre
 		 */
 		virtual Server*			createServer(const uint32 nID, const String& szName, const SSAdp& ssadp, Server* pParent)
 		{
-			World* pWorld = new World(nID, szName);
+			WorldServer* pWorld = new WorldServer(nID, szName);
 			try{
 				if (pWorld->configure(ssadp))
 				{

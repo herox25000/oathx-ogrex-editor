@@ -1,5 +1,5 @@
 #include "stdafx.h"
-#include "OgreWorld.h"
+#include "OgreWorldServer.h"
 
 namespace Ogre
 {
@@ -8,7 +8,7 @@ namespace Ogre
 	 * \param nID 
 	 * \return 
 	 */
-	World::World(const uint32 nID, const String& szName)
+	WorldServer::WorldServer(const uint32 nID, const String& szName)
 		: Server(nID, szName), m_pSceneManager(NULL), m_pSceneQuery(NULL)
 	{
 
@@ -18,7 +18,7 @@ namespace Ogre
 	 *
 	 * \return 
 	 */
-	World::~World()
+	WorldServer::~WorldServer()
 	{
 		
 	}
@@ -28,7 +28,7 @@ namespace Ogre
 	 * \param ssadp 
 	 * \return 
 	 */
-	bool			World::configure(const SSAdp& ssadp)
+	bool			WorldServer::configure(const SSAdp& ssadp)
 	{
 		// convert to world param
 		const SWorldAdp& adp = static_cast<const SWorldAdp&>(ssadp);
@@ -47,6 +47,24 @@ namespace Ogre
 		}
 		
 		return Server::configure(ssadp);
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	SceneManager*	WorldServer::getSceneManager() const
+	{
+		return m_pSceneManager;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	RaySceneQuery*	WorldServer::getRaySceneQuery() const
+	{
+		return m_pSceneQuery;
 	}
 
 }
