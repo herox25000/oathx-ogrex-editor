@@ -3,6 +3,9 @@
 
 namespace Ogre
 {
+#define		ID_DEFSCHEME	0
+#define		ID_DEFWORLD		1
+
 	/**
 	* \ingroup : OgreSandBox
 	*

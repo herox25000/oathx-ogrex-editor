@@ -210,7 +210,7 @@ namespace Ogre
 				m_pScheme = NULL;
 			}
 			
-			m_pScheme = static_cast<Scheme*>(pFactory->createServer(0, szName, adp, NULL));
+			m_pScheme = static_cast<Scheme*>(pFactory->createServer(ID_DEFSCHEME, szName, adp, NULL));
 			if (m_pScheme)
 			{
 				TKLogEvent("create scheme : " + szName);
