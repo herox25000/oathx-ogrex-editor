@@ -185,6 +185,14 @@
 				>
 			</File>
 			<File
+				RelativePath=".\OgreSandBoxUnity.cpp"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSchemeServer.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreServer.cpp"
 				>
 			</File>
@@ -232,6 +240,14 @@
 			</File>
 			<File
 				RelativePath=".\OgreSandBoxTypes.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSandBoxUnity.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreSchemeServer.h"
 				>
 			</File>
 			<File

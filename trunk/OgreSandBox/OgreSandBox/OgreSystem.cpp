@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "OgreSystem.h"
-#include "OgreWorld.h"
+#include "OgreSchemeServer.h"
+#include "OgreWorldServer.h"
 
 namespace Ogre
 {
@@ -32,9 +33,9 @@ namespace Ogre
 	 * \return 
 	 */
 	System::System()
-		: m_pRoot(NULL), m_pWindow(NULL)
+		: m_pRoot(NULL), m_pWindow(NULL), m_pGlobalEventSet(NULL)
 	{
-		
+		m_pGlobalEventSet = new GlobalEventSet();
 	}
 
 	/**
@@ -43,6 +44,12 @@ namespace Ogre
 	 */
 	System::~System()
 	{
+		if (m_pGlobalEventSet)
+		{
+			delete m_pGlobalEventSet;
+			m_pGlobalEventSet = NULL;
+		}
+
 		clearUp();
 	}
 
@@ -101,9 +108,13 @@ namespace Ogre
 		rsys->setConfigOption("VSync",			"Yes" );
 		rsys->setConfigOption("Full Screen",	"No" );
 		rsys->setConfigOption("FSAA",			"2");
+
+		// set render system
 		m_pRoot->setRenderSystem( rsys );
 		
-		registerServerFactory(new WorldFactory("Factory/World"));
+		// register server factory
+		registerServerFactory(new TemplateServerFactory<WorldServer>());
+		registerServerFactory(new TemplateServerFactory<SchemeServer>());
 
 		// create render window
 		m_pWindow = m_pRoot->initialise(bAutoCreateWindow);

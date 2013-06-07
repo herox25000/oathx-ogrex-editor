@@ -3,6 +3,13 @@
 
 namespace Ogre
 {
+	const String	Server::EventNamespace			= "Server";
+	const String	Server::ServerTypeName			= "ServerType/Default";
+
+	const String	Server::EventRegisterServer		= "RegisterServer";
+	const String	Server::EventUnregisterServer	= "UnregisterServer";
+	const String	Server::EventLoadProperty		= "LoadProperty";
+
 	/**
 	 *
 	 * \param nID 
@@ -87,15 +94,24 @@ namespace Ogre
 		ServerRegister::iterator it = m_ServerRegister.find(pServer->getID());
 		if ( it != m_ServerRegister.end() )
 		{
+			// reset parent server
 			Server* pParent = pServer->getParent();
 			if (pParent)
 				pParent->unregisterServer(pServer, 0);
 
+			// set new parent server
 			pServer->setParent(this);
-
+			
+			// insert server
 			m_ServerRegister.insert(
 				ServerRegister::value_type(pServer->getID(), pServer)
 				);
+
+			// send register server event
+			RegServerEventArgs args(pServer);
+			fireEvent(EventRegisterServer, args, 
+				EventNamespace);
+
 		}
 	}
 
@@ -132,6 +148,11 @@ namespace Ogre
 		ServerRegister::iterator it = m_ServerRegister.find(pServer->getID());
 		if ( it != m_ServerRegister.end() )
 		{
+			// send register server event
+			RegServerEventArgs args(pServer);
+			fireEvent(EventUnregisterServer, args, 
+				EventNamespace);
+
 			if (bDestory)
 			{
 				delete it->second;
@@ -148,16 +169,10 @@ namespace Ogre
 	 */
 	bool			Server::configure(const SSAdp& ssadp)
 	{
-		return loadProperty(ssadp.szPropertyFilePath);
-	}
+		// send register server event
+		LoadPropertyEventArgs args(ssadp.szPropertyFilePath);
+		fireEvent(EventLoadProperty, args, EventNamespace);
 
-	/**
-	 *
-	 * \param szPropertyFilePath 
-	 * \return 
-	 */
-	bool			Server::loadProperty(const String& szPropertyFilePath)
-	{
 		return true;
 	}
 }

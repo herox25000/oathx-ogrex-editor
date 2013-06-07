@@ -123,6 +123,7 @@ namespace Ogre
 		 *
 		 */
 		virtual void				destoryAllPlugin();
+		 
 	public:
 		/** register a server factory
 		 *
@@ -142,13 +143,14 @@ namespace Ogre
 		 * \param pServerFactory 
 		 */
 		virtual	void				unregisterServerFactory(ServerFactory* pServerFactory);
+
 	protected:
+		GlobalEventSet*				m_pGlobalEventSet;
 		Root*						m_pRoot;				// ogre root object
 		RenderWindow*				m_pWindow;				// ogre auto render window
 		HashMapServerFactory		m_HashMapServerFactory;
 		PluginRegister				m_vPluginRegister;		// plugin register table
 		DynlibRegister				m_vDynlibRegister;		// dynlib register table
-		
 	};
 }
 

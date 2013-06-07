@@ -3,6 +3,18 @@
 
 namespace Ogre
 {
+	// camera server adapter param
+	struct SCameraAdp : public SSAdp
+	{
+		Vector3			vPos;					// the camera positon
+		Quaternion		q;				
+		float			fNearClipDistance;
+		float			fFarClipDistance;
+		float			fFov;
+		bool			bAutoAspectRatio;
+		uint32			nQueryFlags;
+	};
+
 	/**
 	* \ingroup : OgreSandBox
 	*
@@ -14,7 +26,7 @@ namespace Ogre
 	*
 	* \Author  : lp
 	*
-	* \Desc    : 
+	* \Desc    : camera server
 	*
 	* \bug     : 
 	*
@@ -36,6 +48,17 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual ~CameraServer();
+
+	public:
+		/**
+		 *
+		 * \param ssadp 
+		 * \return 
+		 */
+		virtual bool			configure(const SSAdp& ssadp);
+
+	protected:
+		Camera*					m_pCamera;
 	};
 }
 

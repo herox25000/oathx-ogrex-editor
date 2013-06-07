@@ -29,6 +29,8 @@
 #include <OgreAny.h>
 #include <OgreIteratorWrapper.h>
 #include <OgrePropertyEvent.h>
+#include <OgreGlobalEventSet.h>
+#include <OgrePropertySet.h>
 
 #ifndef SAFE_DELETE
 #	define SAFE_DELETE(p) if (p != NULL) {delete p; p=NULL;}
@@ -37,9 +39,9 @@
 namespace Ogre
 {
 	class Server;
-		class World;
+		class WorldServer;
+		class SchemeServer;
 
 	class ServerFactory;
-		class WorldFactory;
 }
 #endif

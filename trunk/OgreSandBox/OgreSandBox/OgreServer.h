@@ -9,6 +9,71 @@ namespace Ogre
 		String			szPropertyFilePath;
 	};
 
+	/**
+	* \ingroup : OgreSandBox
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+	*
+	* \VERSION : 1.0
+	*
+	* \date    : 2013-06-07
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
+	* \Copyright (c) 2012 lp All rights reserved.
+	*/
+	class Ogre_SandBox_Export_API RegServerEventArgs : public EventArgs
+	{
+	public:
+		RegServerEventArgs(Server* pSend)
+			: pServer(pSend)
+		{
+
+		}
+
+	public:
+		Server*			pServer;
+	};
+
+	/**
+	* \ingroup : OgreSandBox
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+	*
+	* \VERSION : 1.0
+	*
+	* \date    : 2013-06-07
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
+	* \Copyright (c) 2012 lp All rights reserved.
+	*/
+	class Ogre_SandBox_Export_API LoadPropertyEventArgs : public EventArgs
+	{
+	public:
+		/**
+		 *
+		 * \param szPath 
+		 * \return 
+		 */
+		LoadPropertyEventArgs(const String& szPath)
+			: szPathName(szPath)
+		{
+
+		}
+
+	public:
+		String				szPathName;
+	};
+
 	// child server table
 	typedef map<uint32, Server*>::type	ServerRegister;
 
@@ -31,6 +96,13 @@ namespace Ogre
 	*/
 	class Ogre_SandBox_Export_API Server : public PropertySet
 	{
+	public:
+		static const String		EventNamespace;
+		static const String		ServerTypeName;
+
+		static const String		EventRegisterServer;
+		static const String		EventUnregisterServer;
+		static const String		EventLoadProperty;
 	public:
 		/**
 		 *
@@ -108,11 +180,6 @@ namespace Ogre
 		 */
 		virtual bool			configure(const SSAdp& ssadp);
 		
-		/**
-		 *
-		 * \param szPropertyFilePath 
-		 */
-		virtual	bool			loadProperty(const String& szPropertyFilePath);
 	protected:
 		Server*					m_pParent;
 		ServerRegister			m_ServerRegister;
@@ -189,6 +256,92 @@ namespace Ogre
 	protected:
 		String					m_typeName;
 	};
+
+	
+	/**
+	* \ingroup : OgreSandBox
+	*
+	* \os&IDE  : Microsoft Windows XP (SP3)  &  Microsoft Visual C++ .NET 2008
+	*
+	* \VERSION : 1.0
+	*
+	* \date    : 2013-06-07
+	*
+	* \Author  : lp
+	*
+	* \Desc    : 
+	*
+	* \bug     : 
+	*
+	* \Copyright (c) 2012 lp All rights reserved.
+	*/
+	template<typename T> 
+		class TemplateServerFactory : public ServerFactory
+	{
+	public:
+		/**
+		 *
+		 * \return 
+		 */
+		TemplateServerFactory();
+		
+		/**
+		 *
+		 * \param nID 
+		 * \param szName 
+		 * \param ssadp 
+		 * \param pParent 
+		 * \return 
+		 */
+		virtual	Server*			createServer(const uint32 nID, const String& szName, const SSAdp& ssadp, Server* pParent);
+	};
+	
+	/**
+	 *
+	 * \return 
+	 */
+	template <typename T>
+		TemplateServerFactory<T>::TemplateServerFactory() 
+			: ServerFactory(T::ServerTypeName)
+		{
+		}
+
+	/**
+	 *
+	 * \param nID 
+	 * \param szName 
+	 * \param ssadp 
+	 * \param pParent 
+	 * \return 
+	 */
+	template <typename T>
+		Server* TemplateServerFactory<T>::createServer(const uint32 nID, const String& szName, const SSAdp& ssadp, Server* pParent)
+	{
+		Server* pServer = new T(nID, szName);
+		try{
+			if (pServer->configure(ssadp))
+			{
+				if (pParent)
+					pParent->registerServer(pServer);
+
+				return pServer;
+			}
+			else
+			{
+				OGRE_EXCEPT(Exception::ERR_RT_ASSERTION_FAILED, "Crate server " + szName + " error",
+					"createServer");
+			}
+		}
+		catch(Exception& e)
+		{
+			TKLogEvent(e.getFullDescription().c_str(), 
+				LML_CRITICAL);
+
+			delete pServer;
+		}
+
+		return NULL;
+	}
 }
 
 #endif
