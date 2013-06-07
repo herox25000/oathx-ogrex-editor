@@ -1,5 +1,7 @@
 #include "stdafx.h"
 #include "OgreScheme.h"
+#include "OgreWorldServer.h"
+#include "OgreSystem.h"
 
 namespace Ogre
 {
@@ -36,11 +38,21 @@ namespace Ogre
 	{
 		const SSchemeAdp& adp = static_cast<const SSchemeAdp&>(ssadp);
 
-		if (Unity::createDirectory(adp.szPathName))
-		{
-					
-		}
+		// create scheme dir
+		if (!Unity::createDirectory(adp.szPathName))
+			return 0;
 
+		// create world server
+		ServerFactory* pFactory = System::getSingleton().getServerFactory(WorldServer::ServerTypeName);
+		if (pFactory)
+		{
+			SWorldAdp adp;
+			adp.clrAmbientLight	= ColourValue::Black;
+			adp.typeMask		= 2;
+
+			pFactory->createServer(ID_DEFWORLD, "World", adp, this);
+		}			
+		
 		return true;
 	}
 }

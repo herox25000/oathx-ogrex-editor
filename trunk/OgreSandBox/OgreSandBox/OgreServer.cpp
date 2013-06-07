@@ -28,7 +28,7 @@ namespace Ogre
 	 */
 	Server::~Server()
 	{
-
+		destroyAllServer();
 	}
 
 	/**
@@ -92,7 +92,7 @@ namespace Ogre
 	void			Server::registerServer(Server* pServer)
 	{
 		ServerRegister::iterator it = m_ServerRegister.find(pServer->getID());
-		if ( it != m_ServerRegister.end() )
+		if ( it == m_ServerRegister.end() )
 		{
 			// reset parent server
 			Server* pParent = pServer->getParent();
@@ -159,6 +159,18 @@ namespace Ogre
 			}
 
 			m_ServerRegister.erase(it);
+		}
+	}
+
+	/**
+	 *
+	 */
+	void			Server::destroyAllServer()
+	{
+		ServerRegister::iterator it = m_ServerRegister.begin();
+		while( it != m_ServerRegister.end() )
+		{
+			delete it->second; it = m_ServerRegister.erase(it);
 		}
 	}
 

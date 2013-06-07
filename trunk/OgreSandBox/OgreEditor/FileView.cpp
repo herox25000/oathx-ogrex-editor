@@ -46,7 +46,7 @@ int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	CRect rectDummy;
 	rectDummy.SetRectEmpty();
-	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS;
+	const DWORD dwViewStyle = WS_CHILD | WS_VISIBLE | TVS_HASLINES | TVS_LINESATROOT | TVS_HASBUTTONS | TVS_CHECKBOXES;
 
 	if (!m_wFileView.Create(dwViewStyle, rectDummy, this, 4))
 	{
@@ -144,7 +144,7 @@ BOOL	CFileView::Insert(Ogre::Server* pServer, HTREEITEM hParent)
 	if (pServer == NULL)
 		return FALSE;
 
-	int nImage		= hParent ? 0 : 1;
+	int nImage		= hParent ? 1 : 0;
 	HTREEITEM hItem = m_wFileView.InsertItem(pServer->getName().c_str(), nImage, nImage, hParent);
 
 	ServerIterator hashServer = pServer->getServerIterator();

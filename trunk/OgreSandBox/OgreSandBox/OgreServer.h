@@ -179,6 +179,12 @@ namespace Ogre
 		 * \return 
 		 */
 		virtual	ServerIterator	getServerIterator();
+
+		/**
+		 *
+		 */
+		virtual	void			destroyAllServer();
+
 		/**
 		 *
 		 * \param ssadp 
