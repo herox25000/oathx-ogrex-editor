@@ -25,7 +25,7 @@ namespace Ogre
 	*
 	* \Copyright (c) 2012 lp All rights reserved.
 	*/
-	class Ogre_SandBox_Export_API SchemeServer : public Server
+	class Ogre_SandBox_Export_API Scheme : public Server
 	{
 	public:
 		static const String		EventNamespace;
@@ -37,13 +37,13 @@ namespace Ogre
 		 * \param szName 
 		 * \return 
 		 */
-		SchemeServer(const uint32 nID, const String& szName);
+		Scheme(const uint32 nID, const String& szName);
 
 		/**
 		 *
 		 * \return 
 		 */
-		virtual ~SchemeServer();
+		virtual ~Scheme();
 
 		/**
 		 *

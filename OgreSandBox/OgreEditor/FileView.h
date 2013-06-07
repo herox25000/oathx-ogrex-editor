@@ -20,7 +20,13 @@ public:
 
 	void				AdjustLayout();
 	void				OnChangeVisualStyle();
-
+	/**
+	 *
+	 * \param pServer 
+	 * \param pParent 
+	 */
+	BOOL				Insert(Ogre::Server* pServer, HTREEITEM hParent);
+	void				Update();
 protected:
 
 	CViewTree			m_wFileView;
@@ -43,6 +49,7 @@ protected:
 	afx_msg void		OnEditClear();
 	afx_msg void		OnPaint();
 	afx_msg void		OnSetFocus(CWnd* pOldWnd);
+	afx_msg LRESULT		OnNewScheme(WPARAM wParam, LPARAM lParam);
 
 	DECLARE_MESSAGE_MAP()
 };

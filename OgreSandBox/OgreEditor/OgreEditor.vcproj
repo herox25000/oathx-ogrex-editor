@@ -249,6 +249,10 @@
 				RelativePath=".\ViewTree.cpp"
 				>
 			</File>
+			<File
+				RelativePath=".\WizardDialog.cpp"
+				>
+			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -269,6 +273,10 @@
 			</File>
 			<File
 				RelativePath=".\OgreEditorDoc.h"
+				>
+			</File>
+			<File
+				RelativePath=".\OgreEditorMsgDef.h"
 				>
 			</File>
 			<File
@@ -301,6 +309,10 @@
 			</File>
 			<File
 				RelativePath=".\ViewTree.h"
+				>
+			</File>
+			<File
+				RelativePath=".\WizardDialog.h"
 				>
 			</File>
 		</Filter>
@@ -358,11 +370,19 @@
 				>
 			</File>
 			<File
+				RelativePath=".\res\OgreEditor.ico"
+				>
+			</File>
+			<File
 				RelativePath=".\OgreEditor.rc"
 				>
 			</File>
 			<File
 				RelativePath=".\res\OgreEditor.rc2"
+				>
+			</File>
+			<File
+				RelativePath=".\res\OgreEditorDoc.ico"
 				>
 			</File>
 			<File
@@ -464,5 +484,9 @@
 		</File>
 	</Files>
 	<Globals>
+		<Global
+			Name="RESOURCE_FILE"
+			Value="OgreEditor.rc"
+		/>
 	</Globals>
 </VisualStudioProject>

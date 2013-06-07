@@ -29,11 +29,17 @@ BEGIN_MESSAGE_MAP(CFileView, CDockablePane)
 	ON_COMMAND(ID_EDIT_CUT, OnEditCut)
 	ON_COMMAND(ID_EDIT_COPY, OnEditCopy)
 	ON_COMMAND(ID_EDIT_CLEAR, OnEditClear)
+	ON_MESSAGE(WM_NEWSCHEME, &CFileView::OnNewScheme)
 	ON_WM_PAINT()
 	ON_WM_SETFOCUS()
 END_MESSAGE_MAP()
 
-int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
+/**
+ *
+ * \param lpCreateStruct 
+ * \return 
+ */
+int		CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
 	if (CDockablePane::OnCreate(lpCreateStruct) == -1)
 		return -1;
@@ -69,13 +75,24 @@ int CFileView::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	return 0;
 }
 
-void CFileView::OnSize(UINT nType, int cx, int cy)
+/**
+ *
+ * \param nType 
+ * \param cx 
+ * \param cy 
+ */
+void	CFileView::OnSize(UINT nType, int cx, int cy)
 {
 	CDockablePane::OnSize(nType, cx, cy);
 	AdjustLayout();
 }
 
-void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
+/**
+ *
+ * \param pWnd 
+ * \param point 
+ */
+void	CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
 {
 	CTreeCtrl* pWndTree = (CTreeCtrl*) &m_wFileView;
 	ASSERT_VALID(pWndTree);
@@ -103,7 +120,10 @@ void CFileView::OnContextMenu(CWnd* pWnd, CPoint point)
 	theApp.GetContextMenuManager()->ShowPopupMenu(IDR_POPUP_EXPLORER, point.x, point.y, this, TRUE);
 }
 
-void CFileView::AdjustLayout()
+/**
+ *
+ */
+void	CFileView::AdjustLayout()
 {
 	if (GetSafeHwnd() == NULL)
 	{
@@ -119,40 +139,94 @@ void CFileView::AdjustLayout()
 	m_wFileView.SetWindowPos(NULL, rectClient.left + 1, rectClient.top + cyTlb + 1, rectClient.Width() - 2, rectClient.Height() - cyTlb - 2, SWP_NOACTIVATE | SWP_NOZORDER);
 }
 
-void CFileView::OnProperties()
+BOOL	CFileView::Insert(Ogre::Server* pServer, HTREEITEM hParent)
 {
-	AfxMessageBox(_T("ÊôÐÔ...."));
+	if (pServer == NULL)
+		return FALSE;
 
+	int nImage		= hParent ? 0 : 1;
+	HTREEITEM hItem = m_wFileView.InsertItem(pServer->getName().c_str(), nImage, nImage, hParent);
+
+	ServerIterator hashServer = pServer->getServerIterator();
+	while ( hashServer.hasMoreElements() )
+	{
+		Server* pNext = hashServer.getNext();
+		if (pNext)
+		{
+			Insert(pNext, hItem);
+		}
+	}
+
+	m_wFileView.Expand(hItem, TVE_EXPAND);
+	return TRUE;
 }
 
-void CFileView::OnFileOpen()
+void	CFileView::Update()
+{
+	Scheme* pScheme = System::getSingleton().getScheme();
+	if (pScheme)
+	{
+		// destroy all
+		m_wFileView.DeleteAllItems();
+		
+		// insert to view
+		Insert(pScheme, NULL);
+	}
+}
+
+void	CFileView::OnProperties()
 {
 	
 }
 
-void CFileView::OnFileOpenWith()
+void	CFileView::OnFileOpen()
 {
 	
 }
 
-void CFileView::OnDummyCompile()
+void	CFileView::OnFileOpenWith()
 {
 	
 }
 
-void CFileView::OnEditCut()
+void	CFileView::OnDummyCompile()
 {
 	
 }
 
-void CFileView::OnEditCopy()
+void	CFileView::OnEditCut()
 {
 	
 }
 
-void CFileView::OnEditClear()
+void	CFileView::OnEditCopy()
 {
 	
+}
+
+void	CFileView::OnEditClear()
+{
+	
+}
+
+LRESULT	CFileView::OnNewScheme(WPARAM wParam, LPARAM lParam)
+{
+	wmNewScheme* pEvent = (wmNewScheme*)(wParam);
+	if (pEvent)
+	{
+		String szName(pEvent->szName);
+		String szPath(pEvent->szPath);
+
+		SSchemeAdp adp;
+		adp.szPathName	= szPath + '/' + szName;
+
+		if (System::getSingleton().createScheme(pEvent->szName, adp))
+		{
+			Update();
+		}
+	}
+
+	return 0;
 }
 
 void CFileView::OnPaint()

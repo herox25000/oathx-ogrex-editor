@@ -189,7 +189,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OgreSchemeServer.cpp"
+				RelativePath=".\OgreScheme.cpp"
 				>
 			</File>
 			<File
@@ -247,7 +247,7 @@
 				>
 			</File>
 			<File
-				RelativePath=".\OgreSchemeServer.h"
+				RelativePath=".\OgreScheme.h"
 				>
 			</File>
 			<File

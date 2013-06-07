@@ -28,7 +28,9 @@
 #include <afxcontrolbars.h>
 #include "SplashDialog.h"
 #include "GraphDC.h"
+#include "FolderDialog.h"
 #include "OgreSandBox.h"
+#include "OgreEditorMsgDef.h"
 
 using namespace Ogre;
 
