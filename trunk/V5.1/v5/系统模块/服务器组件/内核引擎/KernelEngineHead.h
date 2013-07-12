@@ -51,6 +51,10 @@ typedef _variant_t						CDBVarValue;					//数据库数值
 #define TIMES_INFINITY				DWORD(-1)							//无限次数
 #define MAX_ASYNCHRONISM_DATA		16384								//异步数据
 
+//PP fix
+#define SOCKET_VER						0x05								//网络版本
+//#define SOCKET_TCP_BUFFER					8192								//网络缓冲
+
 //////////////////////////////////////////////////////////////////////////////////
 //网络定义
 
