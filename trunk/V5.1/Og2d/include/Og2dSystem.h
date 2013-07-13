@@ -8,7 +8,7 @@ namespace Og2d
 	typedef vector<DynLib*>::type	VectorDynlib;
 	typedef map<String, RenderSystem*>::type MapRenderSystem;
 	typedef vector<Plugin*>::type	VectorPlugin;
-	typedef map<String, SceneFactory*>::type MapSceneFactory;
+	typedef map<int, SceneFactory*>::type MapSceneFactory;
 
 	/**
 	* \ingroup : Og2d
@@ -124,7 +124,7 @@ namespace Og2d
 		 * \param szName 
 		 * \return 
 		 */
-		virtual	SceneFactory*		getSceneFactory(const String& szName);
+		virtual	SceneFactory*		getSceneFactory(int nType);
 
 		/** 移除场景工厂
 		 *
@@ -143,7 +143,7 @@ namespace Og2d
 		 * \param vOrigin 世界原点
 		 * \return 
 		 */
-		virtual	World*				createWorld(const String& szName, const Vector2D& vPos, WorldMask mask);
+		virtual	World*				createWorld(const String& szName);
 		
 		/**
 		 *

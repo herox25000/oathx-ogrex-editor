@@ -7,8 +7,8 @@ namespace Og2d
 	 * \param typeName 
 	 * \return 
 	 */
-	SceneFactory::SceneFactory(const String& typeName)
-		: m_typeName(typeName)
+	SceneFactory::SceneFactory(int nType)
+		: m_nType(nType)
 	{
 
 	}
@@ -24,20 +24,11 @@ namespace Og2d
 
 	/**
 	 *
-	 * \param typeName 
-	 */
-	void		SceneFactory::setTypeName(const String& typeName)
-	{
-		m_typeName = typeName;
-	}
-
-	/**
-	 *
 	 * \return 
 	 */
-	String		SceneFactory::getTypeName() const
+	int			SceneFactory::getType() const
 	{
-		return m_typeName;
+		return m_nType;
 	}
 
 	/**

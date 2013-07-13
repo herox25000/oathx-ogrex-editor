@@ -7,7 +7,7 @@
 namespace Og2d
 {
 	enum WorldMask{
-		WORLD_PAGE_SECNE
+		SWF_DEFAULT,
 	};
 	
 	// 场景映射表
@@ -78,7 +78,7 @@ namespace Og2d
 		 * \param szName 
 		 * \return 
 		 */
-		virtual	Scene*			createScene(const String& szCreateFactoryName, const String& szName, const Rect& rcBound);
+		virtual	Scene*			createScene(const String& szName, const Rect& rcBound, int nFactoryType=SWF_DEFAULT);
 		
 		/** 获取场景
 		 *

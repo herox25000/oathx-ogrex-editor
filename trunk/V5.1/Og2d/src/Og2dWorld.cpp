@@ -70,14 +70,14 @@ namespace Og2d
 	 * \param szName 
 	 * \return 
 	 */
-	Scene*	World::createScene(const String& szCreateFactoryName, const String& szName, const Rect& rcBound)
+	Scene*	World::createScene(const String& szName, const Rect& rcBound, int nFactoryType/* =SWF_DEFAULT */)
 	{
 		SceneMapTab::iterator it = m_MapSceneTab.find(szName);
 		if ( it == m_MapSceneTab.end() )
 		{
 			// get scene factory
 			SceneFactory* pFactory = System::getSingleton().getSceneFactory(
-				szCreateFactoryName
+				nFactoryType
 				);
 			if (pFactory)
 			{
@@ -96,7 +96,7 @@ namespace Og2d
 			else
 			{
 				// can't found scene factory
-				tryException(EC_ITEM_NOT_FOUND, "can't found scene factory " + szCreateFactoryName,
+				tryException(EC_ITEM_NOT_FOUND, "can't found scene factory " + nFactoryType,
 					"World::createScene");
 			}
 		}
