@@ -190,6 +190,7 @@ copy /y ..\..\..\运行\Debug\Unicode\$(TargetFileName) ..\..\..\发布组件\客户端组
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_UNICODE;PLAYCHATSHORTSOUND"
 				MinimalRebuild="FALSE"
 				RuntimeLibrary="2"
@@ -1499,16 +1500,16 @@ copy /y ..\..\..\运行\Release\Unicode\$(TargetFileName) ..\..\..\发布组件\客户端
 				RelativePath=".\Res\Server_table\Table_ready.png">
 			</File>
 			<File
-				RelativePath=".\Res\Server_table\TABLE_TL.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Plaza_match\TABLE_TL.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Server_table\TABLE_TM.bmp">
+				RelativePath=".\Res\Server_table\TABLE_TL.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Plaza_match\TABLE_TM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Server_table\TABLE_TM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Plaza_match\TABLE_TR.bmp">

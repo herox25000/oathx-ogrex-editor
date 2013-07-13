@@ -6,7 +6,7 @@
 #include "Ocdb.h" 
 #include "..\GameFrameApp.h"
 
-#include <c:\Program Files\Microsoft Visual Studio .NET 2003\Vc7\atlmfc\src\mfc\occimpl.h>
+//#include <c:\Program Files\Microsoft Visual Studio .NET 2003\Vc7\atlmfc\src\mfc\occimpl.h>
 
 #undef AFX_DATA
 #define AFX_DATA AFX_DATA_EXPORT
