@@ -212,7 +212,7 @@ namespace Og2d
 		{
 			if (SUCCEEDED(m_pd3dDevice->BeginScene()))
 			{
-				
+				setMatrix2D(0, 0, m_bbSize.w, m_bbSize.h);
 			}	
 		}
 	}
