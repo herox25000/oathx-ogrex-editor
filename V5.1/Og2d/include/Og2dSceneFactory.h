@@ -29,7 +29,7 @@ namespace Og2d
 		 *
 		 * \return 
 		 */
-		SceneFactory(const String& typeName);
+		SceneFactory(int nType);
 
 		/** 析构函数
 		 *
@@ -37,17 +37,11 @@ namespace Og2d
 		 */
 		virtual ~SceneFactory();
 
-		/** 设置工厂类型名
-		 *
-		 * \param typeName 
-		 */
-		virtual	void			setTypeName(const String& typeName);
-
 		/** 获取工厂类型名
 		 *
 		 * \return 
 		 */
-		virtual	String			getTypeName() const;
+		virtual	int				getType() const;
 
 		/** 创建场景管理器
 		 *
@@ -59,7 +53,7 @@ namespace Og2d
 		 */
 		virtual	Scene*			createScene(const String& szName, const Rect& rcBound);
 	protected:
-		String					m_typeName;
+		int						m_nType;
 	};
 }
 

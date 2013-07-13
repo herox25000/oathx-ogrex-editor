@@ -32,13 +32,11 @@ namespace Og2d
 	{
 		InputManager::getSingleton().addInputListener( new AppDemoInuptListener(this) );
 
-		System::getSingleton().addSceneFactory( new SceneFactory("app") );
 		// 创建世界对象
-		World* pWorld = System::getSingleton().createWorld("AppDemo", 
-			Vector2D(0, 0), WORLD_PAGE_SECNE);
+		World* pWorld = System::getSingleton().createWorld("AppDemo");
 		if (pWorld)
 		{
-			Scene* pScene = pWorld->createScene("app", "AppDemo", Rect(0, 0, 800, 600));
+			Scene* pScene = pWorld->createScene("first", Rect(0, 0, 800, 600));
 			if (pScene)
 			{
 				SceneNode* pNode = pScene->createSceneNode("DefaultSceneNodeFactory",
@@ -138,7 +136,6 @@ int main()
 #else
 		printf(e.getFullDescription().c_str());
 #endif
-		app.clearUp();
 	}
 
 	return 0;

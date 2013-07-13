@@ -157,8 +157,11 @@ namespace Og2d
 	 */
 	void			System::shutdown()
 	{
-		clearSceneFactory();
+		
 		destroyWorld();
+
+		// clear scene factory
+		clearSceneFactory();
 		// clear all plugin
 		clearPlugin();
 
@@ -286,16 +289,16 @@ namespace Og2d
 	 */
 	void			System::addSceneFactory(SceneFactory* pFactory)
 	{
-		MapSceneFactory::iterator it = m_vSceneFactory.find(pFactory->getTypeName());
+		MapSceneFactory::iterator it = m_vSceneFactory.find(pFactory->getType());
 		if ( it == m_vSceneFactory.end() )
 		{
 			// out log
 			LogManager::getSingleton().logMessage(INFO_NORMAL,
-				"add scene factory : " + pFactory->getTypeName());
+				"add scene factory : " + pFactory->getType());
 
 			// insert scene factory to map
 			m_vSceneFactory.insert(
-				MapSceneFactory::value_type(pFactory->getTypeName(),
+				MapSceneFactory::value_type(pFactory->getType(),
 				pFactory));
 		}
 	}
@@ -305,9 +308,9 @@ namespace Og2d
 	 * \param szName 
 	 * \return 
 	 */
-	SceneFactory*	System::getSceneFactory(const String& szName)
+	SceneFactory*	System::getSceneFactory(int nType)
 	{
-		MapSceneFactory::iterator it = m_vSceneFactory.find(szName);
+		MapSceneFactory::iterator it = m_vSceneFactory.find(nType);
 		if ( it != m_vSceneFactory.end() )
 			return it->second;
 
@@ -320,12 +323,12 @@ namespace Og2d
 	 */
 	void			System::removeFactory(SceneFactory* pFactory)
 	{
-		MapSceneFactory::iterator it = m_vSceneFactory.find(pFactory->getTypeName());
+		MapSceneFactory::iterator it = m_vSceneFactory.find(pFactory->getType());
 		if ( it != m_vSceneFactory.end() )
 		{
 			// out log
 			LogManager::getSingleton().logMessage(INFO_NORMAL,
-				"remove scene factory : " + pFactory->getTypeName());
+				"remove scene factory : " + pFactory->getType());
 
 			SAFE_DELETE(it->second); m_vSceneFactory.erase(it);
 		}
@@ -340,9 +343,9 @@ namespace Og2d
 		while ( it != m_vSceneFactory.end() )
 		{
 			LogManager::getSingleton().logMessage(INFO_NORMAL,
-				"remove scene factory : " + it->second->getTypeName());
+				"remove scene factory : " + it->second->getType());
 
-			delete it->second; it != m_vSceneFactory.erase(it);
+			delete it->second; it = m_vSceneFactory.erase(it);
 		}
 	}
 
@@ -352,10 +355,13 @@ namespace Og2d
 	 * \param vOrigin 
 	 * \return 
 	 */
-	World*			System::createWorld(const String& szName, const Vector2D& vPos, WorldMask mask)
+	World*			System::createWorld(const String& szName)
 	{
 		try
 		{
+			// add default scene factory
+			addSceneFactory(new SceneFactory(SWF_DEFAULT));
+
 			if (m_pWorld)
 			{
 				tryException(EC_RT_ASSERTION_FAILED, "Can't create world", 
