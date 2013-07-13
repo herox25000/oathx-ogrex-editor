@@ -8,8 +8,8 @@ namespace Og2d
 	 * \param rcBoundingBox 
 	 * \return 
 	 */
-	SceneNode::SceneNode(const String& szName, const Vector2D& vPos)
-		: Node(szName, vPos)
+	SceneNode::SceneNode(const String& szName, const Rect& rcBound)
+		: Node(szName, rcBound)
 	{
 
 	}
@@ -34,7 +34,7 @@ namespace Og2d
 		if ( it == m_vRenderTarget.end() )
 		{
 			// 重设渲染目标位置
-			Vector2D vPos = m_vPos + pRenderTarget->getPosition();
+			Vector2D vPos = m_rcBound.getUpper() + pRenderTarget->getPosition();
 			pRenderTarget->setPosition(
 				vPos);
 

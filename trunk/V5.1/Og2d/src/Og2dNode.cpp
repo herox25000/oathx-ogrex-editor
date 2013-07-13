@@ -8,8 +8,8 @@ namespace Og2d
 	 * \param vPos 
 	 * \return 
 	 */
-	Node::Node(const String& szName, const Vector2D& vPos)
-		: m_szName(szName), m_vPos(vPos), m_pParent(NULL)
+	Node::Node(const String& szName, const Rect& rcBound)
+		: m_szName(szName), m_rcBound(rcBound), m_pParent(NULL)
 	{
 		
 	}
@@ -47,7 +47,7 @@ namespace Og2d
 	 */
 	void		Node::setPosition(const Vector2D& vPos)
 	{
-		m_vPos = vPos;
+		m_rcBound.setOffset(vPos.x, vPos.y);
 	}
 
 	/**
@@ -56,7 +56,16 @@ namespace Og2d
 	 */
 	Vector2D	Node::getPosition() const
 	{
-		return m_vPos;
+		return m_rcBound.getLower();
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	Rect		Node::getBoundingBox() const
+	{
+		return m_rcBound;
 	}
 
 	/**
@@ -98,7 +107,7 @@ namespace Og2d
 			pNode->setParent(this);
 
 			// update this node position
-			Vector2D vPos = m_vPos + pNode->getPosition(); 
+			Vector2D vPos = m_rcBound.getUpper() + pNode->getPosition();
 			pNode->setPosition(vPos);
 
 			m_MapChildren.insert(MapChildNode::value_type(pNode->getName(),

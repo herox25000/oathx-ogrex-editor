@@ -34,7 +34,7 @@ namespace Og2d
 		 * \param rcBoundingBox 
 		 * \return 
 		 */
-		Node(const String& szName, const Vector2D& vPos);
+		Node(const String& szName, const Rect& rcBound);
 	
 		/**
 		 *
@@ -65,6 +65,12 @@ namespace Og2d
 		 * \return 
 		 */
 		virtual Vector2D	getPosition() const;
+
+		/**
+		 *
+		 * \return 
+		 */
+		virtual Rect		getBoundingBox() const;
 
 		/**
 		 *
@@ -117,7 +123,7 @@ namespace Og2d
 	protected:
 		String				m_szName;
 		MapChildNode		m_MapChildren;
-		Vector2D			m_vPos;
+		Rect				m_rcBound;
 		Node*				m_pParent;
 	};
 }

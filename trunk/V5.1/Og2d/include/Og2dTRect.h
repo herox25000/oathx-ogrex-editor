@@ -350,6 +350,19 @@ namespace Og2d
 		{
 			left = x; top = y; right = x+w; bottom = y+h;
 		}
+
+		_____inline
+			void setOffset(T x, T y)
+		{
+			T w		= right - left; 
+			T h		= bottom - top;
+
+			left	= x;
+			top		= y; 
+			right	= x + w; 
+			bottom	= y + h;
+		}
+
 		//!
 		/**
 		*

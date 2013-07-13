@@ -31,9 +31,9 @@ namespace Og2d
 	 * \param cSize 
 	 * \return 
 	 */
-	SceneNode*	SceneNodeFactory::create(const String& szName, const Vector2D& vPos)
+	SceneNode*	SceneNodeFactory::create(const String& szName, const Rect& rcBound)
 	{
-		return new SceneNode(szName, vPos);
+		return new SceneNode(szName, rcBound);
 	}
 
 	/**

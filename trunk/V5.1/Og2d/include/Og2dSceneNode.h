@@ -33,7 +33,7 @@ namespace Og2d
 		 * \param szName 场景节点名称
 		 * \return 
 		 */
-		SceneNode(const String& szName, const Vector2D& vPos);
+		SceneNode(const String& szName, const Rect& rcBound);
 
 		/** 析构函数
 		 *
@@ -69,6 +69,7 @@ namespace Og2d
 	protected:
 		String					m_szName;
 		MapRenderTarget			m_vRenderTarget;
+		Size					m_cSize;
 	};
 }
 
