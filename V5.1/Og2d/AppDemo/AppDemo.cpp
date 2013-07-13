@@ -33,10 +33,12 @@ namespace Og2d
 		InputManager::getSingleton().addInputListener( new AppDemoInuptListener(this) );
 
 		// 创建世界对象
-		World* pWorld = System::getSingleton().createWorld("AppDemoWorld", 
+		World* pWorld = System::getSingleton().createWorld("AppDemo", 
 			Vector2D(0, 0), WORLD_PAGE_SECNE);
-		if (pWorld == NULL)
-			return 0;
+		if (pWorld)
+		{
+			
+		}
 		
 		return true;
 	}
