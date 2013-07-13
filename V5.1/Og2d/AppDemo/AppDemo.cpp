@@ -85,42 +85,9 @@ namespace Og2d
 			{
 				if (iEvt.keyboard.evt == KEYEVT_DOWN)
 				{
-					Viewport* pViewport = World::getSingletonPtr()->getViewport();
-					if (pViewport == NULL)
-						return 0;
 
-					Vector2D vPos = pViewport->getPosition();
-
-					switch( iEvt.keyboard.code )
-					{
-					case EKEY_KEY_W:
-						{
-							vPos.y -= 3;
-						}
-						break;
-					case EKEY_KEY_S:
-						{
-							vPos.y += 3;
-						}
-						break;
-					case EKEY_KEY_A:
-						{
-							vPos.x -= 3;
-						}
-						break;
-					case EKEY_KEY_D:
-						{
-							vPos.x += 3;
-						}
-						break;
-					}
-
-					pViewport->setPosition(vPos);
 				}
-				else
-				{
-			
-				}
+					
 			}
 			break;
 		}

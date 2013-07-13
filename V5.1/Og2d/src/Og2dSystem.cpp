@@ -363,10 +363,6 @@ namespace Og2d
 			{
 				// create world object
 				m_pWorld = new World(szName);
-				if (m_pWorld)
-				{
-					m_pWorld->createViewport(szName, vPos);
-				}
 			}
 		}
 		catch (Exception& e)
@@ -502,16 +498,5 @@ namespace Og2d
 			DynlibManager::getSingleton().unload(*it);
 		}
 		m_vDynlib.clear();
-		
-		// clear all plugins
-		for (VectorPlugin::reverse_iterator it = m_vPlugin.rbegin();
-			it != m_vPlugin.rend(); ++it)
-		{
-			LogManager::getSingleton().logMessage(INFO_NORMAL,
-				"uninstall plugin : " + (*it)->getTypeName());
-
-			(*it)->uninstall();
-		}
-		m_vPlugin.clear();
 	}
 }

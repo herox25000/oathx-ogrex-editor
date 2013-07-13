@@ -73,31 +73,6 @@ namespace Og2d
 		 */
 		virtual	String			getName() const;
 
-		/**
-		 *
-		 * \param vPos 
-		 * \param cSize 
-		 * \return 
-		 */
-		virtual	Viewport*		createViewport(const String& name, const Vector2D& vPos);
-		
-		/**
-		 *
-		 * \param name 
-		 */
-		virtual	void			destroyViewport(const String& name);
-
-		/**
-		 *
-		 * \return 
-		 */
-		virtual Viewport*		getViewport() const;
-
-		/**
-		 *
-		 * \param pViewport 
-		 */
-		virtual	void			destroyAllViewprot();
 
 		/** 创建创建
 		 *
@@ -157,10 +132,6 @@ namespace Og2d
 		SceneMapTab				m_MapSceneTab;
 		// 当前需要更新的场景
 		Scene*					m_pNeedUpdateScene;
-		// 当前视口
-		Viewport*				m_pViewport;
-		// 视口表
-		ViewportTab				m_MapViewport;
 
 	};
 }

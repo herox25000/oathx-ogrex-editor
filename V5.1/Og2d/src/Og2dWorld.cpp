@@ -32,9 +32,9 @@ namespace Og2d
 	 * \return 
 	 */
 	World::World(const String& szName) 
-		: m_szName(szName), m_pNeedUpdateScene(NULL), m_pViewport(NULL)
+		: m_szName(szName), m_pNeedUpdateScene(NULL)
 	{
-		
+
 	}
 
 	/**
@@ -43,7 +43,6 @@ namespace Og2d
 	 */
 	World::~World()
 	{
-		destroyAllViewprot();
 		destroyAllScene();
 	}
 
@@ -63,68 +62,6 @@ namespace Og2d
 	String	World::getName() const
 	{
 		return m_szName;
-	}
-
-	/**
-	 *
-	 * \param name 
-	 * \param vPos 
-	 * \return 
-	 */
-	Viewport*	World::createViewport(const String& name, const Vector2D& vPos)
-	{
-		ViewportTab::iterator it = m_MapViewport.find(name);
-		if ( it == m_MapViewport.end() )
-		{
-			// create viewport
-			Viewport* pViewport = new Viewport(
-				System::getSingletonPtr()->getRenderSystem(), vPos);
-			if (pViewport)
-			{
-				// if current viewport is null then set it
-				if (m_pViewport == NULL)
-					m_pViewport = pViewport;
-
-				m_MapViewport.insert(ViewportTab::value_type(name, pViewport));
-				return pViewport;
-			}
-		}
-
-		return NULL;
-	}
-	
-	/**
-	 *
-	 * \param name 
-	 */
-	void	World::destroyViewport(const String& name)
-	{
-		ViewportTab::iterator it = m_MapViewport.find(name);
-		if ( it != m_MapViewport.end() )
-		{
-			SAFE_DELETE(it->second); m_MapViewport.erase(it);
-		}
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Viewport* World::getViewport() const
-	{
-		return m_pViewport;
-	}
-
-	/**
-	 *
-	 */
-	void	World::destroyAllViewprot()
-	{
-		ViewportTab::iterator it = m_MapViewport.begin();
-		while ( it != m_MapViewport.end() )
-		{
-			SAFE_DELETE(it->second); it = m_MapViewport.erase(it);
-		}
 	}
 
 	/**
@@ -256,12 +193,6 @@ namespace Og2d
 	{
 		if (m_pNeedUpdateScene)
 		{
-			// update view
-			if (m_pViewport)
-			{
-				m_pViewport->update(fElapsed);
-			}
-
 			// update current scene
 			m_pNeedUpdateScene->update(fElapsed);
 		}
