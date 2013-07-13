@@ -57,7 +57,7 @@ namespace Og2d
 		 * \param rcView	йс©зЁъ╢Г
 		 * \return 
 		 */
-		virtual	Scene*			createScene(const String& szName, const Vector2D& vPos, const Size& cSize) = 0;
+		virtual	Scene*			createScene(const String& szName, const Rect& rcBound);
 	protected:
 		String					m_typeName;
 	};

@@ -1,4 +1,5 @@
 #include "Og2dScene.h"
+#include "Og2dException.h"
 
 namespace Og2d
 {
@@ -6,8 +7,8 @@ namespace Og2d
 	 *
 	 * \return 
 	 */
-	Scene::Scene(const String& szName, const Vector2D& vPos, const Size& cSize)
-		: m_vPos(vPos), m_szName(szName), m_cSize(cSize)
+	Scene::Scene(const String& szName, const Rect& rcBound)
+		: m_szName(szName), m_rcBound(rcBound), m_bActive(true)
 	{
 	
 	}
@@ -18,7 +19,7 @@ namespace Og2d
 	 */
 	Scene::~Scene()
 	{
-
+		destroyAllSceneNode();
 	}
 
 	/**
@@ -43,26 +44,112 @@ namespace Og2d
 	 *
 	 * \return 
 	 */
-	Size		Scene::getSize() const
+	Rect		Scene::getBoundingBox() const
 	{
-		return m_cSize;
-	}
-
-	/**
-	 *
-	 * \param cSize 
-	 */
-	void		Scene::setSize(const Size& cSize)
-	{
-		m_cSize = cSize;
+		return m_rcBound;
 	}
 
 	/**
 	 *
 	 * \return 
 	 */
-	Rect		Scene::getArea() const
+	void		Scene::setActive(bool bActive)
 	{
-		return Rect(m_vPos, m_cSize);
+		m_bActive = bActive;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	bool		Scene::getActive() const
+	{
+		return m_bActive;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */	
+	SceneNode*	Scene::createSceneNode(const String& szNodeFactoryName, const String& szName, const Rect& rcBound)
+	{
+		SceneNodeFactory* pFactory = SceneNodeFactoryManager::getSingleton().getSceneNodeFactory(szNodeFactoryName);
+		if (pFactory != NULL)
+		{
+			MapSceneNodeTab::iterator it = m_MapSceneNodeTab.find(szName);
+			if ( it == m_MapSceneNodeTab.end() )
+			{
+				// create this scene node
+				SceneNode* pNode = pFactory->create(szName, rcBound);
+				if (pNode)
+				{
+					m_MapSceneNodeTab.insert(MapSceneNodeTab::value_type(szName, pNode));
+					return pNode;
+				}
+			}
+		}
+		
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */	
+	SceneNode*	Scene::getSceneNode(const String& szName)
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNodeTab.find(szName);
+		if ( it != m_MapSceneNodeTab.end() )
+			return it->second;
+
+		return NULL;
+	}
+
+	/**
+	 *
+	 * \return 
+	 */	
+	void		Scene::destroySceneNode(const String& szName)
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNodeTab.find(szName);
+		if ( it != m_MapSceneNodeTab.end() )
+		{
+			SAFE_DELETE(it->second); it = m_MapSceneNodeTab.erase(it);
+		}
+	}
+
+	/**
+	 *
+	 * \return 
+	 */	
+	void		Scene::destroySceneNode(SceneNode* pSceneNode)
+	{
+		destroySceneNode(pSceneNode->getName());
+	}
+
+	/**
+	 *
+	 * \return 
+	 */	
+	void		Scene::destroyAllSceneNode()
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNodeTab.begin();
+		while( it != m_MapSceneNodeTab.end() )
+		{
+			SAFE_DELETE(it->second); it = m_MapSceneNodeTab.erase(it);
+		}
+	}
+
+	/**
+	 *
+	 * \return 
+	 */	
+	void		Scene::update(float fElapsed)
+	{
+		MapSceneNodeTab::iterator it = m_MapSceneNodeTab.begin();
+		while( it != m_MapSceneNodeTab.end() )
+		{
+			it->second->update(fElapsed); it ++;
+		}
 	}
 }
