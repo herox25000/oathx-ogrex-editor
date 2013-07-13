@@ -32,7 +32,7 @@ namespace Og2d
 	 * \return 
 	 */
 	World::World(const String& szName) 
-		: m_szName(szName), m_pNeedUpdateScene(NULL)
+		: m_szName(szName)
 	{
 
 	}
@@ -70,8 +70,7 @@ namespace Og2d
 	 * \param szName 
 	 * \return 
 	 */
-	Scene*	World::createScene(const String& szCreateFactoryName, const String& szName, 
-		const Vector2D& vPos, const Size& cSize)
+	Scene*	World::createScene(const String& szCreateFactoryName, const String& szName, const Rect& rcBound)
 	{
 		SceneMapTab::iterator it = m_MapSceneTab.find(szName);
 		if ( it == m_MapSceneTab.end() )
@@ -83,16 +82,14 @@ namespace Og2d
 			if (pFactory)
 			{
 				// crate scene object
-				Scene* pScene = pFactory->createScene(szName, vPos, cSize);
+				Scene* pScene = pFactory->createScene(szName,rcBound);
 				if (pScene)
 				{
-					// if current need updat scene is null 
-					// set this scene to current need scene
-					if (!getNeedUpdateScene())
-						setNeedUpdateScene(pScene);
-
 					// inser to map table
-					m_MapSceneTab.insert(SceneMapTab::value_type(szName, pScene));
+					m_MapSceneTab.insert(
+						SceneMapTab::value_type(szName, pScene)
+						);
+					
 					return pScene;
 				}
 			}
@@ -162,27 +159,6 @@ namespace Og2d
 
 			SAFE_DELETE(it->second); it = m_MapSceneTab.erase(it);
 		}
-
-		setNeedUpdateScene(NULL);
-	}
-
-	/**
-	 *
-	 * \param pScene 
-	 */
-	void	World::setNeedUpdateScene(Scene* pScene)
-	{
-		if (m_pNeedUpdateScene != pScene)
-			m_pNeedUpdateScene = pScene;
-	}
-
-	/**
-	 *
-	 * \return 
-	 */
-	Scene*	World::getNeedUpdateScene() const
-	{
-		return m_pNeedUpdateScene;
 	}
 
 	/**
@@ -191,10 +167,13 @@ namespace Og2d
 	 */
 	void	World::update(float fElapsed)
 	{
-		if (m_pNeedUpdateScene)
+		SceneMapTab::iterator it = m_MapSceneTab.begin();
+		while( it != m_MapSceneTab.end() )
 		{
-			// update current scene
-			m_pNeedUpdateScene->update(fElapsed);
+			if (it->second->getActive())
+				it->second->update(fElapsed);
+
+			it ++;
 		}
 	}
 }

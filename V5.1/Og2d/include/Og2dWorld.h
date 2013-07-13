@@ -78,8 +78,7 @@ namespace Og2d
 		 * \param szName 
 		 * \return 
 		 */
-		virtual	Scene*			createScene(const String& szCreateFactoryName, const String& szName,
-			const Vector2D& vPos, const Size& cSize);
+		virtual	Scene*			createScene(const String& szCreateFactoryName, const String& szName, const Rect& rcBound);
 		
 		/** 获取场景
 		 *
@@ -105,18 +104,6 @@ namespace Og2d
 		 */
 		virtual	void			destroyAllScene();
 
-		/** 设置当前需要更新的场景
-		 *
-		 * \param pScene 
-		 */
-		virtual	void			setNeedUpdateScene(Scene* pScene);
-
-		/** 返回当前正在更新的场景
-		 *
-		 * \return 
-		 */
-		virtual	Scene*			getNeedUpdateScene() const;
-
 		/** 周期性更新，只更新需要更新的场景对象
 		 *
 		 * \param fElapsed 
@@ -128,9 +115,6 @@ namespace Og2d
 		String					m_szName;
 		// 场景映射表
 		SceneMapTab				m_MapSceneTab;
-		// 当前需要更新的场景
-		Scene*					m_pNeedUpdateScene;
-
 	};
 }
 

@@ -2,6 +2,7 @@
 #define _____Og2dScene_H
 
 #include "Og2dSceneNode.h"
+#include "Og2dSceneNodeFactoryManager.h"
 
 namespace Og2d
 {
@@ -35,7 +36,7 @@ namespace Og2d
 		 * \param rcView	场景视口
 		 * \return 
 		 */
-		Scene(const String& szName, const Vector2D& vPos, const Size& cSize);
+		Scene(const String& szName, const Rect& rcBound);
 
 		/** 析构函数
 		 *
@@ -54,24 +55,25 @@ namespace Og2d
 		 * \return 
 		 */
 		virtual String		getName() const;
-		
-		/** 获取场景尺寸
+
+		/**
 		 *
 		 * \return 
 		 */
-		virtual Size		getSize() const;
+		virtual void		setActive(bool bActive);
 
-		/** 设置场景尺寸
+
+		/**
 		 *
-		 * \param cSize 
+		 * \return 
 		 */
-		virtual	void		setSize(const Size& cSize);
-
+		virtual bool		getActive() const;
+		
 		/** 获取场景包围盒
 		 *
 		 * \return 
 		 */
-		virtual	Rect		getArea() const;
+		virtual	Rect		getBoundingBox() const;
 
 		/** 创建场景节点
 		 *
@@ -79,41 +81,43 @@ namespace Og2d
 		 * \param rcBoundingBox 节点包围盒
 		 * \return 
 		 */
-		virtual	SceneNode*	createSceneNode(const String& szName, const Vector2D& vPos) = 0;
+		virtual	SceneNode*	createSceneNode(const String& szNodeFactoryName, const String& szName, const Rect& rcBound);
 
 		/** 获取场景节点
 		 *
 		 * \param szName 
 		 * \return 
 		 */
-		virtual	SceneNode*	getSceneNode(const String& szName) = 0;
+		virtual	SceneNode*	getSceneNode(const String& szName);
 
 		/** 销毁场景节点
 		 *
 		 * \param szName 
 		 */
-		virtual	void		destroySceneNode(const String& szName) = 0;
+		virtual	void		destroySceneNode(const String& szName);
 
 		/** 销毁场景节点
 		 *
 		 * \param pSceneNode 
 		 */
-		virtual	void		destroySceneNode(SceneNode* pSceneNode) = 0;
+		virtual	void		destroySceneNode(SceneNode* pSceneNode);
 		
 		/** 销毁所有的场景节点
 		 *
 		 */
-		virtual	void		destroyAllSceneNode() = 0;
+		virtual	void		destroyAllSceneNode();
 
 		/**
 		 *
 		 * \param fElapsed 
 		 */
-		virtual	void		update(float fElapsed) = 0;
+		virtual	void		update(float fElapsed);
 	protected:
-		Size				m_cSize;
-		Vector2D			m_vPos;
 		String				m_szName;
+		MapSceneNodeTab		m_MapSceneNodeTab;
+		Rect				m_rcBound;
+		bool				m_bActive;
+		
 	};
 }
 

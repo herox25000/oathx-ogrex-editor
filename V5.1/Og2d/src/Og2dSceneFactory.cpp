@@ -39,4 +39,13 @@ namespace Og2d
 	{
 		return m_typeName;
 	}
+
+	/**
+	 *
+	 * \return 
+	 */
+	Scene*		SceneFactory::createScene(const String& szName, const Rect& rcBound)
+	{
+		return new Scene(szName, rcBound);
+	}
 }

@@ -157,6 +157,7 @@ namespace Og2d
 	 */
 	void			System::shutdown()
 	{
+		clearSceneFactory();
 		destroyWorld();
 		// clear all plugin
 		clearPlugin();
@@ -168,6 +169,7 @@ namespace Og2d
 		// delete input manager
 		InputManager* pInputManager = InputManager::getSingletonPtr();
 		SAFE_DELETE(pInputManager);
+
 		// delete scene node manager
 		SceneNodeFactoryManager* pSceneNodeFactoryManager = SceneNodeFactoryManager::getSingletonPtr();
 		SAFE_DELETE(pSceneNodeFactoryManager);
