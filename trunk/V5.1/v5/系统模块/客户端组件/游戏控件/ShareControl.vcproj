@@ -197,6 +197,7 @@ copy /y ..\..\..\运行\Debug\Unicode\$(TargetFileName) ..\..\..\发布组件\客户端组
 			CharacterSet="1">
 			<Tool
 				Name="VCCLCompilerTool"
+				Optimization="0"
 				PreprocessorDefinitions="WIN32;_WINDOWS;NDEBUG;_AFXEXT;SHARE_CONTROL_DLL;_UNICODE"
 				RuntimeLibrary="2"
 				TreatWChar_tAsBuiltInType="TRUE"
@@ -404,10 +405,10 @@ copy /y ..\..\..\运行\Release\Unicode\$(TargetFileName) ..\..\..\发布组件\客户端
 				RelativePath=".\Res\BT_CHAT_HISTORY.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\BT_INSURE_SCORE.bmp">
+				RelativePath=".\Res\Dlg_insure\BT_INSURE_SCORE.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Dlg_insure\BT_INSURE_SCORE.bmp">
+				RelativePath=".\Res\BT_INSURE_SCORE.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\BT_KEYBOARD.bmp">
@@ -425,10 +426,10 @@ copy /y ..\..\..\运行\Release\Unicode\$(TargetFileName) ..\..\..\发布组件\客户端
 				RelativePath=".\Res\Dlg_insure\BT_SAVE_SCORE.png">
 			</File>
 			<File
-				RelativePath=".\Res\BT_TAKE_SCORE.png">
+				RelativePath=".\Res\Dlg_insure\BT_TAKE_SCORE.png">
 			</File>
 			<File
-				RelativePath=".\Res\Dlg_insure\BT_TAKE_SCORE.png">
+				RelativePath=".\Res\BT_TAKE_SCORE.png">
 			</File>
 			<File
 				RelativePath=".\Res\Dlg_insure\Bt_transfer_score.png">
