@@ -1,0 +1,40 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Og2d", "Og2d\Og2d.vcproj", "{D03B98CE-D889-461C-90C8-B3190F4E2EED}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "RenderSystem_Direct3D9", "plugin\RenderSystem_Direct3D9\RenderSystem_Direct3D9.vcproj", "{6F6B23C8-8126-4C5F-BBEA-FBA233A88131}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D03B98CE-D889-461C-90C8-B3190F4E2EED} = {D03B98CE-D889-461C-90C8-B3190F4E2EED}
+	EndProjectSection
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AppDemo", "AppDemo\AppDemo.vcproj", "{F2CBFB95-CC73-4101-ABEC-B018FADE0BE9}"
+	ProjectSection(ProjectDependencies) = postProject
+		{6F6B23C8-8126-4C5F-BBEA-FBA233A88131} = {6F6B23C8-8126-4C5F-BBEA-FBA233A88131}
+		{D03B98CE-D889-461C-90C8-B3190F4E2EED} = {D03B98CE-D889-461C-90C8-B3190F4E2EED}
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{D03B98CE-D889-461C-90C8-B3190F4E2EED}.Debug.ActiveCfg = Debug|Win32
+		{D03B98CE-D889-461C-90C8-B3190F4E2EED}.Debug.Build.0 = Debug|Win32
+		{D03B98CE-D889-461C-90C8-B3190F4E2EED}.Release.ActiveCfg = Release|Win32
+		{D03B98CE-D889-461C-90C8-B3190F4E2EED}.Release.Build.0 = Release|Win32
+		{6F6B23C8-8126-4C5F-BBEA-FBA233A88131}.Debug.ActiveCfg = Debug|Win32
+		{6F6B23C8-8126-4C5F-BBEA-FBA233A88131}.Debug.Build.0 = Debug|Win32
+		{6F6B23C8-8126-4C5F-BBEA-FBA233A88131}.Release.ActiveCfg = Release|Win32
+		{6F6B23C8-8126-4C5F-BBEA-FBA233A88131}.Release.Build.0 = Release|Win32
+		{F2CBFB95-CC73-4101-ABEC-B018FADE0BE9}.Debug.ActiveCfg = Debug|Win32
+		{F2CBFB95-CC73-4101-ABEC-B018FADE0BE9}.Debug.Build.0 = Debug|Win32
+		{F2CBFB95-CC73-4101-ABEC-B018FADE0BE9}.Release.ActiveCfg = Release|Win32
+		{F2CBFB95-CC73-4101-ABEC-B018FADE0BE9}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal
