@@ -48,7 +48,7 @@ namespace Og2d
 		 * \param cSize 
 		 * \return 
 		 */
-		virtual SceneNode*	create(const String& szName, const Vector2D& vPos);
+		virtual SceneNode*	create(const String& szName, const Rect& rcBound);
 
 		/**
 		 *

@@ -3,7 +3,6 @@
 
 #include "Og2dSingleton.h"
 #include "Og2dScene.h"
-#include "Og2dViewport.h"
 
 namespace Og2d
 {
@@ -13,8 +12,7 @@ namespace Og2d
 	
 	// 场景映射表
 	typedef HashMap<String, Scene*>		SceneMapTab;
-	// 视口映射表
-	typedef HashMap<String, Viewport*>	ViewportTab;
+
 	/**
 	* \ingroup : Og2d
 	*

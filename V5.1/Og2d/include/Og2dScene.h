@@ -2,7 +2,6 @@
 #define _____Og2dScene_H
 
 #include "Og2dSceneNode.h"
-#include "Og2dViewport.h"
 
 namespace Og2d
 {

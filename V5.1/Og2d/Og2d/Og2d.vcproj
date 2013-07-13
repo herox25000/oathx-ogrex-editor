@@ -203,9 +203,6 @@
 				RelativePath="..\src\Og2dVertex.cpp">
 			</File>
 			<File
-				RelativePath="..\src\Og2dViewport.cpp">
-			</File>
-			<File
 				RelativePath="..\src\Og2dWorld.cpp">
 			</File>
 		</Filter>
@@ -344,9 +341,6 @@
 			</File>
 			<File
 				RelativePath="..\include\Og2dVertex.h">
-			</File>
-			<File
-				RelativePath="..\include\Og2dViewport.h">
 			</File>
 			<File
 				RelativePath="..\include\Og2dWorld.h">
