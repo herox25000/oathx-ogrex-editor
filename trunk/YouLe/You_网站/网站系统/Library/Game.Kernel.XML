@@ -1,0 +1,2981 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Game.Kernel</name>
+    </assembly>
+    <members>
+        <member name="T:Game.Kernel.PagerSet">
+            <summary>
+            单页数据集
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.PagerSet.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.PagerSet.#ctor(System.Int32,System.Int32,System.Int32,System.Int32,System.Data.DataSet)">
+            <summary>
+            
+            </summary>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+            <param name="pageCount"></param>
+            <param name="recordCount"></param>
+            <param name="pageSet"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerSet.CheckedPageSet">
+            <summary>
+            检测 DataSet 数据集是否为空;是空值，返回 false；不是返回 true
+            </summary>
+            <returns>是空值，返回 false；不是返回 true</returns>
+        </member>
+        <member name="P:Game.Kernel.PagerSet.PageIndex">
+            <summary>
+            要显示的页码(页索引)
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerSet.PageSize">
+            <summary>
+            每页的大小(记录数)
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerSet.PageCount">
+            <summary>
+            总页数
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerSet.RecordCount">
+            <summary>
+            总记录数
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerSet.PageSet">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.DbHelper">
+            <summary>
+            数据访问助手类
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DbHelper.m_connectionstring">
+            <summary>
+            数据库连接字符串
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DbHelper.m_factory">
+            <summary>
+            DbProviderFactory实例
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DbHelper.m_provider">
+            <summary>
+            数据接口
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DbHelper.m_querycount">
+            <summary>
+            查询次数统计
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DbHelper.m_paramcache">
+            <summary>
+            Parameters缓存哈希表
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.#ctor(System.String)">
+            <summary>
+            构造方法
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.BuildConnection(System.String)">
+            <summary>
+            构建数据库连接,带参数
+            </summary>
+            <param name="connectionString"></param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ResetDbProvider">
+            <summary>
+            刷新数据库提供者
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.AttachParameters(System.Data.Common.DbCommand,System.Data.Common.DbParameter[])">
+            <summary>
+            将DbParameter参数数组(参数值)分配给DbCommand命令.
+            这个方法将给任何一个参数分配DBNull.Value;
+            该操作将阻止默认值的使用.
+            </summary>
+            <param name="command">命令名</param>
+            <param name="commandParameters">DbParameters数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.AssignParameterValues(System.Data.Common.DbParameter[],System.Data.DataRow)">
+            <summary>
+            将DataRow类型的列值分配到DbParameter参数数组.
+            </summary>
+            <param name="commandParameters">要分配值的DbParameter参数数组</param>
+            <param name="dataRow">将要分配给存储过程参数的DataRow</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.AssignParameterValues(System.Data.Common.DbParameter[],System.Object[])">
+            <summary>
+            将一个对象数组分配给DbParameter参数数组.
+            </summary>
+            <param name="commandParameters">要分配值的DbParameter参数数组</param>
+            <param name="parameterValues">将要分配给存储过程参数的对象数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.PrepareCommand(System.Data.Common.DbCommand,System.Data.Common.DbConnection,System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.Common.DbParameter[],System.Boolean@)">
+            <summary>
+            预处理用户提供的命令,数据库连接/事务/命令类型/参数
+            </summary>
+            <param name="command">要处理的DbCommand</param>
+            <param name="connection">数据库连接</param>
+            <param name="transaction">一个有效的事务或者是null值</param>
+            <param name="commandType">命令类型 (存储过程,命令文本, 其它.)</param>
+            <param name="commandText">存储过程名或都SQL命令文本</param>
+            <param name="commandParameters">和命令相关联的DbParameter参数数组,如果没有参数为'null'</param>
+            <param name="mustCloseConnection"><c>true</c> 如果连接是打开的,则为true,其它情况下为false.</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.DiscoverSpParameterSet(System.Data.Common.DbConnection,System.String,System.Boolean)">
+            <summary>
+            探索运行时的存储过程,返回DbParameter参数数组.
+            初始化参数值为 DBNull.Value.
+            </summary>
+            <param name="connection">一个有效的数据库连接</param>
+            <param name="spName">存储过程名称</param>
+            <param name="includeReturnValueParameter">是否包含返回值参数</param>
+            <returns>返回DbParameter参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.CloneParameters(System.Data.Common.DbParameter[])">
+            <summary>
+            DbParameter参数数组的深层拷贝.
+            </summary>
+            <param name="originalParameters">原始参数数组</param>
+            <returns>返回一个同样的参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.String)">
+            <summary>
+            执行指定连接字符串,类型的DbCommand.
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery("SELECT * FROM [table123]");
+            </remarks>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回命令影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Int32@,System.String)">
+            <summary>
+            执行指定连接字符串,类型的DbCommand.
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery("SELECT * FROM [table123]");
+            </remarks>
+            <param name="id">自动增长的ID</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回命令影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.CommandType,System.String)">
+            <summary>
+            执行指定连接字符串,类型的DbCommand.
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(connString, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本, 其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回命令影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Int32@,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定连接字符串,并返回刚插入的自增ID
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(connString, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="id">自动增长的ID</param>
+            <param name="commandType">命令类型 (存储过程,命令文本, 其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回命令影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定连接字符串,类型的DbCommand.如果没有提供参数,不返回结果.
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(connString, CommandType.StoredProcedure, "PublishOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本, 其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">DbParameter参数数组</param>
+            <returns>返回命令影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Int32@,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定连接字符串并返回刚插入的自增ID,类型的DbCommand.如果没有提供参数,不返回结果.
+            </summary>
+            <param name="id">自动增长的ID</param>
+            <param name="commandType">命令类型 (存储过程,命令文本, 其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">DbParameter参数数组</param>
+            <returns>返回命令影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.Common.DbConnection,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接对象的命令 
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(conn, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Int32@,System.Data.Common.DbConnection,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接对象的命令并返回自增ID 
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(conn, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="id">自动增长的ID</param>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.Common.DbConnection,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接对象的命令
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(conn, CommandType.StoredProcedure, "PublishOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">T存储过程名称或SQL语句</param>
+            <param name="commandParameters">SqlParamter参数数组</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Int32@,System.Data.Common.DbConnection,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接对象的命令
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(conn, CommandType.StoredProcedure, "PublishOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="id">自动增长的ID</param>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">T存储过程名称或SQL语句</param>
+            <param name="commandParameters">SqlParamter参数数组</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.Common.DbConnection,System.String,System.Object[])">
+            <summary>
+            执行指定数据库连接对象的命令,将对象数组的值赋给存储过程参数.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值
+            示例:  
+             int result = ExecuteNonQuery(conn, "PublishOrders", 24, 36);
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            执行带事务的DbCommand.
+            </summary>
+            <remarks>
+            示例.:  
+             int result = ExecuteNonQuery(trans, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="transaction">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Int32@,System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            执行带事务的DbCommand.
+            </summary>
+            <remarks>
+            示例.:  
+             int result = ExecuteNonQuery(trans, CommandType.StoredProcedure, "PublishOrders");
+            </remarks>
+            <param name="id">自动增长的ID</param>
+            <param name="transaction">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行带事务的DbCommand(指定参数).
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(trans, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">SqlParamter参数数组</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Int32@,System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行带事务的DbCommand(指定参数).
+            </summary>
+            <remarks>
+            示例:  
+             int result = ExecuteNonQuery(trans, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="id">自动增长的ID</param>
+            <param name="transaction">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型(存储过程,命令文本或其它.)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">SqlParamter参数数组</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQuery(System.Data.Common.DbTransaction,System.String,System.Object[])">
+            <summary>
+            执行带事务的DbCommand(指定参数值).
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值
+            示例:  
+             int result = ExecuteNonQuery(conn, trans, "PublishOrders", 24, 36);
+            </remarks>
+            <param name="transaction">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回受影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteCommandWithSplitter(System.String,System.String)">
+            <summary>
+            运行含有GO命令的多条SQL命令
+            </summary>
+            <param name="commandText">SQL命令字符串</param>
+            <param name="splitter">分割字符串</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteCommandWithSplitter(System.String)">
+            <summary>
+            运行含有GO命令的多条SQL命令
+            </summary>
+            <param name="commandText">SQL命令字符串</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.String)">
+            <summary>
+            执行指定数据库连接字符串的命令,返回DataSet.
+            </summary>
+            <remarks>
+            示例:  
+             DataSet ds = ExecuteDataset("SELECT * FROM [table1]");
+            </remarks>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接字符串的命令,返回DataSet.
+            </summary>
+            <remarks>
+            示例:  
+             DataSet ds = ExecuteDataset(connString, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接字符串的命令,返回DataSet.
+            </summary>
+            <remarks>
+            示例: 
+             DataSet ds = ExecuteDataset(connString, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">SqlParamters参数数组</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.Common.DbConnection,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接对象的命令,返回DataSet.
+            </summary>
+            <remarks>
+            示例:  
+             DataSet ds = ExecuteDataset(conn, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.Common.DbConnection,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接对象的命令,指定存储过程参数,返回DataSet.
+            </summary>
+            <remarks>
+            示例:  
+             DataSet ds = ExecuteDataset(conn, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <param name="commandParameters">SqlParamter参数数组</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.Common.DbConnection,System.String,System.Object[])">
+            <summary>
+            执行指定数据库连接对象的命令,指定参数值,返回DataSet.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输入参数和返回值.
+            示例.:  
+             DataSet ds = ExecuteDataset(conn, "GetOrders", 24, 36);
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定事务的命令,返回DataSet.
+            </summary>
+            <remarks>
+            示例:  
+             DataSet ds = ExecuteDataset(trans, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="transaction">事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定事务的命令,指定参数,返回DataSet.
+            </summary>
+            <remarks>
+            示例:  
+             DataSet ds = ExecuteDataset(trans, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <param name="commandParameters">SqlParamter参数数组</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDataset(System.Data.Common.DbTransaction,System.String,System.Object[])">
+            <summary>
+            执行指定事务的命令,指定参数值,返回DataSet.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输入参数和返回值.
+            示例.:  
+             DataSet ds = ExecuteDataset(trans, "GetOrders", 24, 36);
+            </remarks>
+            <param name="transaction">事务</param>
+            <param name="spName">存储过程名</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回一个包含结果集的DataSet</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.Common.DbConnection,System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.Common.DbParameter[],Game.Kernel.DbHelper.DbConnectionOwnership)">
+            <summary>
+            执行指定数据库连接对象的数据阅读器.
+            </summary>
+            <remarks>
+            如果是BaseDbHelper打开连接,当连接关闭DataReader也将关闭.
+            如果是调用都打开连接,DataReader由调用都管理.
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="transaction">一个有效的事务,或者为 'null'</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <param name="commandParameters">DbParameters参数数组,如果没有参数则为'null'</param>
+            <param name="connectionOwnership">标识数据库连接对象是由调用者提供还是由BaseDbHelper提供</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接字符串的数据阅读器.
+            </summary>
+            <remarks>
+            示例:  
+             DbDataReader dr = ExecuteReader(connString, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接字符串的数据阅读器,指定参数.
+            </summary>
+            <remarks>
+            示例:  
+             DbDataReader dr = ExecuteReader(connString, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <param name="commandParameters">SqlParamter参数数组(new DbParameter("@prodid", 24))</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.String,System.Object[])">
+            <summary>
+            执行指定数据库连接字符串的数据阅读器,指定参数值.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            示例:  
+             DbDataReader dr = ExecuteReader(connString, "GetOrders", 24, 36);
+            </remarks>
+            <param name="spName">存储过程名</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.Common.DbConnection,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接对象的数据阅读器.
+            </summary>
+            <remarks>
+            示例:  
+             DbDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.Common.DbConnection,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            [调用者方式]执行指定数据库连接对象的数据阅读器,指定参数.
+            </summary>
+            <remarks>
+            示例:  
+             DbDataReader dr = ExecuteReader(conn, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandParameters">SqlParamter参数数组</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.Common.DbConnection,System.String,System.Object[])">
+            <summary>
+            [调用者方式]执行指定数据库连接对象的数据阅读器,指定参数值.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            示例:  
+             DbDataReader dr = ExecuteReader(conn, "GetOrders", 24, 36);
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">T存储过程名</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            [调用者方式]执行指定数据库事务的数据阅读器,指定参数值.
+            </summary>
+            <remarks>
+            示例:  
+             DbDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders");
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            [调用者方式]执行指定数据库事务的数据阅读器,指定参数.
+            </summary>
+            <remarks>
+            示例:  
+              DbDataReader dr = ExecuteReader(trans, CommandType.StoredProcedure, "GetOrders", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReader(System.Data.Common.DbTransaction,System.String,System.Object[])">
+            <summary>
+            [调用者方式]执行指定数据库事务的数据阅读器,指定参数值.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            
+            示例:  
+             DbDataReader dr = ExecuteReader(trans, "GetOrders", 24, 36);
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="spName">存储过程名称</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接字符串的命令,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            示例:  
+             int orderCount = (int)ExecuteScalar(connString, CommandType.StoredProcedure, "GetOrderCount");
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接字符串的命令,指定参数,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            示例:  
+             int orderCount = (int)ExecuteScalar(connString, CommandType.StoredProcedure, "GetOrderCount", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.Common.DbConnection,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库连接对象的命令,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            示例:  
+             int orderCount = (int)ExecuteScalar(conn, CommandType.StoredProcedure, "GetOrderCount");
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.Common.DbConnection,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接对象的命令,指定参数,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            示例:  
+             int orderCount = (int)ExecuteScalar(conn, CommandType.StoredProcedure, "GetOrderCount", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.Common.DbConnection,System.String,System.Object[])">
+            <summary>
+            执行指定数据库连接对象的命令,指定参数值,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            
+            示例:  
+             int orderCount = (int)ExecuteScalar(conn, "GetOrderCount", 24, 36);
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名称</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.Common.DbTransaction,System.Data.CommandType,System.String)">
+            <summary>
+            执行指定数据库事务的命令,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            示例:  
+             int orderCount = (int)ExecuteScalar(trans, CommandType.StoredProcedure, "GetOrderCount");
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库事务的命令,指定参数,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            示例:  
+             int orderCount = (int)ExecuteScalar(trans, CommandType.StoredProcedure, "GetOrderCount", new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalar(System.Data.Common.DbTransaction,System.String,System.Object[])">
+            <summary>
+            执行指定数据库事务的命令,指定参数值,返回结果集中的第一行第一列.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            
+            示例:  
+             int orderCount = (int)ExecuteScalar(trans, "GetOrderCount", 24, 36);
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="spName">存储过程名称</param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.CommandType,System.String,System.Data.DataSet,System.String[])">
+            <summary>
+            执行指定数据库连接字符串的命令,映射数据表并填充数据集.
+            </summary>
+            <remarks>
+            示例:  
+             FillDataset(connString, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"});
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接字符串的命令,映射数据表并填充数据集.指定命令参数.
+            </summary>
+            <remarks>
+            示例:  
+             FillDataset(connString, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>
+            执行指定数据库连接字符串的命令,映射数据表并填充数据集,指定存储过程参数值.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            
+            示例:  
+             FillDataset(connString, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, 24);
+            </remarks>
+            <param name="spName">存储过程名称</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>    
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.Common.DbConnection,System.Data.CommandType,System.String,System.Data.DataSet,System.String[])">
+            <summary>
+            执行指定数据库连接对象的命令,映射数据表并填充数据集.
+            </summary>
+            <remarks>
+            示例:  
+             FillDataset(conn, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"});
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>    
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.Common.DbConnection,System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库连接对象的命令,映射数据表并填充数据集,指定参数.
+            </summary>
+            <remarks>
+            示例:  
+             FillDataset(conn, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.Common.DbConnection,System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>
+            执行指定数据库连接对象的命令,映射数据表并填充数据集,指定存储过程参数值.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            
+            示例:  
+             FillDataset(conn, "GetOrders", ds, new string[] {"orders"}, 24, 36);
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.DataSet,System.String[])">
+            <summary>
+            执行指定数据库事务的命令,映射数据表并填充数据集.
+            </summary>
+            <remarks>
+            示例:  
+             FillDataset(trans, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"});
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.Common.DbParameter[])">
+            <summary>
+            执行指定数据库事务的命令,映射数据表并填充数据集,指定参数.
+            </summary>
+            <remarks>
+            示例:  
+             FillDataset(trans, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.Common.DbTransaction,System.String,System.Data.DataSet,System.String[],System.Object[])">
+            <summary>
+            执行指定数据库事务的命令,映射数据表并填充数据集,指定存储过程参数值.
+            </summary>
+            <remarks>
+            此方法不提供访问存储过程输出参数和返回值参数.
+            
+            示例:  
+             FillDataset(trans, "GetOrders", ds, new string[]{"orders"}, 24, 36);
+            </remarks>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>
+            <param name="parameterValues">分配给存储过程输入参数的对象数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.FillDataset(System.Data.Common.DbConnection,System.Data.Common.DbTransaction,System.Data.CommandType,System.String,System.Data.DataSet,System.String[],System.Data.Common.DbParameter[])">
+            <summary>
+            [私有方法][内部调用]执行指定数据库连接对象/事务的命令,映射数据表并填充数据集,DataSet/TableNames/DbParameters.
+            </summary>
+            <remarks>
+            示例:  
+             FillDataset(conn, trans, CommandType.StoredProcedure, "GetOrders", ds, new string[] {"orders"}, new DbParameter("@prodid", 24));
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="transaction">一个有效的连接事务</param>
+            <param name="commandType">命令类型 (存储过程,命令文本或其它)</param>
+            <param name="commandText">存储过程名称或SQL语句</param>
+            <param name="dataSet">要填充结果集的DataSet实例</param>
+            <param name="tableNames">表映射的数据表数组
+            用户定义的表名 (可有是实际的表名.)
+            </param>
+            <param name="commandParameters">分配给命令的SqlParamter参数数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.UpdateDataSet(System.Data.Common.DbCommand,System.Data.Common.DbCommand,System.Data.Common.DbCommand,System.Data.DataSet,System.String)">
+            <summary>
+            执行数据集更新到数据库,指定inserted, updated, or deleted命令.
+            </summary>
+            <remarks>
+            示例:  
+             UpdateDataset(conn, insertCommand, deleteCommand, updateCommand, dataSet, "Order");
+            </remarks>
+            <param name="insertCommand">[追加记录]一个有效的SQL语句或存储过程</param>
+            <param name="deleteCommand">[删除记录]一个有效的SQL语句或存储过程</param>
+            <param name="updateCommand">[更新记录]一个有效的SQL语句或存储过程</param>
+            <param name="dataSet">要更新到数据库的DataSet</param>
+            <param name="tableName">要更新到数据库的DataTable</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.UpdateDataSet(System.Data.DataSet,System.String)">
+            <summary>
+            执行数据集更新到数据库
+            </summary>
+            <param name="dataSet">要更新到数据库的DataSet</param>
+            <param name="tableName">要更新到数据库的DataTable</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.CreateCommand(System.Data.Common.DbConnection,System.String,System.String[])">
+            <summary>
+            创建DbCommand命令,指定数据库连接对象,存储过程名和参数.
+            </summary>
+            <remarks>
+            示例:  
+             DbCommand command = CreateCommand(conn, "AddCustomer", "CustomerID", "CustomerName");
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名称</param>
+            <param name="sourceColumns">源表的列名称数组</param>
+            <returns>返回DbCommand命令</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQueryTypedParams(System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接字符串的存储过程,使用DataRow做为参数值,返回受影响的行数.
+            </summary>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQueryTypedParams(System.Data.Common.DbConnection,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接对象的存储过程,使用DataRow做为参数值,返回受影响的行数.
+            </summary>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteNonQueryTypedParams(System.Data.Common.DbTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库事物的存储过程,使用DataRow做为参数值,返回受影响的行数.
+            </summary>
+            <param name="transaction">一个有效的连接事务 object</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回影响的行数</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDatasetTypedParams(System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接字符串的存储过程,使用DataRow做为参数值,返回DataSet.
+            </summary>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回一个包含结果集的DataSet.</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDatasetTypedParams(System.Data.Common.DbConnection,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接对象的存储过程,使用DataRow做为参数值,返回DataSet.
+            </summary>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回一个包含结果集的DataSet.</returns>
+            
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteDatasetTypedParams(System.Data.Common.DbTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库事务的存储过程,使用DataRow做为参数值,返回DataSet.
+            </summary>
+            <param name="transaction">一个有效的连接事务 object</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回一个包含结果集的DataSet.</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReaderTypedParams(System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接字符串的存储过程,使用DataRow做为参数值,返回DataReader.
+            </summary>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReaderTypedParams(System.Data.Common.DbConnection,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接对象的存储过程,使用DataRow做为参数值,返回DataReader.
+            </summary>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteReaderTypedParams(System.Data.Common.DbTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库事物的存储过程,使用DataRow做为参数值,返回DataReader.
+            </summary>
+            <param name="transaction">一个有效的连接事务 object</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回包含结果集的DbDataReader</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalarTypedParams(System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接字符串的存储过程,使用DataRow做为参数值,返回结果集中的第一行第一列.
+            </summary>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalarTypedParams(System.Data.Common.DbConnection,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库连接对象的存储过程,使用DataRow做为参数值,返回结果集中的第一行第一列.
+            </summary>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalarTypedParams(System.Data.Common.DbTransaction,System.String,System.Data.DataRow)">
+            <summary>
+            执行指定连接数据库事务的存储过程,使用DataRow做为参数值,返回结果集中的第一行第一列.
+            </summary>
+            <param name="transaction">一个有效的连接事务 object</param>
+            <param name="spName">存储过程名称</param>
+            <param name="dataRow">使用DataRow作为参数值</param>
+            <returns>返回结果集中的第一行第一列</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.CacheParameterSet(System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            追加参数数组到缓存.
+            </summary>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <param name="commandParameters">要缓存的参数数组</param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.GetCachedParameterSet(System.String)">
+            <summary>
+            从缓存中获取参数数组.
+            </summary>
+            <param name="commandText">存储过程名或SQL语句</param>
+            <returns>参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.GetSpParameterSet(System.String)">
+            <summary>
+            返回指定的存储过程的参数集
+            </summary>
+            <remarks>
+            这个方法将查询数据库,并将信息存储到缓存.
+            </remarks>
+            <param name="spName">存储过程名</param>
+            <returns>返回DbParameter参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.GetSpParameterSet(System.String,System.Boolean)">
+            <summary>
+            返回指定的存储过程的参数集
+            </summary>
+            <remarks>
+            这个方法将查询数据库,并将信息存储到缓存.
+            </remarks>
+            <param name="spName">存储过程名</param>
+            <param name="includeReturnValueParameter">是否包含返回值参数</param>
+            <returns>返回DbParameter参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.GetSpParameterSet(System.Data.Common.DbConnection,System.String)">
+            <summary>
+            [内部]返回指定的存储过程的参数集(使用连接对象).
+            </summary>
+            <remarks>
+            这个方法将查询数据库,并将信息存储到缓存.
+            </remarks>
+            <param name="connection">一个有效的数据库连接字符</param>
+            <param name="spName">存储过程名</param>
+            <returns>返回DbParameter参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.GetSpParameterSet(System.Data.Common.DbConnection,System.String,System.Boolean)">
+            <summary>
+            [内部]返回指定的存储过程的参数集(使用连接对象)
+            </summary>
+            <remarks>
+            这个方法将查询数据库,并将信息存储到缓存.
+            </remarks>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名</param>
+            <param name="includeReturnValueParameter">
+            是否包含返回值参数
+            </param>
+            <returns>返回DbParameter参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.GetSpParameterSetInternal(System.Data.Common.DbConnection,System.String,System.Boolean)">
+            <summary>
+            [私有]返回指定的存储过程的参数集(使用连接对象)
+            </summary>
+            <param name="connection">一个有效的数据库连接对象</param>
+            <param name="spName">存储过程名</param>
+            <param name="includeReturnValueParameter">是否包含返回值参数</param>
+            <returns>返回DbParameter参数数组</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeInParam(System.String,System.Object)">
+            <summary>
+            传递输入参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <param name="paraValue">参数值</param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeOutParam(System.String,System.Type)">
+            <summary>
+            传递输出参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <param name="paraType">参数类型</param>
+            <returns>新的 <see cref="T:System.Data.Common.DbParameter"/> 对象</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeOutParam(System.String,System.Type,System.Int32)">
+            <summary>
+            传递输出参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <param name="paraType">参数类型</param>
+            <param name="size"></param>
+            <returns>新的 <see cref="T:System.Data.Common.DbParameter"/> 对象</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeOutParam(System.String,System.Object,System.Type,System.Int32)">
+            <summary>
+            传递输出参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <param name="paraValue">参数值</param>
+            <param name="paraType">参数类型</param>
+            <param name="size"></param>
+            <returns>新的 <see cref="T:System.Data.Common.DbParameter"/> 对象</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeReturnParam(System.String)">
+            <summary>
+            传递返回值参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <returns>新的 <see cref="T:System.Data.Common.DbParameter"/> 对象</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeReturnParam">
+            <summary>
+            传递返回值参数,ReturnValue
+            </summary>
+            <returns>新的 <see cref="T:System.Data.Common.DbParameter"/> 对象</returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeParam(System.String,System.Object,System.Data.ParameterDirection,System.Type,System.String)">
+            <summary>
+            生成存储过程参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <param name="paraValue">参数值</param>
+            <param name="direction">参数方向：: in / out /return</param>
+            <param name="paraType">参数类型</param>
+            <param name="sourceColumn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeParam(System.String,System.Object,System.Data.ParameterDirection,System.Type,System.String,System.Int32)">
+            <summary>
+            生成存储过程参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <param name="paraValue">参数值</param>
+            <param name="direction">参数方向：: in / out /return</param>
+            <param name="paraType">参数类型</param>
+            <param name="sourceColumn"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.MakeParam(System.String,System.Object,System.Data.ParameterDirection)">
+            <summary>
+            生成存储过程参数
+            </summary>
+            <param name="paraName">参数名称</param>
+            <param name="paraValue">参数值</param>
+            <param name="direction">参数方向：: in / out /return</param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalarToStr(System.Data.CommandType,System.String)">
+            <summary>
+            返回一个始终是该命令返回的第一行的第一列
+            </summary>
+            <param name="commandType"></param>
+            <param name="commandText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteScalarToStr(System.Data.CommandType,System.String,System.Data.Common.DbParameter[])">
+            <summary>
+            返回一个始终是该命令返回的第一行的第一列
+            </summary>
+            <param name="commandType"></param>
+            <param name="commandText"></param>
+            <param name="commandParameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.GetEmptyTable(System.String)">
+            <summary>
+            获取一个空的DataTable，该DataTable反映了目标表的结构
+            </summary>
+            <param name="tableName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName">存储过程名</param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String,System.Data.DataSet@)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName"></param>
+            <param name="ds"></param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String,System.Data.Common.DbDataReader@)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName"></param>
+            <param name="reader"></param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String,System.Object@)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName"></param>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter},System.Data.DataSet@)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <param name="ds"></param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter},System.Data.Common.DbDataReader@)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <param name="reader"></param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProc(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter},System.Object@)">
+            <summary>
+            执行存储过程
+            </summary>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <param name="obj"></param>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteObjectList``1(System.String)">
+            <summary>
+            执行命令串,返回对象的单表集合 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="commandText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteObjectList``1(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            执行命令串,返回对象的单表集合 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="commandText"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteObject``1(System.String)">
+            <summary>
+            执行命令串,返回单个对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="commandText"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.ExecuteObject``1(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            执行命令串,返回单个对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="commandText"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProcObjectList``1(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            执行存储过程,返回对象的单表集合 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProcObjectList``1(System.String)">
+            <summary>
+            执行存储过程,返回对象的单表集合 
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="procName"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProcObject``1(System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            执行存储过程,返回单个对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DbHelper.RunProcObject``1(System.String)">
+            <summary>
+            执行存储过程,返回单个对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="procName"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.DbHelper.QueryDetail">
+            <summary>
+            查询详情
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.DbHelper.QueryCount">
+            <summary>
+            查询次数统计
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.DbHelper.ConnectionString">
+            <summary>
+            数据库连接字符串
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.DbHelper.Provider">
+            <summary>
+            IDbProvider接口
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.DbHelper.Factory">
+            <summary>
+            DbFactory实例
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.DbHelper.DbConnectionOwnership">
+            <summary>
+            枚举,标识数据库连接是由BaseDbHelper提供还是由调用者提供
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DbHelper.DbConnectionOwnership.Internal">
+            <summary>由BaseDbHelper提供连接</summary>
+        </member>
+        <member name="F:Game.Kernel.DbHelper.DbConnectionOwnership.External">
+            <summary>由调用者提供连接</summary>
+        </member>
+        <member name="T:Game.Kernel.ITableProvider">
+            <summary>
+            单张数据表访问器接口
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.Insert(System.Data.DataRow)">
+            <summary>
+            将row存放到数据库中
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.NewRow">
+            <summary>
+            返回一个与目标表大纲完全一致的DataRow
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.CommitData(System.Data.DataTable)">
+            <summary>
+            批量更新,提交DataTable中的changes到数据库
+            </summary>
+            <param name="dt"></param>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.BatchCommitData(System.Data.DataTable,System.String[][])">
+            <summary>
+            批量插入
+            </summary>
+            <param name="table"></param>
+            <param name="columnMapArray"></param>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.BatchCommitData(System.Data.DataSet,System.String[][])">
+            <summary>
+            批量插入
+            </summary>
+            <param name="dataSet"></param>
+            <param name="columnMapArray"></param>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.Delete(System.String)">
+            <summary>
+            删除目标表中所有满足where条件的记录
+            </summary>
+            <param name="where"></param>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.Get(System.String)">
+            <summary>
+            获取满足条件的DataSet
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.GetEmptyTable">
+            <summary>
+            获取一个空的DataTable，该DataTable反映了目标表的结构
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.GetOne(System.String)">
+            <summary>
+            获取满足where条件的第一条记录
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.GetObjectList``1(System.String)">
+            <summary>
+            获取满足条件的列表对象,仅一张表
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.GetObject``1(System.String)">
+            <summary>
+            获取满足条件的对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ITableProvider.GetRecordsCount(System.String)">
+            <summary>
+            获取目标表中满足where条件的记录总数
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.ITableProvider.TableName">
+            <summary>
+            目标表名称
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.SoapHeaderUC">
+            <summary>
+            SOAP协议验证
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.ISoapHeaderUC">
+            <summary>
+             SOAP协议验证
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.StationID">
+            <summary>
+            用户站点
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.AccreditKey">
+            <summary>
+            站点授权
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.WebVersion">
+            <summary>
+            版本
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.ServiceStyle">
+            <summary>
+            授权类型
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.ConnectStyle">
+            <summary>
+            通信协议
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.LineType">
+            <summary>
+            线路类型
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.MachineSerial">
+            <summary>
+            机器码
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.IPAddress">
+            <summary>
+            调用发起的地址
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.ClusterID">
+            <summary>
+            服务环境标识(集群,比如：运营、公测和内测)
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.EntropyTicks">
+            <summary>
+            随机串，确保每次生成签名不一样
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.ISoapHeaderUC.Signature">
+            <summary>
+            签名
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.SoapHeaderUC.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.SoapHeaderUC.#ctor(Game.Kernel.ISoapHeaderUC)">
+            <summary>
+            
+            </summary>
+            <param name="iuc"></param>
+        </member>
+        <member name="M:Game.Kernel.SoapHeaderUC.#ctor(System.String,System.String,System.String,Game.Kernel.AccreditType,Game.Kernel.ConnectionProtocol,System.String,System.String,System.String,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="stationID"></param>
+            <param name="accreditKey"></param>
+            <param name="webVersion"></param>
+            <param name="serviceStyle"></param>
+            <param name="connectStyle"></param>
+            <param name="machineSerial"></param>
+            <param name="ipAddress"></param>
+            <param name="clusterID"></param>
+            <param name="entropyTicks"></param>
+            <param name="signature"></param>
+        </member>
+        <member name="M:Game.Kernel.SoapHeaderUC.ToString">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.StationID">
+            <summary>
+            用户站点
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.AccreditKey">
+            <summary>
+            站点授权
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.WebVersion">
+            <summary>
+            版本
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.ServiceStyle">
+            <summary>
+            授权类型
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.ConnectStyle">
+            <summary>
+            通信协议
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.LineType">
+            <summary>
+            线路类型
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.MachineSerial">
+            <summary>
+            机器码
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.IPAddress">
+            <summary>
+            调用发起的地址
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.ClusterID">
+            <summary>
+            服务环境标识(集群,比如：运营、公测和内测)
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.EntropyTicks">
+            <summary>
+            随机串，确保每次生成签名不一样
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.SoapHeaderUC.Signature">
+            <summary>
+            签名
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.SqlServerProvider">
+            <summary>
+            SQL Server 数据库访问类
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.IDbProvider">
+            <summary>
+            数据库访问接口
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.Instance">
+            <summary>
+            返回DbProviderFactory实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.DeriveParameters(System.Data.IDbCommand)">
+            <summary>
+            检索SQL参数信息并填充
+            </summary>
+            <param name="cmd"></param>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.MakeParam(System.String,System.Object,System.Data.ParameterDirection)">
+            <summary>
+            创建SQL参数
+            </summary>
+            <param name="paraName"></param>
+            <param name="paraValue"></param>
+            <param name="direction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.MakeParam(System.String,System.Object,System.Data.ParameterDirection,System.Type,System.String)">
+            <summary>
+            创建SQL参数
+            </summary>
+            <param name="paraName"></param>
+            <param name="paraValue"></param>
+            <param name="direction"></param>
+            <param name="paraType"></param>
+            <param name="sourceColumn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.MakeParam(System.String,System.Object,System.Data.ParameterDirection,System.Type,System.String,System.Int32)">
+            <summary>
+            创建SQL参数
+            </summary>
+            <param name="paraName"></param>
+            <param name="paraValue"></param>
+            <param name="direction"></param>
+            <param name="paraType"></param>
+            <param name="sourceColumn"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.ConvertToLocalDbType(System.Type)">
+            <summary>
+            转换到数据库类型
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.ConvertToLocalDbTypeString(System.Type)">
+            <summary>
+            转换到Net类型
+            </summary>
+            <param name="netType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.IsFullTextSearchEnabled">
+            <summary>
+            是否支持全文搜索
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.IsCompactDatabase">
+            <summary>
+            是否支持压缩数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.IsBackupDatabase">
+            <summary>
+            是否支持备份数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.GetLastIdSql">
+            <summary>
+            返回刚插入记录的自增ID值, 如不支持则为""
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.IsDbOptimize">
+            <summary>
+            是否支持数据库优化
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.IsShrinkData">
+            <summary>
+            是否支持数据库收缩
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDbProvider.IsStoreProc">
+            <summary>
+            是否支持存储过程
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.IDbProvider.ParameterPrefix">
+            <summary>
+            参数前缀
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.Instance">
+            <summary>
+            返回DbProviderFactory实例
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.DeriveParameters(System.Data.IDbCommand)">
+            <summary>
+            检索SQL参数信息并填充
+            </summary>
+            <param name="cmd"></param>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.MakeParam(System.String,System.Object,System.Data.ParameterDirection)">
+            <summary>
+            创建SQL参数
+            </summary>
+            <param name="paraName"></param>
+            <param name="paraValue"></param>
+            <param name="direction"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.MakeParam(System.String,System.Object,System.Data.ParameterDirection,System.Type,System.String)">
+            <summary>
+            创建SQL参数
+            </summary>
+            <param name="paraName"></param>
+            <param name="paraValue"></param>
+            <param name="direction"></param>
+            <param name="paraType"></param>
+            <param name="sourceColumn"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.MakeParam(System.String,System.Object,System.Data.ParameterDirection,System.Type,System.String,System.Int32)">
+            <summary>
+            创建SQL参数
+            </summary>
+            <param name="paraName"></param>
+            <param name="paraValue"></param>
+            <param name="direction"></param>
+            <param name="paraType"></param>
+            <param name="sourceColumn"></param>
+            <param name="size"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.ConvertToLocalDbType(System.Type)">
+            <summary>
+            转换到数据库类型
+            </summary>
+            <param name="t"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.ConvertToLocalDbTypeString(System.Type)">
+            <summary>
+            转换到Net类型
+            </summary>
+            <param name="netType"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.IsFullTextSearchEnabled">
+            <summary>
+            是否支持全文搜索
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.IsCompactDatabase">
+            <summary>
+            是否支持压缩数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.IsBackupDatabase">
+            <summary>
+            是否支持备份数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.GetLastIdSql">
+            <summary>
+            返回刚插入记录的自增ID值, 如不支持则为""
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.IsDbOptimize">
+            <summary>
+            是否支持数据库优化
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.IsShrinkData">
+            <summary>
+            是否支持数据库收缩
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlServerProvider.IsStoreProc">
+            <summary>
+            是否支持存储过程
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.SqlServerProvider.ParameterPrefix">
+            <summary>
+            参数前缀
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.BaseFacadeProvider">
+            <summary>
+            业务外观基类
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.BaseProvider">
+            <summary>
+            基础服务接口实现
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.IProvider">
+            <summary>
+            基础服务接口
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.IProvider.QueryInterface(System.Type,System.Version)">
+            <summary>
+            接口查询
+            </summary>
+            <param name="refType">引用类型</param>
+            <param name="queryVer">版本</param>
+        </member>
+        <member name="P:Game.Kernel.IProvider.ProviderVersion">
+            <summary>
+            当前程序集版本对象
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.BaseProvider.QueryInterface(System.Type,System.Version)">
+            <summary>
+            接口版本查询
+            </summary>
+            <param name="refType"></param>
+            <param name="queryVer"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.BaseProvider.CheckedDataSet(System.Data.DataSet)">
+            <summary>
+            检测 DataSet 数据集是否为空;非空 返回 true,为空 返回 false
+            </summary>
+            <param name="ds"></param>
+            <returns>非空 返回 true,为空 返回 false</returns>
+        </member>
+        <member name="P:Game.Kernel.BaseProvider.ProviderVersion">
+            <summary>
+            获取当前程序版本
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.IConfigInfo">
+            <summary>
+            配置文件接口
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.ConnectionProtocol">
+            <summary>
+            与客户网站建立连接的通信协议
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.ConnectionProtocol.UnKnowProtocol">
+            <summary>
+            未知协议
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.ConnectionProtocol.LocationSqlServer">
+            <summary>
+            本地调用
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.ConnectionProtocol.RemotingSqlServer">
+            <summary>
+            远程调用
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.ConnectionProtocol.WebService">
+            <summary>
+            Web 服务
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.ConnectionProtocol.WCF">
+            <summary>
+            WCF
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.AccreditType">
+            <summary>
+            授权类型
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.AccreditType.MainStation">
+            <summary>
+            主站模式
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.AccreditType.Substation">
+            <summary>
+            分站模式
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.AccreditType.Singleness">
+            <summary>
+            租用模式
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.AccreditType.Unauthorized">
+            <summary>
+            未授权
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.DBRouteExceptionType">
+            <summary>
+            群集路由异常
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBRouteExceptionType.MachineEnjoin">
+            <summary>
+            机器受限
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBRouteExceptionType.AddressEnjoin">
+            <summary>
+            IP地址受限
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBRouteExceptionType.StationIDError">
+            <summary>
+            站点标识错误
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBRouteExceptionType.StationEnjoin">
+            <summary>
+            站点停用
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBRouteExceptionType.AddressInvalidDate">
+            <summary>
+            授权过期
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.StationPermExceptionType">
+            <summary>
+            授权异常
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.StationPermExceptionType.SignatureFailure">
+            <summary>
+            签名验证失败
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.StationPermExceptionType.UnknowError">
+            <summary>
+            未知错误
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.StationPermExceptionType.Success">
+            <summary>
+            授权正确
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.StationPermExceptionType.InvokeIllegal">
+            <summary>
+            无效的授权码
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.StationPermExceptionType.AccreditIDStopped">
+            <summary>
+            授权码已经停用
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.DBLineType">
+            <summary>
+            服务器线路
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBLineType.Local">
+            <summary>
+            本地
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBLineType.DX">
+            <summary>
+            电信
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBLineType.WT">
+            <summary>
+            网通
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DBLineType.TT">
+            <summary>
+            铁通
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.PagerParameters">
+            <summary>
+            分页参数
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.PagerParameters.#ctor">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.PagerParameters.#ctor(System.String,System.String,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="table"></param>
+            <param name="pkey"></param>
+            <param name="pageIndex"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerParameters.#ctor(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="table"></param>
+            <param name="pkey"></param>
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerParameters.#ctor(System.String,System.String,System.Int32,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="table"></param>
+            <param name="pkey"></param>
+            <param name="pageIndex"></param>
+            <param name="whereStr"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerParameters.#ctor(System.String,System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            
+            </summary>
+            <param name="table"></param>
+            <param name="pkey"></param>
+            <param name="whereStr"></param>        
+            <param name="pageIndex"></param>
+            <param name="pageSize"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerParameters.#ctor(System.String,System.String,System.String,System.Int32,System.Int32,System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="table"></param>
+            <param name="pkey"></param>
+            <param name="whereStr"></param>
+            <param name="pageSize"></param>
+            <param name="pageIndex"></param>
+            <param name="fields"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerParameters.#ctor(System.String,System.String,System.String,System.Int32,System.Int32,System.String[],System.String[])">
+            <summary>
+            
+            </summary>
+            <param name="table"></param>
+            <param name="pkey"></param>
+            <param name="whereStr"></param>
+            <param name="pageSize"></param>
+            <param name="pageIndex"></param>
+            <param name="fields"></param>
+            <param name="fieldAlias"></param>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.Ascending">
+            <summary>
+            排序方向
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.CacherSize">
+            <summary>
+            缓存页面大小
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.FieldAlias">
+            <summary>
+            字段别名集合
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.Fields">
+            <summary>
+            字段集合
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.PageIndex">
+            <summary>
+            页面索引
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.PageSize">
+            <summary>
+            页面大小
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.PKey">
+            <summary>
+            主键
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.Table">
+            <summary>
+            表名称
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.PagerParameters.WhereStr">
+            <summary>
+            条件语句,需要加 WHERE
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.ProxyFactory">
+            <summary>
+            提供代理实现工厂
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.ProxyFactory.#ctor">
+            <summary>
+            不允许实例化为对象
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.ProxyFactory.CreateInstance``1">
+            <summary>
+            创建无参的对象实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ProxyFactory.CreateInstance``1(System.Object[])">
+            <summary>
+            创建带参数的对象实例
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ProxyFactory.CreateHandler(System.Type,System.String,System.Type[])">
+            <summary>
+            
+            </summary>
+            <param name="objtype"></param>
+            <param name="key"></param>
+            <param name="ptypes"></param>
+        </member>
+        <member name="M:Game.Kernel.ProxyFactory.GetParameterTypes(System.Object[])">
+            <summary>
+            获取参数类型
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.ProxyFactory.GetKey(System.Type[])">
+            <summary>
+            获取缓存键
+            </summary>
+            <param name="types"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Game.Kernel.ProxyFactory.CreateInstanceHandler">
+            <summary>
+            创建对象实例
+            </summary>
+            <param name="parameters"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Game.Kernel.Message">
+            <summary>
+            携带消息类
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.IMessage">
+            <summary>
+            消息接口
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.IMessage.AddEntity(System.Object)">
+            <summary>
+            增加携带对象
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:Game.Kernel.IMessage.AddEntity(System.Collections.ArrayList)">
+            <summary>
+            增加携带对象
+            </summary>
+            <param name="entityList"></param>
+        </member>
+        <member name="M:Game.Kernel.IMessage.ResetEntityList">
+            <summary>
+            清空携带对象集
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.IMessage.MessageID">
+            <summary>
+            消息标识
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.IMessage.Success">
+            <summary>
+            成功状态
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.IMessage.Content">
+            <summary>
+            消息内容
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.IMessage.EntityList">
+            <summary>
+            携带对象列表
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.Message.AddEntity(System.Object)">
+            <summary>
+            增加携带对象
+            </summary>
+            <param name="entity"></param>
+        </member>
+        <member name="M:Game.Kernel.Message.AddEntity(System.Collections.ArrayList)">
+            <summary>
+            增加携带对象
+            </summary>
+            <param name="entityList"></param>
+        </member>
+        <member name="M:Game.Kernel.Message.ResetEntityList">
+            <summary>
+            清空携带对象集
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.Message.#ctor">
+            <summary>
+            初始化消息实例
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.Message.#ctor(System.Int32,System.String)">
+            <summary>
+            初始化消息实例
+            </summary>
+            <param name="messageID"></param>
+            <param name="content"></param>
+        </member>
+        <member name="M:Game.Kernel.Message.#ctor(System.Int32,System.String,System.Collections.ArrayList)">
+            <summary>
+            初始化消息实例
+            </summary>
+            <param name="messageID"></param>
+            <param name="content"></param>
+            <param name="entityList"></param>
+        </member>
+        <member name="M:Game.Kernel.Message.#ctor(System.Boolean)">
+            <summary>
+            初始化消息实例
+            </summary>
+            <param name="isSuccess"></param>
+        </member>
+        <member name="M:Game.Kernel.Message.#ctor(System.Boolean,System.String)">
+            <summary>
+            初始化消息实例
+            </summary>
+            <param name="isSuccess">是否成功: 成功 true，失败 false</param>
+            <param name="content"></param>
+        </member>
+        <member name="M:Game.Kernel.Message.#ctor(System.Boolean,System.String,System.Collections.ArrayList)">
+            <summary>
+            初始化消息实例
+            </summary>
+            <param name="isSuccess">是否成功: 成功 true，失败 false</param>
+            <param name="content"></param>
+            <param name="entityList"></param>
+        </member>
+        <member name="P:Game.Kernel.Message.MessageID">
+            <summary>
+            消息标识
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.Message.Success">
+            <summary>
+            成功状态
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.Message.Content">
+            <summary>
+            消息内容
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.Message.EntityList">
+            <summary>
+            携带对象列表
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.WebServiceFactory">
+            <summary>
+            Web 服务动态调用工厂
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.WebServiceFactory.#ctor">
+            <summary>
+            不允许实例化为对象
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.WebServiceFactory.InvokeWebService(System.String,System.String,System.Object[])">
+            <summary>
+            动态调用web服务
+            </summary>
+            <param name="url">Web服务的地址</param>
+            <param name="methodname">要调用的服务方法名</param>
+            <param name="args">要调用Web服务所需的参数</param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.WebServiceFactory.InvokeWebService(System.String,System.String,System.String,System.Object[])">
+            <summary>
+            动态调用web服务
+            </summary>
+            <param name="url"></param>
+            <param name="classname"></param>
+            <param name="methodname"></param>
+            <param name="args"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Game.Kernel.MessageHelper">
+            <summary>
+            消息辅助
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.MessageHelper.GetMessage(System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            获取未携带实体消息的对象
+            </summary>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.MessageHelper.GetMessage(Game.Kernel.DbHelper,System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            获取未携带实体消息的对象
+            </summary>
+            <param name="database"></param>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.MessageHelper.GetMessageForDataSet(Game.Kernel.DbHelper,System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            获取消息并携带 DataSet 对象
+            </summary>
+            <param name="database"></param>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.MessageHelper.GetMessageForObject``1(Game.Kernel.DbHelper,System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            获取消息并携带实体单个对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="database"></param>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.MessageHelper.GetMessageForObjectList``1(Game.Kernel.DbHelper,System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            获取消息并携带实体单个列表对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="database"></param>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.MessageHelper.GetObjectList``1(Game.Kernel.DbHelper,System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            获取对象列表
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="database"></param>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.MessageHelper.GetObject``1(Game.Kernel.DbHelper,System.String,System.Collections.Generic.List{System.Data.Common.DbParameter})">
+            <summary>
+            获取对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="database"></param>
+            <param name="procName"></param>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Game.Kernel.PagerManager">
+            <summary>
+            分页管理器
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.#ctor(Game.Kernel.PagerParameters,Game.Kernel.DbHelper)">
+            <summary>
+            
+            </summary>
+            <param name="prams"></param>
+            /// <param name="dbHelper"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.#ctor(Game.Kernel.PagerParameters,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="prams"></param>
+            <param name="connectionString"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.#ctor(Game.Kernel.DbHelper)">
+            <summary>
+            
+            </summary>
+            <param name="dbHelper"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="connectionString"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.GetPagerSet">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.GetPagerSet(Game.Kernel.PagerParameters)">
+            <summary>
+            获取分页结果集 排序字段仅一个
+            </summary>
+            <param name="pramsPager"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.GetPagerSet2(Game.Kernel.PagerParameters)">
+            <summary>
+            获取分页结果集 排序字段可以多个，需要自定义：Order by UserID DESC,Accounts ASC
+            </summary>
+            <param name="pramsPager"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.GetFieldString(System.String[],System.String[])">
+            <summary>
+            获取显示字段
+            </summary>
+            <param name="fields"></param>
+            <param name="fieldAlias"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.CacheObject(System.Int32,Game.Kernel.PagerSet)">
+            <summary>
+            缓存分页数据对象
+            </summary>
+            <param name="index"></param>
+            <param name="pagerSet"></param>
+        </member>
+        <member name="M:Game.Kernel.PagerManager.GetCachedObject(System.Int32)">
+            <summary>
+            获取分页数据对象
+            </summary>
+            <param name="index"></param>
+            <returns></returns>
+        </member>
+        <member name="T:Game.Kernel.BaseDataProvider">
+            <summary>
+            数据访问基类
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.BaseDataProvider.#ctor(System.String)">
+            <summary>
+            初始化数据访问基类对象
+            </summary>
+            <param name="connectionString"></param>
+        </member>
+        <member name="M:Game.Kernel.BaseDataProvider.#ctor(Game.Kernel.DbHelper)">
+            <summary>
+            初始化数据访问基类对象
+            </summary>
+            <param name="database"></param>
+        </member>
+        <member name="M:Game.Kernel.BaseDataProvider.#ctor">
+            <summary>
+            初始化数据访问基类对象
+            </summary>      
+        </member>
+        <member name="M:Game.Kernel.BaseDataProvider.GetPagerSet(Game.Kernel.PagerParameters)">
+            <summary>
+            获取分页数据 排序字段仅一个
+            </summary>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.BaseDataProvider.GetPagerSet2(Game.Kernel.PagerParameters)">
+            <summary>
+            获取分页数据 排序字段可以多个，需要自定义：Order by UserID DESC,Accounts ASC
+            </summary>
+            <param name="prams"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.BaseDataProvider.GetTableProvider(System.String)">
+            <summary>
+            获取 ITableProvider 实例对象
+            </summary>
+            <param name="tableName">表名</param>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.BaseDataProvider.ConnectionString">
+            <summary>
+            连接字符串
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.BaseDataProvider.Database">
+            <summary>
+            数据库操作
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.BaseDataProvider.PagerHelper">
+            <summary>
+            分页对象
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.IConfigFileManager">
+            <summary>
+            配置文件管理接口
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.IConfigFileManager.LoadConfig">
+            <summary>
+            加载配置文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IConfigFileManager.SaveConfig">
+            <summary>
+            保存配置文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="T:Game.Kernel.SqlSystemProvider">
+            <summary>
+            数据库系统访问
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.IDBSystemProvider">
+            <summary>
+            数据库系统访问接口
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.IDBSystemProvider.BackupDb(System.String,System.String)">
+            <summary>
+            备份数据库
+            </summary>
+            <param name="dbName"></param>
+            <param name="bakFilePath"></param>
+        </member>
+        <member name="M:Game.Kernel.IDBSystemProvider.CreateDb(System.String)">
+            <summary>
+            新建数据库
+            </summary>
+            <param name="newDbName"></param>
+        </member>
+        <member name="M:Game.Kernel.IDBSystemProvider.GetAllDbNames">
+            <summary>
+            获取数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.IDBSystemProvider.RemoveDb(System.String)">
+            <summary>
+            删除数据库
+            </summary>
+            <param name="dbName"></param>
+        </member>
+        <member name="M:Game.Kernel.IDBSystemProvider.RestoreDb(System.String,System.String)">
+            <summary>
+            恢复数据库
+            </summary>
+            <param name="bakFilePath"></param>
+            <param name="dbName"></param>
+        </member>
+        <member name="M:Game.Kernel.SqlSystemProvider.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="connectionString"></param>
+        </member>
+        <member name="M:Game.Kernel.SqlSystemProvider.BackupDb(System.String,System.String)">
+            <summary>
+            备份数据库
+            </summary>
+            <param name="dbName"></param>
+            <param name="bakFilePath"></param>
+        </member>
+        <member name="M:Game.Kernel.SqlSystemProvider.CreateDb(System.String)">
+            <summary>
+            新建数据库
+            </summary>
+            <param name="newDbName"></param>
+        </member>
+        <member name="M:Game.Kernel.SqlSystemProvider.GetAllDbNames">
+            <summary>
+            获取数据库
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.SqlSystemProvider.RemoveDb(System.String)">
+            <summary>
+            删除数据库
+            </summary>
+            <param name="dbName"></param>
+        </member>
+        <member name="M:Game.Kernel.SqlSystemProvider.RestoreDb(System.String,System.String)">
+            <summary>
+            恢复数据库
+            </summary>
+            <param name="bakFilePath"></param>
+            <param name="dbName"></param>
+        </member>
+        <member name="T:Game.Kernel.DefaultConfigFileManager">
+            <summary>
+            文件配置管理基类
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DefaultConfigFileManager.m_configfilepath">
+            <summary>
+            文件所在路径变量
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DefaultConfigFileManager.m_configinfo">
+            <summary>
+            临时配置对象变量
+            </summary>
+        </member>
+        <member name="F:Game.Kernel.DefaultConfigFileManager.m_lockHelper">
+            <summary>
+            锁对象
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.DefaultConfigFileManager.LoadConfig(System.DateTime@,System.String,Game.Kernel.IConfigInfo)">
+            <summary>
+            加载(反序列化)指定对象类型的配置对象
+            </summary>
+            <param name="fileoldchange">文件加载时间</param>
+            <param name="configFilePath">配置文件所在路径</param>
+            <param name="configinfo">相应的变量 注:该参数主要用于设置m_configinfo变量 和 获取类型.GetType()</param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DefaultConfigFileManager.LoadConfig(System.DateTime@,System.String,Game.Kernel.IConfigInfo,System.Boolean)">
+            <summary>
+            加载(反序列化)指定对象类型的配置对象
+            </summary>
+            <param name="fileoldchange">文件加载时间</param>
+            <param name="configFilePath">配置文件所在路径(包括文件名)</param>
+            <param name="configinfo">相应的变量 注:该参数主要用于设置m_configinfo变量 和 获取类型.GetType()</param>
+            <param name="checkTime">是否检查并更新传递进来的"文件加载时间"变量</param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DefaultConfigFileManager.DeserializeInfo(System.String,System.Type)">
+            <summary>
+            反序列化指定的类
+            </summary>
+            <param name="configfilepath">config 文件的路径</param>
+            <param name="configtype">相应的类型</param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DefaultConfigFileManager.SaveConfig">
+            <summary>
+            保存配置实例(虚方法需继承)
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.DefaultConfigFileManager.SaveConfig(System.String,Game.Kernel.IConfigInfo)">
+            <summary>
+            保存(序列化)指定路径下的配置文件
+            </summary>
+            <param name="configFilePath">指定的配置文件所在的路径(包括文件名)</param>
+            <param name="configinfo">被保存(序列化)的对象</param>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.DefaultConfigFileManager.ConfigFilePath">
+            <summary>
+            文件所在路径
+            </summary>
+        </member>
+        <member name="P:Game.Kernel.DefaultConfigFileManager.ConfigInfo">
+            <summary>
+            临时配置对象
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.WebBaseHandler">
+            <summary>
+            网站处理程序基类
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ProcessRequest(System.Web.HttpContext)">
+            <summary>
+            
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.GetResponse(System.Web.HttpContext)">
+            <summary>
+            获取响应对象
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseJavaScripts(System.Web.HttpContext,System.String)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="jsText"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseJavaScripts(System.Web.HttpContext,System.Text.StringBuilder)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="jsText"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseJavaScripts(System.Web.HttpContext,Game.Utils.StringBuffer)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="jsText"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseJavaScriptsForFile(System.Web.HttpContext,System.String)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="jsText"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseJavaScriptsForFile(System.Web.HttpContext,System.Text.StringBuilder)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="jsText"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseJavaScriptsForFile(System.Web.HttpContext,Game.Utils.StringBuffer)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="jsText"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseText(System.Web.HttpContext,System.String)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="text"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseText(System.Web.HttpContext,System.Text.StringBuilder)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="textBuilder"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseText(System.Web.HttpContext,Game.Utils.StringBuffer)">
+            <summary>
+            输出文本
+            </summary>
+            <param name="context"></param>
+            <param name="textBuilder"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseXML(System.Web.HttpContext,System.String)">
+            <summary>
+            发送 XML 响应数据
+            </summary>
+            <param name="context"></param>
+            <param name="xml"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseXML(System.Web.HttpContext,System.Text.StringBuilder)">
+            <summary>
+            发送 XML 响应数据
+            </summary>
+            <param name="context"></param>
+            <param name="xmlnode"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseXML(System.Web.HttpContext,Game.Utils.StringBuffer)">
+            <summary>
+            发送 XML 响应数据
+            </summary>
+            <param name="context"></param>
+            <param name="xmlnode"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.ResponseJSON(System.Web.HttpContext,System.String)">
+            <summary>
+            发送 JSON 响应数据
+            </summary>
+            <param name="context"></param>
+            <param name="text"></param>
+        </member>
+        <member name="M:Game.Kernel.WebBaseHandler.OutputResponse(System.Web.HttpContext)">
+            <summary>
+            子类内容输出
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="P:Game.Kernel.WebBaseHandler.IsReusable">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.DbException">
+            <summary>
+            数据库异常类
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.DbException.#ctor(System.String)">
+            <summary>
+            
+            </summary>
+            <param name="message"></param>
+        </member>
+        <member name="P:Game.Kernel.DbException.Number">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:Game.Kernel.TableProvider">
+            <summary>
+            单张数据表访问器
+            </summary>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.#ctor(System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="connectionString"></param>
+            <param name="tableName"></param>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.#ctor(Game.Kernel.DbHelper,System.String)">
+            <summary>
+            
+            </summary>
+            <param name="database"></param>
+            <param name="tableName"></param>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.Insert(System.Data.DataRow)">
+            <summary>
+            将row存放到数据库中
+            </summary>
+            <param name="row"></param>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.NewRow">
+            <summary>
+            返回一个与目标表大纲完全一致的DataRow
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.CommitData(System.Data.DataTable)">
+            <summary>
+            批量更新,提交DataTable中的changes到数据库
+            </summary>
+            <param name="dt"></param>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.ConstructDataSet(System.Data.DataTable)">
+            <summary>
+            构造 DataSet
+            </summary>
+            <param name="dt"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.BatchCommitData(System.Data.DataTable,System.String[][])">
+            <summary>
+            批量插入
+            </summary>
+            <param name="table"></param>
+            <param name="columnMapArray"></param>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.BatchCommitData(System.Data.DataSet,System.String[][])">
+            <summary>
+            批量插入
+            </summary>
+            <param name="dataSet"></param>
+            <param name="columnMapArray"></param>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.Delete(System.String)">
+            <summary>
+            删除目标表中所有满足where条件的记录
+            </summary>
+            <param name="where"></param>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.Get(System.String)">
+            <summary>
+            获取满足条件的DataSet
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.GetEmptyTable">
+            <summary>
+            获取一个空的DataTable，该DataTable反映了目标表的结构
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.GetOne(System.String)">
+            <summary>
+            获取满足条件的第一条记录
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.GetObjectList``1(System.String)">
+            <summary>
+            获取满足条件的列表对象,仅一张表
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.GetObject``1(System.String)">
+            <summary>
+            获取满足条件的对象
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Game.Kernel.TableProvider.GetRecordsCount(System.String)">
+            <summary>
+            获取目标表中满足where条件的记录总数
+            </summary>
+            <param name="where"></param>
+            <returns></returns>
+        </member>
+        <member name="P:Game.Kernel.TableProvider.TableName">
+            <summary>
+            目标表名称
+            </summary>
+        </member>
+    </members>
+</doc>

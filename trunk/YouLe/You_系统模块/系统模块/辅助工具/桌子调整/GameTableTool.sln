@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "×À×Ó¹¤¾ß", "GameTableTool.vcproj", "{4E84AA09-CA73-4A0B-9459-D58E460F021B}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{4E84AA09-CA73-4A0B-9459-D58E460F021B}.Debug.ActiveCfg = Debug|Win32
+		{4E84AA09-CA73-4A0B-9459-D58E460F021B}.Debug.Build.0 = Debug|Win32
+		{4E84AA09-CA73-4A0B-9459-D58E460F021B}.Release.ActiveCfg = Release|Win32
+		{4E84AA09-CA73-4A0B-9459-D58E460F021B}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,16 @@
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Facade.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Facade.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Data.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Entity.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.IData.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Kernel.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Utils.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Newtonsoft.Json.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Utils.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Data.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Kernel.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.IData.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\bin\Debug\Game.Entity.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\obj\Debug\ResolveAssemblyReference.cache
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\obj\Debug\Game.Facade.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Facade\obj\Debug\Game.Facade.pdb

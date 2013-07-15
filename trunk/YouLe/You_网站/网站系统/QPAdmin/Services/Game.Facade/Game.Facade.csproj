@@ -1,0 +1,125 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{27CA8135-4237-4070-9223-EB59FEFC3842}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Game.Facade</RootNamespace>
+    <AssemblyName>Game.Facade</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Aide\AdminCookie.cs" />
+    <Compile Include="Aide\BillBanks.cs" />
+    <Compile Include="Aide\BillErrorMsg.cs" />
+    <Compile Include="Aide\BillPayType.cs" />
+    <Compile Include="Aide\BuildWhere.cs" />
+    <Compile Include="Aide\DataAccess.cs" />
+    <Compile Include="Aide\DayPayMessage.cs" />
+    <Compile Include="Aide\DayPayType.cs" />
+    <Compile Include="Aide\Enumeration.cs" />
+    <Compile Include="Aide\Protection.cs" />
+    <Compile Include="Controls\VerifyImage.cs" />
+    <Compile Include="Controls\VerifyImageInfo.cs" />
+    <Compile Include="Controls\VerifyImageVer2.cs" />
+    <Compile Include="Aide\AdminPermission.cs" />
+    <Compile Include="Aide\Fetch.cs" />
+    <Compile Include="Aide\GameWebRules.cs" />
+    <Compile Include="Facade\AccountsFacade.cs" />
+    <Compile Include="Facade\GameMatchFacade.cs" />
+    <Compile Include="Facade\GameScoreFacade.cs" />
+    <Compile Include="Facade\NativeWebFacade.cs" />
+    <Compile Include="Facade\PlatformFacade.cs" />
+    <Compile Include="Facade\PlatformManagerFacade.cs" />
+    <Compile Include="Aide\UCHttpModule.cs" />
+    <Compile Include="Facade\RecordFacade.cs" />
+    <Compile Include="Facade\TreasureFacade.cs" />
+    <Compile Include="Files\HttpFileManager.cs" />
+    <Compile Include="Files\HttpFolderInfo.cs" />
+    <Compile Include="PasswordCard.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ResMessage.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ResMessage.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Game.Kernel\Game.Kernel.csproj">
+      <Project>{65A5648C-2D45-4F45-B869-5E73A8E37E41}</Project>
+      <Name>Game.Kernel</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Game.Utils\Game.Utils.csproj">
+      <Project>{AA0752F8-22AC-409F-A500-40A81B9C5D06}</Project>
+      <Name>Game.Utils</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Game.Data\Game.Data.csproj">
+      <Project>{886F508D-C039-4968-97CB-32A75E14C8B0}</Project>
+      <Name>Game.Data</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Game.Entity\Game.Entity.csproj">
+      <Project>{B1C68DA4-20F2-45ED-A567-73B369EA36D5}</Project>
+      <Name>Game.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Game.IData\Game.IData.csproj">
+      <Project>{1077E043-B4D2-4172-A650-CB865DA31AF2}</Project>
+      <Name>Game.IData</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="ResMessage.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>ResMessage.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Aide\app.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
