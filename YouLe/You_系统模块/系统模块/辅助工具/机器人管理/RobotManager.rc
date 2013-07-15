@@ -1,0 +1,185 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\RobotManager.rc2""  // 非 Microsoft Visual C++ 编辑过的资源\r\n"
+    "#include ""afxres.rc""         // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\RobotManager.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ROBOTMANAGER_DIALOG DIALOGEX 0, 0, 155, 111
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "机器人管理"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "连接数据库",IDOK,7,88,141,16
+    LTEXT           "数据库地址",IDC_STATIC_ADDR,14,15,35,8
+    LTEXT           "数据库名",IDC_STATIC_DB_NAME,21,35,28,8
+    LTEXT           "SQL用户",IDC_STATIC_USER_NAME,22,52,27,8
+    LTEXT           "SQL密码",IDC_STATIC_USER_PSW,22,69,27,8
+    EDITTEXT        IDC_EDIT_ADDR,55,15,81,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_USER_NAME,54,48,81,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DBNAME,55,31,81,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_USER_PSW,54,66,81,12,ES_PASSWORD | 
+                    ES_AUTOHSCROLL
+    PUSHBUTTON      "头像修改",IDC_BUTTON_FACE,12,14,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "性别修改",IDC_BUTTON_SEX,92,15,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "昵称替换",IDC_BUTTON_NAME,12,43,50,14,NOT WS_VISIBLE
+    PUSHBUTTON      "密码修改",IDC_BUTTON_PWS,92,65,50,14,NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT_ROBOT_PSW,12,67,72,12,ES_AUTOHSCROLL | NOT 
+                    WS_VISIBLE
+    LTEXT           "本机机器码",IDC_STATIC_CODE,12,91,35,8,NOT WS_VISIBLE
+    EDITTEXT        IDC_EDIT_CODE,57,88,91,14,ES_AUTOHSCROLL | ES_READONLY | 
+                    NOT WS_VISIBLE
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "Comments", "深圳网狐科技有限公司"
+            VALUE "CompanyName", "深圳网狐科技有限公司"
+            VALUE "FileDescription", "机器人管理"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "RobotManager.exe"
+            VALUE "LegalCopyright", "深圳网狐科技有限公司保留所有权利。"
+            VALUE "OriginalFilename", "RobotManager.exe"
+            VALUE "ProductName", "机器人管理"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_ROBOTMANAGER_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 148
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 104
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\RobotManager.rc2"  // 非 Microsoft Visual C++ 编辑过的资源
+#include "afxres.rc"         // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

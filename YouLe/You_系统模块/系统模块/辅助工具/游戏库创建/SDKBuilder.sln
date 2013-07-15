@@ -1,0 +1,21 @@
+Microsoft Visual Studio Solution File, Format Version 8.00
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SDKBuilder", "SDKBuilder.vcproj", "{26AAFD83-EC0D-46F4-B940-68656C4F6234}"
+	ProjectSection(ProjectDependencies) = postProject
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfiguration) = preSolution
+		Debug = Debug
+		Release = Release
+	EndGlobalSection
+	GlobalSection(ProjectConfiguration) = postSolution
+		{26AAFD83-EC0D-46F4-B940-68656C4F6234}.Debug.ActiveCfg = Debug|Win32
+		{26AAFD83-EC0D-46F4-B940-68656C4F6234}.Debug.Build.0 = Debug|Win32
+		{26AAFD83-EC0D-46F4-B940-68656C4F6234}.Release.ActiveCfg = Release|Win32
+		{26AAFD83-EC0D-46F4-B940-68656C4F6234}.Release.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+	EndGlobalSection
+	GlobalSection(ExtensibilityAddIns) = postSolution
+	EndGlobalSection
+EndGlobal

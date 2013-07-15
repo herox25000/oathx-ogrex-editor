@@ -1,0 +1,12 @@
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.IData.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.IData.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.Entity.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.Kernel.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.Utils.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Newtonsoft.Json.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.Utils.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.Kernel.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\bin\Release\Game.Entity.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\obj\Release\ResolveAssemblyReference.cache
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\obj\Release\Game.IData.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.IData\obj\Release\Game.IData.pdb

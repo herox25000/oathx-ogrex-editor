@@ -1,0 +1,6 @@
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Entity\bin\Debug\Game.Entity.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Entity\bin\Debug\Game.Entity.pdb
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Entity\bin\Debug\Newtonsoft.Json.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Entity\obj\Debug\ResolveAssemblyReference.cache
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Entity\obj\Debug\Game.Entity.dll
+E:\网狐站点\网狐棋牌\棋牌6603\网站系统\QPFront\Services\Game.Entity\obj\Debug\Game.Entity.pdb

@@ -1,0 +1,272 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// 中文(中华人民共和国) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+#ifdef _WIN32
+LANGUAGE LANG_CHINESE, SUBLANG_CHINESE_SIMPLIFIED
+#pragma code_page(936)
+#endif //_WIN32
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)\r\n"
+    "LANGUAGE 4, 2\r\n"
+    "#pragma code_page(936)\r\n"
+    "#include ""res\\GameTableTool.rc2""  // 非 Microsoft Visual C++ 编辑过的资源\r\n"
+    "#include ""afxres.rc""         // 标准组件\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON                    "res\\GameTableTool.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_GAMETABLETOOL_DIALOG DIALOGEX 0, 0, 514, 325
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | 
+    WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "棋牌游戏桌子位置参数调整器"
+FONT 9, "MS Shell Dlg", 0, 0, 0x1
+BEGIN
+    CONTROL         "",IDC_SHOW_WND,"Static",SS_BITMAP | SS_REALSIZEIMAGE,7,
+                    7,15,14,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "加载图片",IDC_LOAD_IMAGE,15,296,45,16,BS_CENTER | 
+                    BS_VCENTER,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "加载参数",IDC_LOAD_PARAMETER,68,296,45,16,BS_CENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "保存参数",IDC_SAVE_PARAMETER,121,296,45,16,BS_CENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "桌号颜色",IDC_TABLE_NOCOLOR,174,296,45,16,BS_CENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "名字颜色",IDC_ACCOUNT_COLOR,227,296,45,16,BS_CENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "退出系统",IDOK,280,296,45,16,BS_CENTER,WS_EX_CLIENTEDGE
+    LTEXT           "椅子个数：",IDC_STATIC,347,18,37,8
+    COMBOBOX        IDC_SEAT_COUNT,384,17,51,99,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "用户名称：",IDC_STATIC,347,36,37,8
+    COMBOBOX        IDC_USER_NAME,384,35,115,67,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "调整索引：",IDC_STATIC,346,59,37,8
+    COMBOBOX        IDC_CURRENT_SEAT,384,58,51,96,CBS_DROPDOWN | CBS_SORT | 
+                    WS_VSCROLL | WS_TABSTOP
+    CONTROL         "",IDC_FOUR_PIXEL,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
+                    377,106,10,16
+    PUSHBUTTON      "上",IDC_UP,372,82,18,17,BS_CENTER | BS_VCENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "下",IDC_DOWN,372,131,18,17,BS_CENTER | BS_VCENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "左",IDC_LEFT,348,106,18,17,BS_CENTER | BS_VCENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "右",IDC_RIGHT,395,106,18,17,BS_CENTER | BS_VCENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "增宽",IDC_ADD_WIDTH,421,81,26,14,BS_CENTER | BS_VCENTER,
+                    WS_EX_CLIENTEDGE
+    PUSHBUTTON      "缩窄",IDC_REDUCE_WIDTH,421,99,26,14,BS_CENTER | 
+                    BS_VCENTER,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "增高",IDC_ADD_HEIGHT,421,117,26,14,BS_CENTER | 
+                    BS_VCENTER,WS_EX_CLIENTEDGE
+    PUSHBUTTON      "缩矮",IDC_REDUCE_HEIGHT,421,135,26,14,BS_CENTER | 
+                    BS_VCENTER,WS_EX_CLIENTEDGE
+    CONTROL         "头像位置",IDC_LOCAL_HEAD,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,456,82,43,10
+    CONTROL         "帐号位置",IDC_LOCAL_ACCOUNT,"Button",BS_AUTORADIOBUTTON,
+                    456,96,43,10
+    CONTROL         "桌号位置",IDC_LOCAL_TABLENO,"Button",BS_AUTORADIOBUTTON,
+                    456,110,43,10
+    CONTROL         "椅子位置",IDC_LOCAL_HAND,"Button",BS_AUTORADIOBUTTON,
+                    456,124,43,10
+    CONTROL         "桌锁位置",IDC_LOCAL_LOCK,"Button",BS_AUTORADIOBUTTON,
+                    456,138,43,10
+    CONTROL         "左对齐",IDC_HALIGNMET_LEFT,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,364,175,37,10
+    CONTROL         "中对齐",IDC_HALIGNMET_CENTER,"Button",
+                    BS_AUTORADIOBUTTON,364,189,37,10
+    CONTROL         "右对齐",IDC_HALIGNMET_RIGHT,"Button",BS_AUTORADIOBUTTON,
+                    364,203,37,10
+    CONTROL         "上对齐",IDC_VALIGNMET_UP,"Button",BS_AUTORADIOBUTTON | 
+                    WS_GROUP,432,175,37,10
+    CONTROL         "中对齐",IDC_VALIGNMET_CENTER,"Button",
+                    BS_AUTORADIOBUTTON,432,189,37,10
+    CONTROL         "下对齐",IDC_VALIGNMET_DOWN,"Button",BS_AUTORADIOBUTTON,
+                    432,203,37,10
+    CONTROL         "用户帐号",IDC_HAVE_ACCOUNT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,362,239,43,10
+    CONTROL         "用户头像",IDC_HAVE_HEAD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,362,255,43,10
+    CONTROL         "椅子标志",IDC_HAVE_LOCK,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,362,271,43,10
+    CONTROL         "帐号框架",IDC_FRAME_ACCOUNT,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,431,240,43,10
+    CONTROL         "头像框架",IDC_FRAME_HEAD,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,431,256,43,10
+    CONTROL         "桌号框架",IDC_FRAME_TABLENO,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,431,272,43,10
+    GROUPBOX        "",IDC_STATIC,358,166,45,53,NOT WS_VISIBLE | WS_GROUP
+    GROUPBOX        "",IDC_STATIC,425,166,45,53,NOT WS_VISIBLE | WS_GROUP
+    CONTROL         "帐号文本对齐方式",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | 
+                    WS_GROUP,343,155,164,12
+    LTEXT           "操作显示可选项",IDC_STATIC,343,223,164,13
+    GROUPBOX        "",IDC_STATIC,337,7,167,283
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 2,0,0,0
+ PRODUCTVERSION 2,0,0,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "080403a8"
+        BEGIN
+            VALUE "FileDescription", "棋牌游戏桌子调整器"
+            VALUE "FileVersion", "1.0.0.1"
+            VALUE "InternalName", "桌子调整器.exe"
+            VALUE "LegalCopyright", "保留所有权利。"
+            VALUE "OriginalFilename", "桌子调整器.exe"
+            VALUE "ProductName", "游戏桌子调整器"
+            VALUE "ProductVersion", "1.0.0.1"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x804, 936
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_GAMETABLETOOL_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 507
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 318
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_LOCK                BITMAP                  "res\\Locker.bmp"
+IDB_Ready               BITMAP                  "res\\UserReady.bmp"
+IDB_HAND                BITMAP                  "res\\0_0.bmp"
+IDB_HEAD1               BITMAP                  "res\\0_0.bmp"
+IDB_HEAD2               BITMAP                  "res\\1_0.bmp"
+IDB_HEAD3               BITMAP                  "res\\3_0.bmp"
+IDB_HEAD4               BITMAP                  "res\\4_0.bmp"
+IDB_HEAD5               BITMAP                  "res\\5_0.bmp"
+IDB_HEAD6               BITMAP                  "res\\6_0.bmp"
+IDB_HEAD7               BITMAP                  "res\\7_0.bmp"
+IDB_HEAD8               BITMAP                  "res\\8_0.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE 
+BEGIN
+    IDS_ABOUTBOX            "关于 GameTableTool(&A)..."
+END
+
+#endif    // 中文(中华人民共和国) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4, 2
+#pragma code_page(936)
+#include "res\GameTableTool.rc2"  // 非 Microsoft Visual C++ 编辑过的资源
+#include "afxres.rc"         // 标准组件
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
