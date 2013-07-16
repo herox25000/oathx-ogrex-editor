@@ -519,6 +519,7 @@ LONG CDataBaseSink::SPRegisterAccounts(LPCTSTR pszAccounts, LPCTSTR pszPassword,
 	m_AccountsDBAide.ResetParameter();
 	m_AccountsDBAide.AddParameter(TEXT("@strAccounts"),pszAccounts);
 	m_AccountsDBAide.AddParameter(TEXT("@strPassword"),pszPassword);
+	m_AccountsDBAide.AddParameter(TEXT("@strPasswordBank"), pszPassword);
 	m_AccountsDBAide.AddParameter(TEXT("@strSpreader"),pszSpreader);
 	m_AccountsDBAide.AddParameter(TEXT("@nFaceID"),wFaceID);
 	m_AccountsDBAide.AddParameter(TEXT("@cbGender"),cbGender);
