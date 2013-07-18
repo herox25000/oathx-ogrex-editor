@@ -22,7 +22,8 @@ CGamePlazaApp::CGamePlazaApp()
 BOOL CGamePlazaApp::InitInstance()
 {
 	__super::InitInstance();
-
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
 	//≈–∂œ «∑Ò÷ÿ»Î
 #ifndef ADMIN_PLAZA
 #ifndef _DEBUG
@@ -84,6 +85,13 @@ BOOL CGamePlazaApp::InitInstance()
 	m_pMainWnd=pMainFrame;
 
 	return TRUE;
+}
+
+int CGamePlazaApp::ExitInstance() 
+{
+	Gdiplus::GdiplusShutdown(m_gdiplusToken);
+
+	return CWinApp::ExitInstance();
 }
 
 //////////////////////////////////////////////////////////////////////////

@@ -111,53 +111,15 @@ BEGIN
     PUSHBUTTON      "",IDC_BANK,73,7,34,13
 END
 
-IDD_LOGON DIALOGEX 0, 0, 210, 249
-STYLE DS_SETFONT | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CLIPCHILDREN | 
-    WS_SYSMENU
+IDD_LOGON DIALOGEX 0, 0, 353, 253
+STYLE DS_SETFONT | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CLIPCHILDREN
 FONT 9, "宋体", 400, 0, 0x0
 BEGIN
-    LTEXT           "登录服务器：",IDC_STATIC,16,106,49,8
-    LTEXT           "游戏帐号：",IDC_TYPE_NAME,24,122,41,8
-    LTEXT           "游戏密码：",IDC_STATIC,24,138,41,8
-    COMBOBOX        IDC_SERVER,67,102,129,122,CBS_DROPDOWN | CBS_SORT | 
-                    WS_VSCROLL | WS_TABSTOP,WS_EX_CLIENTEDGE
-    COMBOBOX        IDC_ACCOUNTS,68,120,78,117,CBS_DROPDOWN | 
-                    CBS_AUTOHSCROLL | CBS_SORT | WS_VSCROLL | WS_TABSTOP,
-                    WS_EX_CLIENTEDGE
-    COMBOBOX        IDC_USER_ID,68,120,78,117,CBS_DROPDOWN | CBS_SORT | NOT 
-                    WS_VISIBLE | WS_VSCROLL | WS_TABSTOP,WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_PASSWORD,68,136,78,12,ES_PASSWORD | ES_AUTOHSCROLL,
-                    WS_EX_CLIENTEDGE
-    PUSHBUTTON      "清除记录",IDC_DELETE_RECORD,150,120,46,14
-    CONTROL         "记住密码",IDC_REM_PASSWORD,"Button",BS_AUTOCHECKBOX | 
-                    BS_FLAT | WS_TABSTOP,151,138,48,10
-    DEFPUSHBUTTON   "登 录",IDOK,8,172,43,14
-    PUSHBUTTON      "退 出",IDCANCEL,161,172,43,14
-    PUSHBUTTON      "申请帐号",IDC_REGISTER,55,172,43,14
-    LTEXT           "取回密码",IDC_GET_PASSWORD,155,154,33,8
-    LTEXT           "申请密码保护",IDC_PASSWORD_PROTECT,90,154,49,8
-    LTEXT           "访问游戏网站",IDC_MAIN_PAGE,25,154,49,8
-    CONTROL         "",IDC_LOGON_TYPE,"SysTabControl32",TCS_TOOLTIPS,7,84,
-                    198,84
-    LTEXT           "类型：",IDC_STATIC,16,197,25,8
-    LTEXT           "地址：",IDC_STATIC,16,214,25,8
-    LTEXT           "用户：",IDC_STATIC,16,230,25,8
-    LTEXT           "端口：",IDC_STATIC,118,214,25,8
-    LTEXT           "密码：",IDC_STATIC,118,230,25,8
-    EDITTEXT        IDC_PROXY_SERVER,42,212,66,12,ES_AUTOHSCROLL | 
-                    WS_DISABLED,WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_PROXY_PORT,146,212,44,12,ES_AUTOHSCROLL | ES_NUMBER | 
-                    WS_DISABLED,WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_PROXY_USER,42,228,66,12,ES_AUTOHSCROLL | WS_DISABLED,
-                    WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_PROXY_PASS,146,228,44,12,ES_PASSWORD | 
-                    ES_AUTOHSCROLL | WS_DISABLED,WS_EX_CLIENTEDGE
-    PUSHBUTTON      "测 试",IDC_PROXY_TEST,146,194,44,14,WS_DISABLED
-    CONTROL         "",IDC_BORDER,"Static",SS_ETCHEDHORZ | NOT WS_VISIBLE,6,
-                    193,199,1
-    PUSHBUTTON      "网络设置",IDC_NET_OPTION,112,172,44,14
-    COMBOBOX        IDC_PROXY_TYPE,42,194,66,80,CBS_DROPDOWNLIST | 
-                    WS_DISABLED | WS_VSCROLL | WS_TABSTOP
+    EDITTEXT        IDC_ACCOUNTS,113,96,141,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_PASSWORD,113,124,141,12,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    DEFPUSHBUTTON   "登 录",IDOK,276,91,67,60
+    PUSHBUTTON      "",IDCANCEL,327,2,18,10
 END
 
 IDD_STATUS DIALOGEX 0, 0, 216, 34
@@ -212,33 +174,38 @@ BEGIN
     PUSHBUTTON      "取消",IDCANCEL,235,222,50,14
 END
 
-IDD_REGISTER DIALOGEX 0, 0, 251, 179
+IDD_REGISTER DIALOGEX 0, 0, 250, 296
 STYLE DS_SETFONT | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU
 FONT 9, "宋体", 400, 0, 0x0
 BEGIN
-    EDITTEXT        IDC_ACCOUNTS,72,31,104,12,ES_AUTOHSCROLL,
-                    WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_PASSWORD,72,49,104,12,ES_PASSWORD | ES_AUTOHSCROLL,
-                    WS_EX_CLIENTEDGE
-    EDITTEXT        IDC_PASSWORD2,72,67,104,12,ES_PASSWORD | ES_AUTOHSCROLL,
-                    WS_EX_CLIENTEDGE
-    CONTROL         "",IDC_USER_FACE,"ComboBoxEx32",CBS_DROPDOWNLIST | 
-                    CBS_SORT | WS_VSCROLL | WS_TABSTOP,187,31,37,194
-    DEFPUSHBUTTON   "注 册",IDOK,63,155,43,14
-    PUSHBUTTON      "取 消",IDCANCEL,144,155,43,14
-    LTEXT           "帐号名称：",IDC_TYPE_NAME,28,33,41,8
-    LTEXT           "游戏密码：",IDC_STATIC,28,51,41,8
-    LTEXT           "确认密码：",IDC_STATIC,28,69,41,8
-    LTEXT           "注册帮助",IDC_PASSWORD_PROTECT,186,137,33,8
-    LTEXT           "访问游戏网站",IDC_MAIN_PAGE,109,137,49,8
-    LTEXT           "用户性别：",IDC_STATIC,28,88,41,8
-    COMBOBOX        IDC_GENDER,72,85,104,80,CBS_DROPDOWNLIST | WS_VSCROLL | 
-                    WS_TABSTOP
-    LTEXT           "通过网站注册",IDC_REG_WEB,32,137,49,8
-    LTEXT           "推荐人：",IDC_STATIC,36,115,33,8
-    EDITTEXT        IDC_SPREADER,72,113,104,12,ES_AUTOHSCROLL,
-                    WS_EX_CLIENTEDGE
-    LTEXT           "（可不填）",IDC_STATIC,181,116,41,8
+    EDITTEXT        IDC_ACCOUNTS,69,47,114,12,ES_AUTOHSCROLL | NOT WS_BORDER
+    LTEXT           "账号",IDC_STATIC,38,50,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    LTEXT           "密码",IDC_STATIC,37,72,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_PASSWORD,69,71,114,12,ES_PASSWORD | ES_AUTOHSCROLL | 
+                    NOT WS_BORDER
+    LTEXT           "确认密码",IDC_STATIC,22,95,33,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_PASSWORD2,69,95,114,12,ES_PASSWORD | ES_AUTOHSCROLL | 
+                    NOT WS_BORDER
+    LTEXT           "昵称",IDC_STATIC,33,138,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_LIKENAME,69,137,114,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
+    LTEXT           "姓名",IDC_STATIC,36,220,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_EDIT_NAME,69,217,114,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
+    LTEXT           "身份证",IDC_STATIC,28,241,25,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_EDIT_SFZ,69,241,114,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
+    CONTROL         "地址",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_GROUP,27,165,17,8
+    EDITTEXT        IDC_Address1,68,163,50,12,ES_AUTOHSCROLL | NOT WS_BORDER
+    EDITTEXT        IDC_Address2,131,163,50,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
 END
 
 IDD_SEND_WARNING DIALOGEX 0, 0, 226, 163
@@ -484,8 +451,8 @@ BEGIN
 
     IDD_LOGON, DIALOG
     BEGIN
-        RIGHTMARGIN, 209
-        BOTTOMMARGIN, 248
+        RIGHTMARGIN, 352
+        BOTTOMMARGIN, 252
     END
 
     IDD_SHORT_MESSAGE, DIALOG
@@ -542,6 +509,26 @@ IDB_SERVER_LIST_IMAGE   BITMAP                  "Res\\SERVER_LIST_IMAGE.bmp"
 IDB_USER_STATUS         BITMAP                  "Res\\USER_STATUS.bmp"
 IDB_TABLE_LOCK          BITMAP                  "res\\TABLE_LOCK.bmp"
 IDB_TABLE_READY         BITMAP                  "res\\TABLE_READY.bmp"
+IDB_CHECK_BUTTON_BACK   BITMAP                  "res\\PLAZA_LOGON\\BT_REMEMBER.bmp"
+IDB_BT_LOGON_QUIT       BITMAP                  "res\\PLAZA_LOGON\\BT_LOGON_QUIT.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+DLG_LOGON_BACK          PNG                     "res\\PLAZA_LOGON\\DLG_LOGON_BACK.PNG"
+DLG_REGISTER_BACK       PNG                     "res\\PLAZA_LOGON\\RegisterBack.PNG"
+PASSWORD_LEVEL          PNG                     "res\\PLAZA_LOGON\\passlevel.PNG"
+PNG_BT_LOGON            PNG                     "res\\PLAZA_LOGON\\BT_LOGON_ENTER.png"
+PNG_BT_WEBHOME          PNG                     "res\\PLAZA_LOGON\\BT_webhome.png"
+PNG_BT_REGISTER         PNG                     "res\\PLAZA_LOGON\\BT_register.png"
+PNG_BT_CHONGZHI         PNG                     "res\\PLAZA_LOGON\\BT_chongzhi.png"
+PNG_BT_BANBEN           PNG                     "res\\PLAZA_LOGON\\BT_banben.png"
+PNG_BT_RegisterClose    PNG                     "res\\PLAZA_LOGON\\BT_RegisterClose.png"
+PNG_BT_chose2           PNG                     "res\\PLAZA_LOGON\\BT_chose2.png"
+PNG_BT_chose1           PNG                     "res\\PLAZA_LOGON\\BT_chose1.png"
+PNG_BT_RegisterOK       PNG                     "res\\PLAZA_LOGON\\BT_RegisterOK.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //

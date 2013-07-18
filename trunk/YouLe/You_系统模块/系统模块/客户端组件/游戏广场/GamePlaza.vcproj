@@ -217,10 +217,16 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\GamePlaza.cpp">
 			</File>
 			<File
+				RelativePath=".\GdipButton.cpp">
+			</File>
+			<File
 				RelativePath=".\GlobalUnits.cpp">
 			</File>
 			<File
 				RelativePath=".\ManagerClass.cpp">
+			</File>
+			<File
+				RelativePath=".\PasswordControl.cpp">
 			</File>
 			<File
 				RelativePath=".\PlazaViewItem.cpp">
@@ -279,6 +285,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\CGdiPlusBitmap.h">
+			</File>
+			<File
 				RelativePath=".\DlgCustomFace.h">
 			</File>
 			<File
@@ -303,10 +312,19 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\GamePlaza.h">
 			</File>
 			<File
+				RelativePath=".\GdipButton.h">
+			</File>
+			<File
 				RelativePath=".\GlobalUnits.h">
 			</File>
 			<File
 				RelativePath=".\ManagerClass.h">
+			</File>
+			<File
+				RelativePath=".\MemDC.h">
+			</File>
+			<File
+				RelativePath=".\PasswordControl.h">
 			</File>
 			<File
 				RelativePath=".\PlazaViewItem.h">
@@ -416,7 +434,16 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\BT_HIDE_LIST_2.bmp">
 			</File>
 			<File
+				RelativePath=".\Res\Plaza_logon\BT_LOGON.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_LOGON_QUIT.bmp">
+			</File>
+			<File
 				RelativePath=".\Res\BT_QUIT_ROOM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Plaza_logon\BT_REMEMBER.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\BT_SEARCH_USER.bmp">
@@ -873,10 +900,46 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\Res\Plaza_logon\BT_banben.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_chongzhi.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_chose1.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_chose2.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_LOGON_ENTER.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_Register.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_RegisterClose.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_RegisterOK.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\BT_webhome.png">
+		</File>
+		<File
 			RelativePath=".\Res\BUGLE.wav">
 		</File>
 		<File
+			RelativePath=".\Res\Plaza_logon\Dlg_logon_back.png">
+		</File>
+		<File
 			RelativePath=".\res\GamePlaza.manifest">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\passlevel.png">
+		</File>
+		<File
+			RelativePath=".\Res\Plaza_logon\RegisterBack.png">
 		</File>
 	</Files>
 	<Globals>

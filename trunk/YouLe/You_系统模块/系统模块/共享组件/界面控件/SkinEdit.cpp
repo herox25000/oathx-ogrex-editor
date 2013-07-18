@@ -16,6 +16,11 @@ BEGIN_MESSAGE_MAP(CSkinEdit, CEdit)
 	ON_WM_CTLCOLOR_REFLECT()
 END_MESSAGE_MAP()
 
+BEGIN_MESSAGE_MAP(CSkinEditEx, CSkinEdit)
+	ON_WM_NCPAINT()
+	ON_WM_CTLCOLOR_REFLECT()
+END_MESSAGE_MAP()
+
 //////////////////////////////////////////////////////////////////////////
 
 //构造函数
@@ -112,4 +117,128 @@ void CSkinEdit::OnKillFocus(CWnd * pNewWnd)
 	__super::OnKillFocus(pNewWnd);
 }
 
-//////////////////////////////////////////////////////////////////////////
+//绘画控件
+VOID CSkinEdit::DrawControlView(CDC * pDC, COLORREF crColorBorad,  COLORREF crColorBK)
+{
+	//获取位置
+	CRect rcWindow;
+	GetWindowRect(&rcWindow);
+	ScreenToClient(&rcWindow);
+
+	//绘画边框
+	if (GetExStyle()&WS_EX_CLIENTEDGE)
+	{
+		pDC->Draw3dRect(&rcWindow,crColorBorad,crColorBorad);
+		pDC->Draw3dRect(rcWindow.left+1,rcWindow.top+1,rcWindow.Width()-2,rcWindow.Height()-2,crColorBK,crColorBK);
+	}
+	else
+	{
+		pDC->Draw3dRect(&rcWindow,crColorBK,crColorBK);
+		pDC->Draw3dRect(rcWindow.left+1,rcWindow.top+1,rcWindow.Width()-2,rcWindow.Height()-2,crColorBK,crColorBK);
+	}
+
+	return;
+}
+
+//////////////////////////////////////////////////////////////////////////////////
+
+//构造函数
+CSkinEditEx::CSkinEditEx()
+{
+	//背景颜色
+	m_crEnableBK=m_SkinAttribute.m_crFocusBK;
+	m_crDisableBK=m_SkinAttribute.m_crNoFocusBK;
+
+	//字体颜色
+	m_crEnableText=m_SkinAttribute.m_crFocusTX;
+	m_crDisableText=m_SkinAttribute.m_crNoFocusTX;
+
+	//边框颜色
+	m_crEnableBorad=m_SkinAttribute.m_crDisFocusTX;
+	m_crDisableBorad=m_SkinAttribute.m_crDisFocusBK;
+	return;
+}
+
+//析构函数
+CSkinEditEx::~CSkinEditEx()
+{
+}
+
+//设置颜色
+VOID CSkinEditEx::SetEnableColor(COLORREF crEnableText, COLORREF crEnableBK, COLORREF crEnableBorad)
+{
+	//设置颜色
+	m_crEnableBK=crEnableBK;
+	m_crEnableText=crEnableText;
+	m_crEnableBorad=crEnableBorad;
+
+	//创建画刷
+	m_brEnable.DeleteObject();
+	m_brEnable.CreateSolidBrush(m_crEnableBK);
+
+	//更新界面
+	if (m_hWnd!=NULL)
+	{
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_ERASE|RDW_UPDATENOW|RDW_ERASENOW);
+	}
+
+	return;
+}
+
+//设置颜色
+VOID CSkinEditEx::SetDisableColor(COLORREF crDisableText, COLORREF crDisableBK, COLORREF crDisableBorad)
+{
+	//设置颜色
+	m_crDisableBK=crDisableBK;
+	m_crDisableText=crDisableText;
+	m_crDisableBorad=crDisableBorad;
+
+	//创建画刷
+	m_brDisable.DeleteObject();
+	m_brDisable.CreateSolidBrush(m_crDisableBK);
+
+	//更新界面
+	if (m_hWnd!=NULL)
+	{
+		RedrawWindow(NULL,NULL,RDW_INVALIDATE|RDW_ERASE|RDW_UPDATENOW|RDW_ERASENOW);
+	}
+
+	return;
+}
+
+//重画消息
+VOID CSkinEditEx::OnNcPaint()
+{
+	//状态变量
+	bool bDisable=(IsWindowEnabled()==FALSE);
+	COLORREF crColorBK=(bDisable==false)?m_crEnableBK:m_crDisableBK;
+	COLORREF crColorBorad=(bDisable==false)?m_crEnableBorad:m_crDisableBorad;
+
+	//绘画边框
+	CClientDC ClientDC(this);
+	DrawControlView(&ClientDC,crColorBorad,crColorBK);
+
+	return;
+}
+
+//绘画控件
+HBRUSH CSkinEditEx::CtlColor(CDC * pDC, UINT nCtlColor)
+{
+	//设置环境
+	if (IsWindowEnabled()==FALSE)
+	{
+		//禁用状态
+		pDC->SetBkColor((m_crDisableBK==CLR_INVALID)?m_SkinAttribute.m_crNoFocusTX:m_crDisableBK);
+		pDC->SetTextColor((m_crDisableText==CLR_INVALID)?m_SkinAttribute.m_crNoFocusTX:m_crDisableText);
+		return (m_brDisable.GetSafeHandle()==NULL)?m_SkinAttribute.m_brDisbale:m_brDisable;
+	}
+	else
+	{
+		//启用状态
+		pDC->SetBkColor((m_crEnableBK==CLR_INVALID)?m_SkinAttribute.m_crFocusBK:m_crEnableBK);
+		pDC->SetTextColor((m_crEnableText==CLR_INVALID)?m_SkinAttribute.m_crFocusTX:m_crEnableText);
+		return (m_brEnable.GetSafeHandle()==NULL)?m_SkinAttribute.m_brDisbale:m_brEnable;
+	}
+
+	return NULL;
+}

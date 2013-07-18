@@ -14,7 +14,7 @@ class CGamePlazaApp : public CWinApp
 //	//变量定义
 //public:
 //	CSkinRecordFile							m_SkinRecordFile;				//界面设置
-
+	ULONG_PTR m_gdiplusToken;
 	//函数定义
 public:
 	//构造函数
@@ -24,6 +24,7 @@ public:
 public:
 	//初始化函数
 	virtual BOOL InitInstance();
+	virtual int ExitInstance();
 
 	DECLARE_MESSAGE_MAP()
 };
