@@ -5,7 +5,7 @@
 static AFX_EXTENSION_MODULE SkinControlsDLL={NULL,NULL};
 
 //////////////////////////////////////////////////////////////////////////
-
+//static ULONG_PTR g_lGdiPlusToken=0L;
 //DLL Ö÷º¯Êý
 extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpReserved)
 {
@@ -14,9 +14,12 @@ extern "C" int APIENTRY DllMain(HINSTANCE hInstance, DWORD dwReason, LPVOID lpRe
 	{
 		if (!AfxInitExtensionModule(SkinControlsDLL, hInstance)) return 0;
 		new CDynLinkLibrary(SkinControlsDLL);
+		//GdiplusStartupInput StartupInput;
+		//GdiplusStartup(&g_lGdiPlusToken,&StartupInput,NULL);
 	}
 	else if (dwReason==DLL_PROCESS_DETACH)
 	{
+		//GdiplusShutdown(g_lGdiPlusToken);
 		AfxTermExtensionModule(SkinControlsDLL);
 	}
 	return 1;

@@ -5,6 +5,10 @@
 
 #include "Stdafx.h"
 #include "Resource.h"
+#include "PasswordControl.h"
+#include "GdipButton.h"
+#include "MemDC.h"
+
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -21,49 +25,86 @@ enum enLogonMode
 #define REG_LOGON_SERVER		TEXT("Software\\WHQPGame\\GamePlaza\\LogonServer")
 
 //////////////////////////////////////////////////////////////////////////
-
-//登录 TAB 控件
-class CTabCtrlLogon : public CTabCtrl
+//单选控件
+class  CControlCheckButton
 {
+	//状态变量
+protected:
+	BYTE                           m_cbChecked;                        //记住密码
+	CWnd *                         m_pParentSink;                      //父类指针
+
+	//位置变量
+protected:
+	CPoint                         m_ptControlBenchmark;               //基准位置
+
+	//资源变量
+protected:
+	CBitmap						 m_ImageBtnBack;                     //背景资源
+
 	//函数定义
 public:
 	//构造函数
-	CTabCtrlLogon();
-	//析够函数
-	virtual ~CTabCtrlLogon();
+	CControlCheckButton();
+	//析构函数
+	virtual ~CControlCheckButton();
 
-	//消息函数
-protected:
-	//重画函数	
-	afx_msg void OnPaint();
+	//辅助函数
+public:
+	//控件区域
+	CRect GetControlRect();
 
-	DECLARE_MESSAGE_MAP()
+	//辅助函数
+public:
+	//基准位置
+	inline VOID  SetControlBenchmark(INT nXPos,INT nYPos) { m_ptControlBenchmark.SetPoint(nXPos,nYPos); };
+	//获取状态
+	inline BYTE  GetButtonChecked() { return m_cbChecked; };
+	//设置状态
+	inline VOID  SetButtonChecked(BYTE cbChecked);
+	//设置父类
+	inline VOID  SetParentWndSink(CWnd * pParentSink) { m_pParentSink=pParentSink; };
+
+	//事件函数
+public:
+	//绘制控件
+	VOID  OnDrawControl(CDC * pDC);
+	//点击事件
+	VOID  OnClickControl(CPoint Point);
+
 };
-
 //////////////////////////////////////////////////////////////////////////
 
 //用户注册
-class CDlgRegister : public CSkinDialogEx
+class CDlgRegister : public CDialog
 {
 	friend class CDlgLogon;
-
+	enum passLevel
+	{		
+		PASSWORD_LEVEL_0=0,	
+		PASSWORD_LEVEL_1,			
+		PASSWORD_LEVEL_2,		
+		PASSWORD_LEVEL_3		
+	};
 	//登录信息
 public:
 	WORD								m_wFaceID;						//头像标识
 	BYTE								m_cbGender;						//用户性别
-	TCHAR								m_szSpreader[NAME_LEN];			//电子邮箱
 	TCHAR								m_szAccounts[NAME_LEN];			//游戏帐号
 	TCHAR								m_szPassword[PASS_LEN];			//游戏密码
+	TCHAR								m_szLikeName[NAME_LEN];			//昵称
+	TCHAR								m_szAddress[32];				//地址
+	TCHAR								m_szName[NAME_LEN];				//
+	TCHAR								m_szSFZ[PASS_LEN];				//身份证号码
 
+	BYTE								m_cbLogonPassLevel;					//密码强度
+	CPngImage m_ImageBack;
+	CPngImage m_ImagePasswordLevel;
 	//控件变量
 public:
-	CImageList							m_ImageList;
-	CComboBoxEx							m_FaceSelect;
-	CSkinButton							m_btLogon;						//登录按钮
-	CSkinButton							m_btCancel;						//取消按钮
-	CSkinHyperLink						m_LineRegWeb;					//网站注册
-	CSkinHyperLink						m_LineMainPage;					//游戏主页
-	CSkinHyperLink						m_LinePassWord;					//密码保护
+	CGdipButton				m_btEixt;
+	CGdipButton				m_btRegisterOk;
+	CGdipButton				m_btMan;
+	CGdipButton				m_btWoman;
 
 	//函数定义
 public:
@@ -71,6 +112,12 @@ public:
 	CDlgRegister();
 	//析构函数
 	virtual ~CDlgRegister();
+	//按钮函数
+	void SetButtonBackGrounds(CDC *pDC);
+	//密码等级
+	BYTE GetPasswordLevel(LPCTSTR pszPassword);
+	//登陆密码输入
+	VOID OnEnChangeLogonPass();
 
 	//重载函数
 protected:
@@ -82,6 +129,13 @@ protected:
 	virtual void OnOK();
 	//取消消息
 	virtual void OnCancel();
+	//绘画背景
+	BOOL OnEraseBkgnd(CDC * pDC);
+	//鼠标消息
+	VOID OnLButtonDown(UINT nFlags, CPoint Point);
+	//鼠标弹起
+	void OnLButtonUp(UINT nFlags, CPoint point);
+
 
 	DECLARE_MESSAGE_MAP()
 };
@@ -89,7 +143,7 @@ protected:
 //////////////////////////////////////////////////////////////////////////
 
 //登录对话框
-class CDlgLogon : public CSkinDialogEx
+class CDlgLogon : public CDialog
 {
 	friend class CRoomViewItem;
 	friend class CPlazaViewItem;
@@ -122,20 +176,28 @@ protected:
 	//连接信息
 protected:
 	CString								m_strLogonServer;				//服务器地址
-
+	CPngImage							m_ImageBack;
 	//按钮变量
 public:
-	CSkinButton							m_btLogon;						//登录按钮
 	CSkinButton							m_btCancel;						//取消按钮
+	CGdipButton							m_btLogon;
+	CGdipButton							m_btWebhome;
+	CGdipButton							m_btRegister;
+	CGdipButton							m_btChongzhi;
+	CGdipButton							m_btBanben;
+
+	CSkinEditEx							m_edAccounts;						//登录帐号
+	CPasswordControl					m_PasswordControl;					//用户密码
+	CControlCheckButton					m_RemPwdControl;
+
 	CSkinButton							m_btDelete;						//删除按钮
-	CSkinButton							m_btRegister;					//注册按钮
+
 	CSkinButton							m_btNetOption;					//网络按钮
 	CSkinButton							m_btProxyTest;					//测试按钮
 
 	//控件变量
 public:
 	CWebBrowser							m_BrowerAD;						//浏览窗口
-	CTabCtrlLogon						m_TabLogonMode;					//登录选择
 	CSkinHyperLink						m_LineMainPage;					//游戏主页
 	CSkinHyperLink						m_LinePassWord;					//密码保护
 	CSkinHyperLink						m_LineGetPassWord;				//取回密码
@@ -187,8 +249,6 @@ private:
 	void LoadProxyServerInfo();
 	//效验输入
 	bool CheckLogonInput(bool bShowError);
-	//设置模式
-	void SetLogonMode(enLogonMode LogonMode);
 
 	//辅助函数
 private:
@@ -205,26 +265,32 @@ private:
 	//代理判断
 	bool EnableProxy() { return m_bNetOption;}
 
+public:
+	//按钮函数
+	void SetButtonBackGrounds(CDC *pDC);
 	//消息函数
 public:
 	//注册帐号
 	afx_msg void OnRegisterAccounts();
-	//删除用户
-	afx_msg void OnDeleteAccounts();
-	//网络设置
-	afx_msg void OnBnClickedNetOption();
-	//代理测试
-	afx_msg void OnBnClickedProxyTest();
+	afx_msg void OnWebhome();
+	afx_msg void OnChongzhi();
+	afx_msg void OnBanben();
 	//密码改变
 	afx_msg void OnEnChangePassword();
 	//选择改变
 	afx_msg void OnSelchangeAccounts();
 	//选择改变
 	afx_msg void OnSelchangeUserID();
-	//类型改变
-	afx_msg void OnTcnSelchangeLogonType(NMHDR * pNMHDR, LRESULT * pResult);
+	//控件改变
+	void OnEnChangeAccounts();
 	//重画消息
 	afx_msg void OnPaint();
+	//绘画背景
+	BOOL OnEraseBkgnd(CDC * pDC);
+	//鼠标消息
+	VOID OnLButtonDown(UINT nFlags, CPoint Point);
+	//鼠标弹起
+	void OnLButtonUp(UINT nFlags, CPoint point);
 
 	DECLARE_MESSAGE_MAP()
 };

@@ -29,6 +29,7 @@
 #define IDD_OPTION_TABLE_RULE           273
 #define IDD_CUSTOM_FACE                 276
 #define IDD_MODIFY_INDIVIDUAL           277
+#define IDB_CHECK_BUTTON_BACK           1003
 #define IDC_CHAT_MESSAGE                1004
 #define IDC_TABLE_PASSWORD              1004
 #define IDC_SERVER                      1005
@@ -41,7 +42,6 @@
 #define IDC_PASSWORD2                   1011
 #define IDC_BIND_USER                   1011
 #define IDC_NET_OPTION                  1011
-#define IDC_REGISTER                    1012
 #define IDC_RECV_MESSAGE                1012
 #define IDC_BIND_GAME                   1012
 #define IDC_LOGON_TYPE                  1013
@@ -120,14 +120,30 @@
 #define IDC_DELETE                      1087
 #define IDC_WARIMG_MSG                  1089
 #define IDC_PLAZA_FACE                  1090
+#define IDC_Address1                    1090
 #define IDC_GAME_FACE                   1091
+#define IDC_EDIT2                       1091
+#define IDC_Address2                    1091
+#define IDC_LIKENAME                    1092
+#define IDC_EDIT_NAME                   1093
 #define IDC_RESET_SHALL_CLOSE           1094
+#define IDC_EDIT_SFZ                    1094
 #define IDC_ALLOW_WISPER                1095
 #define IDC_ALLOW_ROOM_CHAT             1096
 #define IDC_ALLOW_ENTER_GAME            1097
 #define IDC_ALLOW_GAME_CHAT             1098
 #define IDC_BOSS_HOTKEY                 1098
 #define IDC_ALLOW_ENTER_ROOM            1099
+#define IDB_BT_LOGON_QUIT               1100
+#define PNG_BT_LOGON                    1101
+#define PNG_BT_WEBHOME                  1102
+#define PNG_BT_REGISTER                 1103
+#define PNG_BT_CHONGZHI                 1104
+#define PNG_BT_BANBEN                   1105
+#define PNG_BT_RegisterClose            1106
+#define PNG_BT_chose2                   1107
+#define PNG_BT_chose1                   1108
+#define PNG_BT_RegisterOK               1109
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32776
@@ -139,7 +155,7 @@
 #define _APS_NO_MFC                     1
 #define _APS_NEXT_RESOURCE_VALUE        318
 #define _APS_NEXT_COMMAND_VALUE         32777
-#define _APS_NEXT_CONTROL_VALUE         1088
+#define _APS_NEXT_CONTROL_VALUE         1092
 #define _APS_NEXT_SYMED_VALUE           104
 #endif
 #endif
