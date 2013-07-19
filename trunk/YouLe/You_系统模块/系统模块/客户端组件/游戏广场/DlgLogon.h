@@ -30,7 +30,7 @@ class  CControlCheckButton
 {
 	//状态变量
 protected:
-	BYTE                           m_cbChecked;                        //记住密码
+	bool                           m_cbChecked;                        //记住密码
 	CWnd *                         m_pParentSink;                      //父类指针
 
 	//位置变量
@@ -39,8 +39,7 @@ protected:
 
 	//资源变量
 protected:
-	CBitmap						 m_ImageBtnBack;                     //背景资源
-
+	CPngImage		m_ImageBack;
 	//函数定义
 public:
 	//构造函数
@@ -52,24 +51,21 @@ public:
 public:
 	//控件区域
 	CRect GetControlRect();
-
 	//辅助函数
 public:
-	//基准位置
-	inline VOID  SetControlBenchmark(INT nXPos,INT nYPos) { m_ptControlBenchmark.SetPoint(nXPos,nYPos); };
 	//获取状态
-	inline BYTE  GetButtonChecked() { return m_cbChecked; };
+	inline bool  GetButtonChecked() { return m_cbChecked; };
 	//设置状态
-	inline VOID  SetButtonChecked(BYTE cbChecked);
-	//设置父类
-	inline VOID  SetParentWndSink(CWnd * pParentSink) { m_pParentSink=pParentSink; };
+	inline VOID  SetButtonChecked(bool cbChecked);
+	//创建(只能添加PNG资源)
+	void CreatCheckButton(CWnd* pParentWnd,HINSTANCE hInstance, LPCTSTR pszResourceName,INT nXPos,INT nYPos);
 
 	//事件函数
 public:
 	//绘制控件
 	VOID  OnDrawControl(CDC * pDC);
 	//点击事件
-	VOID  OnClickControl(CPoint Point);
+	bool  OnClickControl(CPoint Point);
 
 };
 //////////////////////////////////////////////////////////////////////////
@@ -96,15 +92,15 @@ public:
 	TCHAR								m_szName[NAME_LEN];				//
 	TCHAR								m_szSFZ[PASS_LEN];				//身份证号码
 
-	BYTE								m_cbLogonPassLevel;					//密码强度
-	CPngImage m_ImageBack;
-	CPngImage m_ImagePasswordLevel;
+	BYTE					m_cbLogonPassLevel;					//密码强度
+	CPngImage				m_ImageBack;
+	CPngImage				m_ImagePasswordLevel;
 	//控件变量
 public:
 	CGdipButton				m_btEixt;
 	CGdipButton				m_btRegisterOk;
-	CGdipButton				m_btMan;
-	CGdipButton				m_btWoman;
+	CControlCheckButton		m_btMan;
+	CControlCheckButton		m_btWoman;
 
 	//函数定义
 public:
@@ -153,10 +149,12 @@ protected:
 	WORD								m_wFaceID;						//头像标识
 	BYTE								m_cbGender;						//用户性别
 	DWORD								m_dwUserID;						//用户 I D
-	TCHAR								m_szSpreader[NAME_LEN];			//推广人名
 	TCHAR								m_szAccounts[NAME_LEN];			//游戏帐号
 	TCHAR								m_szPassword[PASS_LEN];			//游戏密码
-
+	TCHAR								m_szLikeName[NAME_LEN];			//昵称
+	TCHAR								m_szAddress[32];				//地址
+	TCHAR								m_szName[NAME_LEN];				//
+	TCHAR								m_szSFZ[PASS_LEN];				//身份证号码
 	//位置变量
 protected:
 	INT									m_nFullWidth;					//全部宽度
@@ -171,7 +169,6 @@ protected:
 	//辅助信息
 protected:
 	bool								m_bRegister;					//注册标志
-	bool								m_bChangePassWord;				//改变标志
 
 	//连接信息
 protected:
@@ -190,10 +187,6 @@ public:
 	CPasswordControl					m_PasswordControl;					//用户密码
 	CControlCheckButton					m_RemPwdControl;
 
-	CSkinButton							m_btDelete;						//删除按钮
-
-	CSkinButton							m_btNetOption;					//网络按钮
-	CSkinButton							m_btProxyTest;					//测试按钮
 
 	//控件变量
 public:
@@ -245,21 +238,19 @@ private:
 	void LoadLogonServer();
 	//读取帐号
 	void LoadAccountsInfo();
-	//代理信息
-	void LoadProxyServerInfo();
 	//效验输入
 	bool CheckLogonInput(bool bShowError);
 
 	//辅助函数
 private:
 	//更新密码
-	void UpdateUserPassWord(DWORD dwUserDBID);
+	//void UpdateUserPassWord(DWORD dwUserDBID);
 	//代理模式
 	void SwitchNetOption(bool bNetOption);
 	//更新选择
-	void UpdateUserComboBox(UINT uComboBoxID);
+	//void UpdateUserComboBox(UINT uComboBoxID);
 	//查找字符
-	int ComboBoxFindString(CComboBox * pComboBox, LPCTSTR pszFindString);
+	//int ComboBoxFindString(CComboBox * pComboBox, LPCTSTR pszFindString);
 	//获取代理
 	void GetProxyInfo(enProxyServerType &ProxyServerType, tagProxyServerInfo &ProxyServerInfo);
 	//代理判断
@@ -276,13 +267,13 @@ public:
 	afx_msg void OnChongzhi();
 	afx_msg void OnBanben();
 	//密码改变
-	afx_msg void OnEnChangePassword();
+	//afx_msg void OnEnChangePassword();
 	//选择改变
-	afx_msg void OnSelchangeAccounts();
+	//afx_msg void OnSelchangeAccounts();
 	//选择改变
-	afx_msg void OnSelchangeUserID();
+	//afx_msg void OnSelchangeUserID();
 	//控件改变
-	void OnEnChangeAccounts();
+//	void OnEnChangeAccounts();
 	//重画消息
 	afx_msg void OnPaint();
 	//绘画背景
