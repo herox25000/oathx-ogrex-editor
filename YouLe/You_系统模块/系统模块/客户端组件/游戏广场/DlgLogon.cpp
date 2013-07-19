@@ -60,9 +60,9 @@ BEGIN_MESSAGE_MAP(CDlgLogon, CDialog)
 	ON_WM_LBUTTONUP()
 	ON_WM_WINDOWPOSCHANGED()
 
-	ON_EN_CHANGE(IDC_PASSWORD, OnEnChangePassword)
-	ON_CBN_SELCHANGE(IDC_USER_ID, OnSelchangeUserID)
-	ON_CBN_SELCHANGE(IDC_ACCOUNTS, OnSelchangeAccounts)
+	//ON_EN_CHANGE(IDC_PASSWORD, OnEnChangePassword)
+	//ON_CBN_SELCHANGE(IDC_USER_ID, OnSelchangeUserID)
+	//ON_CBN_SELCHANGE(IDC_ACCOUNTS, OnSelchangeAccounts)
 	ON_BN_CLICKED(WM_BT_REGISTER, OnRegisterAccounts)
 	ON_BN_CLICKED(WM_BT_WEBHOME, OnWebhome)
 	ON_BN_CLICKED(WM_BT_CHONGZHI, OnChongzhi)
@@ -89,10 +89,8 @@ static BOOL GetOptionItem(LPCTSTR lpAppName, LPCTSTR lpKey, LPSTR lpText, int iL
 CControlCheckButton::CControlCheckButton()
 {
 	//设置变量
-	m_cbChecked=FALSE;
+	m_cbChecked=false;
 	m_pParentSink=NULL;
-	//加载资源
-	m_ImageBtnBack.LoadBitmap(IDB_CHECK_BUTTON_BACK);
 }
 
 //析构函数
@@ -100,66 +98,66 @@ CControlCheckButton::~CControlCheckButton()
 {
 }
 
+//创建(只能添加PNG资源)
+void CControlCheckButton::CreatCheckButton(CWnd* pParentWnd,HINSTANCE hInstance, LPCTSTR pszResourceName,INT nXPos,INT nYPos)
+{
+	m_pParentSink = pParentWnd;
+	m_ptControlBenchmark.SetPoint(nXPos,nYPos);	
+	m_ImageBack.LoadImage(hInstance,pszResourceName);
+}
+
 //控件区域
 CRect CControlCheckButton::GetControlRect()
 {
-	BITMAP bimp ;
-	m_ImageBtnBack.GetBitmap(&bimp);
-		
+	int width = m_ImageBack.GetWidth();
+	int wHeight = m_ImageBack.GetHeight();
 	CRect rcClient(m_ptControlBenchmark.x,m_ptControlBenchmark.y,
-	m_ptControlBenchmark.x+bimp.bmWidth/2,m_ptControlBenchmark.y+bimp.bmHeight);
+	m_ptControlBenchmark.x+width/2,m_ptControlBenchmark.y+wHeight);
 
 	return rcClient;
 }
 
 //设置状态
-VOID  CControlCheckButton::SetButtonChecked(BYTE cbChecked) 
+VOID  CControlCheckButton::SetButtonChecked(bool cbChecked) 
 { 
 	//设置变量
 	m_cbChecked=cbChecked;
-
 	//定义变量
 	CRect rcClient = GetControlRect();
-
 	//重绘界面
-	if(m_pParentSink!=NULL) m_pParentSink->InvalidateRect(&rcClient);
+	if(m_pParentSink!=NULL) 
+		m_pParentSink->InvalidateRect(&rcClient);
 };
 
 //绘制控件
 VOID  CControlCheckButton::OnDrawControl(CDC * pDC)
 {
 	//参数校验
-	if(pDC==NULL) return;
-	BITMAP bimp ;
-	m_ImageBtnBack.GetBitmap(&bimp);
+	if(pDC==NULL)
+		return;
 	//定义变量
-	INT nImageWidth = bimp.bmWidth/2;
-	INT nImageHeight = bimp.bmHeight;
-
-	CDC dcMemory;
-	dcMemory.CreateCompatibleDC(pDC);
-
-	CBitmap* pOldBitmap = dcMemory.SelectObject(&m_ImageBtnBack);
-	pDC->BitBlt(m_ptControlBenchmark.x, m_ptControlBenchmark.y, 
-		nImageWidth, nImageHeight, &dcMemory,m_cbChecked==TRUE?nImageWidth:0, 0, SRCCOPY);
-	dcMemory.SelectObject(pOldBitmap);
+	INT nImageWidth = m_ImageBack.GetWidth()/2;
+	INT nImageHeight = m_ImageBack->GetHeight();
+	m_ImageBack.DrawImage(pDC,m_ptControlBenchmark.x, m_ptControlBenchmark.y,
+		nImageWidth, nImageHeight,m_cbChecked?nImageWidth:0, 0);
 }
 
 //点击事件
-VOID  CControlCheckButton::OnClickControl(CPoint Point)
+bool  CControlCheckButton::OnClickControl(CPoint Point)
 {
 	//定义变量
 	CRect rcClient = GetControlRect();
-
 	//选中判断
 	if(rcClient.PtInRect(Point))
 	{
 		//设置变量
-		m_cbChecked=m_cbChecked==FALSE?TRUE:FALSE;
-
+		m_cbChecked=m_cbChecked==false?true:false;
 		//重绘界面
-		if(m_pParentSink!=NULL)	m_pParentSink->InvalidateRect(&rcClient);
+		if(m_pParentSink!=NULL)	
+			m_pParentSink->InvalidateRect(&rcClient);
+		return true;
 	}
+	return false;
 }
 
 
@@ -209,11 +207,9 @@ BOOL CDlgRegister::OnInitDialog()
 
 	m_btEixt.CreateButton(this,PNG_BT_RegisterClose,_T("PNG"),With-50,5,WM_BT_REGISTERCLOSE,5);
 	m_btRegisterOk.CreateButton(this,PNG_BT_RegisterOK,_T("PNG"),With/2-30,Height-30,WM_BT_REGISTEROK,5);
-	m_btMan.CreateButton(this,PNG_BT_chose1,_T("PNG"),110,277,WM_BT_REGISTERMAN);
-	m_btMan.LoadAltImage(PNG_BT_chose2, _T("PNG"));
-	m_btWoman.CreateButton(this,PNG_BT_chose1,_T("PNG"),170,277,WM_BT_REGISTERWOMAN);
-	m_btWoman.LoadAltImage(PNG_BT_chose2, _T("PNG"));
-
+	m_btMan.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),110,277);
+	m_btWoman.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),170,277);
+	m_btMan.SetButtonChecked(true);
 	//居中窗口
 	CenterWindow(this);
 	//获取窗口
@@ -310,6 +306,11 @@ void CDlgRegister::OnOK()
 	lstrcpyn(m_szSFZ,strBuffer,CountArray(m_szSFZ));
 
 	m_wFaceID = 1;
+	m_cbGender = 0;
+	if(m_btMan.GetButtonChecked())
+		m_cbGender = 1;
+	else
+		m_cbGender = 2;
 
 	__super::OnOK();
 }
@@ -338,6 +339,26 @@ VOID CDlgRegister::OnLButtonDown(UINT nFlags, CPoint Point)
 //鼠标弹起
 void CDlgRegister::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	bool bClick = false;
+	if(!bClick)
+	{
+		if(!m_btWoman.GetButtonChecked())
+		{
+			bClick = m_btWoman.OnClickControl(point);
+			if(bClick)
+				m_btMan.SetButtonChecked(false);
+		}
+	}
+	if(!bClick)
+	{
+		if( !m_btMan.GetButtonChecked())
+		{
+			bClick = m_btMan.OnClickControl(point);
+			if(bClick)
+				m_btWoman.SetButtonChecked(false);
+		}
+	}
+
 	CDialog::OnLButtonUp(nFlags, point);
 }
 
@@ -352,7 +373,8 @@ BOOL CDlgRegister::OnEraseBkgnd(CDC * pDC)
 	CMemDC pDevC(pDC, rcClient);
 	//绘制背景
 	m_ImageBack.DrawImage(pDevC,0,0);
-
+	m_btMan.OnDrawControl(pDevC);
+	m_btWoman.OnDrawControl(pDevC);
 	//绘制密码等级
 	CSize SizePassword;
 	SizePassword.SetSize(m_ImagePasswordLevel.GetWidth()/3,m_ImagePasswordLevel.GetHeight()/2);
@@ -373,8 +395,6 @@ void CDlgRegister::SetButtonBackGrounds(CDC *pDC)
 {
 	m_btEixt.SetBkGnd(pDC);
 	m_btRegisterOk.SetBkGnd(pDC);
-	m_btMan.SetBkGnd(pDC);
-	m_btWoman.SetBkGnd(pDC);
 }
 
 //密码等级
@@ -463,15 +483,16 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 	//登录信息
 	m_wFaceID=0;
 	m_cbGender=0;
-	m_dwUserID=0;
-	m_szSpreader[0]=0;
 	m_szAccounts[0]=0;
 	m_szPassword[0]=0;
+	m_szLikeName[0]=0;
+	m_szName[0]=0;
+	m_szSFZ[0] = 0;
+	m_szAddress[0]=0;
 	m_LogonMode=LogonMode_Accounts;
 
 	//辅助信息
 	m_bRegister=false;
-	m_bChangePassWord=false;
 
 	//位置信息
 	m_nFullWidth=0;
@@ -511,9 +532,8 @@ BOOL CDlgLogon::OnInitDialog()
 	m_PasswordControl.SetEnableColor(RGB(0,0,0),RGB(255,255,255),RGB(255,255,255));
 
 	//记住密码
-	m_RemPwdControl.SetControlBenchmark(165,225);
-	m_RemPwdControl.SetParentWndSink(this);
-
+	m_RemPwdControl.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("CHECK_BUTTON_BACK"),165,225);
+	
 	m_btCancel.SetButtonImage(IDB_BT_LOGON_QUIT,AfxGetInstanceHandle(),false);
 	m_btLogon.LoadStdImage(PNG_BT_LOGON,_T("PNG"),5);
 	
@@ -537,9 +557,11 @@ BOOL CDlgLogon::OnInitDialog()
 	//设置区域
 	CRgn RgnWindow;
 	RgnWindow.CreateRoundRectRgn(LAYERED_SIZE,LAYERED_SIZE,SizeWindow.cx-LAYERED_SIZE+1,SizeWindow.cy-LAYERED_SIZE+1,ROUND_CX,ROUND_CY);
-
 	//设置区域
 	SetWindowRgn(RgnWindow,FALSE);
+
+	LoadLogonServer();
+	LoadAccountsInfo();
 
 	return FALSE;
 }
@@ -554,7 +576,8 @@ BOOL CDlgLogon::PreTranslateMessage(MSG * pMsg)
 void CDlgLogon::OnOK()
 {
 	//效验输入
-	if (CheckLogonInput(true)==false) return;
+	if (CheckLogonInput(true)==false)
+		return;
 
 	//设置变量
 	m_bRegister=false;
@@ -616,9 +639,8 @@ bool CDlgLogon::SendLogonPacket(ITCPSocket * pIClientSocke)
 				pRegisterAccounts->cbGender=m_cbGender;
 				pRegisterAccounts->dwPlazaVersion=g_GlobalUnits.GetPlazaVersion();
 				lstrcpyn(pRegisterAccounts->szPassWord,szPassword,CountArray(pRegisterAccounts->szPassWord));
-				lstrcpyn(pRegisterAccounts->szSpreader,m_szSpreader,CountArray(pRegisterAccounts->szSpreader));
 				lstrcpyn(pRegisterAccounts->szAccounts,m_szAccounts,CountArray(pRegisterAccounts->szAccounts));
-
+				
 				//机器序列号
 				tagClientSerial ClientSerial;
 				g_GlobalUnits.GetClientSerial(ClientSerial);
@@ -659,55 +681,27 @@ bool CDlgLogon::SendLogonPacket(ITCPSocket * pIClientSocke)
 //登录成功处理
 bool CDlgLogon::OnLogonSuccess()
 {
-	//登录配置
-	BOOL bRemPassword=(((CButton *)GetDlgItem(IDC_REM_PASSWORD))->GetCheck()==BST_CHECKED);
-	AfxGetApp()->WriteProfileInt(REG_OPTION_LOGON,TEXT("LogonMode"),m_LogonMode);
-	AfxGetApp()->WriteProfileString(REG_OPTION_LOGON,TEXT("LogonServer"),m_strLogonServer);
-
-	//配置信息
-	if (bRemPassword==FALSE)
-	{
-		if (g_GlobalOption.m_enAcountsRule==enAcountsRule_AccountsAndPass)
-		{
-			g_GlobalOption.m_enAcountsRule=enAcountsRule_Accounts;
-		}
-	}
-	else g_GlobalOption.m_enAcountsRule=enAcountsRule_AccountsAndPass;
-
 	//用户信息
 	tagGlobalUserData & UserData=g_GlobalUnits.GetGolbalUserData();
-	AfxGetApp()->WriteProfileInt(REG_OPTION_LOGON,TEXT("LastUserID"),UserData.dwUserID);
-
-	//写入用户记录
-	if (g_GlobalOption.m_enAcountsRule!=enAcountsRule_None)
+	//构造信息
+	TCHAR szBuffer[256];
+	_snprintf(szBuffer,sizeof(szBuffer),TEXT("%s"),REG_USER_INFO);
+	//写入信息
+	CRegKey RegUserInfo;
+	if (RegUserInfo.Create(HKEY_CURRENT_USER,szBuffer)==ERROR_SUCCESS)
 	{
-		//构造信息
-		TCHAR szBuffer[256];
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("%s\\%ld"),REG_USER_INFO,UserData.dwUserID);
-
-		//写入信息
-		CRegKey RegUserInfo;
-		if (RegUserInfo.Create(HKEY_CURRENT_USER,szBuffer)==ERROR_SUCCESS)
+		RegUserInfo.SetKeyValue(TEXT(""),UserData.szAccounts,TEXT("UserAccount"));
+		if (m_RemPwdControl.GetButtonChecked()==TRUE) 
 		{
 			TCHAR szPassBuffer[256]=TEXT("");
-			if (bRemPassword) CXOREncrypt::EncryptData(m_szPassword,szPassBuffer,CountArray(szPassBuffer));
-			RegUserInfo.SetKeyValue(TEXT(""),UserData.szAccounts,TEXT("UserAccount"));
-			RegUserInfo.SetKeyValue(TEXT(""),UserData.szPassWord,TEXT("UserPassToken"));
+			CXOREncrypt::EncryptData(m_szPassword,szPassBuffer,CountArray(szPassBuffer));
 			RegUserInfo.SetKeyValue(TEXT(""),szPassBuffer,TEXT("UserPassword"));
-			if (UserData.dwGameID!=0L) RegUserInfo.SetDWORDValue(TEXT("GameID"),UserData.dwGameID);
+		}
+		else
+		{
+			RegUserInfo.SetKeyValue(TEXT(""),TEXT(""),TEXT("UserPassword"));
 		}
 	}
-	else
-	{
-		//构造信息
-		TCHAR szBuffer[256];
-		_snprintf(szBuffer,sizeof(szBuffer),TEXT("%ld"),UserData.dwUserID);
-
-		//写入信息
-		CRegKey RegUserID;
-		if (RegUserID.Open(HKEY_CURRENT_USER,REG_USER_INFO)==ERROR_SUCCESS)	RegUserID.RecurseDeleteKey(szBuffer);
-	}
-
 	//关闭窗口
 	DestroyWindow();
 
@@ -717,91 +711,35 @@ bool CDlgLogon::OnLogonSuccess()
 //读取帐号
 void CDlgLogon::LoadAccountsInfo()
 {
-	//变量定义
-	CComboBox * pComBoxAccounts=(CComboBox *)GetDlgItem(IDC_ACCOUNTS);
-	CComboBox * pComBoxUserID=(CComboBox *)GetDlgItem(IDC_USER_ID);
-
-	//读取信息
-	CRegKey RegUserInfo;
-	RegUserInfo.Open(HKEY_CURRENT_USER,REG_USER_INFO,KEY_READ);
-	if (RegUserInfo!=NULL)
+	//加载其他信息
+	CRegKey RegUserAccount;
+	RegUserAccount.Open(HKEY_CURRENT_USER,REG_USER_INFO,KEY_READ);
+	if (RegUserAccount!=NULL)
 	{
-		int iInsertItem=CB_ERR;
+		TCHAR szPassWord[256]=TEXT(""),szAccount[256]=TEXT("");
+		DWORD dwType=REG_SZ;
 		LONG lErrorCode=ERROR_SUCCESS;
-		DWORD dwType=REG_SZ,dwIndex=0,dwUserDBID=0;
-		TCHAR szUserIDBuffer[32]=TEXT(""),szTempBuffer[256]=TEXT("");
-		do
+		//游戏帐号
+		DWORD dwSize=sizeof(szAccount);
+		lErrorCode=RegUserAccount.QueryValue(TEXT("UserAccount"),&dwType,szAccount,&dwSize);
+		if ((lErrorCode==ERROR_SUCCESS) && szAccount[0]!=0)
 		{
-			//设置变量
-			dwUserDBID=0;
-			szTempBuffer[0]=0;
-			szUserIDBuffer[0]=0;
-
-			//读取游戏 ID
-			DWORD dwBufferSize=sizeof(szUserIDBuffer);
-			if (RegUserInfo.EnumKey(dwIndex++,szUserIDBuffer,&dwBufferSize,NULL)!=ERROR_SUCCESS) break;
-			dwUserDBID=atol(szUserIDBuffer);
-			if (dwUserDBID==0) continue;
-
-			//加载其他信息
-			CRegKey RegUserAccount;
-			_snprintf(szTempBuffer,sizeof(szTempBuffer),TEXT("%s\\%ld"),REG_USER_INFO,dwUserDBID);
-			RegUserAccount.Open(HKEY_CURRENT_USER,szTempBuffer,KEY_READ);
-			if (RegUserAccount!=NULL)
-			{
-				//游戏帐号
-				dwBufferSize=sizeof(szTempBuffer);
-				lErrorCode=RegUserAccount.QueryValue(TEXT("UserAccount"),&dwType,szTempBuffer,&dwBufferSize);
-				if ((lErrorCode==ERROR_SUCCESS)&&(szTempBuffer[0]!=0)&&(ComboBoxFindString(pComBoxAccounts,szTempBuffer)==LB_ERR))
-				{
-					iInsertItem=pComBoxAccounts->AddString(szTempBuffer);
-					pComBoxAccounts->SetItemData(iInsertItem,dwUserDBID);
-				}
-
-				//游戏 ID
-				DWORD dwGameID=0L;
-				dwBufferSize=sizeof(dwGameID);
-				if ((RegUserAccount.QueryValue(TEXT("GameID"),&dwType,&dwGameID,&dwBufferSize)==ERROR_SUCCESS)&&(dwGameID!=0L))
-				{
-					_sntprintf(szTempBuffer,CountArray(szTempBuffer),TEXT("%ld"),dwGameID);
-					iInsertItem=pComBoxUserID->AddString(szTempBuffer);
-					pComBoxUserID->SetItemData(iInsertItem,dwUserDBID);
-				}
-			}
-		} while (true);
-	}
-
-	//最近用户
-	DWORD dwLastUserID=AfxGetApp()->GetProfileInt(REG_OPTION_LOGON,TEXT("LastUserID"),0L);
-	if (dwLastUserID!=0L)
-	{
-		for (int i=0;i<pComBoxUserID->GetCount();i++)
+			m_edAccounts.SetWindowText(szAccount);
+		}
+		//游戏密码
+		dwSize=sizeof(szPassWord);
+		lErrorCode=RegUserAccount.QueryValue(TEXT("UserPassword"),&dwType,szPassWord,&dwSize);
+		if ((lErrorCode==ERROR_SUCCESS)&&(szPassWord[0]!=0))
 		{
-			DWORD dwComboBoxID=(DWORD)pComBoxUserID->GetItemData(i);
-			if ((dwComboBoxID!=0L)&&(dwComboBoxID==dwLastUserID))
+			TCHAR szPassBuffer[256]=TEXT("");
+			CXOREncrypt::CrevasseData(szPassWord,szPassBuffer,CountArray(szPassWord));
+			m_PasswordControl.SetUserPassword(szPassBuffer);
+			if(szPassWord[0]!=0)
 			{
-				pComBoxUserID->SetCurSel(i);
-				UpdateUserComboBox(IDC_USER_ID);
-				break;
+				m_RemPwdControl.SetButtonChecked(true);
 			}
 		}
 	}
-
-	//设置选择
-	if ((pComBoxUserID->GetCurSel()==LB_ERR)&&(pComBoxUserID->GetCount()>0))
-	{
-		pComBoxUserID->SetCurSel(0);
-		UpdateUserComboBox(IDC_USER_ID);
-	}
-
-	//设置选择
-	if ((pComBoxAccounts->GetCurSel()==LB_ERR)&&(pComBoxAccounts->GetCount()>0))
-	{
-		pComBoxAccounts->SetCurSel(0);
-		UpdateUserComboBox(IDC_ACCOUNTS);
-	}
-
-	return;
 }
 
 //加载服务器
@@ -811,177 +749,83 @@ void CDlgLogon::LoadLogonServer()
 	char szAppName[256];
 	char szName[256];
 	char szIP[32];
-	_snprintf(szAppName, sizeof(szAppName), "Server1");
+	_snprintf(szAppName, sizeof(szAppName), "Server0");
 	GetOptionItem(szAppName, "Name",  szName, 256);
 	GetOptionItem(szAppName, "IPAddress",  szIP, 32);
 	m_strLogonServer.Format("%s",szIP);
-
 	return;
 }
 
-//代理信息
-void CDlgLogon::LoadProxyServerInfo()
-{
-	//变量定义
-	LPCTSTR szProxyType[]={TEXT("不使用代理"),TEXT("HTTP 代理"),TEXT("SOCKS 4"),TEXT("SOCKS 5")};
-	enProxyServerType ProxyServerType[]={ProxyType_None,ProxyType_Http,ProxyType_Socks4,ProxyType_Socks5};
+////代理信息
+//void CDlgLogon::LoadProxyServerInfo()
+//{
+//	//变量定义
+//	LPCTSTR szProxyType[]={TEXT("不使用代理"),TEXT("HTTP 代理"),TEXT("SOCKS 4"),TEXT("SOCKS 5")};
+//	enProxyServerType ProxyServerType[]={ProxyType_None,ProxyType_Http,ProxyType_Socks4,ProxyType_Socks5};
+//
+//	//获取信息
+//	enProxyServerType CurrentProxyType=g_GlobalOption.m_ProxyServerType;
+//	const tagProxyServerInfo & ProxyServerInfo=g_GlobalOption.m_ProxyServerInfo;
+//
+//	//加载类型
+//	for (INT i=0;i<CountArray(szProxyType);i++)
+//	{
+//		ASSERT(i<CountArray(ProxyServerType));
+//		INT nItem=m_cmProxyServerType.AddString(szProxyType[i]);
+//		m_cmProxyServerType.SetItemData(nItem,ProxyServerType[i]);
+//		if (CurrentProxyType==ProxyServerType[i]) m_cmProxyServerType.SetCurSel(nItem);
+//	}
+//
+//	//设置信息
+//	SetDlgItemText(IDC_PROXY_USER,ProxyServerInfo.szUserName);
+//	SetDlgItemText(IDC_PROXY_PASS,ProxyServerInfo.szPassword);
+//	SetDlgItemText(IDC_PROXY_SERVER,ProxyServerInfo.szProxyServer);
+//	if (ProxyServerInfo.wProxyPort!=0) SetDlgItemInt(IDC_PROXY_PORT,ProxyServerInfo.wProxyPort);
+//
+//	//设置选择
+//	if (m_cmProxyServerType.GetCurSel()==CB_ERR) m_cmProxyServerType.SetCurSel(0);
+//
+//	return;
+//}
 
-	//获取信息
-	enProxyServerType CurrentProxyType=g_GlobalOption.m_ProxyServerType;
-	const tagProxyServerInfo & ProxyServerInfo=g_GlobalOption.m_ProxyServerInfo;
-
-	//加载类型
-	for (INT i=0;i<CountArray(szProxyType);i++)
-	{
-		ASSERT(i<CountArray(ProxyServerType));
-		INT nItem=m_cmProxyServerType.AddString(szProxyType[i]);
-		m_cmProxyServerType.SetItemData(nItem,ProxyServerType[i]);
-		if (CurrentProxyType==ProxyServerType[i]) m_cmProxyServerType.SetCurSel(nItem);
-	}
-
-	//设置信息
-	SetDlgItemText(IDC_PROXY_USER,ProxyServerInfo.szUserName);
-	SetDlgItemText(IDC_PROXY_PASS,ProxyServerInfo.szPassword);
-	SetDlgItemText(IDC_PROXY_SERVER,ProxyServerInfo.szProxyServer);
-	if (ProxyServerInfo.wProxyPort!=0) SetDlgItemInt(IDC_PROXY_PORT,ProxyServerInfo.wProxyPort);
-
-	//设置选择
-	if (m_cmProxyServerType.GetCurSel()==CB_ERR) m_cmProxyServerType.SetCurSel(0);
-
-	return;
-}
-
-//查找数据
-int CDlgLogon::ComboBoxFindString(CComboBox * pComboBox, LPCTSTR pszFindString)
-{
-	CString strBuffer;
-	int iItemHandle=LB_ERR,iItemFind=LB_ERR;
-	int nStringLen=lstrlen(pszFindString);
-	do 
-	{
-		iItemFind=pComboBox->FindString((iItemHandle==LB_ERR)?0:(iItemHandle+1),pszFindString);
-		if ((iItemFind==LB_ERR)||(iItemHandle==iItemFind)||(iItemFind<iItemHandle)) return LB_ERR;
-		iItemHandle=iItemFind;
-		pComboBox->GetLBText(iItemHandle,strBuffer);
-		if (pComboBox->GetLBTextLen(iItemHandle)==nStringLen) return iItemHandle;
-	} while (true);
-	return LB_ERR;
-}
+////查找数据
+//int CDlgLogon::ComboBoxFindString(CComboBox * pComboBox, LPCTSTR pszFindString)
+//{
+//	CString strBuffer;
+//	int iItemHandle=LB_ERR,iItemFind=LB_ERR;
+//	int nStringLen=lstrlen(pszFindString);
+//	do 
+//	{
+//		iItemFind=pComboBox->FindString((iItemHandle==LB_ERR)?0:(iItemHandle+1),pszFindString);
+//		if ((iItemFind==LB_ERR)||(iItemHandle==iItemFind)||(iItemFind<iItemHandle)) return LB_ERR;
+//		iItemHandle=iItemFind;
+//		pComboBox->GetLBText(iItemHandle,strBuffer);
+//		if (pComboBox->GetLBTextLen(iItemHandle)==nStringLen) return iItemHandle;
+//	} while (true);
+//	return LB_ERR;
+//}
 
 //效验输入
 bool CDlgLogon::CheckLogonInput(bool bShowError)
 {
-	//定义变量
 	UINT uControlID=0;
-	CString strBuffer;
-
 	try
 	{
-		//屏幕像素
-		RECT reWindowSize;
-		GetDesktopWindow()->GetWindowRect(&reWindowSize);
-		INT nHeight =reWindowSize.bottom-reWindowSize.top;
-		INT nWidth =reWindowSize.right-reWindowSize.left;
-		
-		//判断像素
-		if(nWidth<LESS_SCREEN_W || nHeight<LESS_SCREEN_H)
+		//获取信息
+		GetDlgItemText(IDC_ACCOUNTS,m_szAccounts,CountArray(m_szAccounts));
+		if (m_szAccounts[0] == 0)
 		{
-			TCHAR szInfo[255]=TEXT("");
-			_sntprintf(szInfo,CountArray(szInfo),TEXT("屏幕像素需要在%d*%d或以上才可以正常游戏!"),LESS_SCREEN_W,LESS_SCREEN_H);
-			throw szInfo;
+			uControlID=IDC_ACCOUNTS;
+			throw TEXT("用户登录帐号不能为空，请重新输入登录帐号！");
 		}
 
-		//登录服务器
-		GetDlgItemText(IDC_SERVER,m_strLogonServer);
-		m_strLogonServer.TrimLeft();
-		m_strLogonServer.TrimRight();
-		if (m_strLogonServer.IsEmpty())
-		{
-			uControlID=IDC_SERVER;
-			throw TEXT("登录服务器不能为空，请重新选择或者输入登录服务器！");
-		}
-
-		//登录帐号
-		switch (m_LogonMode)
-		{
-		case LogonMode_Accounts:		//帐号登录
-			{
-				GetDlgItemText(IDC_ACCOUNTS,strBuffer);
-				strBuffer.TrimLeft();
-				strBuffer.TrimRight();
-				if (strBuffer.IsEmpty())
-				{
-					uControlID=IDC_ACCOUNTS;
-					throw TEXT("用户登录帐号不能为空，请重新输入登录帐号！");
-				}
-				lstrcpyn(m_szAccounts,strBuffer,CountArray(m_szAccounts));
-				break;
-			}
-		case LogonMode_UserID:			//ID 登录
-			{
-				GetDlgItemText(IDC_USER_ID,strBuffer);
-				strBuffer.TrimLeft();
-				strBuffer.TrimRight();
-				m_dwUserID=atoi(strBuffer);
-				if (m_dwUserID==0L)
-				{
-					uControlID=IDC_USER_ID;
-					throw TEXT("用户登录 ID 不能为空，请重新输入登录 ID ！");
-				}
-				break;
-			}
-		}
-
-		//用户密码
-		if (m_bChangePassWord==true)
-		{
-			m_bChangePassWord=false;
-			GetDlgItemText(IDC_PASSWORD,m_szPassword,CountArray(m_szPassword));
-		}
-		if (m_szPassword[0]==0)
+		//获取密码
+		m_PasswordControl.GetUserPassword(m_szPassword);
+		if (m_szPassword[0] == 0)
 		{
 			uControlID=IDC_PASSWORD;
 			throw TEXT("登录密码不能为空，请重新输入登录密码！");
 		}
-
-		//代理类型
-		CComboBox * pComProxyType=(CComboBox *)GetDlgItem(IDC_PROXY_TYPE);
-		enProxyServerType ProxyServerType=(enProxyServerType)pComProxyType->GetItemData(pComProxyType->GetCurSel());
-
-		//代理信息
-		tagProxyServerInfo ProxyServerInfo;
-		ZeroMemory(&ProxyServerInfo,sizeof(ProxyServerInfo));
-		ProxyServerInfo.wProxyPort=GetDlgItemInt(IDC_PROXY_PORT);
-		GetDlgItemText(IDC_PROXY_USER,ProxyServerInfo.szUserName,CountArray(ProxyServerInfo.szUserName));
-		GetDlgItemText(IDC_PROXY_PASS,ProxyServerInfo.szPassword,CountArray(ProxyServerInfo.szPassword));
-		GetDlgItemText(IDC_PROXY_SERVER,ProxyServerInfo.szProxyServer,CountArray(ProxyServerInfo.szProxyServer));
-
-		//效验代理
-		if (ProxyServerType!=ProxyType_None)
-		{
-			//代理地址
-			if (ProxyServerInfo.szProxyServer[0]==0)
-			{
-				ShowInformation(TEXT("代理服务器地址不能为空，请重新输入！"),0,MB_ICONINFORMATION);
-				if (m_bNetOption==false) SwitchNetOption(true);
-				m_edProxyServer.SetFocus();
-				return false;
-			}
-
-			//代理端口
-			if (ProxyServerInfo.wProxyPort==0)
-			{
-				ShowInformation(TEXT("请输入代理服务器端口号，例如：1080！"),0,MB_ICONINFORMATION);
-				if (m_bNetOption==false) SwitchNetOption(true);
-				m_edProxyPort.SetFocus();
-				return false;
-			}
-		}
-
-		//保存配置
-		g_GlobalOption.m_ProxyServerType=ProxyServerType;
-		g_GlobalOption.m_ProxyServerInfo=ProxyServerInfo;
-
 		return true;
 	}
 	catch (LPCTSTR pszError)
@@ -991,76 +835,79 @@ bool CDlgLogon::CheckLogonInput(bool bShowError)
 			ShowWindow(SW_SHOW);
 			BringWindowToTop();
 			ShowInformation(pszError,0,MB_ICONQUESTION);
-			if (uControlID!=0) GetDlgItem(uControlID)->SetFocus();
+			if (uControlID!=0) 
+				GetDlgItem(uControlID)->SetFocus();
 		}
 
 	}
 	return false;
 }
-
-//更新选择
-void CDlgLogon::UpdateUserComboBox(UINT uComboBoxID)
-{
-	//获取 ID
-	CComboBox * pComboBox=(CComboBox *)GetDlgItem(uComboBoxID);
-	DWORD dwUserDBID=(DWORD)pComboBox->GetItemData(pComboBox->GetCurSel());
-
-	//更新信息
-	UpdateUserPassWord(dwUserDBID);
-	UINT uComboBoxIDs[]={IDC_ACCOUNTS,IDC_USER_ID};
-	for (int i=0;i<CountArray(uComboBoxIDs);i++)
-	{
-		pComboBox=(CComboBox *)GetDlgItem(uComboBoxIDs[i]);
-		for (int j=0;j<pComboBox->GetCount();j++)
-		{
-			DWORD dwComboBoxID=(DWORD)pComboBox->GetItemData(j);
-			if ((dwComboBoxID!=0L)&&(dwComboBoxID==dwUserDBID))
-			{
-				pComboBox->SetCurSel(j);
-				break;
-			}
-		}
-	}
-
-	return;
-}
-
-//更新密码
-void CDlgLogon::UpdateUserPassWord(DWORD dwUserDBID)
-{
-	if (dwUserDBID!=0L)
-	{
-		//注册表字符
-		CString strRegKey;
-		strRegKey.Format(TEXT("%s\\%ld"),REG_USER_INFO,dwUserDBID);
-
-		//打开注册表
-		CRegKey RegPassWord;
-		RegPassWord.Open(HKEY_CURRENT_USER,strRegKey,KEY_READ);
-		if (RegPassWord!=NULL)
-		{
-			DWORD dwType=REG_SZ;
-			TCHAR szPassBuffer[256]=TEXT("");
-			DWORD dwBufferLength=sizeof(szPassBuffer);
-			if (RegPassWord.QueryValue(TEXT("UserPassword"),&dwType,szPassBuffer,&dwBufferLength)==ERROR_SUCCESS)
-			{
-				m_szPassword[0]=0;
-				CXOREncrypt::CrevasseData(szPassBuffer,m_szPassword,CountArray(m_szPassword));
-				if (m_szPassword[0]==0) SetDlgItemText(IDC_PASSWORD,TEXT(""));
-				else SetDlgItemText(IDC_PASSWORD,TEXT("**********"));
-				m_bChangePassWord=false;
-				return;
-			}
-		}
-	}
-
-	//设置信息
-	m_szPassword[0]=0;
-	SetDlgItemText(IDC_PASSWORD,TEXT(""));
-	m_bChangePassWord=false;
-	
-	return;
-}
+//
+////更新选择
+//void CDlgLogon::UpdateUserComboBox(UINT uComboBoxID)
+//{
+//	//获取 ID
+//	CComboBox * pComboBox=(CComboBox *)GetDlgItem(uComboBoxID);
+//	DWORD dwUserDBID=(DWORD)pComboBox->GetItemData(pComboBox->GetCurSel());
+//
+//	//更新信息
+//	UpdateUserPassWord(dwUserDBID);
+//	UINT uComboBoxIDs[]={IDC_ACCOUNTS,IDC_USER_ID};
+//	for (int i=0;i<CountArray(uComboBoxIDs);i++)
+//	{
+//		pComboBox=(CComboBox *)GetDlgItem(uComboBoxIDs[i]);
+//		for (int j=0;j<pComboBox->GetCount();j++)
+//		{
+//			DWORD dwComboBoxID=(DWORD)pComboBox->GetItemData(j);
+//			if ((dwComboBoxID!=0L)&&(dwComboBoxID==dwUserDBID))
+//			{
+//				pComboBox->SetCurSel(j);
+//				break;
+//			}
+//		}
+//	}
+//
+//	return;
+//}
+//
+////更新密码
+//void CDlgLogon::UpdateUserPassWord(DWORD dwUserDBID)
+//{
+//	if (dwUserDBID!=0L)
+//	{
+//		//注册表字符
+//		CString strRegKey;
+//		strRegKey.Format(TEXT("%s\\%ld"),REG_USER_INFO,dwUserDBID);
+//
+//		//打开注册表
+//		CRegKey RegPassWord;
+//		RegPassWord.Open(HKEY_CURRENT_USER,strRegKey,KEY_READ);
+//		if (RegPassWord!=NULL)
+//		{
+//			DWORD dwType=REG_SZ;
+//			TCHAR szPassBuffer[256]=TEXT("");
+//			DWORD dwBufferLength=sizeof(szPassBuffer);
+//			if (RegPassWord.QueryValue(TEXT("UserPassword"),&dwType,szPassBuffer,&dwBufferLength)==ERROR_SUCCESS)
+//			{
+//				m_szPassword[0]=0;
+//				CXOREncrypt::CrevasseData(szPassBuffer,m_szPassword,CountArray(m_szPassword));
+//				if (m_szPassword[0]==0) 
+//					SetDlgItemText(IDC_PASSWORD,TEXT(""));
+//				else 
+//					SetDlgItemText(IDC_PASSWORD,TEXT("**********"));
+//				m_bChangePassWord=false;
+//				return;
+//			}
+//		}
+//	}
+//
+//	//设置信息
+//	m_szPassword[0]=0;
+//	SetDlgItemText(IDC_PASSWORD,TEXT(""));
+//	m_bChangePassWord=false;
+//	
+//	return;
+//}
 
 //代理模式
 void CDlgLogon::SwitchNetOption(bool bNetOption)
@@ -1082,26 +929,26 @@ void CDlgLogon::SwitchNetOption(bool bNetOption)
 
 	return;
 }
-
-//密码改变
-void CDlgLogon::OnEnChangePassword()
-{
-	m_bChangePassWord=true;
-}
-
-//选择改变
-void CDlgLogon::OnSelchangeAccounts()
-{
-	UpdateUserComboBox(IDC_ACCOUNTS);
-	return;
-}
-
-//选择改变
-void CDlgLogon::OnSelchangeUserID()
-{
-	UpdateUserComboBox(IDC_USER_ID);
-	return;
-}
+//
+////密码改变
+//void CDlgLogon::OnEnChangePassword()
+//{
+//	m_bChangePassWord=true;
+//}
+//
+////选择改变
+//void CDlgLogon::OnSelchangeAccounts()
+//{
+//	UpdateUserComboBox(IDC_ACCOUNTS);
+//	return;
+//}
+//
+////选择改变
+//void CDlgLogon::OnSelchangeUserID()
+//{
+//	UpdateUserComboBox(IDC_USER_ID);
+//	return;
+//}
 
 
 //注册帐号
@@ -1120,10 +967,10 @@ void CDlgLogon::OnRegisterAccounts()
 	m_cbGender=DlgRegister.m_cbGender;
 	lstrcpy(m_szAccounts,DlgRegister.m_szAccounts);
 	lstrcpy(m_szPassword,DlgRegister.m_szPassword);
-
-	//服务器
-	GetDlgItemText(IDC_SERVER,m_strLogonServer);
-	if (m_strLogonServer.IsEmpty()) m_strLogonServer=TEXT("www.youle8.com");
+	lstrcpy(m_szSFZ,DlgRegister.m_szSFZ);
+	lstrcpy(m_szName,DlgRegister.m_szName);
+	lstrcpy(m_szAddress,DlgRegister.m_szAddress);
+	lstrcpy(m_szLikeName,DlgRegister.m_szLikeName);
 
 	//登录广场
 	ShowWindow(SW_HIDE);
@@ -1205,19 +1052,19 @@ void CDlgLogon::OnLButtonUp(UINT nFlags, CPoint point)
 	CDialog::OnLButtonUp(nFlags, point);
 }
 
-//控件改变
-void CDlgLogon::OnEnChangeAccounts()
-{
-	//虚假密码
-	if(m_PasswordControl.m_hWnd!=NULL && m_PasswordControl.IsFalsityPassword()==true)
-	{
-		//密码设置
-		m_PasswordControl.SetUserPassword(TEXT(""));
-
-		//安全设置
-		m_RemPwdControl.SetButtonChecked(FALSE);
-	}
-}
+////控件改变
+//void CDlgLogon::OnEnChangeAccounts()
+//{
+//	//虚假密码
+//	if(m_PasswordControl.m_hWnd!=NULL && m_PasswordControl.IsFalsityPassword()==true)
+//	{
+//		//密码设置
+//		m_PasswordControl.SetUserPassword(TEXT(""));
+//
+//		//安全设置
+//		m_RemPwdControl.SetButtonChecked(FALSE);
+//	}
+//}
 
 //获取代理
 void CDlgLogon::GetProxyInfo(enProxyServerType &ProxyServerType, tagProxyServerInfo &ProxyServerInfo)

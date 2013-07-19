@@ -509,7 +509,6 @@ IDB_SERVER_LIST_IMAGE   BITMAP                  "Res\\SERVER_LIST_IMAGE.bmp"
 IDB_USER_STATUS         BITMAP                  "Res\\USER_STATUS.bmp"
 IDB_TABLE_LOCK          BITMAP                  "res\\TABLE_LOCK.bmp"
 IDB_TABLE_READY         BITMAP                  "res\\TABLE_READY.bmp"
-IDB_CHECK_BUTTON_BACK   BITMAP                  "res\\PLAZA_LOGON\\BT_REMEMBER.bmp"
 IDB_BT_LOGON_QUIT       BITMAP                  "res\\PLAZA_LOGON\\BT_LOGON_QUIT.bmp"
 
 /////////////////////////////////////////////////////////////////////////////
@@ -520,14 +519,14 @@ IDB_BT_LOGON_QUIT       BITMAP                  "res\\PLAZA_LOGON\\BT_LOGON_QUIT
 DLG_LOGON_BACK          PNG                     "res\\PLAZA_LOGON\\DLG_LOGON_BACK.PNG"
 DLG_REGISTER_BACK       PNG                     "res\\PLAZA_LOGON\\RegisterBack.PNG"
 PASSWORD_LEVEL          PNG                     "res\\PLAZA_LOGON\\passlevel.PNG"
+CHECK_BUTTON_BACK   	PNG			"res\\PLAZA_LOGON\\BT_REMEMBER.PNG"
 PNG_BT_LOGON            PNG                     "res\\PLAZA_LOGON\\BT_LOGON_ENTER.png"
 PNG_BT_WEBHOME          PNG                     "res\\PLAZA_LOGON\\BT_webhome.png"
 PNG_BT_REGISTER         PNG                     "res\\PLAZA_LOGON\\BT_register.png"
 PNG_BT_CHONGZHI         PNG                     "res\\PLAZA_LOGON\\BT_chongzhi.png"
 PNG_BT_BANBEN           PNG                     "res\\PLAZA_LOGON\\BT_banben.png"
 PNG_BT_RegisterClose    PNG                     "res\\PLAZA_LOGON\\BT_RegisterClose.png"
-PNG_BT_chose2           PNG                     "res\\PLAZA_LOGON\\BT_chose2.png"
-PNG_BT_chose1           PNG                     "res\\PLAZA_LOGON\\BT_chose1.png"
+PNG_BT_CHOSE           	PNG                     "res\\PLAZA_LOGON\\BT_chose.png"
 PNG_BT_RegisterOK       PNG                     "res\\PLAZA_LOGON\\BT_RegisterOK.png"
 
 /////////////////////////////////////////////////////////////////////////////
