@@ -9,7 +9,6 @@
 #endif
 
 
-
 BEGIN_MESSAGE_MAP(CGamePlazaApp, CWinApp)
 	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
@@ -19,10 +18,11 @@ CGamePlazaApp::CGamePlazaApp()
 
 }
 
-CGamePlazaApp theApp;
-
 BOOL CGamePlazaApp::InitInstance()
 {
+	Gdiplus::GdiplusStartupInput gdiplusStartupInput;
+	Gdiplus::GdiplusStartup(&m_gdiplusToken, &gdiplusStartupInput, NULL);
+
 	bool bPlazaExist=false;
 	CMutex Mutex(FALSE,SZ_PLAZACLASS,NULL);
 	if (Mutex.Lock(0)==FALSE)
@@ -48,11 +48,13 @@ BOOL CGamePlazaApp::InitInstance()
 	}
 
 	//结果处理
-	if (bPlazaExist==true) return FALSE;
+	if (bPlazaExist == true) 
+		return FALSE;
 
 	//环境配置
 	AfxOleInit();
 	AfxInitRichEdit2();
+
 	InitCommonControls();
 	AfxEnableControlContainer();
 
@@ -83,5 +85,9 @@ BOOL CGamePlazaApp::InitInstance()
 
 int CGamePlazaApp::ExitInstance()
 {
+	Gdiplus::GdiplusShutdown(m_gdiplusToken);
+
 	return CWinApp::ExitInstance();
 }
+
+CGamePlazaApp theApp;

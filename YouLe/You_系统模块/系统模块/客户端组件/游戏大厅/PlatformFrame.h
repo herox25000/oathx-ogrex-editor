@@ -1,6 +1,8 @@
 #pragma once
 
 #include "GamePlazaDlg.h"
+#include "GdipButton.h"
+
 
 class CPlatformFrame : public CFrameWnd
 {
@@ -11,11 +13,32 @@ public:
 protected:
 	virtual ~CPlatformFrame();
 
-	CGamePlazaDlg*		m_pGamePlazaDlg;
+protected:
+	CGamePlazaDlg*					m_pGamePlazaDlg;
+
+	//控件按钮
+protected:
+	CGdipButton						m_btMin;
+	CGdipButton						m_btClose;
+
+public:
+	virtual BOOL					RectifyResource(int nWidth, int nHeight);
+	virtual void					SetFrameSize(int nWidth, int nHeight);
+protected:
+	//命令函数
+	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
+
+protected:	
+	//鼠标消息
+	VOID OnLButtonDown(UINT nFlags, CPoint Point);
+	//关闭消息
+	VOID OnClose();
+	
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
-	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg int	 OnCreate(LPCREATESTRUCT lpCreateStruct);
+	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 };
 
 
