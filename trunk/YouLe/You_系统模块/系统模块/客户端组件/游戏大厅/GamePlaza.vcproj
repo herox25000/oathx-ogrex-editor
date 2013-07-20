@@ -12,7 +12,7 @@
 	<Configurations>
 		<Configuration
 			Name="Debug|Win32"
-			OutputDirectory="Debug"
+			OutputDirectory="../../运行/Debug"
 			IntermediateDirectory="Debug"
 			ConfigurationType="1"
 			UseOfMFC="2"
@@ -33,6 +33,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="gdiplus.lib ../../链接库/ComServiceD.lib ../../链接库/ClientShareD.lib ../../链接库/SkinControlsD.lib ../../链接库/ChannelModuleD.lib ../../链接库/PropertyModuleD.lib Winmm.lib"
 				LinkIncremental="2"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
@@ -190,6 +191,22 @@
 			</File>
 			<File
 				RelativePath=".\res\GamePlaza.rc2">
+			</File>
+		</Filter>
+		<Filter
+			Name="Ctrl"
+			Filter="">
+			<File
+				RelativePath=".\CGdiPlusBitmap.h">
+			</File>
+			<File
+				RelativePath=".\GdipButton.cpp">
+			</File>
+			<File
+				RelativePath=".\GdipButton.h">
+			</File>
+			<File
+				RelativePath=".\MemDC.h">
 			</File>
 		</Filter>
 		<File

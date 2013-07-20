@@ -17,6 +17,8 @@ public:
 
 	DECLARE_MESSAGE_MAP()
 	
+protected:
+	ULONG_PTR		m_gdiplusToken;
 };
 
 extern CGamePlazaApp theApp;

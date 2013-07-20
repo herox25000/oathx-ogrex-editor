@@ -1,21 +1,17 @@
 #pragma once
 
-
-// CLogonDlg 对话框
-
 class CLogonDlg : public CDialog
 {
 	DECLARE_DYNAMIC(CLogonDlg)
 
 public:
-	CLogonDlg(CWnd* pParent = NULL);   // 标准构造函数
+	CLogonDlg(CWnd* pParent = NULL);
 	virtual ~CLogonDlg();
 
-// 对话框数据
 	enum { IDD = IDD_LOGON_DIALOG };
 
 protected:
-	virtual void DoDataExchange(CDataExchange* pDX);    // DDX/DDV 支持
+	virtual void DoDataExchange(CDataExchange* pDX);
 
 	DECLARE_MESSAGE_MAP()
 };

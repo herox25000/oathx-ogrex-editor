@@ -66,16 +66,18 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\GamePlaza.ico"
 
-/////////////////////////////////////////////////////////////////////////////
-//
+
+BACKGROUND_PLAZA		PNG						"res\\PLAZA\\BACKGROUND_PLAZA.png"
+BT_FRAME_MIN			PNG						"res\\PLAZA\\BT_FRAME_MIN.png"
+BT_FRAME_CLOSE			PNG						"res\\PLAZA\\BT_FRAME_CLOSE.png"
+BACKGROUND_HEAD			PNG						"res\\PLAZA\\BACKGROUND_HEAD.png"
 // Dialog
 //
 
 IDD_GAMEPLAZA_DIALOG DIALOGEX 0, 0, 483, 341
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
-    WS_VISIBLE | WS_CAPTION
+STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_CHILD | WS_VISIBLE | 
+    WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "GamePlaza"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     PUSHBUTTON      "Button1",IDC_BUTTON1,110,75,72,22
