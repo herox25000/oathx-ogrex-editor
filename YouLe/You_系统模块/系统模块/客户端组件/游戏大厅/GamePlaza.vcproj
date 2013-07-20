@@ -131,6 +131,12 @@
 				RelativePath=".\GamePlazaDlg.cpp">
 			</File>
 			<File
+				RelativePath=".\LogonDlg.cpp">
+			</File>
+			<File
+				RelativePath=".\PlatformFrame.cpp">
+			</File>
+			<File
 				RelativePath=".\stdafx.cpp">
 				<FileConfiguration
 					Name="Debug|Win32">
@@ -155,6 +161,15 @@
 			</File>
 			<File
 				RelativePath=".\GamePlazaDlg.h">
+			</File>
+			<File
+				RelativePath=".\LogonDlg.h">
+			</File>
+			<File
+				RelativePath=".\Platform.h">
+			</File>
+			<File
+				RelativePath=".\PlatformFrame.h">
 			</File>
 			<File
 				RelativePath=".\Resource.h">
