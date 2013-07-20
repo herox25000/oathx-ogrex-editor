@@ -81,6 +81,16 @@ BEGIN
     PUSHBUTTON      "Button1",IDC_BUTTON1,110,75,72,22
 END
 
+IDD_LOGON_DIALOG DIALOGEX 0, 0, 186, 93
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_CHILD | 
+    WS_CAPTION | WS_SYSMENU
+CAPTION "Dialog"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,51,62,50,14
+    PUSHBUTTON      "取消",IDCANCEL,111,60,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -119,6 +129,25 @@ BEGIN
         VALUE "翻译", 0x804, 936
     END
 END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_LOGON_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 179
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 86
+    END
+END
+#endif    // APSTUDIO_INVOKED
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
