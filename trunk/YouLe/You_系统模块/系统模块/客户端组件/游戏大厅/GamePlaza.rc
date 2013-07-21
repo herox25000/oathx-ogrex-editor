@@ -177,6 +177,11 @@ PNG_BT_FRAME_MIN        PNG                     "res\\PLAZA\\BT_FRAME_MIN.png"
 PNG_BT_FRAME_CLOSE      PNG                     "res\\PLAZA\\BT_FRAME_CLOSE.png"
 BACKGROUND_USERINFO	PNG			"res\\PLAZA\\BACKGROUND_USERINFO.png"
 BACKGROUND_GAMEPUBLIC	PNG			"res\\PLAZA\\BACKGROUND_GAMEPUBLIC.png"
+PNG_BT_GAME		PNG			"res\\PLAZA\\BT_GAME.png"
+PNG_BT_MATCH		PNG			"res\\PLAZA\\BT_MATCH.png"
+PNG_BT_PROPERTY		PNG			"res\\PLAZA\\BT_PROPERTY.png"
+PNG_BT_PRIZE		PNG			"res\\PLAZA\\BT_PRIZE.png"
+PNG_BT_RECHARGE		PNG			"res\\PLAZA\\BT_RECHARGE.png"
 
 
 /////////////////////////////////////////////////////////////////////////////

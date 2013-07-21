@@ -30,6 +30,12 @@ protected:
 protected:
 	CGdipButton						m_btMin;
 	CGdipButton						m_btClose;
+
+	CGdipButton						m_btGame;
+	CGdipButton						m_btMatch;
+	CGdipButton						m_btProperty;
+	CGdipButton						m_btPrize;
+	CGdipButton						m_btRecharge;
 	
 	CGamePage						m_GamePage;
 public:

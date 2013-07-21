@@ -4,16 +4,18 @@
 #include "Platform.h"
 
 //控制按钮
-#define IDC_BT_FRAME_MIN					100									//最小按钮
-#define IDC_BT_FRAME_CLOSE					101									//关闭按钮
+#define IDC_BT_FRAME_MIN					100							//最小按钮
+#define IDC_BT_FRAME_CLOSE					101							//关闭按钮
+
+#define IDC_BT_GAME							102							//游戏专区
 
 //圆角大小
-#define ROUND_CX					7									//圆角宽度
-#define ROUND_CY					7									//圆角高度
+#define ROUND_CX							7							//圆角宽度
+#define ROUND_CY							7							//圆角高度
 
 //阴影定义
-#define SHADOW_CX					0									//阴影宽度
-#define SHADOW_CY					0									//阴影高度
+#define SHADOW_CX							0							//阴影宽度
+#define SHADOW_CY							0							//阴影高度
 
 IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 
@@ -225,8 +227,14 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 //加载按钮
 void CPlatformFrame::LoadButtons()
 {
-	m_btMin.CreateButton(this, "PNG_BT_FRAME_MIN", _T("PNG"), LESS_SCREEN_CX-86, 3, IDC_BT_FRAME_MIN, 5);
-	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), LESS_SCREEN_CX-38, 3, IDC_BT_FRAME_CLOSE, 5);
+	m_btMin.CreateButton(this, "PNG_BT_FRAME_MIN", _T("PNG"), LESS_SCREEN_CX-86, 3, IDC_BT_FRAME_MIN, 4);
+	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), LESS_SCREEN_CX-38, 3, IDC_BT_FRAME_CLOSE, 4);
+
+	m_btGame.CreateButton(this, "PNG_BT_GAME", _T("PNG"), LESS_SCREEN_CX / 2 - 264, 154, IDC_BT_GAME, 4);
+	m_btMatch.CreateButton(this, "PNG_BT_MATCH", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_GAME, 4);
+	m_btProperty.CreateButton(this, "PNG_BT_PROPERTY", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_GAME, 4);
+	m_btPrize.CreateButton(this, "PNG_BT_PRIZE", _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_GAME, 4);
+	m_btRecharge.CreateButton(this, "PNG_BT_RECHARGE", _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_GAME, 4);
 }
 
 //加载图片资源
@@ -257,6 +265,12 @@ void CPlatformFrame::SetButtonBackGrounds(CDC *pDC)
 {
 	m_btMin.SetBkGnd(pDC);
 	m_btClose.SetBkGnd(pDC);
+
+	m_btGame.SetBkGnd(pDC);
+	m_btMatch.SetBkGnd(pDC);
+	m_btProperty.SetBkGnd(pDC);
+	m_btPrize.SetBkGnd(pDC);
+	m_btRecharge.SetBkGnd(pDC);
 }
 
 //鼠标消息
