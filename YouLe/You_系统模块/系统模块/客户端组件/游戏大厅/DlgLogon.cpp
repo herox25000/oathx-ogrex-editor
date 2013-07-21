@@ -370,7 +370,6 @@ void CDlgRegister::OnLButtonUp(UINT nFlags, CPoint point)
 //ªÊª≠±≥æ∞
 BOOL CDlgRegister::OnEraseBkgnd(CDC * pDC)
 {
-	//CDialog::OnEraseBkgnd(pDC);
 	//ªÒ»°Œª÷√
 	CRect rcClient;
 	GetClientRect(&rcClient);
@@ -1040,7 +1039,6 @@ void CDlgLogon::OnPaint()
 //ªÊª≠±≥æ∞
 BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 {
-	//CDialog::OnEraseBkgnd(pDC);
 	//ªÒ»°Œª÷√
 	CRect rcClient;
 	GetClientRect(&rcClient);
