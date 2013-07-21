@@ -3,9 +3,6 @@
 #include "GamePlazaDlg.h"
 #include "GdipButton.h"
 #include "DlgLogon.h"
-#include "GameItemWnd.h"
-#include "GameRoomWnd.h"
-#include "TabGamePage.h"
 #include "GamePage.h"
 
 
@@ -24,17 +21,16 @@ protected:
 
 	//资源
 protected:
-	CPngImage				m_ImageHead;
-	CPngImage				m_ImageBack;
-	CPngImage				m_ImageUserInfo;
-	CPngImage				m_ImageGamePublic;
+	CPngImage						m_ImageHead;
+	CPngImage						m_ImageBack;
+	CPngImage						m_ImageUserInfo;
+	CPngImage						m_ImageGamePublic;
 
 	//控件按钮
 protected:
 	CGdipButton						m_btMin;
 	CGdipButton						m_btClose;
 	
-	CTabGamePage					m_pGamePage;
 	CGamePage						m_GamePage;
 public:
 	//加载按钮
