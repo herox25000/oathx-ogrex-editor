@@ -30,12 +30,6 @@ CDlgStatus::~CDlgStatus()
 {
 }
 
-//初始化函数
-BOOL CDlgStatus::OnInitDialog()
-{
-	//m_btCancel.LoadStdImage()
-	return TRUE;
-}
 //控件绑定
 void CDlgStatus::DoDataExchange(CDataExchange * pDX)
 {
@@ -72,6 +66,8 @@ BOOL CDlgStatus::OnEraseBkgnd(CDC* pDC)
 	//清理资源
 	ImageStatus.ReleaseDC();
 	ImageStatus.Destroy();
+
+	m_btCancel.SetBkGnd(pDevC);
 	return TRUE;
 }
 
@@ -97,12 +93,13 @@ bool CDlgStatus::ShowStatusMessage(LPCTSTR pszMessage, CWnd * pNotifyWnd)
 	{
 		Create(IDD_STATUS);
 		SetTimer(IDT_STATUS_IMANGE,200,NULL);
+		m_btCancel.LoadStdImage(TEXT("PNG_BT_CANCELSTATUS"),_T("PNG"),5);
 	}
 
 	//设置消息
 	m_pNotifyWnd=pNotifyWnd;
 	m_strMessage=pszMessage;
-	Invalidate(FALSE);
+	Invalidate(TRUE);
 
 	//显示窗口
 	ShowWindow(SW_SHOW);
@@ -117,6 +114,7 @@ bool CDlgStatus::DestroyStatusWnd(CWnd * pNotifyWnd)
 	if ((m_pNotifyWnd==pNotifyWnd)||(pNotifyWnd==NULL))
 	{
 		DestroyWindow();
+		m_btCancel.~CGdipButton();
 		return true;
 	}
 	return false;

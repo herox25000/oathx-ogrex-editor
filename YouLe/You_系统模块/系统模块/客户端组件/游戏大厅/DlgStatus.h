@@ -18,7 +18,7 @@ protected:
 
 	//控件变量
 protected:
-	CSkinButton							m_btCancel;						//取消按钮
+	CGdipButton							m_btCancel;						//取消按钮
 
 	//函数定义
 public:
@@ -29,8 +29,6 @@ public:
 
 	//重载函数
 protected:
-	//初始化函数
-	virtual BOOL OnInitDialog();
 	//控件绑定
 	virtual void DoDataExchange(CDataExchange * pDX);
 	//确定函数

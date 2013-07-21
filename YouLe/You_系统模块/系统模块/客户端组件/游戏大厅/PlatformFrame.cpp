@@ -514,6 +514,7 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_DlgLogon.SetPlatFormPointer(this);
 	OnCommandLogon();
 	g_GlobalUnits.m_ServerListManager.InitServerListManager(NULL);
+	//m_GamePage.Create(NULL, NULL, WS_CHILD|WS_VISIBLE, CRect(250, 260, 250+176*3, 260+140*3), this, 10001);
 	//m_GamePage.Create(3, 3, NULL, CRect(250, 260, 250+176*3, 260+140*3), this, 0);
 	m_ZonePage.Create(0, CRect(250, 206, 250+176*3, 260+140*3), this);
 	return 0;
@@ -542,6 +543,7 @@ void CPlatformFrame::OnCommandLogon()
 	//ÏÔÊ¾µÇÂ¼¿ò
 	m_DlgLogon.ShowWindow(SW_SHOW);
 	m_DlgLogon.SetActiveWindow();
+	m_DlgLogon.BringWindowToTop();
 	m_DlgLogon.SetForegroundWindow();
 	return;
 }

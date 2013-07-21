@@ -199,7 +199,7 @@ GAMEITEM_JOIN           PNG                     "res\\PLAZA\\GAMEITEM_JOIN.png"
 GAMEROOM_JOIN           PNG                     "res\\PLAZA\\GAMEROOM_JOIN.png"
 GAMEROOM_BILL           PNG                     "res\\PLAZA\\GAMEROOM_BILL.png"
 GAMEPAGE_MATCH          PNG                     "res\\PLAZA\\GAMEPAGE_MATCH.png"
-
+PNG_BT_CANCELSTATUS	PNG			"res\\Cancel_STATUS.png"
 /////////////////////////////////////////////////////////////////////////////
 //
 GAMETAB_GAME			PNG						"res\\PLAZA\\GAMETAB_GAME.png"
