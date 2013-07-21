@@ -200,6 +200,18 @@
 				RelativePath=".\CGdiPlusBitmap.h">
 			</File>
 			<File
+				RelativePath=".\GameItemWnd.cpp">
+			</File>
+			<File
+				RelativePath=".\GameItemWnd.h">
+			</File>
+			<File
+				RelativePath=".\GameRoomWnd.cpp">
+			</File>
+			<File
+				RelativePath=".\GameRoomWnd.h">
+			</File>
+			<File
 				RelativePath=".\GdipButton.cpp">
 			</File>
 			<File

@@ -79,4 +79,5 @@ using namespace Gdiplus;
 #include "..\..\共享组件\界面控件\SkinControls.h"
 #include "..\..\共享组件\界面资源\SkinResourceModule.h"
 #include "MemDC.h"
+#include "GdipButton.h"
 

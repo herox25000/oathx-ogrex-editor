@@ -2,7 +2,8 @@
 
 #include "GamePlazaDlg.h"
 #include "GdipButton.h"
-
+#include "GameItemWnd.h"
+#include "GameRoomWnd.h"
 
 class CPlatformFrame : public CFrameWnd
 {
@@ -20,7 +21,9 @@ protected:
 protected:
 	CGdipButton						m_btMin;
 	CGdipButton						m_btClose;
-
+	
+	CGameItemWnd					m_pTest;
+	CGameRoomWnd					m_pRoom;
 public:
 	virtual BOOL					RectifyResource(int nWidth, int nHeight);
 	virtual void					SetFrameSize(int nWidth, int nHeight);
