@@ -39,6 +39,10 @@ int CGamePage::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		}
 	}
 
+	CRgn rgn;
+	rgn.CreateRoundRectRgn(rect.left+1, rect.top+1, rect.right-1, rect.bottom-1, 5, 5);
+	SetWindowRgn(rgn, TRUE);
+
 	return 0;
 }
 
@@ -48,7 +52,7 @@ BOOL CGamePage::OnEraseBkgnd(CDC* pDC)
 	GetClientRect(&rect);
 
 	CMemDC dc(pDC, &rect);
-	dc.FillRect(&rect, &CBrush(RGB(0, 0, 155)));
+	dc.FillRect(&rect, &CBrush(RGB(0, 76, 149)));
 
 	return TRUE;
 }
