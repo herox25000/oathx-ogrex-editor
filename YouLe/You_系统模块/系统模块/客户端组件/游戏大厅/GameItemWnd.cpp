@@ -32,6 +32,14 @@ BOOL CGameItemWnd::Create(UINT nID, INT nDestX, INT nDestY,
 	return CWnd::Create(NULL, NULL, WS_VISIBLE|WS_CHILD, rect, pParent, nID);
 }
 
+BOOL CGameItemWnd::EnableWindow(BOOL bEnable)
+{
+	m_Regular.ShowWindow(bEnable ? SW_SHOW : SW_HIDE);
+	m_JoinBtn.ShowWindow(bEnable ? SW_SHOW : SW_HIDE);
+
+	return CWnd::EnableWindow(bEnable);
+}
+
 BOOL CGameItemWnd::OnEraseBkgnd(CDC* pDC)
 {
 	return CWnd::OnEraseBkgnd(pDC);
@@ -55,7 +63,8 @@ int CGameItemWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TEXT("GAMEITEM_REGULAR"), _T("PNG"), 7, 105, 0, 4);
 	
 	// create join button
-	m_Join.CreateButton(this, TEXT("GAMEITEM_JOIN"), _T("PNG"), 60, 105, 0, 4);
+	m_JoinBtn.CreateButton(this,
+		TEXT("GAMEITEM_JOIN"), _T("PNG"), 60, 105, 0, 4);
 	
 	return 0;
 }

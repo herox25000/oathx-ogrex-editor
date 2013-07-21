@@ -66,7 +66,7 @@
 		</Configuration>
 		<Configuration
 			Name="Release|Win32"
-			OutputDirectory="Release"
+			OutputDirectory="../../运行/Release"
 			IntermediateDirectory="Release"
 			ConfigurationType="1"
 			UseOfMFC="2"
@@ -85,6 +85,7 @@
 				Name="VCCustomBuildTool"/>
 			<Tool
 				Name="VCLinkerTool"
+				AdditionalDependencies="gdiplus.lib ../../链接库/ComService.lib ../../链接库/ClientShare.lib ../../链接库/SkinControls.lib ../../链接库/ChannelModule.lib ../../链接库/PropertyModule.lib Winmm.lib"
 				LinkIncremental="1"
 				GenerateDebugInformation="TRUE"
 				SubSystem="2"
@@ -132,6 +133,9 @@
 				RelativePath=".\DlgStatus.cpp">
 			</File>
 			<File
+				RelativePath=".\GamePage.cpp">
+			</File>
+			<File
 				RelativePath=".\GamePlaza.cpp">
 			</File>
 			<File
@@ -174,6 +178,9 @@
 			</File>
 			<File
 				RelativePath=".\DlgStatus.h">
+			</File>
+			<File
+				RelativePath=".\GamePage.h">
 			</File>
 			<File
 				RelativePath=".\GamePlaza.h">

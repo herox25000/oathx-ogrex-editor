@@ -6,6 +6,7 @@
 #include "GameItemWnd.h"
 #include "GameRoomWnd.h"
 #include "TabGamePage.h"
+#include "GamePage.h"
 
 
 class CPlatformFrame : public CFrameWnd
@@ -34,6 +35,7 @@ protected:
 	CGdipButton						m_btClose;
 	
 	CTabGamePage					m_pGamePage;
+	CGamePage						m_GamePage;
 public:
 	//º”‘ÿ∞¥≈•
 	void LoadButtons();
