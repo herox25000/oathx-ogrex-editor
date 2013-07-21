@@ -142,9 +142,6 @@
 				RelativePath=".\GlobalUnits.cpp">
 			</File>
 			<File
-				RelativePath=".\GlobalUnits.h">
-			</File>
-			<File
 				RelativePath=".\PasswordControl.cpp">
 			</File>
 			<File
@@ -181,6 +178,9 @@
 			</File>
 			<File
 				RelativePath=".\GamePlazaDlg.h">
+			</File>
+			<File
+				RelativePath=".\GlobalUnits.h">
 			</File>
 			<File
 				RelativePath=".\PasswordControl.h">

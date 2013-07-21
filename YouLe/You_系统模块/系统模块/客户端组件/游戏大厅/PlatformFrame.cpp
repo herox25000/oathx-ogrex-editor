@@ -21,6 +21,7 @@ IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 
 CPlatformFrame::CPlatformFrame()
 {
+	m_bLogonPlaza = false;
 }
 
 CPlatformFrame::~CPlatformFrame()
@@ -35,6 +36,290 @@ BEGIN_MESSAGE_MAP(CPlatformFrame, CFrameWnd)
 	ON_WM_LBUTTONDOWN()
 
 END_MESSAGE_MAP()
+
+
+//接口查询
+void * __cdecl CPlatformFrame::QueryInterface(const IID & Guid, DWORD dwQueryVer)
+{
+	QUERYINTERFACE(ITCPSocketSink,Guid,dwQueryVer);
+	QUERYINTERFACE_IUNKNOWNEX(ITCPSocketSink,Guid,dwQueryVer);
+	return NULL;
+}
+//连接事件
+bool __cdecl CPlatformFrame::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode)
+{
+	//错误处理
+	if (nErrorCode!=0)
+	{
+		g_GlobalAttemper.DestroyStatusWnd(this);
+		ShowMessageBox(TEXT("登录服务器连接失败，请稍后再试或留意网站公告！"),MB_ICONINFORMATION);
+		OnCommandLogon();
+		return true;
+	}
+
+	//发送登录包
+	if (m_bLogonPlaza==false)
+	{
+		m_DlgLogon.SendLogonPacket(m_ClientSocket.GetInterface());
+		g_GlobalAttemper.ShowStatusMessage(TEXT("正在验证用户登录信息..."),this);
+	}
+	return true;
+}
+//关闭事件
+bool __cdecl CPlatformFrame::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutReason)
+{
+	if (m_bLogonPlaza==false)
+	{
+		if (cbShutReason!=SHUT_REASON_NORMAL)
+		{
+			g_GlobalAttemper.DestroyStatusWnd(this);
+			ShowMessageBox(TEXT("登录服务器连接失败，请稍后再试或留意网站公告！"),MB_ICONINFORMATION);
+			OnCommandLogon();
+		}
+	}
+
+	return true;
+}
+//读取事件
+bool __cdecl CPlatformFrame::OnEventTCPSocketRead(WORD wSocketID, CMD_Command Command, VOID * pData, WORD wDataSize)
+{
+	switch (Command.wMainCmdID)
+	{
+	case MDM_GP_LOGON:				//登录消息
+		{
+			return OnSocketMainLogon(Command,pData,wDataSize);
+		}
+	case MDM_GP_SERVER_LIST:		//列表消息
+		{
+			//return OnSocketMainServerList(Command,pData,wDataSize);
+		}
+	case MDM_GP_SYSTEM:				//系统消息
+		{
+			//return OnSocketMainSystem(Command,pData,wDataSize);
+		}
+	case MDM_GP_USER:				//用户消息
+		{
+			//return OnSocketMainUser(Command,pData,wDataSize);
+		}
+	}
+	return true;
+}
+
+
+//显示消息
+int CPlatformFrame::ShowMessageBox(LPCTSTR pszMessage, UINT nType)
+{				
+	int nResult=ShowInformationEx(pszMessage,0,nType,TEXT("提示"));
+	return nResult;
+}
+
+//发送信息
+void CPlatformFrame::SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData, WORD wDataSize)
+{
+	m_ClientSocket->SendData(wMainCmdID, wSubCmdID, pData, wDataSize);
+	return;
+}
+
+
+//登录消息
+bool CPlatformFrame::OnSocketMainLogon(CMD_Command Command, void * pData, WORD wDataSize)
+{
+	switch (Command.wSubCmdID)
+	{
+	case SUB_GP_LOGON_SUCCESS:		//登录成功
+		{
+			//效验参数
+			ASSERT(wDataSize>=sizeof(CMD_GP_LogonSuccess));
+			if (wDataSize<sizeof(CMD_GP_LogonSuccess)) return false;
+
+			//保存信息
+			tagGlobalUserData & UserData=g_GlobalUnits.GetGolbalUserData();
+			CMD_GP_LogonSuccess * pLogonSuccess=(CMD_GP_LogonSuccess *)pData;
+			UserData.wFaceID=pLogonSuccess->wFaceID;
+			UserData.cbGender=pLogonSuccess->cbGender;
+			UserData.cbMember=pLogonSuccess->cbMember;
+			UserData.dwUserID=pLogonSuccess->dwUserID;
+			UserData.dwGameID=pLogonSuccess->dwGameID;
+			UserData.dwExperience=pLogonSuccess->dwExperience;
+			UserData.dwCustomFaceVer=pLogonSuccess->dwCustomFaceVer;
+
+			//扩展信息
+			void * pDataBuffer=NULL;
+			tagDataDescribe DataDescribe;
+			CRecvPacketHelper RecvPacket(pLogonSuccess+1,wDataSize-sizeof(CMD_GP_LogonSuccess));
+			while (true)
+			{
+				pDataBuffer=RecvPacket.GetData(DataDescribe);
+				if (DataDescribe.wDataDescribe==DTP_NULL) break;
+				switch (DataDescribe.wDataDescribe)
+				{
+				case DTP_USER_ACCOUNTS:		//用户帐户
+					{
+						ASSERT(pDataBuffer!=NULL);
+						ASSERT(DataDescribe.wDataSize>0);
+						ASSERT(DataDescribe.wDataSize<=sizeof(UserData.szAccounts));
+						if (DataDescribe.wDataSize<=sizeof(UserData.szAccounts))
+						{
+							CopyMemory(UserData.szAccounts,pDataBuffer,DataDescribe.wDataSize);
+							UserData.szAccounts[CountArray(UserData.szAccounts)-1]=0;
+						}
+						break;
+					}
+				case DTP_USER_PASS:			//用户密码
+					{
+						ASSERT(pDataBuffer!=NULL);
+						ASSERT(DataDescribe.wDataSize>0);
+						ASSERT(DataDescribe.wDataSize<=sizeof(UserData.szPassWord));
+						if (DataDescribe.wDataSize<=sizeof(UserData.szPassWord))
+						{
+							CopyMemory(UserData.szPassWord,pDataBuffer,DataDescribe.wDataSize);
+							UserData.szPassWord[CountArray(UserData.szPassWord)-1]=0;
+						}
+						break;
+					}
+				case DTP_UNDER_WRITE:		//个性签名
+					{
+						ASSERT(pDataBuffer!=NULL);
+						ASSERT(DataDescribe.wDataSize>0);
+						ASSERT(DataDescribe.wDataSize<=sizeof(UserData.szUnderWrite));
+						if (DataDescribe.wDataSize<=sizeof(UserData.szUnderWrite))
+						{
+							CopyMemory(UserData.szUnderWrite,pDataBuffer,DataDescribe.wDataSize);
+							UserData.szUnderWrite[CountArray(UserData.szUnderWrite)-1]=0;
+						}
+						break;
+					}
+				case DTP_USER_GROUP_NAME:	//社团名字
+					{
+						ASSERT(pDataBuffer!=NULL);
+						ASSERT(DataDescribe.wDataSize>0);
+						ASSERT(DataDescribe.wDataSize<=sizeof(UserData.szGroupName));
+						if (DataDescribe.wDataSize<=sizeof(UserData.szGroupName))
+						{
+							CopyMemory(UserData.szGroupName,pDataBuffer,DataDescribe.wDataSize);
+							UserData.szGroupName[CountArray(UserData.szGroupName)-1]=0;
+						}
+						break;
+					}
+				case DTP_STATION_PAGE:		//游戏主站
+					{
+						ASSERT(pDataBuffer!=NULL);
+						if (pDataBuffer!=NULL) 
+						{
+							g_GlobalUnits.SetStationPage((LPCTSTR)pDataBuffer);
+							//m_pHtmlBrower->Navigate(g_GlobalUnits.GetStationPage());
+						}
+						break;
+					}
+				default: { ASSERT(FALSE); }
+				}
+			}
+
+			//设置提示
+			g_GlobalAttemper.ShowStatusMessage(TEXT("正在读取服务器列表信息..."),this);
+
+			return true;
+		}
+	case SUB_GP_LOGON_ERROR:		//登录失败
+		{
+			//效验参数
+			CMD_GP_LogonError *pLogonError = (CMD_GP_LogonError *)pData;
+			ASSERT(wDataSize>=(sizeof(CMD_GP_LogonError)-sizeof(pLogonError->szErrorDescribe)));
+			if (wDataSize<(sizeof(CMD_GP_LogonError)-sizeof(pLogonError->szErrorDescribe))) return false;
+
+			//关闭连接
+			g_GlobalAttemper.DestroyStatusWnd(this);
+			m_ClientSocket->CloseSocket();
+
+			//显示消息
+			WORD wDescribeSize=wDataSize-(sizeof(CMD_GP_LogonError)-sizeof(pLogonError->szErrorDescribe));
+			if (wDescribeSize>0)
+			{
+				pLogonError->szErrorDescribe[wDescribeSize-1]=0;
+				ShowMessageBox(pLogonError->szErrorDescribe,MB_ICONINFORMATION);
+			}
+
+			//发送登录
+			OnCommandLogon();
+
+			return true;
+		}
+	case SUB_GP_LOGON_FINISH:		//登录完成
+		{
+			//关闭提示
+			g_GlobalAttemper.DestroyStatusWnd(this);
+
+			////展开类型
+			//INT_PTR nIndex=0;
+			//CListType * pListType=NULL;
+			//do
+			//{
+			//	pListType=g_GlobalUnits.m_ServerListManager.EnumTypeItem(nIndex++);
+			//	if (pListType==NULL) break;
+			//	g_GlobalUnits.m_ServerListManager.ExpandListItem(pListType);
+			//} while (true);
+
+			////展开列表
+			//nIndex=0;
+			//CListInside * pListInside=NULL;
+			//do
+			//{
+			//	pListInside=g_GlobalUnits.m_ServerListManager.EnumInsideItem(nIndex++);
+			//	if (pListInside==NULL) break;
+			//	g_GlobalUnits.m_ServerListManager.ExpandListItem(pListInside);
+			//} while (true);
+
+			//记录信息
+			ShowWindow(SW_SHOW);
+			m_bLogonPlaza=true;
+			m_DlgLogon.OnLogonSuccess();
+			//m_pHtmlBrower->EnableBrowser(true);
+
+			//记录信息
+			g_GlobalUnits.WriteUserCookie();
+
+			////显示头像
+			//((CGameFrame*)AfxGetMainWnd())->m_UserInfoView.ShowUserInfo(true);
+
+			////自定义判断
+			//tagGlobalUserData &GlobalUserData = g_GlobalUnits.GetGolbalUserData();
+			//if ( GlobalUserData.dwCustomFaceVer!=0)
+			//{
+			//	//头像名称
+			//	CString strDirName = CString(g_GlobalUnits.GetWorkDirectory()) + TEXT("\\CustomFace");
+			//	CString strFileName;
+			//	strFileName.Format(TEXT("\\%ld_%d.bmp"), GlobalUserData.dwUserID, GlobalUserData.dwCustomFaceVer);
+
+			//	//读取文件
+			//	CImage FaceImage;
+			//	HRESULT hResult = FaceImage.Load(strDirName + strFileName);
+			//	if (SUCCEEDED(hResult))
+			//	{
+			//		//关闭连接
+			//		m_ClientSocket->CloseSocket();
+
+			//		FaceImage.Destroy();
+			//	}
+			//	//下载头像
+			//	else
+			//	{
+			//		PostMessage(WM_DOWN_LOAD_FACE, LPARAM(GlobalUserData.dwCustomFaceVer), WPARAM(GlobalUserData.dwUserID));
+			//	}
+			//}
+			//else
+			//{
+			//	//关闭连接
+			//	m_ClientSocket->CloseSocket();
+			//}
+
+			return true;
+		}
+	}
+
+	return true;
+}
+
+//游戏列表消息
 
 
 int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -55,10 +340,12 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetClientRect(&rcClient);
 	RectifyResource(rcClient.Width(), rcClient.Height());
 	//显示窗口
-	ShowWindow(SW_SHOW);
+	ShowWindow(SW_HIDE);
 	SetForegroundWindow();
 	//启动登陆窗口
-	//SendLogonMessage();
+	m_DlgLogon.SetPlatFormPointer(this);
+	OnCommandLogon();
+
 
 	m_GamePage.Create(NULL, NULL, WS_CHILD|WS_VISIBLE, CRect(250, 260, 250+176*3, 260+140*3), this, 10001);
 
@@ -76,19 +363,7 @@ BOOL CPlatformFrame::PreTranslateMessage(MSG * pMsg)
 	return __super::PreTranslateMessage(pMsg);;
 }
 
-//启动登陆窗口
-bool __cdecl CPlatformFrame::SendLogonMessage()
-{
-	PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
-	return true;
-}
 
-//连接消息
-bool __cdecl CPlatformFrame::SendConnectMessage()
-{
-	PostMessage(WM_COMMAND,IDM_CONNECT_SERVER,0);
-	return true;
-}
 
 //启动登陆窗口
 void CPlatformFrame::OnCommandLogon()
@@ -102,101 +377,65 @@ void CPlatformFrame::OnCommandLogon()
 	m_DlgLogon.ShowWindow(SW_SHOW);
 	m_DlgLogon.SetActiveWindow();
 	m_DlgLogon.SetForegroundWindow();
-
 	return;
 }
 
 //连接服务器
 void CPlatformFrame::OnCommandConnect()
 {
-	////创建组件
-	//if (m_ClientSocket.GetInterface()==NULL)
-	//{
-	//	try
-	//	{
-	//		IUnknownEx * pIUnknownEx=(IUnknownEx *)QueryInterface(IID_IUnknownEx,VER_IUnknownEx);
-	//		if (m_ClientSocket.CreateInstance()==false) 
-	//		{
-	//			throw TEXT("网络组件创建失败");
-	//		}
-	//		if (m_ClientSocket->SetTCPSocketSink(pIUnknownEx)==false) 
-	//		{
-	//			throw TEXT("网络组件回调接口设置失败");
-	//		}
-	//	}
-	//	catch (...)
-	//	{
-	//		ShowMessageBox(TEXT("网络组件创建失败，请重新下载游戏大厅！"),MB_ICONSTOP);
-	//		PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
-	//		return;
-	//	}
-	//}
+	//创建组件
+	if (m_ClientSocket.GetInterface()==NULL)
+	{
+		try
+		{
+			IUnknownEx * pIUnknownEx=(IUnknownEx *)QueryInterface(IID_IUnknownEx,VER_IUnknownEx);
+			if (m_ClientSocket.CreateInstance()==false) 
+			{
+				throw TEXT("网络组件创建失败");
+			}
+			if (m_ClientSocket->SetTCPSocketSink(pIUnknownEx)==false) 
+			{
+				throw TEXT("网络组件回调接口设置失败");
+			}
+		}
+		catch (...)
+		{
+			ShowMessageBox(TEXT("网络组件创建失败，请重新下载游戏大厅！"),MB_ICONSTOP);
+			OnCommandLogon();
+			return;
+		}
+	}
 
-	////地址解释
-	//CRegKey RegServer;
-	//LPCTSTR pszServerIP=m_DlgLogon.GetLogonServer();
-	//TCHAR szRegServer[256]=TEXT(""),szServerAddr[64]=TEXT("");
-	//_snprintf(szRegServer,sizeof(szRegServer),TEXT("%s\\%s"),REG_LOGON_SERVER,pszServerIP);
+	//连接服务器
+	try
+	{
+		//连接服务器
+		m_ClientSocket->CloseSocket();
+		if (m_ClientSocket->Connect(m_DlgLogon.GetLogonServer(),PORT_LOGON_SERVER)!=CONNECT_SUCCESS)
+		{
+			throw TEXT("服务器连接错误，可能是你的系统还没有成功连接上网络！");
+		}
+	}
+	catch (LPCTSTR pszError)
+	{
+		ShowMessageBox(pszError,MB_ICONINFORMATION);
+		OnCommandLogon();
+		return;
+	}
 
-	//if (RegServer.Open(HKEY_CURRENT_USER,szRegServer,KEY_READ)==ERROR_SUCCESS)
-	//{
-	//	TCHAR szReadData[1024]=TEXT("");
-	//	DWORD dwReadData=0L,dwDataType=0L,dwDataSize=sizeof(szReadData);
-	//	LONG lErrorCode=RegServer.QueryValue(TEXT("ServerAddr"),&dwDataType,szReadData,&dwDataSize);
-	//	if (lErrorCode==ERROR_SUCCESS) 
-	//	{
-	//		CXOREncrypt::CrevasseData(szReadData,szServerAddr,sizeof(szServerAddr));
-	//		pszServerIP=szServerAddr;
-	//	}
-	//}
-
-	////连接服务器
-	//try
-	//{
-	//	//连接服务器
-	//	m_ClientSocket->CloseSocket();
-
-	//	//代理判断
-	//	if ( m_DlgLogon.EnableProxy() == true )
-	//	{
-	//		//获取代理
-	//		enProxyServerType ProxyServerType;
-	//		tagProxyServerInfo ProxyServerInfo;
-	//		m_DlgLogon.GetProxyInfo(ProxyServerType, ProxyServerInfo);	
-
-	//		//设置代理
-	//		m_ClientSocket->SetProxyServerInfo(ProxyServerType,ProxyServerInfo);
-	//	}
-
-	//	if (m_ClientSocket->Connect(pszServerIP,PORT_LOGON_SERVER)!=CONNECT_SUCCESS)
-	//	{
-	//		throw TEXT("服务器连接错误，可能是你的系统还没有成功连接上网络！");
-	//	}
-	//}
-	//catch (LPCTSTR pszError)
-	//{
-	//	ShowMessageBox(pszError,MB_ICONINFORMATION);
-	//	SendLogonMessage();
-	//	return;
-	//}
-
-	////显示提示框
-	//CString strMessage=TEXT("正在连接服务器，请稍候...");
-	//g_GlobalAttemper.ShowStatusMessage(strMessage,this);
-
+	//显示提示框
+	CString strMessage=TEXT("正在连接服务器，请稍候...");
+	g_GlobalAttemper.ShowStatusMessage(strMessage,this);
 	return;
 }
 
 //取消连接
 void CPlatformFrame::OnCommandCancelConnect()
 {
-	//g_GlobalAttemper.DestroyStatusWnd(this);
-	//m_ClientSocket->CloseSocket();
-	SendLogonMessage();
+	g_GlobalAttemper.DestroyStatusWnd(this);
+	m_ClientSocket->CloseSocket();
 	return;
 }
-
-
 
 void CPlatformFrame::SetFrameSize(int nWidth, int nHeight)
 {

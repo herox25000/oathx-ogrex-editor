@@ -141,9 +141,8 @@ protected:
 //登录对话框
 class CDlgLogon : public CDialog
 {
-	friend class CRoomViewItem;
-	friend class CPlazaViewItem;
-
+public:
+	CWnd*		m_pPlatformFrame;
 	//登录信息
 protected:
 	WORD								m_wFaceID;						//头像标识
@@ -169,7 +168,7 @@ protected:
 	//辅助信息
 protected:
 	bool								m_bRegister;					//注册标志
-
+	
 	//连接信息
 protected:
 	CString								m_strLogonServer;				//服务器地址
@@ -217,7 +216,8 @@ public:
 	CDlgLogon();
 	//析构函数
 	virtual ~CDlgLogon();
-
+	//设置大厅指针
+	void SetPlatFormPointer(CWnd* pPointer)	{m_pPlatformFrame = pPointer;}
 	//重载函数
 protected:
 	//控件绑定

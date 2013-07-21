@@ -86,6 +86,7 @@ using namespace std;
 #include "..\..\共享组件\界面资源\SkinResourceModule.h"
 #include "MemDC.h"
 #include "GdipButton.h"
+#include "resource.h"
 
 //字符串安全拼接
 static void SafeStrCat(char* dest, const char* src, int iDestBufferLen)
