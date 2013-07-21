@@ -8,6 +8,15 @@
 #define IDC_BT_FRAME_CLOSE					101							//关闭按钮
 
 #define IDC_BT_GAME							102							//游戏专区
+#define IDC_BT_MATCH						103							//比赛专区
+#define IDC_BT_PROPERTY						104							//道具商城
+#define IDC_BT_PRIZE						105							//奖品中心
+#define IDC_BT_RECHARGE						106							//充值中心
+
+#define IDC_BT_REFLASH						107							//信息刷新
+#define IDC_BT_USERINFOSET					108							//个人设置
+#define IDC_BT_RETURN						109							//返回
+#define IDC_BT_LOBBYSET						110							//大厅设置
 
 //圆角大小
 #define ROUND_CX							7							//圆角宽度
@@ -466,14 +475,19 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 //加载按钮
 void CPlatformFrame::LoadButtons()
 {
-	m_btMin.CreateButton(this, "PNG_BT_FRAME_MIN", _T("PNG"), LESS_SCREEN_CX-86, 3, IDC_BT_FRAME_MIN, 4);
-	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), LESS_SCREEN_CX-38, 3, IDC_BT_FRAME_CLOSE, 4);
+	m_LobbySet.CreateButton(this, "PNG_LOBBY_SET", _T("PNG"), LESS_SCREEN_CX - 112, 3, IDC_BT_LOBBYSET, 4);
+	m_btMin.CreateButton(this, "PNG_BT_FRAME_MIN", _T("PNG"), LESS_SCREEN_CX - 77, 3, IDC_BT_FRAME_MIN, 4);
+	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), LESS_SCREEN_CX - 42, 3, IDC_BT_FRAME_CLOSE, 4);
 
 	m_btGame.CreateButton(this, "PNG_BT_GAME", _T("PNG"), LESS_SCREEN_CX / 2 - 264, 154, IDC_BT_GAME, 4);
-	m_btMatch.CreateButton(this, "PNG_BT_MATCH", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_GAME, 4);
-	m_btProperty.CreateButton(this, "PNG_BT_PROPERTY", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_GAME, 4);
-	m_btPrize.CreateButton(this, "PNG_BT_PRIZE", _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_GAME, 4);
-	m_btRecharge.CreateButton(this, "PNG_BT_RECHARGE", _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_GAME, 4);
+	m_btMatch.CreateButton(this, "PNG_BT_MATCH", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_MATCH, 4);
+	m_btProperty.CreateButton(this, "PNG_BT_PROPERTY", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_PROPERTY, 4);
+	m_btPrize.CreateButton(this, "PNG_BT_PRIZE", _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_PRIZE, 4);
+	m_btRecharge.CreateButton(this, "PNG_BT_RECHARGE", _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_RECHARGE, 4);
+
+	m_btReflash.CreateButton(this, "PNG_YOU_RENEW", _T("PNG"), 178, 322, IDC_BT_REFLASH, 4);
+	m_btUserInfoSet.CreateButton(this, "PNG_INFO_MODIFY", _T("PNG"), 26, 290, IDC_BT_USERINFOSET, 4);
+	m_btReturn.CreateButton(this, "PNG_GL_BACK", _T("PNG"), LESS_SCREEN_CX / 2 + 210, 210, IDC_BT_RETURN, 4);
 }
 
 //加载图片资源
@@ -504,12 +518,17 @@ void CPlatformFrame::SetButtonBackGrounds(CDC *pDC)
 {
 	m_btMin.SetBkGnd(pDC);
 	m_btClose.SetBkGnd(pDC);
+	m_LobbySet.SetBkGnd(pDC);
 
 	m_btGame.SetBkGnd(pDC);
 	m_btMatch.SetBkGnd(pDC);
 	m_btProperty.SetBkGnd(pDC);
 	m_btPrize.SetBkGnd(pDC);
 	m_btRecharge.SetBkGnd(pDC);
+
+	m_btReflash.SetBkGnd(pDC);
+	m_btUserInfoSet.SetBkGnd(pDC);
+	m_btReturn.SetBkGnd(pDC);
 }
 
 //鼠标消息
