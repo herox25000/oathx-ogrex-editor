@@ -1,12 +1,12 @@
 #pragma once
-
+#include "stdafx.h"
 #include "GamePlazaDlg.h"
 #include "GdipButton.h"
 #include "DlgLogon.h"
 #include "GamePage.h"
+#include "GlobalUnits.h"
 
-
-class CPlatformFrame : public CFrameWnd
+class CPlatformFrame : public CFrameWnd ,public ITCPSocketSink
 {
 	DECLARE_DYNCREATE(CPlatformFrame)
 public:
@@ -15,6 +15,33 @@ public:
 protected:
 	virtual ~CPlatformFrame();
 
+public:
+	//释放对象
+	virtual void __cdecl Release() { delete this; }
+	//接口查询
+	virtual void * __cdecl QueryInterface(const IID & Guid, DWORD dwQueryVer);
+	//网络事件
+public:
+	//连接事件
+	virtual bool __cdecl OnEventTCPSocketLink(WORD wSocketID, INT nErrorCode);
+	//关闭事件
+	virtual bool __cdecl OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutReason);
+	//读取事件
+	virtual bool __cdecl OnEventTCPSocketRead(WORD wSocketID, CMD_Command Command, VOID * pData, WORD wDataSize);
+public:
+	//发送信息
+	void SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData, WORD wDataSize);
+	//显示消息
+	int ShowMessageBox(LPCTSTR pszMessage, UINT nType);
+	
+	//响应服务器消息函数
+public:
+	//登录消息
+	bool OnSocketMainLogon(CMD_Command Command, void * pData, WORD wDataSize);
+
+public:
+	CTCPSocketHelper			m_ClientSocket;						//网络连接
+	bool						m_bLogonPlaza;		//是否已经登陆
 protected:
 	CGamePlazaDlg*					m_pGamePlazaDlg;
 	CDlgLogon						m_DlgLogon;							//登录对话框
@@ -45,11 +72,7 @@ public:
 	void LoadImages();
 	//按钮背景绘制
 	void SetButtonBackGrounds(CDC *pDC);
-public:
-	//登录消息
-	virtual bool __cdecl SendLogonMessage();
-	//连接消息
-	virtual bool __cdecl SendConnectMessage();
+
 
 public:
 	virtual BOOL					RectifyResource(int nWidth, int nHeight);

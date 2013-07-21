@@ -512,6 +512,7 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 //析构函数
 CDlgLogon::~CDlgLogon()
 {
+	m_pPlatformFrame = NULL;
 }
 
 //控件绑定
@@ -618,6 +619,8 @@ void CDlgLogon::OnOK()
 	//ASSERT(pIPlazaViewItem!=NULL);
 	//pIPlazaViewItem->SendConnectMessage();
 
+	if(m_pPlatformFrame != NULL)
+		m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_CONNECT_SERVER,0);
 	return;
 }
 
@@ -1007,7 +1010,8 @@ void CDlgLogon::OnRegisterAccounts()
 	//IPlazaViewItem * pIPlazaViewItem=((CGameFrame*)AfxGetMainWnd())->GetPlazaViewItem();
 	//ASSERT(pIPlazaViewItem!=NULL);
 	//pIPlazaViewItem->SendConnectMessage();
-
+	if(m_pPlatformFrame != NULL)
+		m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_CONNECT_SERVER,0);
 	return;
 }
 
