@@ -16,7 +16,7 @@ protected:
 	TCHAR							m_szPassword[LEN_PASSWORD];					//用户密码
 
 	//控件变量
-protected:
+public:
 	CSkinEditEx						m_edPassword;						//密码控件
 
 	//函数定义
