@@ -1,7 +1,5 @@
 #pragma once
 
-#include "LogonDlg.h"
-
 class CGamePlazaDlg : public CDialog
 {
 public:
@@ -14,7 +12,6 @@ public:
 
 protected:
 	HICON					m_hIcon;
-	CLogonDlg				m_LogonDlg;
 
 	virtual BOOL			OnInitDialog();
 
