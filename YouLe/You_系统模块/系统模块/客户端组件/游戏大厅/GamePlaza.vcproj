@@ -221,6 +221,12 @@
 				RelativePath=".\CGdiPlusBitmap.h">
 			</File>
 			<File
+				RelativePath=".\EmptyPage.cpp">
+			</File>
+			<File
+				RelativePath=".\EmptyPage.h">
+			</File>
+			<File
 				RelativePath=".\GameItemWnd.cpp">
 			</File>
 			<File
@@ -240,6 +246,12 @@
 			</File>
 			<File
 				RelativePath=".\MemDC.h">
+			</File>
+			<File
+				RelativePath=".\TabGamePage.cpp">
+			</File>
+			<File
+				RelativePath=".\TabGamePage.h">
 			</File>
 		</Filter>
 		<File

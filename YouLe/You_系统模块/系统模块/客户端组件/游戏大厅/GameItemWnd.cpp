@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "GamePlaza.h"
 #include "GameItemWnd.h"
-#include ".\gameitemwnd.h"
 
 IMPLEMENT_DYNAMIC(CGameItemWnd, CWnd)
 CGameItemWnd::CGameItemWnd()

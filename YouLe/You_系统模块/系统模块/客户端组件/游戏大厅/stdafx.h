@@ -36,9 +36,15 @@
 #include <afxdisp.h>        // MFC 自动化类
 #include <afxmt.h>
 #include <AfxCmn.h>
+#include <afxtempl.h>
 #include <GdiPlus.h>
+#include <vector>
+#include <map>
+#include <list>
+#include <deque>
 
 using namespace Gdiplus;
+using namespace std;
 
 
 //MFC 文件
