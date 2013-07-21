@@ -187,7 +187,15 @@ public:
 	CPasswordControl					m_PasswordControl;					//用户密码
 	CControlCheckButton					m_RemPwdControl;
 
-
+	//软件键盘
+	CGdipButton							m_btNumber[10];		//数字按钮
+	CGdipButton							m_btAlphabet[26];	//字母按钮
+	CGdipButton							m_btOther[2];		//删除和大写
+	//
+public:
+	TCHAR								m_szKeyboradNumber[2][10];			//键盘字符
+	TCHAR								m_szKeyboradChar[2][26];			//键盘字符
+	bool								m_bCaps;	//是否大写
 	//控件变量
 public:
 	CWebBrowser							m_BrowerAD;						//浏览窗口
@@ -259,6 +267,9 @@ private:
 public:
 	//按钮函数
 	void SetButtonBackGrounds(CDC *pDC);
+	//大小写切换
+	void SwitchChar(bool bCaps);
+
 	//消息函数
 public:
 	//注册帐号
@@ -266,6 +277,8 @@ public:
 	afx_msg void OnWebhome();
 	afx_msg void OnChongzhi();
 	afx_msg void OnBanben();
+	//响应软键盘
+	afx_msg void OnKeyBoard(UINT uID);
 	//密码改变
 	//afx_msg void OnEnChangePassword();
 	//选择改变

@@ -82,6 +82,30 @@ BEGIN_MESSAGE_MAP(CGdipButton, CButton)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+//ÖØÐÂÉèÖÃAltImage
+void CGdipButton::ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName)
+{
+	m_bHaveBitmaps = FALSE;
+	m_dcStd.DeleteDC();
+	m_dcStdP.DeleteDC();
+	m_dcStdH.DeleteDC();
+	m_dcGS.DeleteDC();
+	m_dcBk.DeleteDC();
+	m_pStdImage->Load(ResName,pImageName);
+	Invalidate(TRUE);
+}
+
+BOOL CGdipButton::CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageName,int dx,int dy,UINT WondowsID,UINT lStatusNum/*=1*/)
+{
+	m_nStatusNum = lStatusNum;
+	m_pStdImage = new CGdiPlusBitmapResource;
+	if(m_pStdImage->Load(ResName,pImageName))
+	{
+		CRect rcWndButton(dx,dy,dx+(m_pStdImage->m_pBitmap->GetWidth()/m_nStatusNum),dy+m_pStdImage->m_pBitmap->GetHeight());
+		return Create(NULL,WS_VISIBLE|WS_CLIPCHILDREN,rcWndButton,pParentWnd,WondowsID);
+	}
+	return FALSE;
+}
 
 //=============================================================================
 //
@@ -306,7 +330,6 @@ HBRUSH CGdipButton::CtlColor(CDC* pScreenDC, UINT nCtlColor)
 			// background
 			if (m_dcBk.m_hDC == NULL)
 			{
-
 				CRect rect1;
 				CClientDC clDC(GetParent());
 				GetWindowRect(rect1);

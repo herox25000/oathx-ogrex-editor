@@ -47,6 +47,10 @@ public:
 				DIS_TYPE
 			};
 
+
+	// create button
+	BOOL CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageName,int dx,int dy,UINT WondowsID,UINT lStatusNum = 1);
+
 	// create button
 	BOOL CreateButton(CWnd* pParentWnd,UINT ResourceID, LPCTSTR pImageName,int dx,int dy,UINT WondowsID,UINT lStatusNum = 1);
 
@@ -71,7 +75,8 @@ public:
 	void SetToolTipText(UINT nId, BOOL bActivate = TRUE);
 	void SetHorizontal(bool ImagesAreLaidOutHorizontally = FALSE);
 	void DeleteToolTip();
-
+	//÷ÿ–¬…Ë÷√AltImage
+	void ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName);
 
 protected:
 

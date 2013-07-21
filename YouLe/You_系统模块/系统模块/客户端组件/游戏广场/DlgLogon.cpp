@@ -36,6 +36,9 @@
 #define		WM_BT_CHONGZHI		102
 #define		WM_BT_BANBEN		103
 
+//软件键盘
+#define		WM_BT_KEYBOARD_MIN	120
+#define		WM_BT_KEYBOARD_MAX	WM_BT_KEYBOARD_MIN+38
 
 BEGIN_MESSAGE_MAP(CDlgRegister, CDialog)
 	//系统消息
@@ -48,7 +51,6 @@ BEGIN_MESSAGE_MAP(CDlgRegister, CDialog)
 	ON_BN_CLICKED(WM_BT_REGISTERCLOSE,OnCancel)
 	ON_BN_CLICKED(WM_BT_REGISTEROK,OnOK)
 	ON_EN_CHANGE(IDC_PASSWORD, OnEnChangeLogonPass)
-
 END_MESSAGE_MAP()
 
 BEGIN_MESSAGE_MAP(CDlgLogon, CDialog)
@@ -67,6 +69,7 @@ BEGIN_MESSAGE_MAP(CDlgLogon, CDialog)
 	ON_BN_CLICKED(WM_BT_WEBHOME, OnWebhome)
 	ON_BN_CLICKED(WM_BT_CHONGZHI, OnChongzhi)
 	ON_BN_CLICKED(WM_BT_BANBEN, OnBanben)
+	ON_CONTROL_RANGE( BN_CLICKED, WM_BT_KEYBOARD_MIN, WM_BT_KEYBOARD_MAX, OnKeyBoard)
 END_MESSAGE_MAP()
 
 
@@ -210,6 +213,7 @@ BOOL CDlgRegister::OnInitDialog()
 	m_btMan.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),110,277);
 	m_btWoman.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),170,277);
 	m_btMan.SetButtonChecked(true);
+	
 	//居中窗口
 	CenterWindow(this);
 	//获取窗口
@@ -490,15 +494,18 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 	m_szSFZ[0] = 0;
 	m_szAddress[0]=0;
 	m_LogonMode=LogonMode_Accounts;
-
 	//辅助信息
 	m_bRegister=false;
-
 	//位置信息
 	m_nFullWidth=0;
 	m_nFullHeight=0;
 	m_bNetOption=false;
-
+	//设置键值
+	lstrcpyn(m_szKeyboradNumber[0],TEXT("0123456789"),CountArray(m_szKeyboradNumber[0]));
+	lstrcpyn(m_szKeyboradNumber[1],TEXT(")!@#$%^&*("),CountArray(m_szKeyboradNumber[1]));
+	lstrcpyn(m_szKeyboradChar[0],TEXT("abcdefghijklmnopqrstyvwxyz"),CountArray(m_szKeyboradChar[0]));
+	lstrcpyn(m_szKeyboradChar[1],TEXT("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),CountArray(m_szKeyboradChar[1]));
+	m_bCaps = false;
 	return;
 }
 
@@ -542,6 +549,29 @@ BOOL CDlgLogon::OnInitDialog()
 	m_btChongzhi.CreateButton(this,PNG_BT_CHONGZHI,_T("PNG"),350,75,WM_BT_CHONGZHI,5);
 	m_btBanben.CreateButton(this,PNG_BT_BANBEN,_T("PNG"),440,75,WM_BT_BANBEN,5);
 
+	//创建软键盘
+	m_btOther[0].CreateButton(this,TEXT("PNG_BT_KEYBOARD2"),_T("PNG"),414,312,WM_BT_KEYBOARD_MIN,3);
+	m_btOther[1].CreateButton(this,TEXT("PNG_BT_KEYBOARD3"),_T("PNG"),414,349,WM_BT_KEYBOARD_MIN+1,3);
+	TCHAR TempName[32];
+	UINT windowsID = 0;
+	int i=0;
+	for (i=0;i<10;i++)
+	{
+		sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+4);
+		windowsID = WM_BT_KEYBOARD_MIN+2+i; 
+		m_btNumber[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*i,275,windowsID,3);
+	}
+	for(i=0;i<26;i++)
+	{
+		sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+14);
+		windowsID = WM_BT_KEYBOARD_MIN+12+i; 
+		if(i<8)
+			m_btAlphabet[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*i,312,windowsID,3);
+		else if(i<16)
+			m_btAlphabet[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*(i-8),349,windowsID,3);
+		else
+			m_btAlphabet[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*(i-16),387,windowsID,3);
+	}
 
 	//居中窗口
 	CenterWindow(this);
@@ -1025,7 +1055,17 @@ void CDlgLogon::SetButtonBackGrounds(CDC *pDC)
 	m_btRegister.SetBkGnd(pDC);
 	m_btChongzhi.SetBkGnd(pDC);
 	m_btBanben.SetBkGnd(pDC);
-	
+	//key board
+	m_btOther[0].SetBkGnd(pDC);
+	m_btOther[1].SetBkGnd(pDC);
+	for (int i=0;i<10;i++)
+	{
+		m_btNumber[i].SetBkGnd(pDC);
+	}
+	for (int i=0;i<26;i++)
+	{
+		m_btAlphabet[i].SetBkGnd(pDC);
+	}
 }
 
 //鼠标消息
@@ -1101,5 +1141,82 @@ void CDlgLogon::GetProxyInfo(enProxyServerType &ProxyServerType, tagProxyServerI
 		}
 	}
 }
+
+//响应软键盘
+void CDlgLogon::OnKeyBoard(UINT uID)
+{
+	int nInx = uID - WM_BT_KEYBOARD_MIN;
+	switch(nInx)
+	{
+	case 0: //删除按钮
+		{
+			m_PasswordControl.m_edPassword.SetFocus();
+			m_PasswordControl.m_edPassword.SendMessage(WM_CHAR,VK_BACK,0L);
+			break;
+		}
+	case 1: //大写
+		{
+			OutputDebugString("大写 \r\n");\
+			m_PasswordControl.m_edPassword.SetFocus();
+			m_bCaps = !m_bCaps;
+			SwitchChar(m_bCaps);
+			CRect FramRect;
+			GetClientRect(FramRect);
+			CRect rect(0,FramRect.bottom/2,FramRect.right,FramRect.bottom);
+			InvalidateRect(rect,TRUE);
+			break;
+		}
+	default:
+		{
+			m_PasswordControl.m_edPassword.SetFocus();
+			//数字键
+			WORD wViraulCode = 0;
+			if((nInx >= 2) && (nInx < 12))
+			{
+				OutputDebugString("点击了数字键 \r\n");
+
+				if((GetKeyState(VK_SHIFT)&0xF0)>0)
+					wViraulCode = (WORD)m_szKeyboradNumber[1][nInx-2];
+				else
+					wViraulCode = (WORD)m_szKeyboradNumber[0][nInx-2];
+			}
+			else//字母键
+			{
+				OutputDebugString("点击了字母 \r\n");
+				
+				if(m_bCaps)
+					wViraulCode = (WORD)m_szKeyboradChar[1][nInx-12];
+				else
+					wViraulCode = (WORD)m_szKeyboradChar[0][nInx-12];
+			}
+			m_PasswordControl.m_edPassword.SendMessage(WM_CHAR,wViraulCode,0L);
+			break;
+		}
+	}
+}
+
+//大小写切换
+void CDlgLogon::SwitchChar(bool bCaps)
+{
+	int i = 0;
+	TCHAR TempName[256] = TEXT("");
+	if(bCaps)
+	{
+		for(i=0;i<26;i++)
+		{
+			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+40);
+			m_btAlphabet[i].ResetAltImage(TempName,_T("PNG"));
+		}
+	}
+	else
+	{
+		for(i=0;i<26;i++)
+		{
+			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+14);
+			m_btAlphabet[i].ResetAltImage(TempName,_T("PNG"));
+		}
+	}
+}
+
 //////////////////////////////////////////////////////////////////////////
 

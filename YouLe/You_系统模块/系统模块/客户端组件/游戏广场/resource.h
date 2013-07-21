@@ -143,6 +143,8 @@
 #define PNG_BT_RegisterClose            1106
 #define PNG_BT_RegisterOK               1107
 
+
+
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32776
