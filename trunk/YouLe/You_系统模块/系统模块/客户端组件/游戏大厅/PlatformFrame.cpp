@@ -349,8 +349,7 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetClientRect(&rcClient);
 	RectifyResource(rcClient.Width(), rcClient.Height());
 	//显示窗口
-	ShowWindow(SW_HIDE);
-	SetForegroundWindow();
+
 	//启动登陆窗口
 	m_DlgLogon.SetPlatFormPointer(this);
 	OnCommandLogon();

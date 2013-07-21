@@ -1,6 +1,7 @@
 #include "stdafx.h"
 #include "GamePlaza.h"
 #include "GamePage.h"
+#include ".\gamepage.h"
 
 IMPLEMENT_DYNAMIC(CGamePage, CWnd)
 CGamePage::CGamePage()
@@ -14,6 +15,7 @@ CGamePage::~CGamePage()
 
 BEGIN_MESSAGE_MAP(CGamePage, CWnd)
 	ON_WM_CREATE()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 
@@ -38,4 +40,15 @@ int CGamePage::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	}
 
 	return 0;
+}
+
+BOOL CGamePage::OnEraseBkgnd(CDC* pDC)
+{
+	CRect rect;
+	GetClientRect(&rect);
+
+	CMemDC dc(pDC, &rect);
+	dc.FillRect(&rect, &CBrush(RGB(0, 0, 155)));
+
+	return TRUE;
 }

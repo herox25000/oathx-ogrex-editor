@@ -26,7 +26,6 @@ protected:
 public:
 	afx_msg BOOL	OnEraseBkgnd(CDC* pDC);
 	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
-	afx_msg void	OnPaint();
 };
 
 typedef CArray<CGameItemWnd*>	GameItemList;
