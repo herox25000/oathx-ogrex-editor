@@ -233,6 +233,8 @@ void CPlatformFrame::LoadImages()
 {
 	m_ImageHead.LoadImage(AfxGetInstanceHandle(),TEXT("BACKGROUND_HEAD"));
 	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("BACKGROUND_PLAZA"));
+	m_ImageUserInfo.LoadImage(AfxGetInstanceHandle(), TEXT("BACKGROUND_USERINFO"));
+	m_ImageGamePublic.LoadImage(AfxGetInstanceHandle(), TEXT("BACKGROUND_GAMEPUBLIC"));
 }
 
 BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
@@ -241,7 +243,10 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	GetClientRect(&rcClient);
 	CMemDC pDevC(pDC, rcClient);
 	m_ImageHead.DrawImage(pDevC, 0, 0);
-	m_ImageBack.DrawImage(pDevC,0,147);
+	int nHight = m_ImageHead.GetHeight();
+	m_ImageUserInfo.DrawImage(pDevC, 0, nHight);
+	m_ImageBack.DrawImage(pDevC,m_ImageUserInfo.GetWidth(), nHight);
+	m_ImageGamePublic.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + m_ImageBack.GetWidth(), nHight);
 	SetButtonBackGrounds(pDevC);
 	return TRUE;
 }

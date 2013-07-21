@@ -25,6 +25,8 @@ protected:
 protected:
 	CPngImage				m_ImageHead;
 	CPngImage				m_ImageBack;
+	CPngImage				m_ImageUserInfo;
+	CPngImage				m_ImageGamePublic;
 
 	//¿Ø¼þ°´Å¥
 protected:

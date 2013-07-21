@@ -175,6 +175,8 @@ BACKGROUND_PLAZA        PNG                     "res\\PLAZA\\BACKGROUND_PLAZA.pn
 BACKGROUND_HEAD         PNG                     "res\\PLAZA\\BACKGROUND_HEAD.png"
 PNG_BT_FRAME_MIN        PNG                     "res\\PLAZA\\BT_FRAME_MIN.png"
 PNG_BT_FRAME_CLOSE      PNG                     "res\\PLAZA\\BT_FRAME_CLOSE.png"
+BACKGROUND_USERINFO	PNG			"res\\PLAZA\\BACKGROUND_USERINFO.png"
+BACKGROUND_GAMEPUBLIC	PNG			"res\\PLAZA\\BACKGROUND_GAMEPUBLIC.png"
 
 
 /////////////////////////////////////////////////////////////////////////////
