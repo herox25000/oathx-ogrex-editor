@@ -5,6 +5,7 @@
 #include "DlgLogon.h"
 #include "GameZonePage.h"
 #include "GlobalUnits.h"
+#include "FrameSet.h"
 
 class CPlatformFrame : public CFrameWnd ,public ITCPSocketSink
 {
@@ -46,11 +47,13 @@ public:
 	bool OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wDataSize);
 
 
-public:
+protected:
 	CTCPSocketHelper				m_ClientSocket;						//网络连接
 	bool							m_bLogonPlaza;		//是否已经登陆
+
 	CGamePlazaDlg*					m_pGamePlazaDlg;
-	CDlgLogon						m_DlgLogon;							//登录对话框
+	CDlgLogon						m_DlgLogon;				//登录对话框
+	CFrameSet						m_DlgFrameSet;			//打开大厅设置
 
 	//资源
 protected:
@@ -58,6 +61,8 @@ protected:
 	CPngImage						m_ImageBack;
 	CPngImage						m_ImageUserInfo;
 	CPngImage						m_ImageGamePublic;
+
+	CPngImage						m_UserHead;
 
 	//控件按钮
 protected:
@@ -74,7 +79,14 @@ protected:
 	CGdipButton						m_btUserInfoSet;
 	CGdipButton						m_btReturn;
 
+	CGdipButton						m_btUserBag;
+	CGdipButton						m_btSquare;
+	CGdipButton						m_btTill;
+	CGdipButton						m_btIm;
+	
+protected:
 	CGameZonePage					m_ZonePage;
+
 public:
 	//加载按钮
 	void LoadButtons();
@@ -82,7 +94,8 @@ public:
 	void LoadImages();
 	//按钮背景绘制
 	void SetButtonBackGrounds(CDC *pDC);
-
+	//绘制角色信息
+	void DrawUserInfo(CDC *pDC);
 
 	//重载函数
 public:
@@ -106,6 +119,8 @@ public:
 	afx_msg void OnCommandConnect();
 	//取消连接
 	afx_msg void OnCommandCancelConnect();
+	//打开大厅设置
+	afx_msg void OnOpenFrameSet();
 
 protected:
 	DECLARE_MESSAGE_MAP()

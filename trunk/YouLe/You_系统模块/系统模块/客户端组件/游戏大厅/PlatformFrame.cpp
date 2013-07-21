@@ -18,13 +18,16 @@
 #define IDC_BT_RETURN						109							//返回
 #define IDC_BT_LOBBYSET						110							//大厅设置
 
-//圆角大小
-#define ROUND_CX							7							//圆角宽度
-#define ROUND_CY							7							//圆角高度
+#define IDC_BT_USERBAG						111							//角色背包
+#define IDC_BT_SQUARE						112							
+#define IDC_BT_TILL							113
+#define IDC_BT_IM							114
 
 //阴影定义
 #define SHADOW_CX							0							//阴影宽度
 #define SHADOW_CY							0							//阴影高度
+
+#define CAPTION_SIZE						35							//标题大小
 
 IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 
@@ -543,6 +546,21 @@ void CPlatformFrame::OnCommandLogon()
 	return;
 }
 
+//打开大厅设置
+void CPlatformFrame::OnOpenFrameSet()
+{
+	//创建登录框
+	if (m_DlgFrameSet.m_hWnd == NULL) 
+	{
+		m_DlgFrameSet.Create(IDD_FRAMESET, this);
+	}
+	//显示登录框
+	m_DlgFrameSet.ShowWindow(SW_SHOW);
+	m_DlgFrameSet.SetActiveWindow();
+	m_DlgFrameSet.SetForegroundWindow();
+	return;
+}
+
 //连接服务器
 void CPlatformFrame::OnCommandConnect()
 {
@@ -643,6 +661,11 @@ void CPlatformFrame::LoadButtons()
 	m_btReflash.CreateButton(this, "PNG_YOU_RENEW", _T("PNG"), 178, 322, IDC_BT_REFLASH, 4);
 	m_btUserInfoSet.CreateButton(this, "PNG_INFO_MODIFY", _T("PNG"), 26, 290, IDC_BT_USERINFOSET, 4);
 	m_btReturn.CreateButton(this, "PNG_GL_BACK", _T("PNG"), LESS_SCREEN_CX / 2 + 210, 210, IDC_BT_RETURN, 4);
+
+	m_btSquare.CreateButton(this, "PNG_BT_GL_SQUARE", _T("PNG"), 26, 490, IDC_BT_SQUARE, 4);
+	m_btTill.CreateButton(this, "PNG_BT_GL_TILL", _T("PNG"), 72, 490, IDC_BT_TILL, 4);
+	m_btUserBag.CreateButton(this, "PNG_BT_GL_BAGPACK", _T("PNG"), 122, 490, IDC_BT_USERBAG, 4);
+	m_btIm.CreateButton(this, "PNG_BT_GL_IM", _T("PNG"), 172, 490, IDC_BT_IM, 4);
 }
 
 //加载图片资源
@@ -652,6 +675,8 @@ void CPlatformFrame::LoadImages()
 	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("BACKGROUND_PLAZA"));
 	m_ImageUserInfo.LoadImage(AfxGetInstanceHandle(), TEXT("BACKGROUND_USERINFO"));
 	m_ImageGamePublic.LoadImage(AfxGetInstanceHandle(), TEXT("BACKGROUND_GAMEPUBLIC"));
+
+	m_UserHead.LoadImage(AfxGetInstanceHandle(), TEXT("PNG_SEX_HEAD"));
 }
 
 BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
@@ -659,15 +684,15 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	CMemDC pDevC(pDC, rcClient);
+	pDevC->SetBkMode(TRANSPARENT);
 	m_ImageHead.DrawImage(pDevC, 0, 0);
 	int nHight = m_ImageHead.GetHeight();
 	m_ImageUserInfo.DrawImage(pDevC, 0, nHight);
 	m_ImageBack.DrawImage(pDevC,m_ImageUserInfo.GetWidth(), nHight);
 	m_ImageGamePublic.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + m_ImageBack.GetWidth(), nHight);
 	SetButtonBackGrounds(pDevC);
-
+	DrawUserInfo(pDevC);
 	m_ZonePage.EraseBkgnd(pDevC);
-
 	return TRUE;
 }
 
@@ -687,6 +712,36 @@ void CPlatformFrame::SetButtonBackGrounds(CDC *pDC)
 	m_btReflash.SetBkGnd(pDC);
 	m_btUserInfoSet.SetBkGnd(pDC);
 	m_btReturn.SetBkGnd(pDC);
+
+	m_btUserBag.SetBkGnd(pDC);
+	m_btIm.SetBkGnd(pDC);
+	m_btSquare.SetBkGnd(pDC);
+	m_btTill.SetBkGnd(pDC);
+}
+
+//绘制角色信息
+void CPlatformFrame::DrawUserInfo( CDC *pDC )
+{
+	tagGlobalUserData& UserData = g_GlobalUnits.GetGolbalUserData();
+	if (UserData.dwUserID!=0L)
+	{
+		int nHeadNumberWidth	= m_UserHead.GetWidth() / 2;
+		int nHeadNumberHeight	= m_UserHead.GetHeight(); 
+		//输出头像
+		if (UserData.cbGender)
+		{
+			m_UserHead.DrawImage(pDC, 28, 190, nHeadNumberWidth, nHeadNumberHeight, 0, 0);
+		}
+		else
+		{
+			m_UserHead.DrawImage(pDC, 28, 190, nHeadNumberWidth, nHeadNumberHeight, nHeadNumberWidth, 0);
+		}
+
+		//输出帐号
+		CRect rcAccounts;
+		rcAccounts.SetRect(66, 344, 166,360);
+		pDC->DrawText(UserData.szAccounts,lstrlen(UserData.szAccounts),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
+	}
 }
 
 //鼠标消息
@@ -717,6 +772,11 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 	case IDC_BT_FRAME_CLOSE:				//关闭按钮
 		{
 			PostMessage(WM_CLOSE,0,0);
+			return TRUE;
+		}
+	case IDC_BT_LOBBYSET:				//打开大厅设置
+		{
+			OnOpenFrameSet();
 			return TRUE;
 		}
 	case IDM_LOGON_PLAZA:			//启动登陆窗口	

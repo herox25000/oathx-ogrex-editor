@@ -92,15 +92,15 @@ public:
 	TCHAR								m_szName[NAME_LEN];				//
 	TCHAR								m_szSFZ[PASS_LEN];				//身份证号码
 
-	BYTE					m_cbLogonPassLevel;					//密码强度
-	CPngImage				m_ImageBack;
-	CPngImage				m_ImagePasswordLevel;
+	BYTE								m_cbLogonPassLevel;					//密码强度
+	CPngImage							m_ImageBack;
+	CPngImage							m_ImagePasswordLevel;
 	//控件变量
 public:
-	CGdipButton				m_btEixt;
-	CGdipButton				m_btRegisterOk;
-	CControlCheckButton		m_btMan;
-	CControlCheckButton		m_btWoman;
+	CGdipButton							m_btEixt;
+	CGdipButton							m_btRegisterOk;
+	CControlCheckButton					m_btMan;
+	CControlCheckButton					m_btWoman;
 
 	//函数定义
 public:
