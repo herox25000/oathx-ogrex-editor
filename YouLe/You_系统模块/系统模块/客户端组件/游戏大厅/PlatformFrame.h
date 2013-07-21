@@ -3,7 +3,7 @@
 #include "GamePlazaDlg.h"
 #include "GdipButton.h"
 #include "DlgLogon.h"
-#include "GamePage.h"
+#include "GameZonePage.h"
 #include "GlobalUnits.h"
 
 class CPlatformFrame : public CFrameWnd ,public ITCPSocketSink
@@ -74,7 +74,7 @@ protected:
 	CGdipButton						m_btUserInfoSet;
 	CGdipButton						m_btReturn;
 
-	CGamePage						m_GamePage;
+	CGameZonePage					m_ZonePage;
 public:
 	//º”‘ÿ∞¥≈•
 	void LoadButtons();

@@ -1,22 +1,30 @@
 #pragma once
 
+//////////////////////////////////////////////////////////////////////////
+// 游戏列表项
+//////////////////////////////////////////////////////////////////////////
 class CGameItemWnd : public CWnd
 {
 	DECLARE_DYNAMIC(CGameItemWnd)
-
 public:
+	// 构造函数
 	CGameItemWnd();
+	// 析构函数
 	virtual ~CGameItemWnd();
 
-	// create game item wnd
+	// 创建窗口
 	virtual BOOL	Create(UINT nID, INT nDestX, INT nDestY, 
-		CWnd* pParent, HINSTANCE hResource, LPCTSTR lpszBackResourceName, LPCTSTR lpszBillResouceName);
+		CWnd* pParent, HINSTANCE hInstance, LPCTSTR lpszBackResourceName, LPCTSTR lpszBillResouceName);
 
+	// 灰色窗口
 	virtual	BOOL	EnableWindow(BOOL bEnable /* = TRUE */);
+public:
+	// 设置背景
+	virtual void	SetBackImage(HINSTANCE hInstance, LPCTSTR lpszBackResouceName);
+	// 设置广告
+	virtual void	SetBillImage(HINSTANCE hInstance, LPCTSTR lpszBillResouceName);
 protected:
-	// back png image
 	CPngImage		m_PngBack;
-	// bill png image
 	CPngImage		m_PngBill;
 
 	CGdipButton		m_Regular;
@@ -28,6 +36,7 @@ public:
 	afx_msg int		OnCreate(LPCREATESTRUCT lpCreateStruct);
 };
 
+// 游戏项列表
 typedef CArray<CGameItemWnd*>	GameItemList;
 
 

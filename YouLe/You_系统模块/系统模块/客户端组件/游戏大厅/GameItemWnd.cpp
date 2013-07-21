@@ -16,12 +16,13 @@ BEGIN_MESSAGE_MAP(CGameItemWnd, CWnd)
 	ON_WM_CREATE()
 END_MESSAGE_MAP()
 
+// 创建游戏项
 BOOL CGameItemWnd::Create(UINT nID, INT nDestX, INT nDestY,
-						  CWnd* pParent, HINSTANCE hResource, LPCTSTR lpszBackResourceName, LPCTSTR lpszBillResouceName)
+						  CWnd* pParent, HINSTANCE hInstance, LPCTSTR lpszBackResourceName, LPCTSTR lpszBillResouceName)
 {
-	m_PngBack.LoadImage(hResource == NULL ? AfxGetInstanceHandle() : hResource, 
+	m_PngBack.LoadImage(hInstance == NULL ? AfxGetInstanceHandle() : hInstance, 
 		lpszBackResourceName);
-	m_PngBill.LoadImage(hResource == NULL ? AfxGetInstanceHandle() : hResource,
+	m_PngBill.LoadImage(hInstance == NULL ? AfxGetInstanceHandle() : hInstance,
 		lpszBillResouceName);
 
 	CRect rect;
@@ -31,6 +32,7 @@ BOOL CGameItemWnd::Create(UINT nID, INT nDestX, INT nDestY,
 	return CWnd::Create(NULL, NULL, WS_VISIBLE|WS_CHILD, rect, pParent, nID);
 }
 
+// 状态控制
 BOOL CGameItemWnd::EnableWindow(BOOL bEnable)
 {
 	m_Regular.ShowWindow(bEnable ? SW_SHOW : SW_HIDE);
@@ -39,6 +41,21 @@ BOOL CGameItemWnd::EnableWindow(BOOL bEnable)
 	return CWnd::EnableWindow(bEnable);
 }
 
+// 设置背景
+void CGameItemWnd::SetBackImage(HINSTANCE hInstance, LPCTSTR lpszBackResouceName)
+{
+	m_PngBack.DestroyImage();
+	m_PngBack.LoadImage(hInstance == NULL ? AfxGetInstanceHandle() : hInstance, lpszBackResouceName);
+}
+
+// 设置广告
+void CGameItemWnd::SetBillImage(HINSTANCE hInstance, LPCTSTR lpszBillResouceName)
+{
+	m_PngBill.DestroyImage();
+	m_PngBill.LoadImage(hInstance == NULL ? AfxGetInstanceHandle() : hInstance, lpszBillResouceName);
+}
+
+// 背景刷新
 BOOL CGameItemWnd::OnEraseBkgnd(CDC* pDC)
 {
 	CRect rcClient;
