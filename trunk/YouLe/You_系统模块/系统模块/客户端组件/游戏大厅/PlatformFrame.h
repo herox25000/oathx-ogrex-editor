@@ -57,12 +57,17 @@ protected:
 protected:
 	CGdipButton						m_btMin;
 	CGdipButton						m_btClose;
+	CGdipButton						m_LobbySet;
 
 	CGdipButton						m_btGame;
 	CGdipButton						m_btMatch;
 	CGdipButton						m_btProperty;
 	CGdipButton						m_btPrize;
 	CGdipButton						m_btRecharge;
+	CGdipButton						m_btReflash;
+	CGdipButton						m_btUserInfoSet;
+	CGdipButton						m_btReturn;
+
 	
 	CGamePage						m_GamePage;
 public:

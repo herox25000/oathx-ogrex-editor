@@ -182,7 +182,10 @@ PNG_BT_MATCH		PNG			"res\\PLAZA\\BT_MATCH.png"
 PNG_BT_PROPERTY		PNG			"res\\PLAZA\\BT_PROPERTY.png"
 PNG_BT_PRIZE		PNG			"res\\PLAZA\\BT_PRIZE.png"
 PNG_BT_RECHARGE		PNG			"res\\PLAZA\\BT_RECHARGE.png"
-
+PNG_GL_BACK		PNG			"res\\PLAZA\\GL_BACK.png"
+PNG_INFO_MODIFY		PNG			"res\\PLAZA\\INFO_MODIFY.png"
+PNG_LOBBY_SET		PNG			"res\\PLAZA\\LOBBY_SET.png"
+PNG_YOU_RENEW		PNG			"res\\PLAZA\\YOU_RENEW.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
