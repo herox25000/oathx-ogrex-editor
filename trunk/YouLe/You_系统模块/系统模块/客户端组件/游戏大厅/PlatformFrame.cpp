@@ -57,8 +57,11 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetForegroundWindow();
 	//Æô¶¯µÇÂ½´°¿Ú
 	//SendLogonMessage();
-	m_pGamePage.Create(0, CRect(250, 260, 500, 500), this);
-	m_pGamePage.ShowWindow(SW_SHOW);
+	//m_pGamePage.Create(0, CRect(250, 260, 500, 500), this);
+	//m_pGamePage.ShowWindow(SW_SHOW);
+
+	m_GamePage.Create(NULL, NULL, WS_CHILD|WS_VISIBLE, CRect(250, 260, 250+176*3, 260+140*3), this, 10001);
+
 	return 0;
 }
 

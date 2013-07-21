@@ -12,6 +12,7 @@ public:
 	virtual BOOL	Create(UINT nID, INT nDestX, INT nDestY, 
 		CWnd* pParent, HINSTANCE hResource, LPCTSTR lpszBackResourceName, LPCTSTR lpszBillResouceName);
 
+	virtual	BOOL	EnableWindow(BOOL bEnable /* = TRUE */);
 protected:
 	// back png image
 	CPngImage		m_PngBack;
@@ -19,7 +20,7 @@ protected:
 	CPngImage		m_PngBill;
 
 	CGdipButton		m_Regular;
-	CGdipButton		m_Join;
+	CGdipButton		m_JoinBtn;
 protected:
 	DECLARE_MESSAGE_MAP()
 public:
