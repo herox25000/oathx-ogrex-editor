@@ -175,27 +175,33 @@ BACKGROUND_PLAZA        PNG                     "res\\PLAZA\\BACKGROUND_PLAZA.pn
 BACKGROUND_HEAD         PNG                     "res\\PLAZA\\BACKGROUND_HEAD.png"
 PNG_BT_FRAME_MIN        PNG                     "res\\PLAZA\\BT_FRAME_MIN.png"
 PNG_BT_FRAME_CLOSE      PNG                     "res\\PLAZA\\BT_FRAME_CLOSE.png"
-BACKGROUND_USERINFO	PNG			"res\\PLAZA\\BACKGROUND_USERINFO.png"
-BACKGROUND_GAMEPUBLIC	PNG			"res\\PLAZA\\BACKGROUND_GAMEPUBLIC.png"
-PNG_BT_GAME		PNG			"res\\PLAZA\\BT_GAME.png"
-PNG_BT_MATCH		PNG			"res\\PLAZA\\BT_MATCH.png"
-PNG_BT_PROPERTY		PNG			"res\\PLAZA\\BT_PROPERTY.png"
-PNG_BT_PRIZE		PNG			"res\\PLAZA\\BT_PRIZE.png"
-PNG_BT_RECHARGE		PNG			"res\\PLAZA\\BT_RECHARGE.png"
-PNG_GL_BACK		PNG			"res\\PLAZA\\GL_BACK.png"
-PNG_INFO_MODIFY		PNG			"res\\PLAZA\\INFO_MODIFY.png"
-PNG_LOBBY_SET		PNG			"res\\PLAZA\\LOBBY_SET.png"
-PNG_YOU_RENEW		PNG			"res\\PLAZA\\YOU_RENEW.png"
+BACKGROUND_USERINFO     PNG                     "res\\PLAZA\\BACKGROUND_USERINFO.png"
+BACKGROUND_GAMEPUBLIC   PNG                     "res\\PLAZA\\BACKGROUND_GAMEPUBLIC.png"
+PNG_BT_GAME             PNG                     "res\\PLAZA\\BT_GAME.png"
+PNG_BT_MATCH            PNG                     "res\\PLAZA\\BT_MATCH.png"
+PNG_BT_PROPERTY         PNG                     "res\\PLAZA\\BT_PROPERTY.png"
+PNG_BT_PRIZE            PNG                     "res\\PLAZA\\BT_PRIZE.png"
+PNG_BT_RECHARGE         PNG                     "res\\PLAZA\\BT_RECHARGE.png"
+PNG_GL_BACK             PNG                     "res\\PLAZA\\GL_BACK.png"
+PNG_INFO_MODIFY         PNG                     "res\\PLAZA\\INFO_MODIFY.png"
+PNG_LOBBY_SET           PNG                     "res\\PLAZA\\LOBBY_SET.png"
+PNG_YOU_RENEW           PNG                     "res\\PLAZA\\YOU_RENEW.png"
+PNG_BT_GL_BAGPACK       PNG                     "res\\PLAZA\\GL_BAGPACK.png"
+PNG_BT_GL_IM            PNG                     "res\\PLAZA\\GL_IM.png"
+PNG_BT_GL_SQUARE        PNG                     "res\\PLAZA\\GL_SQUARE.png"
+PNG_BT_GL_TILL          PNG                     "res\\PLAZA\\GL_TILL.png"
+PNG_SEX_HEAD            PNG                     "res\\PLAZA\\SEX.png"
+PNG_FRAME_SET           PNG                     "res\\PLAZA\\FRAME_SET.png"
+GAMEITEM_BACK           PNG                     "res\\PLAZA\\GAMEITEM_BACK.png"
+GAMEITEM_BILL           PNG                     "res\\PLAZA\\GAMEITEM_BILL.png"
+GAMEITEM_REGULAR        PNG                     "res\\PLAZA\\GAMEITEM_REGULAR.png"
+GAMEITEM_JOIN           PNG                     "res\\PLAZA\\GAMEITEM_JOIN.png"
+GAMEROOM_JOIN           PNG                     "res\\PLAZA\\GAMEROOM_JOIN.png"
+GAMEROOM_BILL           PNG                     "res\\PLAZA\\GAMEROOM_BILL.png"
+GAMEPAGE_MATCH          PNG                     "res\\PLAZA\\GAMEPAGE_MATCH.png"
 
 /////////////////////////////////////////////////////////////////////////////
 //
-GAMEITEM_BACK			PNG						"res\\PLAZA\\GAMEITEM_BACK.png"
-GAMEITEM_BILL			PNG						"res\\PLAZA\\GAMEITEM_BILL.png"
-GAMEITEM_REGULAR		PNG						"res\\PLAZA\\GAMEITEM_REGULAR.png"
-GAMEITEM_JOIN			PNG						"res\\PLAZA\\GAMEITEM_JOIN.png"
-GAMEROOM_JOIN			PNG						"res\\PLAZA\\GAMEROOM_JOIN.png"
-GAMEROOM_BILL			PNG						"res\\PLAZA\\GAMEROOM_BILL.png"
-GAMEPAGE_MATCH			PNG						"res\\PLAZA\\GAMEPAGE_MATCH.png"
 GAMETAB_GAME			PNG						"res\\PLAZA\\GAMETAB_GAME.png"
 GAMETAB_CARD			PNG						"res\\PLAZA\\GAMETAB_CARD.png"
 GAMETAB_MAHJ			PNG						"res\\PLAZA\\GAMETAB_MAHJ.png"
@@ -209,7 +215,6 @@ STYLE DS_SETFONT | DS_FIXEDSYS | DS_CENTER | WS_CHILD | WS_VISIBLE |
 EXSTYLE WS_EX_APPWINDOW
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Button1",IDC_BUTTON1,110,75,72,22
 END
 
 IDD_LOGON DIALOGEX 0, 0, 353, 253
@@ -263,6 +268,13 @@ STYLE DS_SETFONT | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | WS_POPUP |
 FONT 9, "ËÎÌå", 400, 0, 0x0
 BEGIN
     PUSHBUTTON      "È¡Ïû",IDC_CLOSE,167,10,44,14,NOT WS_TABSTOP
+END
+
+IDD_FRAMESET DIALOGEX 0, 0, 186, 90
+STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
+    WS_CLIPCHILDREN
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
 END
 
 

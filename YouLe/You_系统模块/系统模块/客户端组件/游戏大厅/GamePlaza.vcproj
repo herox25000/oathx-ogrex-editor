@@ -133,6 +133,9 @@
 				RelativePath=".\DlgStatus.cpp">
 			</File>
 			<File
+				RelativePath=".\FrameSet.cpp">
+			</File>
+			<File
 				RelativePath=".\GamePlaza.cpp">
 			</File>
 			<File
@@ -140,6 +143,9 @@
 			</File>
 			<File
 				RelativePath=".\GlobalUnits.cpp">
+			</File>
+			<File
+				RelativePath=".\GlobalUnits.h">
 			</File>
 			<File
 				RelativePath=".\PasswordControl.cpp">
@@ -177,13 +183,13 @@
 				RelativePath=".\DlgStatus.h">
 			</File>
 			<File
+				RelativePath=".\FrameSet.h">
+			</File>
+			<File
 				RelativePath=".\GamePlaza.h">
 			</File>
 			<File
 				RelativePath=".\GamePlazaDlg.h">
-			</File>
-			<File
-				RelativePath=".\GlobalUnits.h">
 			</File>
 			<File
 				RelativePath=".\PasswordControl.h">
@@ -301,10 +307,16 @@
 			RelativePath=".\res\Plaza_logon\key\back.png">
 		</File>
 		<File
+			RelativePath=".\res\Plaza\BACKGROUND_GAMEPUBLIC.png">
+		</File>
+		<File
 			RelativePath=".\res\Plaza\BACKGROUND_HEAD.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza\BACKGROUND_PLAZA.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BACKGROUND_USERINFO.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza_logon\BT_banben.png">
@@ -322,10 +334,25 @@
 			RelativePath=".\res\Plaza\BT_FRAME_MIN.png">
 		</File>
 		<File
+			RelativePath=".\res\Plaza\BT_GAME.png">
+		</File>
+		<File
 			RelativePath=".\res\Plaza_logon\BT_LOGON_ENTER.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza_logon\BT_LOGON_QUIT.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BT_MATCH.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BT_PRIZE.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BT_PROPERTY.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BT_RECHARGE.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza_logon\BT_Register.png">
@@ -349,7 +376,52 @@
 			RelativePath=".\res\Plaza_logon\Dlg_logon_back.png">
 		</File>
 		<File
+			RelativePath=".\res\Plaza\FRAME_SET.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMEITEM_BACK.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMEITEM_BILL.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMEITEM_JOIN.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMEITEM_REGULAR.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMEPAGE_MATCH.png">
+		</File>
+		<File
 			RelativePath=".\res\GamePlaza.manifest">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMEROOM_BILL.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMEROOM_JOIN.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GL_BACK.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GL_BAGPACK.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GL_IM.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GL_SQUARE.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GL_TILL.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\INFO_MODIFY.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\LOBBY_SET.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza_logon\key\lower\lower_0.png">
@@ -439,6 +511,9 @@
 			RelativePath=".\res\Plaza_logon\RegisterBack.png">
 		</File>
 		<File
+			RelativePath=".\res\Plaza\SEX.png">
+		</File>
+		<File
 			RelativePath=".\res\Plaza_logon\key\upper\upper_0.png">
 		</File>
 		<File
@@ -515,6 +590,9 @@
 		</File>
 		<File
 			RelativePath=".\res\Plaza_logon\key\upper\upper_9.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\YOU_RENEW.png">
 		</File>
 	</Files>
 	<Globals>
