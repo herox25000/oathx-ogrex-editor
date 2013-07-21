@@ -5,6 +5,7 @@
 #include "DlgLogon.h"
 #include "GameItemWnd.h"
 #include "GameRoomWnd.h"
+#include "TabGamePage.h"
 
 
 class CPlatformFrame : public CFrameWnd
@@ -30,8 +31,7 @@ protected:
 	CGdipButton						m_btMin;
 	CGdipButton						m_btClose;
 	
-	CGameItemWnd					m_pTest;
-	CGameRoomWnd					m_pRoom;
+	CTabGamePage					m_pGamePage;
 public:
 	//º”‘ÿ∞¥≈•
 	void LoadButtons();

@@ -28,4 +28,6 @@ public:
 	afx_msg void	OnPaint();
 };
 
+typedef CArray<CGameItemWnd*>	GameItemList;
+
 

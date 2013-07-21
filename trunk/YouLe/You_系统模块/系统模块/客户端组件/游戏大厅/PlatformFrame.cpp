@@ -57,8 +57,8 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	SetForegroundWindow();
 	//Æô¶¯µÇÂ½´°¿Ú
 	//SendLogonMessage();
-	m_pTest.Create(1, 300, 300, this, NULL, TEXT("GAMEITEM_BACK"), TEXT("GAMEITEM_BILL"));
-	m_pRoom.Create(2, 605, 300, this, NULL, TEXT("GAMEITEM_BACK"), TEXT("GAMEROOM_BILL"));
+	m_pGamePage.Create(0, CRect(250, 260, 500, 500), this);
+	m_pGamePage.ShowWindow(SW_SHOW);
 	return 0;
 }
 
