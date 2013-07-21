@@ -126,13 +126,25 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\DlgLogon.cpp">
+			</File>
+			<File
+				RelativePath=".\DlgStatus.cpp">
+			</File>
+			<File
 				RelativePath=".\GamePlaza.cpp">
 			</File>
 			<File
 				RelativePath=".\GamePlazaDlg.cpp">
 			</File>
 			<File
-				RelativePath=".\LogonDlg.cpp">
+				RelativePath=".\GlobalUnits.cpp">
+			</File>
+			<File
+				RelativePath=".\GlobalUnits.h">
+			</File>
+			<File
+				RelativePath=".\PasswordControl.cpp">
 			</File>
 			<File
 				RelativePath=".\PlatformFrame.cpp">
@@ -158,13 +170,19 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\DlgLogon.h">
+			</File>
+			<File
+				RelativePath=".\DlgStatus.h">
+			</File>
+			<File
 				RelativePath=".\GamePlaza.h">
 			</File>
 			<File
 				RelativePath=".\GamePlazaDlg.h">
 			</File>
 			<File
-				RelativePath=".\LogonDlg.h">
+				RelativePath=".\PasswordControl.h">
 			</File>
 			<File
 				RelativePath=".\Platform.h">
@@ -183,6 +201,9 @@
 			Name="资源文件"
 			Filter="rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx"
 			UniqueIdentifier="{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}">
+			<File
+				RelativePath=".\res\CONNECT_STATUS.bmp">
+			</File>
 			<File
 				RelativePath=".\res\GamePlaza.ico">
 			</File>
@@ -222,10 +243,253 @@
 			</File>
 		</Filter>
 		<File
+			RelativePath=".\res\Plaza_logon\key\0.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\1.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\2.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\3.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\4.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\5.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\6.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\7.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\8.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\9.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\back.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BACKGROUND_HEAD.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BACKGROUND_PLAZA.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_banben.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_chongzhi.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_chose.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BT_FRAME_CLOSE.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\BT_FRAME_MIN.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_LOGON_ENTER.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_LOGON_QUIT.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_Register.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_RegisterClose.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_RegisterOK.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_REMEMBER.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\BT_webhome.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\cap.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\Dlg_logon_back.png">
+		</File>
+		<File
 			RelativePath=".\res\GamePlaza.manifest">
 		</File>
 		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_0.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_1.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_10.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_11.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_12.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_13.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_14.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_15.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_16.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_17.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_18.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_19.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_2.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_20.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_21.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_22.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_23.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_24.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_25.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_3.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_4.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_5.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_6.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_7.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_8.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\lower\lower_9.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\passlevel.png">
+		</File>
+		<File
 			RelativePath=".\ReadMe.txt">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\RegisterBack.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_0.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_1.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_10.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_11.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_12.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_13.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_14.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_15.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_16.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_17.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_18.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_19.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_2.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_20.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_21.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_22.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_23.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_24.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_25.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_3.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_4.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_5.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_6.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_7.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_8.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_logon\key\upper\upper_9.png">
 		</File>
 	</Files>
 	<Globals>

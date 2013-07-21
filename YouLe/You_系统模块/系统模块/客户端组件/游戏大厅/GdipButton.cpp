@@ -82,12 +82,25 @@ BEGIN_MESSAGE_MAP(CGdipButton, CButton)
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
+//ÖØÐÂÉèÖÃAltImage
+void CGdipButton::ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName)
+{
+	m_bHaveBitmaps = FALSE;
+	m_dcStd.DeleteDC();
+	m_dcStdP.DeleteDC();
+	m_dcStdH.DeleteDC();
+	m_dcGS.DeleteDC();
+	m_dcBk.DeleteDC();
+	m_pStdImage->Load(ResName,pImageName);
+	Invalidate(TRUE);
+}
 
-BOOL CGdipButton::CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageName,int dx,int dy,UINT WondowsID,UINT lStatusNum/*=1*/)
+BOOL CGdipButton::CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageName,
+							   int dx,int dy,UINT WondowsID,UINT lStatusNum/*=1*/,HINSTANCE  hInst/*=NULL*/)
 {
 	m_nStatusNum = lStatusNum;
 	m_pStdImage = new CGdiPlusBitmapResource;
-	if(m_pStdImage->Load(ResName,pImageName))
+	if(m_pStdImage->Load(ResName,pImageName,hInst))
 	{
 		CRect rcWndButton(dx,dy,dx+(m_pStdImage->m_pBitmap->GetWidth()/m_nStatusNum),dy+m_pStdImage->m_pBitmap->GetHeight());
 		return Create(NULL,WS_VISIBLE|WS_CLIPCHILDREN,rcWndButton,pParentWnd,WondowsID);
@@ -121,11 +134,12 @@ BOOL CGdipButton::CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageN
 //				Non zero if successful, otherwise zero
 //
 //=============================================================================
-BOOL CGdipButton::CreateButton(CWnd* pParentWnd,UINT ResourceID, LPCTSTR pImageName,int dx,int dy,UINT WondowsID,UINT lStatusNum/*=1*/)
+BOOL CGdipButton::CreateButton(CWnd* pParentWnd,UINT ResourceID, LPCTSTR pImageName,
+							   int dx,int dy,UINT WondowsID,UINT lStatusNum/*=1*/,HINSTANCE  hInst/*=NULL*/)
 {
 	m_nStatusNum = lStatusNum;
 	m_pStdImage = new CGdiPlusBitmapResource;
-	if(m_pStdImage->Load(ResourceID,pImageName))
+	if(m_pStdImage->Load(ResourceID,pImageName,hInst))
 	{
 		CRect rcWndButton(dx,dy,dx+(m_pStdImage->m_pBitmap->GetWidth()/m_nStatusNum),dy+m_pStdImage->m_pBitmap->GetHeight());
 		return Create(NULL,WS_VISIBLE|WS_CLIPCHILDREN,rcWndButton,pParentWnd,WondowsID);
@@ -153,11 +167,11 @@ BOOL CGdipButton::CreateButton(CWnd* pParentWnd,UINT ResourceID, LPCTSTR pImageN
 //				Non zero if successful, otherwise zero
 //
 //=============================================================================
-BOOL CGdipButton::LoadStdImage(UINT id, LPCTSTR pType,UINT lStatusNum/*=1*/)
+BOOL CGdipButton::LoadStdImage(UINT id, LPCTSTR pType,UINT lStatusNum/*=1*/,HINSTANCE  hInst/*=NULL*/)
 {
 	m_nStatusNum = lStatusNum;
 	m_pStdImage = new CGdiPlusBitmapResource;
-	return m_pStdImage->Load(id, pType);
+	return m_pStdImage->Load(id, pType,hInst);
 }
 
 //=============================================================================
@@ -178,14 +192,28 @@ BOOL CGdipButton::LoadStdImage(UINT id, LPCTSTR pType,UINT lStatusNum/*=1*/)
 //				Non zero if successful, otherwise zero
 //
 //=============================================================================
-BOOL CGdipButton::LoadAltImage(UINT id, LPCTSTR pType,UINT lStatusNum/*=1*/)
+BOOL CGdipButton::LoadAltImage(UINT id, LPCTSTR pType,UINT lStatusNum/*=1*/,HINSTANCE  hInst/*=NULL*/)
 {
 	m_nStatusNum = lStatusNum;
 	m_bHaveAltImage = TRUE;
 	m_pAltImage = new CGdiPlusBitmapResource;
-	return (m_pAltImage->Load(id, pType));
+	return (m_pAltImage->Load(id, pType,hInst));
 }
 
+BOOL CGdipButton::LoadStdImage(LPCTSTR ResName, LPCTSTR pType,UINT lStatusNum/*=1*/,HINSTANCE  hInst/*=NULL*/)
+{
+	m_nStatusNum = lStatusNum;
+	m_pStdImage = new CGdiPlusBitmapResource;
+	return m_pStdImage->Load(ResName, pType,hInst);
+}
+
+BOOL CGdipButton::LoadAltImage(LPCTSTR ResName, LPCTSTR pType,UINT lStatusNum/*=1*/,HINSTANCE  hInst/*=NULL*/)
+{
+	m_nStatusNum = lStatusNum;
+	m_bHaveAltImage = TRUE;
+	m_pAltImage = new CGdiPlusBitmapResource;
+	return (m_pAltImage->Load(ResName, pType,hInst));
+}
 
 //=============================================================================
 // enables the toggle mode
@@ -318,7 +346,6 @@ HBRUSH CGdipButton::CtlColor(CDC* pScreenDC, UINT nCtlColor)
 			// background
 			if (m_dcBk.m_hDC == NULL)
 			{
-
 				CRect rect1;
 				CClientDC clDC(GetParent());
 				GetWindowRect(rect1);

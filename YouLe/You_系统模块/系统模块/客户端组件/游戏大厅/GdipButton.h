@@ -49,17 +49,21 @@ public:
 
 
 	// create button
-	BOOL CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageName,int dx,int dy,UINT WondowsID,UINT lStatusNum = 1);
+	BOOL CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageName,
+		int dx,int dy,UINT WondowsID,UINT lStatusNum = 1,HINSTANCE hInst=NULL);
 
 	// create button
-	BOOL CreateButton(CWnd* pParentWnd,UINT ResourceID, LPCTSTR pImageName,int dx,int dy,UINT WondowsID,UINT lStatusNum = 1);
+	BOOL CreateButton(CWnd* pParentWnd,UINT ResourceID, LPCTSTR pImageName,
+		int dx,int dy,UINT WondowsID,UINT lStatusNum = 1,HINSTANCE hInst=NULL);
 
 	// sets the image type
 	void SetImage(int type);
 
-	BOOL LoadAltImage(UINT id, LPCTSTR pType,UINT lStatusNum=1);
-	BOOL LoadStdImage(UINT id, LPCTSTR pType,UINT lStatusNum=1);
+	BOOL LoadAltImage(LPCTSTR ResName, LPCTSTR pType,UINT lStatusNum=1,HINSTANCE hInst=NULL);
+	BOOL LoadStdImage(LPCTSTR ResName, LPCTSTR pType,UINT lStatusNum=1,HINSTANCE hInst=NULL);
 
+	BOOL LoadAltImage(UINT id, LPCTSTR pType,UINT lStatusNum=1,HINSTANCE hInst=NULL);
+	BOOL LoadStdImage(UINT id, LPCTSTR pType,UINT lStatusNum=1,HINSTANCE hInst=NULL);
 	// if false, disables the press state and uses grayscale image if it exists
 	void EnableButton(BOOL bEnable = TRUE) { m_bIsDisabled = !bEnable; }
 
@@ -75,7 +79,8 @@ public:
 	void SetToolTipText(UINT nId, BOOL bActivate = TRUE);
 	void SetHorizontal(bool ImagesAreLaidOutHorizontally = FALSE);
 	void DeleteToolTip();
-
+	//÷ÿ–¬…Ë÷√AltImage
+	void ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName);
 
 protected:
 

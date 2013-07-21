@@ -59,6 +59,22 @@ END
 
 /////////////////////////////////////////////////////////////////////////////
 //
+// Menu
+//
+
+IDR_MENU MENU 
+BEGIN
+    POPUP "内部菜单"
+    BEGIN
+        MENUITEM "登录游戏广场",                IDM_LOGON_PLAZA
+        MENUITEM "发送登录请求",                IDM_CONNECT_SERVER
+        MENUITEM "取消网络连接",                IDM_CANCEL_CONNECT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 // Icon
 //
 
@@ -66,11 +82,103 @@ END
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\GamePlaza.ico"
 
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
 
-BACKGROUND_PLAZA		PNG						"res\\PLAZA\\BACKGROUND_PLAZA.png"
-BT_FRAME_MIN			PNG						"res\\PLAZA\\BT_FRAME_MIN.png"
-BT_FRAME_CLOSE			PNG						"res\\PLAZA\\BT_FRAME_CLOSE.png"
-BACKGROUND_HEAD			PNG						"res\\PLAZA\\BACKGROUND_HEAD.png"
+IDB_CONNECT_STATUS      BITMAP                  "Res\\CONNECT_STATUS.bmp"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// PNG
+//
+
+DLG_LOGON_BACK          PNG                     "res\\PLAZA_LOGON\\DLG_LOGON_BACK.PNG"
+DLG_REGISTER_BACK       PNG                     "res\\PLAZA_LOGON\\RegisterBack.PNG"
+PASSWORD_LEVEL          PNG                     "res\\PLAZA_LOGON\\passlevel.PNG"
+CHECK_BUTTON_BACK       PNG                     "res\\PLAZA_LOGON\\BT_REMEMBER.PNG"
+PNG_BT_LOGON            PNG                     "res\\PLAZA_LOGON\\BT_LOGON_ENTER.png"
+PNG_BT_LOGON_QUIT       PNG                     "res\\PLAZA_LOGON\\BT_LOGON_QUIT.PNG"
+PNG_BT_WEBHOME          PNG                     "res\\PLAZA_LOGON\\BT_webhome.png"
+PNG_BT_REGISTER         PNG                     "res\\PLAZA_LOGON\\BT_register.png"
+PNG_BT_CHONGZHI         PNG                     "res\\PLAZA_LOGON\\BT_chongzhi.png"
+PNG_BT_BANBEN           PNG                     "res\\PLAZA_LOGON\\BT_banben.png"
+PNG_BT_REGISTERCLOSE    PNG                     "res\\PLAZA_LOGON\\BT_RegisterClose.png"
+PNG_BT_CHOSE            PNG                     "res\\PLAZA_LOGON\\BT_chose.png"
+PNG_BT_REGISTEROK       PNG                     "res\\PLAZA_LOGON\\BT_RegisterOK.png"
+PNG_BT_KEYBOARD2        PNG                     "res\\PLAZA_LOGON\\key\\back.png"
+PNG_BT_KEYBOARD3        PNG                     "res\\PLAZA_LOGON\\key\\cap.png"
+PNG_BT_KEYBOARD4        PNG                     "res\\PLAZA_LOGON\\key\\0.png"
+PNG_BT_KEYBOARD5        PNG                     "res\\PLAZA_LOGON\\key\\1.png"
+PNG_BT_KEYBOARD6        PNG                     "res\\PLAZA_LOGON\\key\\2.png"
+PNG_BT_KEYBOARD7        PNG                     "res\\PLAZA_LOGON\\key\\3.png"
+PNG_BT_KEYBOARD8        PNG                     "res\\PLAZA_LOGON\\key\\4.png"
+PNG_BT_KEYBOARD9        PNG                     "res\\PLAZA_LOGON\\key\\5.png"
+PNG_BT_KEYBOARD10       PNG                     "res\\PLAZA_LOGON\\key\\6.png"
+PNG_BT_KEYBOARD11       PNG                     "res\\PLAZA_LOGON\\key\\7.png"
+PNG_BT_KEYBOARD12       PNG                     "res\\PLAZA_LOGON\\key\\8.png"
+PNG_BT_KEYBOARD13       PNG                     "res\\PLAZA_LOGON\\key\\9.png"
+PNG_BT_KEYBOARD14       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_0.png"
+PNG_BT_KEYBOARD15       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_1.png"
+PNG_BT_KEYBOARD16       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_2.png"
+PNG_BT_KEYBOARD17       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_3.png"
+PNG_BT_KEYBOARD18       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_4.png"
+PNG_BT_KEYBOARD19       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_5.png"
+PNG_BT_KEYBOARD20       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_6.png"
+PNG_BT_KEYBOARD21       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_7.png"
+PNG_BT_KEYBOARD22       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_8.png"
+PNG_BT_KEYBOARD23       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_9.png"
+PNG_BT_KEYBOARD24       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_10.png"
+PNG_BT_KEYBOARD25       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_11.png"
+PNG_BT_KEYBOARD26       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_12.png"
+PNG_BT_KEYBOARD27       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_13.png"
+PNG_BT_KEYBOARD28       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_14.png"
+PNG_BT_KEYBOARD29       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_15.png"
+PNG_BT_KEYBOARD30       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_16.png"
+PNG_BT_KEYBOARD31       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_17.png"
+PNG_BT_KEYBOARD32       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_18.png"
+PNG_BT_KEYBOARD33       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_19.png"
+PNG_BT_KEYBOARD34       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_20.png"
+PNG_BT_KEYBOARD35       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_21.png"
+PNG_BT_KEYBOARD36       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_22.png"
+PNG_BT_KEYBOARD37       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_23.png"
+PNG_BT_KEYBOARD38       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_24.png"
+PNG_BT_KEYBOARD39       PNG                     "res\\PLAZA_LOGON\\key\\lower\\lower_25.png"
+PNG_BT_KEYBOARD40       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_0.png"
+PNG_BT_KEYBOARD41       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_1.png"
+PNG_BT_KEYBOARD42       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_2.png"
+PNG_BT_KEYBOARD43       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_3.png"
+PNG_BT_KEYBOARD44       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_4.png"
+PNG_BT_KEYBOARD45       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_5.png"
+PNG_BT_KEYBOARD46       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_6.png"
+PNG_BT_KEYBOARD47       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_7.png"
+PNG_BT_KEYBOARD48       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_8.png"
+PNG_BT_KEYBOARD49       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_9.png"
+PNG_BT_KEYBOARD50       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_10.png"
+PNG_BT_KEYBOARD51       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_11.png"
+PNG_BT_KEYBOARD52       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_12.png"
+PNG_BT_KEYBOARD53       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_13.png"
+PNG_BT_KEYBOARD54       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_14.png"
+PNG_BT_KEYBOARD55       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_15.png"
+PNG_BT_KEYBOARD56       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_16.png"
+PNG_BT_KEYBOARD57       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_17.png"
+PNG_BT_KEYBOARD58       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_18.png"
+PNG_BT_KEYBOARD59       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_19.png"
+PNG_BT_KEYBOARD60       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_20.png"
+PNG_BT_KEYBOARD61       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_21.png"
+PNG_BT_KEYBOARD62       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_22.png"
+PNG_BT_KEYBOARD63       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_23.png"
+PNG_BT_KEYBOARD64       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_24.png"
+PNG_BT_KEYBOARD65       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_25.png"
+BACKGROUND_PLAZA        PNG                     "res\\PLAZA\\BACKGROUND_PLAZA.png"
+BACKGROUND_HEAD         PNG                     "res\\PLAZA\\BACKGROUND_HEAD.png"
+PNG_BT_FRAME_MIN        PNG                     "res\\PLAZA\\BT_FRAME_MIN.png"
+PNG_BT_FRAME_CLOSE      PNG                     "res\\PLAZA\\BT_FRAME_CLOSE.png"
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
 GAMEITEM_BACK			PNG						"res\\PLAZA\\GAMEITEM_BACK.png"
 GAMEITEM_BILL			PNG						"res\\PLAZA\\GAMEITEM_BILL.png"
 GAMEITEM_REGULAR		PNG						"res\\PLAZA\\GAMEITEM_REGULAR.png"
@@ -89,14 +197,57 @@ BEGIN
     PUSHBUTTON      "Button1",IDC_BUTTON1,110,75,72,22
 END
 
-IDD_LOGON_DIALOG DIALOGEX 0, 0, 186, 93
-STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | DS_CENTER | WS_CHILD | 
-    WS_CAPTION | WS_SYSMENU
-CAPTION "Dialog"
-FONT 8, "MS Shell Dlg", 400, 0, 0x1
+IDD_LOGON DIALOGEX 0, 0, 353, 253
+STYLE DS_SETFONT | DS_3DLOOK | DS_CENTER | WS_POPUP | WS_CLIPCHILDREN
+FONT 9, "宋体", 400, 0, 0x0
 BEGIN
-    DEFPUSHBUTTON   "确定",IDOK,51,62,50,14
-    PUSHBUTTON      "取消",IDCANCEL,111,60,50,14
+    EDITTEXT        IDC_ACCOUNTS,113,96,141,12,ES_AUTOHSCROLL
+    LTEXT           "",IDC_PASSWORD,113,124,141,12,SS_CENTERIMAGE | 
+                    WS_BORDER | WS_TABSTOP
+    DEFPUSHBUTTON   "登 录",IDOK,276,91,67,60
+    PUSHBUTTON      "",IDCANCEL,324,3,25,19
+END
+
+IDD_REGISTER DIALOGEX 0, 0, 250, 296
+STYLE DS_SETFONT | WS_POPUP | WS_CLIPSIBLINGS | WS_CLIPCHILDREN | WS_SYSMENU
+FONT 9, "宋体", 400, 0, 0x0
+BEGIN
+    EDITTEXT        IDC_ACCOUNTS,69,47,114,12,ES_AUTOHSCROLL | NOT WS_BORDER
+    LTEXT           "账号",IDC_STATIC,38,50,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    LTEXT           "密码",IDC_STATIC,37,72,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_PASSWORD,69,71,114,12,ES_PASSWORD | ES_AUTOHSCROLL | 
+                    NOT WS_BORDER
+    LTEXT           "确认密码",IDC_STATIC,22,95,33,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_PASSWORD2,69,95,114,12,ES_PASSWORD | ES_AUTOHSCROLL | 
+                    NOT WS_BORDER
+    LTEXT           "昵称",IDC_STATIC,33,138,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_LIKENAME,69,137,114,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
+    LTEXT           "姓名",IDC_STATIC,36,220,17,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_EDIT_NAME,69,217,114,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
+    LTEXT           "身份证",IDC_STATIC,28,241,25,8,NOT WS_VISIBLE | 
+                    WS_DISABLED
+    EDITTEXT        IDC_EDIT_SFZ,69,241,114,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
+    CONTROL         "地址",IDC_STATIC,"Static",SS_LEFTNOWORDWRAP | NOT 
+                    WS_VISIBLE | WS_DISABLED | WS_GROUP,27,165,17,8
+    EDITTEXT        IDC_Address1,68,163,50,12,ES_AUTOHSCROLL | NOT WS_BORDER
+    EDITTEXT        IDC_Address2,131,163,50,12,ES_AUTOHSCROLL | NOT 
+                    WS_BORDER
+END
+
+IDD_STATUS DIALOGEX 0, 0, 216, 34
+STYLE DS_SETFONT | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | WS_POPUP | 
+    WS_BORDER
+FONT 9, "宋体", 400, 0, 0x0
+BEGIN
+    PUSHBUTTON      "取消",IDC_CLOSE,167,10,44,14,NOT WS_TABSTOP
 END
 
 
@@ -137,25 +288,6 @@ BEGIN
         VALUE "翻译", 0x804, 936
     END
 END
-
-
-/////////////////////////////////////////////////////////////////////////////
-//
-// DESIGNINFO
-//
-
-#ifdef APSTUDIO_INVOKED
-GUIDELINES DESIGNINFO 
-BEGIN
-    IDD_LOGON_DIALOG, DIALOG
-    BEGIN
-        LEFTMARGIN, 7
-        RIGHTMARGIN, 179
-        TOPMARGIN, 7
-        BOTTOMMARGIN, 86
-    END
-END
-#endif    // APSTUDIO_INVOKED
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////

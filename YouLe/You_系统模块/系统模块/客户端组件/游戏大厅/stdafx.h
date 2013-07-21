@@ -81,3 +81,21 @@ using namespace Gdiplus;
 #include "MemDC.h"
 #include "GdipButton.h"
 
+//字符串安全拼接
+static void SafeStrCat(char* dest, const char* src, int iDestBufferLen)
+{
+	int iDestLen=lstrlen(dest);
+	int iSrcLen=lstrlen(src);
+
+	if ((iDestLen+iSrcLen)>=iDestBufferLen)
+		return;
+
+	lstrcat(dest, src);
+}
+//得到执行文件地址
+static void GetModulePath(LPSTR szPath, int iLen)
+{
+	::GetModuleFileName(NULL, szPath, iLen);
+	TCHAR* find=strrchr(szPath, '\\');
+	*find=0;
+}
