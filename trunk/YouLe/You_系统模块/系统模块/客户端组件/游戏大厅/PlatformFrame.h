@@ -38,11 +38,17 @@ public:
 public:
 	//登录消息
 	bool OnSocketMainLogon(CMD_Command Command, void * pData, WORD wDataSize);
+	//列表消息
+	bool OnSocketMainServerList(CMD_Command Command, void * pBuffer, WORD wDataSize);
+	//系统消息
+	bool OnSocketMainSystem(CMD_Command Command, void * pBuffer, WORD wDataSize);
+	//用户消息
+	bool OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wDataSize);
+
 
 public:
-	CTCPSocketHelper			m_ClientSocket;						//网络连接
-	bool						m_bLogonPlaza;		//是否已经登陆
-protected:
+	CTCPSocketHelper				m_ClientSocket;						//网络连接
+	bool							m_bLogonPlaza;		//是否已经登陆
 	CGamePlazaDlg*					m_pGamePlazaDlg;
 	CDlgLogon						m_DlgLogon;							//登录对话框
 
@@ -68,7 +74,6 @@ protected:
 	CGdipButton						m_btUserInfoSet;
 	CGdipButton						m_btReturn;
 
-	
 	CGamePage						m_GamePage;
 public:
 	//加载按钮
@@ -79,20 +84,16 @@ public:
 	void SetButtonBackGrounds(CDC *pDC);
 
 
+	//重载函数
 public:
-	virtual BOOL					RectifyResource(int nWidth, int nHeight);
-	virtual void					SetFrameSize(int nWidth, int nHeight);
-
-//重载函数
-protected:
+	virtual BOOL RectifyResource(int nWidth, int nHeight);
+	virtual void SetFrameSize(int nWidth, int nHeight);
 	//命令函数
 	virtual BOOL OnCommand(WPARAM wParam, LPARAM lParam);
 	//控件绑定
 	virtual void DoDataExchange(CDataExchange * pDX);
 	//消息解释
-	virtual BOOL PreTranslateMessage(MSG * pMsg);
-
-protected:	
+	virtual BOOL PreTranslateMessage(MSG * pMsg);	
 	//鼠标消息
 	VOID OnLButtonDown(UINT nFlags, CPoint Point);
 	//关闭消息

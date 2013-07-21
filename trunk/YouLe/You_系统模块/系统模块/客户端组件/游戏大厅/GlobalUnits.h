@@ -5,9 +5,7 @@
 
 #include "Stdafx.h"
 #include "DlgStatus.h"
-//#include "RoomViewItem.h"
-//#include "PlazaViewItem.h"
-//#include "ServerItemView.h"
+#include "ServerListManager.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -45,7 +43,7 @@ protected:
 
 	//组件变量
 public:
-//	CServerListManager					m_ServerListManager;			//列表管理
+	CServerListManager					m_ServerListManager;			//列表管理
 
 	//资源变量
 public:

@@ -11,8 +11,8 @@
 
 BEGIN_MESSAGE_MAP(CDlgStatus, CDialog)
 	ON_BN_CLICKED(IDC_CLOSE, OnBnClickedClose)
-	ON_WM_PAINT()
 	ON_WM_TIMER()
+	ON_WM_ERASEBKGND()
 END_MESSAGE_MAP()
 
 //////////////////////////////////////////////////////////////////////////
@@ -30,6 +30,12 @@ CDlgStatus::~CDlgStatus()
 {
 }
 
+//初始化函数
+BOOL CDlgStatus::OnInitDialog()
+{
+	//m_btCancel.LoadStdImage()
+	return TRUE;
+}
 //控件绑定
 void CDlgStatus::DoDataExchange(CDataExchange * pDX)
 {
@@ -37,47 +43,36 @@ void CDlgStatus::DoDataExchange(CDataExchange * pDX)
 	DDX_Control(pDX, IDC_CLOSE, m_btCancel);
 }
 
-//重画消息
-void CDlgStatus::OnPaint()
-{
-	CPaintDC dc(this);
 
+BOOL CDlgStatus::OnEraseBkgnd(CDC* pDC)
+{
 	//获取位置
 	CRect rcClientRect;
 	GetClientRect(&rcClientRect);
 
-	//绘画背景
-	CImage ImageBuffer;
-	ImageBuffer.Create(rcClientRect.Width(),rcClientRect.Height(),16);
-	CDC * pDCBuffer=CDC::FromHandle(ImageBuffer.GetDC());
-	pDCBuffer->FillSolidRect(0,0,rcClientRect.Width(),rcClientRect.Height(),CSkinDialog::m_SkinAttribute.m_crBackGround);
+	CMemDC pDevC(pDC, rcClientRect);
+	pDevC.FillRect(&rcClientRect, &CBrush(RGB(0, 76, 149)));
 
 	//绘画状态
 	CImage ImageStatus;
 	ImageStatus.LoadFromResource(AfxGetInstanceHandle(),IDB_CONNECT_STATUS);
 	CDC * pDCImage=CDC::FromHandle(ImageStatus.GetDC());
-	AlphaDrawImage(pDCBuffer,10,10,32,32,pDCImage,m_wImagePos*32,0,32,32,RGB(255,0,255));
+	AlphaDrawImage(pDevC,10,10,32,32,pDCImage,m_wImagePos*32,0,32,32,RGB(255,0,255));
 
 	//绘画消息
 	CFont DrawFont;
 	DrawFont.CreateFont(-12,0,0,0,400,0,0,0,134,3,2,1,2,TEXT("宋体"));
-	CFont * pOldFont=pDCBuffer->SelectObject(&DrawFont);
-	pDCBuffer->SetTextColor(RGB(10,10,10));
-	pDCBuffer->SetBkMode(TRANSPARENT);
-	pDCBuffer->TextOut(60,20,m_strMessage);
-	pDCBuffer->SelectObject(pOldFont);
+	CFont * pOldFont=pDevC->SelectObject(&DrawFont);
+	pDevC->SetTextColor(RGB(10,10,10));
+	pDevC->SetBkMode(TRANSPARENT);
+	pDevC->TextOut(60,20,m_strMessage);
+	pDevC->SelectObject(pOldFont);
 	DrawFont.DeleteObject();
-
-	//绘画界面
-	ImageBuffer.BitBlt(dc,0,0);
 
 	//清理资源
 	ImageStatus.ReleaseDC();
-	ImageBuffer.ReleaseDC();
 	ImageStatus.Destroy();
-	ImageBuffer.Destroy();
-
-	return;
+	return TRUE;
 }
 
 //定时器消息
@@ -88,7 +83,7 @@ void CDlgStatus::OnTimer(UINT nIDEvent)
 		CRect rcImageRect;
 		rcImageRect.SetRect(10,10,42,42);
 		m_wImagePos=(m_wImagePos+1)%STATUS_IMAGE_COUNT;
-		InvalidateRect(&rcImageRect,FALSE);
+		InvalidateRect(&rcImageRect,TRUE);
 		return;
 	}
 	__super::OnTimer(nIDEvent);

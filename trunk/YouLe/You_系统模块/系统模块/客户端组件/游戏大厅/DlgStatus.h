@@ -29,13 +29,15 @@ public:
 
 	//重载函数
 protected:
+	//初始化函数
+	virtual BOOL OnInitDialog();
 	//控件绑定
 	virtual void DoDataExchange(CDataExchange * pDX);
 	//确定函数
 	virtual void OnOK() { return; };
 	//取消函数
 	virtual void OnCancel() { return; };
-
+	
 	//功能函数
 public:
 	//设置消息
@@ -45,8 +47,7 @@ public:
 
 	//消息映射
 protected:
-	//重画消息
-	afx_msg void OnPaint();
+	BOOL OnEraseBkgnd(CDC* pDC);
 	//取消按钮
 	afx_msg void OnBnClickedClose();
 	//定时器消息
