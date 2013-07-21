@@ -129,7 +129,6 @@ void CPlatformFrame::SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData, WOR
 	return;
 }
 
-
 //登录消息
 bool CPlatformFrame::OnSocketMainLogon(CMD_Command Command, void * pData, WORD wDataSize)
 {
@@ -216,7 +215,6 @@ bool CPlatformFrame::OnSocketMainLogon(CMD_Command Command, void * pData, WORD w
 						if (pDataBuffer!=NULL) 
 						{
 							g_GlobalUnits.SetStationPage((LPCTSTR)pDataBuffer);
-							//m_pHtmlBrower->Navigate(g_GlobalUnits.GetStationPage());
 						}
 						break;
 					}
@@ -247,10 +245,8 @@ bool CPlatformFrame::OnSocketMainLogon(CMD_Command Command, void * pData, WORD w
 				pLogonError->szErrorDescribe[wDescribeSize-1]=0;
 				ShowMessageBox(pLogonError->szErrorDescribe,MB_ICONINFORMATION);
 			}
-
 			//发送登录
 			OnCommandLogon();
-
 			return true;
 		}
 	case SUB_GP_LOGON_FINISH:		//登录完成
@@ -280,10 +276,13 @@ bool CPlatformFrame::OnSocketMainLogon(CMD_Command Command, void * pData, WORD w
 
 			//记录信息
 			ShowWindow(SW_SHOW);
+			SetActiveWindow();
+			BringWindowToTop();
+			SetForegroundWindow();
+
+
 			m_bLogonPlaza=true;
 			m_DlgLogon.OnLogonSuccess();
-			//m_pHtmlBrower->EnableBrowser(true);
-
 			//记录信息
 			g_GlobalUnits.WriteUserCookie();
 
@@ -339,21 +338,16 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	ModifyStyle(WS_CAPTION,0,0);
 	ModifyStyleEx(WS_BORDER|WS_EX_CLIENTEDGE|WS_EX_WINDOWEDGE,0,0);
 
-// 	m_pGamePlazaDlg = new CGamePlazaDlg();
-// 	m_pGamePlazaDlg->Create(IDD_GAMEPLAZA_DIALOG, this);
-// 	m_pGamePlazaDlg->ShowWindow(SW_SHOW);
 	SetFrameSize(LESS_SCREEN_CX, LESS_SCREEN_CY);
 	LoadImages();
 	LoadButtons();
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	RectifyResource(rcClient.Width(), rcClient.Height());
-	//显示窗口
-
+	
 	//启动登陆窗口
 	m_DlgLogon.SetPlatFormPointer(this);
 	OnCommandLogon();
-
 
 	m_GamePage.Create(NULL, NULL, WS_CHILD|WS_VISIBLE, CRect(250, 260, 250+176*3, 260+140*3), this, 10001);
 
@@ -370,7 +364,6 @@ BOOL CPlatformFrame::PreTranslateMessage(MSG * pMsg)
 {
 	return __super::PreTranslateMessage(pMsg);;
 }
-
 
 
 //启动登陆窗口
