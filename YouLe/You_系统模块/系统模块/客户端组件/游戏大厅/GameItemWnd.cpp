@@ -14,7 +14,6 @@ CGameItemWnd::~CGameItemWnd()
 BEGIN_MESSAGE_MAP(CGameItemWnd, CWnd)
 	ON_WM_ERASEBKGND()
 	ON_WM_CREATE()
-	ON_WM_PAINT()
 END_MESSAGE_MAP()
 
 BOOL CGameItemWnd::Create(UINT nID, INT nDestX, INT nDestY,
@@ -42,7 +41,26 @@ BOOL CGameItemWnd::EnableWindow(BOOL bEnable)
 
 BOOL CGameItemWnd::OnEraseBkgnd(CDC* pDC)
 {
-	return CWnd::OnEraseBkgnd(pDC);
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	CMemDC pDevC(pDC, rcClient);
+
+	BOOL bEnabled = IsWindowEnabled();
+	if (!bEnabled)
+	{
+		// draw enable background
+		m_PngBack.DrawImage(pDevC, 0, 0);
+	}
+	else
+	{
+		// drwo normal stat image
+		m_PngBill.DrawImage(pDevC, 0, 0);
+	}
+
+	m_Regular.SetBkGnd(pDevC);
+	m_JoinBtn.SetBkGnd(pDC);
+
+	return TRUE;
 }
 
 int CGameItemWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -67,24 +85,5 @@ int CGameItemWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		TEXT("GAMEITEM_JOIN"), _T("PNG"), 60, 105, 0, 4);
 	
 	return 0;
-}
-
-void CGameItemWnd::OnPaint()
-{
-	CMemDC pMemDC(GetDC());
-
-	BOOL bEnabled = IsWindowEnabled();
-	if (!bEnabled)
-	{
-		// draw enable background
-		m_PngBack.DrawImage(pMemDC, 0, 0);
-	}
-	else
-	{
-		// drwo normal stat image
-		m_PngBill.DrawImage(pMemDC, 0, 0);
-	}
-
-	return CWnd::OnPaint();
 }
 
