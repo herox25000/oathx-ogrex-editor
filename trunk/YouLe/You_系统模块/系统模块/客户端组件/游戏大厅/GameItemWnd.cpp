@@ -58,7 +58,7 @@ BOOL CGameItemWnd::OnEraseBkgnd(CDC* pDC)
 	}
 
 	m_Regular.SetBkGnd(pDevC);
-	m_JoinBtn.SetBkGnd(pDC);
+	m_JoinBtn.SetBkGnd(pDevC);
 
 	return TRUE;
 }
