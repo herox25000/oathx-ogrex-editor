@@ -246,6 +246,12 @@
 				RelativePath=".\GameRoomWnd.h">
 			</File>
 			<File
+				RelativePath=".\GameZonePage.cpp">
+			</File>
+			<File
+				RelativePath=".\GameZonePage.h">
+			</File>
+			<File
 				RelativePath=".\GdipButton.cpp">
 			</File>
 			<File
@@ -253,6 +259,12 @@
 			</File>
 			<File
 				RelativePath=".\MemDC.h">
+			</File>
+			<File
+				RelativePath=".\TabPage.cpp">
+			</File>
+			<File
+				RelativePath=".\TabPage.h">
 			</File>
 		</Filter>
 		<File
