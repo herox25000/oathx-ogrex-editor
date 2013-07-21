@@ -47,7 +47,7 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 // 	m_pGamePlazaDlg->ShowWindow(SW_SHOW);
 
 	//创建按钮
-	m_btMin.CreateButton(this, "BT_FRAME_MIN", _T("PNG"), LESS_SCREEN_CX-86, 3, IDC_MIN, 5);
+	m_btMin.CreateButton(this, "BT_FRAME_MIN", _T("PNG"), 0, 3, IDC_MIN, 5);
 	m_btClose.CreateButton(this, "BT_FRAME_CLOSE", _T("PNG"), LESS_SCREEN_CX-38, 3, IDC_CLOSE, 5);
 
 	SetFrameSize(LESS_SCREEN_CX, LESS_SCREEN_CY);
@@ -59,6 +59,9 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//显示窗口
 	ShowWindow(SW_SHOW);
 	SetForegroundWindow();
+
+	m_pTest.Create(1, 300, 300, this, NULL, TEXT("GAMEITEM_BACK"), TEXT("GAMEITEM_BILL"));
+	m_pRoom.Create(2, 605, 300, this, NULL, TEXT("GAMEITEM_BACK"), TEXT("GAMEROOM_BILL"));
 
 	return 0;
 }
