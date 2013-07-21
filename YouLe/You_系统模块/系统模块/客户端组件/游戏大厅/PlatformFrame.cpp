@@ -100,15 +100,15 @@ bool __cdecl CPlatformFrame::OnEventTCPSocketRead(WORD wSocketID, CMD_Command Co
 		}
 	case MDM_GP_SERVER_LIST:		//列表消息
 		{
-			//return OnSocketMainServerList(Command,pData,wDataSize);
+			return OnSocketMainServerList(Command,pData,wDataSize);
 		}
 	case MDM_GP_SYSTEM:				//系统消息
 		{
-			//return OnSocketMainSystem(Command,pData,wDataSize);
+			return OnSocketMainSystem(Command,pData,wDataSize);
 		}
 	case MDM_GP_USER:				//用户消息
 		{
-			//return OnSocketMainUser(Command,pData,wDataSize);
+			return OnSocketMainUser(Command,pData,wDataSize);
 		}
 	}
 	return true;
@@ -328,6 +328,168 @@ bool CPlatformFrame::OnSocketMainLogon(CMD_Command Command, void * pData, WORD w
 }
 
 //游戏列表消息
+bool CPlatformFrame::OnSocketMainServerList(CMD_Command Command, void * pData, WORD wDataSize)
+{
+	ASSERT(Command.wMainCmdID==MDM_GP_SERVER_LIST);
+
+	switch (Command.wSubCmdID)
+	{
+	case SUB_GP_LIST_TYPE:			//类型信息
+		{
+			//效验参数
+			ASSERT(wDataSize%sizeof(tagGameType)==0);
+			if (wDataSize%sizeof(tagGameType)!=0) return false;
+
+			//处理消息
+			tagGameType * pGameType=(tagGameType *)pData;
+			WORD wItemCount=wDataSize/sizeof(tagGameType);
+			g_GlobalUnits.m_ServerListManager.InsertTypeItem(pGameType,wItemCount);
+
+			return true;
+		}
+	case SUB_GP_LIST_KIND:			//种类消息
+		{
+			//效验参数
+			ASSERT(wDataSize%sizeof(tagGameKind)==0);
+			if (wDataSize%sizeof(tagGameKind)!=0) return false;
+
+			//处理消息
+			tagGameKind * pGameKind=(tagGameKind *)pData;
+			WORD wItemCount=wDataSize/sizeof(tagGameKind);
+			g_GlobalUnits.m_ServerListManager.InsertKindItem(pGameKind,wItemCount);
+
+			return true;
+		}
+	case SUB_GP_LIST_STATION:		//站点消息
+		{
+			//效验参数
+			ASSERT(wDataSize%sizeof(tagGameStation)==0);
+			if (wDataSize%sizeof(tagGameStation)!=0) return false;
+
+			//处理消息
+			tagGameStation * pGameStation=(tagGameStation *)pData;
+			WORD wItemCount=wDataSize/sizeof(tagGameStation);
+			g_GlobalUnits.m_ServerListManager.InsertStationItem(pGameStation,wItemCount);
+			return true;
+		}
+	case SUB_GP_LIST_SERVER:		//服务器房间
+		{
+			//效验参数
+			ASSERT(wDataSize%sizeof(tagGameServer)==0);
+			if (wDataSize%sizeof(tagGameServer)!=0) return false;
+
+			//处理消息
+			tagGameServer * pGameServer=(tagGameServer *)pData;
+			WORD wItemCount=wDataSize/sizeof(tagGameServer);
+			g_GlobalUnits.m_ServerListManager.InsertServerItem(pGameServer,wItemCount);
+			return true;
+		}
+	case SUB_GP_LIST_FINISH:		//列表发送完成
+		{
+			//更新人数
+			INT_PTR nIndex=0;
+			DWORD dwAllOnLineCount=0L;
+			CListKind * pListKind=NULL;
+			do
+			{
+				pListKind=g_GlobalUnits.m_ServerListManager.EnumKindItem(nIndex++);
+				if (pListKind==NULL) break;
+				dwAllOnLineCount+=pListKind->GetItemInfo()->dwOnLineCount;
+			} while (true);
+			g_GlobalUnits.m_ServerListManager.UpdateGameOnLineCount(dwAllOnLineCount);
+			return true;
+		}
+	case SUB_GP_LIST_CONFIG:		//列表配置
+		{
+			//效验参数
+			ASSERT(wDataSize%sizeof(CMD_GP_ListConfig)==0);
+			if (wDataSize%sizeof(CMD_GP_ListConfig)!=0) return false;
+
+			//处理消息
+			CMD_GP_ListConfig * pListConfig=(CMD_GP_ListConfig *)pData;
+			bool bShowOnLineCount = pListConfig->bShowOnLineCount?true:false;
+
+			return true;
+		}
+	}
+
+	return true;
+}
+
+//系统消息
+bool CPlatformFrame::OnSocketMainSystem(CMD_Command Command, void * pData, WORD wDataSize)
+{
+	ASSERT(Command.wMainCmdID==MDM_GP_SYSTEM);
+	switch (Command.wSubCmdID)
+	{
+	case SUB_GP_VERSION:			//版本信息
+		{
+			//效验参数
+			ASSERT(wDataSize>=sizeof(CMD_GP_Version));
+			if (wDataSize<sizeof(CMD_GP_Version)) return false;
+
+			//消息处理
+			CMD_GP_Version * pVersion=(CMD_GP_Version *)pData;
+			if (pVersion->bAllowConnect)
+			{
+				TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在的版本还可以继续使用，现在是否马上下载新版本？");
+				int iResult=ShowInformationEx(szMessage,0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏大厅"));
+				if (iResult==IDYES)
+				{
+					g_GlobalAttemper.DestroyStatusWnd(this);
+					m_ClientSocket->CloseSocket();
+					tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+					memset(&GlobalUserData,0,sizeof(GlobalUserData));
+					g_GlobalAttemper.DownLoadClient(TEXT("游戏大厅"),0,true);
+				}
+			}
+			else
+			{
+				g_GlobalAttemper.DestroyStatusWnd(this);
+				m_ClientSocket->CloseSocket();
+				TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在的版本不可以继续使用，现在是否马上下载新版本？");
+				int iResult=ShowInformationEx(szMessage,0,MB_ICONSTOP|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏大厅"));
+				if(iResult != IDYES)
+				{
+					tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+					memset(&GlobalUserData,0,sizeof(GlobalUserData));
+					AfxGetMainWnd()->PostMessage(WM_CLOSE);
+				}
+				else 
+				{
+					g_GlobalAttemper.DownLoadClient(TEXT("游戏大厅"),0,true);
+				}
+			}
+
+			return true;
+		}
+	}
+	return true;
+}
+
+//用户消息
+bool CPlatformFrame::OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wDataSize)
+{
+	ASSERT(Command.wMainCmdID == MDM_GP_USER);
+	switch(Command.wSubCmdID)
+	{
+	case SUB_GP_USER_DOWNLOAD_FACE:			//下载头像
+	case SUB_GP_UPLOAD_FACE_RESULT:		//上传结果
+	case SUB_GP_DELETE_FACE_RESULT:		//删除结果
+	case SUB_GP_MODIFY_INDIVIDUAL_RESULT:	//修改结果
+		{
+			return true;
+		}
+	default:
+		{
+			ASSERT(FALSE);
+			return false;
+		}
+	}
+	return true;
+}
+
+
 
 
 int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -348,7 +510,7 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//启动登陆窗口
 	m_DlgLogon.SetPlatFormPointer(this);
 	OnCommandLogon();
-
+	g_GlobalUnits.m_ServerListManager.InitServerListManager(NULL);
 	m_GamePage.Create(NULL, NULL, WS_CHILD|WS_VISIBLE, CRect(250, 260, 250+176*3, 260+140*3), this, 10001);
 
 	return 0;
@@ -435,6 +597,7 @@ void CPlatformFrame::OnCommandCancelConnect()
 {
 	g_GlobalAttemper.DestroyStatusWnd(this);
 	m_ClientSocket->CloseSocket();
+	OnCommandLogon();
 	return;
 }
 
