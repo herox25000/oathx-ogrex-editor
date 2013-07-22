@@ -154,6 +154,9 @@
 				RelativePath=".\PlatformFrame.cpp">
 			</File>
 			<File
+				RelativePath=".\PlatformSocket.cpp">
+			</File>
+			<File
 				RelativePath=".\ServerListManager.cpp">
 			</File>
 			<File
@@ -199,6 +202,9 @@
 			</File>
 			<File
 				RelativePath=".\PlatformFrame.h">
+			</File>
+			<File
+				RelativePath=".\PlatformSocket.h">
 			</File>
 			<File
 				RelativePath=".\Resource.h">

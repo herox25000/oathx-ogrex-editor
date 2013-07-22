@@ -14,7 +14,7 @@
 #define IDC_BT_CONFIRN						101
 #define IDC_BT_CANCEL						102
 
-#define CAPTION_SIZE						35							//标题大小
+
 
 // CFrameSet 对话框
 

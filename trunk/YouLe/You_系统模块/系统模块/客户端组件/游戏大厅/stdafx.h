@@ -88,6 +88,7 @@ using namespace std;
 #include "GdipButton.h"
 #include "resource.h"
 
+#define CAPTION_SIZE						35							//标题大小
 //字符串安全拼接
 static void SafeStrCat(char* dest, const char* src, int iDestBufferLen)
 {
