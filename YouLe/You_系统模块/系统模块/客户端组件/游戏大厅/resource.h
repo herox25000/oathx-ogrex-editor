@@ -22,9 +22,11 @@
 #define IDC_PASSWORD                    1011
 #define IDC_PASSWORD2                   1012
 #define IDC_CLOSE                       1013
+
 #define IDM_LOGON_PLAZA                 32772
+#define IDM_SNED_LOGONPACKET			32773
 #define IDM_CONNECT_SERVER              32774
-#define IDM_CANCEL_CONNECT              32776
+#define IDM_CANCEL_CONNECT              32775
 
 // Next default values for new objects
 // 

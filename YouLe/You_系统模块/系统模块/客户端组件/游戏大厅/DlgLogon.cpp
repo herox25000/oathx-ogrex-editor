@@ -22,7 +22,6 @@
 
 //屏幕位置
 #define LAYERED_SIZE				5									//分层大小
-#define CAPTION_SIZE				35									//标题大小
 //////////////////////////////////////////////////////////////////////////
 //注册框按钮ID
 #define		WM_BT_REGISTERCLOSE		200
