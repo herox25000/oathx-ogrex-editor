@@ -178,6 +178,9 @@ void CPlatformFrame::LoadButtons()
 	m_btTill.CreateButton(this, "PNG_BT_GL_TILL", _T("PNG"), 72, 490, IDC_BT_TILL, 4);
 	m_btUserBag.CreateButton(this, "PNG_BT_GL_BAGPACK", _T("PNG"), 122, 490, IDC_BT_USERBAG, 4);
 	m_btIm.CreateButton(this, "PNG_BT_GL_IM", _T("PNG"), 172, 490, IDC_BT_IM, 4);
+
+	m_btSquare.EnableButton(FALSE);
+	m_btIm.EnableButton(FALSE);
 }
 
 //º”‘ÿÕº∆¨◊ ‘¥

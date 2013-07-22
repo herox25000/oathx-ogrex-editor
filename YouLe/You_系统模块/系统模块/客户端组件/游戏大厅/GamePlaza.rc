@@ -191,7 +191,7 @@ PNG_BT_GL_IM            PNG                     "res\\PLAZA\\GL_IM.png"
 PNG_BT_GL_SQUARE        PNG                     "res\\PLAZA\\GL_SQUARE.png"
 PNG_BT_GL_TILL          PNG                     "res\\PLAZA\\GL_TILL.png"
 PNG_SEX_HEAD            PNG                     "res\\PLAZA\\SEX.png"
-PNG_FRAME_SET           PNG                     "res\\PLAZA\\FRAME_SET.png"
+
 GAMEITEM_BACK           PNG                     "res\\PLAZA\\GAMEITEM_BACK.png"
 GAMEITEM_BILL           PNG                     "res\\PLAZA\\GAMEITEM_BILL.png"
 GAMEITEM_REGULAR        PNG                     "res\\PLAZA\\GAMEITEM_REGULAR.png"
@@ -199,7 +199,13 @@ GAMEITEM_JOIN           PNG                     "res\\PLAZA\\GAMEITEM_JOIN.png"
 GAMEROOM_JOIN           PNG                     "res\\PLAZA\\GAMEROOM_JOIN.png"
 GAMEROOM_BILL           PNG                     "res\\PLAZA\\GAMEROOM_BILL.png"
 GAMEPAGE_MATCH          PNG                     "res\\PLAZA\\GAMEPAGE_MATCH.png"
+
+PNG_FRAME_SET           PNG                     "res\\PLAZA_SET\\FRAME_SET.png"
+PNG_BT_CONFIRN          PNG                     "res\\PLAZA_SET\\BT_CONFIRN.png"
+PNG_BT_CANCEL           PNG                     "res\\PLAZA_SET\\BT_CANCEL.png"
+
 PNG_BT_CANCELSTATUS	PNG			"res\\Cancel_STATUS.png"
+
 /////////////////////////////////////////////////////////////////////////////
 //
 GAMETAB_GAME			PNG						"res\\PLAZA\\GAMETAB_GAME.png"
