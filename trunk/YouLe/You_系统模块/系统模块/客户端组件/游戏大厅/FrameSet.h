@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GdipButton.h"
+#include "DlgLogon.h"
 
 // CFrameSet 对话框
 
@@ -23,6 +24,11 @@ protected:
 protected:
 	//鼠标消息
 	VOID OnLButtonDown(UINT nFlags, CPoint Point);
+	//鼠标消息
+	VOID OnLButtonUp(UINT nFlags, CPoint Point);
+	//
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+
 
 	//图片资源
 protected:
@@ -30,9 +36,16 @@ protected:
 
 	//按钮控件
 protected:
-	CGdipButton			m_btClose;
-	CGdipButton			m_btConfirn;
-	CGdipButton			m_btCancel;
+	CGdipButton				m_btClose;
+	CGdipButton				m_btConfirn;
+	CGdipButton				m_btCancel;
+
+	CControlCheckButton		m_btNotUse;
+	CControlCheckButton		m_btUserQuick;
+
+protected:
+	std::string					m_strCtrl;
+	std::string					m_strKey;
 
 	DECLARE_MESSAGE_MAP()
 public:
