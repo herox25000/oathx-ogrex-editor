@@ -820,3 +820,22 @@ void CGdipButton::DeleteToolTip()
 	}
 }
 
+void CGdipButton::DeleteResource()
+{
+	if(m_pStdImage) 
+	{
+		delete m_pStdImage;
+		m_pStdImage = NULL;
+	}
+	if(m_pAltImage) 
+	{
+		delete m_pAltImage;
+		m_pAltImage = NULL;
+	}
+
+	if(m_pToolTip)
+	{
+		delete m_pToolTip;
+		m_pToolTip = NULL;
+	}
+}

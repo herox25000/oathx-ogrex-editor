@@ -11,6 +11,7 @@
 #define IDD_REGISTER                    131
 #define IDD_STATUS                      132
 #define IDD_DIALOG2                     133
+#define IDD_DLG_ENQUIRE					134
 #define IDB_CONNECT_STATUS              500
 #define IDC_BUTTON1                     1000
 #define IDC_ACCOUNTS                    1005

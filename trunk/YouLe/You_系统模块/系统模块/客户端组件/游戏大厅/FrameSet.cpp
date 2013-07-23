@@ -53,7 +53,7 @@ int CFrameSet::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	SetWindowPos(NULL, 0, 0, FRAMEDLG_X, FRAMEDLG_Y, SWP_NOZORDER);
 	CenterWindow();
-
+if(m_ImageBack.IsNull())
 	m_ImageBack.LoadImage(AfxGetInstanceHandle(), TEXT("PNG_FRAME_SET"));
 
 	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), FRAMEDLG_X - 42, 3, IDC_BT_CLOSE, 4);

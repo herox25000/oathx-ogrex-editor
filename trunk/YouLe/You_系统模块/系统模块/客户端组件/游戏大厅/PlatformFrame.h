@@ -7,6 +7,7 @@
 #include "GlobalUnits.h"
 #include "FrameSet.h"
 #include "PlatformSocket.h"
+#include "DlgEnquire.h"
 
 class CPlatformSocket;
 class CPlatformFrame : public CFrameWnd 
@@ -91,7 +92,8 @@ public:
 	afx_msg void OnCommandCancelConnect();
 	//打开大厅设置
 	afx_msg void OnOpenFrameSet();
-
+	//处理关闭大厅
+	afx_msg void OnClosePlatForm();
 protected:
 	DECLARE_MESSAGE_MAP()
 };

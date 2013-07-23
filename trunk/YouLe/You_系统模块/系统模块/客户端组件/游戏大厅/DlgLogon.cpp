@@ -105,7 +105,8 @@ void CControlCheckButton::CreatCheckButton(CWnd* pParentWnd,HINSTANCE hInstance,
 {
 	m_pParentSink = pParentWnd;
 	m_ptControlBenchmark.SetPoint(nXPos,nYPos);	
-	m_ImageBack.LoadImage(hInstance,pszResourceName);
+	if(m_ImageBack.IsNull())
+		m_ImageBack.LoadImage(hInstance,pszResourceName);
 }
 
 //控件区域
@@ -198,17 +199,18 @@ BOOL CDlgRegister::OnInitDialog()
 	__super::OnInitDialog();
  
 	//加载资源
+	if(m_ImageBack.IsNull())
 	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_REGISTER_BACK"));
 	int With = m_ImageBack->GetWidth();
 	int Height = m_ImageBack->GetHeight();
 	//设置大小
 	CSize SizeWindow(With,Height);
 	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
+	if(m_ImagePasswordLevel.IsNull())
+		m_ImagePasswordLevel.LoadImage(AfxGetInstanceHandle(),TEXT("PASSWORD_LEVEL"));
 
-	m_ImagePasswordLevel.LoadImage(AfxGetInstanceHandle(),TEXT("PASSWORD_LEVEL"));
-
-	m_btEixt.CreateButton(this,TEXT("PNG_BT_REGISTERCLOSE") ,_T("PNG"),With-50,5,WM_BT_REGISTERCLOSE,5);
-	m_btRegisterOk.CreateButton(this,TEXT("PNG_BT_REGISTEROK") ,_T("PNG"),With/2-30,Height-30,WM_BT_REGISTEROK,5);
+	m_btEixt.CreateButton(this,TEXT("PNG_BT_REGISTERCLOSE") ,_T("PNG"),With/2+80,Height-60,WM_BT_REGISTERCLOSE,4);
+	m_btRegisterOk.CreateButton(this,TEXT("PNG_BT_REGISTEROK") ,_T("PNG"),With/2-130,Height-60,WM_BT_REGISTEROK,4);
 	m_btMan.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),110,277);
 	m_btWoman.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),170,277);
 	m_btMan.SetButtonChecked(true);
@@ -227,9 +229,11 @@ BOOL CDlgRegister::OnInitDialog()
 	//设置区域
 	CRgn RgnWindow;
 	RgnWindow.CreateRoundRectRgn(LAYERED_SIZE,LAYERED_SIZE,SizeWindow.cx-LAYERED_SIZE+1,SizeWindow.cy-LAYERED_SIZE+1,ROUND_CX,ROUND_CY);
-
 	//设置区域
 	SetWindowRgn(RgnWindow,FALSE);
+	SetActiveWindow();
+	BringWindowToTop();
+	SetForegroundWindow();
 	return TRUE;
 }
 
@@ -528,6 +532,7 @@ BOOL CDlgLogon::OnInitDialog()
 {
 	__super::OnInitDialog();
 	//加载资源
+	if(m_ImageBack.IsNull())
 	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_LOGON_BACK"));
 	//设置大小
 	CSize SizeWindow(m_ImageBack.GetWidth(),m_ImageBack.GetHeight());
@@ -733,9 +738,8 @@ bool CDlgLogon::OnLogonSuccess()
 			RegUserInfo.SetKeyValue(TEXT(""),TEXT(""),TEXT("UserPassword"));
 		}
 	}
-	//关闭窗口
+	////关闭窗口
 	DestroyWindow();
-
 	return true;
 }
 

@@ -47,7 +47,7 @@ public:
 				DIS_TYPE
 			};
 
-
+	void DeleteResource();
 	// create button
 	BOOL CreateButton(CWnd* pParentWnd,LPCTSTR ResName, LPCTSTR pImageName,
 		int dx,int dy,UINT WondowsID,UINT lStatusNum = 1,HINSTANCE hInst=NULL);
