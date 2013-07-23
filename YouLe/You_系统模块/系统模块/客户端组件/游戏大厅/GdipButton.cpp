@@ -250,7 +250,7 @@ void CGdipButton::SetImage(int type)
 {
 	m_nCurType = type;
 
-	(type == DIS_TYPE) ? m_bIsDisabled = TRUE : m_bIsDisabled = FALSE;
+	//(type == DIS_TYPE) ? m_bIsDisabled = TRUE : m_bIsDisabled = FALSE;
 
 	Invalidate();
 }
@@ -677,8 +677,8 @@ BOOL CGdipButton::PreTranslateMessage(MSG* pMsg)
 			m_pToolTip->RelayEvent(pMsg);		
 		}
 	}
-	if(m_bIsDisabled)
-		return TRUE;
+/*	if(m_bIsDisabled)
+		return TRUE*/;
 	if (pMsg->message == WM_LBUTTONDBLCLK)
 		pMsg->message = WM_LBUTTONDOWN;
 
@@ -702,7 +702,7 @@ void CGdipButton::DrawItem(LPDRAWITEMSTRUCT lpDIS)
 	CDC* pDC = CDC::FromHandle(lpDIS->hDC);
 
 	// handle disabled state
-	if(m_bIsDisabled)  //不可用
+	if(!IsWindowEnabled())  //不可用
 	{
 		m_pCurBtn = &m_dcGS;
 		PaintBtn(pDC);
