@@ -102,6 +102,9 @@ public:
 	CControlCheckButton					m_btMan;
 	CControlCheckButton					m_btWoman;
 
+	CSkinEditEx		m_NameEdit;
+	CSkinEditEx		m_SfzEdit;
+
 	//函数定义
 public:
 	//构造函数
