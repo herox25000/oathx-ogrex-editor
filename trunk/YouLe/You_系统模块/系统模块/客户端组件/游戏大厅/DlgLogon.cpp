@@ -191,6 +191,9 @@ CDlgRegister::~CDlgRegister()
 void CDlgRegister::DoDataExchange(CDataExchange * pDX)
 {
 	__super::DoDataExchange(pDX);
+	DDX_Control(pDX,IDC_EDIT_NAME,m_NameEdit);
+	DDX_Control(pDX,IDC_EDIT_SFZ,m_SfzEdit);
+	
 }
 
 //初始化函数
@@ -215,6 +218,8 @@ BOOL CDlgRegister::OnInitDialog()
 	m_btWoman.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),170,277);
 	m_btMan.SetButtonChecked(true);
 	
+	m_NameEdit.SetEnableColor(RGB(0,0,0),RGB(147,186,243),RGB(147,186,243));
+	m_SfzEdit.SetEnableColor(RGB(0,0,0),RGB(147,186,243),RGB(147,186,243));
 	//居中窗口
 	CenterWindow(this);
 	//获取窗口
@@ -775,6 +780,9 @@ void CDlgLogon::LoadAccountsInfo()
 			}
 		}
 	}
+	m_edAccounts.SetFocus();
+	//设置选择
+	m_edAccounts.SetSel(0,-1,FALSE);
 }
 
 //加载服务器
