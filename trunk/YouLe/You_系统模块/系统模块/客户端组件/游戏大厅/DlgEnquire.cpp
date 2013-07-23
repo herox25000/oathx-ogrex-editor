@@ -59,13 +59,13 @@ BOOL CDlgEnquire::OnInitDialog()
 	CSize SizeWindow(m_ImageBack.GetWidth(),m_ImageBack.GetHeight());
 	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
 
-	m_btCancel.CreateButton(this,TEXT("BT_ENQUIRE_CANCEL"),_T("PNG"),m_ImageBack.GetWidth()-40,10,WM_BT_CLOSE,5);
+	m_btCancel.CreateButton(this,TEXT("BT_ENQUIRE_CANCEL"),_T("PNG"),m_ImageBack.GetWidth()-50,15,WM_BT_CLOSE,4);
 	m_btClosePlaza.CreateButton(this,TEXT("BT_ENQUIRE_PLAZA"),_T("PNG"),
-		10,m_ImageBack.GetHeight()-100,WM_BT_CLOSE_PLAZA,5);
+		m_ImageBack.GetWidth()-160,m_ImageBack.GetHeight()-70,WM_BT_CLOSE_PLAZA,4);
 	m_btSwitchAccounts.CreateButton(this,TEXT("BT_ENQUIRE_SWITCH"),_T("PNG"),
-		m_ImageBack.GetWidth()/2-50,m_ImageBack.GetHeight()-100,WM_BT_SWITCH_ACCOUNTS,5);
-	m_btQuite.CreateButton(this,TEXT("BT_ENQUIRE_QUITE"),_T("PNG"),
-		m_ImageBack.GetWidth()-50,m_ImageBack.GetHeight()-100,WM_BT_QUITE,5);
+		30,m_ImageBack.GetHeight()-70,WM_BT_SWITCH_ACCOUNTS,4);
+	//m_btQuite.CreateButton(this,TEXT("BT_ENQUIRE_QUITE"),_T("PNG"),
+	//	m_ImageBack.GetWidth()-50,m_ImageBack.GetHeight()-100,WM_BT_QUITE,4);
 	//居中窗口
 	CenterWindow(this);
 	//设置区域
@@ -95,7 +95,7 @@ BOOL CDlgEnquire::OnEraseBkgnd(CDC * pDC)
 	m_btCancel.SetBkGnd(pDevDC);
 	m_btClosePlaza.SetBkGnd(pDevDC);
 	m_btSwitchAccounts.SetBkGnd(pDevDC);
-	m_btQuite.SetBkGnd(pDevDC);
+	//m_btQuite.SetBkGnd(pDevDC);
 	return TRUE;
 }
 
