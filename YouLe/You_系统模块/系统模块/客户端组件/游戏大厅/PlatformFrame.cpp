@@ -88,6 +88,8 @@ BOOL CPlatformFrame::PreTranslateMessage(MSG * pMsg)
 //启动登陆窗口
 void CPlatformFrame::OnCommandLogon()
 {
+	m_PlatformSocket.m_bLogonPlaza = false;
+	ShowWindow(SW_HIDE);
 	//创建登录框
 	if (m_DlgLogon.m_hWnd==NULL) 
 	{
@@ -114,6 +116,31 @@ void CPlatformFrame::OnOpenFrameSet()
 	m_DlgFrameSet.SetActiveWindow();
 	m_DlgFrameSet.SetForegroundWindow();
 	return;
+}
+
+//处理关闭大厅
+void CPlatformFrame::OnClosePlatForm()
+{
+	//显示窗口
+	CDlgEnquire DlgEnquire;
+	INT_PTR nResult=DlgEnquire.DoModal();
+	switch (nResult)
+	{
+	case WM_BT_CLOSE_PLAZA:
+		{
+			PostMessage(WM_CLOSE,0,0);
+			break;
+		}
+	case WM_BT_SWITCH_ACCOUNTS:	//切换帐号
+		{
+			//删除记录
+			g_GlobalUnits.DeleteUserCookie();
+			tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+			memset(&GlobalUserData,0,sizeof(GlobalUserData));
+			OnCommandLogon();
+			break;
+		}
+	}
 }
 
 //连接服务器
@@ -273,6 +300,7 @@ VOID CPlatformFrame::OnLButtonDown(UINT nFlags, CPoint Point)
 	return;
 }
 
+
 BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 {
 	//变量定义
@@ -286,7 +314,7 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 		}
 	case IDC_BT_FRAME_CLOSE:				//关闭按钮
 		{
-			PostMessage(WM_CLOSE,0,0);
+			OnClosePlatForm();
 			return TRUE;
 		}
 	case IDC_BT_LOBBYSET:				//打开大厅设置

@@ -191,7 +191,6 @@ PNG_BT_GL_IM            PNG                     "res\\PLAZA\\GL_IM.png"
 PNG_BT_GL_SQUARE        PNG                     "res\\PLAZA\\GL_SQUARE.png"
 PNG_BT_GL_TILL          PNG                     "res\\PLAZA\\GL_TILL.png"
 PNG_SEX_HEAD            PNG                     "res\\PLAZA\\SEX.png"
-
 GAMEITEM_BACK           PNG                     "res\\PLAZA\\GAMEITEM_BACK.png"
 GAMEITEM_BILL           PNG                     "res\\PLAZA\\GAMEITEM_BILL.png"
 GAMEITEM_REGULAR        PNG                     "res\\PLAZA\\GAMEITEM_REGULAR.png"
@@ -199,19 +198,22 @@ GAMEITEM_JOIN           PNG                     "res\\PLAZA\\GAMEITEM_JOIN.png"
 GAMEROOM_JOIN           PNG                     "res\\PLAZA\\GAMEROOM_JOIN.png"
 GAMEROOM_BILL           PNG                     "res\\PLAZA\\GAMEROOM_BILL.png"
 GAMEPAGE_MATCH          PNG                     "res\\PLAZA\\GAMEPAGE_MATCH.png"
-
+PNG_BT_CANCELSTATUS     PNG                     "res\\Cancel_STATUS.png"
+DLG_ENQUIRE_BACK        PNG                     "res\\PLAZA_ENQUIRE\\DLG_ENQUIRE_BACK.png"
+BT_ENQUIRE_CANCEL       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_CANCEL.png"
+BT_ENQUIRE_PLAZA        PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_PLAZA.png"
+BT_ENQUIRE_SWITCH       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_SWITCH.png"
+BT_ENQUIRE_QUITE        PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_QUITE.png"
+GAMETAB_GAME            PNG                     "res\\PLAZA\\GAMETAB_GAME.png"
+GAMETAB_CARD            PNG                     "res\\PLAZA\\GAMETAB_CARD.png"
+GAMETAB_MAHJ            PNG                     "res\\PLAZA\\GAMETAB_MAHJ.png"
+GAMETAB_LEIS            PNG                     "res\\PLAZA\\GAMETAB_LEIS.png"
 PNG_FRAME_SET           PNG                     "res\\PLAZA_SET\\FRAME_SET.png"
 PNG_BT_CONFIRN          PNG                     "res\\PLAZA_SET\\BT_CONFIRN.png"
 PNG_BT_CANCEL           PNG                     "res\\PLAZA_SET\\BT_CANCEL.png"
 
-PNG_BT_CANCELSTATUS	PNG			"res\\Cancel_STATUS.png"
-
 /////////////////////////////////////////////////////////////////////////////
 //
-GAMETAB_GAME			PNG						"res\\PLAZA\\GAMETAB_GAME.png"
-GAMETAB_CARD			PNG						"res\\PLAZA\\GAMETAB_CARD.png"
-GAMETAB_MAHJ			PNG						"res\\PLAZA\\GAMETAB_MAHJ.png"
-GAMETAB_LEIS			PNG						"res\\PLAZA\\GAMETAB_LEIS.png"
 // Dialog
 //
 
@@ -273,13 +275,19 @@ STYLE DS_SETFONT | DS_SETFOREGROUND | DS_3DLOOK | DS_CENTER | WS_POPUP |
     WS_BORDER
 FONT 9, "宋体", 400, 0, 0x0
 BEGIN
-    PUSHBUTTON      "取消",IDC_CLOSE,167,10,44,14,NOT WS_TABSTOP
 END
 
 IDD_FRAMESET DIALOGEX 0, 0, 186, 90
 STYLE DS_SETFONT | DS_3DLOOK | DS_FIXEDSYS | DS_CENTER | WS_POPUP | 
     WS_CLIPCHILDREN
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+END
+
+IDD_DLG_ENQUIRE DIALOGEX 0, 0, 184, 128
+STYLE DS_SETFONT | DS_CENTER | WS_POPUP | WS_VISIBLE | WS_CLIPSIBLINGS | 
+    WS_CLIPCHILDREN | WS_SYSMENU
+FONT 9, "宋体", 400, 0, 0x0
 BEGIN
 END
 

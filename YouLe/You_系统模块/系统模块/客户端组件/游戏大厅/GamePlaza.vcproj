@@ -127,6 +127,9 @@
 			Filter="cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx"
 			UniqueIdentifier="{4FC737F1-C7A5-4376-A066-2A32D752A2FF}">
 			<File
+				RelativePath=".\DlgEnquire.cpp">
+			</File>
+			<File
 				RelativePath=".\DlgLogon.cpp">
 			</File>
 			<File
@@ -140,6 +143,9 @@
 			</File>
 			<File
 				RelativePath=".\GamePlazaDlg.cpp">
+			</File>
+			<File
+				RelativePath=".\GameRoomSocket.cpp">
 			</File>
 			<File
 				RelativePath=".\GlobalUnits.cpp">
@@ -180,6 +186,9 @@
 			Filter="h;hpp;hxx;hm;inl;inc;xsd"
 			UniqueIdentifier="{93995380-89BD-4b04-88EB-625FBE52EBFB}">
 			<File
+				RelativePath=".\DlgEnquire.h">
+			</File>
+			<File
 				RelativePath=".\DlgLogon.h">
 			</File>
 			<File
@@ -193,6 +202,9 @@
 			</File>
 			<File
 				RelativePath=".\GamePlazaDlg.h">
+			</File>
+			<File
+				RelativePath=".\GameRoomSocket.h">
 			</File>
 			<File
 				RelativePath=".\PasswordControl.h">
@@ -328,10 +340,28 @@
 			RelativePath=".\res\Plaza_logon\BT_banben.png">
 		</File>
 		<File
+			RelativePath=".\res\Plaza_set\BT_CANCEL.png">
+		</File>
+		<File
 			RelativePath=".\res\Plaza_logon\BT_chongzhi.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza_logon\BT_chose.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_set\BT_CONFIRN.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_enquire\BT_ENQUIRE_CANCEL.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_enquire\BT_ENQUIRE_PLAZA.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_enquire\BT_ENQUIRE_QUITE.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_enquire\BT_ENQUIRE_SWITCH.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza\BT_FRAME_CLOSE.png">
@@ -376,13 +406,22 @@
 			RelativePath=".\res\Plaza_logon\BT_webhome.png">
 		</File>
 		<File
+			RelativePath=".\res\Cancel_STATUS.png">
+		</File>
+		<File
 			RelativePath=".\res\Plaza_logon\key\cap.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_enquire\DLG_ENQUIRE_BACK.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza_logon\Dlg_logon_back.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza\FRAME_SET.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza_set\FRAME_SET.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza\GAMEITEM_BACK.png">
@@ -407,6 +446,18 @@
 		</File>
 		<File
 			RelativePath=".\res\Plaza\GAMEROOM_JOIN.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMETAB_CARD.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMETAB_GAME.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMETAB_LEIS.png">
+		</File>
+		<File
+			RelativePath=".\res\Plaza\GAMETAB_MAHJ.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza\GL_BACK.png">

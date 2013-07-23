@@ -34,9 +34,7 @@ CDlgStatus::~CDlgStatus()
 void CDlgStatus::DoDataExchange(CDataExchange * pDX)
 {
 	__super::DoDataExchange(pDX);
-	DDX_Control(pDX, IDC_CLOSE, m_btCancel);
 }
-
 
 BOOL CDlgStatus::OnEraseBkgnd(CDC* pDC)
 {
@@ -93,7 +91,9 @@ bool CDlgStatus::ShowStatusMessage(LPCTSTR pszMessage, CWnd * pNotifyWnd)
 	{
 		Create(IDD_STATUS);
 		SetTimer(IDT_STATUS_IMANGE,200,NULL);
-		m_btCancel.LoadStdImage(TEXT("PNG_BT_CANCELSTATUS"),_T("PNG"),5);
+		CRect rect;
+		GetClientRect(&rect);
+		m_btCancel.CreateButton(this,TEXT("PNG_BT_CANCELSTATUS"),_T("PNG"),rect.Width()-50,20,IDC_CLOSE,5);
 	}
 
 	//…Ë÷√œ˚œ¢
@@ -113,8 +113,8 @@ bool CDlgStatus::DestroyStatusWnd(CWnd * pNotifyWnd)
 {
 	if ((m_pNotifyWnd==pNotifyWnd)||(pNotifyWnd==NULL))
 	{
+		m_btCancel.DeleteResource();
 		DestroyWindow();
-		m_btCancel.~CGdipButton();
 		return true;
 	}
 	return false;
