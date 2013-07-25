@@ -102,8 +102,10 @@ public:
 	CControlCheckButton					m_btMan;
 	CControlCheckButton					m_btWoman;
 
-	CSkinEditEx		m_NameEdit;
-	CSkinEditEx		m_SfzEdit;
+	CSkinEditEx				m_NameEdit;
+	CSkinEditEx				m_SfzEdit;
+	CSkinComboBox			m_ChengShi;
+	CSkinComboBox			m_Diqu;
 
 	//º¯Êý¶¨Òå
 public:

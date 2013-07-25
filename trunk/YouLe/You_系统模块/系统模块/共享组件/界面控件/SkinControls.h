@@ -398,6 +398,7 @@ public:
 	#include "SkinHyperLink.h"
 	#include "SkinAide.h"
 	#include "SkinResourceManager.h"
+	#include "SkinComboBox.h"
 #endif
 
 //////////////////////////////////////////////////////////////////////////

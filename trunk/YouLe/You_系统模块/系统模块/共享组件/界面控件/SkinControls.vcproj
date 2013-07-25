@@ -161,6 +161,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath="SkinButton.cpp">
 			</File>
 			<File
+				RelativePath=".\SkinComboBox.cpp">
+			</File>
+			<File
 				RelativePath="SkinControls.cpp">
 			</File>
 			<File
@@ -249,6 +252,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath="SkinButton.h">
 			</File>
 			<File
+				RelativePath=".\SkinComboBox.h">
+			</File>
+			<File
 				RelativePath="SkinControls.h">
 			</File>
 			<File
@@ -296,6 +302,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 			<File
 				RelativePath="res\SKIN_BUTTON_BACK.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\SKIN_COMBOBOX_BUTTON.bmp">
 			</File>
 			<File
 				RelativePath="res\SKIN_HEAD_TITLE.bmp">
