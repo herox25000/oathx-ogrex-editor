@@ -4,6 +4,8 @@
 #define VC_EXTRALEAN		// 从 Windows 头中排除极少使用的资料
 #endif
 
+#define WINVER  0x0501
+
 #ifndef WINVER				// 允许使用特定于 Windows 95 和 Windows NT 4 或更高版本的功能。
 #define WINVER 0x0400		// 将此更改为针对于 Windows 98 和 Windows 2000 或更高版本的合适的值。
 #endif

@@ -21,7 +21,7 @@
 #define ROUND_CY					7									//圆角高度
 
 //屏幕位置
-#define LAYERED_SIZE				5									//分层大小
+#define LAYERED_SIZE				1									//分层大小
 //////////////////////////////////////////////////////////////////////////
 //注册框按钮ID
 #define		WM_BT_REGISTERCLOSE		200
@@ -193,7 +193,8 @@ void CDlgRegister::DoDataExchange(CDataExchange * pDX)
 	__super::DoDataExchange(pDX);
 	DDX_Control(pDX,IDC_EDIT_NAME,m_NameEdit);
 	DDX_Control(pDX,IDC_EDIT_SFZ,m_SfzEdit);
-	
+	DDX_Control(pDX,IDC_COMBO_CHNEGSHI,m_ChengShi);
+	DDX_Control(pDX,IDC_COMBO_DIQU,m_Diqu);
 }
 
 //初始化函数
@@ -287,11 +288,11 @@ void CDlgRegister::OnOK()
 	lstrcpyn(m_szLikeName,strBuffer,CountArray(m_szLikeName));
 
 	//地址
-	GetDlgItemText(IDC_Address1,strBuffer);
+	GetDlgItemText(IDC_COMBO_CHNEGSHI,strBuffer);
 	if (strBuffer.GetLength()<4)
 	{
 		ShowInformation(TEXT("请输入地址！"),10,MB_ICONQUESTION);
-		GetDlgItem(IDC_Address1)->SetFocus();
+		GetDlgItem(IDC_COMBO_CHNEGSHI)->SetFocus();
 		return;
 	}
 	lstrcpyn(m_szAddress,strBuffer,CountArray(m_szAddress));

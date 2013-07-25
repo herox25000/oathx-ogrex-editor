@@ -103,6 +103,13 @@ END
 //
 
 IDC_HAND_CUR            CURSOR                  ".\\res\\HAND_CUR.cur"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SKIN_COMBOBOX_BUTTON BITMAP                  "Res\\SKIN_COMBOBOX_BUTTON.bmp"
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
@@ -119,6 +126,7 @@ IDC_HAND_CUR            CURSOR                  ".\\res\\HAND_CUR.cur"
 #define _AFX_NO_PROPERTY_RESOURCES
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_CHS)
+LANGUAGE 4,2
 #pragma code_page(936)
 #include "res\SkinControls.rc2"  // 非 Microsoft Visual C++ 编辑资源
 #include "afxres.rc"     // 标准组件
@@ -126,3 +134,4 @@ IDC_HAND_CUR            CURSOR                  ".\\res\\HAND_CUR.cur"
 
 /////////////////////////////////////////////////////////////////////////////
 #endif    // not APSTUDIO_INVOKED
+
