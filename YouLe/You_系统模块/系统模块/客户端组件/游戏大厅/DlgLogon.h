@@ -95,6 +95,9 @@ public:
 	BYTE								m_cbLogonPassLevel;					//密码强度
 	CPngImage							m_ImageBack;
 	CPngImage							m_ImagePasswordLevel;
+
+	TCHAR*		m_StrSheng[36];
+	TCHAR*		m_StrDiqu[36][21];
 	//控件变量
 public:
 	CGdipButton							m_btEixt;
@@ -104,8 +107,8 @@ public:
 
 	CSkinEditEx				m_NameEdit;
 	CSkinEditEx				m_SfzEdit;
-	CSkinComboBox			m_ChengShi;
-	CSkinComboBox			m_Diqu;
+	CSkinComboBox			m_BoxChengshi;
+	CSkinComboBox			m_BoxDiqu;
 
 	//函数定义
 public:
@@ -120,6 +123,7 @@ public:
 	//登陆密码输入
 	VOID OnEnChangeLogonPass();
 
+	void InitChengShiDiQu();
 	//重载函数
 protected:
 	//控件绑定
@@ -136,7 +140,8 @@ protected:
 	VOID OnLButtonDown(UINT nFlags, CPoint Point);
 	//鼠标弹起
 	void OnLButtonUp(UINT nFlags, CPoint point);
-
+	afx_msg void OnCbnSelchangeComboChengshi();
+	afx_msg void OnCbnSelchangeComboDiqu();
 
 	DECLARE_MESSAGE_MAP()
 };
@@ -188,7 +193,7 @@ public:
 	CGdipButton							m_btBanben;
 
 	CSkinEditEx							m_edAccounts;						//登录帐号
-	CPasswordControl					m_PasswordControl;					//用户密码
+	CSkinEditEx							m_edPassWord;
 	CControlCheckButton					m_RemPwdControl;
 
 	//软件键盘
