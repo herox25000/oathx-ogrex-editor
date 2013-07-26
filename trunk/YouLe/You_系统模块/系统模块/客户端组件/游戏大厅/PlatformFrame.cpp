@@ -187,7 +187,7 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 //加载按钮
 void CPlatformFrame::LoadButtons()
 {
-	m_LobbySet.CreateButton(this, "PNG_LOBBY_SET", _T("PNG"), LESS_SCREEN_CX - 112, 3, IDC_BT_LOBBYSET, 4);
+	m_LobbySet.CreateButton(this, "PNG_LOBBY_SET", _T("PNG"), LESS_SCREEN_CX - 116, 3, IDC_BT_LOBBYSET, 4);
 	m_btMin.CreateButton(this, "PNG_BT_FRAME_MIN", _T("PNG"), LESS_SCREEN_CX - 77, 3, IDC_BT_FRAME_MIN, 4);
 	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), LESS_SCREEN_CX - 42, 3, IDC_BT_FRAME_CLOSE, 4);
 
@@ -206,8 +206,8 @@ void CPlatformFrame::LoadButtons()
 	m_btUserBag.CreateButton(this, "PNG_BT_GL_BAGPACK", _T("PNG"), 122, 490, IDC_BT_USERBAG, 4);
 	m_btIm.CreateButton(this, "PNG_BT_GL_IM", _T("PNG"), 172, 490, IDC_BT_IM, 4);
 
-	m_btSquare.EnableButton(FALSE);
-	m_btIm.EnableButton(FALSE);
+	m_btSquare.EnableWindow(FALSE);
+	m_btIm.EnableWindow(FALSE);
 }
 
 //加载图片资源
@@ -223,6 +223,7 @@ void CPlatformFrame::LoadImages()
 
 BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 {
+	
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	CMemDC pDevC(pDC, rcClient);
@@ -346,4 +347,9 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 VOID CPlatformFrame::OnClose()
 {
 	__super::OnClose();
+}
+
+void CPlatformFrame::SaveBossKey( int nCtrlKey, int nHelpKey )
+{
+	
 }

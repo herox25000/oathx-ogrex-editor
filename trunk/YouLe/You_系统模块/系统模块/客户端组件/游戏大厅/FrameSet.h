@@ -3,8 +3,24 @@
 #include "GdipButton.h"
 #include "DlgLogon.h"
 
-// CFrameSet 对话框
 
+class KeyManage  
+{
+public:
+	KeyManage();
+	virtual ~KeyManage();
+
+public:
+	BOOL GetKeyAllState(string &str);
+	int GetKeyState(UINT vKey);
+	void PreTranslateKey();
+	CString GetKeyName(UINT vk, BOOL fExtended);
+
+protected:
+	BYTE m_key[256];
+};
+
+// CFrameSet 对话框
 class CFrameSet : public CDialog
 {
 	DECLARE_DYNAMIC(CFrameSet)
@@ -46,6 +62,7 @@ protected:
 protected:
 	std::string					m_strCtrl;
 	std::string					m_strKey;
+	KeyManage					m_keys;
 
 	DECLARE_MESSAGE_MAP()
 public:
