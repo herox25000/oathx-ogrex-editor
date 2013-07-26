@@ -16,6 +16,79 @@
 #define IDC_BT_CANCEL						102
 
 
+KeyManage::KeyManage()
+{
+	memset(m_key,0,sizeof(BYTE)*256);
+}
+
+KeyManage::~KeyManage()
+{
+
+}
+
+void KeyManage::PreTranslateKey()
+{
+	GetKeyboardState(m_key);
+}
+
+inline int KeyManage::GetKeyState(UINT vKey)
+{
+	ASSERT(vKey<256);
+	return m_key[vKey]&0x80;
+}
+
+CString KeyManage::GetKeyName(UINT vk, BOOL fExtended)
+{
+	LONG lScan = MapVirtualKey(vk, 0) << 16;
+
+	if (fExtended)
+		lScan |= 0x01000000L;
+
+	CString str;
+	int nBufferLen = 64;
+	int nLen;
+	do
+	{
+		nBufferLen *= 2;
+		LPTSTR psz = str.GetBufferSetLength(nBufferLen);
+		nLen = ::GetKeyNameText(lScan, psz, nBufferLen + 1);
+		str.ReleaseBuffer(nLen);
+	}
+	while (nLen == nBufferLen);
+	return str;
+
+}
+
+BOOL KeyManage::GetKeyAllState(string &str)
+{
+	BOOL IsPress = FALSE;
+	str = "";
+	int nArrKey[2] = {-1, -1};
+	for(int i = 0; i < 256; i++)
+	{
+		if(GetKeyState(i))
+		{
+			if (FALSE == IsPress)
+				IsPress = TRUE;
+			CString c = _T("");
+			bool bExtend = FALSE;
+			if (i == 18 || i == 164)			//alt
+				nArrKey[0] = VK_MENU;
+			else if (i == 17 || i == 162)		//ctrl
+				nArrKey[0] = VK_CONTROL;
+			else if (i == 16 || i == 160)		//ctrl
+				nArrKey[0] = VK_SHIFT;
+			else
+				nArrKey[1] = i;
+			str += c;
+		}
+	}
+	if (nArrKey[0] >= 0)
+		str += GetKeyName(nArrKey[0], FALSE);
+	if (nArrKey[1] >= 0)
+		str += GetKeyName(nArrKey[1], TRUE);
+	return IsPress;
+}
 
 // CFrameSet 对话框
 
@@ -64,7 +137,6 @@ if(m_ImageBack.IsNull())
 	m_btUserQuick.CreatCheckButton(this, AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),28,92);
 	m_btNotUse.SetButtonChecked(true);
 
-
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	//调整判断
@@ -81,7 +153,6 @@ if(m_ImageBack.IsNull())
 		//设置区域
 		SetWindowRgn(RegionWindow,TRUE);
 	}
-
 
 	return 0;
 }
@@ -100,15 +171,6 @@ BOOL CFrameSet::OnEraseBkgnd(CDC* pDC)
 
 	m_btNotUse.OnDrawControl(pDevC);
 	m_btUserQuick.OnDrawControl(pDevC);
-
-	if (!m_strCtrl.empty() && !m_strKey.empty())
-	{
-		char temp[128];
-		sprintf(temp, "%s + %s", m_strCtrl.c_str(), m_strKey.c_str());
-		CRect rcAccounts;
-		rcAccounts.SetRect(135, 92, 235,105);
-		pDevC->DrawText(temp, lstrlen(temp),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
-	}
 
 	return TRUE;
 }
@@ -141,6 +203,9 @@ BOOL CFrameSet::OnCommand( WPARAM wParam, LPARAM lParam )
 		}
 	case IDC_BT_CONFIRN:
 		{
+			//保存到配置文件中
+			//AfxGetMainWnd()->SaveBossKey();
+			OnOK();
 			return TRUE;
 		}
 	}
@@ -158,7 +223,9 @@ void CFrameSet::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			bClick = m_btUserQuick.OnClickControl(point);
 			if(bClick)
+			{
 				m_btNotUse.SetButtonChecked(false);
+			}
 		}
 	}
 	if(!bClick)
@@ -167,7 +234,9 @@ void CFrameSet::OnLButtonUp(UINT nFlags, CPoint point)
 		{
 			bClick = m_btNotUse.OnClickControl(point);
 			if(bClick)
+			{
 				m_btUserQuick.SetButtonChecked(false);
+			}
 		}
 	}
 
@@ -178,34 +247,20 @@ BOOL CFrameSet::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_btUserQuick.GetButtonChecked())
 	{
-		if (::GetAsyncKeyState(VK_CONTROL) & 0x8000f)
-		{
-			m_strCtrl = "CTRL";
-		}
-		else if (::GetAsyncKeyState(VK_MENU) & 0x8000f)
-		{
-			m_strCtrl = "ALT";
-		}
-		else if (::GetAsyncKeyState(VK_SHIFT) & 0x8000f)
-		{
-			m_strCtrl = "SHIFT";
-		}
-		
-		for(int i = 0x30; i < 0x39; i++)
-		{
-			if (::GetAsyncKeyState(i) & 0x8000f)
-			{
-				m_strKey = MapVirtualKey(i,2);
-			}
-		}
-		for(i = 0x41; i < 0x5A; i++)
-		{
-			if (::GetAsyncKeyState(i) & 0x8000f)
-			{
-				m_strKey = MapVirtualKey(i, 2);
-			}
-		}
-
+// 		m_keys.PreTranslateKey();
+// 		string str;
+// 		if(m_keys.GetKeyAllState(str))
+// 		{
+// 			CDC* pDC = GetDC();
+// 			CRect rcClient;
+// 			GetClientRect(&rcClient);
+// 			CMemDC pDevC(pDC, rcClient);
+// 			pDevC->SetBkMode(TRANSPARENT);
+// 
+// 			CRect rcAccounts;
+// 			rcAccounts.SetRect(135, 92, 235,105);
+// 			pDevC->DrawText(str.c_str(), str.length(),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
+// 		}
 	}
 	return CDialog::PreTranslateMessage(pMsg);
 }

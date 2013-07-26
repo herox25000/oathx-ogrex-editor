@@ -94,6 +94,9 @@ public:
 	afx_msg void OnOpenFrameSet();
 	//处理关闭大厅
 	afx_msg void OnClosePlatForm();
+public:
+	void SaveBossKey(int nCtrlKey, int nHelpKey);
+
 protected:
 	DECLARE_MESSAGE_MAP()
 };
