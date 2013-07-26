@@ -89,10 +89,6 @@ int CGameItemWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rect;
 	GetClientRect(&rect);
 
-	CRgn rgn;
-	rgn.CreateRoundRectRgn(rect.left+1, rect.top+1, rect.right-1, rect.bottom-1, 5, 5);
-	SetWindowRgn(rgn, TRUE);
-
 	// create regular button.
 	m_Regular.CreateButton(this, 
 		TEXT("GAMEITEM_REGULAR"), _T("PNG"), 7, 105, 0, 4);
@@ -101,6 +97,10 @@ int CGameItemWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_JoinBtn.CreateButton(this,
 		TEXT("GAMEITEM_JOIN"), _T("PNG"), 60, 105, 0, 4);
 	
+	CRgn rgn;
+	rgn.CreateRoundRectRgn(rect.left+1, rect.top+1, rect.right-1, rect.bottom-1, 20, 20);
+	SetWindowRgn(rgn, TRUE);
+
 	return 0;
 }
 

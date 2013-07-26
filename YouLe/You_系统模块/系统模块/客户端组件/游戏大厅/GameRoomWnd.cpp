@@ -1,7 +1,6 @@
 #include "stdafx.h"
 #include "GamePlaza.h"
 #include "GameRoomWnd.h"
-#include ".\gameroomwnd.h"
 
 IMPLEMENT_DYNAMIC(CGameRoomWnd, CWnd)
 CGameRoomWnd::CGameRoomWnd()
@@ -49,7 +48,7 @@ int		CGameRoomWnd::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	GetClientRect(&rect);
 
 	CRgn rgn;
-	rgn.CreateRoundRectRgn(rect.left+1, rect.top+1, rect.right-1, rect.bottom-1, 5, 5);
+	rgn.CreateRoundRectRgn(rect.left+1, rect.top+1, rect.right-1, rect.bottom-1, 15, 15);
 	SetWindowRgn(rgn, TRUE);
 
 	// create regular button.

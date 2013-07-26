@@ -20,6 +20,8 @@ public:
 	virtual void		ShowWindow(int nCmdShow);
 	// 背景刷新
 	virtual	void		EraseBkgnd(CDC* pDC);
+
+	virtual void		EnableWindow(INT iBtton, BOOL bEnabled);
 protected:
 	// 项目窗口
 	CGamePage			m_GamePage;

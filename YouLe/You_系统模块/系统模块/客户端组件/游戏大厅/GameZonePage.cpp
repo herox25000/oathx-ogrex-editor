@@ -40,10 +40,13 @@ BOOL CGameZonePage::Create(INT nID, const RECT& rect, CWnd* pParent)
 		TEXT("GAMETAB_LEIS")
 	};
 
+	const INT idList[] = {
+		IDB_GAMETAB_GAME, IDB_GAMETAB_CARD, IDB_GAMETAB_MAHJ, IDB_GAMETAB_LEIS
+	};
 	for (int i=0; i<4; i++)
 	{
 		m_GameBnts[i].CreateButton(pParent, 
-			chBtnImageResouceName[i], _T("PNG"), rect.left + i * 100, rect.top, 0, 3);
+			chBtnImageResouceName[i], _T("PNG"), rect.left + i * 100, rect.top, idList[i], 3);
 	}
 
 	return bResult;
@@ -69,4 +72,9 @@ void CGameZonePage::ShowWindow(int nCmdShow)
 	}
 
 	m_GamePage.ShowWindow(nCmdShow);
+}
+
+void CGameZonePage::EnableWindow(INT iBtton, BOOL bEnabled)
+{
+	m_GameBnts[iBtton].EnableWindow(bEnabled);
 }

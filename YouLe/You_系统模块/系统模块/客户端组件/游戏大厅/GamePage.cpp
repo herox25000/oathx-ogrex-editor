@@ -30,7 +30,7 @@ BOOL	CGamePage::Create(INT nRow, INT nCol, HINSTANCE hInstance, const RECT& rect
 		for (int cx=0; cx<nCol; cx++)
 		{
 			AddGameItem(cy * nRow + cx, client.left + cx * 176, client.top + cy * 140, hInstance, 
-				TEXT("GAMEITEM_BACK"), TEXT("GAMEITEM_BILL"), TRUE);
+				TEXT("GAMEITEM_BACK"), TEXT("GAMEITEM_BILL"), FALSE);
 		}
 	}
 	
