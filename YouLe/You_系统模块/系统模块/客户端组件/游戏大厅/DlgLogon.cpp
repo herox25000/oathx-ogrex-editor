@@ -12,14 +12,6 @@
 //颜色定义
 #define SELECT_COLOR		RGB(37,56,220)						//选择颜色
 
-//屏幕限制
-#define LESS_SCREEN_W					1024					//最小宽度
-#define LESS_SCREEN_H					720						//最小高度
-
-//圆角大小
-#define ROUND_CX					7									//圆角宽度
-#define ROUND_CY					7									//圆角高度
-
 //屏幕位置
 #define LAYERED_SIZE				1									//分层大小
 //////////////////////////////////////////////////////////////////////////

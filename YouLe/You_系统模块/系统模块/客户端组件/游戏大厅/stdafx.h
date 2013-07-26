@@ -87,6 +87,7 @@ using namespace std;
 #include "MemDC.h"
 #include "GdipButton.h"
 #include "resource.h"
+#include "Platform.h"
 
 #define CAPTION_SIZE						35							//标题大小
 //字符串安全拼接
