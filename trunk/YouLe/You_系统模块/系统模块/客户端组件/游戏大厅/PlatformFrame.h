@@ -8,6 +8,7 @@
 #include "FrameSet.h"
 #include "PlatformSocket.h"
 #include "DlgEnquire.h"
+#include "PngButton.h"
 
 class CPlatformSocket;
 class CPlatformFrame : public CFrameWnd 
@@ -26,6 +27,7 @@ protected:
 	CDlgLogon						m_DlgLogon;				//登录对话框
 	CFrameSet						m_DlgFrameSet;			//打开大厅设置
 
+	PngBtnManager*					m_pPngButtonMgr;
 	//资源
 protected:
 	CPngImage						m_ImageHead;

@@ -24,17 +24,20 @@
 #define IDC_BT_IM							114
 
 //阴影定义
-#define SHADOW_CX							0							//阴影宽度
-#define SHADOW_CY							0							//阴影高度
+#define SHADOW_CX							1							//阴影宽度
+#define SHADOW_CY							1							//阴影高度
 
 IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 
 CPlatformFrame::CPlatformFrame()
 {
+	m_pPngButtonMgr = new PngBtnManager();
 }
 
 CPlatformFrame::~CPlatformFrame()
 {
+	delete m_pPngButtonMgr;
+	m_pPngButtonMgr = NULL;
 }
 
 
@@ -73,6 +76,10 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	//m_GamePage.Create(NULL, NULL, WS_CHILD|WS_VISIBLE, CRect(250, 260, 250+176*3, 260+140*3), this, 10001);
 	//m_GamePage.Create(3, 3, NULL, CRect(250, 260, 250+176*3, 260+140*3), this, 0);
 	m_ZonePage.Create(0, CRect(250, 206, 250+176*3, 260+140*3), this);
+
+	PngButton* pPngButton = new PngButton(NULL);
+	pPngButton->InitButton(100, 100, 0, AfxGetInstanceHandle(), TEXT("GAMEITEM_REGULAR"));
+	m_pPngButtonMgr->addBtn(pPngButton);
 	return 0;
 }
 
@@ -239,6 +246,8 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	SetButtonBackGrounds(pDevC);
 	DrawUserInfo(pDevC);
 	m_ZonePage.EraseBkgnd(pDevC);
+
+	m_pPngButtonMgr->DrawBtn(pDevC);
 	return TRUE;
 }
 

@@ -10,7 +10,7 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("v5");
 //#define CAPTION_SIZE			79									//标题大小
 
 //圆角大小
-#define ROUND_CX				7									//圆角宽度
-#define ROUND_CY				7									//圆角高度
+#define ROUND_CX				5									//圆角宽度
+#define ROUND_CY				5									//圆角高度
 
 #endif

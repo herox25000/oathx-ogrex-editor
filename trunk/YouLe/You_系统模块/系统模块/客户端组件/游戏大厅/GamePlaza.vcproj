@@ -285,6 +285,12 @@
 				RelativePath=".\MemDC.h">
 			</File>
 			<File
+				RelativePath=".\PngButton.cpp">
+			</File>
+			<File
+				RelativePath=".\PngButton.h">
+			</File>
+			<File
 				RelativePath=".\TabPage.cpp">
 			</File>
 			<File
@@ -418,10 +424,10 @@
 			RelativePath=".\res\Plaza_logon\Dlg_logon_back.png">
 		</File>
 		<File
-			RelativePath=".\res\Plaza\FRAME_SET.png">
+			RelativePath=".\res\Plaza_set\FRAME_SET.png">
 		</File>
 		<File
-			RelativePath=".\res\Plaza_set\FRAME_SET.png">
+			RelativePath=".\res\Plaza\FRAME_SET.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza\GAMEITEM_BACK.png">
