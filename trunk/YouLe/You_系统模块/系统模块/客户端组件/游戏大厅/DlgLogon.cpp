@@ -234,7 +234,7 @@ BOOL CDlgRegister::OnInitDialog()
 	m_BoxChengshi.SetCurSel(0);
 
 	m_BoxDiqu.ResetContent();
-	m_BoxDiqu.InsertString(0,"请选择");
+	m_BoxDiqu.InsertString(0,"地区");
 	m_BoxDiqu.SetCurSel(0);
 
 	//居中窗口
@@ -307,7 +307,6 @@ void CDlgRegister::OnOK()
 	if( 0 == m_BoxChengshi.GetCurSel())
 	{
 		ShowInformation(TEXT("请输入地址！"),10,MB_ICONQUESTION);
-		OutputDebugString("请选择地址！\r\n");
 		return;
 	}
 	CString strChengshi;
@@ -536,7 +535,7 @@ void CDlgRegister::InitChengShiDiQu()
 
 	char* TempChengshi[36] = 
 	{
-		"请选择","北京","天津","上海","重庆","辽宁","吉林","黑龙江","河北","山西","河南","山东","江苏","安徽","江西",
+		"省市","北京","天津","上海","重庆","辽宁","吉林","黑龙江","河北","山西","河南","山东","江苏","安徽","江西",
 			"浙江","福建","广东","海南","贵州","云南","四川","湖南","湖北","陕西","甘肃","青海","内蒙古","西藏","新疆",
 			"广西","宁夏","台湾","香港","澳门","其他"
 	};
@@ -544,7 +543,7 @@ void CDlgRegister::InitChengShiDiQu()
 
 	char* TempDiqu[36][21] = 
 	{
-		{"请选择"}
+		{"地区"}
 		,{"北京"}
 		,{"天津"}
 		,{"上海"}
