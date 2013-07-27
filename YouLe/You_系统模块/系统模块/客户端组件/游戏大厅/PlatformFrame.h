@@ -68,6 +68,12 @@ public:
 	//绘制角色信息
 	void DrawUserInfo(CDC *pDC);
 
+public:
+	//资源句柄
+	HINSTANCE GetResInstanceHandle();
+	//获取资源
+	tagPlatformFrameImageNew GetPlatformRes();
+
 	//重载函数
 public:
 	virtual BOOL RectifyResource(int nWidth, int nHeight);

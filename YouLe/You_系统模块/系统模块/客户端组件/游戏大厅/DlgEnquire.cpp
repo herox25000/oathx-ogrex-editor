@@ -54,16 +54,19 @@ BOOL CDlgEnquire::OnInitDialog()
 {
 	__super::OnInitDialog();
 	//加载资源
-	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_ENQUIRE_BACK"));
+	tagPlatformFrameImageNew & PlazaViewImage = g_GlobalUnits.m_PlatformFrameImage;
+	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+
+	m_ImageBack.LoadImage(hInstance, PlazaViewImage.pszEnquireBack);
 	//设置大小
 	CSize SizeWindow(m_ImageBack.GetWidth(),m_ImageBack.GetHeight());
 	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
 
-	m_btCancel.CreateButton(this,TEXT("BT_ENQUIRE_CANCEL"),_T("PNG"),m_ImageBack.GetWidth()-50,15,WM_BT_CLOSE,4);
-	m_btClosePlaza.CreateButton(this,TEXT("BT_ENQUIRE_PLAZA"),_T("PNG"),
-		m_ImageBack.GetWidth()-160,m_ImageBack.GetHeight()-70,WM_BT_CLOSE_PLAZA,4);
-	m_btSwitchAccounts.CreateButton(this,TEXT("BT_ENQUIRE_SWITCH"),_T("PNG"),
-		30,m_ImageBack.GetHeight()-70,WM_BT_SWITCH_ACCOUNTS,4);
+	m_btCancel.CreateButton(this, PlazaViewImage.pszEnquireCancel, _T("PNG"),m_ImageBack.GetWidth()-50,15,WM_BT_CLOSE,4, hInstance);
+	m_btClosePlaza.CreateButton(this, PlazaViewImage.pszEnquirePlaza, _T("PNG"),
+		m_ImageBack.GetWidth()-160,m_ImageBack.GetHeight()-70,WM_BT_CLOSE_PLAZA, 4, hInstance);
+	m_btSwitchAccounts.CreateButton(this, PlazaViewImage.pszEnquireSwitch, _T("PNG"),
+		30,m_ImageBack.GetHeight()-70,WM_BT_SWITCH_ACCOUNTS,4, hInstance);
 	//m_btQuite.CreateButton(this,TEXT("BT_ENQUIRE_QUITE"),_T("PNG"),
 	//	m_ImageBack.GetWidth()-50,m_ImageBack.GetHeight()-100,WM_BT_QUITE,4);
 	//居中窗口

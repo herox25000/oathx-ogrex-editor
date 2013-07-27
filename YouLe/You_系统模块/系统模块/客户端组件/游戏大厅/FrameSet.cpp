@@ -5,8 +5,7 @@
 #include "GamePlaza.h"
 #include "FrameSet.h"
 #include "Platform.h"
-#include ".\frameset.h"
-
+#include "GlobalUnits.h"
 
 #define FRAMEDLG_X							359
 #define FRAMEDLG_Y							240
@@ -126,15 +125,18 @@ int CFrameSet::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	SetWindowPos(NULL, 0, 0, FRAMEDLG_X, FRAMEDLG_Y, SWP_NOZORDER);
 	CenterWindow();
-if(m_ImageBack.IsNull())
-	m_ImageBack.LoadImage(AfxGetInstanceHandle(), TEXT("PNG_FRAME_SET"));
 
-	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), FRAMEDLG_X - 42, 3, IDC_BT_CLOSE, 4);
-	m_btConfirn.CreateButton(this, "PNG_BT_CONFIRN", _T("PNG"), FRAMEDLG_X / 2 - 100, 210, IDC_BT_CONFIRN, 4);
-	m_btCancel.CreateButton(this, "PNG_BT_CANCEL", _T("PNG"), FRAMEDLG_X / 2 + 10, 210, IDC_BT_CANCEL, 4);
+	tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
+	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
 
-	m_btNotUse.CreatCheckButton(this, AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),28,68);
-	m_btUserQuick.CreatCheckButton(this, AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),28,92);
+	m_ImageBack.LoadImage(hInstance, FrameViewImage.pszFrameSet);
+
+	m_btClose.CreateButton(this, FrameViewImage.pszBtClose, _T("PNG"), FRAMEDLG_X - 42, 3, IDC_BT_CLOSE, 4, hInstance);
+	m_btConfirn.CreateButton(this, FrameViewImage.pszBtConfirn, _T("PNG"), FRAMEDLG_X / 2 - 100, 210, IDC_BT_CONFIRN, 4, hInstance);
+	m_btCancel.CreateButton(this, FrameViewImage.pszBtCancel, _T("PNG"), FRAMEDLG_X / 2 + 10, 210, IDC_BT_CANCEL, 4, hInstance);
+
+	m_btNotUse.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28,68);
+	m_btUserQuick.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28,92);
 	m_btNotUse.SetButtonChecked(true);
 
 	CRect rcClient;

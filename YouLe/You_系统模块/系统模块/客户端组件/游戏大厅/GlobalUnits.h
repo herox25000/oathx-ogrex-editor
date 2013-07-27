@@ -47,11 +47,11 @@ public:
 
 	//资源变量
 public:
-	tagPlazaViewImage					m_PlazaViewImage;				//广场资源
+	tagPlatViewImageNew					m_PlazaViewImage;				//广场资源
 	tagServerViewImage					m_ServerViewImage;				//房间资源
 	tagWhisperViewImage					m_WhisperViewImage;				//私聊资源
 	tagControlViewImage					m_ControlViewImage;				//控件资源
-	tagPlatformFrameImage				m_PlatformFrameImage;			//框架资源
+	tagPlatformFrameImageNew			m_PlatformFrameImage;			//框架资源
 	tagChatExpViewImage					m_ChatExpViewImage;				//表情资源
 	tagPropertyViewImage				m_PropertyViewImage;			//道具资源
 

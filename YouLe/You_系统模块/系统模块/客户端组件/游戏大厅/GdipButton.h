@@ -80,7 +80,7 @@ public:
 	void SetHorizontal(bool ImagesAreLaidOutHorizontally = FALSE);
 	void DeleteToolTip();
 	//÷ÿ–¬…Ë÷√AltImage
-	void ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName);
+	void ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName, HINSTANCE hInst = NULL);
 
 protected:
 

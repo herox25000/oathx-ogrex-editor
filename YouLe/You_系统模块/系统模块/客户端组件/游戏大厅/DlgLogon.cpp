@@ -197,21 +197,24 @@ BOOL CDlgRegister::OnInitDialog()
 {
 	__super::OnInitDialog();
  
+	tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
+	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+
 	//加载资源
 	if(m_ImageBack.IsNull())
-	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_REGISTER_BACK"));
+	m_ImageBack.LoadImage(hInstance, FrameViewImage.pszRegisterBack);
 	int With = m_ImageBack->GetWidth();
 	int Height = m_ImageBack->GetHeight();
 	//设置大小
 	CSize SizeWindow(With,Height);
 	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
 	if(m_ImagePasswordLevel.IsNull())
-		m_ImagePasswordLevel.LoadImage(AfxGetInstanceHandle(),TEXT("PASSWORD_LEVEL"));
+		m_ImagePasswordLevel.LoadImage(hInstance, FrameViewImage.pszPassLevel);
 
-	m_btEixt.CreateButton(this,TEXT("PNG_BT_REGISTERCLOSE") ,_T("PNG"),With/2+80,Height-60,WM_BT_REGISTERCLOSE,4);
-	m_btRegisterOk.CreateButton(this,TEXT("PNG_BT_REGISTEROK") ,_T("PNG"),With/2-130,Height-60,WM_BT_REGISTEROK,4);
-	m_btMan.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),110,277);
-	m_btWoman.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("PNG_BT_CHOSE"),170,277);
+	m_btEixt.CreateButton(this, FrameViewImage.pszBtCloseRegister ,_T("PNG"),With/2+80,Height-60,WM_BT_REGISTERCLOSE,4, hInstance);
+	m_btRegisterOk.CreateButton(this, FrameViewImage.pszBtRegisterOk ,_T("PNG"),With/2-130,Height-60,WM_BT_REGISTEROK,4, hInstance);
+	m_btMan.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,110,277);
+	m_btWoman.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,170,277);
 	m_btMan.SetButtonChecked(true);
 	
 	m_NameEdit.SetEnableColor(RGB(0,0,0),RGB(147,186,243),RGB(147,186,243));
@@ -632,8 +635,11 @@ BOOL CDlgLogon::OnInitDialog()
 {
 	__super::OnInitDialog();
 	//加载资源
+	tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
+	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+
 	if(m_ImageBack.IsNull())
-	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("DLG_LOGON_BACK"));
+	m_ImageBack.LoadImage(hInstance, FrameViewImage.pszLoginBack);
 	//设置大小
 	CSize SizeWindow(m_ImageBack.GetWidth(),m_ImageBack.GetHeight());
 	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
@@ -643,38 +649,34 @@ BOOL CDlgLogon::OnInitDialog()
 	m_edPassWord.SetEnableColor(RGB(0,0,0),RGB(255,255,255),RGB(255,255,255));
 
 	//记住密码
-	m_RemPwdControl.CreatCheckButton(this,AfxGetInstanceHandle(),TEXT("CHECK_BUTTON_BACK"),165,225);
+	m_RemPwdControl.CreatCheckButton(this, hInstance, FrameViewImage.pszBtCheckBack,165,225);
 	
-
-	m_btCancel.LoadStdImage(TEXT("PNG_BT_LOGON_QUIT") ,_T("PNG"),5);
-	m_btLogon.LoadStdImage(TEXT("PNG_BT_LOGON") ,_T("PNG"),5);
-	m_btWebhome.CreateButton(this,TEXT("PNG_BT_WEBHOME"),_T("PNG"),175,75,WM_BT_WEBHOME,5);
-	m_btRegister.CreateButton(this,TEXT("PNG_BT_REGISTER"),_T("PNG"),260,75,WM_BT_REGISTER,5);
-	m_btChongzhi.CreateButton(this,TEXT("PNG_BT_CHONGZHI"),_T("PNG"),350,75,WM_BT_CHONGZHI,5);
-	m_btBanben.CreateButton(this,TEXT("PNG_BT_BANBEN"),_T("PNG"),440,75,WM_BT_BANBEN,5);
+	m_btCancel.LoadStdImage(FrameViewImage.pszBtQuit ,_T("PNG"),5, hInstance);
+	m_btLogon.LoadStdImage(FrameViewImage.pszBtLogin ,_T("PNG"),5, hInstance);
+	m_btWebhome.CreateButton(this,FrameViewImage.pszBtWebHome,_T("PNG"),175,75,WM_BT_WEBHOME,5, hInstance);
+	m_btRegister.CreateButton(this,FrameViewImage.pszBtRegister,_T("PNG"),260,75,WM_BT_REGISTER,5, hInstance);
+	m_btChongzhi.CreateButton(this,FrameViewImage.pszBtChongzhi,_T("PNG"),350,75,WM_BT_CHONGZHI,5, hInstance);
+	m_btBanben.CreateButton(this,FrameViewImage.pszBtVersion,_T("PNG"),440,75,WM_BT_BANBEN,5, hInstance);
 
 	//创建软键盘
-	m_btOther[0].CreateButton(this,TEXT("PNG_BT_KEYBOARD2"),_T("PNG"),414,312,WM_BT_KEYBOARD_MIN,3);
-	m_btOther[1].CreateButton(this,TEXT("PNG_BT_KEYBOARD3"),_T("PNG"),414,349,WM_BT_KEYBOARD_MIN+1,3);
-	TCHAR TempName[32];
+	m_btOther[0].CreateButton(this,FrameViewImage.pszBtNormalKey[0], _T("PNG"),414,312,WM_BT_KEYBOARD_MIN,3, hInstance);
+	m_btOther[1].CreateButton(this,FrameViewImage.pszBtNormalKey[1], _T("PNG"),414,349,WM_BT_KEYBOARD_MIN+1,3, hInstance);
 	UINT windowsID = 0;
 	int i=0;
 	for (i=0;i<10;i++)
 	{
-		sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+4);
 		windowsID = WM_BT_KEYBOARD_MIN+2+i; 
-		m_btNumber[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*i,275,windowsID,3);
+		m_btNumber[i].CreateButton(this,FrameViewImage.pszBtNormalKey[i+2], _T("PNG"), 30+(46+2)*i, 275, windowsID, 3, hInstance);
 	}
 	for(i=0;i<26;i++)
 	{
-		sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+14);
 		windowsID = WM_BT_KEYBOARD_MIN+12+i; 
 		if(i<8)
-			m_btAlphabet[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*i,312,windowsID,3);
+			m_btAlphabet[i].CreateButton(this,FrameViewImage.pszBtLowKey[i],_T("PNG"),30+(46+2)*i,312,windowsID,3, hInstance);
 		else if(i<16)
-			m_btAlphabet[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*(i-8),349,windowsID,3);
+			m_btAlphabet[i].CreateButton(this,FrameViewImage.pszBtLowKey[i],_T("PNG"),30+(46+2)*(i-8),349,windowsID,3, hInstance);
 		else
-			m_btAlphabet[i].CreateButton(this,TempName,_T("PNG"),30+(46+2)*(i-16),387,windowsID,3);
+			m_btAlphabet[i].CreateButton(this,FrameViewImage.pszBtLowKey[i],_T("PNG"),30+(46+2)*(i-16),387,windowsID,3, hInstance);
 	}
 
 	//居中窗口
@@ -1308,21 +1310,25 @@ void CDlgLogon::OnKeyBoard(UINT uID)
 void CDlgLogon::SwitchChar(bool bCaps)
 {
 	int i = 0;
-	TCHAR TempName[256] = TEXT("");
+// 	TCHAR TempName[256] = TEXT("");
+
+	tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
+	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+
 	if(bCaps)
 	{
 		for(i=0;i<26;i++)
 		{
-			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+40);
-			m_btAlphabet[i].ResetAltImage(TempName,_T("PNG"));
+// 			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+40);
+			m_btAlphabet[i].ResetAltImage(FrameViewImage.pszBtUpperKey[i],_T("PNG"), hInstance);
 		}
 	}
 	else
 	{
 		for(i=0;i<26;i++)
 		{
-			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+14);
-			m_btAlphabet[i].ResetAltImage(TempName,_T("PNG"));
+// 			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+14);
+			m_btAlphabet[i].ResetAltImage(FrameViewImage.pszBtLowKey[i], _T("PNG"), hInstance);
 		}
 	}
 }
