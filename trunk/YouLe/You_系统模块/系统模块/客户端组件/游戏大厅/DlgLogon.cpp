@@ -9,8 +9,8 @@
 #define LOGON_BY_ACCOUNTS				0						//帐号登录
 #define LOGON_BY_USERID					1						//ID 登录
 
-//颜色定义
-#define SELECT_COLOR		RGB(37,56,220)						//选择颜色
+////颜色定义
+//#define SELECT_COLOR		RGB(37,56,220)						//选择颜色
 
 //屏幕位置
 #define LAYERED_SIZE				1									//分层大小
@@ -235,11 +235,11 @@ BOOL CDlgRegister::OnInitDialog()
 	CRect rcWindow;
 	GetWindowRect(&rcWindow);
 	//计算位置
-	CRect rcUnLayered;
-	rcUnLayered.top=LAYERED_SIZE;
-	rcUnLayered.left=LAYERED_SIZE;
-	rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
-	rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
+	//CRect rcUnLayered;
+	//rcUnLayered.top=LAYERED_SIZE;
+	//rcUnLayered.left=LAYERED_SIZE;
+	//rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
+	//rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
 	//设置区域
 	CRgn RgnWindow;
 	RgnWindow.CreateRoundRectRgn(LAYERED_SIZE,LAYERED_SIZE,SizeWindow.cx-LAYERED_SIZE+1,SizeWindow.cy-LAYERED_SIZE+1,ROUND_CX,ROUND_CY);
@@ -683,11 +683,11 @@ BOOL CDlgLogon::OnInitDialog()
 	CRect rcWindow;
 	GetWindowRect(&rcWindow);
 	//计算位置
-	CRect rcUnLayered;
-	rcUnLayered.top=LAYERED_SIZE;
-	rcUnLayered.left=LAYERED_SIZE;
-	rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
-	rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
+	//CRect rcUnLayered;
+	//rcUnLayered.top=LAYERED_SIZE;
+	//rcUnLayered.left=LAYERED_SIZE;
+	//rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
+	//rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
 	//设置区域
 	CRgn RgnWindow;
 	RgnWindow.CreateRoundRectRgn(LAYERED_SIZE,LAYERED_SIZE,SizeWindow.cx-LAYERED_SIZE+1,SizeWindow.cy-LAYERED_SIZE+1,ROUND_CX,ROUND_CY);
