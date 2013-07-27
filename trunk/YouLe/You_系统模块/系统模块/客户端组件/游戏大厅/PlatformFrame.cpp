@@ -76,7 +76,7 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	OnCommandLogon();
 	g_GlobalUnits.m_ServerListManager.InitServerListManager(NULL);
 
-	m_GamePage.Create(0, CRect(250, 206, 250+176*3, 260+140*3), this, NULL, NULL);
+	m_GamePage.Create(0, CRect(245, 206, 245+176*3, 260+140*3), this, NULL, NULL);
 
 	return 0;
 }
