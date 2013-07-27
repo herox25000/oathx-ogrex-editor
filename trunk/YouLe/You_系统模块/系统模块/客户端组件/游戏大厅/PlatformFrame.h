@@ -3,7 +3,6 @@
 #include "GamePlazaDlg.h"
 #include "GdipButton.h"
 #include "DlgLogon.h"
-#include "GameZonePage.h"
 #include "GlobalUnits.h"
 #include "FrameSet.h"
 #include "PlatformSocket.h"
