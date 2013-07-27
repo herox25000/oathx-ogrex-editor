@@ -87,79 +87,91 @@ namespace YouLe
 	// 鼠标移动
 	BOOL	UIPngButton::OnMouseMove(const CPoint& cPt)
 	{
+		if (!m_bVisible || !m_bEnabled)
+			return FALSE;
+	
 		if (UIWidget::OnMouseMove(cPt))
 			return TRUE;
+	
+		if (m_bPress)
+			return FALSE;
 
-		if (m_bVisible && m_bEnabled)
+		BOOL bDeliver = FALSE;
+
+		if (PtInRect(cPt))
 		{
-			if (PtInRect(cPt))
-			{
-				m_nState = m_bPress ? PNG_BTNDOWN : PNG_BTNHOVER;
-				Invalidate(TRUE);
-				return TRUE;
-			}
-			else
-			{
-				m_nState = m_bPress ? PNG_BTNDOWN : PNG_BTNNORMAL;
-				Invalidate(TRUE);
-				return FALSE;
-			}
+			m_nState = m_bPress ? PNG_BTNDOWN : PNG_BTNHOVER;
+			bDeliver = TRUE;
+		}
+		else
+		{
+			m_nState = m_bPress ? PNG_BTNDOWN : PNG_BTNNORMAL;
+			bDeliver = FALSE;
 		}
 
-		return FALSE;
+		Invalidate(TRUE);
+
+		return bDeliver;
 	}
 
 	// 左键按下
 	BOOL	UIPngButton::OnLeftDown(const CPoint& cPt)
 	{
+		if (!m_bVisible || !m_bEnabled)
+			return FALSE;
+
 		if (UIWidget::OnLeftDown(cPt))
 			return TRUE;
 
-		if (m_bVisible && m_bEnabled)
-		{
-			if (PtInRect(cPt))
-			{
-				m_nState = PNG_BTNDOWN;
-				m_bPress = TRUE;
-				Invalidate(TRUE);
-				
-				return TRUE;
-			}
-			else
-			{
-				m_nState = PNG_BTNNORMAL;
-				Invalidate(TRUE);
-				return FALSE;
-			}
-		}
+		BOOL bDeliver = FALSE;
 
-		return FALSE;
+		if (PtInRect(cPt))
+		{
+			m_nState = PNG_BTNDOWN;
+			bDeliver = TRUE;
+		}
+		else
+		{
+			m_nState = PNG_BTNNORMAL;
+			bDeliver = FALSE;
+		}
+		
+		m_bPress = TRUE;
+		Invalidate(TRUE);
+
+		return bDeliver;
 	}
 
 	// 左键弹起
 	BOOL	UIPngButton::OnLeftUp(const CPoint& cPt)
 	{
-		if (UIWidget::OnLeftDown(cPt))
+		if (!m_bVisible || !m_bEnabled)
+			return FALSE;
+
+		if (UIWidget::OnLeftUp(cPt))
 			return TRUE;
 
-		if (m_bVisible && m_bEnabled)
+		BOOL bDeliver = FALSE;
+
+		if (PtInRect(cPt))
 		{
-			// update button state
-			m_nState = PtInRect(cPt) ? PNG_BTNHOVER : PNG_BTNNORMAL;
-			
-			// paint button
-			Invalidate(TRUE);
+			m_nState = PNG_BTNHOVER;
+			bDeliver = TRUE;
 
-			// send process cliecked
-			if (m_bPress && m_pProcess != NULL)
+			if (m_pProcess != NULL)
 			{
-				m_bPress = FALSE;
-
-				if (m_pProcess->OnClicked(this, cPt))
-					return TRUE;
+				m_pProcess->OnClicked(this, cPt);
 			}
 		}
+		else
+		{
+			m_nState = PNG_BTNNORMAL;
+			bDeliver = FALSE;
+		}
+		
+		m_bPress = FALSE;
+		Invalidate(TRUE);
 
-		return FALSE;
+		return bDeliver;
 	}
 }
