@@ -5,7 +5,7 @@ namespace YouLe
 {
 	// 析构函数
 	UIPngButton::UIPngButton()
-		: m_nState(PNG_BTNNORMAL), m_nSlice(0), m_pImage(NULL), m_bPress(FALSE)
+		: m_nState(PNG_BTNNORMAL), m_nSlice(0), m_pImage(NULL), m_bPress(FALSE), m_nCount(4)
 	{
 
 	}
@@ -22,11 +22,8 @@ namespace YouLe
 
 	// 创建控件
 	BOOL	UIPngButton::Create(INT nID, const RECT& rect, CWnd* pAttach, 
-		HINSTANCE hInstance, LPCTSTR lpResourceName, INT nStatCount, UIWidget* pParent)
+		UIProcess* pProcess, HINSTANCE hInstance, LPCTSTR lpResourceName, INT nStatCount, UIWidget* pParent)
 	{
-		if (!UIWidget::Create(nID, rect, pAttach, pParent))
-			return FALSE;
-
 		// button image object
 		m_pImage = new CPngImage();
 		ASSERT(m_pImage != NULL);
@@ -36,14 +33,24 @@ namespace YouLe
 			lpResourceName);
 		ASSERT(bResult);
 		
+		m_nCount = nStatCount;
+
 		// calc image slice width
 		m_nSlice = m_pImage->GetWidth() / nStatCount;
 		
 		// calc button client rect
 		m_rect.SetRect(rect.left, rect.top, 
 			rect.left + m_nSlice, rect.top + m_pImage->GetHeight());
+	
+		return UIWidget::Create(nID, rect, pAttach, 
+			pProcess, pParent);
+	}
 
-		return TRUE;
+	// 创建控件
+	BOOL	UIPngButton::Create(INT nID, INT x, INT y, CWnd* pAttach, 
+		UIProcess* pProcess, HINSTANCE hInstance, LPCTSTR lpResourceName, INT nStatCount, UIWidget* pParent)
+	{
+		return Create(nID, CRect(x, y, 0, 0), pAttach, pProcess, hInstance, lpResourceName, nStatCount, pParent);
 	}
 
 	// 重写绘制
@@ -59,18 +66,22 @@ namespace YouLe
 		return UIWidget::Draw(pDC);
 	}
 
+	// 控制窗口无效
 	void	UIPngButton::EnabledWidget(bool bEnabled)
 	{
 		UIWidget::EnabledWidget(bEnabled);
 
-		m_nState = PNG_BTNENABLE;
-		Invalidate(TRUE);
-	}
+		if (IsWidgetEnabled())
+		{
+			m_nState = PNG_BTNNORMAL;
+		}
+		else
+		{
+			m_nState = (m_nCount == 3 ? PNG_BTNDOWN : PNG_BTNENABLE);
+		}
 
-	// 设置按钮文本
-	void	UIPngButton::SetText(LPCTSTR lpszText)
-	{
-		
+		// invalid the window
+		Invalidate(TRUE);
 	}
 	
 	// 鼠标移动
@@ -133,17 +144,20 @@ namespace YouLe
 
 		if (m_bVisible && m_bEnabled)
 		{
-			if (PtInRect(cPt))
-			{
-				m_nState = PNG_BTNHOVER;
-			}
-			else
-			{
-				m_nState = PNG_BTNNORMAL;
-			}
-
-			m_bPress = FALSE;
+			// update button state
+			m_nState = PtInRect(cPt) ? PNG_BTNHOVER : PNG_BTNNORMAL;
+			
+			// paint button
 			Invalidate(TRUE);
+
+			// send process cliecked
+			if (m_bPress && m_pProcess != NULL)
+			{
+				m_bPress = FALSE;
+
+				if (m_pProcess->OnClicked(this, cPt))
+					return TRUE;
+			}
 		}
 
 		return FALSE;

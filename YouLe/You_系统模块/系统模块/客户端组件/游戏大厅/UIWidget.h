@@ -3,6 +3,19 @@
 
 namespace YouLe
 {
+	class UIWidget;
+
+	// UI 消息处理器
+	class UIProcess
+	{
+	public:
+		// 析构函数
+		virtual ~UIProcess(){}
+
+		// 处理按下消息
+		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt) = 0;
+	};
+
 	// GDI+ 自绘UI基础类
 	class UIWidget
 	{
@@ -17,7 +30,7 @@ namespace YouLe
 		virtual ~UIWidget();
 
 		// 创建控件
-		virtual BOOL		Create(INT nID, const RECT& rect,  CWnd* pAttach, UIWidget* pParent);
+		virtual BOOL		Create(INT nID, const RECT& rect,  CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
 		// 重设ID
 		virtual void		SetID(const INT nID);
 		// 获取ID
@@ -92,6 +105,7 @@ namespace YouLe
 		BOOL				m_bEnabled;
 		BOOL				m_bVisible;
 		CRect				m_rect;
+		UIProcess*			m_pProcess;
 	};
 
 }

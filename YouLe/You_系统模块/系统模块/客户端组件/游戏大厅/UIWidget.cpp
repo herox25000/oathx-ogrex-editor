@@ -5,7 +5,7 @@ namespace YouLe
 {
 	// 构造函数
 	UIWidget::UIWidget() 
-		: m_nID(0), m_bVisible(TRUE), m_bEnabled(TRUE), m_pParent(NULL), m_pAttach(NULL)
+		: m_nID(0), m_bVisible(TRUE), m_bEnabled(TRUE), m_pParent(NULL), m_pAttach(NULL), m_pProcess(NULL)
 	{
 
 	}
@@ -21,12 +21,15 @@ namespace YouLe
 	}
 
 	// 创建控件
-	BOOL		UIWidget::Create(INT nID, const RECT& rect, CWnd* pAttach, UIWidget* pParent)
+	BOOL		UIWidget::Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent)
 	{
 		m_pAttach	= pAttach;
 		m_nID		= nID;
 		m_rect		= rect;
-		m_pParent	= pParent;
+		m_pProcess	= pProcess;
+
+		if (pParent)
+			pParent->Add(this);
 
 		return TRUE;
 	}
