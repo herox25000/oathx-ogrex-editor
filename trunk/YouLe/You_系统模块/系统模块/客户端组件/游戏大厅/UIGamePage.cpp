@@ -52,7 +52,7 @@ namespace YouLe
 		for (int i=0; i<4; i++)
 		{
 			UIPngButton* pPngButton = new UIPngButton();
-			pPngButton->Create(idList[i], i * 100, 0, m_pAttach, this,
+			pPngButton->Create(idList[i], i * 96, 0, m_pAttach, this,
 				AfxGetInstanceHandle(), chBtnImageResouceName[i], 3, this);
 		}
 
