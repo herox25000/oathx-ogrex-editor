@@ -39,10 +39,10 @@ namespace YouLe
 		m_nSlice = m_pImage->GetWidth() / nStatCount;
 		
 		// calc button client rect
-		m_rect.SetRect(rect.left, rect.top, 
+		CRect area(rect.left, rect.top, 
 			rect.left + m_nSlice, rect.top + m_pImage->GetHeight());
 	
-		return UIWidget::Create(nID, rect, pAttach, 
+		return UIWidget::Create(nID, area, pAttach, 
 			pProcess, pParent);
 	}
 

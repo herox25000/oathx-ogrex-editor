@@ -16,6 +16,7 @@ namespace YouLe
 
 	// 构造函数
 	UIGamePage::UIGamePage()
+		: m_pGameView(NULL)
 	{
 
 	}
@@ -23,7 +24,7 @@ namespace YouLe
 	// 析构函数
 	UIGamePage::~UIGamePage()
 	{
-
+		
 	}
 
 	// 窗口控件
@@ -36,8 +37,9 @@ namespace YouLe
 		INT nLeft	= GTP_OFFSETX;
 		int nTop	= GTP_OFFSETY;
 
-		//m_GameView.Create(0, CRect(nLeft, nTop, nLeft + GTP_WINDOWX * GTP_ITEMCOL, nTop + GTP_WINDOWY * GTP_ITEMROW),
-		//	pAttach, pProcess, this);
+		m_pGameView = new UIGameView();
+		m_pGameView->Create(0, CRect(nLeft, nTop, nLeft + GTP_WINDOWX * GTP_ITEMCOL, nTop + GTP_WINDOWY * GTP_ITEMROW),
+			pAttach, pProcess, this);
 
 		// 创建页面按钮
 		const TCHAR* chBtnImageResouceName[] = {
