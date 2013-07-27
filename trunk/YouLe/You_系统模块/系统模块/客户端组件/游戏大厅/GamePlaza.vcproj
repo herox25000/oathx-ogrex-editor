@@ -252,6 +252,30 @@
 				RelativePath=".\CGdiPlusBitmap.h">
 			</File>
 			<File
+				RelativePath=".\GameItemWnd.cpp">
+			</File>
+			<File
+				RelativePath=".\GameItemWnd.h">
+			</File>
+			<File
+				RelativePath=".\GamePage.cpp">
+			</File>
+			<File
+				RelativePath=".\GamePage.h">
+			</File>
+			<File
+				RelativePath=".\GameRoomWnd.cpp">
+			</File>
+			<File
+				RelativePath=".\GameRoomWnd.h">
+			</File>
+			<File
+				RelativePath=".\GameZonePage.cpp">
+			</File>
+			<File
+				RelativePath=".\GameZonePage.h">
+			</File>
+			<File
 				RelativePath=".\GdipButton.cpp">
 			</File>
 			<File
@@ -265,6 +289,12 @@
 			</File>
 			<File
 				RelativePath=".\PngButton.h">
+			</File>
+			<File
+				RelativePath=".\TabPage.cpp">
+			</File>
+			<File
+				RelativePath=".\TabPage.h">
 			</File>
 			<Filter
 				Name="Widget"
@@ -416,10 +446,10 @@
 			RelativePath=".\res\Plaza_logon\Dlg_logon_back.png">
 		</File>
 		<File
-			RelativePath=".\res\Plaza_set\FRAME_SET.png">
+			RelativePath=".\res\Plaza\FRAME_SET.png">
 		</File>
 		<File
-			RelativePath=".\res\Plaza\FRAME_SET.png">
+			RelativePath=".\res\Plaza_set\FRAME_SET.png">
 		</File>
 		<File
 			RelativePath=".\res\Plaza\GAMEITEM_BACK.png">
