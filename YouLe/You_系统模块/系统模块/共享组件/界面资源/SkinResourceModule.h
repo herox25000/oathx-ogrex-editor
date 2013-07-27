@@ -26,6 +26,82 @@
 //////////////////////////////////////////////////////////////////////////
 //结构定义
 
+//新框架资源
+struct tagPlatformFrameImageNew
+{
+	LPCTSTR							pszImageHead;
+	LPCTSTR							pszImageLeft;
+	LPCTSTR							pszImageRight;
+	LPCTSTR							pszImageMiddle;
+
+	LPCTSTR							pszBtGame;
+	LPCTSTR							pszBtMatch;
+	LPCTSTR							pszBtProperty;
+	LPCTSTR							pszBtPrize;
+	LPCTSTR							pszBtRecharge;
+
+	LPCTSTR							pszBtFrameSet;
+	LPCTSTR							pszBtMin;
+	LPCTSTR							pszBtClose;
+
+	LPCTSTR							pszBtBagpack;
+	LPCTSTR							pszBtIm;
+	LPCTSTR							pszBtSquare;
+	LPCTSTR							pszBtTill;
+
+	LPCTSTR							pszBtReflash;
+	LPCTSTR							pszBtUserSet;
+	LPCTSTR							pszBtReturn;
+	LPCTSTR							pszBtUserSexHead;
+
+	LPCTSTR							pszEnquireBack;
+	LPCTSTR							pszEnquireCancel;
+	LPCTSTR							pszEnquirePlaza;
+	LPCTSTR							pszEnquireSwitch;
+	LPCTSTR							pszEnquireQuit;
+
+	LPCTSTR							pszFrameSet;
+	LPCTSTR							pszBtConfirn;
+	LPCTSTR							pszBtCancel;
+
+	//登陆相关
+	LPCTSTR							pszLoginBack;
+	LPCTSTR							pszRegisterBack;
+	LPCTSTR							pszPassLevel;
+	LPCTSTR							pszBtCheckBack;
+	LPCTSTR							pszBtLogin;
+	LPCTSTR							pszBtQuit;
+	LPCTSTR							pszBtWebHome;
+	LPCTSTR							pszBtRegister;
+	LPCTSTR							pszBtChongzhi;
+	LPCTSTR							pszBtVersion;
+	LPCTSTR							pszBtCloseRegister;
+	LPCTSTR							pszBtChose;
+	LPCTSTR							pszBtRegisterOk;
+
+	LPCTSTR							pszBtNormalKey[12];
+	LPCTSTR							pszBtLowKey[26];
+	LPCTSTR							pszBtUpperKey[26];
+};
+
+//新广场资源
+struct tagPlatViewImageNew
+{
+	LPCTSTR							pszGameBack;
+	LPCTSTR							pszGameItemBill;
+	LPCTSTR							pszGameItemRegular;
+	LPCTSTR							pszGameItemJoin;
+	LPCTSTR							pszGameRoomJoin;
+	LPCTSTR							pszGameRoomBill;
+	LPCTSTR							pszPageMatch;
+
+	LPCTSTR							pszGameTabGame;
+	LPCTSTR							pszGameTabCard;
+	LPCTSTR							pszGameTabMahj;
+	LPCTSTR							pszGameTabLeis;
+};
+
+
 //框架资源
 struct tagPlatformFrameImage
 {
@@ -384,11 +460,11 @@ public:
 	//大厅资源
 public:
 	//广场资源
-	virtual bool __cdecl GetPlazaViewImage(tagPlazaViewImage * PlazaViewImage)=NULL;
+	virtual bool __cdecl GetPlazaViewImage(tagPlatViewImageNew * PlazaViewImage)=NULL;
 	//房间资源
 	virtual bool __cdecl GetServerViewImage(tagServerViewImage * ServerViewImage)=NULL;
 	//框架资源
-	virtual bool __cdecl GetPlatformFrameImage(tagPlatformFrameImage * PlatformFrameImage)=NULL;
+	virtual bool __cdecl GetPlatformFrameImage(tagPlatformFrameImageNew * PlatformFrameImage)=NULL;
 
 	//附加资源
 public:

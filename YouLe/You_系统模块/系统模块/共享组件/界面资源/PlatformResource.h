@@ -14,9 +14,9 @@ class CPlatformResource : public IPlatformResource
 {
 	//资源变量
 protected:
-	tagPlazaViewImage				*m_pPlazaViewImage ;
+	tagPlatViewImageNew				*m_pPlazaViewImage ;
 	tagServerViewImage				*m_pServerViewImage ;
-	tagPlatformFrameImage			*m_pPlatformFrameImage;
+	tagPlatformFrameImageNew		*m_pPlatformFrameImage;
 	tagWhisperViewImage				*m_pWhisperViewImage ;
 	tagControlViewImage				*m_pControlViewImage ;
 	tagPropertyViewImage			*m_pPropertyViewImage ;
@@ -70,11 +70,11 @@ public:
 	//大厅资源
 public:
 	//广场资源
-	virtual bool __cdecl GetPlazaViewImage(tagPlazaViewImage * PlazaViewImage);
+	virtual bool __cdecl GetPlazaViewImage(tagPlatViewImageNew * PlazaViewImage);
 	//房间资源
 	virtual bool __cdecl GetServerViewImage(tagServerViewImage * ServerViewImage);
 	//框架资源
-	virtual bool __cdecl GetPlatformFrameImage(tagPlatformFrameImage * PlatformFrameImage);
+	virtual bool __cdecl GetPlatformFrameImage(tagPlatformFrameImageNew * PlatformFrameImage);
 
 	//附加资源
 public:

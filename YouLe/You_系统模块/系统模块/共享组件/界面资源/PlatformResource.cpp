@@ -86,74 +86,86 @@ VOID * __cdecl CPlatformResource::GetSkinResource(REFGUID Guid, DWORD dwQueryVer
 }
 
 //广场资源
-bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlazaViewImage * PlazaViewImage)
+bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaViewImage)
 {
 	if(PlazaViewImage==NULL)return false;
 	if(m_pPlazaViewImage==NULL)m_pPlazaViewImage = PlazaViewImage;
 
-	switch(m_cbResourceType)
-	{
-	case RESOURCE_DEFAULT:
-		{
-			//浏览资源
-			PlazaViewImage->uBrowseML=DEF_IDB_BROWSE_ML;
-			PlazaViewImage->uBrowseMR=DEF_IDB_BROWSE_MR;
-			PlazaViewImage->uBrowseTL=DEF_IDB_BROWSE_TL;
-			PlazaViewImage->uBrowseTM=DEF_IDB_BROWSE_TM;
-			PlazaViewImage->uBrowseTR=DEF_IDB_BROWSE_TR;
-			PlazaViewImage->uBrowseBL=DEF_IDB_BROWSE_BL;
-			PlazaViewImage->uBrowseBM=DEF_IDB_BROWSE_BM;
-			PlazaViewImage->uBrowseBR=DEF_IDB_BROWSE_BR;
+// 	switch(m_cbResourceType)
+// 	{
+// 	case RESOURCE_DEFAULT:
+// 		{
+// 			//浏览资源
+// 			PlazaViewImage->uBrowseML=DEF_IDB_BROWSE_ML;
+// 			PlazaViewImage->uBrowseMR=DEF_IDB_BROWSE_MR;
+// 			PlazaViewImage->uBrowseTL=DEF_IDB_BROWSE_TL;
+// 			PlazaViewImage->uBrowseTM=DEF_IDB_BROWSE_TM;
+// 			PlazaViewImage->uBrowseTR=DEF_IDB_BROWSE_TR;
+// 			PlazaViewImage->uBrowseBL=DEF_IDB_BROWSE_BL;
+// 			PlazaViewImage->uBrowseBM=DEF_IDB_BROWSE_BM;
+// 			PlazaViewImage->uBrowseBR=DEF_IDB_BROWSE_BR;
+// 
+// 			//按钮资源
+// 			PlazaViewImage->uBtWebLast=DEF_IDB_BT_WEB_LAST;
+// 			PlazaViewImage->uBtWebNext=DEF_IDB_BT_WEB_NEXT;
+// 			PlazaViewImage->uBtWebStop=DEF_IDB_BT_WEB_STOP;
+// 			PlazaViewImage->uBtWebHome=DEF_IDB_BT_WEB_HOME;
+// 			PlazaViewImage->uBtWebReload=DEF_IDB_BT_WEB_RELOAD;
+// 			break;
+// 		}
+// 	case RESOURCE_BLACK:
+// 		{
+// 			//浏览资源
+// 			PlazaViewImage->uBrowseML=BLACK_IDB_BROWSE_ML;
+// 			PlazaViewImage->uBrowseMR=BLACK_IDB_BROWSE_MR;
+// 			PlazaViewImage->uBrowseTL=BLACK_IDB_BROWSE_TL;
+// 			PlazaViewImage->uBrowseTM=BLACK_IDB_BROWSE_TM;
+// 			PlazaViewImage->uBrowseTR=BLACK_IDB_BROWSE_TR;
+// 			PlazaViewImage->uBrowseBL=BLACK_IDB_BROWSE_BL;
+// 			PlazaViewImage->uBrowseBM=BLACK_IDB_BROWSE_BM;
+// 			PlazaViewImage->uBrowseBR=BLACK_IDB_BROWSE_BR;
+// 
+// 			//按钮资源
+// 			PlazaViewImage->uBtWebLast=BLACK_IDB_BT_WEB_LAST;
+// 			PlazaViewImage->uBtWebNext=BLACK_IDB_BT_WEB_NEXT;
+// 			PlazaViewImage->uBtWebStop=BLACK_IDB_BT_WEB_STOP;
+// 			PlazaViewImage->uBtWebHome=BLACK_IDB_BT_WEB_HOME;
+// 			PlazaViewImage->uBtWebReload=BLACK_IDB_BT_WEB_RELOAD;
+// 			break;
+// 		}
+// 	case RESOURCE_RED:
+// 		{
+// 			//浏览资源
+// 			PlazaViewImage->uBrowseML=RED_IDB_BROWSE_ML;
+// 			PlazaViewImage->uBrowseMR=RED_IDB_BROWSE_MR;
+// 			PlazaViewImage->uBrowseTL=RED_IDB_BROWSE_TL;
+// 			PlazaViewImage->uBrowseTM=RED_IDB_BROWSE_TM;
+// 			PlazaViewImage->uBrowseTR=RED_IDB_BROWSE_TR;
+// 			PlazaViewImage->uBrowseBL=RED_IDB_BROWSE_BL;
+// 			PlazaViewImage->uBrowseBM=RED_IDB_BROWSE_BM;
+// 			PlazaViewImage->uBrowseBR=RED_IDB_BROWSE_BR;
+// 
+// 			//按钮资源
+// 			PlazaViewImage->uBtWebLast=RED_IDB_BT_WEB_LAST;
+// 			PlazaViewImage->uBtWebNext=RED_IDB_BT_WEB_NEXT;
+// 			PlazaViewImage->uBtWebStop=RED_IDB_BT_WEB_STOP;
+// 			PlazaViewImage->uBtWebHome=RED_IDB_BT_WEB_HOME;
+// 			PlazaViewImage->uBtWebReload=RED_IDB_BT_WEB_RELOAD;
+// 			break;
+// 		}
+// 	}
+	PlazaViewImage->pszGameBack = TEXT("GAMEITEM_BACK");
+	PlazaViewImage->pszGameItemBill = TEXT("GAMEITEM_BILL");
+	PlazaViewImage->pszGameItemRegular = TEXT("GAMEITEM_REGULAR");
+	PlazaViewImage->pszGameItemJoin = TEXT("GAMEITEM_JOIN");
+	PlazaViewImage->pszGameRoomJoin = TEXT("GAMEROOM_JOIN");
+	PlazaViewImage->pszGameRoomBill = TEXT("GAMEROOM_BILL");
+	PlazaViewImage->pszPageMatch = TEXT("GAMEPAGE_MATCH");
 
-			//按钮资源
-			PlazaViewImage->uBtWebLast=DEF_IDB_BT_WEB_LAST;
-			PlazaViewImage->uBtWebNext=DEF_IDB_BT_WEB_NEXT;
-			PlazaViewImage->uBtWebStop=DEF_IDB_BT_WEB_STOP;
-			PlazaViewImage->uBtWebHome=DEF_IDB_BT_WEB_HOME;
-			PlazaViewImage->uBtWebReload=DEF_IDB_BT_WEB_RELOAD;
-			break;
-		}
-	case RESOURCE_BLACK:
-		{
-			//浏览资源
-			PlazaViewImage->uBrowseML=BLACK_IDB_BROWSE_ML;
-			PlazaViewImage->uBrowseMR=BLACK_IDB_BROWSE_MR;
-			PlazaViewImage->uBrowseTL=BLACK_IDB_BROWSE_TL;
-			PlazaViewImage->uBrowseTM=BLACK_IDB_BROWSE_TM;
-			PlazaViewImage->uBrowseTR=BLACK_IDB_BROWSE_TR;
-			PlazaViewImage->uBrowseBL=BLACK_IDB_BROWSE_BL;
-			PlazaViewImage->uBrowseBM=BLACK_IDB_BROWSE_BM;
-			PlazaViewImage->uBrowseBR=BLACK_IDB_BROWSE_BR;
-
-			//按钮资源
-			PlazaViewImage->uBtWebLast=BLACK_IDB_BT_WEB_LAST;
-			PlazaViewImage->uBtWebNext=BLACK_IDB_BT_WEB_NEXT;
-			PlazaViewImage->uBtWebStop=BLACK_IDB_BT_WEB_STOP;
-			PlazaViewImage->uBtWebHome=BLACK_IDB_BT_WEB_HOME;
-			PlazaViewImage->uBtWebReload=BLACK_IDB_BT_WEB_RELOAD;
-			break;
-		}
-	case RESOURCE_RED:
-		{
-			//浏览资源
-			PlazaViewImage->uBrowseML=RED_IDB_BROWSE_ML;
-			PlazaViewImage->uBrowseMR=RED_IDB_BROWSE_MR;
-			PlazaViewImage->uBrowseTL=RED_IDB_BROWSE_TL;
-			PlazaViewImage->uBrowseTM=RED_IDB_BROWSE_TM;
-			PlazaViewImage->uBrowseTR=RED_IDB_BROWSE_TR;
-			PlazaViewImage->uBrowseBL=RED_IDB_BROWSE_BL;
-			PlazaViewImage->uBrowseBM=RED_IDB_BROWSE_BM;
-			PlazaViewImage->uBrowseBR=RED_IDB_BROWSE_BR;
-
-			//按钮资源
-			PlazaViewImage->uBtWebLast=RED_IDB_BT_WEB_LAST;
-			PlazaViewImage->uBtWebNext=RED_IDB_BT_WEB_NEXT;
-			PlazaViewImage->uBtWebStop=RED_IDB_BT_WEB_STOP;
-			PlazaViewImage->uBtWebHome=RED_IDB_BT_WEB_HOME;
-			PlazaViewImage->uBtWebReload=RED_IDB_BT_WEB_RELOAD;
-			break;
-		}
-	}
+	PlazaViewImage->pszGameTabGame = TEXT("GAMETAB_GAME");
+	PlazaViewImage->pszGameTabCard = TEXT("GAMETAB_CARD");
+	PlazaViewImage->pszGameTabMahj = TEXT("GAMETAB_MAHJ");
+	PlazaViewImage->pszGameTabLeis = TEXT("GAMETAB_LEIS");
 
 	return true;
 }
@@ -230,7 +242,7 @@ bool __cdecl CPlatformResource::GetServerViewImage(tagServerViewImage * ServerVi
 }
 
 //框架资源
-bool __cdecl CPlatformResource::GetPlatformFrameImage(tagPlatformFrameImage * PlatformFrameImage)
+bool __cdecl CPlatformResource::GetPlatformFrameImage(tagPlatformFrameImageNew * PlatformFrameImage)
 {
 	if(PlatformFrameImage==NULL)return false;
 	if(m_pPlatformFrameImage==NULL)m_pPlatformFrameImage = PlatformFrameImage;
@@ -250,51 +262,128 @@ bool __cdecl CPlatformResource::GetPlatformFrameImage(tagPlatformFrameImage * Pl
 			break;
 		}
 	}
-	//框架资源
-	PlatformFrameImage->uFrameML=DEF_IDB_FRAME_ML;
-	PlatformFrameImage->uFrameMR=DEF_IDB_FRAME_MR;
-	PlatformFrameImage->uFrameTL=DEF_IDB_FRAME_TL;
-	PlatformFrameImage->uFrameTM=DEF_IDB_FRAME_TM;
-	PlatformFrameImage->uFrameTR=DEF_IDB_FRAME_TR;
-	PlatformFrameImage->uFrameBL=DEF_IDB_FRAME_BL;
-	PlatformFrameImage->uFrameBM=DEF_IDB_FRAME_BM;
-	PlatformFrameImage->uFrameBR=DEF_IDB_FRAME_BR;
-
-	//列表资源
-	PlatformFrameImage->uServerML=DEF_IDB_SERVER_ML;
-	PlatformFrameImage->uServerMR=DEF_IDB_SERVER_MR;
-	PlatformFrameImage->uServerTL=DEF_IDB_SERVER_TL;
-	PlatformFrameImage->uServerTM=DEF_IDB_SERVER_TM;
-	PlatformFrameImage->uServerTR=DEF_IDB_SERVER_TR;
-	PlatformFrameImage->uServerBL=DEF_IDB_SERVER_BL;
-	PlatformFrameImage->uServerBM=DEF_IDB_SERVER_BM;
-	PlatformFrameImage->uServerBR=DEF_IDB_SERVER_BR;
-
-	//框架按钮
-	PlatformFrameImage->uBtFrameMin=DEF_IDB_FRAME_BT_MIN;
-	PlatformFrameImage->uBtFrameClose=DEF_IDB_FRAME_BT_CLOSE;
-	PlatformFrameImage->uBtFrameMax=DEF_IDB_FRAME_BT_MAX;
-	PlatformFrameImage->uBtFrameResore=DEF_IDB_FRAME_BT_RESORE;
-	PlatformFrameImage->uBtFrameSelfSet=DEF_IDB_FRAME_BT_SELF_SET;
-	PlatformFrameImage->uBtFrameSwitch=DEF_IDB_FRAME_BT_SWITCH;
-	PlatformFrameImage->uBtFrameOption=DEF_IDB_FRAME_BT_OPTION;
-	PlatformFrameImage->uFrameServiceBtHide1=DEF_IDB_SERVER_BT_HIDE_1;
-	PlatformFrameImage->uFrameServiceBtHide2=DEF_IDB_SERVER_BT_HIDE_2;
-	PlatformFrameImage->uFrameServiceBtShow1=DEF_IDB_SERVER_BT_SHOW_1;
-	PlatformFrameImage->uFrameServiceBtShow2=DEF_IDB_SERVER_BT_SHOW_2;
-
-	//切换按钮
-	PlatformFrameImage->uBtShowGameList=DEF_IDB_SHOW_GAME_LIST;
-	PlatformFrameImage->uBtHideGameList=DEF_IDB_HIDE_GAME_LIST;
-	PlatformFrameImage->uBtFrameItemNormal=DEF_IDB_BT_ITEM_NORMAL;
-	PlatformFrameImage->uBtFrameItemActive=DEF_IDB_BT_ITEM_AVTIVE;
+	//背景
+	PlatformFrameImage->pszImageHead = TEXT("BACKGROUND_HEAD");
+	PlatformFrameImage->pszImageLeft = TEXT("BACKGROUND_USERINFO");
+	PlatformFrameImage->pszImageRight = TEXT("BACKGROUND_GAMEPUBLIC");
+	PlatformFrameImage->pszImageMiddle = TEXT("BACKGROUND_PLAZA");
 
 	//导航按钮
-	PlatformFrameImage->uFrameNavigation[0]=DEF_IDB_FRAME_BT_NAVIGATION_1;
-	PlatformFrameImage->uFrameNavigation[1]=DEF_IDB_FRAME_BT_NAVIGATION_2;
-	PlatformFrameImage->uFrameNavigation[2]=DEF_IDB_FRAME_BT_NAVIGATION_3;
-	PlatformFrameImage->uFrameNavigation[3]=DEF_IDB_FRAME_BT_NAVIGATION_4;
-	PlatformFrameImage->uFrameNavigation[4]=DEF_IDB_FRAME_BT_NAVIGATION_5;
+	PlatformFrameImage->pszBtGame = TEXT("PNG_BT_GAME");
+	PlatformFrameImage->pszBtMatch = TEXT("PNG_BT_MATCH");
+	PlatformFrameImage->pszBtProperty = TEXT("PNG_BT_PROPERTY");
+	PlatformFrameImage->pszBtPrize = TEXT("PNG_BT_PRIZE");
+	PlatformFrameImage->pszBtRecharge = TEXT("PNG_BT_RECHARGE");
+
+	//菜单按钮
+	PlatformFrameImage->pszBtFrameSet = TEXT("PNG_LOBBY_SET");
+	PlatformFrameImage->pszBtMin = TEXT("PNG_BT_FRAME_MIN");
+	PlatformFrameImage->pszBtClose = TEXT("PNG_BT_FRAME_CLOSE");
+
+	//
+	PlatformFrameImage->pszBtBagpack = TEXT("PNG_BT_GL_BAGPACK");
+	PlatformFrameImage->pszBtIm = TEXT("PNG_BT_GL_IM");
+	PlatformFrameImage->pszBtSquare = TEXT("PNG_BT_GL_SQUARE");
+	PlatformFrameImage->pszBtTill = TEXT("PNG_BT_GL_TILL");
+
+	PlatformFrameImage->pszBtReflash = TEXT("PNG_YOU_RENEW");
+	PlatformFrameImage->pszBtUserSet = TEXT("PNG_INFO_MODIFY");
+	PlatformFrameImage->pszBtReturn = TEXT("PNG_GL_BACK");
+
+	PlatformFrameImage->pszBtUserSexHead = TEXT("PNG_SEX_HEAD");
+
+	PlatformFrameImage->pszEnquireBack = TEXT("DLG_ENQUIRE_BACK");
+	PlatformFrameImage->pszEnquireCancel = TEXT("BT_ENQUIRE_CANCEL");
+	PlatformFrameImage->pszEnquirePlaza = TEXT("BT_ENQUIRE_PLAZA");
+	PlatformFrameImage->pszEnquireSwitch = TEXT("BT_ENQUIRE_SWITCH");
+	PlatformFrameImage->pszEnquireQuit = TEXT("BT_ENQUIRE_QUITE");
+
+	PlatformFrameImage->pszFrameSet = TEXT("PNG_FRAME_SET");
+	PlatformFrameImage->pszBtConfirn = TEXT("PNG_BT_CONFIRN");
+	PlatformFrameImage->pszBtCancel = TEXT("PNG_BT_CANCEL");
+
+	//登陆资源
+	PlatformFrameImage->pszLoginBack = TEXT("DLG_LOGON_BACK");
+	PlatformFrameImage->pszRegisterBack = TEXT("DLG_REGISTER_BACK");
+	PlatformFrameImage->pszPassLevel = TEXT("PASSWORD_LEVEL");
+	PlatformFrameImage->pszBtCheckBack = TEXT("CHECK_BUTTON_BACK");
+	PlatformFrameImage->pszBtLogin = TEXT("PNG_BT_LOGON");
+	PlatformFrameImage->pszBtQuit = TEXT("PNG_BT_LOGON_QUIT");
+	PlatformFrameImage->pszBtWebHome = TEXT("PNG_BT_WEBHOME");
+	PlatformFrameImage->pszBtRegister = TEXT("PNG_BT_REGISTER");
+	PlatformFrameImage->pszBtChongzhi = TEXT("PNG_BT_CHONGZHI");
+	PlatformFrameImage->pszBtVersion = TEXT("PNG_BT_BANBEN");
+	PlatformFrameImage->pszBtCloseRegister = TEXT("PNG_BT_REGISTERCLOSE");
+	PlatformFrameImage->pszBtChose = TEXT("PNG_BT_CHOSE");
+	PlatformFrameImage->pszBtRegisterOk = TEXT("PNG_BT_REGISTEROK");
+
+
+	PlatformFrameImage->pszBtNormalKey[0] = TEXT("PNG_BT_KEYBOARD2");
+	PlatformFrameImage->pszBtNormalKey[1] = TEXT("PNG_BT_KEYBOARD3");
+	PlatformFrameImage->pszBtNormalKey[2] = TEXT("PNG_BT_KEYBOARD4");
+	PlatformFrameImage->pszBtNormalKey[3] = TEXT("PNG_BT_KEYBOARD5");
+	PlatformFrameImage->pszBtNormalKey[4] = TEXT("PNG_BT_KEYBOARD6");
+	PlatformFrameImage->pszBtNormalKey[5] = TEXT("PNG_BT_KEYBOARD7");
+	PlatformFrameImage->pszBtNormalKey[6] = TEXT("PNG_BT_KEYBOARD8");
+	PlatformFrameImage->pszBtNormalKey[7] = TEXT("PNG_BT_KEYBOARD9");
+	PlatformFrameImage->pszBtNormalKey[8] = TEXT("PNG_BT_KEYBOARD10");
+	PlatformFrameImage->pszBtNormalKey[9] = TEXT("PNG_BT_KEYBOARD11");
+	PlatformFrameImage->pszBtNormalKey[10] = TEXT("PNG_BT_KEYBOARD12");
+	PlatformFrameImage->pszBtNormalKey[11] = TEXT("PNG_BT_KEYBOARD13");
+
+	PlatformFrameImage->pszBtLowKey[0] = TEXT("PNG_BT_KEYBOARD14");
+	PlatformFrameImage->pszBtLowKey[1] = TEXT("PNG_BT_KEYBOARD15");
+	PlatformFrameImage->pszBtLowKey[2] = TEXT("PNG_BT_KEYBOARD16");
+	PlatformFrameImage->pszBtLowKey[3] = TEXT("PNG_BT_KEYBOARD17");
+	PlatformFrameImage->pszBtLowKey[4] = TEXT("PNG_BT_KEYBOARD18");
+	PlatformFrameImage->pszBtLowKey[5] = TEXT("PNG_BT_KEYBOARD19");
+	PlatformFrameImage->pszBtLowKey[6] = TEXT("PNG_BT_KEYBOARD20");
+	PlatformFrameImage->pszBtLowKey[7] = TEXT("PNG_BT_KEYBOARD21");
+	PlatformFrameImage->pszBtLowKey[8] = TEXT("PNG_BT_KEYBOARD22");
+	PlatformFrameImage->pszBtLowKey[9] = TEXT("PNG_BT_KEYBOARD23");
+	PlatformFrameImage->pszBtLowKey[10] = TEXT("PNG_BT_KEYBOARD24");
+	PlatformFrameImage->pszBtLowKey[11] = TEXT("PNG_BT_KEYBOARD25");
+	PlatformFrameImage->pszBtLowKey[12] = TEXT("PNG_BT_KEYBOARD26");
+	PlatformFrameImage->pszBtLowKey[13] = TEXT("PNG_BT_KEYBOARD27");
+	PlatformFrameImage->pszBtLowKey[14] = TEXT("PNG_BT_KEYBOARD28");
+	PlatformFrameImage->pszBtLowKey[15] = TEXT("PNG_BT_KEYBOARD29");
+	PlatformFrameImage->pszBtLowKey[16] = TEXT("PNG_BT_KEYBOARD30");
+	PlatformFrameImage->pszBtLowKey[17] = TEXT("PNG_BT_KEYBOARD31");
+	PlatformFrameImage->pszBtLowKey[18] = TEXT("PNG_BT_KEYBOARD32");
+	PlatformFrameImage->pszBtLowKey[19] = TEXT("PNG_BT_KEYBOARD33");
+	PlatformFrameImage->pszBtLowKey[20] = TEXT("PNG_BT_KEYBOARD34");
+	PlatformFrameImage->pszBtLowKey[21] = TEXT("PNG_BT_KEYBOARD35");
+	PlatformFrameImage->pszBtLowKey[22] = TEXT("PNG_BT_KEYBOARD36");
+	PlatformFrameImage->pszBtLowKey[23] = TEXT("PNG_BT_KEYBOARD37");
+	PlatformFrameImage->pszBtLowKey[24] = TEXT("PNG_BT_KEYBOARD38");
+	PlatformFrameImage->pszBtLowKey[25] = TEXT("PNG_BT_KEYBOARD39");
+
+	PlatformFrameImage->pszBtUpperKey[0] = TEXT("PNG_BT_KEYBOARD40");
+	PlatformFrameImage->pszBtUpperKey[1] = TEXT("PNG_BT_KEYBOARD41");
+	PlatformFrameImage->pszBtUpperKey[2] = TEXT("PNG_BT_KEYBOARD42");
+	PlatformFrameImage->pszBtUpperKey[3] = TEXT("PNG_BT_KEYBOARD43");
+	PlatformFrameImage->pszBtUpperKey[4] = TEXT("PNG_BT_KEYBOARD44");
+	PlatformFrameImage->pszBtUpperKey[5] = TEXT("PNG_BT_KEYBOARD45");
+	PlatformFrameImage->pszBtUpperKey[6] = TEXT("PNG_BT_KEYBOARD46");
+	PlatformFrameImage->pszBtUpperKey[7] = TEXT("PNG_BT_KEYBOARD47");
+	PlatformFrameImage->pszBtUpperKey[8] = TEXT("PNG_BT_KEYBOARD48");
+	PlatformFrameImage->pszBtUpperKey[9] = TEXT("PNG_BT_KEYBOARD49");
+	PlatformFrameImage->pszBtUpperKey[10] = TEXT("PNG_BT_KEYBOARD50");
+	PlatformFrameImage->pszBtUpperKey[11] = TEXT("PNG_BT_KEYBOARD51");
+	PlatformFrameImage->pszBtUpperKey[12] = TEXT("PNG_BT_KEYBOARD52");
+	PlatformFrameImage->pszBtUpperKey[13] = TEXT("PNG_BT_KEYBOARD53");
+	PlatformFrameImage->pszBtUpperKey[14] = TEXT("PNG_BT_KEYBOARD54");
+	PlatformFrameImage->pszBtUpperKey[15] = TEXT("PNG_BT_KEYBOARD55");
+	PlatformFrameImage->pszBtUpperKey[16] = TEXT("PNG_BT_KEYBOARD56");
+	PlatformFrameImage->pszBtUpperKey[17] = TEXT("PNG_BT_KEYBOARD57");
+	PlatformFrameImage->pszBtUpperKey[18] = TEXT("PNG_BT_KEYBOARD58");
+	PlatformFrameImage->pszBtUpperKey[19] = TEXT("PNG_BT_KEYBOARD59");
+	PlatformFrameImage->pszBtUpperKey[20] = TEXT("PNG_BT_KEYBOARD60");
+	PlatformFrameImage->pszBtUpperKey[21] = TEXT("PNG_BT_KEYBOARD61");
+	PlatformFrameImage->pszBtUpperKey[22] = TEXT("PNG_BT_KEYBOARD62");
+	PlatformFrameImage->pszBtUpperKey[23] = TEXT("PNG_BT_KEYBOARD63");
+	PlatformFrameImage->pszBtUpperKey[24] = TEXT("PNG_BT_KEYBOARD64");
+	PlatformFrameImage->pszBtUpperKey[25] = TEXT("PNG_BT_KEYBOARD65");
 
 	return true;
 }
