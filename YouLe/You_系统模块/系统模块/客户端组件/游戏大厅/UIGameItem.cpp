@@ -29,7 +29,24 @@ namespace YouLe
 		rect.SetRect(nDestX, nDestY,
 			nDestX + m_PngBack.GetWidth(), nDestY + m_PngBack.GetHeight());
 		
-		return UIWidget::Create(nID, rect, pAttach, pProcess, pParent);
+		if (!UIWidget::Create(nID, rect, pAttach, pProcess, pParent))
+			return FALSE;
+
+		// 创建页面按钮
+		const TCHAR* chBtnImageResouceName[] = {
+			TEXT("GAMEITEM_REGULAR"),
+			TEXT("GAMEITEM_JOIN"),
+		};
+
+		UIPngButton* pRegular = new UIPngButton();
+		pRegular->Create(0, 5, 106, m_pAttach, pProcess,
+				AfxGetInstanceHandle(), chBtnImageResouceName[0], 4, this);
+
+		UIPngButton* pJoinBtn = new UIPngButton();
+		pJoinBtn->Create(1, 60, 106, m_pAttach, pProcess,
+			AfxGetInstanceHandle(), chBtnImageResouceName[1], 4, this);
+
+		return TRUE;
 	}
 
 	//
@@ -100,7 +117,7 @@ namespace YouLe
 				UIGameItem* pItem = new UIGameItem();
 				pItem->Create(c * MAX_GIROW + r , r * 180, c * 145, NULL, TEXT("GAMEITEM_BACK"), TEXT("GAMEITEM_BILL"), 
 					pAttach, pProcess, this);
-				pItem->EnabledWidget(FALSE);
+			//	pItem->EnabledWidget(FALSE);
 			}
 		}
 
