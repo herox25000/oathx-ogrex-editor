@@ -65,13 +65,13 @@ public:
 	BOOL LoadAltImage(UINT id, LPCTSTR pType,UINT lStatusNum=1,HINSTANCE hInst=NULL);
 	BOOL LoadStdImage(UINT id, LPCTSTR pType,UINT lStatusNum=1,HINSTANCE hInst=NULL);
 	// if false, disables the press state and uses grayscale image if it exists
-	void EnableButton(BOOL bEnable = TRUE) { m_bIsDisabled = !bEnable; }
+	//void EnableButton(BOOL bEnable = TRUE) { m_bIsDisabled = !bEnable; }
 
 	// in toggle mode each press toggles between std and alt images
 	void EnableToggle(BOOL bEnable = TRUE);
 
 	// return the enable/disable state
-	BOOL IsDisabled(void) {return (m_bIsDisabled == TRUE); }
+	//BOOL IsDisabled(void) {return (m_bIsDisabled == TRUE); }
 
 	void SetBkGnd(CDC* pDC);
 
