@@ -2,7 +2,7 @@
 #include "GamePlaza.h"
 #include "PlatformFrame.h"
 #include "Platform.h"
-#include ".\platformframe.h"
+#include "GlobalUnits.h"
 
 //控制按钮
 #define IDC_BT_FRAME_MIN					100							//最小按钮
@@ -53,6 +53,18 @@ BEGIN_MESSAGE_MAP(CPlatformFrame, CFrameWnd)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
+
+//资源句柄
+HINSTANCE CPlatformFrame::GetResInstanceHandle()
+{
+	return g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+}
+
+//获取资源
+tagPlatformFrameImageNew CPlatformFrame::GetPlatformRes()
+{
+	return g_GlobalUnits.m_PlatformFrameImage;
+}
 
 int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 {
@@ -195,24 +207,24 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 //加载按钮
 void CPlatformFrame::LoadButtons()
 {
-	m_LobbySet.CreateButton(this, "PNG_LOBBY_SET", _T("PNG"), LESS_SCREEN_CX - 116, 3, IDC_BT_LOBBYSET, 4);
-	m_btMin.CreateButton(this, "PNG_BT_FRAME_MIN", _T("PNG"), LESS_SCREEN_CX - 77, 3, IDC_BT_FRAME_MIN, 4);
-	m_btClose.CreateButton(this, "PNG_BT_FRAME_CLOSE", _T("PNG"), LESS_SCREEN_CX - 42, 3, IDC_BT_FRAME_CLOSE, 4);
+	m_LobbySet.CreateButton(this, GetPlatformRes().pszBtFrameSet, _T("PNG"), LESS_SCREEN_CX - 116, 3, IDC_BT_LOBBYSET, 4, GetResInstanceHandle());
+	m_btMin.CreateButton(this, GetPlatformRes().pszBtMin, _T("PNG"), LESS_SCREEN_CX - 77, 3, IDC_BT_FRAME_MIN, 4, GetResInstanceHandle());
+	m_btClose.CreateButton(this, GetPlatformRes().pszBtClose, _T("PNG"), LESS_SCREEN_CX - 42, 3, IDC_BT_FRAME_CLOSE, 4, GetResInstanceHandle());
 
-	m_btGame.CreateButton(this, "PNG_BT_GAME", _T("PNG"), LESS_SCREEN_CX / 2 - 264, 154, IDC_BT_GAME, 4);
-	m_btMatch.CreateButton(this, "PNG_BT_MATCH", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_MATCH, 4);
-	m_btProperty.CreateButton(this, "PNG_BT_PROPERTY", _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_PROPERTY, 4);
-	m_btPrize.CreateButton(this, "PNG_BT_PRIZE", _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_PRIZE, 4);
-	m_btRecharge.CreateButton(this, "PNG_BT_RECHARGE", _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_RECHARGE, 4);
+	m_btGame.CreateButton(this, GetPlatformRes().pszBtGame, _T("PNG"), LESS_SCREEN_CX / 2 - 264, 154, IDC_BT_GAME, 4, GetResInstanceHandle());
+	m_btMatch.CreateButton(this, GetPlatformRes().pszBtMatch, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_MATCH, 4, GetResInstanceHandle());
+	m_btProperty.CreateButton(this, GetPlatformRes().pszBtProperty, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_PROPERTY, 4, GetResInstanceHandle());
+	m_btPrize.CreateButton(this, GetPlatformRes().pszBtPrize, _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_PRIZE, 4, GetResInstanceHandle());
+	m_btRecharge.CreateButton(this, GetPlatformRes().pszBtRecharge, _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_RECHARGE, 4, GetResInstanceHandle());
 
-	m_btReflash.CreateButton(this, "PNG_YOU_RENEW", _T("PNG"), 178, 322, IDC_BT_REFLASH, 4);
-	m_btUserInfoSet.CreateButton(this, "PNG_INFO_MODIFY", _T("PNG"), 26, 290, IDC_BT_USERINFOSET, 4);
-	m_btReturn.CreateButton(this, "PNG_GL_BACK", _T("PNG"), LESS_SCREEN_CX / 2 + 210, 210, IDC_BT_RETURN, 4);
+	m_btReflash.CreateButton(this, GetPlatformRes().pszBtReflash, _T("PNG"), 178, 322, IDC_BT_REFLASH, 4, GetResInstanceHandle());
+	m_btUserInfoSet.CreateButton(this, GetPlatformRes().pszBtUserSet, _T("PNG"), 26, 290, IDC_BT_USERINFOSET, 4, GetResInstanceHandle());
+	m_btReturn.CreateButton(this, GetPlatformRes().pszBtReturn, _T("PNG"), LESS_SCREEN_CX / 2 + 210, 210, IDC_BT_RETURN, 4, GetResInstanceHandle());
 
-	m_btSquare.CreateButton(this, "PNG_BT_GL_SQUARE", _T("PNG"), 26, 490, IDC_BT_SQUARE, 4);
-	m_btTill.CreateButton(this, "PNG_BT_GL_TILL", _T("PNG"), 72, 490, IDC_BT_TILL, 4);
-	m_btUserBag.CreateButton(this, "PNG_BT_GL_BAGPACK", _T("PNG"), 122, 490, IDC_BT_USERBAG, 4);
-	m_btIm.CreateButton(this, "PNG_BT_GL_IM", _T("PNG"), 172, 490, IDC_BT_IM, 4);
+	m_btSquare.CreateButton(this, GetPlatformRes().pszBtSquare, _T("PNG"), 26, 490, IDC_BT_SQUARE, 4, GetResInstanceHandle());
+	m_btTill.CreateButton(this, GetPlatformRes().pszBtTill, _T("PNG"), 72, 490, IDC_BT_TILL, 4, GetResInstanceHandle());
+	m_btUserBag.CreateButton(this, GetPlatformRes().pszBtBagpack, _T("PNG"), 122, 490, IDC_BT_USERBAG, 4, GetResInstanceHandle());
+	m_btIm.CreateButton(this, GetPlatformRes().pszBtIm, _T("PNG"), 172, 490, IDC_BT_IM, 4, GetResInstanceHandle());
 
 	m_btSquare.EnableWindow(FALSE);
 	m_btIm.EnableWindow(FALSE);
@@ -221,12 +233,11 @@ void CPlatformFrame::LoadButtons()
 //加载图片资源
 void CPlatformFrame::LoadImages()
 {
-	m_ImageHead.LoadImage(AfxGetInstanceHandle(),TEXT("BACKGROUND_HEAD"));
-	m_ImageBack.LoadImage(AfxGetInstanceHandle(),TEXT("BACKGROUND_PLAZA"));
-	m_ImageUserInfo.LoadImage(AfxGetInstanceHandle(), TEXT("BACKGROUND_USERINFO"));
-	m_ImageGamePublic.LoadImage(AfxGetInstanceHandle(), TEXT("BACKGROUND_GAMEPUBLIC"));
-
-	m_UserHead.LoadImage(AfxGetInstanceHandle(), TEXT("PNG_SEX_HEAD"));
+	m_ImageHead.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszImageHead);
+	m_ImageBack.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszImageMiddle);
+	m_ImageUserInfo.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszImageLeft);
+	m_ImageGamePublic.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszImageRight);
+	m_UserHead.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszBtUserSexHead);
 }
 
 BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)

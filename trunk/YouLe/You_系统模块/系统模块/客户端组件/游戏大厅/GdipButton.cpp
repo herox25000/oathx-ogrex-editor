@@ -95,7 +95,7 @@ BEGIN_MESSAGE_MAP(CGdipButton, CButton)
 END_MESSAGE_MAP()
 
 //ÖØÐÂÉèÖÃAltImage
-void CGdipButton::ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName)
+void CGdipButton::ResetAltImage( LPCTSTR ResName, LPCTSTR pImageName, HINSTANCE hInst )
 {
 	m_bHaveBitmaps = FALSE;
 	m_dcStd.DeleteDC();
@@ -103,7 +103,7 @@ void CGdipButton::ResetAltImage(LPCTSTR ResName, LPCTSTR pImageName)
 	m_dcStdH.DeleteDC();
 	m_dcGS.DeleteDC();
 	m_dcBk.DeleteDC();
-	m_pStdImage->Load(ResName,pImageName);
+	m_pStdImage->Load(ResName,pImageName, hInst);
 	Invalidate(TRUE);
 }
 

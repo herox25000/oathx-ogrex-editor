@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UIGameItem.h"
+#include "GlobalUnits.h"
 
 namespace YouLe
 {
@@ -110,12 +111,15 @@ namespace YouLe
 		if (!UIWidget::Create(nID, rect, pAttach, pProcess, pParent))
 			return FALSE;
 
+		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
+		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+
 		for (int c=0; c<MAX_GICOL; c++)
 		{
 			for (int r=0; r<MAX_GIROW; r++)
 			{
 				UIGameItem* pItem = new UIGameItem();
-				pItem->Create(c * MAX_GIROW + r , r * 180, c * 145, NULL, TEXT("GAMEITEM_BACK"), TEXT("GAMEITEM_BILL"), 
+				pItem->Create(c * MAX_GIROW + r , r * 180, c * 145, hInstance, PlazaViewImage.pszGameBack, PlazaViewImage.pszGameItemBill, 
 					pAttach, pProcess, this);
 			//	pItem->EnabledWidget(FALSE);
 			}

@@ -1,5 +1,6 @@
 #include "Stdafx.h"
 #include "UIGamePage.h"
+#include "GlobalUnits.h"
 
 namespace YouLe
 {
@@ -41,19 +42,23 @@ namespace YouLe
 		m_pGameView->Create(0, CRect(nLeft, nTop, nLeft + GTP_WINDOWX * GTP_ITEMCOL, nTop + GTP_WINDOWY * GTP_ITEMROW),
 			pAttach, pProcess, this);
 
+		//加载资源
+		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
+		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+
 		// 创建页面按钮
 		const TCHAR* chBtnImageResouceName[] = {
-			TEXT("GAMETAB_GAME"),
-			TEXT("GAMETAB_CARD"),
-			TEXT("GAMETAB_MAHJ"),
-			TEXT("GAMETAB_LEIS")
+			PlazaViewImage.pszGameTabGame,
+			PlazaViewImage.pszGameTabCard,
+			PlazaViewImage.pszGameTabMahj,
+			PlazaViewImage.pszGameTabLeis
 		};
 
 		for (int i=0; i<4; i++)
 		{
 			UIPngButton* pPngButton = new UIPngButton();
 			pPngButton->Create(idList[i], i * 96, 0, m_pAttach, this,
-				AfxGetInstanceHandle(), chBtnImageResouceName[i], 3, this);
+				hInstance, chBtnImageResouceName[i], 3, this);
 		}
 
 		SetPage(idList[0]);

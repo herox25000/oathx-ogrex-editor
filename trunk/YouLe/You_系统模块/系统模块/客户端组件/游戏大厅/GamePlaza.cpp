@@ -3,6 +3,7 @@
 #include "GamePlazaDlg.h"
 #include "PlatformFrame.h"
 #include "Platform.h"
+#include "GlobalUnits.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -60,6 +61,13 @@ BOOL CGamePlazaApp::InitInstance()
 
 	//随机种子
 	srand((DWORD)time(NULL));
+
+	//全局信息
+	if (g_GlobalUnits.InitGlobalUnits()==false)
+	{
+		ShowInformation(TEXT("游戏广场初始化失败，程序即将退出！"),0,MB_ICONSTOP);
+		return FALSE;
+	}
 
 	//变量定义
 	WNDCLASS WndClasss;
