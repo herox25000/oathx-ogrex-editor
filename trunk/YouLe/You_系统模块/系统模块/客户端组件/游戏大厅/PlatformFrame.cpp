@@ -2,6 +2,7 @@
 #include "GamePlaza.h"
 #include "PlatformFrame.h"
 #include "Platform.h"
+#include ".\platformframe.h"
 
 //控制按钮
 #define IDC_BT_FRAME_MIN					100							//最小按钮
@@ -31,13 +32,12 @@ IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 
 CPlatformFrame::CPlatformFrame()
 {
-	m_pPngButtonMgr = new PngBtnManager();
+
 }
 
 CPlatformFrame::~CPlatformFrame()
 {
-	delete m_pPngButtonMgr;
-	m_pPngButtonMgr = NULL;
+
 }
 
 
@@ -50,6 +50,8 @@ BEGIN_MESSAGE_MAP(CPlatformFrame, CFrameWnd)
 	ON_BN_CLICKED(IDB_GAMETAB_CARD, OnTabCard)
 	ON_BN_CLICKED(IDB_GAMETAB_MAHJ, OnTabMahj)
 	ON_BN_CLICKED(IDB_GAMETAB_LEIS, OnTabLeis)
+	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
@@ -73,13 +75,9 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_PlatformSocket.SetPlatFormPointer(this);
 	OnCommandLogon();
 	g_GlobalUnits.m_ServerListManager.InitServerListManager(NULL);
-	//m_GamePage.Create(NULL, NULL, WS_CHILD|WS_VISIBLE, CRect(250, 260, 250+176*3, 260+140*3), this, 10001);
-	//m_GamePage.Create(3, 3, NULL, CRect(250, 260, 250+176*3, 260+140*3), this, 0);
-	m_ZonePage.Create(0, CRect(250, 206, 250+176*3, 260+140*3), this);
 
-	PngButton* pPngButton = new PngButton(NULL);
-	pPngButton->InitButton(100, 100, 0, AfxGetInstanceHandle(), TEXT("GAMEITEM_REGULAR"));
-	m_pPngButtonMgr->addBtn(pPngButton);
+	m_GamePage.Create(0, CRect(250, 206, 250+176*3, 260+140*3), this, NULL, NULL);
+
 	return 0;
 }
 
@@ -245,9 +243,8 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	m_ImageGamePublic.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + m_ImageBack.GetWidth(), nHight);
 	SetButtonBackGrounds(pDevC);
 	DrawUserInfo(pDevC);
-	m_ZonePage.EraseBkgnd(pDevC);
 
-	m_pPngButtonMgr->DrawBtn(pDevC);
+	m_GamePage.Draw(pDevC);
 	return TRUE;
 }
 
@@ -298,21 +295,6 @@ void CPlatformFrame::DrawUserInfo( CDC *pDC )
 		pDC->DrawText(UserData.szAccounts,lstrlen(UserData.szAccounts),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
 	}
 }
-
-//鼠标消息
-VOID CPlatformFrame::OnLButtonDown(UINT nFlags, CPoint Point)
-{
-	__super::OnLButtonDown(nFlags,Point);
-
-	//模拟按标题
-	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE))
-	{
-		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
-	}
-
-	return;
-}
-
 
 BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 {
@@ -384,4 +366,30 @@ void CPlatformFrame::OnTabMahj()
 void CPlatformFrame::OnTabLeis()
 {
 
+}
+
+//鼠标消息
+void CPlatformFrame::OnLButtonDown(UINT nFlags, CPoint Point)
+{
+	CFrameWnd::OnLButtonDown(nFlags,Point);
+
+	//模拟按标题
+	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE))
+	{
+		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
+	}
+
+	m_GamePage.OnLeftDown(Point);
+}
+
+void CPlatformFrame::OnLButtonUp(UINT nFlags, CPoint point)
+{
+	m_GamePage.OnLeftUp(point);
+	CFrameWnd::OnLButtonUp(nFlags, point);
+}
+
+void CPlatformFrame::OnMouseMove(UINT nFlags, CPoint point)
+{
+	m_GamePage.OnMouseMove(point);
+	CFrameWnd::OnMouseMove(nFlags, point);
 }

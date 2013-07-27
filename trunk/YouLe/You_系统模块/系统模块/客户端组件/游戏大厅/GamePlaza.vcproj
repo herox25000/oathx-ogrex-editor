@@ -300,16 +300,22 @@
 				Name="Widget"
 				Filter="">
 				<File
+					RelativePath=".\UIGameItem.cpp">
+				</File>
+				<File
+					RelativePath=".\UIGameItem.h">
+				</File>
+				<File
+					RelativePath=".\UIGamePage.cpp">
+				</File>
+				<File
+					RelativePath=".\UIGamePage.h">
+				</File>
+				<File
 					RelativePath=".\UIPngButton.cpp">
 				</File>
 				<File
 					RelativePath=".\UIPngButton.h">
-				</File>
-				<File
-					RelativePath=".\UITab.cpp">
-				</File>
-				<File
-					RelativePath=".\UITab.h">
 				</File>
 				<File
 					RelativePath=".\UIWidget.cpp">

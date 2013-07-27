@@ -20,20 +20,22 @@ namespace YouLe
 		virtual ~UIPngButton();
 
 		// 创建控件
-		virtual	BOOL	Create(INT nID, const RECT& rect, CWnd* pAttach, HINSTANCE hInstance, LPCTSTR lpResourceName,
+		virtual	BOOL	Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, HINSTANCE hInstance, LPCTSTR lpResourceName,
+			INT nStatCount, UIWidget* pParent);
+
+		// 创建控件
+		virtual	BOOL	Create(INT nID, INT x, INT y, CWnd* pAttach, UIProcess* pProcess, HINSTANCE hInstance, LPCTSTR lpResourceName,
 			INT nStatCount, UIWidget* pParent);
 
 		// 重写绘制
 		virtual BOOL	Draw(CDC* pDC);
-
-		// 设置文本
-		virtual	void	SetText(LPCTSTR lpszText);
-
+		
+		// 无效控件
 		virtual void	EnabledWidget(bool bEnabled);
+		
 	public:
 		// 鼠标移动
 		virtual BOOL	OnMouseMove(const CPoint& cPt);
-
 		// 左键按下
 		virtual BOOL	OnLeftDown(const CPoint& cPt);
 		// 左键弹起
@@ -43,6 +45,7 @@ namespace YouLe
 		INT				m_nSlice;
 		INT				m_nState;
 		BOOL			m_bPress;
+		INT				m_nCount;
 	};
 }
 

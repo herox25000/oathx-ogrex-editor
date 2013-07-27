@@ -8,7 +8,7 @@
 #include "FrameSet.h"
 #include "PlatformSocket.h"
 #include "DlgEnquire.h"
-#include "PngButton.h"
+#include "UIGamePage.h"
 
 class CPlatformSocket;
 class CPlatformFrame : public CFrameWnd 
@@ -27,7 +27,6 @@ protected:
 	CDlgLogon						m_DlgLogon;				//登录对话框
 	CFrameSet						m_DlgFrameSet;			//打开大厅设置
 
-	PngBtnManager*					m_pPngButtonMgr;
 	//资源
 protected:
 	CPngImage						m_ImageHead;
@@ -58,7 +57,7 @@ protected:
 	CGdipButton						m_btIm;
 	
 protected:
-	CGameZonePage					m_ZonePage;
+	YouLe::UIGamePage				m_GamePage;
 
 public:
 	//加载按钮
@@ -105,6 +104,9 @@ public:
 
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 
