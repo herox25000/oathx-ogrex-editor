@@ -2,7 +2,6 @@
 #include "Resource.h"
 #include "DlgLogon.h"
 #include "GlobalUnits.h"
-
 #include "dlglogon.h"
 
 //登录方式
@@ -22,14 +21,8 @@
 #define		WM_BT_REGISTERWOMAN		203
 
 //登陆框按钮ID
-#define		WM_BT_REGISTER		100
-#define		WM_BT_WEBHOME		101
-#define		WM_BT_CHONGZHI		102
-#define		WM_BT_BANBEN		103
 
-//软件键盘
-#define		WM_BT_KEYBOARD_MIN	120
-#define		WM_BT_KEYBOARD_MAX	WM_BT_KEYBOARD_MIN+38
+
 
 BEGIN_MESSAGE_MAP(CDlgRegister, CDialog)
 	//系统消息
@@ -53,11 +46,14 @@ BEGIN_MESSAGE_MAP(CDlgLogon, CDialog)
 	ON_WM_SHOWWINDOW()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_WM_MOUSEMOVE()
 	ON_WM_WINDOWPOSCHANGED()
 
 	//ON_EN_CHANGE(IDC_PASSWORD, OnEnChangePassword)
 	//ON_CBN_SELCHANGE(IDC_USER_ID, OnSelchangeUserID)
 	//ON_CBN_SELCHANGE(IDC_ACCOUNTS, OnSelchangeAccounts)
+	ON_BN_CLICKED(WM_BT_CLOSE,OnCancel)
+	ON_BN_CLICKED(WM_BT_LOGON,OnOK)
 	ON_BN_CLICKED(WM_BT_REGISTER, OnRegisterAccounts)
 	ON_BN_CLICKED(WM_BT_WEBHOME, OnWebhome)
 	ON_BN_CLICKED(WM_BT_CHONGZHI, OnChongzhi)
@@ -608,7 +604,7 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 	//设置键值
 	lstrcpyn(m_szKeyboradNumber[0],TEXT("0123456789"),CountArray(m_szKeyboradNumber[0]));
 	lstrcpyn(m_szKeyboradNumber[1],TEXT(")!@#$%^&*("),CountArray(m_szKeyboradNumber[1]));
-	lstrcpyn(m_szKeyboradChar[0],TEXT("abcdefghijklmnopqrstyvwxyz"),CountArray(m_szKeyboradChar[0]));
+	lstrcpyn(m_szKeyboradChar[0],TEXT("abcdefghijklmnopqrstuvwxyz"),CountArray(m_szKeyboradChar[0]));
 	lstrcpyn(m_szKeyboradChar[1],TEXT("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),CountArray(m_szKeyboradChar[1]));
 	m_bCaps = false;
 	return;
@@ -624,8 +620,6 @@ CDlgLogon::~CDlgLogon()
 void CDlgLogon::DoDataExchange(CDataExchange * pDX)
 {
 	__super::DoDataExchange(pDX);
-	DDX_Control(pDX, IDOK, m_btLogon);
-	DDX_Control(pDX, IDCANCEL, m_btCancel);
 	DDX_Control(pDX, IDC_ACCOUNTS, m_edAccounts);
 	DDX_Control(pDX, IDC_PASSWORD, m_edPassWord);
 }
@@ -645,51 +639,12 @@ BOOL CDlgLogon::OnInitDialog()
 	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
 
 	m_edAccounts.SetEnableColor(RGB(0,0,0),RGB(255,255,255),RGB(255,255,255));
-	//m_PasswordControl.SetDrawBorad(false);
 	m_edPassWord.SetEnableColor(RGB(0,0,0),RGB(255,255,255),RGB(255,255,255));
-
 	//记住密码
 	m_RemPwdControl.CreatCheckButton(this, hInstance, FrameViewImage.pszBtCheckBack,165,225);
 	
-	m_btCancel.LoadStdImage(FrameViewImage.pszBtQuit ,_T("PNG"),5, hInstance);
-	m_btLogon.LoadStdImage(FrameViewImage.pszBtLogin ,_T("PNG"),5, hInstance);
-	m_btWebhome.CreateButton(this,FrameViewImage.pszBtWebHome,_T("PNG"),175,75,WM_BT_WEBHOME,5, hInstance);
-	m_btRegister.CreateButton(this,FrameViewImage.pszBtRegister,_T("PNG"),260,75,WM_BT_REGISTER,5, hInstance);
-	m_btChongzhi.CreateButton(this,FrameViewImage.pszBtChongzhi,_T("PNG"),350,75,WM_BT_CHONGZHI,5, hInstance);
-	m_btBanben.CreateButton(this,FrameViewImage.pszBtVersion,_T("PNG"),440,75,WM_BT_BANBEN,5, hInstance);
-
-	//创建软键盘
-	m_btOther[0].CreateButton(this,FrameViewImage.pszBtNormalKey[0], _T("PNG"),414,312,WM_BT_KEYBOARD_MIN,3, hInstance);
-	m_btOther[1].CreateButton(this,FrameViewImage.pszBtNormalKey[1], _T("PNG"),414,349,WM_BT_KEYBOARD_MIN+1,3, hInstance);
-	UINT windowsID = 0;
-	int i=0;
-	for (i=0;i<10;i++)
-	{
-		windowsID = WM_BT_KEYBOARD_MIN+2+i; 
-		m_btNumber[i].CreateButton(this,FrameViewImage.pszBtNormalKey[i+2], _T("PNG"), 30+(46+2)*i, 275, windowsID, 3, hInstance);
-	}
-	for(i=0;i<26;i++)
-	{
-		windowsID = WM_BT_KEYBOARD_MIN+12+i; 
-		if(i<8)
-			m_btAlphabet[i].CreateButton(this,FrameViewImage.pszBtLowKey[i],_T("PNG"),30+(46+2)*i,312,windowsID,3, hInstance);
-		else if(i<16)
-			m_btAlphabet[i].CreateButton(this,FrameViewImage.pszBtLowKey[i],_T("PNG"),30+(46+2)*(i-8),349,windowsID,3, hInstance);
-		else
-			m_btAlphabet[i].CreateButton(this,FrameViewImage.pszBtLowKey[i],_T("PNG"),30+(46+2)*(i-16),387,windowsID,3, hInstance);
-	}
-
 	//居中窗口
 	CenterWindow(this);
-	//获取窗口
-	CRect rcWindow;
-	GetWindowRect(&rcWindow);
-	//计算位置
-	//CRect rcUnLayered;
-	//rcUnLayered.top=LAYERED_SIZE;
-	//rcUnLayered.left=LAYERED_SIZE;
-	//rcUnLayered.right=rcWindow.Width()-LAYERED_SIZE;
-	//rcUnLayered.bottom=rcWindow.Height()-LAYERED_SIZE;
 	//设置区域
 	CRgn RgnWindow;
 	RgnWindow.CreateRoundRectRgn(LAYERED_SIZE,LAYERED_SIZE,SizeWindow.cx-LAYERED_SIZE+1,SizeWindow.cy-LAYERED_SIZE+1,ROUND_CX,ROUND_CY);
@@ -698,6 +653,10 @@ BOOL CDlgLogon::OnInitDialog()
 
 	LoadLogonServer();
 	LoadAccountsInfo();
+
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	m_LogonFramSheet.Create(0,rcClient,this,NULL,NULL);
 
 	return FALSE;
 }
@@ -1153,54 +1112,41 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 	CMemDC pDevC(pDC, rcClient);
 	m_ImageBack.DrawImage(pDevC,0,0);
 	m_RemPwdControl.OnDrawControl(pDevC);
-	SetButtonBackGrounds(pDevC);
+	m_LogonFramSheet.Draw(pDevC);
+
 	return TRUE;
 }
 
-	//按钮函数
-void CDlgLogon::SetButtonBackGrounds(CDC *pDC)
-{
-	m_btLogon.SetBkGnd(pDC);
-	m_btCancel.SetBkGnd(pDC);
-	m_btWebhome.SetBkGnd(pDC);
-	m_btRegister.SetBkGnd(pDC);
-	m_btChongzhi.SetBkGnd(pDC);
-	m_btBanben.SetBkGnd(pDC);
-	//key board
-	m_btOther[0].SetBkGnd(pDC);
-	m_btOther[1].SetBkGnd(pDC);
-	for (int i=0;i<10;i++)
-	{
-		m_btNumber[i].SetBkGnd(pDC);
-	}
-	for (int i=0;i<26;i++)
-	{
-		m_btAlphabet[i].SetBkGnd(pDC);
-	}
-}
 
 //鼠标消息
 VOID CDlgLogon::OnLButtonDown(UINT nFlags, CPoint Point)
 {
-	__super::OnLButtonDown(nFlags,Point);
-
+	if(m_LogonFramSheet.OnLeftDown(Point))
+		return;
 	//模拟标题
 	if (Point.y<=CAPTION_SIZE)
 	{
 		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
 	}
-
-	return;
+	return __super::OnLButtonDown(nFlags,Point);
 }
 
 
 //鼠标弹起
 void CDlgLogon::OnLButtonUp(UINT nFlags, CPoint point)
 {
+	m_LogonFramSheet.OnLeftUp(point);
 	//选中事件
 	m_RemPwdControl.OnClickControl(point);
+	__super::OnLButtonUp(nFlags, point);
+}
 
-	CDialog::OnLButtonUp(nFlags, point);
+//
+void CDlgLogon::OnMouseMove(UINT nFlags, CPoint point)
+{
+
+	m_LogonFramSheet.OnMouseMove(point);
+	__super::OnMouseMove(nFlags,point);
 }
 
 ////控件改变
@@ -1268,13 +1214,18 @@ void CDlgLogon::OnKeyBoard(UINT uID)
 	case 1: //大写
 		{
 			OutputDebugString("大写 \r\n");\
-			m_edPassWord.SetFocus();
 			m_bCaps = !m_bCaps;
-			SwitchChar(m_bCaps);
-			CRect FramRect;
-			GetClientRect(FramRect);
-			CRect rect(0,FramRect.bottom/2,FramRect.right,FramRect.bottom);
-			InvalidateRect(rect,TRUE);
+			for (int i=0;i<52;i++)
+			{
+				if(i<26)
+					m_LogonFramSheet.m_pBtAlphabet[i]->VisibleWidget(!m_bCaps);
+				else
+					m_LogonFramSheet.m_pBtAlphabet[i]->VisibleWidget(m_bCaps);
+			}
+			CRect rcClient;
+			GetClientRect(&rcClient);
+			rcClient.top = 250;
+			InvalidateRect(rcClient,TRUE);
 			break;
 		}
 	default:
@@ -1296,39 +1247,15 @@ void CDlgLogon::OnKeyBoard(UINT uID)
 				OutputDebugString("点击了字母 \r\n");
 				
 				if(m_bCaps)
-					wViraulCode = (WORD)m_szKeyboradChar[1][nInx-12];
+					wViraulCode = (WORD)m_szKeyboradChar[1][nInx-12-26];
 				else
 					wViraulCode = (WORD)m_szKeyboradChar[0][nInx-12];
 			}
+			TCHAR log[256];
+			sprintf(log,_T("值：%d  \r\n"),wViraulCode);
+			OutputDebugString(log);
 			m_edPassWord.SendMessage(WM_CHAR,wViraulCode,0L);
 			break;
-		}
-	}
-}
-
-//大小写切换
-void CDlgLogon::SwitchChar(bool bCaps)
-{
-	int i = 0;
-// 	TCHAR TempName[256] = TEXT("");
-
-	tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
-	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
-
-	if(bCaps)
-	{
-		for(i=0;i<26;i++)
-		{
-// 			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+40);
-			m_btAlphabet[i].ResetAltImage(FrameViewImage.pszBtUpperKey[i],_T("PNG"), hInstance);
-		}
-	}
-	else
-	{
-		for(i=0;i<26;i++)
-		{
-// 			sprintf(TempName,TEXT("PNG_BT_KEYBOARD%d"),i+14);
-			m_btAlphabet[i].ResetAltImage(FrameViewImage.pszBtLowKey[i], _T("PNG"), hInstance);
 		}
 	}
 }
