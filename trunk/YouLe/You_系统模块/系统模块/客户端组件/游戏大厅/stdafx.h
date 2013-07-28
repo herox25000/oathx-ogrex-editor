@@ -88,6 +88,7 @@ using namespace std;
 #include "GdipButton.h"
 #include "resource.h"
 #include "Platform.h"
+#include "IGamePlaza.h"
 
 #define CAPTION_SIZE						35							//标题大小
 //字符串安全拼接

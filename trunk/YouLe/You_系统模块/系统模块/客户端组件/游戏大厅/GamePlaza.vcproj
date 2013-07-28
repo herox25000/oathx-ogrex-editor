@@ -145,6 +145,9 @@
 				RelativePath=".\GamePlazaDlg.cpp">
 			</File>
 			<File
+				RelativePath=".\GameRoomManager.cpp">
+			</File>
+			<File
 				RelativePath=".\GameRoomSocket.cpp">
 			</File>
 			<File
@@ -180,6 +183,9 @@
 						UsePrecompiledHeader="1"/>
 				</FileConfiguration>
 			</File>
+			<File
+				RelativePath=".\UserManager.cpp">
+			</File>
 		</Filter>
 		<Filter
 			Name="Í·ÎÄ¼þ"
@@ -204,7 +210,13 @@
 				RelativePath=".\GamePlazaDlg.h">
 			</File>
 			<File
+				RelativePath=".\GameRoomManager.h">
+			</File>
+			<File
 				RelativePath=".\GameRoomSocket.h">
+			</File>
+			<File
+				RelativePath=".\IGamePlaza.h">
 			</File>
 			<File
 				RelativePath=".\PasswordControl.h">
@@ -226,6 +238,9 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h">
+			</File>
+			<File
+				RelativePath=".\UserManager.h">
 			</File>
 		</Filter>
 		<Filter
