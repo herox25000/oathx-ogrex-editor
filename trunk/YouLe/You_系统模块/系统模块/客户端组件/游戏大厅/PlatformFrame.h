@@ -6,7 +6,6 @@
 #include "GlobalUnits.h"
 #include "FrameSet.h"
 #include "PlatformSocket.h"
-#include "DlgEnquire.h"
 #include "UIFrameSheet.h"
 
 class CPlatformSocket;
