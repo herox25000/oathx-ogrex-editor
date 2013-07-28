@@ -223,6 +223,7 @@ protected:
 
 public:
 	YouLe::UILogonFramSheet				m_LogonFramSheet;
+	bool								m_bCreateUI;
 	//函数定义
 public:
 	//构造函数
