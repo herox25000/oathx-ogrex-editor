@@ -8,6 +8,7 @@
 #include "PasswordControl.h"
 #include "GdipButton.h"
 #include "MemDC.h"
+#include "LogonFramSheet.h"
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -202,8 +203,8 @@ public:
 	CGdipButton							m_btOther[2];		//删除和大写
 	//
 public:
-	TCHAR								m_szKeyboradNumber[2][10];			//键盘字符
-	TCHAR								m_szKeyboradChar[2][26];			//键盘字符
+	TCHAR								m_szKeyboradNumber[2][11];			//键盘字符
+	TCHAR								m_szKeyboradChar[2][27];			//键盘字符
 	bool								m_bCaps;	//是否大写
 	//控件变量
 public:
@@ -220,6 +221,8 @@ protected:
 	CSkinEdit							m_edProxyPassword;				//代理密码
 	CComboBox							m_cmProxyServerType;			//代理类型
 
+public:
+	YouLe::UILogonFramSheet				m_LogonFramSheet;
 	//函数定义
 public:
 	//构造函数
@@ -274,12 +277,6 @@ private:
 	//代理判断
 	bool EnableProxy() { return m_bNetOption;}
 
-public:
-	//按钮函数
-	void SetButtonBackGrounds(CDC *pDC);
-	//大小写切换
-	void SwitchChar(bool bCaps);
-
 	//消息函数
 public:
 	//注册帐号
@@ -305,6 +302,8 @@ public:
 	VOID OnLButtonDown(UINT nFlags, CPoint Point);
 	//鼠标弹起
 	void OnLButtonUp(UINT nFlags, CPoint point);
+	//
+	void OnMouseMove(UINT nFlags, CPoint point);
 
 	DECLARE_MESSAGE_MAP()
 };

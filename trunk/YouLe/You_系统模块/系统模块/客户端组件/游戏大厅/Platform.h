@@ -18,4 +18,5 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("v5");
 #define WM_CLOSE_FRAME			WM_USER + 102
 #define WM_SWITCH_ACCOUNT		WM_USER + 103
 
+
 #endif
