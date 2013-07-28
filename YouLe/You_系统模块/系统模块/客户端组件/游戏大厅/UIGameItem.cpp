@@ -39,13 +39,14 @@ namespace YouLe
 			TEXT("GAMEITEM_JOIN"),
 		};
 
+
 		UIPngButton* pRegular = new UIPngButton();
 		pRegular->Create(0, 5, 106, m_pAttach, pProcess,
-				AfxGetInstanceHandle(), chBtnImageResouceName[0], 4, this);
+			hInstance, chBtnImageResouceName[0], 4, this);
 
 		UIPngButton* pJoinBtn = new UIPngButton();
 		pJoinBtn->Create(1, 60, 106, m_pAttach, pProcess,
-			AfxGetInstanceHandle(), chBtnImageResouceName[1], 4, this);
+			hInstance, chBtnImageResouceName[1], 4, this);
 
 		return TRUE;
 	}
