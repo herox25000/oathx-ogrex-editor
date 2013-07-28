@@ -4,26 +4,6 @@
 #include "Platform.h"
 #include "GlobalUnits.h"
 
-//控制按钮
-#define IDC_BT_FRAME_MIN					100							//最小按钮
-#define IDC_BT_FRAME_CLOSE					101							//关闭按钮
-
-#define IDC_BT_GAME							102							//游戏专区
-#define IDC_BT_MATCH						103							//比赛专区
-#define IDC_BT_PROPERTY						104							//道具商城
-#define IDC_BT_PRIZE						105							//奖品中心
-#define IDC_BT_RECHARGE						106							//充值中心
-
-#define IDC_BT_REFLASH						107							//信息刷新
-#define IDC_BT_USERINFOSET					108							//个人设置
-#define IDC_BT_RETURN						109							//返回
-#define IDC_BT_LOBBYSET						110							//大厅设置
-
-#define IDC_BT_USERBAG						111							//角色背包
-#define IDC_BT_SQUARE						112							
-#define IDC_BT_TILL							113
-#define IDC_BT_IM							114
-
 //阴影定义
 #define SHADOW_CX							1							//阴影宽度
 #define SHADOW_CY							1							//阴影高度
@@ -312,17 +292,12 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 	UINT nCommandID=LOWORD(wParam);
 	switch (nCommandID)
 	{
-	case IDC_BT_FRAME_MIN:				//最小按钮
-		{
-			ShowWindow(SW_MINIMIZE);
-			return TRUE;
-		}
-	case IDC_BT_FRAME_CLOSE:				//关闭按钮
+	case WM_SHOW_FRAMECLOSE:				//关闭按钮
 		{
 			OnClosePlatForm();
 			return TRUE;
 		}
-	case IDC_BT_LOBBYSET:				//打开大厅设置
+	case WM_SHOW_LOBBYSET:
 		{
 			OnOpenFrameSet();
 			return TRUE;

@@ -137,14 +137,12 @@ namespace YouLe
 			}
 		case IDC_BT_LOBBYSET:
 			{
+				SendMessage(WM_COMMAND, WM_SHOW_LOBBYSET, NULL);
 				return TRUE;
 			}
 		case IDC_BT_FRAME_CLOSE:
 			{
-				return TRUE;
-			}
-		case IDC_BT_FRAME_CLOSE:
-			{
+				SendMessage(WM_COMMAND, WM_SHOW_FRAMECLOSE, NULL);
 				return TRUE;
 			}
 		}
