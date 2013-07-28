@@ -92,7 +92,7 @@ void CPlatformFrame::OnCommandLogon()
 	//´´½¨µÇÂ¼¿ò
 	if (m_DlgLogon.m_hWnd==NULL) 
 	{
-		m_DlgLogon.Create(IDD_LOGON,this);
+		m_DlgLogon.Create(IDD_LOGON,GetDesktopWindow());
 	}
 	//ÏÔÊ¾µÇÂ¼¿ò
 	m_DlgLogon.ShowWindow(SW_SHOW);
