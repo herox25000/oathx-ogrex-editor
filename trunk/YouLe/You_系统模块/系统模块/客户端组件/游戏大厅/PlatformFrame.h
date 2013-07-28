@@ -96,6 +96,7 @@ public:
 	afx_msg void OnTabCard();
 	afx_msg void OnTabMahj();
 	afx_msg void OnTabLeis();
+
 public:
 	void SaveBossKey(int nCtrlKey, int nHelpKey);
 

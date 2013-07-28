@@ -315,3 +315,4 @@ void CPlatformFrame::OnMouseMove(UINT nFlags, CPoint point)
 	CFrameWnd::OnMouseMove(nFlags, point);
 
 }
+

@@ -607,6 +607,7 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 	lstrcpyn(m_szKeyboradChar[0],TEXT("abcdefghijklmnopqrstuvwxyz"),CountArray(m_szKeyboradChar[0]));
 	lstrcpyn(m_szKeyboradChar[1],TEXT("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),CountArray(m_szKeyboradChar[1]));
 	m_bCaps = false;
+	m_bCreateUI = false;
 	return;
 }
 
@@ -614,6 +615,7 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 CDlgLogon::~CDlgLogon()
 {
 	m_pPlatformFrame = NULL;
+	m_bCreateUI = false;
 }
 
 //¿Ø¼þ°ó¶¨
@@ -656,7 +658,12 @@ BOOL CDlgLogon::OnInitDialog()
 
 	CRect rcClient;
 	GetClientRect(&rcClient);
-	m_LogonFramSheet.Create(0,rcClient,this,NULL,NULL);
+
+	if(!m_bCreateUI)
+	{
+		m_LogonFramSheet.Create(0,rcClient,this,NULL,NULL);
+		m_bCreateUI = true;
+	}
 
 	return FALSE;
 }
@@ -1222,6 +1229,7 @@ void CDlgLogon::OnKeyBoard(UINT uID)
 				else
 					m_LogonFramSheet.m_pBtAlphabet[i]->VisibleWidget(m_bCaps);
 			}
+
 			CRect rcClient;
 			GetClientRect(&rcClient);
 			rcClient.top = 250;
