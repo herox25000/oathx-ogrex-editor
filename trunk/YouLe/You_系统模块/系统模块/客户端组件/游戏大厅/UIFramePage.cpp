@@ -2,6 +2,7 @@
 #include "UIFramePage.h"
 #include "GlobalUnits.h"
 #include "Platform.h"
+#include "UIFrameClose.h"
 
 #define IDC_BT_FRAME_MIN					100							//最小按钮
 #define IDC_BT_FRAME_CLOSE					101							//关闭按钮
@@ -22,35 +23,10 @@
 #define IDC_BT_TILL							113
 #define IDC_BT_IM							114
 
+#define IDP_FRAME_CLOSE						500
 
 namespace YouLe
 {
-#define GTP_OFFSETX			0
-#define GTP_OFFSETY			40
-#define GTP_WINDOWX			176
-#define GTP_WINDOWY			140
-#define GTP_ITEMCOL			3
-#define GTP_ITEMROW			3
-
-	static const INT idList[] = {
-		IDB_GAMETAB_GAME, IDB_GAMETAB_CARD, IDB_GAMETAB_MAHJ, IDB_GAMETAB_LEIS
-	};
-	
-	struct sResourceInfo
-	{
-	public:
-		sResourceInfo(TCHAR* chResourcName, int x, int y)
-		{
-			pResourceName = chResourcName;
-			nPosx = x;
-			nPosy = y;
-		}
-	public:
-		TCHAR* pResourceName;
-		int nPosx; 
-		int nPosy;
-	};
-
 	// 构造函数
 	UIFramePage::UIFramePage()
 	{
@@ -122,6 +98,10 @@ namespace YouLe
 		pBtSquare->EnabledWidget(FALSE);
 		pBtIm->EnabledWidget(FALSE);
 
+		UIFrameClose* pFrameClose = new UIFrameClose();
+		pFrameClose->Create(IDP_FRAME_CLOSE, CRect(LESS_SCREEN_CX / 2 - 180, LESS_SCREEN_CY / 2 - 108, LESS_SCREEN_CX / 2 + 180, LESS_SCREEN_CY / 2 + 108), pAttach, NULL, this);
+		pFrameClose->VisibleWidget(FALSE);
+
 		return TRUE;
 	}
 
@@ -142,7 +122,8 @@ namespace YouLe
 			}
 		case IDC_BT_FRAME_CLOSE:
 			{
-				SendMessage(WM_COMMAND, WM_SHOW_FRAMECLOSE, NULL);
+				UIWidget* pCloseWnd = Search(IDP_FRAME_CLOSE);
+				pCloseWnd->VisibleWidget(TRUE);
 				return TRUE;
 			}
 		}

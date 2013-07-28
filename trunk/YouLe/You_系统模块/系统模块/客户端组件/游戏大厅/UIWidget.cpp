@@ -66,11 +66,13 @@ namespace YouLe
 	void		UIWidget::EnabledWidget(bool bEnabled)
 	{
 		m_bEnabled = bEnabled;
+		Invalidate(TRUE);
 	}
 
 	void		UIWidget::VisibleWidget(bool bVisible)
 	{
 		m_bVisible = bVisible;
+		Invalidate(TRUE);
 	}
 	
 	void		UIWidget::GetWidgetRect(LPRECT lpRect)

@@ -58,12 +58,8 @@ protected:
 protected:
 	YouLe::UIFrameSheet				m_FrameSheet;
 public:
-	//加载按钮
-	void LoadButtons();
 	//加载图片资源
 	void LoadImages();
-	//按钮背景绘制
-	void SetButtonBackGrounds(CDC *pDC);
 	//绘制角色信息
 	void DrawUserInfo(CDC *pDC);
 
@@ -97,8 +93,6 @@ public:
 	afx_msg void OnCommandCancelConnect();
 	//打开大厅设置
 	afx_msg void OnOpenFrameSet();
-	//处理关闭大厅
-	afx_msg void OnClosePlatForm();
 	afx_msg void OnTabGame();
 	afx_msg void OnTabCard();
 	afx_msg void OnTabMahj();
