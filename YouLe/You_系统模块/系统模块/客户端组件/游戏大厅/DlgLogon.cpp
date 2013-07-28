@@ -48,7 +48,7 @@ BEGIN_MESSAGE_MAP(CDlgLogon, CDialog)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 	ON_WM_WINDOWPOSCHANGED()
-
+	ON_WM_SETCURSOR()
 	//ON_EN_CHANGE(IDC_PASSWORD, OnEnChangePassword)
 	//ON_CBN_SELCHANGE(IDC_USER_ID, OnSelchangeUserID)
 	//ON_CBN_SELCHANGE(IDC_ACCOUNTS, OnSelchangeAccounts)
@@ -608,6 +608,7 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 	lstrcpyn(m_szKeyboradChar[1],TEXT("ABCDEFGHIJKLMNOPQRSTUVWXYZ"),CountArray(m_szKeyboradChar[1]));
 	m_bCaps = false;
 	m_bCreateUI = false;
+	m_bHandCur = false;
 	return;
 }
 
@@ -664,7 +665,6 @@ BOOL CDlgLogon::OnInitDialog()
 		m_LogonFramSheet.Create(0,rcClient,this,NULL,NULL);
 		m_bCreateUI = true;
 	}
-
 	return FALSE;
 }
 
@@ -1151,9 +1151,27 @@ void CDlgLogon::OnLButtonUp(UINT nFlags, CPoint point)
 //
 void CDlgLogon::OnMouseMove(UINT nFlags, CPoint point)
 {
-
 	m_LogonFramSheet.OnMouseMove(point);
+	m_bHandCur = false;
+	CRect rcClient;
+	GetClientRect(&rcClient);
+	if(point.x >= 27 && point.x <= rcClient.right-27 
+		&& point.y >= 272 && point.y <= rcClient.bottom-65 )
+		m_bHandCur = true;
 	__super::OnMouseMove(nFlags,point);
+}
+
+//光标消息
+BOOL CDlgLogon::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
+{
+	//设置光标
+	if (m_bHandCur)
+	{
+		SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_HAND_CUR)));
+		return TRUE;
+	}
+
+	return __super::OnSetCursor(pWnd,nHitTest,uMessage);
 }
 
 ////控件改变

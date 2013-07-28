@@ -12,6 +12,7 @@
 #define IDD_STATUS                      132
 #define IDD_DIALOG2                     133
 #define IDD_DLG_ENQUIRE                 134
+#define IDC_HAND_CUR                    134
 #define IDB_CONNECT_STATUS              500
 #define IDC_BUTTON1                     1000
 #define IDC_COMBO_CHNEGSHI              1001
@@ -23,20 +24,20 @@
 #define IDC_PASSWORD                    1011
 #define IDC_PASSWORD2                   1012
 #define IDC_CLOSE                       1013
+#define IDB_GAMETAB_GAME                10001
+#define IDB_GAMETAB_CARD                10002
+#define IDB_GAMETAB_MAHJ                10003
+#define IDB_GAMETAB_LEIS                10004
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_SNED_LOGONPACKET            32773
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32775
-#define IDB_GAMETAB_GAME				10001
-#define IDB_GAMETAB_CARD				10002
-#define IDB_GAMETAB_MAHJ				10003
-#define IDB_GAMETAB_LEIS				10004
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
-#define _APS_NEXT_RESOURCE_VALUE        134
+#define _APS_NEXT_RESOURCE_VALUE        135
 #define _APS_NEXT_COMMAND_VALUE         32771
 #define _APS_NEXT_CONTROL_VALUE         1002
 #define _APS_NEXT_SYMED_VALUE           104
