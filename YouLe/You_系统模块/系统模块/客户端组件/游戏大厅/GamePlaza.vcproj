@@ -184,6 +184,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\UIFramePage.cpp">
+			</File>
+			<File
 				RelativePath=".\UserManager.cpp">
 			</File>
 		</Filter>
@@ -238,6 +241,9 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h">
+			</File>
+			<File
+				RelativePath=".\UIFramePage.h">
 			</File>
 			<File
 				RelativePath=".\UserManager.h">

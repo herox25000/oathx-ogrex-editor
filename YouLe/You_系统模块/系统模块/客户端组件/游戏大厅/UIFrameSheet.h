@@ -2,6 +2,7 @@
 #define _____UIFrameSheet_H
 
 #include "UIGamePage.h"
+#include "UIFramePage.h"
 
 namespace YouLe
 {

@@ -24,6 +24,9 @@ namespace YouLe
 		UIGamePage* pGamePage = new UIGamePage();
 		pGamePage->Create(0, CRect(245, 206, 245+176*3, 260+140*3), pAttach, pProcess, this);
 
+		UIFramePage* pFramePage = new UIFramePage();
+		pFramePage->Create(1, rect, pAttach, pProcess, this);
+
 		return TRUE;
 	}
 
