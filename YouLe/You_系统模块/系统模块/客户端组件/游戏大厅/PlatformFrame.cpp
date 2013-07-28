@@ -88,7 +88,8 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	OnCommandLogon();
 	g_GlobalUnits.m_ServerListManager.InitServerListManager(NULL);
 
-	m_GamePage.Create(0, CRect(245, 206, 245+176*3, 260+140*3), this, NULL, NULL);
+	
+	m_FrameSheet.Create(0, rcClient, this, NULL, NULL);
 
 	return 0;
 }
@@ -255,7 +256,8 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	SetButtonBackGrounds(pDevC);
 	DrawUserInfo(pDevC);
 
-	m_GamePage.Draw(pDevC);
+	m_FrameSheet.Draw(pDevC);
+	
 	return TRUE;
 }
 
@@ -390,17 +392,18 @@ void CPlatformFrame::OnLButtonDown(UINT nFlags, CPoint Point)
 		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
 	}
 
-	m_GamePage.OnLeftDown(Point);
+	m_FrameSheet.OnLeftDown(Point);
 }
 
 void CPlatformFrame::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	m_GamePage.OnLeftUp(point);
+	m_FrameSheet.OnLeftUp(point);
+
 	CFrameWnd::OnLButtonUp(nFlags, point);
 }
 
 void CPlatformFrame::OnMouseMove(UINT nFlags, CPoint point)
 {
-	m_GamePage.OnMouseMove(point);
+	m_FrameSheet.OnMouseMove(point);
 	CFrameWnd::OnMouseMove(nFlags, point);
 }

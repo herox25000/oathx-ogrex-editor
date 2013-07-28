@@ -7,7 +7,7 @@
 #include "FrameSet.h"
 #include "PlatformSocket.h"
 #include "DlgEnquire.h"
-#include "UIGamePage.h"
+#include "UIFrameSheet.h"
 
 class CPlatformSocket;
 class CPlatformFrame : public CFrameWnd 
@@ -56,8 +56,7 @@ protected:
 	CGdipButton						m_btIm;
 	
 protected:
-	YouLe::UIGamePage				m_GamePage;
-
+	YouLe::UIFrameSheet				m_FrameSheet;
 public:
 	//º”‘ÿ∞¥≈•
 	void LoadButtons();
