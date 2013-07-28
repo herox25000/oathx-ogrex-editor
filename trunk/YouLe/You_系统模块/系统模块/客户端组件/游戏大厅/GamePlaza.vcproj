@@ -263,6 +263,9 @@
 				RelativePath=".\res\CONNECT_STATUS.bmp">
 			</File>
 			<File
+				RelativePath=".\res\cursor1.cur">
+			</File>
+			<File
 				RelativePath=".\res\GamePlaza.ico">
 			</File>
 			<File
@@ -270,6 +273,9 @@
 			</File>
 			<File
 				RelativePath=".\res\GamePlaza.rc2">
+			</File>
+			<File
+				RelativePath=".\res\HAND_CUR.cur">
 			</File>
 		</Filter>
 		<Filter

@@ -224,6 +224,7 @@ protected:
 public:
 	YouLe::UILogonFramSheet				m_LogonFramSheet;
 	bool								m_bCreateUI;
+	bool								m_bHandCur;
 	//函数定义
 public:
 	//构造函数
@@ -305,7 +306,8 @@ public:
 	void OnLButtonUp(UINT nFlags, CPoint point);
 	//
 	void OnMouseMove(UINT nFlags, CPoint point);
-
+	//光标消息
+	BOOL OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage);
 	DECLARE_MESSAGE_MAP()
 };
 
