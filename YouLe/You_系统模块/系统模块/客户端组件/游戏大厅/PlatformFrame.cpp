@@ -56,7 +56,6 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 
 	SetFrameSize(LESS_SCREEN_CX, LESS_SCREEN_CY);
 	LoadImages();
-	LoadButtons();
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	RectifyResource(rcClient.Width(), rcClient.Height());
@@ -118,31 +117,6 @@ void CPlatformFrame::OnOpenFrameSet()
 	return;
 }
 
-//处理关闭大厅
-void CPlatformFrame::OnClosePlatForm()
-{
-	//显示窗口
-	CDlgEnquire DlgEnquire;
-	INT_PTR nResult=DlgEnquire.DoModal();
-	switch (nResult)
-	{
-	case WM_BT_CLOSE_PLAZA:
-		{
-			PostMessage(WM_CLOSE,0,0);
-			break;
-		}
-	case WM_BT_SWITCH_ACCOUNTS:	//切换帐号
-		{
-			//删除记录
-			g_GlobalUnits.DeleteUserCookie();
-			tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
-			memset(&GlobalUserData,0,sizeof(GlobalUserData));
-			OnCommandLogon();
-			break;
-		}
-	}
-}
-
 //连接服务器
 void CPlatformFrame::OnCommandConnect()
 {
@@ -184,32 +158,6 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 	return TRUE;
 }
 
-//加载按钮
-void CPlatformFrame::LoadButtons()
-{
-//	m_LobbySet.CreateButton(this, GetPlatformRes().pszBtFrameSet, _T("PNG"), LESS_SCREEN_CX - 116, 3, IDC_BT_LOBBYSET, 4, GetResInstanceHandle());
-// 	m_btMin.CreateButton(this, GetPlatformRes().pszBtMin, _T("PNG"), LESS_SCREEN_CX - 77, 3, IDC_BT_FRAME_MIN, 4, GetResInstanceHandle());
-// 	m_btClose.CreateButton(this, GetPlatformRes().pszBtClose, _T("PNG"), LESS_SCREEN_CX - 42, 3, IDC_BT_FRAME_CLOSE, 4, GetResInstanceHandle());
-// 
-// 	m_btGame.CreateButton(this, GetPlatformRes().pszBtGame, _T("PNG"), LESS_SCREEN_CX / 2 - 264, 154, IDC_BT_GAME, 4, GetResInstanceHandle());
-// 	m_btMatch.CreateButton(this, GetPlatformRes().pszBtMatch, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_MATCH, 4, GetResInstanceHandle());
-// 	m_btProperty.CreateButton(this, GetPlatformRes().pszBtProperty, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_PROPERTY, 4, GetResInstanceHandle());
-// 	m_btPrize.CreateButton(this, GetPlatformRes().pszBtPrize, _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_PRIZE, 4, GetResInstanceHandle());
-// 	m_btRecharge.CreateButton(this, GetPlatformRes().pszBtRecharge, _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_RECHARGE, 4, GetResInstanceHandle());
-// 
-// 	m_btReflash.CreateButton(this, GetPlatformRes().pszBtReflash, _T("PNG"), 178, 322, IDC_BT_REFLASH, 4, GetResInstanceHandle());
-// 	m_btUserInfoSet.CreateButton(this, GetPlatformRes().pszBtUserSet, _T("PNG"), 26, 290, IDC_BT_USERINFOSET, 4, GetResInstanceHandle());
-// 	m_btReturn.CreateButton(this, GetPlatformRes().pszBtReturn, _T("PNG"), LESS_SCREEN_CX / 2 + 210, 210, IDC_BT_RETURN, 4, GetResInstanceHandle());
-// 
-// 	m_btSquare.CreateButton(this, GetPlatformRes().pszBtSquare, _T("PNG"), 26, 490, IDC_BT_SQUARE, 4, GetResInstanceHandle());
-// 	m_btTill.CreateButton(this, GetPlatformRes().pszBtTill, _T("PNG"), 72, 490, IDC_BT_TILL, 4, GetResInstanceHandle());
-// 	m_btUserBag.CreateButton(this, GetPlatformRes().pszBtBagpack, _T("PNG"), 122, 490, IDC_BT_USERBAG, 4, GetResInstanceHandle());
-// 	m_btIm.CreateButton(this, GetPlatformRes().pszBtIm, _T("PNG"), 172, 490, IDC_BT_IM, 4, GetResInstanceHandle());
-// 
-// 	m_btSquare.EnableWindow(FALSE);
-// 	m_btIm.EnableWindow(FALSE);
-}
-
 //加载图片资源
 void CPlatformFrame::LoadImages()
 {
@@ -231,34 +179,10 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	m_ImageUserInfo.DrawImage(pDevC, 0, nHight);
 	m_ImageBack.DrawImage(pDevC,m_ImageUserInfo.GetWidth(), nHight);
 	m_ImageGamePublic.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + m_ImageBack.GetWidth(), nHight);
-	SetButtonBackGrounds(pDevC);
 	DrawUserInfo(pDevC);
 
 	m_FrameSheet.Draw(pDevC);
 	return TRUE;
-}
-
-//按钮背景绘制
-void CPlatformFrame::SetButtonBackGrounds(CDC *pDC)
-{
-// 	m_btMin.SetBkGnd(pDC);
-// 	m_btClose.SetBkGnd(pDC);
-// 	m_LobbySet.SetBkGnd(pDC);
-// 
-// 	m_btGame.SetBkGnd(pDC);
-// 	m_btMatch.SetBkGnd(pDC);
-// 	m_btProperty.SetBkGnd(pDC);
-// 	m_btPrize.SetBkGnd(pDC);
-// 	m_btRecharge.SetBkGnd(pDC);
-// 
-// 	m_btReflash.SetBkGnd(pDC);
-// 	m_btUserInfoSet.SetBkGnd(pDC);
-// 	m_btReturn.SetBkGnd(pDC);
-// 
-// 	m_btUserBag.SetBkGnd(pDC);
-// 	m_btIm.SetBkGnd(pDC);
-// 	m_btSquare.SetBkGnd(pDC);
-// 	m_btTill.SetBkGnd(pDC);
 }
 
 //绘制角色信息
@@ -292,14 +216,23 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 	UINT nCommandID=LOWORD(wParam);
 	switch (nCommandID)
 	{
-	case WM_SHOW_FRAMECLOSE:				//关闭按钮
-		{
-			OnClosePlatForm();
-			return TRUE;
-		}
 	case WM_SHOW_LOBBYSET:
 		{
 			OnOpenFrameSet();
+			return TRUE;
+		}
+	case WM_CLOSE_FRAME:
+		{
+			PostMessage(WM_CLOSE,0,0);
+			return TRUE;
+		}
+	case WM_SWITCH_ACCOUNT:
+		{
+			//删除记录
+			g_GlobalUnits.DeleteUserCookie();
+			tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+			memset(&GlobalUserData,0,sizeof(GlobalUserData));
+			OnCommandLogon();
 			return TRUE;
 		}
 	case IDM_LOGON_PLAZA:			//启动登陆窗口	

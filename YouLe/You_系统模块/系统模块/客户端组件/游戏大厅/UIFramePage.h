@@ -2,11 +2,9 @@
 #define _____UIFRAMEPage_H
 
 #include "UIPngButton.h"
-#include "UIGameItem.h"
 
 namespace YouLe
 {
-	// ÓÎÏ·×¨Çø
 	class UIFramePage : public UIWidget, public UIProcess
 	{
 	public:

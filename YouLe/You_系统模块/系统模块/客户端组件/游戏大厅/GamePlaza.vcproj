@@ -184,6 +184,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\UIFrameClose.cpp">
+			</File>
+			<File
 				RelativePath=".\UIFramePage.cpp">
 			</File>
 			<File
@@ -241,6 +244,9 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h">
+			</File>
+			<File
+				RelativePath=".\UIFrameClose.h">
 			</File>
 			<File
 				RelativePath=".\UIFramePage.h">
