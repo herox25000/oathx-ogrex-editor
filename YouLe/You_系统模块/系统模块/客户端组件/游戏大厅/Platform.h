@@ -13,4 +13,7 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("v5");
 #define ROUND_CX				5									//Ô²½Ç¿í¶È
 #define ROUND_CY				5									//Ô²½Ç¸ß¶È
 
+#define WM_SHOW_LOBBYSET		WM_USER + 100
+#define WM_SHOW_FRAMECLOSE		WM_USER + 101
+
 #endif

@@ -111,7 +111,7 @@ namespace YouLe
 
 		Invalidate(TRUE);
 
-		return bDeliver;
+		return FALSE;
 	}
 
 	// ×ó¼ü°´ÏÂ
@@ -171,7 +171,6 @@ namespace YouLe
 		
 		m_bPress = FALSE;
 		Invalidate(TRUE);
-
 		return bDeliver;
 	}
 }
