@@ -33,10 +33,12 @@ namespace YouLe
 		if (!UIWidget::Create(nID, rect, pAttach, pProcess, pParent))
 			return FALSE;
 
+		tagPlatViewImageNew & PlatViewImage = g_GlobalUnits.m_PlazaViewImage;
+
 		// 创建页面按钮
 		const TCHAR* chBtnImageResouceName[] = {
-			TEXT("GAMEITEM_REGULAR"),
-			TEXT("GAMEITEM_JOIN"),
+			PlatViewImage.pszGameItemRegular,
+			PlatViewImage.pszGameItemJoin,
 		};
 
 
