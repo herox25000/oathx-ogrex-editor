@@ -321,6 +321,12 @@
 					RelativePath=".\UIPngButton.h">
 				</File>
 				<File
+					RelativePath=".\UISheet.cpp">
+				</File>
+				<File
+					RelativePath=".\UISheet.h">
+				</File>
+				<File
 					RelativePath=".\UIWidget.cpp">
 				</File>
 				<File

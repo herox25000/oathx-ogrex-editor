@@ -40,6 +40,10 @@ namespace YouLe
 		virtual BOOL	OnLeftDown(const CPoint& cPt);
 		// 左键弹起
 		virtual BOOL	OnLeftUp(const CPoint& cPt);
+		// 鼠标离开
+		virtual BOOL	OnMouseLeave(const CPoint& cPt);
+		// 鼠标进入
+		virtual BOOL	OnMouseEnter(const CPoint& cPt);
 	protected:
 		CPngImage*		m_pImage;
 		INT				m_nSlice;

@@ -123,6 +123,7 @@ namespace YouLe
 		case IDC_BT_FRAME_CLOSE:
 			{
 				UIWidget* pCloseWnd = Search(IDP_FRAME_CLOSE);
+				pCloseWnd->MoveToFront();
 				pCloseWnd->VisibleWidget(TRUE);
 				return TRUE;
 			}

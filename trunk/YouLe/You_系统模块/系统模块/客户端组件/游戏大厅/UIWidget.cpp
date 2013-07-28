@@ -16,7 +16,7 @@ namespace YouLe
 		UIWidgetRegister::iterator it = m_WidgetReg.begin();
 		while( it != m_WidgetReg.end() )
 		{
-			delete it->second; it = m_WidgetReg.erase(it);
+			delete (*it); it = m_WidgetReg.erase(it);
 		}
 	}
 
@@ -108,7 +108,7 @@ namespace YouLe
 		UIWidgetRegister::iterator it = m_WidgetReg.begin();
 		while(it != m_WidgetReg.end())
 		{
-			it->second->Draw(pDC); it ++;
+			(*it)->Draw(pDC); it ++;
 		}
 
 // #ifndef _DEBUG
@@ -120,8 +120,7 @@ namespace YouLe
 
 	BOOL		UIWidget::Add(UIWidget* pWidget)
 	{
-		UIWidgetRegister::iterator it = m_WidgetReg.find(pWidget->GetID());
-		if (it != m_WidgetReg.end())
+		if (Search(pWidget->GetID()))
 			return FALSE;
 
 		// get widget rect
@@ -152,34 +151,80 @@ namespace YouLe
 		CPoint cPt = m_rect.TopLeft();
 		pWidget->SetWidgetPos(0, cPt.x + cRelatively.x, cPt.y + cRelatively.y, 
 			rectWidget.Width(), rectWidget.Height());
+		
+		// add the widget
+		m_WidgetReg.push_back(pWidget);
 
-		// insert widget
-		m_WidgetReg.insert(
-			UIWidgetRegister::value_type(pWidget->GetID(), pWidget)
-			);
 		return TRUE;
 	}
 
 	// 查找窗口
 	UIWidget*	UIWidget::Search(INT nID)
 	{
-		UIWidgetRegister::iterator it = m_WidgetReg.find(nID);
-		if (it != m_WidgetReg.end() )
-			return it->second;
+		for (size_t i=0; i<m_WidgetReg.size(); i++)
+		{
+			if (m_WidgetReg[i]->GetID() == nID)
+				return m_WidgetReg[i];
+		}
 
+		return NULL;
+	}
+
+	//鼠标查找
+	UIWidget*	UIWidget::GetChildWidget(const CPoint& cPt)
+	{
+		// get end element
+		const UIWidgetRegister::const_reverse_iterator end = m_WidgetReg.rend();
+
+		// reverse find
+		UIWidgetRegister::const_reverse_iterator child;
+		for (child=m_WidgetReg.rbegin(); child!=end; child++)
+		{
+			if ((*child)->IsWidgetVisible())
+			{
+				UIWidget* pWidget = (*child)->GetChildWidget(cPt);
+				if (pWidget == NULL)
+				{
+					if ((*child)->PtInRect(cPt))
+						return (*child);
+				}
+				else
+				{
+					return pWidget;
+				}
+			}
+		}
+		
 		return NULL;
 	}
 
 	// 移除控件
 	void		UIWidget::Remove(INT nID, BOOL bDestroy/* =TRUE */)
 	{
-		UIWidgetRegister::iterator it = m_WidgetReg.find(nID);
+		UIWidgetRegister::iterator it = m_WidgetReg.begin();
+		while (it != m_WidgetReg.end() )
+		{
+			if ((*it)->GetID() == nID)
+			{
+				if (bDestroy)
+					delete (*it);
+
+				m_WidgetReg.erase(it);
+				break;
+			}
+			
+			it ++;
+		}
+	}
+
+	// 移除控件
+	void		UIWidget::Remove(UIWidget* pWidget, BOOL bDestroy/* =TRUE */)
+	{
+		UIWidgetRegister::iterator it = std::find(m_WidgetReg.begin(), m_WidgetReg.end(), pWidget);
 		if (it != m_WidgetReg.end() )
 		{
 			if (bDestroy)
-			{
-				delete it->second;
-			}
+				delete (*it);
 
 			m_WidgetReg.erase(it);
 		}
@@ -189,6 +234,25 @@ namespace YouLe
 	INT			UIWidget::GetWidgetCount() const
 	{
 		return (INT)(m_WidgetReg.size());
+	}
+
+	// 强制置顶
+	BOOL		UIWidget::MoveToFront()
+	{
+		if (m_pParent == NULL)
+			return FALSE;
+
+		BOOL bTookAction = m_pParent->MoveToFront();
+
+		if (m_pParent)
+		{
+			m_pParent->Remove(this, FALSE);
+
+			// add this
+			m_pParent->Add(this);
+		}
+
+		return bTookAction;
 	}
 
 	// 设置父亲
@@ -209,98 +273,81 @@ namespace YouLe
 		if (!m_bEnabled || !m_bVisible)
 			return FALSE;
 
-		UIWidgetRegister::iterator it = m_WidgetReg.begin();
-		while( it != m_WidgetReg.end() )
-		{
-			if (it->second->IsWidgetVisible() && it->second->IsWidgetEnabled())
-			{
-				if (it->second->OnMouseMove(cPt))
-					return TRUE;
-			}
+		if (m_pProcess)
+			m_pProcess->OnMouseMove(this, cPt);
 
-			it ++;
-		}
+		Invalidate(TRUE);
 
-		return FALSE;
+		return TRUE;
 	}
-
+	
+	// 左键按下
 	BOOL		UIWidget::OnLeftDown(const CPoint& cPt)
 	{
 		if (!m_bEnabled || !m_bVisible)
 			return FALSE;
 
-		UIWidgetRegister::iterator it = m_WidgetReg.begin();
-		while( it != m_WidgetReg.end() )
-		{
-			if (it->second->IsWidgetVisible() && it->second->IsWidgetEnabled())
-			{
-				if (it->second->OnLeftDown(cPt))
-					return TRUE;
-			}
+		if (m_pProcess)
+			m_pProcess->OnLeftDown(this, cPt);
 
-			it ++;
-		}
+		Invalidate(TRUE);
 
-		return FALSE;
+		return TRUE;
 	}
 
+	// 左键弹起
 	BOOL		UIWidget::OnLeftUp(const CPoint& cPt)
 	{
 		if (!m_bEnabled || !m_bVisible)
 			return FALSE;
 
-		UIWidgetRegister::iterator it = m_WidgetReg.begin();
-		while( it != m_WidgetReg.end() )
-		{
-			if (it->second->IsWidgetVisible() && it->second->IsWidgetEnabled())
-			{
-				if (it->second->OnLeftUp(cPt))
-					return TRUE;
-			}
+		if (m_pProcess)
+			m_pProcess->OnLeftUp(this, cPt);
 
-			it ++;
-		}
+		Invalidate(TRUE);
 
-		return FALSE;
+		return TRUE;
 	}
-
-	BOOL		UIWidget::OnRightDown(const CPoint& cPt)
+	
+	// 鼠标响应
+	BOOL		UIWidget::OnClicked(const CPoint& cPt)
 	{
 		if (!m_bEnabled || !m_bVisible)
 			return FALSE;
 
-		UIWidgetRegister::iterator it = m_WidgetReg.begin();
-		while( it != m_WidgetReg.end() )
-		{
-			if (it->second->IsWidgetVisible() && it->second->IsWidgetEnabled())
-			{
-				if (it->second->OnRightDown(cPt))
-					return TRUE;
-			}
+		if (m_pProcess)
+			m_pProcess->OnClicked(this, cPt);
 
-			it ++;
-		}
+		Invalidate(TRUE);
 
-		return FALSE;
+		return TRUE;
 	}
 
-	BOOL		UIWidget::OnRightUp(const CPoint& cPt)
+	// 鼠标离开
+	BOOL		UIWidget::OnMouseLeave(const CPoint& cPt)
 	{
 		if (!m_bEnabled || !m_bVisible)
 			return FALSE;
 
-		UIWidgetRegister::iterator it = m_WidgetReg.begin();
-		while( it != m_WidgetReg.end() )
-		{
-			if (it->second->IsWidgetVisible() && it->second->IsWidgetEnabled())
-			{
-				if (it->second->OnRightUp(cPt))
-					return TRUE;
-			}
+		if (m_pProcess)
+			m_pProcess->OnMouseLeave(this, cPt);
 
-			it ++;
-		}
+		Invalidate(TRUE);
 
-		return FALSE;
+		return TRUE;
+	}
+
+	// 鼠标进入
+	BOOL		UIWidget::OnMouseEnter(const CPoint& cPt)
+	{
+		if (!m_bEnabled || !m_bVisible)
+			return FALSE;
+
+		if (m_pProcess)
+			m_pProcess->OnMouseEnter(this, cPt);
+
+		Invalidate(TRUE);
+
+		return TRUE;
 	}
 }
