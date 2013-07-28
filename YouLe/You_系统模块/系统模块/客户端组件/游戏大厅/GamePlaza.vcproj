@@ -166,12 +166,6 @@
 				RelativePath=".\PlatformSocket.cpp">
 			</File>
 			<File
-				RelativePath=".\PngAnomalyDailog.cpp">
-			</File>
-			<File
-				RelativePath=".\PngAnomalyDailog.h">
-			</File>
-			<File
 				RelativePath=".\ServerListManager.cpp">
 			</File>
 			<File
