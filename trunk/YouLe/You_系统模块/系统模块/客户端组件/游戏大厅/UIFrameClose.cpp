@@ -35,10 +35,10 @@ namespace YouLe
 		m_PngBack.LoadImage(hInstance, PlazaViewImage.pszEnquireBack);
 
 		UIPngButton* pClosePlaza = new UIPngButton();
-		pClosePlaza->Create(WM_BT_CLOSE_PLAZA, m_PngBack.GetWidth()-160,m_PngBack.GetHeight()-70, pAttach, this, hInstance, PlazaViewImage.pszEnquirePlaza, 4, this);
+		pClosePlaza->Create(WM_BT_CLOSE_PLAZA, m_PngBack.GetWidth()-160,m_PngBack.GetHeight()-62, pAttach, this, hInstance, PlazaViewImage.pszEnquirePlaza, 4, this);
 
 		UIPngButton* pSwitchAccount = new UIPngButton();
-		pSwitchAccount->Create(WM_BT_SWITCH_ACCOUNTS, 30, m_PngBack.GetHeight()-70, pAttach, this, hInstance, PlazaViewImage.pszEnquireSwitch, 4, this);
+		pSwitchAccount->Create(WM_BT_SWITCH_ACCOUNTS, 30, m_PngBack.GetHeight()-62, pAttach, this, hInstance, PlazaViewImage.pszEnquireSwitch, 4, this);
 
 		return TRUE;
 	}

@@ -111,9 +111,9 @@ namespace YouLe
 			it->second->Draw(pDC); it ++;
 		}
 
-#ifndef _DEBUG
-		pDC->FillRect(&m_rect, &CBrush(RGB(0, 255, 0)));
-#endif
+// #ifndef _DEBUG
+// 		pDC->FillRect(&m_rect, &CBrush(RGB(0, 255, 0)));
+// #endif
 		
 		return TRUE;
 	}
