@@ -1238,7 +1238,7 @@ void CDlgLogon::OnKeyBoard(UINT uID)
 		}
 	case 1: //ด๓ะด
 		{
-			OutputDebugString("ด๓ะด \r\n");\
+			OutputDebugString("ด๓ะด \r\n");
 			m_bCaps = !m_bCaps;
 			for (int i=0;i<52;i++)
 			{
