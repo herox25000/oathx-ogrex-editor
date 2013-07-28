@@ -90,28 +90,12 @@ namespace YouLe
 		if (!m_bVisible || !m_bEnabled)
 			return FALSE;
 	
-		if (UIWidget::OnMouseMove(cPt))
-			return TRUE;
-	
-		if (m_bPress)
-			return FALSE;
-
-		BOOL bDeliver = FALSE;
-
-		if (PtInRect(cPt))
-		{
-			m_nState = m_bPress ? PNG_BTNDOWN : PNG_BTNHOVER;
-			bDeliver = TRUE;
-		}
-		else
-		{
-			m_nState = m_bPress ? PNG_BTNDOWN : PNG_BTNNORMAL;
-			bDeliver = FALSE;
-		}
+		if (m_pProcess)
+			m_pProcess->OnMouseMove(this, cPt);
 
 		Invalidate(TRUE);
 
-		return FALSE;
+		return TRUE;
 	}
 
 	// 左键按下
@@ -120,26 +104,16 @@ namespace YouLe
 		if (!m_bVisible || !m_bEnabled)
 			return FALSE;
 
-		if (UIWidget::OnLeftDown(cPt))
-			return TRUE;
+		UIWidget::OnLeftDown(cPt);
 
-		BOOL bDeliver = FALSE;
+		m_bPress = TRUE;
 
 		if (PtInRect(cPt))
-		{
 			m_nState = PNG_BTNDOWN;
-			bDeliver = TRUE;
-		}
-		else
-		{
-			m_nState = PNG_BTNNORMAL;
-			bDeliver = FALSE;
-		}
-		
-		m_bPress = TRUE;
+
 		Invalidate(TRUE);
 
-		return bDeliver;
+		return TRUE;
 	}
 
 	// 左键弹起
@@ -148,29 +122,44 @@ namespace YouLe
 		if (!m_bVisible || !m_bEnabled)
 			return FALSE;
 
-		if (UIWidget::OnLeftUp(cPt))
-			return TRUE;
-
-		BOOL bDeliver = FALSE;
-
-		if (PtInRect(cPt))
-		{
-			m_nState = PNG_BTNHOVER;
-			bDeliver = TRUE;
-
-			if (m_pProcess != NULL)
-			{
-				m_pProcess->OnClicked(this, cPt);
-			}
-		}
-		else
-		{
-			m_nState = PNG_BTNNORMAL;
-			bDeliver = FALSE;
-		}
+		UIWidget::OnLeftUp(cPt);
 		
 		m_bPress = FALSE;
+		if (PtInRect(cPt))
+			m_nState = PNG_BTNHOVER;
+		else
+			m_nState = PNG_BTNNORMAL;
+
 		Invalidate(TRUE);
-		return bDeliver;
+
+		return TRUE;
+	}
+	
+	// 鼠标离开
+	BOOL	UIPngButton::OnMouseLeave(const CPoint& cPt)
+	{
+		if (!m_bVisible || !m_bEnabled)
+			return FALSE;
+
+		UIWidget::OnMouseLeave(cPt);
+
+		m_nState = m_bPress ? PNG_BTNDOWN : PNG_BTNNORMAL;
+		Invalidate(TRUE);
+
+		return TRUE;
+	}
+
+	// 鼠标进入
+	BOOL	UIPngButton::OnMouseEnter(const CPoint& cPt)
+	{
+		if (!m_bVisible || !m_bEnabled)
+			return FALSE;
+
+		UIWidget::OnMouseEnter(cPt);
+
+		m_nState = PNG_BTNHOVER;
+		Invalidate(TRUE);
+
+		return TRUE;
 	}
 }

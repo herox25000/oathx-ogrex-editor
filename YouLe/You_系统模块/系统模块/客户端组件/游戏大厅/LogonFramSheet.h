@@ -1,5 +1,5 @@
 #pragma once
-#include "UIWidget.h"
+#include "UISheet.h"
 #include "UIPngButton.h"
 
 #define		WM_BT_CLOSE			100
@@ -16,7 +16,7 @@
 namespace YouLe
 {
 	// UI 根窗口
-	class UILogonFramSheet : public UIWidget, public UIProcess
+	class UILogonFramSheet : public UISheet, public UIProcess
 	{
 	public:
 		// 构造函数

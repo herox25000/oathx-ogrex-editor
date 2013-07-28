@@ -289,29 +289,27 @@ void CPlatformFrame::OnTabLeis()
 //鼠标消息
 void CPlatformFrame::OnLButtonDown(UINT nFlags, CPoint Point)
 {
-	CFrameWnd::OnLButtonDown(nFlags,Point);
-
-	if (m_FrameSheet.OnLeftDown(Point))
-		return;
+	m_FrameSheet.InjectLeftDown(Point);
 
 	//模拟按标题
 	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE))
 	{
-		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
+		//PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
 	}
 	
+	CFrameWnd::OnLButtonDown(nFlags,Point);
 }
 
 void CPlatformFrame::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	m_FrameSheet.OnLeftUp(point);
+	m_FrameSheet.InjectLeftUp(point);
 
 	CFrameWnd::OnLButtonUp(nFlags, point);
 }
 
 void CPlatformFrame::OnMouseMove(UINT nFlags, CPoint point)
 {
-	m_FrameSheet.OnMouseMove(point);
+	m_FrameSheet.InjectMouseMove(point);
 	CFrameWnd::OnMouseMove(nFlags, point);
 
 }

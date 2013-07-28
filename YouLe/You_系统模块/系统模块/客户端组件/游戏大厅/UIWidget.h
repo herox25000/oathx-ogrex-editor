@@ -12,15 +12,50 @@ namespace YouLe
 		// 析构函数
 		virtual ~UIProcess(){}
 
-		// 处理按下消息
-		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt) = 0;
+		// 按下消息
+		virtual	BOOL		OnClicked(UIWidget* pWidget, 
+			const CPoint& cPt)
+		{
+			return FALSE;
+		}
+		// 鼠标移动
+		virtual BOOL		OnMouseMove(UIWidget* pWidget,
+			const CPoint& cPt)
+		{
+			return FALSE;
+		}
+		// 鼠标离开
+		virtual BOOL		OnMouseLeave(UIWidget* pWidget, 
+			const CPoint& cPt)
+		{
+			return FALSE;
+		}
+		// 鼠标进入
+		virtual BOOL		OnMouseEnter(UIWidget* pWidget, 
+			const CPoint& cPt)
+		{
+			return FALSE;
+		}
+		// 左键按下
+		virtual BOOL		OnLeftDown(UIWidget* pWidget,
+			const CPoint& cPt)
+		{
+			return FALSE;
+		}
+		// 左键弹起
+		virtual BOOL		OnLeftUp(UIWidget* pWidget,
+			const CPoint& cPt)
+		{
+			return FALSE;
+		}
+
 	};
 
 	// GDI+ 自绘UI基础类
 	class UIWidget
 	{
 		// 子控件表
-		typedef std::map<INT, 
+		typedef std::vector< 
 			UIWidget*>	UIWidgetRegister;
 
 	public:
@@ -31,13 +66,16 @@ namespace YouLe
 
 		// 创建控件
 		virtual BOOL		Create(INT nID, const RECT& rect,  CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
+
 		// 重设ID
 		virtual void		SetID(const INT nID);
+
 		// 获取ID
 		virtual INT			GetID() const;
 
 		// 刷新控件
 		virtual void		Invalidate(BOOL bErase);
+
 	public:
 		// 是否有效
 		virtual	BOOL		IsWidgetEnabled() const;
@@ -60,7 +98,9 @@ namespace YouLe
 		virtual void		SetWidgetPos(INT nTop, INT x, INT y, INT w, INT h);
 		// 位置检测
 		virtual BOOL		PtInRect(const CPoint& cPt);
-		
+
+		// 强制置顶
+		virtual BOOL		MoveToFront();
 	public:
 		// 发送消息
 		virtual	LRESULT		SendMessage(UINT Msg, WPARAM wParam, LPARAM lParam);
@@ -76,8 +116,14 @@ namespace YouLe
 		virtual UIWidget*	Search(INT nID);
 		// 移除控件
 		virtual void		Remove(INT nID, BOOL bDestroy=TRUE);
+	public:
+		// 鼠标查找
+		virtual UIWidget*	GetChildWidget(const CPoint& cPt);
+		// 移除控件
+		virtual void		Remove(UIWidget* pWidget, BOOL bDestroy=TRUE);
 		// 子控件数
 		virtual	INT			GetWidgetCount() const;
+
 	public:
 		// 设置父亲
 		virtual void		SetParent(UIWidget* pParent);
@@ -87,16 +133,16 @@ namespace YouLe
 	public:
 		// 鼠标移动
 		virtual BOOL		OnMouseMove(const CPoint& cPt);
-
 		// 左键按下
 		virtual BOOL		OnLeftDown(const CPoint& cPt);
 		// 左键弹起
 		virtual BOOL		OnLeftUp(const CPoint& cPt);
-		// 右键按下
-		virtual BOOL		OnRightDown(const CPoint& cPt);
-		// 右键弹起
-		virtual BOOL		OnRightUp(const CPoint& cPt);
-
+		// 鼠标离开
+		virtual BOOL		OnMouseLeave(const CPoint& cPt);
+		// 鼠标进入
+		virtual BOOL		OnMouseEnter(const CPoint& cPt);
+		// 鼠标响应
+		virtual BOOL		OnClicked(const CPoint& cPt);
 	protected:
 		CWnd*				m_pAttach;
 		UIWidget*			m_pParent;

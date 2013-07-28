@@ -43,6 +43,7 @@
 #include <map>
 #include <list>
 #include <deque>
+#include <algorithm>
 
 using namespace Gdiplus;
 using namespace std;

@@ -1,11 +1,11 @@
-#ifndef _____UIFRAMEPage_H
-#define _____UIFRAMEPage_H
+#ifndef _____UIFramePage_H
+#define _____UIFramePage_H
 
-#include "UIPngButton.h"
+#include "UISheet.h"
 
 namespace YouLe
 {
-	class UIFramePage : public UIWidget, public UIProcess
+	class UIFramePage : public UISheet, public UIProcess
 	{
 	public:
 		// ¹¹Ôìº¯Êý

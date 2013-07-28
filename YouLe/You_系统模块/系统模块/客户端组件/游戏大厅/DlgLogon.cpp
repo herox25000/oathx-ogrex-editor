@@ -1128,8 +1128,8 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 //鼠标消息
 VOID CDlgLogon::OnLButtonDown(UINT nFlags, CPoint Point)
 {
-	if(m_LogonFramSheet.OnLeftDown(Point))
-		return;
+	m_LogonFramSheet.InjectLeftDown(Point);
+	
 	//模拟标题
 	if (Point.y<=CAPTION_SIZE)
 	{
@@ -1142,7 +1142,7 @@ VOID CDlgLogon::OnLButtonDown(UINT nFlags, CPoint Point)
 //鼠标弹起
 void CDlgLogon::OnLButtonUp(UINT nFlags, CPoint point)
 {
-	m_LogonFramSheet.OnLeftUp(point);
+	m_LogonFramSheet.InjectLeftUp(point);
 	//选中事件
 	m_RemPwdControl.OnClickControl(point);
 	__super::OnLButtonUp(nFlags, point);
@@ -1151,7 +1151,7 @@ void CDlgLogon::OnLButtonUp(UINT nFlags, CPoint point)
 //
 void CDlgLogon::OnMouseMove(UINT nFlags, CPoint point)
 {
-	m_LogonFramSheet.OnMouseMove(point);
+	m_LogonFramSheet.InjectMouseMove(point);
 	m_bHandCur = false;
 	CRect rcClient;
 	GetClientRect(&rcClient);
