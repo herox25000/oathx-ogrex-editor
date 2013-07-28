@@ -71,12 +71,12 @@ bool CGlobalUnits::InitGlobalUnits()
 
 	//获取资源
 	m_PlatformResourceModule->GetPlazaViewImage(&m_PlazaViewImage);
-	m_PlatformResourceModule->GetServerViewImage(&m_ServerViewImage);
-	m_PlatformResourceModule->GetWhisperViewImage(&m_WhisperViewImage);
-	m_PlatformResourceModule->GetControlViewImage(&m_ControlViewImage);
+//	m_PlatformResourceModule->GetServerViewImage(&m_ServerViewImage);
+//	m_PlatformResourceModule->GetWhisperViewImage(&m_WhisperViewImage);
+//	m_PlatformResourceModule->GetControlViewImage(&m_ControlViewImage);
 	m_PlatformResourceModule->GetPlatformFrameImage(&m_PlatformFrameImage);
-	m_PlatformResourceModule->GetChatExpViewImage(&m_ChatExpViewImage);
-	m_PlatformResourceModule->GetPropertyViewImage(&m_PropertyViewImage);
+//	m_PlatformResourceModule->GetChatExpViewImage(&m_ChatExpViewImage);
+//	m_PlatformResourceModule->GetPropertyViewImage(&m_PropertyViewImage);
 
 	//控件资源
 	//IPlatformResource * pIPlatformResource=m_PlatformResourceModule.GetInterface();

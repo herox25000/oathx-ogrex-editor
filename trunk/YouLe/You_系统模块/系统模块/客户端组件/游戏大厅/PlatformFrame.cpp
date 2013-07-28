@@ -87,7 +87,6 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_PlatformSocket.SetPlatFormPointer(this);
 	OnCommandLogon();
 	g_GlobalUnits.m_ServerListManager.InitServerListManager(NULL);
-
 	
 	m_FrameSheet.Create(0, rcClient, this, NULL, NULL);
 
@@ -208,27 +207,27 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 //加载按钮
 void CPlatformFrame::LoadButtons()
 {
-	m_LobbySet.CreateButton(this, GetPlatformRes().pszBtFrameSet, _T("PNG"), LESS_SCREEN_CX - 116, 3, IDC_BT_LOBBYSET, 4, GetResInstanceHandle());
-	m_btMin.CreateButton(this, GetPlatformRes().pszBtMin, _T("PNG"), LESS_SCREEN_CX - 77, 3, IDC_BT_FRAME_MIN, 4, GetResInstanceHandle());
-	m_btClose.CreateButton(this, GetPlatformRes().pszBtClose, _T("PNG"), LESS_SCREEN_CX - 42, 3, IDC_BT_FRAME_CLOSE, 4, GetResInstanceHandle());
-
-	m_btGame.CreateButton(this, GetPlatformRes().pszBtGame, _T("PNG"), LESS_SCREEN_CX / 2 - 264, 154, IDC_BT_GAME, 4, GetResInstanceHandle());
-	m_btMatch.CreateButton(this, GetPlatformRes().pszBtMatch, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_MATCH, 4, GetResInstanceHandle());
-	m_btProperty.CreateButton(this, GetPlatformRes().pszBtProperty, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_PROPERTY, 4, GetResInstanceHandle());
-	m_btPrize.CreateButton(this, GetPlatformRes().pszBtPrize, _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_PRIZE, 4, GetResInstanceHandle());
-	m_btRecharge.CreateButton(this, GetPlatformRes().pszBtRecharge, _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_RECHARGE, 4, GetResInstanceHandle());
-
-	m_btReflash.CreateButton(this, GetPlatformRes().pszBtReflash, _T("PNG"), 178, 322, IDC_BT_REFLASH, 4, GetResInstanceHandle());
-	m_btUserInfoSet.CreateButton(this, GetPlatformRes().pszBtUserSet, _T("PNG"), 26, 290, IDC_BT_USERINFOSET, 4, GetResInstanceHandle());
-	m_btReturn.CreateButton(this, GetPlatformRes().pszBtReturn, _T("PNG"), LESS_SCREEN_CX / 2 + 210, 210, IDC_BT_RETURN, 4, GetResInstanceHandle());
-
-	m_btSquare.CreateButton(this, GetPlatformRes().pszBtSquare, _T("PNG"), 26, 490, IDC_BT_SQUARE, 4, GetResInstanceHandle());
-	m_btTill.CreateButton(this, GetPlatformRes().pszBtTill, _T("PNG"), 72, 490, IDC_BT_TILL, 4, GetResInstanceHandle());
-	m_btUserBag.CreateButton(this, GetPlatformRes().pszBtBagpack, _T("PNG"), 122, 490, IDC_BT_USERBAG, 4, GetResInstanceHandle());
-	m_btIm.CreateButton(this, GetPlatformRes().pszBtIm, _T("PNG"), 172, 490, IDC_BT_IM, 4, GetResInstanceHandle());
-
-	m_btSquare.EnableWindow(FALSE);
-	m_btIm.EnableWindow(FALSE);
+//	m_LobbySet.CreateButton(this, GetPlatformRes().pszBtFrameSet, _T("PNG"), LESS_SCREEN_CX - 116, 3, IDC_BT_LOBBYSET, 4, GetResInstanceHandle());
+// 	m_btMin.CreateButton(this, GetPlatformRes().pszBtMin, _T("PNG"), LESS_SCREEN_CX - 77, 3, IDC_BT_FRAME_MIN, 4, GetResInstanceHandle());
+// 	m_btClose.CreateButton(this, GetPlatformRes().pszBtClose, _T("PNG"), LESS_SCREEN_CX - 42, 3, IDC_BT_FRAME_CLOSE, 4, GetResInstanceHandle());
+// 
+// 	m_btGame.CreateButton(this, GetPlatformRes().pszBtGame, _T("PNG"), LESS_SCREEN_CX / 2 - 264, 154, IDC_BT_GAME, 4, GetResInstanceHandle());
+// 	m_btMatch.CreateButton(this, GetPlatformRes().pszBtMatch, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 108, 154, IDC_BT_MATCH, 4, GetResInstanceHandle());
+// 	m_btProperty.CreateButton(this, GetPlatformRes().pszBtProperty, _T("PNG"), LESS_SCREEN_CX / 2 - 264 + 216, 154, IDC_BT_PROPERTY, 4, GetResInstanceHandle());
+// 	m_btPrize.CreateButton(this, GetPlatformRes().pszBtPrize, _T("PNG"), LESS_SCREEN_CX / 2 + 60, 154, IDC_BT_PRIZE, 4, GetResInstanceHandle());
+// 	m_btRecharge.CreateButton(this, GetPlatformRes().pszBtRecharge, _T("PNG"), LESS_SCREEN_CX / 2 + 168, 154, IDC_BT_RECHARGE, 4, GetResInstanceHandle());
+// 
+// 	m_btReflash.CreateButton(this, GetPlatformRes().pszBtReflash, _T("PNG"), 178, 322, IDC_BT_REFLASH, 4, GetResInstanceHandle());
+// 	m_btUserInfoSet.CreateButton(this, GetPlatformRes().pszBtUserSet, _T("PNG"), 26, 290, IDC_BT_USERINFOSET, 4, GetResInstanceHandle());
+// 	m_btReturn.CreateButton(this, GetPlatformRes().pszBtReturn, _T("PNG"), LESS_SCREEN_CX / 2 + 210, 210, IDC_BT_RETURN, 4, GetResInstanceHandle());
+// 
+// 	m_btSquare.CreateButton(this, GetPlatformRes().pszBtSquare, _T("PNG"), 26, 490, IDC_BT_SQUARE, 4, GetResInstanceHandle());
+// 	m_btTill.CreateButton(this, GetPlatformRes().pszBtTill, _T("PNG"), 72, 490, IDC_BT_TILL, 4, GetResInstanceHandle());
+// 	m_btUserBag.CreateButton(this, GetPlatformRes().pszBtBagpack, _T("PNG"), 122, 490, IDC_BT_USERBAG, 4, GetResInstanceHandle());
+// 	m_btIm.CreateButton(this, GetPlatformRes().pszBtIm, _T("PNG"), 172, 490, IDC_BT_IM, 4, GetResInstanceHandle());
+// 
+// 	m_btSquare.EnableWindow(FALSE);
+// 	m_btIm.EnableWindow(FALSE);
 }
 
 //加载图片资源
@@ -243,7 +242,6 @@ void CPlatformFrame::LoadImages()
 
 BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 {
-	
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	CMemDC pDevC(pDC, rcClient);
@@ -257,31 +255,30 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	DrawUserInfo(pDevC);
 
 	m_FrameSheet.Draw(pDevC);
-	
 	return TRUE;
 }
 
 //按钮背景绘制
 void CPlatformFrame::SetButtonBackGrounds(CDC *pDC)
 {
-	m_btMin.SetBkGnd(pDC);
-	m_btClose.SetBkGnd(pDC);
-	m_LobbySet.SetBkGnd(pDC);
-
-	m_btGame.SetBkGnd(pDC);
-	m_btMatch.SetBkGnd(pDC);
-	m_btProperty.SetBkGnd(pDC);
-	m_btPrize.SetBkGnd(pDC);
-	m_btRecharge.SetBkGnd(pDC);
-
-	m_btReflash.SetBkGnd(pDC);
-	m_btUserInfoSet.SetBkGnd(pDC);
-	m_btReturn.SetBkGnd(pDC);
-
-	m_btUserBag.SetBkGnd(pDC);
-	m_btIm.SetBkGnd(pDC);
-	m_btSquare.SetBkGnd(pDC);
-	m_btTill.SetBkGnd(pDC);
+// 	m_btMin.SetBkGnd(pDC);
+// 	m_btClose.SetBkGnd(pDC);
+// 	m_LobbySet.SetBkGnd(pDC);
+// 
+// 	m_btGame.SetBkGnd(pDC);
+// 	m_btMatch.SetBkGnd(pDC);
+// 	m_btProperty.SetBkGnd(pDC);
+// 	m_btPrize.SetBkGnd(pDC);
+// 	m_btRecharge.SetBkGnd(pDC);
+// 
+// 	m_btReflash.SetBkGnd(pDC);
+// 	m_btUserInfoSet.SetBkGnd(pDC);
+// 	m_btReturn.SetBkGnd(pDC);
+// 
+// 	m_btUserBag.SetBkGnd(pDC);
+// 	m_btIm.SetBkGnd(pDC);
+// 	m_btSquare.SetBkGnd(pDC);
+// 	m_btTill.SetBkGnd(pDC);
 }
 
 //绘制角色信息
@@ -386,13 +383,15 @@ void CPlatformFrame::OnLButtonDown(UINT nFlags, CPoint Point)
 {
 	CFrameWnd::OnLButtonDown(nFlags,Point);
 
+	if (m_FrameSheet.OnLeftDown(Point))
+		return;
+
 	//模拟按标题
 	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE))
 	{
 		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
 	}
-
-	m_FrameSheet.OnLeftDown(Point);
+	
 }
 
 void CPlatformFrame::OnLButtonUp(UINT nFlags, CPoint point)
@@ -406,4 +405,5 @@ void CPlatformFrame::OnMouseMove(UINT nFlags, CPoint point)
 {
 	m_FrameSheet.OnMouseMove(point);
 	CFrameWnd::OnMouseMove(nFlags, point);
+
 }
