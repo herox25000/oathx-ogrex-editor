@@ -609,6 +609,7 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 	m_bCaps = false;
 	m_bCreateUI = false;
 	m_bHandCur = false;
+	m_bLimit = false;
 	return;
 }
 
@@ -636,7 +637,12 @@ BOOL CDlgLogon::OnInitDialog()
 	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
 
 	if(m_ImageBack.IsNull())
-	m_ImageBack.LoadImage(hInstance, FrameViewImage.pszLoginBack);
+		m_ImageBack.LoadImage(hInstance, FrameViewImage.pszLoginBack);
+	if(m_ImageLimitprompt.IsNull())
+		m_ImageLimitprompt.LoadImage(hInstance,FrameViewImage.pszLimitprompt);
+	if(m_ImageEighteen.IsNull())
+		m_ImageEighteen.LoadImage(hInstance,FrameViewImage.pszEighteen);
+
 	//设置大小
 	CSize SizeWindow(m_ImageBack.GetWidth(),m_ImageBack.GetHeight());
 	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy,SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
@@ -1120,6 +1126,9 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 	m_ImageBack.DrawImage(pDevC,0,0);
 	m_RemPwdControl.OnDrawControl(pDevC);
 	m_LogonFramSheet.Draw(pDevC);
+	m_ImageEighteen.DrawImage(pDevC,350,225);
+	if(m_bLimit)
+		m_ImageLimitprompt.DrawImage(pDevC,268,225+20);
 
 	return TRUE;
 }
@@ -1128,13 +1137,13 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 //鼠标消息
 VOID CDlgLogon::OnLButtonDown(UINT nFlags, CPoint Point)
 {
-	m_LogonFramSheet.InjectLeftDown(Point);
+	BOOL Ret = m_LogonFramSheet.InjectLeftDown(Point);
 	
-	//模拟标题
-	if (Point.y<=CAPTION_SIZE)
-	{
-		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
-	}
+	////模拟标题
+	//if (Point.y<=CAPTION_SIZE && Ret==FALSE)
+	//{
+	//	PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
+	//}
 	return __super::OnLButtonDown(nFlags,Point);
 }
 
@@ -1158,6 +1167,19 @@ void CDlgLogon::OnMouseMove(UINT nFlags, CPoint point)
 	if(point.x >= 27 && point.x <= rcClient.right-27 
 		&& point.y >= 272 && point.y <= rcClient.bottom-65 )
 		m_bHandCur = true;
+	if(point.x >= 350 && point.x < 350+27 
+		&& point.y >= 225 && point.y < 225+20)
+	{
+		if(!m_bLimit)
+			Invalidate(TRUE);
+		m_bLimit = true;
+	}
+	else
+	{
+		if(m_bLimit)
+			Invalidate(TRUE);
+		m_bLimit = false;
+	}
 	__super::OnMouseMove(nFlags,point);
 }
 

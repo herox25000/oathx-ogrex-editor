@@ -184,6 +184,8 @@ protected:
 protected:
 	CString								m_strLogonServer;				//服务器地址
 	CPngImage							m_ImageBack;
+	CPngImage							m_ImageLimitprompt;
+	CPngImage							m_ImageEighteen;
 	//按钮变量
 public:
 	CGdipButton							m_btCancel;						//取消按钮
@@ -225,6 +227,7 @@ public:
 	YouLe::UILogonFramSheet				m_LogonFramSheet;
 	bool								m_bCreateUI;
 	bool								m_bHandCur;
+	bool								m_bLimit;
 	//函数定义
 public:
 	//构造函数
