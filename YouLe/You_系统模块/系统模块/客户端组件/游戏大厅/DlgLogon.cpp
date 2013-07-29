@@ -1137,13 +1137,14 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 //鼠标消息
 VOID CDlgLogon::OnLButtonDown(UINT nFlags, CPoint Point)
 {
-	BOOL Ret = m_LogonFramSheet.InjectLeftDown(Point);
-	
-	////模拟标题
-	//if (Point.y<=CAPTION_SIZE && Ret==FALSE)
-	//{
-	//	PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
-	//}
+	m_LogonFramSheet.InjectLeftDown(Point);
+	//模拟标题
+	CRect client;
+	GetClientRect(&client);
+	if (Point.y<=CAPTION_SIZE && (IsZoomed()==FALSE) && (Point.x <= (client.Width() - 50)))
+	{
+		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
+	}
 	return __super::OnLButtonDown(nFlags,Point);
 }
 
