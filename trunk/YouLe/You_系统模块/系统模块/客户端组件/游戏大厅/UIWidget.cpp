@@ -288,7 +288,9 @@ namespace YouLe
 			return FALSE;
 
 		if (m_pProcess)
+		{
 			m_pProcess->OnLeftDown(this, cPt);
+		}
 
 		Invalidate(TRUE);
 
