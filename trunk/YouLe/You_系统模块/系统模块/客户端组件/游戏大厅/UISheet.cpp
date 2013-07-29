@@ -16,28 +16,6 @@ namespace YouLe
 
 	}
 
-	// 设置焦点
-	void		UISheet::SetFocus(UIWidget* pFocus)
-	{
-		if (m_pFocus != pFocus)
-			m_pFocus = pFocus;
-	}
-
-	// 是否是焦点
-	BOOL		UISheet::IsFocus(UIWidget* pFocus)
-	{
-		if (m_pFocus != NULL && m_pFocus == pFocus)
-			return TRUE;
-
-		return FALSE;
-	}
-
-	// 获取焦点
-	UIWidget*	UISheet::GetFocus() const
-	{
-		return m_pFocus;
-	}
-
 	// 鼠标移动
 	BOOL		UISheet::InjectMouseMove(const CPoint& cPt)
 	{
