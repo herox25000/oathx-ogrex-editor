@@ -70,9 +70,6 @@ namespace YouLe
 		UIPngButton* pBtUserSet = new UIPngButton();
 		pBtUserSet->Create(IDC_BT_USERINFOSET, 26, 250, pAttach, this, hInstance, PlazaViewImage.pszBtUserSet, 4, this);
 
-		UIPngButton* pBtReturn = new UIPngButton();
-		pBtReturn->Create(IDC_BT_RETURN, LESS_SCREEN_CX / 2 + 210, 170, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
-
 		UIPngButton* pBtSquare = new UIPngButton();
 		pBtSquare->Create(IDC_BT_SQUARE, 26, 450, pAttach, this, hInstance, PlazaViewImage.pszBtSquare, 4, this);
 

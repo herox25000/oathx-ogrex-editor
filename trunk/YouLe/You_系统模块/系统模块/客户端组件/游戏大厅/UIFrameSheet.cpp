@@ -16,7 +16,7 @@ namespace YouLe
 #define IDP_FRAME_CLOSE						55533
 
 #define PFS_CAPTION_HEIGHT					40
-#define PGP_OFFSETX							256
+#define PGP_OFFSETX							245
 #define PGP_OFFSETY							206
 #define PGP_ITEMWIDTH						176
 #define PGP_ITEMHEIGHT						140

@@ -11,6 +11,8 @@ namespace YouLe
 #define GTP_ITEMCOL			3
 #define GTP_ITEMROW			3
 
+#define IDB_GPRETURN		45535
+
 	static const INT idList[] = {
 		IDB_GAMETAB_GAME, IDB_GAMETAB_CARD, IDB_GAMETAB_MAHJ, IDB_GAMETAB_LEIS
 	};
@@ -63,6 +65,12 @@ namespace YouLe
 
 		SetPage(idList[0]);
 
+		tagPlatformFrameImageNew & PlazaFrameImage = g_GlobalUnits.m_PlatformFrameImage;
+		
+		// 创建返回按钮
+		UIPngButton* pBtReturn = new UIPngButton();
+		pBtReturn->Create(IDB_GPRETURN, rect.right - 300, 5, pAttach, this, hInstance, PlazaFrameImage.pszBtReturn, 4, this);
+
 		return TRUE;
 	}
 
@@ -82,7 +90,10 @@ namespace YouLe
 	{
 		if (pWidget)
 		{
-			SetPage(pWidget->GetID());
+			INT nID = pWidget->GetID();
+			if (nID != IDB_GPRETURN)
+				SetPage(nID);
+
 			return TRUE;
 		}
 
