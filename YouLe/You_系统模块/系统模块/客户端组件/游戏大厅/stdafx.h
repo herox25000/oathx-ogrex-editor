@@ -91,6 +91,7 @@ using namespace std;
 #include "resource.h"
 #include "Platform.h"
 #include "IGamePlaza.h"
+#include "GlobalUnits.h"
 
 #define CAPTION_SIZE						35							//标题大小
 //字符串安全拼接

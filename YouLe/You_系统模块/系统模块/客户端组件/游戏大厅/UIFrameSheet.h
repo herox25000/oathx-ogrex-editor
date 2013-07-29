@@ -6,7 +6,7 @@
 namespace YouLe
 {
 	// UI 根窗口
-	class UIFrameSheet : public UISheet
+	class UIFrameSheet : public UISheet, public UIProcess
 	{
 	public:
 		// 构造函数
@@ -16,6 +16,11 @@ namespace YouLe
 
 		// 创建窗口
 		virtual BOOL			Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
+
+	public:
+		// 按钮按下
+		virtual	BOOL			OnClicked(UIWidget* pWidget,
+			const CPoint& cPt);
 	};
 }
 
