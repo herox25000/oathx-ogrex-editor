@@ -292,9 +292,12 @@ void CPlatformFrame::OnLButtonDown(UINT nFlags, CPoint Point)
 	m_FrameSheet.InjectLeftDown(Point);
 
 	//模拟按标题
-	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE))
+	CRect client;
+	GetClientRect(&client);
+
+	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE) && (Point.x <= (client.Width() - 120)))
 	{
-		//PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
+		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
 	}
 	
 	CFrameWnd::OnLButtonDown(nFlags,Point);
