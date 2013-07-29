@@ -68,6 +68,8 @@ struct tagPlatformFrameImageNew
 	LPCTSTR							pszLoginBack;
 	LPCTSTR							pszRegisterBack;
 	LPCTSTR							pszPassLevel;
+	LPCTSTR							pszEighteen;
+	LPCTSTR							pszLimitprompt;
 	LPCTSTR							pszBtCheckBack;
 	LPCTSTR							pszBtLogin;
 	LPCTSTR							pszBtQuit;

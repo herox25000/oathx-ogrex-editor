@@ -869,6 +869,8 @@ PNG_BT_CANCEL           PNG                     "res\\PLAZA_SET\\BT_CANCEL.png"
 
 DLG_LOGON_BACK          PNG                     "res\\PLAZA_LOGON\\DLG_LOGON_BACK.PNG"
 DLG_REGISTER_BACK       PNG                     "res\\PLAZA_LOGON\\RegisterBack.PNG"
+EIGHTEEN      		PNG                     "res\\PLAZA_LOGON\\eighteen.PNG"
+LIMIT_PROMPT       	PNG                     "res\\PLAZA_LOGON\\limit_prompt.PNG"
 PASSWORD_LEVEL          PNG                     "res\\PLAZA_LOGON\\passlevel.PNG"
 CHECK_BUTTON_BACK       PNG                     "res\\PLAZA_LOGON\\BT_REMEMBER.PNG"
 PNG_BT_LOGON            PNG                     "res\\PLAZA_LOGON\\BT_LOGON_ENTER.png"

@@ -306,6 +306,8 @@ bool __cdecl CPlatformResource::GetPlatformFrameImage(tagPlatformFrameImageNew *
 	PlatformFrameImage->pszLoginBack = TEXT("DLG_LOGON_BACK");
 	PlatformFrameImage->pszRegisterBack = TEXT("DLG_REGISTER_BACK");
 	PlatformFrameImage->pszPassLevel = TEXT("PASSWORD_LEVEL");
+	PlatformFrameImage->pszEighteen = TEXT("EIGHTEEN");
+	PlatformFrameImage->pszLimitprompt = TEXT("LIMIT_PROMPT");
 	PlatformFrameImage->pszBtCheckBack = TEXT("CHECK_BUTTON_BACK");
 	PlatformFrameImage->pszBtLogin = TEXT("PNG_BT_LOGON");
 	PlatformFrameImage->pszBtQuit = TEXT("PNG_BT_LOGON_QUIT");
