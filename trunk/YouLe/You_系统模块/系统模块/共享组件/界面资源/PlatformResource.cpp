@@ -166,6 +166,8 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 	PlazaViewImage->pszGameTabCard = TEXT("GAMETAB_CARD");
 	PlazaViewImage->pszGameTabMahj = TEXT("GAMETAB_MAHJ");
 	PlazaViewImage->pszGameTabLeis = TEXT("GAMETAB_LEIS");
+	PlazaViewImage->pszGLLast	   = TEXT("GAMEITEM_LAST");	 
+	PlazaViewImage->pszGLNext	   = TEXT("GAMEITEM_NEXT");	 
 
 	return true;
 }
