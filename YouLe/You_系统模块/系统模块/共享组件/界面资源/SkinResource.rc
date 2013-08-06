@@ -845,6 +845,8 @@ PNG_GL_BACK             PNG                     "res\\PLAZA\\GL_BACK.png"
 PNG_INFO_MODIFY         PNG                     "res\\PLAZA\\INFO_MODIFY.png"
 PNG_SEX_HEAD            PNG                     "res\\PLAZA\\SEX.png"
 
+GAMEITEM_LAST		PNG			"res\\PLAZA_VIEW\\GAMEITEM_LAST.png"
+GAMEITEM_NEXT		PNG			"res\\PLAZA_VIEW\\GAMEITEM_NEXT.png"
 GAMEITEM_BACK           PNG                     "res\\PLAZA_VIEW\\GAMEITEM_BACK.png"
 GAMEITEM_BILL           PNG                     "res\\PLAZA_VIEW\\GAMEITEM_BILL.png"
 GAMEITEM_REGULAR        PNG                     "res\\PLAZA_VIEW\\GAMEITEM_REGULAR.png"
