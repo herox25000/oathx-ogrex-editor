@@ -96,12 +96,15 @@ struct tagPlatViewImageNew
 	LPCTSTR							pszGameRoomJoin;
 	LPCTSTR							pszGameRoomBill;
 	LPCTSTR							pszPageMatch;
-
+	LPCTSTR							pszGameTableJoin;
+	LPCTSTR							pszGameTableBill;
 	LPCTSTR							pszGameTabGame;
 	LPCTSTR							pszGameTabCard;
 	LPCTSTR							pszGameTabMahj;
 	LPCTSTR							pszGameTabLeis;
-
+	
+	LPCTSTR							pszBtReturn;
+	LPCTSTR							pszTilteImage;
 	LPCTSTR							pszGLLast;
 	LPCTSTR							pszGLNext;
 };

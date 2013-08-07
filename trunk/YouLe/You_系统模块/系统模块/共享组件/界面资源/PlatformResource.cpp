@@ -160,12 +160,16 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 	PlazaViewImage->pszGameItemJoin = TEXT("GAMEITEM_JOIN");
 	PlazaViewImage->pszGameRoomJoin = TEXT("GAMEROOM_JOIN");
 	PlazaViewImage->pszGameRoomBill = TEXT("GAMEROOM_BILL");
+	PlazaViewImage->pszGameTableJoin = TEXT("GAMETABLE_JOIN");
+	PlazaViewImage->pszGameTableBill = TEXT("GAMETABLE_BILL");
 	PlazaViewImage->pszPageMatch = TEXT("GAMEPAGE_MATCH");
 
 	PlazaViewImage->pszGameTabGame = TEXT("GAMETAB_GAME");
 	PlazaViewImage->pszGameTabCard = TEXT("GAMETAB_CARD");
 	PlazaViewImage->pszGameTabMahj = TEXT("GAMETAB_MAHJ");
 	PlazaViewImage->pszGameTabLeis = TEXT("GAMETAB_LEIS");
+	PlazaViewImage->pszBtReturn	   = TEXT("PNG_GL_BACK");	
+	PlazaViewImage->pszTilteImage  = TEXT("PNG_GL_TILTE");
 	PlazaViewImage->pszGLLast	   = TEXT("GAMEITEM_LAST");	 
 	PlazaViewImage->pszGLNext	   = TEXT("GAMEITEM_NEXT");	 
 
@@ -290,7 +294,6 @@ bool __cdecl CPlatformResource::GetPlatformFrameImage(tagPlatformFrameImageNew *
 
 	PlatformFrameImage->pszBtReflash = TEXT("PNG_YOU_RENEW");
 	PlatformFrameImage->pszBtUserSet = TEXT("PNG_INFO_MODIFY");
-	PlatformFrameImage->pszBtReturn = TEXT("PNG_GL_BACK");
 
 	PlatformFrameImage->pszBtUserSexHead = TEXT("PNG_SEX_HEAD");
 
