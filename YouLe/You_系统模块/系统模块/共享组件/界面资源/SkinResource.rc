@@ -841,7 +841,6 @@ PNG_BT_GL_IM            PNG                     "res\\PLAZA\\GL_IM.png"
 PNG_BT_GL_SQUARE        PNG                     "res\\PLAZA\\GL_SQUARE.png"
 PNG_BT_GL_TILL          PNG                     "res\\PLAZA\\GL_TILL.png"
 PNG_YOU_RENEW           PNG                     "res\\PLAZA\\YOU_RENEW.png"
-PNG_GL_BACK             PNG                     "res\\PLAZA\\GL_BACK.png"
 PNG_INFO_MODIFY         PNG                     "res\\PLAZA\\INFO_MODIFY.png"
 PNG_SEX_HEAD            PNG                     "res\\PLAZA\\SEX.png"
 
@@ -858,6 +857,8 @@ GAMETAB_GAME            PNG                     "res\\PLAZA_VIEW\\GAMETAB_GAME.p
 GAMETAB_CARD            PNG                     "res\\PLAZA_VIEW\\GAMETAB_CARD.png"
 GAMETAB_MAHJ            PNG                     "res\\PLAZA_VIEW\\GAMETAB_MAHJ.png"
 GAMETAB_LEIS            PNG                     "res\\PLAZA_VIEW\\GAMETAB_LEIS.png"
+PNG_GL_BACK             PNG                     "res\\PLAZA_VIEW\\GL_BACK.png"
+PNG_GL_TILTE            PNG                     "res\\PLAZA_VIEW\\GL_TILTE.png"
 
 DLG_ENQUIRE_BACK        PNG                     "res\\PLAZA_ENQUIRE\\DLG_ENQUIRE_BACK.png"
 BT_ENQUIRE_CANCEL       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_CANCEL.png"
