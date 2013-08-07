@@ -1,7 +1,6 @@
 #include "Stdafx.h"
 #include "Resource.h"
 #include "DlgLogon.h"
-#include "GlobalUnits.h"
 #include "dlglogon.h"
 
 //µÇÂ¼·½Ê½

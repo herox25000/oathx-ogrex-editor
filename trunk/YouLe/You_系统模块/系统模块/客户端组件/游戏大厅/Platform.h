@@ -18,5 +18,15 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("v5");
 #define WM_CLOSE_FRAME			WM_USER + 102
 #define WM_SWITCH_ACCOUNT		WM_USER + 103
 
+// 视图页面创建的个数
+#define MAX_GICOL			3
+#define MAX_GIROW			3
+#define GTP_OFFSETX			0
+#define GTP_OFFSETY			40
+#define GTP_WITH			540
+#define	GTP_HEIGHT			520
+
+// 返回按钮ID
+#define IDB_GPRETURN		45535
 
 #endif

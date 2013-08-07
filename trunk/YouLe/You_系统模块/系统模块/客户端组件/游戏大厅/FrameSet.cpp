@@ -5,7 +5,6 @@
 #include "GamePlaza.h"
 #include "FrameSet.h"
 #include "Platform.h"
-#include "GlobalUnits.h"
 
 #define FRAMEDLG_X							359
 #define FRAMEDLG_Y							240

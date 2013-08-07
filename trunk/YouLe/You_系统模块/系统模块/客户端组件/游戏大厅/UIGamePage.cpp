@@ -1,18 +1,8 @@
 #include "Stdafx.h"
 #include "UIGamePage.h"
-#include "GlobalUnits.h"
 
 namespace YouLe
 {
-#define GTP_OFFSETX			0
-#define GTP_OFFSETY			40
-#define GTP_WINDOWX			176
-#define GTP_WINDOWY			140
-#define GTP_ITEMCOL			3
-#define GTP_ITEMROW			3
-
-#define IDB_GPRETURN		45535
-
 	static const INT idList[] = {
 		IDB_GAMETAB_GAME, IDB_GAMETAB_CARD, IDB_GAMETAB_MAHJ, IDB_GAMETAB_LEIS
 	};
@@ -37,12 +27,8 @@ namespace YouLe
 		BOOL bResult = UIWidget::Create(nID, rect, pAttach, pProcess, pParent);
 		ASSERT(bResult == TRUE);
 
-		INT nLeft	= GTP_OFFSETX;
-		int nTop	= GTP_OFFSETY;
-
 		m_pGameView = new UIGameView();
-		m_pGameView->Create(0, CRect(nLeft, nTop, nLeft + GTP_WINDOWX * GTP_ITEMCOL, nTop + GTP_WINDOWY * GTP_ITEMROW),
-			pAttach, pProcess, this);
+		m_pGameView->Create(0, CRect(GTP_OFFSETX, GTP_OFFSETY,GTP_WITH, GTP_HEIGHT),pAttach, NULL, this);
 
 		//加载资源
 		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
@@ -65,11 +51,9 @@ namespace YouLe
 
 		SetPage(idList[0]);
 
-		tagPlatformFrameImageNew & PlazaFrameImage = g_GlobalUnits.m_PlatformFrameImage;
-		
 		// 创建返回按钮
 		UIPngButton* pBtReturn = new UIPngButton();
-		pBtReturn->Create(IDB_GPRETURN, rect.right - 300, 5, pAttach, this, hInstance, PlazaFrameImage.pszBtReturn, 4, this);
+		pBtReturn->Create(IDB_GPRETURN, rect.right - 320, 5, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
 
 		return TRUE;
 	}

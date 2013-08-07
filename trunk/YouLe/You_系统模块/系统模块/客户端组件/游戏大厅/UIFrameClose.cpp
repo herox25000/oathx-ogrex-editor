@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "uiframeclose.h"
-#include "GlobalUnits.h"
 #include "Platform.h"
 
 #define  WM_BT_CLOSE_PLAZA			101

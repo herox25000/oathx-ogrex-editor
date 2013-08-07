@@ -2,7 +2,6 @@
 #include "GamePlaza.h"
 #include "PlatformFrame.h"
 #include "Platform.h"
-#include "GlobalUnits.h"
 
 //阴影定义
 #define SHADOW_CX							1							//阴影宽度

@@ -1,7 +1,6 @@
 #include "Stdafx.h"
 #include "Resource.h"
 #include "DlgStatus.h"
-#include "GlobalUnits.h"
 
 //¶¨Ê±Æ÷ ID
 #define IDT_STATUS_IMANGE					1					//×´Ì¬Í¼±ê

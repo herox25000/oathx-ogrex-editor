@@ -92,6 +92,8 @@ using namespace std;
 #include "Platform.h"
 #include "IGamePlaza.h"
 #include "GlobalUnits.h"
+#include "UIPageManager.h"
+using namespace YouLe;
 
 #define CAPTION_SIZE						35							//标题大小
 //字符串安全拼接

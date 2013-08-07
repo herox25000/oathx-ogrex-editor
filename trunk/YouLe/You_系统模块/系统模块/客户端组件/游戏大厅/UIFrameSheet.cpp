@@ -1,8 +1,8 @@
 #include "Stdafx.h"
 #include "UIFrameSheet.h"
-#include "UIGamePage.h"
 #include "UIFramePage.h"
 #include "UIFrameClose.h"
+#include "UIPageManager.h"
 
 namespace YouLe
 {
@@ -12,7 +12,6 @@ namespace YouLe
 #define IDB_FRAME_SET						65533
 
 #define IDP_FRAME_PAGE						55535
-#define IDP_GAME_PAGE						55534
 #define IDP_FRAME_CLOSE						55533
 
 #define PFS_CAPTION_HEIGHT					40
@@ -29,7 +28,7 @@ namespace YouLe
 
 	// 构造函数
 	UIFrameSheet::UIFrameSheet()
-	{
+	{	
 
 	}
 	
@@ -67,11 +66,10 @@ namespace YouLe
 		UIFramePage* pFramePage = new UIFramePage();
 		pFramePage->Create(IDP_FRAME_PAGE, 
 			CRect(rect.left, rect.top + PFS_CAPTION_HEIGHT, rect.right, rect.top), pAttach, pProcess, this);
-
-		// 创建游戏页
-		UIGamePage* pGamePage	= new UIGamePage();
-		pGamePage->Create(IDP_GAME_PAGE, 
-			CRect(PGP_OFFSETX, PGP_OFFSETY, PGP_OFFSETX+PGP_ITEMWIDTH*3, PGP_OFFSETY+PGP_ITEMHEIGHT*3), pAttach, pProcess, this);
+		
+		// 创建所有页面
+		g_UIPageManager.Create(0,
+			CRect(PGP_OFFSETX, PGP_OFFSETY, PGP_OFFSETX+GTP_WITH, PGP_OFFSETY+GTP_HEIGHT), pAttach, this, this);
 
 		// 创建退出框
 		UIFrameClose* pClose	= new UIFrameClose();

@@ -1,7 +1,5 @@
 #include "StdAfx.h"
 #include "logonframsheet.h"
-#include "GlobalUnits.h"
-
 
 namespace YouLe
 {

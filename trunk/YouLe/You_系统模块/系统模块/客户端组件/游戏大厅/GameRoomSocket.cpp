@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "gameroomsocket.h"
-#include "GlobalUnits.h"
 #include "GameRoomManager.h"
 
 CGameRoomSocket::CGameRoomSocket(void)
