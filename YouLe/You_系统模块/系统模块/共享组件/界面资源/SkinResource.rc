@@ -852,6 +852,8 @@ GAMEITEM_REGULAR        PNG                     "res\\PLAZA_VIEW\\GAMEITEM_REGUL
 GAMEITEM_JOIN           PNG                     "res\\PLAZA_VIEW\\GAMEITEM_JOIN.png"
 GAMEROOM_JOIN           PNG                     "res\\PLAZA_VIEW\\GAMEROOM_JOIN.png"
 GAMEROOM_BILL           PNG                     "res\\PLAZA_VIEW\\GAMEROOM_BILL.png"
+GAMETABLE_JOIN          PNG                     "res\\PLAZA_VIEW\\GAMETABLE_JOIN.png"
+GAMETABLE_BILL          PNG                     "res\\PLAZA_VIEW\\GAMETABLE_BILL.png"
 GAMEPAGE_MATCH          PNG                     "res\\PLAZA_VIEW\\GAMEPAGE_MATCH.png"
 GAMETAB_GAME            PNG                     "res\\PLAZA_VIEW\\GAMETAB_GAME.png"
 GAMETAB_CARD            PNG                     "res\\PLAZA_VIEW\\GAMETAB_CARD.png"

@@ -26,7 +26,7 @@ namespace YouLe
 	public:
 		// ÏìÓ¦Ò³¿Ø¼þ
 		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
-	protected:
+	public:
 		UIGameView*			m_pGameView;
 	};
 }

@@ -1,6 +1,5 @@
 #include "StdAfx.h"
 #include "platformsocket.h"
-#include "GlobalUnits.h"
 
 CPlatformSocket::CPlatformSocket(void)
 {
@@ -288,9 +287,14 @@ bool CPlatformSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			//	if (pListInside==NULL) break;
 			//	g_GlobalUnits.m_ServerListManager.ExpandListItem(pListInside);
 			//} while (true);
-
-
-
+			
+			//显示游戏界面
+			if(g_UIPageManager.m_pGamePage)
+			{
+				if(g_UIPageManager.m_pGamePage->m_pGameView)
+					g_UIPageManager.m_pGamePage->m_pGameView->ShowFirstPage();
+			}
+			
 
 			m_bLogonPlaza=true;
 			//记录信息

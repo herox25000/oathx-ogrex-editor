@@ -151,9 +151,6 @@
 				RelativePath=".\GlobalUnits.cpp">
 			</File>
 			<File
-				RelativePath=".\GlobalUnits.h">
-			</File>
-			<File
 				RelativePath=".\LogonFramSheet.cpp">
 			</File>
 			<File
@@ -217,6 +214,9 @@
 			</File>
 			<File
 				RelativePath=".\GameRoomSocket.h">
+			</File>
+			<File
+				RelativePath=".\GlobalUnits.h">
 			</File>
 			<File
 				RelativePath=".\IGamePlaza.h">
@@ -315,16 +315,34 @@
 					RelativePath=".\UIGamePage.h">
 				</File>
 				<File
+					RelativePath=".\UIPageManager.cpp">
+				</File>
+				<File
+					RelativePath=".\UIPageManager.h">
+				</File>
+				<File
 					RelativePath=".\UIPngButton.cpp">
 				</File>
 				<File
 					RelativePath=".\UIPngButton.h">
 				</File>
 				<File
+					RelativePath=".\UIRoomPage.cpp">
+				</File>
+				<File
+					RelativePath=".\UIRoomPage.h">
+				</File>
+				<File
 					RelativePath=".\UISheet.cpp">
 				</File>
 				<File
 					RelativePath=".\UISheet.h">
+				</File>
+				<File
+					RelativePath=".\UITablePage.cpp">
+				</File>
+				<File
+					RelativePath=".\UITablePage.h">
 				</File>
 				<File
 					RelativePath=".\UIWidget.cpp">
