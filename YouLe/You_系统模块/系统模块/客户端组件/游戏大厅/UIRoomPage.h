@@ -59,7 +59,7 @@ namespace YouLe
 		// 功能函数
 	public:
 		// 显示房间列表
-		void				ShowRoomList(CListKind* ListKind);
+		bool				ShowRoomList(CListKind* ListKind);
 
 	public:
 		// 房间列表指针

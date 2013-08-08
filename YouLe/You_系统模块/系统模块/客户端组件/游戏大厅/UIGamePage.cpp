@@ -78,6 +78,7 @@ namespace YouLe
 			if (nID == IDB_GPRETURN )
 			{
 				m_pGameView->ShowFirstPage();
+				SetPage(1);
 			}
 			else
 			{

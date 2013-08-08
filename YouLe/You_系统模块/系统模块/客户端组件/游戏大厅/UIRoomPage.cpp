@@ -164,7 +164,7 @@ namespace YouLe
 	}
 
 	// 显示房间列表
-	void	UIRoomPage::ShowRoomList(CListKind* ListKind)
+	bool	UIRoomPage::ShowRoomList(CListKind* ListKind)
 	{
 		CopyMemory(szKindName,ListKind->m_GameKind.szKindName,sizeof(szKindName));
 		CListServer* pListServer = NULL;
@@ -183,5 +183,8 @@ namespace YouLe
 					break;	
 			}
 		}
+		if(RoomIndex == 0)
+			return false;
+		return true;
 	}
 }
