@@ -150,9 +150,13 @@ namespace YouLe
 	// 进入房间
 	bool	UIGameItem::OnShowRoomPage()
 	{
+		if(!g_UIPageManager.m_pRoomPage->ShowRoomList(m_pListKind))
+		{
+			AfxMessageBox("对不起，游戏服务器没开启！");
+			return false;
+		}
 		g_UIPageManager.m_pGamePage->VisibleWidget(false);
-		g_UIPageManager.m_pRoomPage->VisibleWidget(true);
-		g_UIPageManager.m_pRoomPage->ShowRoomList(m_pListKind);
+		g_UIPageManager.m_pRoomPage->VisibleWidget(true);	
 		return true;
 	}
 
