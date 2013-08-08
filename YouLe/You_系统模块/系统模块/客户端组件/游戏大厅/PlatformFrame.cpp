@@ -25,10 +25,6 @@ BEGIN_MESSAGE_MAP(CPlatformFrame, CFrameWnd)
 	ON_WM_CLOSE()
 	ON_WM_ERASEBKGND()
 	ON_WM_LBUTTONDOWN()
-	ON_BN_CLICKED(IDB_GAMETAB_GAME, OnTabGame)
-	ON_BN_CLICKED(IDB_GAMETAB_CARD, OnTabCard)
-	ON_BN_CLICKED(IDB_GAMETAB_MAHJ, OnTabMahj)
-	ON_BN_CLICKED(IDB_GAMETAB_LEIS, OnTabLeis)
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
@@ -263,26 +259,6 @@ VOID CPlatformFrame::OnClose()
 void CPlatformFrame::SaveBossKey( int nCtrlKey, int nHelpKey )
 {
 	
-}
-
-void CPlatformFrame::OnTabGame()
-{
-
-}
-
-void CPlatformFrame::OnTabCard()
-{
-
-}
-
-void CPlatformFrame::OnTabMahj()
-{
-
-}
-
-void CPlatformFrame::OnTabLeis()
-{
-
 }
 
 // Û±Íœ˚œ¢

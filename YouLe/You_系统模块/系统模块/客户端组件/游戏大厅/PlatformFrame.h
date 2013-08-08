@@ -91,10 +91,6 @@ public:
 	afx_msg void OnCommandCancelConnect();
 	//打开大厅设置
 	afx_msg void OnOpenFrameSet();
-	afx_msg void OnTabGame();
-	afx_msg void OnTabCard();
-	afx_msg void OnTabMahj();
-	afx_msg void OnTabLeis();
 
 public:
 	void SaveBossKey(int nCtrlKey, int nHelpKey);

@@ -4,7 +4,7 @@
 namespace YouLe
 {
 	static const INT idList[] = {
-		IDB_GAMETAB_GAME, IDB_GAMETAB_CARD, IDB_GAMETAB_MAHJ, IDB_GAMETAB_LEIS
+		1, 2, 3, 4
 	};
 
 	// ¹¹Ôìº¯Êý
@@ -75,10 +75,18 @@ namespace YouLe
 		if (pWidget)
 		{
 			INT nID = pWidget->GetID();
-			if (nID != IDB_GPRETURN)
+			if (nID == IDB_GPRETURN )
+			{
+				m_pGameView->ShowFirstPage();
+			}
+			else
+			{
+				if(nID == 1)
+					m_pGameView->ShowFirstPage();
+				else
+					m_pGameView->ShowFirstPage(nID);
 				SetPage(nID);
-
-			return TRUE;
+			}
 		}
 
 		return FALSE;

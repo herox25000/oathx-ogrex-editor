@@ -128,7 +128,7 @@ protected:
 
 	//自定义函数
 public:
-	bool InitGameRoom(CListServer * pListServer,CGameRoomManager* pMgr,CWnd* pPointer);
+	bool InitGameRoom(CListServer * pListServer,CGameRoomManager* pMgr);
 	//类型信息
 	tagGameKind * __cdecl GetKindInfo();
 	//显示消息
@@ -153,11 +153,11 @@ protected:
 public:
 	CGameRoomManager*				m_pGameRoomMgr;						//管理类指针
 	CWnd*							m_pWnd;								//房间框架指针
-	CListServer	*					m_pListServer;						//房间信息
+	CListServer*					m_pListServer;						//房间信息
 	CTCPSocketHelper				m_ClientSocket;						//网络连接
 	CIPCRecvCopyData				m_IPCRecvCopyData;					//信道组件
 	enServiceStatus					m_ServiceStatus;					//服务状态
-	IUserItem *						m_pMeUserItem;						//自己信息
+	IUserItem*						m_pMeUserItem;						//自己信息
 	CClientUserManager				m_ClientUserManager;				//用户管理
 
 	//进程信息

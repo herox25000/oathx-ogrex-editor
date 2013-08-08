@@ -25,6 +25,8 @@ namespace YouLe
 	protected:
 		CPngImage			m_PngBill;
 		UIPngButton*		m_pJoinBtn; 
+	public:
+		TableInfo*			m_pTableInfo;
 	};
 
 
@@ -48,15 +50,26 @@ namespace YouLe
 	public:
 		// 响应页控件
 		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
-
+		// 响应上一页
+		void				OnClickLastPage();
+		// 响应下一页
+		void				OnClickNextPage();
+		// 枚举GameItem
+		bool				EnumTableItem();
+		// 显示首页
+		void				ShowFirstPage();
+		//
+		void				SetListServer(CListServer* ListServer){m_pListServer = ListServer;}
 	public:
 		// 
 		UITableItem*		m_pTableItem[MAX_GICOL*MAX_GIROW];
+		// 枚举序列
+		int					m_EnumIndex;
 		// 返回按钮
 		UIPngButton*		m_pBtBack;
 		// 标题
 		CPngImage			m_TilteImage;
-		// 标题名称（游戏名字）
-		TCHAR				szKindName[KIND_LEN];
+		// 
+		CListServer*		m_pListServer;
 	};
 }

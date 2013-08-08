@@ -48,9 +48,24 @@ namespace YouLe
 			return FALSE;
 
 		CPoint cPt = m_rect.TopLeft();
-		// drwo normal stat image
 		m_PngBill.DrawImage(pDC, cPt.x, cPt.y);
 
+		if(m_pTableInfo)
+		{
+			TCHAR	szTempStr[32];
+			//第几桌
+			sprintf(szTempStr,_T("%d 号桌子"),m_pTableInfo->wTableID);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+5,cPt.x+100,cPt.y+30),DT_CENTER);
+			//状态
+			if(m_pTableInfo->bPlayStatus == true)
+				sprintf(szTempStr,_T("正在游戏"));
+			else
+				sprintf(szTempStr,_T("空桌"));
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+35,cPt.x+100,cPt.y+20),DT_CENTER);
+			//人数
+			sprintf(szTempStr,_T("游戏人数：%d/%d"),m_pTableInfo->lPlayerCount,m_pTableInfo->wChairCount);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+55,cPt.x+100,cPt.y+20),DT_CENTER);
+		}
 		return TRUE;
 	}
 
@@ -78,6 +93,7 @@ namespace YouLe
 	//////////////////////////////////////////////////////////////////////////
 	UITablePage::UITablePage(void)
 	{
+
 	}
 
 	UITablePage::~UITablePage(void)
@@ -110,10 +126,19 @@ namespace YouLe
 				int index = c*MAX_GIROW + r;
 				m_pTableItem[index] = new UITableItem();
 				m_pTableItem[index] ->Create(c * MAX_GIROW + r , r * 180, 40+c * 145,pAttach, pProcess, this);
-				//m_pTableItem[index] ->VisibleWidget(false);
+				m_pTableItem[index] ->VisibleWidget(false);
 			}
 		}
 
+		CRect rc;
+		GetClientRect(&rc);
+		// 绘制翻页按钮，上一页
+		UIPngButton* pBtLast = new UIPngButton();
+		pBtLast->Create(100, rc.right/2 - 84, rc.bottom-28, pAttach, this, hInstance, PlazaViewImage.pszGLLast, 4, this);
+
+		// 绘制翻页按钮，下一页
+		UIPngButton* pBtNext = new UIPngButton();
+		pBtNext->Create(101, rc.right/2 ,		rc.bottom-28, pAttach, this, hInstance, PlazaViewImage.pszGLNext, 4, this);
 		return TRUE;
 	}
 
@@ -125,6 +150,13 @@ namespace YouLe
 
 		CPoint cPt = m_rect.TopLeft();
 		m_TilteImage.DrawImage(pDC, cPt.x, cPt.y);
+
+		if(m_pListServer)
+		{
+			TCHAR	szTempStr[32];
+			CopyMemory(szTempStr,m_pListServer->m_GameServer.szServerName,sizeof(szTempStr));
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x,cPt.y+5,cPt.x+100,cPt.y+30),DT_CENTER);
+		}
 
 		return UIWidget::Draw(pDC);
 	}
@@ -142,9 +174,66 @@ namespace YouLe
 					g_UIPageManager.m_pRoomPage->VisibleWidget(true);
 					return TRUE;
 				}
+			case 100:	// 上一页
+				{
+					OnClickLastPage();
+					return TRUE;
+				}
+			case 101:	// 下一页
+				{
+					OnClickNextPage();
+					return TRUE;
+				}
 			}
 		}
 		return TRUE;
+	}
+
+	// 响应上一页
+	void	UITablePage::OnClickLastPage()
+	{
+		m_EnumIndex -= MAX_GICOL*MAX_GIROW;
+		if(m_EnumIndex < 0)
+		{
+			m_EnumIndex = 0;
+			return;
+		}
+		EnumTableItem();
+	}
+
+	// 响应下一页
+	void	UITablePage::OnClickNextPage()
+	{
+		m_EnumIndex += MAX_GICOL*MAX_GIROW;
+		EnumTableItem();
+	}
+
+	// 枚举GameItem
+	bool	UITablePage::EnumTableItem()
+	{
+		TableInfo*  pTableInfo= NULL;
+		int			TableIndex = 0;
+		for (int nIndex = m_EnumIndex; nIndex < (m_EnumIndex+MAX_GICOL*MAX_GIROW); nIndex++)
+		{
+			pTableInfo = g_GlobalUnits.m_GameRoomManager.EnumTableItem(nIndex);
+			if (pTableInfo == NULL) 
+				return false;
+			UITableItem* pTableItem = m_pTableItem[TableIndex];
+			if(pTableItem)
+			{
+				pTableItem->VisibleWidget(true);
+				pTableItem->m_pTableInfo = pTableInfo;
+			}
+			TableIndex++;
+		}
+		return true;
+	}
+
+	// 显示首页
+	void	UITablePage::ShowFirstPage()
+	{
+		m_EnumIndex = 0;
+		EnumTableItem();
 	}
 
 }
