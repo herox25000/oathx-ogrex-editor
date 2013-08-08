@@ -6,6 +6,7 @@
 #include "Stdafx.h"
 #include "DlgStatus.h"
 #include "ServerListManager.h"
+#include "GameRoomManager.h"
 
 //////////////////////////////////////////////////////////////////////////
 
@@ -44,6 +45,10 @@ protected:
 	//组件变量
 public:
 	CServerListManager					m_ServerListManager;			//列表管理
+
+	//
+public:
+	CGameRoomManager					m_GameRoomManager;				//房间管理
 
 	//资源变量
 public:

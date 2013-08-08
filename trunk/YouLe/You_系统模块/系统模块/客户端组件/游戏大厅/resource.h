@@ -24,10 +24,6 @@
 #define IDC_PASSWORD                    1011
 #define IDC_PASSWORD2                   1012
 #define IDC_CLOSE                       1013
-#define IDB_GAMETAB_GAME                10001
-#define IDB_GAMETAB_CARD                10002
-#define IDB_GAMETAB_MAHJ                10003
-#define IDB_GAMETAB_LEIS                10004
 #define IDM_LOGON_PLAZA                 32772
 #define IDM_SNED_LOGONPACKET            32773
 #define IDM_CONNECT_SERVER              32774

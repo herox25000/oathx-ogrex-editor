@@ -20,13 +20,18 @@ namespace YouLe
 	public:
 		// 响应页控件
 		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
+	
+		// 功能函数
+	public:
+		//
+		bool				OnClickedEnterRoom();
 
 	protected:
 		CPngImage			m_PngBill;
 		UIPngButton*		m_pJoinBtn; 
 
 	public:
-		tagGameServer*		m_pGameServer;
+		CListServer*		m_pListServer;
 	};
 
 
@@ -51,8 +56,13 @@ namespace YouLe
 		// 响应页控件
 		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
 
+		// 功能函数
 	public:
-		// 
+		// 显示房间列表
+		void				ShowRoomList(CListKind* ListKind);
+
+	public:
+		// 房间列表指针
 		UIRoomItem*			m_pRoomItem[MAX_GICOL*MAX_GIROW];
 		// 返回按钮
 		UIPngButton*		m_pBtBack;

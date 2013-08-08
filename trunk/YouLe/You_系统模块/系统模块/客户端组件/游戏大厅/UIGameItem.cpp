@@ -35,14 +35,20 @@ namespace YouLe
 		{
 		case 0: // 规则
 			{
-				char szWebPage[256];
-				sprintf(szWebPage,_T("www.youle8.com//rule//%d"),m_GameKind->wKindID);
-				ShellExecute(NULL,TEXT("OPEN"),szWebPage,NULL,NULL,SW_NORMAL);
+				if(m_pListKind)
+				{
+					char szWebPage[256];
+					sprintf(szWebPage,_T("www.youle8.com//rule//%d"),m_pListKind->m_GameKind.wKindID);
+					ShellExecute(NULL,TEXT("OPEN"),szWebPage,NULL,NULL,SW_NORMAL);
+				}
 				return TRUE;
 			}
 		case 1: // 进入游戏
 			{	
-				OnClickedEnterRoom();	
+				if(m_pListKind)
+				{
+					OnShowRoomPage();	
+				}
 				return TRUE;
 			}
 		}
@@ -106,6 +112,11 @@ namespace YouLe
 			m_PngBill.DrawImage(pDC, cPt.x, cPt.y);
 		}
 
+		if(m_pListKind)
+			pDC->DrawText(m_pListKind->m_GameKind.szKindName,lstrlen(m_pListKind->m_GameKind.szKindName),
+							CRect(cPt.x,cPt.y+10,cPt.x+180,cPt.y+40),DT_CENTER);
+
+
 		return UIWidget::Draw(pDC);
 	}
 	// 设置背景
@@ -137,10 +148,11 @@ namespace YouLe
 	}
 
 	// 进入房间
-	bool	UIGameItem::OnClickedEnterRoom()
+	bool	UIGameItem::OnShowRoomPage()
 	{
 		g_UIPageManager.m_pGamePage->VisibleWidget(false);
 		g_UIPageManager.m_pRoomPage->VisibleWidget(true);
+		g_UIPageManager.m_pRoomPage->ShowRoomList(m_pListKind);
 		return true;
 	}
 
@@ -205,7 +217,7 @@ namespace YouLe
 		case 101:	// 下一页
 			{
 				OnClickNextPage();
-				return FALSE;
+				return TRUE;
 			}
 		}
 		return TRUE;
@@ -227,28 +239,33 @@ namespace YouLe
 		EnabledAllGameItem(false);
 		CListKind * pListKind = NULL;
 		char		szFileName[MAX_PATH];
+		int			GameIndex = 0;
 		for (int nIndex = m_EnumIndex; nIndex < (m_EnumIndex+MAX_GICOL*MAX_GIROW); nIndex++)
 		{
 			pListKind = g_GlobalUnits.m_ServerListManager.EnumKindItem(nIndex);
 			if (pListKind == NULL) 
 				return false;
-			UIGameItem* pGameItem = m_pGameItem[nIndex%(MAX_GICOL*MAX_GIROW)];
+			if(pListKind->m_GameKind.wTypeID != m_KindType && m_KindType != -1)
+				continue;
+			UIGameItem* pGameItem = m_pGameItem[GameIndex];
 			if(pGameItem)
 			{
 				//sprintf(szFileName,"%s\\GameItem\\%d.png", CString(g_GlobalUnits.GetWorkDirectory()),pListKind->GetItemInfo()->wKindID);
 				//if( !pGameItem->SetBillPng(szFileName))
 				//	continue;
 				pGameItem->EnabledWidget(true);
-				pGameItem->m_GameKind = pListKind->GetItemInfo();
+				pGameItem->m_pListKind = pListKind;
 			}
+			GameIndex++;
 		}
 		return true;
 	}
 
 	// 显示首页
-	void	UIGameView::ShowFirstPage()
+	void	UIGameView::ShowFirstPage(int KindType /*= -1*/)
 	{
 		m_EnumIndex = 0;
+		m_KindType = KindType;
 		EnumGameItem();
 	}
 

@@ -33,7 +33,7 @@ namespace YouLe
 		// 设置广告图
 		virtual bool		SetBillPng(HINSTANCE hInstance, LPCTSTR lpszBillResouceName);
 		// 进入房间
-		virtual bool		OnClickedEnterRoom();
+		virtual bool		OnShowRoomPage();
 
 	protected:
 		CPngImage			m_PngBack;
@@ -43,8 +43,7 @@ namespace YouLe
 		
 	public:
 		// 游戏信息
-		tagGameKind*		m_GameKind;	
-
+		CListKind*			m_pListKind;
 	};
 
 	// 游戏视图
@@ -67,7 +66,7 @@ namespace YouLe
 		// 枚举GameItem
 		bool				EnumGameItem();
 		// 显示首页
-		void				ShowFirstPage();
+		void				ShowFirstPage(int KindType = -1);
 		// 响应上一页
 		void				OnClickLastPage();
 		// 响应下一页
@@ -78,6 +77,8 @@ namespace YouLe
 		UIGameItem*			m_pGameItem[MAX_GICOL*MAX_GIROW];
 		// 枚举序列
 		int					m_EnumIndex;
+		// 类型标识
+		int					m_KindType;
 	};
 }
 

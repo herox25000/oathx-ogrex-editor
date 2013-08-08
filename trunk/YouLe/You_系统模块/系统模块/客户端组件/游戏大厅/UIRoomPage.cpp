@@ -49,9 +49,16 @@ namespace YouLe
 			return FALSE;
 
 		CPoint cPt = m_rect.TopLeft();
-		// drwo normal stat image
 		m_PngBill.DrawImage(pDC, cPt.x, cPt.y);
 
+		if(m_pListServer)
+		{
+			TCHAR	szTempStr[32];
+			CopyMemory(szTempStr,m_pListServer->m_GameServer.szServerName,sizeof(szTempStr));
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x,cPt.y+5,cPt.x+100,cPt.y+30),DT_CENTER);
+			sprintf(szTempStr,_T("人数：%d"),m_pListServer->m_GameServer.dwOnLineCount);		
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+30,cPt.y+30,cPt.x+100,cPt.y+30),DT_LEFT);
+		}
 		return UIWidget::Draw(pDC);
 	}
 
@@ -64,8 +71,7 @@ namespace YouLe
 			{
 			case 100:	// 加入按钮
 				{
-					g_UIPageManager.m_pRoomPage->VisibleWidget(false);
-					g_UIPageManager.m_pTablePage->VisibleWidget(true);
+					OnClickedEnterRoom();
 					return TRUE;
 				}
 			}
@@ -73,6 +79,12 @@ namespace YouLe
 		return TRUE;
 	}
 
+	//
+	bool	UIRoomItem::OnClickedEnterRoom()
+	{
+		g_GlobalUnits.m_GameRoomManager.EnterRoom(m_pListServer);
+		return true;
+	}
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -112,7 +124,7 @@ namespace YouLe
 				int index = c*MAX_GIROW + r;
 				m_pRoomItem[index] = new UIRoomItem();
 				m_pRoomItem[index] ->Create(c * MAX_GIROW + r , r * 180, 40+c * 145,pAttach, pProcess, this);
-				//m_pRoomItem[index] ->VisibleWidget(false);
+				m_pRoomItem[index] ->VisibleWidget(false);
 			}
 		}
 
@@ -127,6 +139,8 @@ namespace YouLe
 		
 		CPoint cPt = m_rect.TopLeft();
 		m_TilteImage.DrawImage(pDC, cPt.x, cPt.y);
+		
+		pDC->DrawText(szKindName,lstrlen(szKindName),CRect(cPt.x,cPt.y+10,cPt.x+180,cPt.y+40),DT_CENTER);
 
 		return UIWidget::Draw(pDC);
 	}
@@ -147,5 +161,27 @@ namespace YouLe
 			}
 		}
 		return TRUE;
+	}
+
+	// 显示房间列表
+	void	UIRoomPage::ShowRoomList(CListKind* ListKind)
+	{
+		CopyMemory(szKindName,ListKind->m_GameKind.szKindName,sizeof(szKindName));
+		CListServer* pListServer = NULL;
+		int	SeverIndex = 0;
+		int RoomIndex = 0;
+		while(true)
+		{
+			pListServer = g_GlobalUnits.m_ServerListManager.EnumServerItem(SeverIndex++);
+			if(pListServer == NULL)
+				break;
+			if(pListServer->m_GameServer.wKindID == ListKind->GetItemInfo()->wKindID )
+			{
+				m_pRoomItem[RoomIndex]->VisibleWidget(true);
+				m_pRoomItem[RoomIndex]->m_pListServer = pListServer;
+				if( ++RoomIndex >= MAX_GICOL*MAX_GIROW)
+					break;	
+			}
+		}
 	}
 }

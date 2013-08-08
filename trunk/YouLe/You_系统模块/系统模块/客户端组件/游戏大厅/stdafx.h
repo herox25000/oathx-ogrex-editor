@@ -93,6 +93,7 @@ using namespace std;
 #include "IGamePlaza.h"
 #include "GlobalUnits.h"
 #include "UIPageManager.h"
+#include "GameRoomManager.h"
 using namespace YouLe;
 
 #define CAPTION_SIZE						35							//标题大小
@@ -114,3 +115,4 @@ static void GetModulePath(LPSTR szPath, int iLen)
 	TCHAR* find=strrchr(szPath, '\\');
 	*find=0;
 }
+

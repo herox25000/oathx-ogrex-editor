@@ -35,9 +35,15 @@ namespace YouLe
 		m_pTablePage = new UITablePage();
 		m_pTablePage->Create(IDP_TABLE_PAGE, rect, pAttach, pProcess, pParent);
 		
-		m_pRoomPage->VisibleWidget(false);
-		m_pTablePage->VisibleWidget(false);
-
+		if(m_pRoomPage && m_pGamePage && m_pTablePage)
+		{
+			m_pRoomPage->VisibleWidget(false);
+			m_pTablePage->VisibleWidget(false);
+		}
+		else
+		{
+			AfxMessageBox("程序出现错误，请重新安装！");
+		}
 		return true;
 	}
 }

@@ -29,7 +29,7 @@ bool __cdecl CGameRoomSocket::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCod
 	{
 		g_GlobalAttemper.DestroyStatusWnd(m_pWnd);
 		ShowMessageBox(TEXT("游戏房间连接失败，您暂时不能进入此游戏房间！"),MB_ICONINFORMATION);
-		m_pGameRoomMgr->CloserRoomFram();
+		m_pGameRoomMgr->QuitRoom();
 		return true;
 	}
 
@@ -63,7 +63,7 @@ bool __cdecl CGameRoomSocket::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutRe
 
 	//关闭房间
 	if (bCloseRoomView==true)
-		m_pGameRoomMgr->CloserRoomFram();
+		m_pGameRoomMgr->QuitRoom();
 	return true;
 }
 //读取事件
@@ -160,7 +160,7 @@ bool CGameRoomSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			}
 
 			//关闭房间
-			m_pGameRoomMgr->CloserRoomFram();
+			m_pGameRoomMgr->QuitRoom();
 
 			return true;
 		}
@@ -272,7 +272,7 @@ bool CGameRoomSocket::OnSocketMainInfo(CMD_Command Command, void * pData, WORD w
 			//创建桌子
 			try
 			{
-				m_pGameRoomMgr->CreateGameTable();
+				m_pGameRoomMgr->CreateGameTable(m_wTableCount,m_pListServer);
 			}
 			catch (...)
 			{
@@ -477,7 +477,7 @@ bool CGameRoomSocket::OnSocketMainSystem(CMD_Command Command, void * pData, WORD
 			if (pMessage->wMessageType&SMT_CLOSE_ROOM) 
 			{
 				IRoomViewItem * pIRoomViewItem=QUERY_ME_INTERFACE(IRoomViewItem);
-				m_pGameRoomMgr->CloserRoomFram();
+				m_pGameRoomMgr->QuitRoom();
 			}
 
 			return true;
@@ -1474,10 +1474,10 @@ bool CGameRoomSocket::OnIPCSocket(const IPC_Head * pHead, const void * pIPCBuffe
 
 
 
-bool CGameRoomSocket::InitGameRoom(CListServer * pListServer,CGameRoomManager* pMgr,CWnd* pPointer)
+bool CGameRoomSocket::InitGameRoom(CListServer * pListServer,CGameRoomManager* pMgr)
 {
 	//设置变量
-	if(pListServer == NULL || pMgr == NULL ||pPointer == NULL)
+	if(pListServer == NULL || pMgr == NULL )
 	{
 		ASSERT(FALSE);
 		return false;
@@ -1485,7 +1485,7 @@ bool CGameRoomSocket::InitGameRoom(CListServer * pListServer,CGameRoomManager* p
 
 	m_pListServer=pListServer;
 	m_pGameRoomMgr = pMgr;
-	m_pWnd = pPointer;
+	m_pWnd = AfxGetMainWnd();
 
 	//设置组件
 	IUnknownEx * pIUnknownEx=QUERY_ME_INTERFACE(IUnknownEx);
