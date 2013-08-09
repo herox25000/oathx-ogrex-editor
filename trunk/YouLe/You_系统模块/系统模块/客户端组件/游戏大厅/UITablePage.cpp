@@ -54,19 +54,20 @@ namespace YouLe
 		{
 			TCHAR	szTempStr[32];
 			//第几桌
-			sprintf(szTempStr,_T("%d 号桌子"),m_pTableInfo->wTableID);
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+5,cPt.x+100,cPt.y+30),DT_CENTER);
+			sprintf(szTempStr,_T("%d 号桌子"),(m_pTableInfo->wTableID+1));
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+5,cPt.x+150,cPt.y+30),DT_CENTER);
 			//状态
-			if(m_pTableInfo->bPlayStatus == true)
+			if(m_pTableInfo->bPlayStatus)
 				sprintf(szTempStr,_T("正在游戏"));
 			else
 				sprintf(szTempStr,_T("空桌"));
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+35,cPt.x+100,cPt.y+20),DT_CENTER);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+35,cPt.x+150,cPt.y+55),DT_CENTER);
 			//人数
 			sprintf(szTempStr,_T("游戏人数：%d/%d"),m_pTableInfo->lPlayerCount,m_pTableInfo->wChairCount);
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+55,cPt.x+100,cPt.y+20),DT_CENTER);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+55,cPt.x+150,cPt.y+75),DT_CENTER);
 		}
-		return TRUE;
+
+		return UIWidget::Draw(pDC);
 	}
 
 	// 响应页控件
@@ -78,14 +79,13 @@ namespace YouLe
 			{
 			case 100:	// 加入按钮
 				{
-					::AfxMessageBox("准备确定游戏！！");
+					g_GlobalUnits.m_GameRoomManager.RequestSitdown(m_pTableInfo->wTableID);
 					return TRUE;
 				}
 			}
 		}
 		return TRUE;
 	}
-
 
 
 	//////////////////////////////////////////////////////////////////////////
@@ -118,6 +118,10 @@ namespace YouLe
 		UIPngButton* pBtReturn = new UIPngButton();
 		pBtReturn->Create(IDB_GPRETURN, rect.right - 320, 5, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
 
+		// 快速加入
+		UIPngButton* pBtFastJoin = new UIPngButton();
+		pBtFastJoin->Create(102, rect.right - 320 - 100, 5, pAttach, this, hInstance, PlazaViewImage.pszBtFastJoin, 4, this);
+
 		// 桌子列表
 		for (int c=0; c<MAX_GICOL; c++)
 		{
@@ -139,6 +143,7 @@ namespace YouLe
 		// 绘制翻页按钮，下一页
 		UIPngButton* pBtNext = new UIPngButton();
 		pBtNext->Create(101, rc.right/2 ,		rc.bottom-28, pAttach, this, hInstance, PlazaViewImage.pszGLNext, 4, this);
+
 		return TRUE;
 	}
 
@@ -184,6 +189,13 @@ namespace YouLe
 					OnClickNextPage();
 					return TRUE;
 				}
+			case 102:	//快速加入
+				{
+					if(!OnFastJoin())
+						ShowMessageBox(_T("没能找到合适的位置！"),MB_ICONQUESTION);
+					return TRUE;
+				}
+
 			}
 		}
 		return TRUE;
@@ -205,13 +217,32 @@ namespace YouLe
 	void	UITablePage::OnClickNextPage()
 	{
 		m_EnumIndex += MAX_GICOL*MAX_GIROW;
+		// 检查后面是否还有
+		TableInfo*  pTableInfo = NULL;
+		pTableInfo = g_GlobalUnits.m_GameRoomManager.EnumTableItem(m_EnumIndex);
+		if (pTableInfo == NULL) 
+		{
+			m_EnumIndex -= MAX_GICOL*MAX_GIROW;
+			return ;
+		}
 		EnumTableItem();
+	}
+
+	// 所有Item是否显示
+	void	UITablePage::VisibleAllTableItem(bool bVisible)			
+	{
+		for (int i = 0; i < MAX_GICOL*MAX_GIROW; i++)
+		{
+			if(m_pTableItem[i])
+				m_pTableItem[i]->VisibleWidget(bVisible);
+		}
 	}
 
 	// 枚举GameItem
 	bool	UITablePage::EnumTableItem()
 	{
-		TableInfo*  pTableInfo= NULL;
+		VisibleAllTableItem(false);
+		TableInfo*  pTableInfo = NULL;
 		int			TableIndex = 0;
 		for (int nIndex = m_EnumIndex; nIndex < (m_EnumIndex+MAX_GICOL*MAX_GIROW); nIndex++)
 		{
@@ -236,4 +267,25 @@ namespace YouLe
 		EnumTableItem();
 	}
 
+	// 快速加入
+	bool	UITablePage::OnFastJoin()
+	{
+		TableInfo* pTableInfo = NULL;
+		int nIndex = 0;
+		while(true)
+		{
+			pTableInfo = g_GlobalUnits.m_GameRoomManager.EnumTableItem(nIndex++);
+			if(pTableInfo == NULL)
+				return false;
+			if(!pTableInfo->bPlayStatus)
+			{
+				if(pTableInfo->lPlayerCount < pTableInfo->wChairCount)
+				{
+					g_GlobalUnits.m_GameRoomManager.RequestSitdown(pTableInfo->wTableID);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
 }

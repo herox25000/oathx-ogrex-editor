@@ -110,13 +110,13 @@ namespace YouLe
 		{
 			// drwo normal stat image
 			m_PngBill.DrawImage(pDC, cPt.x, cPt.y);
+
+#ifdef _DEBUG
+			if(m_pListKind)
+				pDC->DrawText(m_pListKind->m_GameKind.szKindName,lstrlen(m_pListKind->m_GameKind.szKindName),
+				CRect(cPt.x,cPt.y+10,cPt.x+180,cPt.y+40),DT_CENTER);
+#endif
 		}
-
-		if(m_pListKind)
-			pDC->DrawText(m_pListKind->m_GameKind.szKindName,lstrlen(m_pListKind->m_GameKind.szKindName),
-							CRect(cPt.x,cPt.y+10,cPt.x+180,cPt.y+40),DT_CENTER);
-
-
 		return UIWidget::Draw(pDC);
 	}
 	// 设置背景
@@ -152,7 +152,7 @@ namespace YouLe
 	{
 		if(!g_UIPageManager.m_pRoomPage->ShowRoomList(m_pListKind))
 		{
-			AfxMessageBox("对不起，游戏服务器没开启！");
+			ShowMessageBox("对不起，游戏服务器没开启！",MB_ICONQUESTION);
 			return false;
 		}
 		g_UIPageManager.m_pGamePage->VisibleWidget(false);

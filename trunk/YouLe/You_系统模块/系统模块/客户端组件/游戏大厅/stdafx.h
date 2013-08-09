@@ -116,3 +116,9 @@ static void GetModulePath(LPSTR szPath, int iLen)
 	*find=0;
 }
 
+//显示消息
+static int __cdecl ShowMessageBox(LPCTSTR pszMessage,UINT nType,UINT nElapse = 0)
+{
+	int nResult=ShowInformationEx(pszMessage,nElapse,nType,_T("提示"));
+	return nResult;
+}

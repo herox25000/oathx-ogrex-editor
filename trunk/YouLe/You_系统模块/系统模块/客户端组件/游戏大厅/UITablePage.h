@@ -54,10 +54,14 @@ namespace YouLe
 		void				OnClickLastPage();
 		// 响应下一页
 		void				OnClickNextPage();
+		// 所有Item是否显示
+		void				VisibleAllTableItem(bool bVisible);				
 		// 枚举GameItem
 		bool				EnumTableItem();
 		// 显示首页
 		void				ShowFirstPage();
+		// 快速加入
+		bool				OnFastJoin();
 		//
 		void				SetListServer(CListServer* ListServer){m_pListServer = ListServer;}
 	public:

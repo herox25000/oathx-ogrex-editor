@@ -163,7 +163,6 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 	PlazaViewImage->pszGameTableJoin = TEXT("GAMETABLE_JOIN");
 	PlazaViewImage->pszGameTableBill = TEXT("GAMETABLE_BILL");
 	PlazaViewImage->pszPageMatch = TEXT("GAMEPAGE_MATCH");
-
 	PlazaViewImage->pszGameTabGame = TEXT("GAMETAB_GAME");
 	PlazaViewImage->pszGameTabCard = TEXT("GAMETAB_CARD");
 	PlazaViewImage->pszGameTabMahj = TEXT("GAMETAB_MAHJ");
@@ -172,7 +171,7 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 	PlazaViewImage->pszTilteImage  = TEXT("PNG_GL_TILTE");
 	PlazaViewImage->pszGLLast	   = TEXT("GAMEITEM_LAST");	 
 	PlazaViewImage->pszGLNext	   = TEXT("GAMEITEM_NEXT");	 
-
+	PlazaViewImage->pszBtFastJoin  = TEXT("PNG_GL_FASTJOIN");
 	return true;
 }
 

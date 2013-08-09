@@ -27,8 +27,8 @@ bool __cdecl CGameRoomSocket::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCod
 	//错误处理
 	if (nErrorCode!=0)
 	{
-		g_GlobalAttemper.DestroyStatusWnd(m_pWnd);
-		ShowMessageBox(TEXT("游戏房间连接失败，您暂时不能进入此游戏房间！"),MB_ICONINFORMATION);
+		g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
+		ShowInformationEx(TEXT("游戏房间连接失败，您暂时不能进入此游戏房间！"),0,MB_ICONINFORMATION,"大厅");
 		m_pGameRoomMgr->QuitRoom();
 		return true;
 	}
@@ -47,7 +47,7 @@ bool __cdecl CGameRoomSocket::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutRe
 
 	//关闭处理
 	CloseGameClient();
-	g_GlobalAttemper.DestroyStatusWnd(m_pWnd);
+	g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 	m_ServiceStatus=ServiceStatus_NetShutDown;
 	if (cbShutReason!=SHUT_REASON_NORMAL)
 	{
@@ -147,7 +147,7 @@ bool CGameRoomSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			if (wDataSize<(sizeof(CMD_GR_LogonError)-sizeof(pLogonError->szErrorDescribe))) return false;
 
 			//关闭连接
-			g_GlobalAttemper.DestroyStatusWnd(m_pWnd);
+			g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 			m_ClientSocket->CloseSocket();
 			m_ServiceStatus=ServiceStatus_NetShutDown;
 
@@ -167,10 +167,7 @@ bool CGameRoomSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 	case SUB_GR_LOGON_FINISH:		//登录完成
 		{
 			//设置界面
-			//m_TableFrame.ShowUserInfo(true);
-			g_GlobalAttemper.DestroyStatusWnd(m_pWnd);
-			//((CGameFrame*)AfxGetMainWnd())->ActiveRoomViewItem(this);
-
+			g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 			//设置变量
 			m_ServiceStatus=ServiceStatus_Serviceing;
 
@@ -272,13 +269,13 @@ bool CGameRoomSocket::OnSocketMainInfo(CMD_Command Command, void * pData, WORD w
 			//创建桌子
 			try
 			{
-				m_pGameRoomMgr->CreateGameTable(m_wTableCount,m_pListServer);
+				m_pGameRoomMgr->CreateGameTable(m_wTableCount,m_wChairCount,m_pListServer);
 			}
 			catch (...)
 			{
 				//关闭网络
 				m_ClientSocket->CloseSocket();
-				g_GlobalAttemper.DestroyStatusWnd(m_pWnd);
+				g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 
 				//提示消息
 				int nResult=ShowMessageBox(TEXT("游戏房间资源加载失败，重新下载安装可能会解决问题，是否立即下载？"),MB_ICONQUESTION|MB_YESNO);
@@ -326,7 +323,8 @@ bool CGameRoomSocket::OnSocketMainInfo(CMD_Command Command, void * pData, WORD w
 			const tagGameKind * pGameKind = GetKindInfo();
 			ZeroMemory(szResDirectory,wBufferCount*sizeof(TCHAR));
 			lstrcpyn(szResDirectory,(LPCTSTR)pGameKind->szProcessName,wBufferCount);
-			while ((szResDirectory[wStringIndex]!=0)&&(szResDirectory[wStringIndex]!=TEXT('.'))) wStringIndex++;
+			while ((szResDirectory[wStringIndex]!=0)&&(szResDirectory[wStringIndex]!=TEXT('.'))) 
+				wStringIndex++;
 
 			//字符终止
 			szResDirectory[wStringIndex]=0;
@@ -462,7 +460,7 @@ bool CGameRoomSocket::OnSocketMainSystem(CMD_Command Command, void * pData, WORD
 			else if (pMessage->wMessageType&SMT_CLOSE_ROOM) bIntermet=true;
 			if (bIntermet==true) 
 			{
-				g_GlobalAttemper.DestroyStatusWnd(m_pWnd);
+				g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 				m_ClientSocket->CloseSocket();
 				CloseGameClient();
 			}
@@ -884,8 +882,8 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 
 		//设置界面
 		BYTE cbUserStatus=UserData.cbUserStatus;
-		//if ((cbUserStatus>=US_SIT)&&(cbUserStatus!=US_LOOKON))
-		//	m_TableFrame.SetUserInfo(UserData.wTableID,UserData.wChairID,pIUserItem);
+		if ((cbUserStatus>=US_SIT)&&(cbUserStatus!=US_LOOKON))
+			m_pGameRoomMgr->SetUserInfo(UserData.wTableID,UserData.wChairID,pIUserItem);
 
 		////提示信息
 		//if ((m_cbHideUserInfo==FALSE)&&(m_ServiceStatus==ServiceStatus_Serviceing))
@@ -962,8 +960,9 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 	if ((wLastTableID!=INVALID_TABLE)&&((wNowTableID!=wLastTableID)||(wNowChairID!=wLastChairID)))
 	{
 		ASSERT(wLastChairID!=INVALID_CHAIR);
-		//IUserItem * pITableUserItem=m_TableFrame.GetUserInfo(wLastTableID,wLastChairID);
-		//if (pITableUserItem==pIUserItem) m_TableFrame.SetUserInfo(wLastTableID,wLastChairID,NULL);
+		IUserItem * pITableUserItem = m_pGameRoomMgr->GetUserInfo(wLastTableID,wLastChairID);
+		if (pITableUserItem==pIUserItem) 
+			m_pGameRoomMgr->SetUserInfo(wLastTableID,wLastChairID,NULL);
 	}
 
 	//用户离开
@@ -1003,13 +1002,13 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 		if (cbNowStatus!=US_LOOKON)
 		{
 			ASSERT(wNowChairID!=INVALID_CHAIR);
-		//	m_TableFrame.SetUserInfo(wNowTableID,wNowChairID,pIUserItem);
+			m_pGameRoomMgr->SetUserInfo(wNowTableID,wNowChairID,pIUserItem);
 		}
 
 		//发送用户
 		if ((m_pMeUserItem!=pIUserItem)&&(pMeUserData->wTableID==wNowTableID))
 		{
-			CIPCSendCopyData SendCopyData(m_hWndChannel,m_pWnd->m_hWnd);
+			CIPCSendCopyData SendCopyData(m_hWndChannel,AfxGetMainWnd()->m_hWnd);
 			SendTableUser(pIUserItem,&SendCopyData);
 		}
 	}
@@ -1168,8 +1167,9 @@ bool CGameRoomSocket::OnSocketSubSitFailed(CMD_Command Command, void * pData, WO
 
 	//消息处理
 	CMD_GR_SitFailed * pSitFailed=(CMD_GR_SitFailed *)pData;
-	//IUserItem * pISendUserItem=m_TableFrame.GetUserInfo(m_wReqTableID,m_wReqChairID);
-	//if (pISendUserItem==m_pMeUserItem) m_TableFrame.SetUserInfo(m_wReqTableID,m_wReqChairID,NULL);
+	IUserItem * pISendUserItem = m_pGameRoomMgr->GetUserInfo(m_wReqTableID,m_wReqChairID);
+	if (pISendUserItem == m_pMeUserItem) 
+		m_pGameRoomMgr->SetUserInfo(m_wReqTableID,m_wReqChairID,NULL);
 
 	//设置变量
 	m_wReqTableID=INVALID_TABLE;
@@ -1320,7 +1320,7 @@ bool CGameRoomSocket::OnIPCKernel(const IPC_Head * pHead, const void * pIPCBuffe
 			m_hWndChannel=hWndSend;
 
 			//发送信息
-			CIPCSendCopyData SendCopyData(m_hWndChannel,m_pWnd->m_hWnd);
+			CIPCSendCopyData SendCopyData(m_hWndChannel,AfxGetMainWnd()->m_hWnd);
 			IPCSendGameInfo(&SendCopyData);
 			IPCSendTableUsers(&SendCopyData);
 			SendCopyData.SendData(IPC_MAIN_CONCTROL,IPC_SUB_START_FINISH);
@@ -1457,8 +1457,7 @@ bool CGameRoomSocket::OnIPCSocket(const IPC_Head * pHead, const void * pIPCBuffe
 			WORD wSendSize=wDataSize-sizeof(CMD_Command);
 			if (wSendSize==0) 
 			{
-				m_ClientSocket->SendData(pCommand->wMainCmdID,
-					pCommand->wSubCmdID);
+				m_ClientSocket->SendData(pCommand->wMainCmdID,pCommand->wSubCmdID);
 			}
 			else 
 			{
@@ -1482,10 +1481,8 @@ bool CGameRoomSocket::InitGameRoom(CListServer * pListServer,CGameRoomManager* p
 		ASSERT(FALSE);
 		return false;
 	}
-
 	m_pListServer=pListServer;
 	m_pGameRoomMgr = pMgr;
-	m_pWnd = AfxGetMainWnd();
 
 	//设置组件
 	IUnknownEx * pIUnknownEx=QUERY_ME_INTERFACE(IUnknownEx);
@@ -1503,7 +1500,7 @@ bool CGameRoomSocket::InitGameRoom(CListServer * pListServer,CGameRoomManager* p
 	//设置共享内存
 	memset(m_pShareMemory,0,sizeof(tagShareMemory));
 	m_pShareMemory->wDataSize=sizeof(tagShareMemory);
-	m_pShareMemory->hWndGameServer=m_pWnd->m_hWnd;
+	m_pShareMemory->hWndGameServer=AfxGetMainWnd()->m_hWnd;
 	m_pShareMemory->hWndGamePlaza=AfxGetMainWnd()->m_hWnd;
 
 	return true;
@@ -1533,13 +1530,6 @@ tagGameKind * __cdecl CGameRoomSocket::GetKindInfo()
 	return NULL;
 }
 
-//显示消息
-int CGameRoomSocket::ShowMessageBox(LPCTSTR pszMessage, UINT nType)
-{
-	int nResult=ShowInformationEx(pszMessage,0,nType,"游戏房间");
-	return nResult;
-}
-
 //发送信息
 void CGameRoomSocket::SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData, WORD wDataSize)
 {
@@ -1552,7 +1542,7 @@ void CGameRoomSocket::SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData, WO
 bool CGameRoomSocket::SendProcessData(WORD wMainCmdID, WORD wSubCmdID, void * pData, WORD wDataSize)
 {
 	//发送消息
-	CIPCSendCopyData IPCSendCopyData(m_hWndChannel,m_pWnd->m_hWnd);
+	CIPCSendCopyData IPCSendCopyData(m_hWndChannel,AfxGetMainWnd()->m_hWnd);
 	return IPCSendCopyData.SendData(wMainCmdID,wSubCmdID,pData,wDataSize);
 }
 
@@ -1803,14 +1793,17 @@ int CGameRoomSocket::StartGameClient()
 			::SetForegroundWindow(m_pShareMemory->hWndGameFrame);
 
 			//发送信息
-			CIPCSendCopyData SendCopyData(m_hWndChannel,m_pWnd->m_hWnd);
+			CIPCSendCopyData SendCopyData(m_hWndChannel,AfxGetMainWnd()->m_hWnd);
 			IPCSendGameInfo(&SendCopyData);
 			IPCSendTableUsers(&SendCopyData);
 			SendCopyData.SendData(IPC_MAIN_CONCTROL,IPC_SUB_START_FINISH);
 
 			return SR_ALREADY_EXIST;
 		}
-		else ::TerminateProcess(m_GameProcessInfo.hProcess,0);
+		else
+		{
+			::TerminateProcess(m_GameProcessInfo.hProcess,0);
+		}
 	}
 
 	//清理数据
@@ -1824,7 +1817,8 @@ int CGameRoomSocket::StartGameClient()
 	CString strCommonLine;
 	CListKind * pListKind=m_pListServer->GetListKind();
 	tagGameKind * pGameKind=pListKind->GetItemInfo();
-	strCommonLine.Format(TEXT("%s /RoomToken:%s /ServerType:%ld /HideUserInfo:%d"),pGameKind->szProcessName,m_szShareName,m_wGameGenre,m_cbHideUserInfo);
+	strCommonLine.Format(TEXT("%s /RoomToken:%s /ServerType:%ld /HideUserInfo:%d"),
+		pGameKind->szProcessName,m_szShareName,m_wGameGenre,m_cbHideUserInfo);
 
 	//启动游戏客户端
 	STARTUPINFO StartInfo;
@@ -1838,7 +1832,6 @@ int CGameRoomSocket::StartGameClient()
 		memset(&m_GameProcessInfo,0,sizeof(m_GameProcessInfo));
 		return SR_CREATE_ERROR;
 	}
-
 	return SR_CREATE_SUCCESS;
 }
 
@@ -1850,7 +1843,8 @@ void CGameRoomSocket::CloseGameClient()
 	{
 		SendProcessData(IPC_MAIN_CONCTROL,IPC_SUB_CLOSE_FRAME,NULL,0);
 		DWORD dwResult=::WaitForSingleObject(m_GameProcessInfo.hProcess,1000);
-		if (dwResult==WAIT_TIMEOUT) ::TerminateProcess(m_GameProcessInfo.hProcess,0);
+		if (dwResult==WAIT_TIMEOUT) 
+			::TerminateProcess(m_GameProcessInfo.hProcess,0);
 	}
 
 	//清理数据
