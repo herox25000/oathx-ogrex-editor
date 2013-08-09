@@ -3,11 +3,12 @@
 
 struct TableInfo 
 {
-	WORD	wTableID;			//桌子号码
-	BYTE	bTableLock;			//锁定状态
-	BYTE	bPlayStatus;		//游戏状态
-	int		lPlayerCount;		//玩家数量
-	WORD	wChairCount;		//椅子数目
+	WORD		wTableID;				//桌子号码
+	bool		bTableLock;				//锁定状态
+	bool		bPlayStatus;			//游戏状态
+	int			lPlayerCount;			//玩家数量
+	WORD		wChairCount;			//椅子数目
+	IUserItem*	pIUserItem[MAX_CHAIR];	//用户信息
 };
 
 typedef CArrayTemplate<TableInfo *> CTableArray;
@@ -25,9 +26,13 @@ public:
 	//退出房间
 	void	QuitRoom();
 	//创建桌子
-	bool	CreateGameTable(int lTableCount,CListServer* ListServer);
+	bool	CreateGameTable(int lTableCount, int wChairCount, CListServer* ListServer);
 	//申请入座
-	void	RequestSitdown(WORD wTableID,WORD wChairID,LPCTSTR pszTablePass);
+	void	RequestSitdown(WORD wTableID);
+	//设置用户信息
+	bool	SetUserInfo(WORD wTableID, WORD wChairID, IUserItem * pIUserItem);
+	//获取用户信息
+	IUserItem* GetUserInfo(WORD wTableID, WORD wChairID);
 	//设置桌子是否加锁
 	void	SetPassFlag(WORD wTableID, bool bPass);
 	//设置桌子是否游戏状态

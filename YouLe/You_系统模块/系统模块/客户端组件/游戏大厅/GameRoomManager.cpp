@@ -14,19 +14,19 @@ CGameRoomManager::~CGameRoomManager(void)
 //进入房间
 void CGameRoomManager::EnterRoom(CListServer * pListServer)
 {
-	////判断状态
-	//tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
-	//if (GlobalUserData.dwUserID==0L)
-	//{
-	//	ShowMessageBox(TEXT("你还没有登录，请先登录游戏广场！"),MB_ICONQUESTION);
-	//	return NULL;
-	//}
+	//判断状态
+	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+	if (GlobalUserData.dwUserID == 0L)
+	{
+		ShowMessageBox(_T("你还没有登录，请先登录游戏广场！"),MB_ICONQUESTION);
+		return ;
+	}
 
-	////效验参数
-	//ASSERT(pListServer!=NULL);
-	//CListKind * pListKind=pListServer->GetListKind();
-	//tagGameKind * pGameKind=pListKind->GetItemInfo();
-	//tagGameServer * pGameServer=pListServer->GetItemInfo();
+	//效验参数
+	ASSERT(pListServer!=NULL);
+	CListKind * pListKind=pListServer->GetListKind();
+	tagGameKind * pGameKind=pListKind->GetItemInfo();
+	tagGameServer * pGameServer=pListServer->GetItemInfo();
 
 	////判断连接
 	//if (m_pRoomViewItemCreate!=NULL)
@@ -52,55 +52,55 @@ void CGameRoomManager::EnterRoom(CListServer * pListServer)
 	//	return NULL;
 	//}
 
-	////获取版本
-	//CWinFileInfo WinFileInfo;
-	//if (WinFileInfo.OpenWinFile(pGameKind->szProcessName)==false)
-	//{
-	//	TCHAR szBuffer[512]=TEXT("");
-	//	_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】还没有安装，现在是否下载？"),pGameKind->szKindName);
-	//	int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
-	//	if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
-	//	return NULL;
-	//}
+	//获取版本
+	CWinFileInfo WinFileInfo;
+	if (WinFileInfo.OpenWinFile(pGameKind->szProcessName)==false)
+	{
+		TCHAR szBuffer[512]=TEXT("");
+		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】还没有安装，现在是否下载？"),pGameKind->szKindName);
+		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
+		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
+		return ;
+	}
 
-	////获取版本
-	//DWORD dwFileVerMS=0L,dwFileVerLS=0L;
-	//WinFileInfo.GetFileVersion(dwFileVerMS,dwFileVerLS);
+	//获取版本
+	DWORD dwFileVerMS=0L,dwFileVerLS=0L;
+	WinFileInfo.GetFileVersion(dwFileVerMS,dwFileVerLS);
 
-	////版本分析
-	//BYTE cbFileVer1=(BYTE)(HIWORD(dwFileVerMS));
-	//BYTE cbFileVer2=(BYTE)(LOWORD(dwFileVerMS));
-	//BYTE cbFileVer3=(BYTE)(HIWORD(dwFileVerLS));
-	//BYTE cbFileVer4=(BYTE)(LOWORD(dwFileVerLS));
-	//BYTE cbListVer1=(BYTE)(LOWORD(LOWORD(pGameKind->dwMaxVersion)));
-	//BYTE cbListVer2=(BYTE)(HIBYTE(LOWORD(pGameKind->dwMaxVersion)));
-	//BYTE cbListVer3=(BYTE)(LOBYTE(HIWORD(pGameKind->dwMaxVersion)));
-	//BYTE cbListVer4=(BYTE)(HIBYTE(HIWORD(pGameKind->dwMaxVersion)));
+	//版本分析
+	BYTE cbFileVer1=(BYTE)(HIWORD(dwFileVerMS));
+	BYTE cbFileVer2=(BYTE)(LOWORD(dwFileVerMS));
+	BYTE cbFileVer3=(BYTE)(HIWORD(dwFileVerLS));
+	BYTE cbFileVer4=(BYTE)(LOWORD(dwFileVerLS));
+	BYTE cbListVer1=(BYTE)(LOWORD(LOWORD(pGameKind->dwMaxVersion)));
+	BYTE cbListVer2=(BYTE)(HIBYTE(LOWORD(pGameKind->dwMaxVersion)));
+	BYTE cbListVer3=(BYTE)(LOBYTE(HIWORD(pGameKind->dwMaxVersion)));
+	BYTE cbListVer4=(BYTE)(HIBYTE(HIWORD(pGameKind->dwMaxVersion)));
 
-	////判断版本
-	//if ((cbFileVer1!=cbListVer1)||(cbFileVer2!=cbListVer2)||(cbFileVer3!=cbListVer3))
-	//{
-	//	TCHAR szBuffer[512]=TEXT("");
-	//	_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，你的版本不能继续使用，现在是否下载？"),pGameKind->szKindName,
-	//		cbListVer1,cbListVer2,cbListVer3,cbListVer4);
-	//	int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
-	//	if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
-	//	return NULL;
-	//}
+	//判断版本
+	if ((cbFileVer1!=cbListVer1)||(cbFileVer2!=cbListVer2)||(cbFileVer3!=cbListVer3))
+	{
+		TCHAR szBuffer[512]=TEXT("");
+		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，你的版本不能继续使用，现在是否下载？"),pGameKind->szKindName,
+			cbListVer1,cbListVer2,cbListVer3,cbListVer4);
+		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
+		if (nResult==IDYES) g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
+		return ;
+	}
 
-	////兼容版本
-	//if (cbFileVer4!=cbListVer4)
-	//{
-	//	TCHAR szBuffer[512]=TEXT("");
-	//	_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，现在是否下载升级？"),pGameKind->szKindName,
-	//		cbListVer1,cbListVer2,cbListVer3,cbListVer4);
-	//	int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
-	//	if (nResult==IDYES) 
-	//	{
-	//		g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
-	//		return NULL;
-	//	}
-	//}
+	//兼容版本
+	if (cbFileVer4!=cbListVer4)
+	{
+		TCHAR szBuffer[512]=TEXT("");
+		_snprintf(szBuffer,sizeof(szBuffer),TEXT("【%s】已经更新为 %ld.%ld.%ld.%ld 版本，现在是否下载升级？"),pGameKind->szKindName,
+			cbListVer1,cbListVer2,cbListVer3,cbListVer4);
+		int nResult=ShowMessageBox(szBuffer,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1);
+		if (nResult==IDYES) 
+		{
+			g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
+			return ;
+		}
+	}
 
 	////创建房间
 	//try
@@ -117,24 +117,22 @@ void CGameRoomManager::EnterRoom(CListServer * pListServer)
 	//	return NULL;
 	//}
 
-	////连接游戏
-	//bool bSuccess=pRoomViewItem->ConnectGameServer();
-	//if (bSuccess==false)
-	//{
-	//	pRoomViewItem->DestroyWindow();
-	//	SafeDelete(pRoomViewItem);
-	//	return NULL;
-	//}
+	m_RoomSocket.InitGameRoom(pListServer,this);
+
+	//连接游戏
+	bool bSuccess=m_RoomSocket.ConnectGameServer();
+	if (bSuccess==false)
+	{
+		return ;
+	}
 
 	////设置变量
 	//m_pRoomViewItemCreate=pRoomViewItem;
 
-	////设置提示
-	//CString strBuffer;
-	//strBuffer.Format(TEXT("正在连接房间，请稍候..."));
-	//g_GlobalAttemper.ShowStatusMessage(strBuffer,pRoomViewItem);
-
-	m_RoomSocket.InitGameRoom(pListServer,this);
+	//设置提示
+	CString strBuffer;
+	strBuffer.Format(TEXT("正在连接房间，请稍候..."));
+	g_GlobalAttemper.ShowStatusMessage(strBuffer,AfxGetMainWnd());
 }
 
 //退出房间
@@ -144,14 +142,21 @@ void CGameRoomManager::QuitRoom()
 }
 
 //创建游戏桌子
-bool CGameRoomManager::CreateGameTable(int lTableCount,CListServer* ListServer)
+bool CGameRoomManager::CreateGameTable(int lTableCount, int wChairCount, CListServer* ListServer)
 {
 	RemoveAllTable();
 	TableInfo*	pTableInfo = NULL;
 	for (int i = 0; i < lTableCount; i++)
 	{
 		pTableInfo = new TableInfo;
-		m_PtrArrayTable.Add(pTableInfo);
+		if(pTableInfo)
+		{
+			pTableInfo->wTableID = i;
+			pTableInfo->wChairCount = wChairCount;
+			pTableInfo->lPlayerCount = 0;
+			memset(pTableInfo->pIUserItem,NULL,sizeof(pTableInfo->pIUserItem));
+			m_PtrArrayTable.Add(pTableInfo);
+		}
 	}
 	g_UIPageManager.m_pRoomPage->VisibleWidget(false);
 	g_UIPageManager.m_pTablePage->VisibleWidget(true);
@@ -161,26 +166,78 @@ bool CGameRoomManager::CreateGameTable(int lTableCount,CListServer* ListServer)
 }
 
 //申请入座
-void CGameRoomManager::RequestSitdown(WORD wTableID,WORD wChairID,LPCTSTR pszTablePass)
+void CGameRoomManager::RequestSitdown(WORD wTableID)
 {
-	m_RoomSocket.SendSitDownPacket(wTableID,wChairID,pszTablePass);
+	m_RoomSocket.SendSitDownPacket(wTableID,0,"");
+}
+
+//设置用户信息
+bool CGameRoomManager::SetUserInfo(WORD wTableID, WORD wChairID, IUserItem * pIUserItem)
+{
+	TableInfo* pTableInfo = EnumTableItem(wTableID);
+	if(pTableInfo == NULL)
+	{
+		ASSERT(FALSE);
+		return false;
+	}
+	if(wChairID >= pTableInfo->wChairCount)
+	{
+		ASSERT(FALSE);
+		return false;
+	}
+
+	if (pIUserItem == NULL)
+	{
+		pTableInfo->lPlayerCount--;
+		if(pTableInfo->lPlayerCount < 0)
+			pTableInfo->lPlayerCount = 0;
+	}
+	else
+	{
+		pTableInfo->lPlayerCount++;
+		if(pTableInfo->lPlayerCount > pTableInfo->wChairCount)
+			pTableInfo->lPlayerCount = pTableInfo->wChairCount;
+	}
+	pTableInfo->pIUserItem[wChairID] = pIUserItem;
+	return true;
+}
+
+//获取用户信息
+IUserItem * CGameRoomManager::GetUserInfo(WORD wTableID, WORD wChairID)
+{	
+	TableInfo* pTableInfo = EnumTableItem(wTableID);
+	if(pTableInfo == NULL)
+	{
+		ASSERT(FALSE);
+		return NULL;
+	}
+	if (wChairID>=CountArray(pTableInfo->pIUserItem)) 
+		return NULL;
+	return pTableInfo->pIUserItem[wChairID];
 }
 
 //设置桌子是否加锁
 void CGameRoomManager::SetPassFlag(WORD wTableID, bool bPass)
 {
-
+	TableInfo* pTableInfo = EnumTableItem(wTableID);
+	if(pTableInfo != NULL)
+		pTableInfo->bTableLock = bPass;
 }
 
 //设置桌子是否游戏状态
 void CGameRoomManager::SetPlayFlag(WORD wTableID, bool bPlay)
 {
-
+	TableInfo* pTableInfo = EnumTableItem(wTableID);
+	if(pTableInfo != NULL)
+		pTableInfo->bPlayStatus = bPlay;
 }
 
 //查询桌子游戏状态
 bool CGameRoomManager::QueryPlayFlag(WORD wTableID)
 {
+	TableInfo* pTableInfo = EnumTableItem(wTableID);
+	if(pTableInfo != NULL)
+		return pTableInfo->bPlayStatus;
 	return false;
 }
 

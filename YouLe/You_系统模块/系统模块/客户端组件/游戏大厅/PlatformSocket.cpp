@@ -80,12 +80,6 @@ bool __cdecl CPlatformSocket::OnEventTCPSocketRead(WORD wSocketID, CMD_Command C
 	return true;
 }
 
-//显示消息
-int CPlatformSocket::ShowMessageBox(LPCTSTR pszMessage, UINT nType)
-{				
-	int nResult=ShowInformationEx(pszMessage,0,nType,TEXT("提示"));
-	return nResult;
-}
 
 //连接到服务器
 void CPlatformSocket::ConnectToServer(LPCTSTR ServerIP,WORD wPort)

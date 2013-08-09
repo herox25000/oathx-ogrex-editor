@@ -102,8 +102,8 @@ struct tagPlatViewImageNew
 	LPCTSTR							pszGameTabCard;
 	LPCTSTR							pszGameTabMahj;
 	LPCTSTR							pszGameTabLeis;
-	
 	LPCTSTR							pszBtReturn;
+	LPCTSTR							pszBtFastJoin;
 	LPCTSTR							pszTilteImage;
 	LPCTSTR							pszGLLast;
 	LPCTSTR							pszGLNext;

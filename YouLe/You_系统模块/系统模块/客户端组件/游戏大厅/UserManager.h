@@ -76,10 +76,10 @@ class CClientUserManager : public IClientUserManager
 protected:
 	CUserItemPtrArray				m_UserItemActive;					//活动数组
 	static CUserItemPtrArray		m_UserItemStorage;					//存储数组
-
-	//外部接口
-protected:
-	IUserManagerSink				* m_pIUserManagerSink;				//回调接口
+//
+//	//外部接口
+//protected:
+//	IUserManagerSink				* m_pIUserManagerSink;				//回调接口
 
 	//函数定义
 public:

@@ -57,7 +57,7 @@ namespace YouLe
 			CopyMemory(szTempStr,m_pListServer->m_GameServer.szServerName,sizeof(szTempStr));
 			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x,cPt.y+5,cPt.x+100,cPt.y+30),DT_CENTER);
 			sprintf(szTempStr,_T("ÈËÊý£º%d"),m_pListServer->m_GameServer.dwOnLineCount);		
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+30,cPt.y+30,cPt.x+100,cPt.y+30),DT_LEFT);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+30,cPt.y+30,cPt.x+100,cPt.y+60),DT_LEFT);
 		}
 		return UIWidget::Draw(pDC);
 	}
@@ -140,7 +140,7 @@ namespace YouLe
 		CPoint cPt = m_rect.TopLeft();
 		m_TilteImage.DrawImage(pDC, cPt.x, cPt.y);
 		
-		pDC->DrawText(szKindName,lstrlen(szKindName),CRect(cPt.x,cPt.y+10,cPt.x+180,cPt.y+40),DT_CENTER);
+		pDC->DrawText(szKindName,lstrlen(szKindName),CRect(cPt.x,cPt.y,cPt.x+180,cPt.y+50),DT_CENTER);
 
 		return UIWidget::Draw(pDC);
 	}

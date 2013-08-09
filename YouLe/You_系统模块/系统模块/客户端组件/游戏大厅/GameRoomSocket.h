@@ -131,8 +131,6 @@ public:
 	bool InitGameRoom(CListServer * pListServer,CGameRoomManager* pMgr);
 	//类型信息
 	tagGameKind * __cdecl GetKindInfo();
-	//显示消息
-	int ShowMessageBox(LPCTSTR pszMessage, UINT nType);
 
 	//数据缓冲
 protected:
@@ -152,7 +150,6 @@ protected:
 	//变量
 public:
 	CGameRoomManager*				m_pGameRoomMgr;						//管理类指针
-	CWnd*							m_pWnd;								//房间框架指针
 	CListServer*					m_pListServer;						//房间信息
 	CTCPSocketHelper				m_ClientSocket;						//网络连接
 	CIPCRecvCopyData				m_IPCRecvCopyData;					//信道组件

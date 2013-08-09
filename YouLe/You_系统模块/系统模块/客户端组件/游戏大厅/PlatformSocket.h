@@ -24,8 +24,7 @@ public:
 	void ConnectToServer(LPCTSTR ServerIP,WORD wPort);
 	//发送信息
 	void SendData(WORD wMainCmdID, WORD wSubCmdID, void * pData, WORD wDataSize);
-	//显示消息
-	int ShowMessageBox(LPCTSTR pszMessage, UINT nType);
+
 
 	//响应服务器消息函数
 public:

@@ -80,7 +80,7 @@ void CUserItem::CleanData()
 //构造函数
 CClientUserManager::CClientUserManager(void)
 {
-	m_pIUserManagerSink=NULL;
+	//m_pIUserManagerSink=NULL;
 }
 
 //接口查询
@@ -125,9 +125,9 @@ IUserItem * __cdecl CClientUserManager::ActiveUserItem(tagUserData & UserData)
 	CopyMemory(&pUserItem->m_UserData,&UserData,sizeof(UserData));
 	m_UserItemActive.Add(pUserItem);
 
-	//更新信息
-	ASSERT(m_pIUserManagerSink!=NULL);
-	m_pIUserManagerSink->OnUserItemAcitve(pUserItem);
+	////更新信息
+	//ASSERT(m_pIUserManagerSink!=NULL);
+	//m_pIUserManagerSink->OnUserItemAcitve(pUserItem);
 
 	return pUserItem;
 }
@@ -146,7 +146,7 @@ bool __cdecl CClientUserManager::DeleteUserItem(IUserItem * pIUserItem)
 			//删除用户
 			m_UserItemActive.RemoveAt(i);
 			m_UserItemStorage.Add(pUserItemActive);
-			m_pIUserManagerSink->OnUserItemDelete(pUserItemActive);
+			//m_pIUserManagerSink->OnUserItemDelete(pUserItemActive);
 			pUserItemActive->CleanData();
 			return true;
 		}
@@ -166,9 +166,9 @@ bool __cdecl CClientUserManager::UpdateUserItemScore(IUserItem * pIUserItem, con
 	//设置数据
 	pIUserItem->SetUserScore(pUserScore);
 
-	//通知更新
-	ASSERT(m_pIUserManagerSink!=NULL);
-	m_pIUserManagerSink->OnUserItemUpdate(pIUserItem);
+	////通知更新
+	//ASSERT(m_pIUserManagerSink!=NULL);
+	//m_pIUserManagerSink->OnUserItemUpdate(pIUserItem);
 
 	return true;
 }
@@ -179,9 +179,9 @@ bool __cdecl CClientUserManager::UpdateUserItemStatus(IUserItem * pIUserItem, co
 	//设置数据
 	pIUserItem->SetUserStatus(pUserStatus);
 
-	//通知更新
-	ASSERT(m_pIUserManagerSink!=NULL);
-	m_pIUserManagerSink->OnUserItemUpdate(pIUserItem);
+	////通知更新
+	//ASSERT(m_pIUserManagerSink!=NULL);
+	//m_pIUserManagerSink->OnUserItemUpdate(pIUserItem);
 
 	return true;
 }
@@ -226,14 +226,15 @@ IUserItem * __cdecl CClientUserManager::SearchUserByGameID(DWORD dwGameID)
 	}
 	return NULL;
 }
-
-//设置回调接口
+//
+////设置回调接口
 bool CClientUserManager::SetUserManagerSink(IUnknownEx * pIUnknownEx)
 {
-	ASSERT(pIUnknownEx!=NULL);
-	m_pIUserManagerSink=QUERY_OBJECT_PTR_INTERFACE(pIUnknownEx,IUserManagerSink);
-	ASSERT(m_pIUserManagerSink!=NULL);
-	return (m_pIUserManagerSink!=NULL);
+	//ASSERT(pIUnknownEx!=NULL);
+	//m_pIUserManagerSink=QUERY_OBJECT_PTR_INTERFACE(pIUnknownEx,IUserManagerSink);
+	//ASSERT(m_pIUserManagerSink!=NULL);
+	//return (m_pIUserManagerSink!=NULL);
+	return true;
 }
 
 //////////////////////////////////////////////////////////////////////////
