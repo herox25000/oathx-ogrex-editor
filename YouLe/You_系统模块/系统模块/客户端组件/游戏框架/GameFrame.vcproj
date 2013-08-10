@@ -156,6 +156,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\GameFrameDlg.cpp">
 			</File>
 			<File
+				RelativePath=".\GameFrameIrrlicht.cpp">
+			</File>
+			<File
 				RelativePath=".\GameFrameView.cpp">
 			</File>
 			<File
@@ -209,6 +212,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\GameFrameDlg.h">
 			</File>
 			<File
+				RelativePath=".\GameFrameIrrlicht.h">
+			</File>
+			<File
 				RelativePath=".\GameFrameView.h">
 			</File>
 			<File
@@ -238,22 +244,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Bt_bugle.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\BT_CLEAN_SCREEN.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Card_frame\BT_CLEAN_SCREEN.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\BT_CLEAN_SCREEN.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Card_frame\BT_COLOR_SET.bmp">
+				RelativePath=".\Res\BT_CLEAN_SCREEN.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\BT_COLOR_SET.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\BT_COLOR_SET.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Card_frame\BT_COLOR_SET.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\UserView\BT_EXCHANGE_CHARM_VALUE.bmp">
@@ -292,22 +298,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Card_frame\BT_OPTION.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Card_frame\BT_QUIT.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Chess_frame\BT_QUIT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\BT_QUIT.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\BT_SEND_CHAT.bmp">
+				RelativePath=".\Res\Card_frame\BT_QUIT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\BT_SEND_CHAT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\BT_SEND_CHAT.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\BT_SEND_CHAT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\BT_SOUND.bmp">
@@ -412,22 +418,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Left_list\LEFT_LIST_TR.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Chess_frame\LEFT_VIEW_LB.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_LB.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_LB.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Chess_frame\LEFT_VIEW_LBM.bmp">
+				RelativePath=".\Res\Chess_frame\LEFT_VIEW_LB.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_LBM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_LBM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Chess_frame\LEFT_VIEW_LBM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\LEFT_VIEW_LM.bmp">
@@ -439,22 +445,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_LM.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Card_frame\LEFT_VIEW_LT.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Chess_frame\LEFT_VIEW_LT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_LT.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Card_frame\LEFT_VIEW_LTM.bmp">
+				RelativePath=".\Res\Card_frame\LEFT_VIEW_LT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_LTM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\LEFT_VIEW_LTM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Card_frame\LEFT_VIEW_LTM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\LEFT_VIEW_MB.bmp">
@@ -466,13 +472,13 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Left_view\LEFT_VIEW_MB.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Left_view\LEFT_VIEW_MM.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Chess_frame\LEFT_VIEW_MM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_MM.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Left_view\LEFT_VIEW_MM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_MMM.bmp">
@@ -487,22 +493,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Left_view\LEFT_VIEW_MT.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Chess_frame\LEFT_VIEW_MTM.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_MTM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_MTM.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Left_view\LEFT_VIEW_RB.bmp">
+				RelativePath=".\Res\Chess_frame\LEFT_VIEW_MTM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_RB.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\LEFT_VIEW_RB.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Left_view\LEFT_VIEW_RB.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\LEFT_VIEW_RBM.bmp">
@@ -514,22 +520,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Left_view\LEFT_VIEW_RBM.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Chess_frame\LEFT_VIEW_RM.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_RM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_RM.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Chess_frame\LEFT_VIEW_RT.bmp">
+				RelativePath=".\Res\Chess_frame\LEFT_VIEW_RM.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Left_view\LEFT_VIEW_RT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_RT.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Chess_frame\LEFT_VIEW_RT.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\LEFT_VIEW_RTM.bmp">
@@ -568,22 +574,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\VIEW_B.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\VIEW_BL.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Chess_frame\VIEW_BL.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\VIEW_BL.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Chess_frame\VIEW_BR.bmp">
+				RelativePath=".\Res\VIEW_BL.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\VIEW_BR.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\VIEW_BR.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Chess_frame\VIEW_BR.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\VIEW_L.bmp">
@@ -595,22 +601,22 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Card_frame\VIEW_L.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Chess_frame\VIEW_R.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\VIEW_R.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\VIEW_R.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\Card_frame\VIEW_T.bmp">
+				RelativePath=".\Res\Chess_frame\VIEW_R.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\VIEW_T.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\VIEW_T.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\Card_frame\VIEW_T.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Card_frame\VIEW_TL.bmp">
@@ -622,13 +628,13 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\Res\Chess_frame\VIEW_TL.bmp">
 			</File>
 			<File
-				RelativePath=".\Res\VIEW_TR.bmp">
-			</File>
-			<File
 				RelativePath=".\Res\Card_frame\VIEW_TR.bmp">
 			</File>
 			<File
 				RelativePath=".\Res\Chess_frame\VIEW_TR.bmp">
+			</File>
+			<File
+				RelativePath=".\Res\VIEW_TR.bmp">
 			</File>
 		</Filter>
 		<File

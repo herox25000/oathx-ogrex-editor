@@ -2,7 +2,6 @@
 #include "Resource.h"
 #include "GlobalOption.h"
 #include "GameFrameView.h"
-#include ".\gameframeview.h"
 
 //////////////////////////////////////////////////////////////////////////
 
