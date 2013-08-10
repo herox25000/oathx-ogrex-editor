@@ -181,12 +181,6 @@
 				</FileConfiguration>
 			</File>
 			<File
-				RelativePath=".\UIFrameClose.cpp">
-			</File>
-			<File
-				RelativePath=".\UIFramePage.cpp">
-			</File>
-			<File
 				RelativePath=".\UserManager.cpp">
 			</File>
 		</Filter>
@@ -246,12 +240,6 @@
 				RelativePath=".\stdafx.h">
 			</File>
 			<File
-				RelativePath=".\UIFrameClose.h">
-			</File>
-			<File
-				RelativePath=".\UIFramePage.h">
-			</File>
-			<File
 				RelativePath=".\UserManager.h">
 			</File>
 		</Filter>
@@ -296,6 +284,18 @@
 			<Filter
 				Name="Widget"
 				Filter="">
+				<File
+					RelativePath=".\UIFrameClose.cpp">
+				</File>
+				<File
+					RelativePath=".\UIFrameClose.h">
+				</File>
+				<File
+					RelativePath=".\UIFramePage.cpp">
+				</File>
+				<File
+					RelativePath=".\UIFramePage.h">
+				</File>
 				<File
 					RelativePath=".\UIFrameSheet.cpp">
 				</File>

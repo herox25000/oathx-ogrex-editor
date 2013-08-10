@@ -10,6 +10,7 @@ namespace YouLe
 {
 	// 构造函数
 	UIFrameClose::UIFrameClose()
+		: m_bPress(FALSE)
 	{
 
 	}
@@ -42,6 +43,39 @@ namespace YouLe
 		return TRUE;
 	}
 
+	// 鼠标移动
+	BOOL	UIFrameClose::OnMouseMove(const CPoint& cPt)
+	{
+		UIWidget::OnMouseMove(cPt);
+
+		if (m_bPress)
+		{
+			SetWidgetPos(0, cPt.x, cPt.y, m_rect.Width(), m_rect.Height());
+		}
+
+		return TRUE;
+	}
+
+	// 鼠标按下
+	BOOL	UIFrameClose::OnLeftDown(const CPoint& cPt)
+	{
+		UIWidget::OnLeftDown(cPt);
+
+		m_bPress = TRUE;
+
+		return TRUE;
+	}
+
+	// 鼠标弹起
+	BOOL	UIFrameClose::OnLeftUp(const CPoint& cPt)
+	{
+		UIWidget::OnLeftUp(cPt);
+
+		m_bPress = FALSE;
+
+		return TRUE;
+	}
+
 	// 处理按键消息
 	BOOL	UIFrameClose::OnClicked(UIWidget* pWidget, const CPoint& cPt)
 	{
@@ -64,6 +98,7 @@ namespace YouLe
 		return FALSE;
 	}
 
+	// 重写绘制
 	BOOL UIFrameClose::Draw( CDC* pDC )
 	{
 		if (!IsWidgetVisible())
