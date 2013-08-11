@@ -39,7 +39,7 @@ namespace YouLe
 	}
 
 	// ´´½¨´°¿Ú
-	UIFrameSheet::Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent)
+	BOOL UIFrameSheet::Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent)
 	{
 		if (!UIWidget::Create(nID, rect, pAttach, pProcess, pParent))
 			return FALSE;
