@@ -121,8 +121,8 @@ bool __cdecl CChannelService::CreateChannel(HWND hWndServer)
 	//创建窗口
 	m_hWndServer=hWndServer;
 	m_DataStorage.RemoveData(false);
-	if (Create(NULL,NULL,WS_CHILD,CRect(0,0,0,0),GetDesktopWindow(),10)==FALSE) return false;
-
+	if (Create(NULL,NULL,WS_CHILD,CRect(0,0,0,0),GetDesktopWindow(),10)==FALSE) 
+		return false;
 	//发送连接通知
 	return SendData(IPC_MIAN_IPC_KERNEL,IPC_SUB_IPC_CLIENT_CONNECT);
 }

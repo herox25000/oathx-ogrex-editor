@@ -1128,7 +1128,6 @@ BOOL CDlgLogon::OnEraseBkgnd(CDC * pDC)
 	m_ImageEighteen.DrawImage(pDevC,350,225);
 	if(m_bLimit)
 		m_ImageLimitprompt.DrawImage(pDevC,268,225+20);
-
 	return TRUE;
 }
 

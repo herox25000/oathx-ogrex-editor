@@ -91,7 +91,8 @@ public:
 	afx_msg void OnCommandCancelConnect();
 	//打开大厅设置
 	afx_msg void OnOpenFrameSet();
-
+	//IPC 消息
+	afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT * pCopyDataStruct);
 public:
 	void SaveBossKey(int nCtrlKey, int nHelpKey);
 

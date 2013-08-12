@@ -994,7 +994,6 @@ bool CClientKernel::OnIPCControl(const IPC_Head * pHead, const void * pIPCBuffer
 			CMD_GF_Info Info;
 			ZeroMemory(&Info,sizeof(Info));
 			Info.bAllowLookon=(m_bAllowUserLookon==true)?TRUE:FALSE;
-
 			//·¢ËÍÏûÏ¢
 			SendSocketData(MDM_GF_FRAME,SUB_GF_INFO,&Info,sizeof(Info));
 

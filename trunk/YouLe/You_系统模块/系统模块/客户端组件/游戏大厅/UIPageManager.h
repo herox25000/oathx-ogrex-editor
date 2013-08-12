@@ -2,6 +2,7 @@
 #include "UIGamePage.h"
 #include "UIRoomPage.h"
 #include "UITablePage.h"
+#include "UIFont.h"
 
 namespace YouLe
 {
@@ -24,6 +25,8 @@ namespace YouLe
 		UIRoomPage*				m_pRoomPage;
 		// 桌子列表
 		UITablePage*			m_pTablePage;
+		// 字体
+		UIFont					m_Font;
 	};
 
 	extern	UIPageManager		g_UIPageManager;
