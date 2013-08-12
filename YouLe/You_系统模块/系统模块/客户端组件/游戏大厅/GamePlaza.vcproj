@@ -281,9 +281,15 @@
 			<File
 				RelativePath=".\MemDC.h">
 			</File>
+			<File
+				RelativePath=".\UIFont.h">
+			</File>
 			<Filter
 				Name="Widget"
 				Filter="">
+				<File
+					RelativePath=".\UIFont.cpp">
+				</File>
 				<File
 					RelativePath=".\UIFrameClose.cpp">
 				</File>

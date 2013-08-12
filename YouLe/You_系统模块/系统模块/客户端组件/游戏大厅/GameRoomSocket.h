@@ -131,7 +131,8 @@ public:
 	bool InitGameRoom(CListServer * pListServer,CGameRoomManager* pMgr);
 	//类型信息
 	tagGameKind * __cdecl GetKindInfo();
-
+	//IPC 消息
+	BOOL OnCopyData(CWnd *pWnd, COPYDATASTRUCT *pCopyDataStruct);
 	//数据缓冲
 protected:
 	WORD							m_wPacketTableID;					//缓冲位置

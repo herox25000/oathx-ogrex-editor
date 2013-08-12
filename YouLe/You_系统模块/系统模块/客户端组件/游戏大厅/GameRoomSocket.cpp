@@ -576,13 +576,10 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	//	//效验参数
 	//	ASSERT(wDataSize==sizeof(CMD_GF_ResidualProperty));
 	//	if (wDataSize!=sizeof(CMD_GF_ResidualProperty)) return false;
-
 	//	//变量定义
 	//	CMD_GF_ResidualProperty * ResidualProperty=(CMD_GF_ResidualProperty *)pData;
-
 	//	//获取玩家
 	//	tagUserData *pMeUserData = m_pMeUserItem->GetUserData();
-
 	//	//设置道具
 	//	for ( WORD wPropID = 0; wPropID < PROPERTY_COUNT; ++wPropID )
 	//	{
@@ -595,52 +592,43 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	//	//校验参数
 	//	ASSERT( wDataSize % sizeof(tagPropertyInfo) == 0 );
 	//	if ( wDataSize % sizeof(tagPropertyInfo) != 0 ) return true;
-
 	//	//类型转换
 	//	int nInfoCount = wDataSize / sizeof(tagPropertyInfo);
 	//	tagPropertyInfo *pPropertyInfo = (tagPropertyInfo*)pData;
-
 	//	//保存属性
 	//	for ( INT_PTR nIndex = 0; nIndex < nInfoCount; ++nIndex )
 	//		m_PropertyAttributeArrary.Add(pPropertyInfo[nIndex]);
-
 	//	//获取对象
 	//	CPropertyBar *pPropertyBar = CPropertyBar::GetInstance();
 	//	ASSERT( pPropertyBar != NULL );
 	//	if ( pPropertyBar == NULL ) return false;
-
 	//	//初始结构
 	//	for ( int nIndex = 0; nIndex < nInfoCount; ++nIndex )
 	//	{
 	//		pPropertyBar->SetPropertyInfo((pPropertyInfo+nIndex)->nPropertyID, *(pPropertyInfo+nIndex));
 	//	}
 	//}
-	////鲜花属性
+	//鲜花属性
 	//else if ( Command.wSubCmdID == SUB_GF_FLOWER_ATTRIBUTE )
 	//{
 	//	//校验参数
 	//	ASSERT( wDataSize % sizeof(tagFlowerInfo) == 0 );
 	//	if ( wDataSize % sizeof(tagFlowerInfo) != 0 ) return true;
-
 	//	//类型转换
 	//	int nInfoCount = wDataSize / sizeof(tagFlowerInfo);
 	//	tagFlowerInfo *pFlowerInfo= (tagFlowerInfo*)pData;
-
 	//	//保存属性
 	//	for ( INT_PTR nIndex = 0; nIndex < nInfoCount; ++nIndex )
 	//		m_FlowerAttributeArrary.Add(pFlowerInfo[nIndex]);
-
 	//	//获取对象
 	//	CPropertyBar *pPropertyBar = CPropertyBar::GetInstance();
 	//	ASSERT( pPropertyBar != NULL );
 	//	if ( pPropertyBar == NULL ) return false;
-
 	//	//初始结构
 	//	for ( int nIndex = 0; nIndex < nInfoCount; ++nIndex )
 	//	{
 	//		pPropertyBar->SetFlowerInfo((pFlowerInfo+nIndex)->nFlowerID, *(pFlowerInfo+nIndex));
 	//	}
-
 	//}
 	////喇叭消息
 	//else if ( Command.wSubCmdID == SUB_GF_PROP_BUGLE )
@@ -745,7 +733,6 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	//		strGiftMsg.Format(g_FlowerDescribe[nFlowerID].szCharmResult, wFlowerCount * abs(CPropertyBar::m_FlowerInfo[nFlowerID].lRcvUserCharm));
 	//		m_MessageProxyHelper->InsertShtickString(strGiftMsg,RGB(255,0,255), strGiftMsg.GetLength(), true);	
 	//	}
-
 	//}
 
 	return true;
@@ -1545,6 +1532,15 @@ bool CGameRoomSocket::SendProcessData(WORD wMainCmdID, WORD wSubCmdID, void * pD
 	CIPCSendCopyData IPCSendCopyData(m_hWndChannel,AfxGetMainWnd()->m_hWnd);
 	return IPCSendCopyData.SendData(wMainCmdID,wSubCmdID,pData,wDataSize);
 }
+
+//IPC 消息
+BOOL CGameRoomSocket::OnCopyData(CWnd *pWnd, COPYDATASTRUCT *pCopyDataStruct)
+{
+	if (m_IPCRecvCopyData.OnCopyData(pWnd->GetSafeHwnd(), pCopyDataStruct)==true)
+		return TRUE;
+	return FALSE;
+}
+
 
 //发送登录包
 bool CGameRoomSocket::SendLogonPacket()

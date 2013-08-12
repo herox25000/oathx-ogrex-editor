@@ -54,17 +54,23 @@ namespace YouLe
 		{
 			TCHAR	szTempStr[32];
 			//第几桌
-			sprintf(szTempStr,_T("%d 号桌子"),(m_pTableInfo->wTableID+1));
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+5,cPt.x+150,cPt.y+30),DT_CENTER);
+			pDC->SelectObject(g_UIPageManager.m_Font.m_InfoFont);
+			pDC->SetTextColor(RGB(255,255,255));
+			sprintf(szTempStr,_T("%d号桌子"),(m_pTableInfo->wTableID+1));
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+20,cPt.x+150,cPt.y+40),DT_CENTER);
 			//状态
+			pDC->SelectObject(g_UIPageManager.m_Font.m_StatusFont);
+			//pDC->SetTextColor(RGB(255,255,255));
 			if(m_pTableInfo->bPlayStatus)
 				sprintf(szTempStr,_T("正在游戏"));
 			else
 				sprintf(szTempStr,_T("空桌"));
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+35,cPt.x+150,cPt.y+55),DT_CENTER);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+50,cPt.x+150,cPt.y+70),DT_CENTER);
 			//人数
+			pDC->SelectObject(g_UIPageManager.m_Font.m_NickFont);
+			//pDC->SetTextColor(RGB(255,255,255));	
 			sprintf(szTempStr,_T("游戏人数：%d/%d"),m_pTableInfo->lPlayerCount,m_pTableInfo->wChairCount);
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+55,cPt.x+150,cPt.y+75),DT_CENTER);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+80,cPt.x+150,cPt.y+100),DT_CENTER);
 		}
 
 		return UIWidget::Draw(pDC);
@@ -159,8 +165,10 @@ namespace YouLe
 		if(m_pListServer)
 		{
 			TCHAR	szTempStr[32];
+			pDC->SelectObject(g_UIPageManager.m_Font.m_TitleFont);
+			pDC->SetTextColor(RGB(255,255,255));
 			CopyMemory(szTempStr,m_pListServer->m_GameServer.szServerName,sizeof(szTempStr));
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x,cPt.y+5,cPt.x+100,cPt.y+30),DT_CENTER);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x,cPt.y+8,cPt.x+150,cPt.y+30),DT_CENTER);
 		}
 
 		return UIWidget::Draw(pDC);

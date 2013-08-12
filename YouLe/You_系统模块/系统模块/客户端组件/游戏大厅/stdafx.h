@@ -53,8 +53,6 @@ using namespace std;
 #include <Nb30.h>
 #include <AfxInet.h>
 
-
-
 #include <afxdtctl.h>		// Internet Explorer 4 公共控件的 MFC 支持
 #ifndef _AFX_NO_AFXCMN_SUPPORT
 #include <afxcmn.h>			// Windows 公共控件的 MFC 支持
@@ -96,7 +94,7 @@ using namespace std;
 #include "GameRoomManager.h"
 using namespace YouLe;
 
-#define CAPTION_SIZE						35							//标题大小
+
 //字符串安全拼接
 static void SafeStrCat(char* dest, const char* src, int iDestBufferLen)
 {

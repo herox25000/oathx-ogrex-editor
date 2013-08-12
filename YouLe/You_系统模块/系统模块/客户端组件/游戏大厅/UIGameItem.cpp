@@ -112,6 +112,8 @@ namespace YouLe
 			m_PngBill.DrawImage(pDC, cPt.x, cPt.y);
 
 #ifdef _DEBUG
+			pDC->SelectObject(g_UIPageManager.m_Font.m_StatusFont);
+			pDC->SetTextColor(RGB(255,255,255));
 			if(m_pListKind)
 				pDC->DrawText(m_pListKind->m_GameKind.szKindName,lstrlen(m_pListKind->m_GameKind.szKindName),
 				CRect(cPt.x,cPt.y+10,cPt.x+180,cPt.y+40),DT_CENTER);
@@ -254,9 +256,12 @@ namespace YouLe
 			UIGameItem* pGameItem = m_pGameItem[GameIndex];
 			if(pGameItem)
 			{
-				//sprintf(szFileName,"%s\\GameItem\\%d.png", CString(g_GlobalUnits.GetWorkDirectory()),pListKind->GetItemInfo()->wKindID);
-				//if( !pGameItem->SetBillPng(szFileName))
-				//	continue;
+				CString strName(pListKind->GetItemInfo()->szProcessName);
+				strName.TrimRight(".exe");
+				sprintf(szFileName,"%s\\GameLobby\\GameKind\\%s\\Bill.png", 
+					CString(g_GlobalUnits.GetWorkDirectory()),strName);
+				if( !pGameItem->SetBillPng(szFileName))
+					continue;
 				pGameItem->EnabledWidget(true);
 				pGameItem->m_pListKind = pListKind;
 			}

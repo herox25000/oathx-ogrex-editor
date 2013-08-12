@@ -54,10 +54,14 @@ namespace YouLe
 		if(m_pListServer)
 		{
 			TCHAR	szTempStr[32];
+			pDC->SelectObject(g_UIPageManager.m_Font.m_StatusFont);
+			pDC->SetTextColor(RGB(255,255,255));		
 			CopyMemory(szTempStr,m_pListServer->m_GameServer.szServerName,sizeof(szTempStr));
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x,cPt.y+5,cPt.x+100,cPt.y+30),DT_CENTER);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+10,cPt.x+120,cPt.y+30),DT_CENTER);
+			pDC->SelectObject(g_UIPageManager.m_Font.m_InfoFont);
+			pDC->SetTextColor(RGB(255,255,128));
 			sprintf(szTempStr,_T("ÈËÊý£º%d"),m_pListServer->m_GameServer.dwOnLineCount);		
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+30,cPt.y+30,cPt.x+100,cPt.y+60),DT_LEFT);
+			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+35,cPt.y+80,cPt.x+135,cPt.y+100),DT_LEFT);
 		}
 		return UIWidget::Draw(pDC);
 	}
@@ -139,8 +143,10 @@ namespace YouLe
 		
 		CPoint cPt = m_rect.TopLeft();
 		m_TilteImage.DrawImage(pDC, cPt.x, cPt.y);
-		
-		pDC->DrawText(szKindName,lstrlen(szKindName),CRect(cPt.x,cPt.y,cPt.x+180,cPt.y+50),DT_CENTER);
+
+		pDC->SelectObject(g_UIPageManager.m_Font.m_TitleFont);
+		pDC->SetTextColor(RGB(255,255,255));
+		pDC->DrawText(szKindName,lstrlen(szKindName),CRect(cPt.x,cPt.y+8,cPt.x+150,cPt.y+30),DT_CENTER);
 
 		return UIWidget::Draw(pDC);
 	}

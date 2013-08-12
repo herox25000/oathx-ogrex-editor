@@ -21,6 +21,7 @@ CPlatformFrame::~CPlatformFrame()
 
 
 BEGIN_MESSAGE_MAP(CPlatformFrame, CFrameWnd)
+	ON_WM_COPYDATA()
 	ON_WM_CREATE()
 	ON_WM_CLOSE()
 	ON_WM_ERASEBKGND()
@@ -110,6 +111,14 @@ void CPlatformFrame::OnOpenFrameSet()
 	m_DlgFrameSet.SetActiveWindow();
 	m_DlgFrameSet.SetForegroundWindow();
 	return;
+}
+
+//IPC 消息
+BOOL CPlatformFrame::OnCopyData(CWnd* pWnd, COPYDATASTRUCT * pCopyDataStruct)
+{
+	if(TRUE == g_GlobalUnits.m_GameRoomManager.m_RoomSocket.OnCopyData(pWnd,pCopyDataStruct))
+		return TRUE;
+	return __super::OnCopyData(pWnd, pCopyDataStruct);
 }
 
 //连接服务器
