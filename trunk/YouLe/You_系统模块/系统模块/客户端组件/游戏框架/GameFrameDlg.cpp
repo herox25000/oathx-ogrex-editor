@@ -168,25 +168,25 @@ bool CGameFrameDlg::OnFrameMessage(WORD wSubCmdID, const void * pBuffer, WORD wD
 //用户进入
 void __cdecl CGameFrameDlg::OnEventUserEnter(tagUserData * pUserData, WORD wChairID, bool bLookonUser)
 {
-	return;
+
 }
 
 //用户离开
 void __cdecl CGameFrameDlg::OnEventUserLeave(tagUserData * pUserData, WORD wChairID, bool bLookonUser)
 {
-	return;
+
 }
 
 //用户积分
 void __cdecl CGameFrameDlg::OnEventUserScore(tagUserData * pUserData, WORD wChairID, bool bLookonUser)
 {
-	return;
+
 }
 
 //用户状态
 void __cdecl CGameFrameDlg::OnEventUserStatus(tagUserData * pUserData, WORD wChairID, bool bLookonUser)
 {
-	return;
+
 }
 
 //初始道具
@@ -202,8 +202,6 @@ void __cdecl CGameFrameDlg::OnEventInitProperty(tagPropertyInfo *pPropertyInfo, 
 	{
 		pPropertyBar->SetPropertyInfo((pPropertyInfo+nIndex)->nPropertyID, *(pPropertyInfo+nIndex));
 	}
-
-	return;
 }
 
 //初始鲜花
@@ -219,18 +217,12 @@ void __cdecl CGameFrameDlg::OnEventInitFlower(tagFlowerInfo *pFlowerInfo, int nI
 	{
 		pPropertyBar->SetFlowerInfo((pFlowerInfo+nIndex)->nFlowerID, *(pFlowerInfo+nIndex));
 	}
-
-	return;
 }
 
 //鲜花消息
 void __cdecl CGameFrameDlg::OnEventFlower(const tagUserData * pSendUserData, const tagUserData * pRecvUserData, UINT uFlowerID, UINT uFlowerEffectID)
 {
-	//界面显示
-	m_pGameFrameView->ShowFlower(SwitchViewChairID(pSendUserData->wChairID), SwitchViewChairID(pRecvUserData->wChairID), uFlowerID, 
-		uFlowerEffectID, m_ClientKernelHelper->GetMeChairID()==pRecvUserData->wChairID);
 
-	return;
 }
 
 //控制列表
@@ -387,16 +379,16 @@ void CGameFrameDlg::ActiveGameFrame()
 	CWnd * pMainWnd=AfxGetMainWnd();
 
 	//激活判断
-	if ((pFocusWnd==NULL)||(pMainWnd->IsChild(pFocusWnd)==FALSE)) pMainWnd->FlashWindow(TRUE);
-
-	return;
+	if ((pFocusWnd==NULL)||(pMainWnd->IsChild(pFocusWnd)==FALSE)) 
+		pMainWnd->FlashWindow(TRUE);
 }
 
 //切换椅子
 WORD CGameFrameDlg::SwitchViewChairID(WORD wChairID)
 {
 	//效验状态
-	if (m_ClientKernelHelper.GetInterface()==NULL) return INVALID_CHAIR;
+	if (m_ClientKernelHelper.GetInterface()==NULL) 
+		return INVALID_CHAIR;
 
 	//变量定义
 	const tagUserData * pMeUserData=m_ClientKernelHelper->GetMeUserInfo();
@@ -467,7 +459,9 @@ bool CGameFrameDlg::IsAllowLookon()
 //允许旁观
 bool CGameFrameDlg::IsAllowUserLookon()
 {
-	if (m_ClientKernelHelper.GetInterface()==NULL) return false;
+	if (m_ClientKernelHelper.GetInterface()==NULL) 
+		return false;
+
 	return m_ClientKernelHelper->IsAllowUserLookon();
 }
 
@@ -475,7 +469,8 @@ bool CGameFrameDlg::IsAllowUserLookon()
 bool CGameFrameDlg::AllowUserLookon(DWORD dwUserID, bool bAllowLookon)
 {
 	//状态效验
-	if (m_ClientKernelHelper.GetInterface()==NULL) return false;
+	if (m_ClientKernelHelper.GetInterface()==NULL) 
+		return false;
 
 	//设置按钮
 	if (dwUserID==0L)
@@ -496,22 +491,25 @@ bool CGameFrameDlg::AllowUserLookon(DWORD dwUserID, bool bAllowLookon)
 //游戏状态
 void CGameFrameDlg::SetGameStatus(BYTE bGameStatus)
 {
-	if (m_ClientKernelHelper.GetInterface()==NULL) return;
-	m_ClientKernelHelper->SetGameStatus(bGameStatus);
-	return;
+	if (m_ClientKernelHelper.GetInterface())
+		m_ClientKernelHelper->SetGameStatus(bGameStatus);
 }
 
 //自己位置
 WORD CGameFrameDlg::GetMeChairID()
 {
-	if (m_ClientKernelHelper.GetInterface()==NULL) return INVALID_CHAIR;
+	if (m_ClientKernelHelper.GetInterface()==NULL) 
+		return INVALID_CHAIR;
+	
 	return m_ClientKernelHelper->GetMeChairID();
 }
 
 //时间位置
 WORD CGameFrameDlg::GetTimeChairID()
 {
-	if (m_ClientKernelHelper.GetInterface()==NULL) return INVALID_CHAIR;
+	if (m_ClientKernelHelper.GetInterface()==NULL) 
+		return INVALID_CHAIR;
+
 	return m_ClientKernelHelper->GetTimeChairID();
 }
 
@@ -520,37 +518,41 @@ VOID CGameFrameDlg::JoinInGameTable(WORD wChairID)
 {
 	//状态效验
 	ASSERT(m_ClientKernelHelper.GetInterface()!=NULL);
-	if (m_ClientKernelHelper.GetInterface()==NULL) return;
+	if (m_ClientKernelHelper.GetInterface())
+	{
+		//获取信息
+		const tagUserData * pUserData=m_ClientKernelHelper->GetMeUserInfo();
+		if (pUserData) 
+		{
+			//变量定义
+			IPC_JoinInGame JoinInGame;
+			ZeroMemory(&JoinInGame,sizeof(JoinInGame));
 
-	//获取信息
-	const tagUserData * pUserData=m_ClientKernelHelper->GetMeUserInfo();
-	if (pUserData==NULL) return;
+			//设置变量
+			JoinInGame.wChairID=wChairID;
+			JoinInGame.wTableID=pUserData->wTableID;
 
-	//变量定义
-	IPC_JoinInGame JoinInGame;
-	ZeroMemory(&JoinInGame,sizeof(JoinInGame));
-
-	//设置变量
-	JoinInGame.wChairID=wChairID;
-	JoinInGame.wTableID=pUserData->wTableID;
-
-	//发送消息
-	m_ClientKernelHelper->SendProcessData(IPC_MAIN_CONCTROL,IPC_SUB_JOIN_IN_GAME,&JoinInGame,sizeof(JoinInGame));
-
-	return;
+			//发送消息
+			m_ClientKernelHelper->SendProcessData(IPC_MAIN_CONCTROL,IPC_SUB_JOIN_IN_GAME,&JoinInGame,sizeof(JoinInGame));
+		}
+	}
 }
 
 //获取用户
 const tagUserData * CGameFrameDlg::GetUserData(WORD wChairID)
 {
-	if (m_ClientKernelHelper.GetInterface()==NULL) return NULL;
+	if (m_ClientKernelHelper.GetInterface()==NULL)
+		return NULL;
+
 	return m_ClientKernelHelper->GetUserInfo(wChairID);
 }
 
 //内核接口
 void * CGameFrameDlg::GetClientKernel(const IID & Guid, DWORD dwQueryVer)
 {
-	if (m_ClientKernelHelper.GetInterface()==NULL) return NULL;
+	if (m_ClientKernelHelper.GetInterface()==NULL)
+		return NULL;
+
 	return m_ClientKernelHelper->QueryInterface(Guid,dwQueryVer);
 }
 
@@ -589,7 +591,7 @@ BOOL CGameFrameDlg::OnInitDialog()
 	if (m_ClientKernelHelper.CreateInstance()==false) throw TEXT("游戏框架内核模块加载失败");
 
 	//创建游戏视图
-	CRect rcGameView(0,0,0,0);
+	CRect rcGameView(0,0,1,1);
 	m_pGameFrameControl->Create(IDD_FRAME_CONTROL,this);
 	if (m_pGameFrameControl->SetUserFaceRes(m_UserFaceResHelper.GetInterface())==false) throw TEXT("头像资源接口设置失败");
 	m_pGameFrameView->Create(NULL,NULL,WS_VISIBLE|WS_CHILD|WS_CLIPSIBLINGS|WS_CLIPCHILDREN,rcGameView,this,10);
@@ -640,7 +642,7 @@ BOOL CGameFrameDlg::PreTranslateMessage(MSG * pMsg)
 //确定消息
 void CGameFrameDlg::OnOK()
 {
-	return;
+
 }
 
 //取消消息
@@ -671,8 +673,6 @@ void CGameFrameDlg::OnCancel()
 
 	//关闭窗口
 	DestroyWindow();
-
-	return;
 }
 
 //控制按钮
@@ -694,8 +694,6 @@ VOID CGameFrameDlg::OnBnClickedControl()
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	RectifyControl(rcClient.Width(),rcClient.Height());
-
-	return;
 }
 
 //位置信息
@@ -706,8 +704,6 @@ void CGameFrameDlg::OnGetMinMaxInfo(MINMAXINFO * lpMMI)
 	//设置位置
 	lpMMI->ptMinTrackSize.x=1024;
 	lpMMI->ptMinTrackSize.y=740;
-
-	return;
 }
 
 //位置改变
@@ -724,9 +720,6 @@ void CGameFrameDlg::OnSize(UINT nType, int cx, int cy)
 
 	//调整控件
 	RectifyControl(cx,cy);
-
-	return;
-
 }
 
 //////////////////////////////////////////////////////////////////////////
