@@ -38,7 +38,6 @@ void __cdecl CClientKernelSink::ResetGameFrame()
 
 	//重置界面
 	m_GameFrameDlg.m_pGameFrameView->ResetData();
-	m_GameFrameDlg.m_pGameFrameView->ResetGameView();
 	m_GameFrameDlg.ResetGameFrame();
 	m_GameFrameDlg.m_pGameFrameControl->ResetGameFrameControl();
 
@@ -218,8 +217,6 @@ void __cdecl CClientKernelSink::OnEventTimerKilled(WORD wChairID, UINT nTimerID)
 	//设置界面
 	WORD wViewChairID=m_GameFrameDlg.SwitchViewChairID(wChairID);
 	m_GameFrameDlg.m_pGameFrameView->SetUserTimer(wViewChairID,0);
-
-	return;
 }
 
 //旁观状态
@@ -227,8 +224,6 @@ void __cdecl CClientKernelSink::OnEventLookonChanged(bool bLookonUser, void * pB
 {
 	//设置界面
 	m_GameFrameDlg.OnLookonChanged(bLookonUser,pBuffer,wDataSize);
-
-	return;
 }
 
 //用户进入
@@ -279,8 +274,6 @@ void __cdecl CClientKernelSink::OnEventUserEnter(tagUserData * pUserData, WORD w
 			pVideoServiceManager->OnEventUserEnter(wViewChairID,pUserData->dwUserID);
 		}
 	}
-
-	return;
 }
 
 //用户离开
@@ -326,8 +319,6 @@ void __cdecl CClientKernelSink::OnEventUserLeave(tagUserData * pUserData, WORD w
 			break;
 		}
 	}
-
-	return;
 }
 
 //用户积分
@@ -335,12 +326,8 @@ void __cdecl CClientKernelSink::OnEventUserScore(tagUserData * pUserData, WORD w
 {
 	//设置界面
 	m_GameFrameDlg.m_pGameFrameControl->UpdateUserItem(pUserData);
-	if (bLookonUser==false) m_GameFrameDlg.m_pGameFrameView->UpdateGameView(NULL);
-
 	//事件通知
 	m_GameFrameDlg.OnEventUserScore(pUserData,wChairID,bLookonUser);
-
-	return;
 }
 
 //用户状态
@@ -348,7 +335,6 @@ void __cdecl CClientKernelSink::OnEventUserStatus(tagUserData * pUserData, WORD 
 {
 	//设置界面
 	m_GameFrameDlg.m_pGameFrameControl->UpdateUserItem(pUserData);
-	if (bLookonUser==false) m_GameFrameDlg.m_pGameFrameView->UpdateGameView(NULL);
 
 	//事件通知
 	m_GameFrameDlg.OnEventUserStatus(pUserData,wChairID,bLookonUser);
@@ -364,8 +350,6 @@ void __cdecl CClientKernelSink::OnEventUserStatus(tagUserData * pUserData, WORD 
 		CVideoServiceManager * pVideoServiceManager=CVideoServiceManager::GetInstance();
 		if (pVideoServiceManager!=NULL) pVideoServiceManager->OnUpdateUserItem(wViewChairID,pUserData->cbUserStatus,pUserData->dwUserID);
 	}
-
-	return;
 }
 
 //会员等级
@@ -373,25 +357,18 @@ void __cdecl CClientKernelSink::OnEventUserMemberOrder(tagUserData * pUserData, 
 {
 	//设置界面
 	m_GameFrameDlg.m_pGameFrameControl->UpdateUserItem(pUserData);
-	if (bLookonUser==false) m_GameFrameDlg.m_pGameFrameView->UpdateGameView(NULL);
-
-	return;
 }
 
 //初始道具
 void __cdecl CClientKernelSink::OnEventInitProperty(tagPropertyInfo *pPropertyInfo, int nInfoCount)
 {
 	m_GameFrameDlg.OnEventInitProperty(pPropertyInfo, nInfoCount);
-
-	return;
 }
 
 //初始鲜花
 void __cdecl CClientKernelSink::OnEventInitFlower(tagFlowerInfo *pFlowerInfo, int nInfoCount)
 {
 	m_GameFrameDlg.OnEventInitFlower(pFlowerInfo, nInfoCount);
-
-	return;
 }
 
 //鲜花消息
@@ -406,8 +383,6 @@ void __cdecl CClientKernelSink::OnEventFlower(const tagUserData * pSendUserData,
 	//本身动画
 	if(pSendUserData->dwUserID!=pRecvUserData->dwUserID)
 		m_GameFrameDlg.OnEventFlower(pSendUserData, pSendUserData, uFlowerID, uFlowerEffectID);	
-
-	return;
 }
 
 //////////////////////////////////////////////////////////////////////////
