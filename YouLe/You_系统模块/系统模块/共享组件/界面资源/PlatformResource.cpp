@@ -154,6 +154,13 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 // 			break;
 // 		}
 // 	}
+	//导航按钮
+	PlazaViewImage->pszBtGame = TEXT("PNG_BT_GAME");
+	PlazaViewImage->pszBtMatch = TEXT("PNG_BT_MATCH");
+	PlazaViewImage->pszBtProperty = TEXT("PNG_BT_PROPERTY");
+	PlazaViewImage->pszBtPrize = TEXT("PNG_BT_PRIZE");
+	PlazaViewImage->pszBtRecharge = TEXT("PNG_BT_RECHARGE");
+
 	PlazaViewImage->pszGameBack = TEXT("GAMEITEM_BACK");
 	PlazaViewImage->pszGameItemBill = TEXT("GAMEITEM_BILL");
 	PlazaViewImage->pszGameItemRegular = TEXT("GAMEITEM_REGULAR");
@@ -172,6 +179,8 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 	PlazaViewImage->pszGLLast	   = TEXT("GAMEITEM_LAST");	 
 	PlazaViewImage->pszGLNext	   = TEXT("GAMEITEM_NEXT");	 
 	PlazaViewImage->pszBtFastJoin  = TEXT("PNG_GL_FASTJOIN");
+	PlazaViewImage->pszUserInfo	   = TEXT("USER_SET_BACK");
+
 	return true;
 }
 
@@ -272,13 +281,6 @@ bool __cdecl CPlatformResource::GetPlatformFrameImage(tagPlatformFrameImageNew *
 	PlatformFrameImage->pszImageLeft = TEXT("BACKGROUND_USERINFO");
 	PlatformFrameImage->pszImageRight = TEXT("BACKGROUND_GAMEPUBLIC");
 	PlatformFrameImage->pszImageMiddle = TEXT("BACKGROUND_PLAZA");
-
-	//导航按钮
-	PlatformFrameImage->pszBtGame = TEXT("PNG_BT_GAME");
-	PlatformFrameImage->pszBtMatch = TEXT("PNG_BT_MATCH");
-	PlatformFrameImage->pszBtProperty = TEXT("PNG_BT_PROPERTY");
-	PlatformFrameImage->pszBtPrize = TEXT("PNG_BT_PRIZE");
-	PlatformFrameImage->pszBtRecharge = TEXT("PNG_BT_RECHARGE");
 
 	//菜单按钮
 	PlatformFrameImage->pszBtFrameSet = TEXT("PNG_LOBBY_SET");
