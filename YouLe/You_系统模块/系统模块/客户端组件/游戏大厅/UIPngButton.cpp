@@ -119,12 +119,13 @@ namespace YouLe
 	// ×ó¼üµ¯Æð
 	BOOL	UIPngButton::OnLeftUp(const CPoint& cPt)
 	{
+		m_bPress = FALSE;
+
 		if (!m_bVisible || !m_bEnabled)
 			return FALSE;
 
 		UIWidget::OnLeftUp(cPt);
 		
-		m_bPress = FALSE;
 		if (PtInRect(cPt))
 			m_nState = PNG_BTNHOVER;
 		else
@@ -162,4 +163,13 @@ namespace YouLe
 
 		return TRUE;
 	}
+
+	void UIPngButton::SetButtonState( int nType )
+	{
+		if (!m_bVisible || !m_bEnabled)
+			return;
+		m_nState = nType;
+		Invalidate(TRUE);
+	}
+
 }

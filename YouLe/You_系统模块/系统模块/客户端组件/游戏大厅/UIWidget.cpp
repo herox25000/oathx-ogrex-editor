@@ -72,7 +72,16 @@ namespace YouLe
 	void		UIWidget::VisibleWidget(bool bVisible)
 	{
 		m_bVisible = bVisible;
+		if (bVisible)
+		{
+			VisibleTrigger();
+		}
 		Invalidate(TRUE);
+	}
+
+	void UIWidget::VisibleTrigger()
+	{
+
 	}
 	
 	void		UIWidget::GetWidgetRect(LPRECT lpRect)

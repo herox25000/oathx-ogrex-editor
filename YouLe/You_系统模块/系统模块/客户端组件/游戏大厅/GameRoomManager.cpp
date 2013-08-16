@@ -158,10 +158,10 @@ bool CGameRoomManager::CreateGameTable(int lTableCount, int wChairCount, CListSe
 			m_PtrArrayTable.Add(pTableInfo);
 		}
 	}
-	g_UIPageManager.m_pRoomPage->VisibleWidget(false);
-	g_UIPageManager.m_pTablePage->VisibleWidget(true);
-	g_UIPageManager.m_pTablePage->SetListServer(ListServer);
-	g_UIPageManager.m_pTablePage->ShowFirstPage();
+// 	g_UIPageManager.m_pRoomPage->VisibleWidget(false);
+// 	g_UIPageManager.m_pTablePage->VisibleWidget(true);
+// 	g_UIPageManager.m_pTablePage->SetListServer(ListServer);
+// 	g_UIPageManager.m_pTablePage->ShowFirstPage();
 	return true;
 }
 

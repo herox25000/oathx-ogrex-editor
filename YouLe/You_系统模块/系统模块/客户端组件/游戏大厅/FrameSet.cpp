@@ -134,8 +134,8 @@ int CFrameSet::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_btConfirn.CreateButton(this, FrameViewImage.pszBtConfirn, _T("PNG"), FRAMEDLG_X / 2 - 100, 210, IDC_BT_CONFIRN, 4, hInstance);
 	m_btCancel.CreateButton(this, FrameViewImage.pszBtCancel, _T("PNG"), FRAMEDLG_X / 2 + 10, 210, IDC_BT_CANCEL, 4, hInstance);
 
-	m_btNotUse.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28,68);
-	m_btUserQuick.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28,92);
+	m_btNotUse.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28, 68);
+	m_btUserQuick.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28, 92);
 	m_btNotUse.SetButtonChecked(true);
 
 	CRect rcClient;
@@ -248,20 +248,20 @@ BOOL CFrameSet::PreTranslateMessage(MSG* pMsg)
 {
 	if (m_btUserQuick.GetButtonChecked())
 	{
-// 		m_keys.PreTranslateKey();
-// 		string str;
-// 		if(m_keys.GetKeyAllState(str))
-// 		{
-// 			CDC* pDC = GetDC();
-// 			CRect rcClient;
-// 			GetClientRect(&rcClient);
-// 			CMemDC pDevC(pDC, rcClient);
-// 			pDevC->SetBkMode(TRANSPARENT);
-// 
-// 			CRect rcAccounts;
-// 			rcAccounts.SetRect(135, 92, 235,105);
-// 			pDevC->DrawText(str.c_str(), str.length(),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
-// 		}
+		m_keys.PreTranslateKey();
+		string str;
+		if(m_keys.GetKeyAllState(str))
+		{
+			CDC* pDC = GetDC();
+			CRect rcClient;
+			GetClientRect(&rcClient);
+			CMemDC pDevC(pDC, rcClient);
+			pDevC->SetBkMode(TRANSPARENT);
+
+			CRect rcAccounts;
+			rcAccounts.SetRect(135, 92, 235,105);
+			pDevC->DrawText(str.c_str(), str.length(),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
+		}
 	}
 	return CDialog::PreTranslateMessage(pMsg);
 }

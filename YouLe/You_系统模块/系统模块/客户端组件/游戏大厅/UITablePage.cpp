@@ -120,10 +120,6 @@ namespace YouLe
 		// 标题图片
 		m_TilteImage.LoadImage(hInstance,PlazaViewImage.pszTilteImage);
 
-		// 创建返回按钮
-		UIPngButton* pBtReturn = new UIPngButton();
-		pBtReturn->Create(IDB_GPRETURN, rect.right - 320, 5, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
-
 		// 快速加入
 		UIPngButton* pBtFastJoin = new UIPngButton();
 		pBtFastJoin->Create(102, rect.right - 320 - 100, 5, pAttach, this, hInstance, PlazaViewImage.pszBtFastJoin, 4, this);
@@ -150,6 +146,7 @@ namespace YouLe
 		UIPngButton* pBtNext = new UIPngButton();
 		pBtNext->Create(101, rc.right/2 ,		rc.bottom-28, pAttach, this, hInstance, PlazaViewImage.pszGLNext, 4, this);
 
+		VisibleWidget(FALSE);
 		return TRUE;
 	}
 

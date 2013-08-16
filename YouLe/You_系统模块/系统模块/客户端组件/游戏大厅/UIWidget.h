@@ -87,6 +87,8 @@ namespace YouLe
 		virtual void		EnabledWidget(bool bEnabled);
 		// 设置显示
 		virtual void		VisibleWidget(bool bVisible);
+		// 设置触发显示
+		virtual void		VisibleTrigger();
 
 	public:
 		// 获取区域
