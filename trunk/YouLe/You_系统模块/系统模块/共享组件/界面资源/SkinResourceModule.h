@@ -34,12 +34,6 @@ struct tagPlatformFrameImageNew
 	LPCTSTR							pszImageRight;
 	LPCTSTR							pszImageMiddle;
 
-	LPCTSTR							pszBtGame;
-	LPCTSTR							pszBtMatch;
-	LPCTSTR							pszBtProperty;
-	LPCTSTR							pszBtPrize;
-	LPCTSTR							pszBtRecharge;
-
 	LPCTSTR							pszBtFrameSet;
 	LPCTSTR							pszBtMin;
 	LPCTSTR							pszBtClose;
@@ -51,7 +45,6 @@ struct tagPlatformFrameImageNew
 
 	LPCTSTR							pszBtReflash;
 	LPCTSTR							pszBtUserSet;
-	LPCTSTR							pszBtReturn;
 	LPCTSTR							pszBtUserSexHead;
 
 	LPCTSTR							pszEnquireBack;
@@ -89,6 +82,12 @@ struct tagPlatformFrameImageNew
 //新广场资源
 struct tagPlatViewImageNew
 {
+	LPCTSTR							pszBtGame;
+	LPCTSTR							pszBtMatch;
+	LPCTSTR							pszBtProperty;
+	LPCTSTR							pszBtPrize;
+	LPCTSTR							pszBtRecharge;
+
 	LPCTSTR							pszGameBack;
 	LPCTSTR							pszGameItemBill;
 	LPCTSTR							pszGameItemRegular;
@@ -107,6 +106,8 @@ struct tagPlatViewImageNew
 	LPCTSTR							pszTilteImage;
 	LPCTSTR							pszGLLast;
 	LPCTSTR							pszGLNext;
+
+	LPCTSTR							pszUserInfo;
 };
 
 

@@ -953,6 +953,8 @@ PNG_BT_KEYBOARD63       PNG                     "res\\PLAZA_LOGON\\key\\upper\\u
 PNG_BT_KEYBOARD64       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_24.png"
 PNG_BT_KEYBOARD65       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_25.png"
 
+USER_SET_BACK		PNG			"res\\USER_INFO\\USER_SET_BACK.png"
+
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
 
