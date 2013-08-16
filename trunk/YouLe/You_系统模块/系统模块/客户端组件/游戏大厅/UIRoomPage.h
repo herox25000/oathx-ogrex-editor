@@ -19,7 +19,7 @@ namespace YouLe
 		virtual BOOL		Draw(CDC* pDC);
 	public:
 		// 响应页控件
-		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
+		virtual	BOOL		OnLeftDown(UIWidget* pWidget, const CPoint& cPt);
 	
 		// 功能函数
 	public:
@@ -54,7 +54,7 @@ namespace YouLe
 
 	public:
 		// 响应页控件
-		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
+		virtual	BOOL		OnLeftDown(UIWidget* pWidget, const CPoint& cPt);
 
 		// 功能函数
 	public:

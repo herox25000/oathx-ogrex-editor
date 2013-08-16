@@ -3,6 +3,8 @@
 
 #include "UIPngButton.h"
 #include "UIGameItem.h"
+#include "UIRoomPage.h"
+#include "UITablePage.h"
 
 namespace YouLe
 {
@@ -20,14 +22,17 @@ namespace YouLe
 			UIProcess* pProcess, UIWidget* pParent);
 
 	public:
-		// 设置当前显示页
-		virtual void		SetPage(INT nPage);
+		virtual void		VisibleTrigger();
+	public:
+		void				ShowRoomView(CListKind* pKind);
 
 	public:
-		// 响应页控件
-		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
-	public:
+		//游戏视图
 		UIGameView*			m_pGameView;
+		//房间视图
+		UIRoomPage*			m_pRoomView;
+		//桌子视图
+		UITablePage*		m_pTableView;
 	};
 }
 

@@ -3,9 +3,9 @@
 
 namespace YouLe
 {
-	static const INT idList[] = {
-		1, 2, 3, 4
-	};
+#define IDP_GAME_VIEW						55530
+#define IDP_ROOM_VIEW						55531
+#define IDP_TABLE_VIEW						55532
 
 	// 构造函数
 	UIGamePage::UIGamePage()
@@ -28,68 +28,35 @@ namespace YouLe
 		ASSERT(bResult == TRUE);
 
 		m_pGameView = new UIGameView();
-		m_pGameView->Create(0, CRect(GTP_OFFSETX, GTP_OFFSETY,GTP_WITH, GTP_HEIGHT),pAttach, NULL, this);
+		m_pGameView->Create(IDP_GAME_VIEW, CRect(0, 0, rect.right - rect.left, rect.bottom - rect.top), pAttach, pProcess, this);
+		// 创建房间页
+		m_pRoomView = new UIRoomPage();
+		m_pRoomView->Create(IDP_ROOM_VIEW, CRect(0, 0, rect.right - rect.left, rect.bottom - rect.top), pAttach, pProcess, this);
+		// 创建桌子页
+		m_pTableView = new UITablePage();
+		m_pTableView->Create(IDP_TABLE_VIEW, CRect(0, 0, rect.right - rect.left, rect.bottom - rect.top), pAttach, pProcess, this);
 
-		//加载资源
-		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
-
-		// 创建页面按钮
-		const TCHAR* chBtnImageResouceName[] = {
-			PlazaViewImage.pszGameTabGame,
-			PlazaViewImage.pszGameTabCard,
-			PlazaViewImage.pszGameTabMahj,
-			PlazaViewImage.pszGameTabLeis
-		};
-
-		for (int i=0; i<4; i++)
-		{
-			UIPngButton* pPngButton = new UIPngButton();
-			pPngButton->Create(idList[i], i * 96, 0, m_pAttach, this,
-				hInstance, chBtnImageResouceName[i], 3, this);
-		}
-
-		SetPage(idList[0]);
-
-		// 创建返回按钮
-		UIPngButton* pBtReturn = new UIPngButton();
-		pBtReturn->Create(IDB_GPRETURN, rect.right - 320, 5, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
+		VisibleWidget(FALSE);
 
 		return TRUE;
 	}
 
-	// 设置页面
-	void	UIGamePage::SetPage(INT nID)
+	void UIGamePage::ShowRoomView( CListKind* pKind )
 	{
-		for (int i=0; i<4; i++)
+		if(!m_pRoomView->ShowRoomList(pKind))
 		{
-			UIWidget* pWidget = Search(idList[i]);
-			if (pWidget)
-				pWidget->EnabledWidget(idList[i] == nID ? FALSE : TRUE);
+			ShowMessageBox("对不起，游戏服务器没开启！",MB_ICONQUESTION);
+			return;
 		}
+		m_pGameView->VisibleWidget(FALSE);
+		m_pRoomView->VisibleWidget(TRUE);	
 	}
 
-	// 处理按键消息
-	BOOL	UIGamePage::OnClicked(UIWidget* pWidget, const CPoint& cPt)
+	void UIGamePage::VisibleTrigger()
 	{
-		if (pWidget)
-		{
-			INT nID = pWidget->GetID();
-			if (nID == IDB_GPRETURN )
-			{
-				m_pGameView->ShowFirstPage();
-				SetPage(1);
-			}
-			else
-			{
-				if(nID == 1)
-					m_pGameView->ShowFirstPage();
-				else
-					m_pGameView->ShowFirstPage(nID);
-				SetPage(nID);
-			}
-		}
-
-		return FALSE;
+		m_pGameView->VisibleWidget(TRUE);
+		m_pRoomView->VisibleWidget(FALSE);
+		m_pTableView->VisibleWidget(FALSE);
 	}
+
 }

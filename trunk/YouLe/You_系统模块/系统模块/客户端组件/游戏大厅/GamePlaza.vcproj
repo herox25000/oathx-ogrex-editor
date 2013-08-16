@@ -133,9 +133,6 @@
 				RelativePath=".\DlgStatus.cpp">
 			</File>
 			<File
-				RelativePath=".\FrameSet.cpp">
-			</File>
-			<File
 				RelativePath=".\GamePlaza.cpp">
 			</File>
 			<File
@@ -193,9 +190,6 @@
 			</File>
 			<File
 				RelativePath=".\DlgStatus.h">
-			</File>
-			<File
-				RelativePath=".\FrameSet.h">
 			</File>
 			<File
 				RelativePath=".\GamePlaza.h">
@@ -281,14 +275,14 @@
 			<File
 				RelativePath=".\MemDC.h">
 			</File>
-			<File
-				RelativePath=".\UIFont.h">
-			</File>
 			<Filter
 				Name="Widget"
 				Filter="">
 				<File
 					RelativePath=".\UIFont.cpp">
+				</File>
+				<File
+					RelativePath=".\UIFont.h">
 				</File>
 				<File
 					RelativePath=".\UIFrameClose.cpp">
@@ -327,6 +321,12 @@
 					RelativePath=".\UIPageManager.h">
 				</File>
 				<File
+					RelativePath=".\UIPlazaView.cpp">
+				</File>
+				<File
+					RelativePath=".\UIPlazaView.h">
+				</File>
+				<File
 					RelativePath=".\UIPngButton.cpp">
 				</File>
 				<File
@@ -357,6 +357,22 @@
 					RelativePath=".\UIWidget.h">
 				</File>
 			</Filter>
+		</Filter>
+		<Filter
+			Name="½çÃæUI"
+			Filter="">
+			<File
+				RelativePath=".\UIFrameSet.cpp">
+			</File>
+			<File
+				RelativePath=".\UIFrameSet.h">
+			</File>
+			<File
+				RelativePath=".\UIUserInfoSet.cpp">
+			</File>
+			<File
+				RelativePath=".\UIUserInfoSet.h">
+			</File>
 		</Filter>
 		<File
 			RelativePath=".\res\Cancel_STATUS.png">

@@ -54,7 +54,7 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	LoadImages();
 	CRect rcClient;
 	GetClientRect(&rcClient);
-	RectifyResource(rcClient.Width(), rcClient.Height());
+	RectifyResource(LESS_SCREEN_CX, LESS_SCREEN_CY);
 	
 	//启动登陆窗口
 	m_DlgLogon.SetPlatFormPointer(this);
@@ -98,21 +98,6 @@ void CPlatformFrame::OnCommandLogon()
 	return;
 }
 
-//打开大厅设置
-void CPlatformFrame::OnOpenFrameSet()
-{
-	//创建登录框
-	if (m_DlgFrameSet.m_hWnd == NULL) 
-	{
-		m_DlgFrameSet.Create(IDD_FRAMESET, this);
-	}
-	//显示登录框
-	m_DlgFrameSet.ShowWindow(SW_SHOW);
-	m_DlgFrameSet.SetActiveWindow();
-	m_DlgFrameSet.SetForegroundWindow();
-	return;
-}
-
 //IPC 消息
 BOOL CPlatformFrame::OnCopyData(CWnd* pWnd, COPYDATASTRUCT * pCopyDataStruct)
 {
@@ -138,7 +123,7 @@ void CPlatformFrame::OnCommandCancelConnect()
 
 void CPlatformFrame::SetFrameSize(int nWidth, int nHeight)
 {
-	SetWindowPos(NULL, 0, 0, nWidth, nHeight, SWP_NOZORDER);
+	SetWindowPos(NULL, 0, 0, nWidth, nHeight, SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
 	CenterWindow();
 }
 
@@ -149,16 +134,15 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 	{
 		//框架位置
 		CRect rcFrame;
-		rcFrame.SetRect(SHADOW_CX, SHADOW_CY, nWidth-SHADOW_CX,nHeight-SHADOW_CY);
+		rcFrame.SetRect(SHADOW_CX, SHADOW_CY, nWidth - SHADOW_CX, nHeight - SHADOW_CY);
 
 		//窗口区域
 		CRgn RegionWindow;
-		RegionWindow.CreateRoundRectRgn(rcFrame.left,rcFrame.top,rcFrame.right+1,rcFrame.bottom+1,ROUND_CX,ROUND_CY);
+		RegionWindow.CreateRoundRectRgn(rcFrame.left, rcFrame.top, rcFrame.right + 1, rcFrame.bottom + 1, ROUND_CX,ROUND_CY);
 
 		//设置区域
 		SetWindowRgn(RegionWindow,TRUE);
 	}
-
 	return TRUE;
 }
 
@@ -178,11 +162,14 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	GetClientRect(&rcClient);
 	CMemDC pDevC(pDC, rcClient);
 	pDevC->SetBkMode(TRANSPARENT);
-	m_ImageHead.DrawImage(pDevC, 0, 0);
+
+	int xPos = 0;
+	int yPos = 0;
+	m_ImageHead.DrawImage(pDevC, xPos, yPos);
 	int nHight = m_ImageHead.GetHeight();
-	m_ImageUserInfo.DrawImage(pDevC, 0, nHight);
-	m_ImageBack.DrawImage(pDevC,m_ImageUserInfo.GetWidth(), nHight);
-	m_ImageGamePublic.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + m_ImageBack.GetWidth(), nHight);
+	m_ImageUserInfo.DrawImage(pDevC, xPos, nHight + yPos);
+	m_ImageBack.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + xPos, nHight + yPos);
+	m_ImageGamePublic.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + m_ImageBack.GetWidth() + xPos, nHight + yPos);
 	DrawUserInfo(pDevC);
 
 	m_FrameSheet.Draw(pDevC);
@@ -220,11 +207,6 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 	UINT nCommandID=LOWORD(wParam);
 	switch (nCommandID)
 	{
-	case WM_SHOW_LOBBYSET:
-		{
-			OnOpenFrameSet();
-			return TRUE;
-		}
 	case WM_CLOSE_FRAME:
 		{
 			PostMessage(WM_CLOSE,0,0);

@@ -7,7 +7,7 @@ namespace YouLe
 {
 	class UIPngButton : public UIWidget
 	{
-		enum{
+		enum {
 			PNG_BTNNORMAL,
 			PNG_BTNDOWN,
 			PNG_BTNHOVER,
@@ -32,6 +32,9 @@ namespace YouLe
 		
 		// 无效控件
 		virtual void	EnabledWidget(bool bEnabled);
+
+		// 设置按钮状态
+		virtual void	SetButtonState(int nType);
 		
 	public:
 		// 鼠标移动

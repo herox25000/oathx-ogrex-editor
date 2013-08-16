@@ -16,7 +16,7 @@ namespace YouLe
 		// 设置有效
 		virtual void		EnabledWidget(bool bEnabled);
 		// 按键消息
-		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
+		virtual	BOOL		OnLeftDown(UIWidget* pWidget, const CPoint& cPt);
 		// 创建控件
 		virtual BOOL		Create(INT nID, INT nDestX, INT nDestY, 
 			HINSTANCE hInstance, LPCTSTR lpszBackResouceName, LPCTSTR lpszBillResouceName, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
@@ -34,6 +34,12 @@ namespace YouLe
 		virtual bool		SetBillPng(HINSTANCE hInstance, LPCTSTR lpszBillResouceName);
 		// 进入房间
 		virtual bool		OnShowRoomPage();
+
+		CListKind*			GetListKind() { return m_pListKind; }
+
+	public:
+		// 左键按下
+		virtual BOOL		OnLeftDown(const CPoint& cPt);
 
 	protected:
 		CPngImage			m_PngBack;
@@ -55,10 +61,12 @@ namespace YouLe
 		// 析构函数
 		virtual ~UIGameView();
 		// 按键消息
-		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
+		virtual	BOOL		OnLeftDown(UIWidget* pWidget, const CPoint& cPt);
 		// 创建游戏视图
 		virtual	BOOL		Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
 	
+	public:
+		virtual	void		VisibleTrigger();
 		// 功能函数
 	public:
 		// 设置所有GameItem是否可用
@@ -71,6 +79,11 @@ namespace YouLe
 		void				OnClickLastPage();
 		// 响应下一页
 		void				OnClickNextPage();
+		// 设置当前显示页
+		virtual void		SetPage(INT nPage);
+
+		// 触发进入某游戏
+		void				OnEnterGame(CListKind* pKind);
 		
 	public:
 		// 游戏页

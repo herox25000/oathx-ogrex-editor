@@ -29,7 +29,7 @@ namespace YouLe
 	}
 
 	// 按键消息
-	BOOL	UIGameItem::OnClicked(UIWidget* pWidget, const CPoint& cPt)
+	BOOL	UIGameItem::OnLeftDown(UIWidget* pWidget, const CPoint& cPt)
 	{
 		switch(pWidget->GetID())
 		{
@@ -79,7 +79,6 @@ namespace YouLe
 			PlatViewImage.pszGameItemRegular,
 			PlatViewImage.pszGameItemJoin,
 		};
-
 
 		m_pRegular = new UIPngButton();
 		m_pRegular->Create(0, 5, 106, m_pAttach, this,
@@ -152,19 +151,31 @@ namespace YouLe
 	// 进入房间
 	bool	UIGameItem::OnShowRoomPage()
 	{
-		if(!g_UIPageManager.m_pRoomPage->ShowRoomList(m_pListKind))
+		UIGameView* pView = (UIGameView*)GetParent();
+		if (pView)
 		{
-			ShowMessageBox("对不起，游戏服务器没开启！",MB_ICONQUESTION);
-			return false;
+			pView->OnEnterGame(m_pListKind);
 		}
-		g_UIPageManager.m_pGamePage->VisibleWidget(false);
-		g_UIPageManager.m_pRoomPage->VisibleWidget(true);	
 		return true;
+	}
+
+	BOOL	UIGameItem::OnLeftDown(const CPoint& cPt)
+	{
+		if (UIWidget::OnLeftDown(cPt))
+		{
+			OnShowRoomPage();
+			return TRUE;
+		}
+		return FALSE;
 	}
 
 	//////////////////////////////////////////////////////////////////////////
 	// 游戏视图构造
 	//////////////////////////////////////////////////////////////////////////
+	static const INT idList[] = {
+		1, 2, 3, 4
+	};
+
 	UIGameView::UIGameView()
 	{
 		m_EnumIndex = 0;
@@ -185,15 +196,33 @@ namespace YouLe
 		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
 		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
 
+		// 创建页面按钮
+		const TCHAR* chBtnImageResouceName[] = {
+				PlazaViewImage.pszGameTabGame,
+				PlazaViewImage.pszGameTabCard,
+				PlazaViewImage.pszGameTabMahj,
+				PlazaViewImage.pszGameTabLeis
+		};
+
+		for (int i=0; i<4; i++)
+		{
+			UIPngButton* pPngButton = new UIPngButton();
+			pPngButton->Create(idList[i], i * 96, 0, m_pAttach, this,
+				hInstance, chBtnImageResouceName[i], 3, this);
+		}
+
+		SetPage(idList[0]);
+
+		// 获取小游戏内容，创建item
 		for (int c=0; c<MAX_GICOL; c++)
 		{
 			for (int r=0; r<MAX_GIROW; r++)
 			{
-				int index = c*MAX_GIROW + r;
+				int index = c * MAX_GIROW + r;
 				m_pGameItem[index] = new UIGameItem();
-				m_pGameItem[index] ->Create(c * MAX_GIROW + r , r * 180, c * 145, hInstance, PlazaViewImage.pszGameBack, PlazaViewImage.pszGameItemBill, 
-					pAttach, pProcess, this);
-				m_pGameItem[index] ->EnabledWidget(false);
+				m_pGameItem[index] ->Create(c * MAX_GIROW + r + 5 , r * 180, c * 145 + 45, hInstance, PlazaViewImage.pszGameBack, PlazaViewImage.pszGameItemBill, 
+					pAttach, this, this);
+				m_pGameItem[index]->EnabledWidget(false);
 			}
 		}
 		
@@ -207,11 +236,24 @@ namespace YouLe
 		UIPngButton* pBtNext = new UIPngButton();
 		pBtNext->Create(101, rc.right/2 ,		rc.bottom-28, pAttach, this, hInstance, PlazaViewImage.pszGLNext, 4, this);
 		
+		VisibleWidget(FALSE);
+
 		return TRUE;
 	}
 
+	// 设置页面
+	void	UIGameView::SetPage(INT nID)
+	{
+		for (int i=0; i<4; i++)
+		{
+			UIWidget* pWidget = Search(idList[i]);
+			if (pWidget)
+				pWidget->EnabledWidget(idList[i] == nID ? FALSE : TRUE);
+		}
+	}
+
 	// 按键消息
-	BOOL	UIGameView::OnClicked(UIWidget* pWidget, const CPoint& cPt)
+	BOOL	UIGameView::OnLeftDown(UIWidget* pWidget, const CPoint& cPt)
 	{
 		switch(pWidget->GetID())
 		{
@@ -223,6 +265,30 @@ namespace YouLe
 		case 101:	// 下一页
 			{
 				OnClickNextPage();
+				return TRUE;
+			}
+		case 1:
+			{
+				ShowFirstPage();
+				SetPage(idList[0]);
+				return TRUE;
+			}
+		case 2:
+			{
+				ShowFirstPage(idList[1]);
+				SetPage(idList[1]);
+				return TRUE;
+			}
+		case 3:
+			{
+				ShowFirstPage(idList[2]);
+				SetPage(idList[2]);
+				return TRUE;
+			}
+		case 4:
+			{
+				ShowFirstPage(idList[3]);
+				SetPage(idList[3]);
 				return TRUE;
 			}
 		}
@@ -303,6 +369,22 @@ namespace YouLe
 			return ;
 		}
 		EnumGameItem();
+	}
+
+	void	UIGameView::OnEnterGame(CListKind* pKind)
+	{
+		// 向父窗口
+		UIGamePage* pPage = (UIGamePage*)GetParent();
+		if (pPage)
+		{
+			pPage->ShowRoomView(pKind);
+		}
+	}
+
+	void	UIGameView::VisibleTrigger()
+	{
+		SetPage(idList[0]);
+		ShowFirstPage();
 	}
 
 }

@@ -26,6 +26,11 @@ struct tagGlobalUserData
 
 	//扩展信息
 	DWORD								dwCustomFaceVer;				//头像版本
+
+	TCHAR								szNickName[NAME_LEN];			//用户昵称
+	DWORD								dwScore;						//游    币
+	DWORD								dwGold;							//乐    豆
+	DWORD								dwGift;							//奖    券
 };
 
 //全局信息类

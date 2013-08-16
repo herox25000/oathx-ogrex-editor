@@ -3,7 +3,6 @@
 #include "GamePlazaDlg.h"
 #include "GdipButton.h"
 #include "DlgLogon.h"
-#include "FrameSet.h"
 #include "PlatformSocket.h"
 #include "UIFrameSheet.h"
 
@@ -22,7 +21,6 @@ protected:
 	CPlatformSocket					m_PlatformSocket;
 	CGamePlazaDlg*					m_pGamePlazaDlg;
 	CDlgLogon						m_DlgLogon;				//登录对话框
-	CFrameSet						m_DlgFrameSet;			//打开大厅设置
 
 	//资源
 protected:
@@ -89,8 +87,6 @@ public:
 	afx_msg void OnCommandConnect();
 	//取消连接
 	afx_msg void OnCommandCancelConnect();
-	//打开大厅设置
-	afx_msg void OnOpenFrameSet();
 	//IPC 消息
 	afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT * pCopyDataStruct);
 public:

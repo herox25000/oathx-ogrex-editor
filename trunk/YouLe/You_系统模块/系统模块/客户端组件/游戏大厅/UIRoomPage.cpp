@@ -44,7 +44,6 @@ namespace YouLe
 	// 绘制控件
 	BOOL	UIRoomItem::Draw(CDC* pDC)
 	{
-		
 		if (!IsWidgetVisible())
 			return FALSE;
 
@@ -67,7 +66,7 @@ namespace YouLe
 	}
 
 	// 响应页控件
-	BOOL	UIRoomItem::OnClicked(UIWidget* pWidget, const CPoint& cPt)
+	BOOL	UIRoomItem::OnLeftDown(UIWidget* pWidget, const CPoint& cPt)
 	{
 		if(pWidget)
 		{
@@ -116,10 +115,6 @@ namespace YouLe
 		// 标题图片
 		m_TilteImage.LoadImage(hInstance,PlazaViewImage.pszTilteImage);
 
-		// 创建返回按钮
-		UIPngButton* pBtReturn = new UIPngButton();
-		pBtReturn->Create(IDB_GPRETURN, rect.right - 320, 5, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
-
 		// 房间列表
 		for (int c=0; c<MAX_GICOL; c++)
 		{
@@ -127,10 +122,12 @@ namespace YouLe
 			{
 				int index = c*MAX_GIROW + r;
 				m_pRoomItem[index] = new UIRoomItem();
-				m_pRoomItem[index] ->Create(c * MAX_GIROW + r , r * 180, 40+c * 145,pAttach, pProcess, this);
+				m_pRoomItem[index] ->Create(c * MAX_GIROW + r , r * 180, 40+c * 145, pAttach, this, this);
 				m_pRoomItem[index] ->VisibleWidget(false);
 			}
 		}
+
+		VisibleWidget(FALSE);
 
 		return TRUE;
 	}
@@ -152,18 +149,14 @@ namespace YouLe
 	}
 
 	// 响应页控件
-	BOOL	UIRoomPage::OnClicked(UIWidget* pWidget, const CPoint& cPt)
+	BOOL	UIRoomPage::OnLeftDown(UIWidget* pWidget, const CPoint& cPt)
 	{
 		if (pWidget)
 		{
-			switch(pWidget->GetID())
+			UIRoomItem* pItem = (UIRoomItem*)pWidget;
+			if (pItem)
 			{
-				case IDB_GPRETURN:	// 返回按钮
-					{
-						g_UIPageManager.m_pGamePage->VisibleWidget(true);
-						g_UIPageManager.m_pRoomPage->VisibleWidget(false);
-						return TRUE;
-					}
+
 			}
 		}
 		return TRUE;
