@@ -179,7 +179,15 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 	PlazaViewImage->pszGLLast	   = TEXT("GAMEITEM_LAST");	 
 	PlazaViewImage->pszGLNext	   = TEXT("GAMEITEM_NEXT");	 
 	PlazaViewImage->pszBtFastJoin  = TEXT("PNG_GL_FASTJOIN");
+
 	PlazaViewImage->pszUserInfo	   = TEXT("USER_SET_BACK");
+	PlazaViewImage->pszBtModifyUser = TEXT("BT_MODIFY_USER");
+	PlazaViewImage->pszBtModifyInfo = TEXT("BT_MODIFY_INFO");
+	PlazaViewImage->pszBtModifyPassword = TEXT("BT_MODIFY_PASSWORD");
+	PlazaViewImage->pszModifyUserInfoBack = TEXT("MODIFY_USERINFO_BACK");
+	PlazaViewImage->pszModifyPasswordBack = TEXT("MODIFY_PASSWORD_BACK");
+	PlazaViewImage->pszBtModifyConfirn = TEXT("BT_MODIFY_CONFIRN");
+	PlazaViewImage->pszBtModifyCancel = TEXT("BT_MODIFY_CANCEL");
 
 	return true;
 }
