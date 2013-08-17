@@ -220,7 +220,7 @@ namespace YouLe
 			{
 				int index = c * MAX_GIROW + r;
 				m_pGameItem[index] = new UIGameItem();
-				m_pGameItem[index] ->Create(c * MAX_GIROW + r + 5 , r * 180, c * 145 + 45, hInstance, PlazaViewImage.pszGameBack, PlazaViewImage.pszGameItemBill, 
+				m_pGameItem[index] ->Create(c * MAX_GIROW + r + GTP_OFFSETX , r * 180, c * 145 + GTP_OFFSETY, hInstance, PlazaViewImage.pszGameBack, PlazaViewImage.pszGameItemBill, 
 					pAttach, this, this);
 				m_pGameItem[index]->EnabledWidget(false);
 			}

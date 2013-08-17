@@ -22,10 +22,10 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 // 视图页面创建的个数
 #define MAX_GICOL			3
 #define MAX_GIROW			3
-#define GTP_OFFSETX			0
-#define GTP_OFFSETY			40
-#define GTP_WITH			580
-#define	GTP_HEIGHT			591
+
+//GameItem偏移量
+#define GTP_OFFSETX			5
+#define GTP_OFFSETY			45
 
 //按钮ID 对应相应page
 #define IDC_BT_GAME							100							//游戏专区
@@ -34,9 +34,33 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 #define IDC_BT_PRIZE						103							//奖品中心
 #define IDC_BT_RECHARGE						104							//充值中心
 
+//用户中心page按钮
 #define IDC_BT_USERSET						105							//用户信息
+#define IDC_BT_REFLASH						106							//信息刷新
+#define IDC_BT_USERBAG						107							//角色背包
+#define IDC_BT_SQUARE						108							
+#define IDC_BT_TILL							109
+#define IDC_BT_IM							110
 
 // 返回按钮ID
-#define IDB_GPRETURN		45535
+#define IDB_GPRETURN						45535
+
+//////////////////////////////////////////////////////////////////////////
+//大厅UI位置
+#define PGP_OFFSETX							222
+#define PGP_OFFSETY							147
+#define PGP_WITH							580
+#define	PGP_HEIGHT							591
+
+//用户UI位置
+#define PUP_OFFSETX							0
+#define PUP_OFFSETY							147
+#define PUP_WITH							222
+#define PUP_HEIGHT							591
+
+
+//////////////////////////////////////////////////////////////////////////
+//UI指令
+#define WM_SHOW_USERSET						WM_USER + 1					//打开用户设置
 
 #endif

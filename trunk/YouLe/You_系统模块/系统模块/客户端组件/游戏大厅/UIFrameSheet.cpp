@@ -1,9 +1,9 @@
 #include "Stdafx.h"
 #include "UIFrameSheet.h"
-#include "UIFramePage.h"
 #include "UIFrameClose.h"
 #include "UIFrameSet.h"
 #include "UIPlazaView.h"
+#include "UIFrameUserPage.h"
 #include "Platform.h"
 
 namespace YouLe
@@ -12,17 +12,12 @@ namespace YouLe
 #define IDB_FRAME_MIN						65534
 #define IDB_FRAME_SET						65533
 
-#define IDP_FRAME_PAGE						55535
 #define IDP_FRAME_CLOSE						55533
 #define IDP_FRAME_SET						55532
 #define IDP_PLAZA_PAGE						55531
+#define IDP_USER_PAGE						55530
 
 #define PFS_CAPTION_HEIGHT					40
-
-#define PGP_OFFSETX							222
-#define PGP_OFFSETY							147
-#define PGP_ITEMWIDTH						176
-#define PGP_ITEMHEIGHT						140
 
 	// 系统按钮ID
 	const static INT idFrameList[] = {
@@ -65,23 +60,17 @@ namespace YouLe
 			pSystemButton->Create(idFrameList[i], rect.right - (i + 1) * 40, 3, pAttach, this, hInstance, chSystemResouceName[i], 4, this);
 		}
 
-		UIPngButton* pBtUserSet = new UIPngButton();
-		pBtUserSet->Create(IDC_BT_USERSET, rect.left + 26, rect.top + 292, pAttach, this, hInstance, PlazaViewImage.pszBtUserSet, 4, this);
-
 		tagPlatformFrameImageNew & PlazaFrameImage = g_GlobalUnits.m_PlatformFrameImage;
-
-		// 创建框架页
-		UIFramePage* pFramePage = new UIFramePage();
-		pFramePage->Create(IDP_FRAME_PAGE, 
-			CRect(rect.left, rect.top + PFS_CAPTION_HEIGHT, rect.right, rect.top), pAttach, pProcess, this);
 		
 		// 广告头页
 		
 		// 用户信息页
+		UIFrameUserPage* pUserPage = new UIFrameUserPage();
+		pUserPage->Create(IDP_USER_PAGE, CRect(PUP_OFFSETX, PUP_OFFSETY, PUP_OFFSETX + PUP_WITH, PUP_OFFSETY + PUP_HEIGHT), pAttach, this, this);
 
 		// 广场页
 		UIPlazaView* pPlazaPage = new UIPlazaView();
-		pPlazaPage->Create(IDP_PLAZA_PAGE, CRect(PGP_OFFSETX, PGP_OFFSETY, PGP_OFFSETX+GTP_WITH, PGP_OFFSETY+GTP_HEIGHT), pAttach, this, this);
+		pPlazaPage->Create(IDP_PLAZA_PAGE, CRect(PGP_OFFSETX, PGP_OFFSETY, PGP_OFFSETX+PGP_WITH, PGP_OFFSETY+PGP_HEIGHT), pAttach, this, this);
 		
 		//活动公告管理页
 
@@ -127,7 +116,16 @@ namespace YouLe
 					pClose->VisibleWidget(TRUE);
 			}
 			break;
-		case IDC_BT_USERSET:
+		}
+
+		return TRUE;
+	}
+
+	void UIFrameSheet::ProcessCommand( int nCommand )
+	{
+		switch(nCommand)
+		{
+		case WM_SHOW_USERSET:
 			{
 				UIPlazaView* pPage = (UIPlazaView*)Search(IDP_PLAZA_PAGE);
 				if (pPage)
@@ -135,8 +133,8 @@ namespace YouLe
 					pPage->ShowPage(IDC_BT_USERSET);
 				}
 			}
+			break;
 		}
-
-		return TRUE;
 	}
+
 }
