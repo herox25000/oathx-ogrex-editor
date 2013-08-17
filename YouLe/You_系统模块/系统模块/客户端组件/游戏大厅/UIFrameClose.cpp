@@ -40,6 +40,8 @@ namespace YouLe
 		UIPngButton* pSwitchAccount = new UIPngButton();
 		pSwitchAccount->Create(WM_BT_SWITCH_ACCOUNTS, 30, m_PngBack.GetHeight()-62, pAttach, this, hInstance, PlazaViewImage.pszEnquireSwitch, 4, this);
 
+		VisibleWidget(FALSE);
+
 		return TRUE;
 	}
 
@@ -83,13 +85,13 @@ namespace YouLe
 		{
 		case WM_BT_CLOSE_PLAZA:
 			{
-				m_pAttach->SendMessage(WM_COMMAND, WM_CLOSE_FRAME, NULL);
+				SendMessage(WM_COMMAND, WM_CLOSE_FRAME, NULL);
 				VisibleWidget(FALSE);
 				return TRUE;
 			}
 		case WM_BT_SWITCH_ACCOUNTS:
 			{
-				m_pAttach->SendMessage(WM_COMMAND, WM_SWITCH_ACCOUNT, NULL);
+				SendMessage(WM_COMMAND, WM_SWITCH_ACCOUNT, NULL);
 				VisibleWidget(FALSE);
 				return TRUE;
 			}

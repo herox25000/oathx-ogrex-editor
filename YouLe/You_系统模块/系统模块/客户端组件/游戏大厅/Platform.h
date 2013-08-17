@@ -42,6 +42,17 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 #define IDC_BT_TILL							109
 #define IDC_BT_IM							110
 
+//用户设置按钮
+#define IDC_BT_MODIFY_USER					300							//更改用户
+#define IDC_BT_MODIFY_INFO					301							//更改资料
+#define IDC_BT_MODIFY_PASSWORD				302							//更改密码
+
+#define IDC_BT_MD_USERINFO_OK				303							//修改用户资料确认
+#define IDC_BT_MD_USERINFO_CANCEL			304							//取消用户资料修改
+
+#define IDC_BT_MD_PASSWORD_OK				305							//确认修改用户密码
+#define IDC_BT_MD_PASSWORD_CANCEL			306							//取消修改用户密码
+
 // 返回按钮ID
 #define IDB_GPRETURN						45535
 

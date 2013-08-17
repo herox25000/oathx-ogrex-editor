@@ -14,12 +14,20 @@ namespace YouLe
 		virtual	BOOL		Create(INT nID, const RECT& rect, CWnd* pAttach, 
 			UIProcess* pProcess, UIWidget* pParent);
 
-		virtual BOOL		Draw(CDC* pDC);
+		// 按下消息
+		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
 
 	public:
+		// 设置触发显示
+		virtual void		VisibleTrigger();
+
+	public:
+		void				ShowPage(int nPageID);
 
 	protected:
 		CPngImage			m_ImageBack;
+
+		int					m_nCurShowPageID;
 
 	};
 

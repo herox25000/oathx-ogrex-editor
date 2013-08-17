@@ -3,6 +3,8 @@
 #include "GlobalUnits.h"
 #include "Platform.h"
 
+namespace YouLe
+{
 #define IDC_BT_CLOSE						100
 #define IDC_BT_CONFIRN						101
 #define IDC_BT_CANCEL						102
@@ -10,8 +12,6 @@
 #define IDC_BT_NOUSE						103
 #define IDC_BT_USE							104
 
-namespace YouLe
-{
 	UIFrameSet::UIFrameSet(void)
 	{
 	}
@@ -38,6 +38,11 @@ namespace YouLe
 
 		UIPngButton* pCancel = new UIPngButton();
 		pCancel->Create(IDC_BT_CANCEL, m_ImageBack.GetWidth() / 2 + 10, 210, pAttach, this, hInstance, FrameViewImage.pszBtCancel, 4, this);
+
+// 		m_btUseBoss.CreatCheckButton(pAttach, hInstance, FrameViewImage.pszBtChose,110, 277);
+// 		m_btNoUseBoss.CreatCheckButton(pAttach, hInstance, FrameViewImage.pszBtChose,170, 277);
+
+		VisibleWidget(FALSE);
 
 		return TRUE;
 	}

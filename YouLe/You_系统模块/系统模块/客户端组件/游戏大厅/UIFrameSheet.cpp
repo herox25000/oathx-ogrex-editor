@@ -79,14 +79,12 @@ namespace YouLe
 		INT x = rect.right	/ 2 - 180;
 		INT y = rect.bottom / 2 - 109;
 		pClose->Create(IDP_FRAME_CLOSE, CRect(x, y, x + 360, y+218), pAttach, this, this);
-		pClose->VisibleWidget(FALSE);
 
 		//´´½¨¿ò¼ÜÉèÖÃ¿ò
 		UIFrameSet* pSet = new UIFrameSet();
 		x = rect.right / 2 - 180;
 		y = rect.bottom / 2 - 120;
 		pSet->Create(IDP_FRAME_SET, CRect(x, y, x + 359, y+240), pAttach, this, this);
-		pSet->VisibleWidget(FALSE);
 
 		return TRUE;
 	}
@@ -100,7 +98,9 @@ namespace YouLe
 			{
 				UIWidget* pSet = Search(IDP_FRAME_SET);
 				if (pSet)
+				{
 					pSet->VisibleWidget(TRUE);
+				}
 			}
 			break;
 		case IDB_FRAME_MIN:
@@ -113,7 +113,9 @@ namespace YouLe
 			{
 				UIWidget* pClose = Search(IDP_FRAME_CLOSE);
 				if (pClose)
+				{
 					pClose->VisibleWidget(TRUE);
+				}
 			}
 			break;
 		}
