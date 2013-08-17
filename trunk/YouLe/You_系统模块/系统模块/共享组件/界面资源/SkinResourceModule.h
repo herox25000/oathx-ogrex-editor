@@ -108,6 +108,13 @@ struct tagPlatViewImageNew
 	LPCTSTR							pszGLNext;
 
 	LPCTSTR							pszUserInfo;
+	LPCTSTR							pszBtModifyUser;
+	LPCTSTR							pszBtModifyInfo;
+	LPCTSTR							pszBtModifyPassword;
+	LPCTSTR							pszModifyUserInfoBack;
+	LPCTSTR							pszModifyPasswordBack;
+	LPCTSTR							pszBtModifyConfirn;
+	LPCTSTR							pszBtModifyCancel;
 };
 
 

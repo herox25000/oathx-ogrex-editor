@@ -954,6 +954,13 @@ PNG_BT_KEYBOARD64       PNG                     "res\\PLAZA_LOGON\\key\\upper\\u
 PNG_BT_KEYBOARD65       PNG                     "res\\PLAZA_LOGON\\key\\upper\\upper_25.png"
 
 USER_SET_BACK		PNG			"res\\USER_INFO\\USER_SET_BACK.png"
+BT_MODIFY_USER		PNG			"res\\USER_INFO\\MODIFY_USER.PNG"
+BT_MODIFY_INFO		PNG			"res\\USER_INFO\\MODIFY_INFO.PNG"
+BT_MODIFY_PASSWORD	PNG			"res\\USER_INFO\\MODIFY_PASSWORD.PNG"
+MODIFY_USERINFO_BACK	PNG			"res\\USER_INFO\\MODIFY_USER_INFO_BACK.png"
+MODIFY_PASSWORD_BACK	PNG			"res\\USER_INFO\\MODIFY_PASSWORD_BACK.png"
+BT_MODIFY_CONFIRN	PNG			"res\\USER_INFO\\BT_CONFIRN.png"
+BT_MODIFY_CANCEL	PNG			"res\\USER_INFO\\BT_CANCEL.png"			
 
 #endif    // 中文(中华人民共和国) resources
 /////////////////////////////////////////////////////////////////////////////
