@@ -306,7 +306,6 @@ void CDlgRegister::OnOK()
 	strBuffer = strChengshi+strDiqu;
 	lstrcpyn(m_szAddress,strBuffer,CountArray(m_szAddress));
 
-
 	//Ãû×Ö
 	GetDlgItemText(IDC_EDIT_NAME,strBuffer);
 	if (strBuffer.GetLength()<1)

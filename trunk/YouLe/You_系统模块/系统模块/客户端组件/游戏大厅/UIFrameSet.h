@@ -1,7 +1,6 @@
 #pragma once
 
 #include "UIPngButton.h"
-#include "UIPngRadioButton.h"
 
 namespace YouLe
 {
@@ -25,6 +24,9 @@ namespace YouLe
 
 	protected:
 		CPngImage			m_ImageBack;
+
+// 		CControlCheckButton m_btUseBoss;
+// 		CControlCheckButton m_btNoUseBoss;
 
 	};
 };

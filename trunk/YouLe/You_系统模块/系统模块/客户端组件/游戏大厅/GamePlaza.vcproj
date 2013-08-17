@@ -315,12 +315,6 @@
 					RelativePath=".\UIPageManager.h">
 				</File>
 				<File
-					RelativePath=".\UIPlazaView.cpp">
-				</File>
-				<File
-					RelativePath=".\UIPlazaView.h">
-				</File>
-				<File
 					RelativePath=".\UIPngButton.cpp">
 				</File>
 				<File
@@ -368,10 +362,22 @@
 				RelativePath=".\UIFrameUserPage.h">
 			</File>
 			<File
+				RelativePath=".\UIPlazaView.cpp">
+			</File>
+			<File
+				RelativePath=".\UIPlazaView.h">
+			</File>
+			<File
 				RelativePath=".\UIUserInfoSet.cpp">
 			</File>
 			<File
 				RelativePath=".\UIUserInfoSet.h">
+			</File>
+			<File
+				RelativePath=".\UIUserinfoView.cpp">
+			</File>
+			<File
+				RelativePath=".\UIUserinfoView.h">
 			</File>
 		</Filter>
 		<File
