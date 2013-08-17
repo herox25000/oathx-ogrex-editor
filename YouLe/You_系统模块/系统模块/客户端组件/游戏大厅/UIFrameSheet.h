@@ -22,6 +22,10 @@ namespace YouLe
 		// 按钮按下
 		virtual	BOOL			OnClicked(UIWidget* pWidget,
 			const CPoint& cPt);
+
+	public:
+		// 处理指令
+		void					ProcessCommand(int nCommand);
 	};
 }
 

@@ -153,7 +153,6 @@ void CPlatformFrame::LoadImages()
 	m_ImageBack.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszImageMiddle);
 	m_ImageUserInfo.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszImageLeft);
 	m_ImageGamePublic.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszImageRight);
-	m_UserHead.LoadImage(GetResInstanceHandle(), GetPlatformRes().pszBtUserSexHead);
 }
 
 BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
@@ -170,35 +169,9 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	m_ImageUserInfo.DrawImage(pDevC, xPos, nHight + yPos);
 	m_ImageBack.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + xPos, nHight + yPos);
 	m_ImageGamePublic.DrawImage(pDevC, m_ImageUserInfo.GetWidth() + m_ImageBack.GetWidth() + xPos, nHight + yPos);
-	DrawUserInfo(pDevC);
 
 	m_FrameSheet.Draw(pDevC);
 	return TRUE;
-}
-
-//绘制角色信息
-void CPlatformFrame::DrawUserInfo( CDC *pDC )
-{
-	tagGlobalUserData& UserData = g_GlobalUnits.GetGolbalUserData();
-	if (UserData.dwUserID!=0L)
-	{
-		int nHeadNumberWidth	= m_UserHead.GetWidth() / 2;
-		int nHeadNumberHeight	= m_UserHead.GetHeight(); 
-		//输出头像
-		if (UserData.cbGender)
-		{
-			m_UserHead.DrawImage(pDC, 28, 190, nHeadNumberWidth, nHeadNumberHeight, 0, 0);
-		}
-		else
-		{
-			m_UserHead.DrawImage(pDC, 28, 190, nHeadNumberWidth, nHeadNumberHeight, nHeadNumberWidth, 0);
-		}
-
-		//输出帐号
-		CRect rcAccounts;
-		rcAccounts.SetRect(66, 344, 166,360);
-		pDC->DrawText(UserData.szAccounts,lstrlen(UserData.szAccounts),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
-	}
 }
 
 BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
@@ -234,6 +207,11 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 	case IDM_CANCEL_CONNECT:		//取消服务器连接，重现登陆窗口
 		{
 			OnCommandCancelConnect();
+			return TRUE;
+		}
+	case WM_SHOW_USERSET:
+		{
+			m_FrameSheet.ProcessCommand(WM_SHOW_USERSET);
 			return TRUE;
 		}
 	}

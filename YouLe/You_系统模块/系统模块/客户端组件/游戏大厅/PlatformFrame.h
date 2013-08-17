@@ -29,8 +29,6 @@ protected:
 	CPngImage						m_ImageUserInfo;
 	CPngImage						m_ImageGamePublic;
 
-	CPngImage						m_UserHead;
-
 	//控件按钮
 protected:
 	CGdipButton						m_btMin;
@@ -56,8 +54,6 @@ protected:
 public:
 	//加载图片资源
 	void LoadImages();
-	//绘制角色信息
-	void DrawUserInfo(CDC *pDC);
 
 public:
 	//资源句柄

@@ -291,12 +291,6 @@
 					RelativePath=".\UIFrameClose.h">
 				</File>
 				<File
-					RelativePath=".\UIFramePage.cpp">
-				</File>
-				<File
-					RelativePath=".\UIFramePage.h">
-				</File>
-				<File
 					RelativePath=".\UIFrameSheet.cpp">
 				</File>
 				<File
@@ -366,6 +360,12 @@
 			</File>
 			<File
 				RelativePath=".\UIFrameSet.h">
+			</File>
+			<File
+				RelativePath=".\UIFrameUserPage.cpp">
+			</File>
+			<File
+				RelativePath=".\UIFrameUserPage.h">
 			</File>
 			<File
 				RelativePath=".\UIUserInfoSet.cpp">
