@@ -39,9 +39,14 @@ namespace YouLe
 		UIPngButton* pCancel = new UIPngButton();
 		pCancel->Create(IDC_BT_CANCEL, m_ImageBack.GetWidth() / 2 + 10, 210, pAttach, this, hInstance, FrameViewImage.pszBtCancel, 4, this);
 
-// 		m_btUseBoss.CreatCheckButton(pAttach, hInstance, FrameViewImage.pszBtChose,110, 277);
-// 		m_btNoUseBoss.CreatCheckButton(pAttach, hInstance, FrameViewImage.pszBtChose,170, 277);
+		UIPngRadioButton* pBtNoUseBoss = new UIPngRadioButton();
+		pBtNoUseBoss->Create(IDC_BT_NOUSE, 30, 68, pAttach, this, this);
+		pBtNoUseBoss->SetCheck(TRUE);
 
+		UIPngRadioButton* pBtUseBoss = new UIPngRadioButton();
+		pBtUseBoss->Create(IDC_BT_USE, 30, 92, pAttach, this, this);
+		pBtNoUseBoss->SetCheck(FALSE);
+		
 		VisibleWidget(FALSE);
 
 		return TRUE;
@@ -79,16 +84,25 @@ namespace YouLe
 		{
 		case IDC_BT_NOUSE:
 			{
-
+				UIPngRadioButton* pRatioBt = (UIPngRadioButton*)Search(IDC_BT_USE);
+				if (pRatioBt)
+				{
+					pRatioBt->SetCheck(FALSE);
+				}
 			}
 			return TRUE;
 		case  IDC_BT_USE:
 			{
-
+				UIPngRadioButton* pRatioBt = (UIPngRadioButton*)Search(IDC_BT_NOUSE);
+				if (pRatioBt)
+				{
+					pRatioBt->SetCheck(FALSE);
+				}
 			}
 			return TRUE;
 		}
-		return FALSE;
+
+		return TRUE;
 	}
 
 }

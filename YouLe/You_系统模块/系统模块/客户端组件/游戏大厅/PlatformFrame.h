@@ -5,6 +5,7 @@
 #include "DlgLogon.h"
 #include "PlatformSocket.h"
 #include "UIFrameSheet.h"
+#include "FrameSet.h"
 
 class CPlatformSocket;
 class CPlatformFrame : public CFrameWnd 
@@ -21,6 +22,7 @@ protected:
 	CPlatformSocket					m_PlatformSocket;
 	CGamePlazaDlg*					m_pGamePlazaDlg;
 	CDlgLogon						m_DlgLogon;				//登录对话框
+	CFrameSet						m_DlgFrameSet;
 
 	//资源
 protected:
@@ -28,26 +30,6 @@ protected:
 	CPngImage						m_ImageBack;
 	CPngImage						m_ImageUserInfo;
 	CPngImage						m_ImageGamePublic;
-
-	//控件按钮
-protected:
-	CGdipButton						m_btMin;
-	CGdipButton						m_btClose;
-	CGdipButton						m_LobbySet;
-
-	CGdipButton						m_btGame;
-	CGdipButton						m_btMatch;
-	CGdipButton						m_btProperty;
-	CGdipButton						m_btPrize;
-	CGdipButton						m_btRecharge;
-	CGdipButton						m_btReflash;
-	CGdipButton						m_btUserInfoSet;
-	CGdipButton						m_btReturn;
-
-	CGdipButton						m_btUserBag;
-	CGdipButton						m_btSquare;
-	CGdipButton						m_btTill;
-	CGdipButton						m_btIm;
 	
 protected:
 	YouLe::UIFrameSheet				m_FrameSheet;
@@ -86,7 +68,8 @@ public:
 	//IPC 消息
 	afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT * pCopyDataStruct);
 public:
-	void SaveBossKey(int nCtrlKey, int nHelpKey);
+	void		SaveBossKey(int nCtrlKey, int nHelpKey);
+	void		OnOpenFrameSet();
 
 protected:
 	DECLARE_MESSAGE_MAP()

@@ -3,10 +3,6 @@
 #include "PlatformFrame.h"
 #include "Platform.h"
 
-//阴影定义
-#define SHADOW_CX							1							//阴影宽度
-#define SHADOW_CY							1							//阴影高度
-
 IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 
 CPlatformFrame::CPlatformFrame()
@@ -141,7 +137,7 @@ BOOL CPlatformFrame::RectifyResource(int nWidth, int nHeight)
 		RegionWindow.CreateRoundRectRgn(rcFrame.left, rcFrame.top, rcFrame.right + 1, rcFrame.bottom + 1, ROUND_CX,ROUND_CY);
 
 		//设置区域
-		SetWindowRgn(RegionWindow,TRUE);
+		SetWindowRgn(RegionWindow, FALSE);
 	}
 	return TRUE;
 }
@@ -174,6 +170,20 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	return TRUE;
 }
 
+void CPlatformFrame::OnOpenFrameSet()
+{
+	//创建登录框
+	if (m_DlgFrameSet.m_hWnd == NULL) 
+	{
+		m_DlgFrameSet.Create(IDD_FRAMESET, this);
+	}
+	//显示登录框
+	m_DlgFrameSet.ShowWindow(SW_SHOW);
+	m_DlgFrameSet.SetActiveWindow();
+	m_DlgFrameSet.BringWindowToTop();
+	m_DlgFrameSet.SetForegroundWindow();
+}
+
 BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 {
 	//变量定义
@@ -194,7 +204,7 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 			OnCommandLogon();
 			return TRUE;
 		}
-	case IDM_LOGON_PLAZA:			//启动登陆窗口	
+	case IDM_LOGON_PLAZA:			//启动登陆窗口
 		{
 			OnCommandLogon();
 			return TRUE;
@@ -212,6 +222,11 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 	case WM_SHOW_USERSET:
 		{
 			m_FrameSheet.ProcessCommand(WM_SHOW_USERSET);
+			return TRUE;
+		}
+	case WM_SHOW_FRAMESET:			//打开大厅设置
+		{
+//			OnOpenFrameSet();
 			return TRUE;
 		}
 	}

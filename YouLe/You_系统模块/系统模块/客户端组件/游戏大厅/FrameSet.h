@@ -3,7 +3,6 @@
 #include "GdipButton.h"
 #include "DlgLogon.h"
 
-
 class KeyManage  
 {
 public:
@@ -52,12 +51,12 @@ protected:
 
 	//°´Å¥¿Ø¼þ
 protected:
-	CGdipButton				m_btClose;
-	CGdipButton				m_btConfirn;
-	CGdipButton				m_btCancel;
+	CGdipButton					m_btClose;
+	CGdipButton					m_btConfirn;
+	CGdipButton					m_btCancel;
 
-	CControlCheckButton		m_btNotUse;
-	CControlCheckButton		m_btUserQuick;
+	CControlCheckButton			m_btNotUse;
+	CControlCheckButton			m_btUserQuick;
 
 protected:
 	std::string					m_strCtrl;

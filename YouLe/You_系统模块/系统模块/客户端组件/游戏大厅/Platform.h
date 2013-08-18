@@ -1,31 +1,30 @@
 #ifndef _____Platform_H
 #define _____Platform_H
 
-const TCHAR SZ_PLAZACLASS[]	=	TEXT("GamePlaza");				//广场类名
+const TCHAR SZ_PLAZACLASS[]	=	TEXT("GamePlaza");						//广场类名
 const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 
 
 #define CAPTION_SIZE						35							//标题大小
 
-#define LESS_SCREEN_CY			738									//最小高度
-#define LESS_SCREEN_CX			1024								//最小宽度
-//#define CAPTION_SIZE			79									//标题大小
+#define LESS_SCREEN_CY						738							//最小高度
+#define LESS_SCREEN_CX						1024						//最小宽度
+//#define CAPTION_SIZE						79							//标题大小
 
 //圆角大小
-#define ROUND_CX				5									//圆角宽度
-#define ROUND_CY				5									//圆角高度
-
-#define WM_SHOW_FRAMECLOSE		WM_USER + 101
-#define WM_CLOSE_FRAME			WM_USER + 102
-#define WM_SWITCH_ACCOUNT		WM_USER + 103
+#define ROUND_CX							5							//圆角宽度
+#define ROUND_CY							5							//圆角高度
+//阴影定义
+#define SHADOW_CX							1							//阴影宽度
+#define SHADOW_CY							1							//阴影高度
 
 // 视图页面创建的个数
-#define MAX_GICOL			3
-#define MAX_GIROW			3
+#define MAX_GICOL							3
+#define MAX_GIROW							3
 
 //GameItem偏移量
-#define GTP_OFFSETX			5
-#define GTP_OFFSETY			45
+#define GTP_OFFSETX							5
+#define GTP_OFFSETY							45
 
 //按钮ID 对应相应page
 #define IDC_BT_GAME							100							//游戏专区
@@ -73,5 +72,9 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 //////////////////////////////////////////////////////////////////////////
 //UI指令
 #define WM_SHOW_USERSET						WM_USER + 1					//打开用户设置
+#define WM_SHOW_FRAMECLOSE					WM_USER + 101
+#define WM_CLOSE_FRAME						WM_USER + 102
+#define WM_SWITCH_ACCOUNT					WM_USER + 103
+#define WM_SHOW_FRAMESET					WM_USER + 104
 
 #endif

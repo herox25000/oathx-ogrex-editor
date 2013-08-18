@@ -54,6 +54,36 @@ namespace YouLe
 		BOOL			m_bPress;
 		INT				m_nCount;
 	};
+
+	// 单选框
+	class UIPngRadioButton : public UIWidget
+	{
+		enum {
+			PNG_BTNNORMAL,
+			PNG_BTNDOWN,
+		};	
+	public:
+		UIPngRadioButton(void);
+		virtual ~UIPngRadioButton(void);
+
+		// 创建控件
+		virtual	BOOL	Create(INT nID, INT x, INT y, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
+
+	public:
+		// 左键按下
+		virtual BOOL	OnLeftDown(const CPoint& cPt);
+		// 重写绘制
+		virtual BOOL	Draw(CDC* pDC);
+
+	public:
+		//是否选中
+		virtual void	SetCheck(BOOL bCheck);
+
+	protected:
+		CPngImage*		m_pImage;
+		INT				m_nState;
+		INT				m_nSlice;
+	};
 }
 
 #endif

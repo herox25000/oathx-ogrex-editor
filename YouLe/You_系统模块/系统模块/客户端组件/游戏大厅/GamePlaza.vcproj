@@ -133,6 +133,9 @@
 				RelativePath=".\DlgStatus.cpp">
 			</File>
 			<File
+				RelativePath=".\FrameSet.cpp">
+			</File>
+			<File
 				RelativePath=".\GamePlaza.cpp">
 			</File>
 			<File
@@ -190,6 +193,9 @@
 			</File>
 			<File
 				RelativePath=".\DlgStatus.h">
+			</File>
+			<File
+				RelativePath=".\FrameSet.h">
 			</File>
 			<File
 				RelativePath=".\GamePlaza.h">
@@ -285,30 +291,6 @@
 					RelativePath=".\UIFont.h">
 				</File>
 				<File
-					RelativePath=".\UIFrameClose.cpp">
-				</File>
-				<File
-					RelativePath=".\UIFrameClose.h">
-				</File>
-				<File
-					RelativePath=".\UIFrameSheet.cpp">
-				</File>
-				<File
-					RelativePath=".\UIFrameSheet.h">
-				</File>
-				<File
-					RelativePath=".\UIGameItem.cpp">
-				</File>
-				<File
-					RelativePath=".\UIGameItem.h">
-				</File>
-				<File
-					RelativePath=".\UIGamePage.cpp">
-				</File>
-				<File
-					RelativePath=".\UIGamePage.h">
-				</File>
-				<File
 					RelativePath=".\UIPageManager.cpp">
 				</File>
 				<File
@@ -321,22 +303,10 @@
 					RelativePath=".\UIPngButton.h">
 				</File>
 				<File
-					RelativePath=".\UIRoomPage.cpp">
-				</File>
-				<File
-					RelativePath=".\UIRoomPage.h">
-				</File>
-				<File
 					RelativePath=".\UISheet.cpp">
 				</File>
 				<File
 					RelativePath=".\UISheet.h">
-				</File>
-				<File
-					RelativePath=".\UITablePage.cpp">
-				</File>
-				<File
-					RelativePath=".\UITablePage.h">
 				</File>
 				<File
 					RelativePath=".\UIWidget.cpp">
@@ -350,10 +320,22 @@
 			Name="½çÃæUI"
 			Filter="">
 			<File
+				RelativePath=".\UIFrameClose.cpp">
+			</File>
+			<File
+				RelativePath=".\UIFrameClose.h">
+			</File>
+			<File
 				RelativePath=".\UIFrameSet.cpp">
 			</File>
 			<File
 				RelativePath=".\UIFrameSet.h">
+			</File>
+			<File
+				RelativePath=".\UIFrameSheet.cpp">
+			</File>
+			<File
+				RelativePath=".\UIFrameSheet.h">
 			</File>
 			<File
 				RelativePath=".\UIFrameUserPage.cpp">
@@ -362,10 +344,34 @@
 				RelativePath=".\UIFrameUserPage.h">
 			</File>
 			<File
+				RelativePath=".\UIGameItem.cpp">
+			</File>
+			<File
+				RelativePath=".\UIGameItem.h">
+			</File>
+			<File
+				RelativePath=".\UIGamePage.cpp">
+			</File>
+			<File
+				RelativePath=".\UIGamePage.h">
+			</File>
+			<File
 				RelativePath=".\UIPlazaView.cpp">
 			</File>
 			<File
 				RelativePath=".\UIPlazaView.h">
+			</File>
+			<File
+				RelativePath=".\UIRoomPage.cpp">
+			</File>
+			<File
+				RelativePath=".\UIRoomPage.h">
+			</File>
+			<File
+				RelativePath=".\UITablePage.cpp">
+			</File>
+			<File
+				RelativePath=".\UITablePage.h">
 			</File>
 			<File
 				RelativePath=".\UIUserInfoSet.cpp">
