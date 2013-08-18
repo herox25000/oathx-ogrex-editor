@@ -122,38 +122,27 @@ int CFrameSet::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	if (CDialog::OnCreate(lpCreateStruct) == -1)
 		return -1;
 
-	SetWindowPos(NULL, 0, 0, FRAMEDLG_X, FRAMEDLG_Y, SWP_NOZORDER);
-	CenterWindow();
-
 	tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
 	HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
 
 	m_ImageBack.LoadImage(hInstance, FrameViewImage.pszFrameSet);
+	CSize SizeWindow(m_ImageBack.GetWidth(),m_ImageBack.GetHeight());
+	SetWindowPos(NULL,0,0,SizeWindow.cx,SizeWindow.cy, SWP_NOZORDER|SWP_NOMOVE|SWP_NOREDRAW);
+	CenterWindow(this);
 
-	m_btClose.CreateButton(this, FrameViewImage.pszBtClose, _T("PNG"), FRAMEDLG_X - 42, 3, IDC_BT_CLOSE, 4, hInstance);
-	m_btConfirn.CreateButton(this, FrameViewImage.pszBtConfirn, _T("PNG"), FRAMEDLG_X / 2 - 100, 210, IDC_BT_CONFIRN, 4, hInstance);
-	m_btCancel.CreateButton(this, FrameViewImage.pszBtCancel, _T("PNG"), FRAMEDLG_X / 2 + 10, 210, IDC_BT_CANCEL, 4, hInstance);
+//	m_btClose.CreateButton(this, FrameViewImage.pszBtClose, _T("PNG"), SizeWindow.cx - 42, 3, IDC_BT_CLOSE, 4, hInstance);
+// 	m_btConfirn.CreateButton(this, FrameViewImage.pszBtConfirn, _T("PNG"), SizeWindow.cx / 2 - 100, 210, IDC_BT_CONFIRN, 4, hInstance);
+// 	m_btCancel.CreateButton(this, FrameViewImage.pszBtCancel, _T("PNG"), SizeWindow.cx / 2 + 10, 210, IDC_BT_CANCEL, 4, hInstance);
+// 
+// 	m_btNotUse.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28, 68);
+// 	m_btUserQuick.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28, 92);
+// 	m_btNotUse.SetButtonChecked(true);
 
-	m_btNotUse.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28, 68);
-	m_btUserQuick.CreatCheckButton(this, hInstance, FrameViewImage.pszBtChose,28, 92);
-	m_btNotUse.SetButtonChecked(true);
-
-	CRect rcClient;
-	GetClientRect(&rcClient);
-	//调整判断
-	if ((rcClient.Width()!=0)&&(rcClient.Height()!=0))
-	{
-		//框架位置
-		CRect rcFrame;
-		rcFrame.SetRect(0, 0, rcClient.Width(), rcClient.Height());
-
-		//窗口区域
-		CRgn RegionWindow;
-		RegionWindow.CreateRoundRectRgn(rcFrame.left,rcFrame.top,rcFrame.right+1,rcFrame.bottom+1,ROUND_CX,ROUND_CY);
-
-		//设置区域
-		SetWindowRgn(RegionWindow,TRUE);
-	}
+	//设置区域
+	CRgn RgnWindow;
+	RgnWindow.CreateRoundRectRgn(SHADOW_CX, SHADOW_CY, SizeWindow.cx - SHADOW_CX + 1,SizeWindow.cy - SHADOW_CY + 1, ROUND_CX, ROUND_CY);
+	//设置区域
+	SetWindowRgn(RgnWindow, TRUE);
 
 	return 0;
 }
@@ -164,14 +153,14 @@ BOOL CFrameSet::OnEraseBkgnd(CDC* pDC)
 	GetClientRect(&rcClient);
 	CMemDC pDevC(pDC, rcClient);
 	pDevC->SetBkMode(TRANSPARENT);
-	m_ImageBack.DrawImage(pDevC, 0, 0);
+//	m_ImageBack.DrawImage(pDevC, 0, 0);
 
-	m_btClose.SetBkGnd(pDevC);
-	m_btConfirn.SetBkGnd(pDevC);
-	m_btCancel.SetBkGnd(pDevC);
-
-	m_btNotUse.OnDrawControl(pDevC);
-	m_btUserQuick.OnDrawControl(pDevC);
+// 	m_btClose.SetBkGnd(pDevC);
+// 	m_btConfirn.SetBkGnd(pDevC);
+// 	m_btCancel.SetBkGnd(pDevC);
+// 
+// 	m_btNotUse.OnDrawControl(pDevC);
+// 	m_btUserQuick.OnDrawControl(pDevC);
 
 	return TRUE;
 }
@@ -182,7 +171,9 @@ VOID CFrameSet::OnLButtonDown(UINT nFlags, CPoint Point)
 	__super::OnLButtonDown(nFlags,Point);
 
 	//模拟按标题
-	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE))
+	CRect client;
+	GetClientRect(&client);
+	if ((IsZoomed()==FALSE)&&(Point.y<=CAPTION_SIZE) && (Point.x <= (client.Width() - 45)))
 	{
 		PostMessage(WM_NCLBUTTONDOWN,HTCAPTION,MAKELPARAM(Point.x,Point.y));
 	}
@@ -246,22 +237,22 @@ void CFrameSet::OnLButtonUp(UINT nFlags, CPoint point)
 
 BOOL CFrameSet::PreTranslateMessage(MSG* pMsg)
 {
-	if (m_btUserQuick.GetButtonChecked())
-	{
-		m_keys.PreTranslateKey();
-		string str;
-		if(m_keys.GetKeyAllState(str))
-		{
-			CDC* pDC = GetDC();
-			CRect rcClient;
-			GetClientRect(&rcClient);
-			CMemDC pDevC(pDC, rcClient);
-			pDevC->SetBkMode(TRANSPARENT);
-
-			CRect rcAccounts;
-			rcAccounts.SetRect(135, 92, 235,105);
-			pDevC->DrawText(str.c_str(), str.length(),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
-		}
-	}
+// 	if (m_btUserQuick.GetButtonChecked())
+// 	{
+// 		m_keys.PreTranslateKey();
+// 		string str;
+// 		if(m_keys.GetKeyAllState(str))
+// 		{
+// 			CDC* pDC = GetDC();
+// 			CRect rcClient;
+// 			GetClientRect(&rcClient);
+// 			CMemDC pDevC(pDC, rcClient);
+// 			pDevC->SetBkMode(TRANSPARENT);
+// 
+// 			CRect rcAccounts;
+// 			rcAccounts.SetRect(135, 92, 235,105);
+// 			pDevC->DrawText(str.c_str(), str.length(),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
+// 		}
+// 	}
 	return CDialog::PreTranslateMessage(pMsg);
 }

@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UIPngButton.h"
+#include "GlobalUnits.h"
 
 namespace YouLe
 {
@@ -60,8 +61,11 @@ namespace YouLe
 			return FALSE;
 
 		// draw button
-		m_pImage->DrawImage(pDC, m_rect.left, m_rect.top, 
-			m_nSlice, m_pImage->GetHeight(), m_nSlice * m_nState, 0);
+		if ( m_nState < m_nCount )
+		{
+			m_pImage->DrawImage(pDC, m_rect.left, m_rect.top, 
+				m_nSlice, m_pImage->GetHeight(), m_nSlice * m_nState, 0);
+		}
 
 		return UIWidget::Draw(pDC);
 	}
@@ -170,6 +174,78 @@ namespace YouLe
 			return;
 		m_nState = nType;
 		Invalidate(TRUE);
+	}
+
+	/////////////////////////////////////////////////////////////////////////////
+	//µ¥Ñ¡¿ò
+	UIPngRadioButton::UIPngRadioButton(void)
+	{
+		m_nState = 0;
+	}
+
+	UIPngRadioButton::~UIPngRadioButton(void)
+	{
+	}
+
+	BOOL UIPngRadioButton::Create( INT nID, INT x, INT y, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent )
+	{
+		tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
+		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+
+		m_pImage = new CPngImage();
+		ASSERT(m_pImage != NULL);
+
+		BOOL bResult = m_pImage->LoadImage(hInstance, FrameViewImage.pszBtChose);
+		ASSERT(bResult);
+
+		// calc image slice width
+		m_nSlice = m_pImage->GetWidth() / 2;
+
+		// calc button client rect
+		CRect area(x, y, 
+			x + m_nSlice, y + m_pImage->GetHeight());
+
+		return UIWidget::Create(nID, area, pAttach, 
+			pProcess, pParent);
+	}
+
+	void UIPngRadioButton::SetCheck( BOOL bCheck )
+	{
+		if (bCheck)
+			m_nState = PNG_BTNDOWN;
+		else
+			m_nState = PNG_BTNNORMAL;
+		Invalidate(TRUE);
+	}
+
+	BOOL UIPngRadioButton::OnLeftDown( const CPoint& cPt )
+	{
+		if (!m_bVisible || !m_bEnabled)
+			return FALSE;
+
+		UIWidget::OnLeftDown(cPt);
+
+		if (PtInRect(cPt))
+			m_nState = PNG_BTNDOWN;
+
+		Invalidate(TRUE);
+
+		return TRUE;
+	}
+
+	BOOL	UIPngRadioButton::Draw(CDC* pDC)
+	{
+		if (!m_bVisible || m_pImage == NULL)
+			return FALSE;
+
+		// draw button
+		if ( m_nState < 2 )
+		{
+			m_pImage->DrawImage(pDC, m_rect.left, m_rect.top, 
+				m_nSlice, m_pImage->GetHeight(), m_nSlice * m_nState, 0);
+		}
+
+		return UIWidget::Draw(pDC);
 	}
 
 }
