@@ -44,10 +44,36 @@ namespace YouLe
 		if (!IsWidgetVisible())
 			return FALSE;
 
-		//显示玩家的信息
-
 		CPoint cPt = m_rect.TopLeft();
 		m_ImageBack.DrawImage(pDC, cPt.x, cPt.y);
+
+		//显示玩家的信息
+		tagGlobalUserData& UserData = g_GlobalUnits.GetGolbalUserData();
+		if (UserData.dwUserID)
+		{
+			CRect rcAccounts;
+			char toStr[25];
+			//昵称
+			rcAccounts.SetRect(m_rect.left + 262, m_rect.top + 76, m_rect.left + 346, m_rect.top + 94);
+			pDC->DrawText(UserData.szNickName,lstrlen(UserData.szNickName), &rcAccounts, DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//输出帐号
+			rcAccounts.SetRect(m_rect.left + 416, m_rect.top + 76, m_rect.left + 520, m_rect.top + 94);
+			pDC->DrawText(UserData.szAccounts,lstrlen(UserData.szAccounts), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//姓名
+			rcAccounts.SetRect(m_rect.left + 262, m_rect.top + 110, m_rect.left + 346, m_rect.top + 126);
+			pDC->DrawText(UserData.szUserName,lstrlen(UserData.szUserName), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//性别
+			rcAccounts.SetRect(m_rect.left + 416, m_rect.top + 110, m_rect.left + 520, m_rect.top + 126);
+			if (UserData.cbGender)
+				sprintf(toStr, "%s", "男");
+			else
+				sprintf(toStr, "%s", "女");
+			pDC->DrawText(toStr,lstrlen(toStr), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//所在城市
+			rcAccounts.SetRect(m_rect.left + 262, m_rect.top + 150, m_rect.left + 520, m_rect.top + 166);
+			pDC->DrawText(UserData.szAddress,lstrlen(UserData.szAddress), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//个性签名
+		}
 
 		return UIWidget::Draw(pDC);
 	}
