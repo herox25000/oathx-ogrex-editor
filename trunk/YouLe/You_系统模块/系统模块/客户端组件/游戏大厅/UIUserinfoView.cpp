@@ -79,10 +79,20 @@ namespace YouLe
 		UIPngButton* pModifyCancel= new UIPngButton();
 		pModifyCancel->Create(IDC_BT_MD_USERINFO_CANCEL, 280, 400, pAttach, pProcess, hInstance, PlazaViewImage.pszBtModifyCancel, 4, this);
 
-		VisibleWidget(FALSE);
+		// eidt
+		//m_Password.Create(WS_VISIBLE|WS_CHILD, CRect(m_rect.left + 152, m_rect.top + 126, m_rect.left + 418, m_rect.top + 148), pAttach, 0);
 
+		VisibleWidget(FALSE);
+	
 		return TRUE;
 
+	}
+
+	void UIModifyUserInfoView::VisibleWidget(bool bVisible)
+	{
+		UIWidget::VisibleWidget(bVisible);
+
+		//m_Password.ShowWindow(bVisible ? SW_SHOW : SW_HIDE);
 	}
 
 	BOOL UIModifyUserInfoView::Draw( CDC* pDC )

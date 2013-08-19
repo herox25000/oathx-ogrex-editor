@@ -744,9 +744,13 @@ bool CDlgLogon::SendLogonPacket(ITCPSocket * pIClientSocke)
 				memset(pRegisterAccounts,0,sizeof(CMD_GP_RegisterAccounts));
 				pRegisterAccounts->wFaceID=m_wFaceID;
 				pRegisterAccounts->cbGender=m_cbGender;
-				pRegisterAccounts->dwPlazaVersion=g_GlobalUnits.GetPlazaVersion();
-				lstrcpyn(pRegisterAccounts->szPassWord,szPassword,CountArray(pRegisterAccounts->szPassWord));
-				lstrcpyn(pRegisterAccounts->szAccounts,m_szAccounts,CountArray(pRegisterAccounts->szAccounts));
+				pRegisterAccounts->dwPlazaVersion = g_GlobalUnits.GetPlazaVersion();
+				lstrcpyn(pRegisterAccounts->szPassWord, szPassword, CountArray(pRegisterAccounts->szPassWord));
+				lstrcpyn(pRegisterAccounts->szAccounts, m_szAccounts, CountArray(pRegisterAccounts->szAccounts));
+				lstrcpyn(pRegisterAccounts->szNickName, m_szLikeName, CountArray(pRegisterAccounts->szNickName));
+				lstrcpyn(pRegisterAccounts->szUserName, m_szName, CountArray(pRegisterAccounts->szUserName));
+				lstrcpyn(pRegisterAccounts->szCeitificate, m_szSFZ, CountArray(pRegisterAccounts->szCeitificate));
+				lstrcpyn(pRegisterAccounts->szAddress, m_szAddress, CountArray(pRegisterAccounts->szAddress));
 				
 				//»úÆ÷ĞòÁĞºÅ
 				tagClientSerial ClientSerial;

@@ -55,6 +55,11 @@ struct DBR_GP_RegisterAccounts
 	TCHAR							szAccounts[NAME_LEN];				//登录帐号
 	TCHAR							szPassWord[PASS_LEN];				//登录密码
 	TCHAR							szComputerID[COMPUTER_ID_LEN];		//机器序列
+
+	TCHAR							szNickName[NAME_LEN];				//昵称
+	TCHAR							szUserName[NAME_LEN];				//玩家名字
+	TCHAR							szCeitificate[NAME_LEN];			//身份证
+	TCHAR							szAddress[NAME_LEN];				//地址
 };
 
 //登录成功
@@ -74,6 +79,18 @@ struct DBR_GP_LogonSuccess
 	DWORD							dwCustomFaceVer;					//头像版本
 	BYTE							cbMember;							//会员等级
 	TCHAR							szUnderWrite[UNDER_WRITE_LEN];		//个性签名
+
+	//额外数据
+	TCHAR							szUserName[NAME_LEN];				//用户名
+	TCHAR							szNickName[NAME_LEN];				//昵称
+	TCHAR							szCeitificate[18];					//身份证
+	TCHAR							szAddress[NAME_LEN];				//地址
+	WORD							wLevel;								//用户等级
+
+	//金钱
+	LONG							lScore;								//用户积分
+	LONG							lBeans;								//乐豆
+	LONG							lLottery;							//奖券
 
 	//描述信息
 	TCHAR							szDescribeString[128];				//描述消息

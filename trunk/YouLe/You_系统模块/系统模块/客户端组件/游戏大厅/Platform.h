@@ -75,6 +75,4 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 #define WM_SHOW_FRAMECLOSE					WM_USER + 101
 #define WM_CLOSE_FRAME						WM_USER + 102
 #define WM_SWITCH_ACCOUNT					WM_USER + 103
-#define WM_SHOW_FRAMESET					WM_USER + 104
-
 #endif

@@ -171,7 +171,8 @@ bool CDataBaseSink::OnRequestLogon(WORD wRequestID, DWORD dwContextID, VOID * pD
 				//执行查询
 				DBR_GP_RegisterAccounts * pRegisterAccounts=(DBR_GP_RegisterAccounts *)pData;
 				lReturnValue=SPRegisterAccounts(pRegisterAccounts->szAccounts,pRegisterAccounts->szPassWord,pRegisterAccounts->szSpreader,
-					pRegisterAccounts->wFaceID,pRegisterAccounts->cbGender,pRegisterAccounts->dwClientIP,pRegisterAccounts->szComputerID);
+					pRegisterAccounts->wFaceID,pRegisterAccounts->cbGender,pRegisterAccounts->dwClientIP,pRegisterAccounts->szComputerID,
+					pRegisterAccounts->szNickName, pRegisterAccounts->szUserName, pRegisterAccounts->szCeitificate, pRegisterAccounts->szAddress);
 				pszPassword=pRegisterAccounts->szPassWord;
 
 				break;
@@ -201,6 +202,16 @@ bool CDataBaseSink::OnRequestLogon(WORD wRequestID, DWORD dwContextID, VOID * pD
 			m_AccountsDBAide.GetValue_String(TEXT("Accounts"),LogonSuccess.szAccounts,CountArray(LogonSuccess.szAccounts));
 			m_AccountsDBAide.GetValue_String(TEXT("UnderWrite"),LogonSuccess.szUnderWrite,CountArray(LogonSuccess.szUnderWrite));
 			m_AccountsDBAide.GetValue_String(TEXT("ErrorDescribe"),LogonSuccess.szDescribeString,CountArray(LogonSuccess.szDescribeString));
+			//额外数据
+			LogonSuccess.wLevel = m_AccountsDBAide.GetValue_WORD(TEXT("GameLevel"));
+			m_AccountsDBAide.GetValue_String(TEXT("Name"),LogonSuccess.szUserName,CountArray(LogonSuccess.szUserName));
+			m_AccountsDBAide.GetValue_String(TEXT("Ceitificate"),LogonSuccess.szCeitificate,CountArray(LogonSuccess.szCeitificate));
+			m_AccountsDBAide.GetValue_String(TEXT("Address"),LogonSuccess.szAddress,CountArray(LogonSuccess.szAddress));
+			m_AccountsDBAide.GetValue_String(TEXT("RegAccounts"),LogonSuccess.szNickName,CountArray(LogonSuccess.szNickName));
+			//金钱
+			LogonSuccess.lScore = m_AccountsDBAide.GetValue_LONG(TEXT("Score"));
+			LogonSuccess.lBeans = m_AccountsDBAide.GetValue_LONG(TEXT("Beans"));
+			LogonSuccess.lLottery = m_AccountsDBAide.GetValue_LONG(TEXT("Lottery"));
 
 			//设置密码
 			CopyMemory(LogonSuccess.szPassword,pszPassword,CountArray(LogonSuccess.szPassword));
@@ -504,7 +515,8 @@ LONG CDataBaseSink::SPLogonByAccounts(LPCTSTR pszAccounts, LPCTSTR pszPassword, 
 }
 
 //更新存储过程
-LONG CDataBaseSink::SPRegisterAccounts(LPCTSTR pszAccounts, LPCTSTR pszPassword, LPCTSTR pszSpreader, WORD wFaceID, BYTE cbGender, DWORD dwClientIP, LPCTSTR pszComputerID)
+LONG CDataBaseSink::SPRegisterAccounts(LPCTSTR pszAccounts, LPCTSTR pszPassword, LPCTSTR pszSpreader, WORD wFaceID, BYTE cbGender, DWORD dwClientIP, LPCTSTR pszComputerID,
+									LPCTSTR pszNickName, LPCTSTR pszUserName, LPCTSTR pszCeitificate, LPCTSTR pszAddress)
 {
 	//效验参数
 	ASSERT(pszAccounts!=NULL);
@@ -525,6 +537,11 @@ LONG CDataBaseSink::SPRegisterAccounts(LPCTSTR pszAccounts, LPCTSTR pszPassword,
 	m_AccountsDBAide.AddParameter(TEXT("@cbGender"),cbGender);
 	m_AccountsDBAide.AddParameter(TEXT("@strClientIP"),szClientIP);
 	m_AccountsDBAide.AddParameter(TEXT("@strMachineSerial"),pszComputerID);
+	
+	m_AccountsDBAide.AddParameter(TEXT("@strNickName"), pszNickName);
+	m_AccountsDBAide.AddParameter(TEXT("@strUserName"), pszUserName);
+	m_AccountsDBAide.AddParameter(TEXT("@strCeitificate"), pszCeitificate);
+	m_AccountsDBAide.AddParameter(TEXT("@strAddress"), pszAddress);
 
 	return m_AccountsDBAide.ExecuteProcess(TEXT("GSP_GP_RegisterAccounts"),true);
 }

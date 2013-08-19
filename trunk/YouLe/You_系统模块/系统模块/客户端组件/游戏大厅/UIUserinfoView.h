@@ -33,8 +33,10 @@ namespace YouLe
 
 		virtual BOOL		Draw(CDC* pDC);
 
+		virtual void		VisibleWidget(bool bVisible);
 	protected:
 		CPngImage			m_ImageBack;
+		CSkinEditEx			m_Password;
 	};
 
 	// –ﬁ∏ƒ”√ªß√‹¬Î

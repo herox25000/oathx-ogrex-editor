@@ -1,7 +1,5 @@
 #include "StdAfx.h"
 #include "UIFrameSet.h"
-#include "GlobalUnits.h"
-#include "Platform.h"
 
 namespace YouLe
 {

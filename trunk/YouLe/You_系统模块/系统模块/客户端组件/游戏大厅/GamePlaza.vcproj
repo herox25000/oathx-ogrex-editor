@@ -133,9 +133,6 @@
 				RelativePath=".\DlgStatus.cpp">
 			</File>
 			<File
-				RelativePath=".\FrameSet.cpp">
-			</File>
-			<File
 				RelativePath=".\GamePlaza.cpp">
 			</File>
 			<File
@@ -193,9 +190,6 @@
 			</File>
 			<File
 				RelativePath=".\DlgStatus.h">
-			</File>
-			<File
-				RelativePath=".\FrameSet.h">
 			</File>
 			<File
 				RelativePath=".\GamePlaza.h">

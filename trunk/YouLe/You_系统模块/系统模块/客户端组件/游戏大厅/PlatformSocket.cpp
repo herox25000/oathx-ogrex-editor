@@ -158,6 +158,10 @@ bool CPlatformSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			UserData.dwGameID=pLogonSuccess->dwGameID;
 			UserData.dwExperience=pLogonSuccess->dwExperience;
 			UserData.dwCustomFaceVer=pLogonSuccess->dwCustomFaceVer;
+			UserData.wLevel = pLogonSuccess->wLevel;
+			UserData.lScore = pLogonSuccess->lScore;
+			UserData.lBeans = pLogonSuccess->lBeans;
+			UserData.lLottery = pLogonSuccess->lLottery;
 
 			//¿©’π–≈œ¢
 			void * pDataBuffer=NULL;
@@ -223,6 +227,42 @@ bool CPlatformSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 						if (pDataBuffer!=NULL) 
 						{
 							g_GlobalUnits.SetStationPage((LPCTSTR)pDataBuffer);
+						}
+						break;
+					}
+				case DTP_NICK_NAME:
+					{
+						if (DataDescribe.wDataSize<=sizeof(UserData.szNickName)) 
+						{
+							CopyMemory(UserData.szNickName,pDataBuffer, DataDescribe.wDataSize);
+							UserData.szNickName[CountArray(UserData.szNickName)-1]=0;
+						}
+						break;
+					}
+				case DTP_USER_NAME:
+					{
+						if (DataDescribe.wDataSize<=sizeof(UserData.szUserName)) 
+						{
+							CopyMemory(UserData.szUserName,pDataBuffer, DataDescribe.wDataSize);
+							UserData.szUserName[CountArray(UserData.szUserName)-1]=0;
+						}
+						break;
+					}
+				case DTP_USER_CEITIFICATE:
+					{
+						if (DataDescribe.wDataSize<=sizeof(UserData.szCeitificate)) 
+						{
+							CopyMemory(UserData.szCeitificate,pDataBuffer, DataDescribe.wDataSize);
+							UserData.szCeitificate[CountArray(UserData.szCeitificate)-1]=0;
+						}
+						break;
+					}
+				case DTP_USER_ADDRESS:
+					{
+						if (DataDescribe.wDataSize<=sizeof(UserData.szAddress)) 
+						{
+							CopyMemory(UserData.szAddress,pDataBuffer, DataDescribe.wDataSize);
+							UserData.szAddress[CountArray(UserData.szAddress)-1]=0;
 						}
 						break;
 					}
