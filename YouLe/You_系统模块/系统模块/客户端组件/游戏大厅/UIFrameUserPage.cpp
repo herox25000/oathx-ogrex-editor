@@ -70,10 +70,30 @@ namespace YouLe
 				m_UserHead.DrawImage(pDC, 28, 190, nHeadNumberWidth, nHeadNumberHeight, nHeadNumberWidth, 0);
 			}
 
-			//Êä³öÕÊºÅ
 			CRect rcAccounts;
-			rcAccounts.SetRect(66, 344, 166,360);
-			pDC->DrawText(UserData.szAccounts,lstrlen(UserData.szAccounts),&rcAccounts,DT_SINGLELINE|DT_VCENTER|DT_END_ELLIPSIS);
+			char toStr[25];
+			//êÇ³Æ
+			rcAccounts.SetRect(m_rect.left + 66, m_rect.top + 176, m_rect.left + 166, m_rect.top + 192);
+			pDC->DrawText(UserData.szNickName,lstrlen(UserData.szNickName), &rcAccounts, DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//Êä³öÕÊºÅ
+			rcAccounts.SetRect(m_rect.left + 66, m_rect.top + 198, m_rect.left + 166, m_rect.top + 214);
+			pDC->DrawText(UserData.szAccounts,lstrlen(UserData.szAccounts), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//µÈ¼¶
+			rcAccounts.SetRect(m_rect.left + 54, m_rect.top + 226, m_rect.left + 76, m_rect.top + 242);
+			itoa(UserData.wLevel, toStr, 10);
+			pDC->DrawText(toStr,lstrlen(toStr), &rcAccounts,DT_SINGLELINE|DT_CENTER|DT_END_ELLIPSIS);
+			//ÓÎ±Ò
+			rcAccounts.SetRect(m_rect.left + 74, m_rect.top + 254, m_rect.left + 202, m_rect.top + 270);
+			itoa(UserData.lScore, toStr, 10);
+			pDC->DrawText(toStr,lstrlen(toStr), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//ÀÖ¶¹
+			rcAccounts.SetRect(m_rect.left + 74, m_rect.top + 284, m_rect.left + 202, m_rect.top + 300);
+			itoa(UserData.lBeans, toStr, 10);
+			pDC->DrawText(toStr,lstrlen(toStr), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
+			//½±È¯
+			rcAccounts.SetRect(m_rect.left + 74, m_rect.top + 314, m_rect.left + 202, m_rect.top + 330);
+			itoa(UserData.lLottery, toStr, 10);
+			pDC->DrawText(toStr,lstrlen(toStr), &rcAccounts,DT_SINGLELINE|DT_LEFT|DT_END_ELLIPSIS);
 		}
 
 
