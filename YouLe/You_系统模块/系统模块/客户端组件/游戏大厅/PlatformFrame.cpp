@@ -170,20 +170,6 @@ BOOL CPlatformFrame::OnEraseBkgnd(CDC* pDC)
 	return TRUE;
 }
 
-void CPlatformFrame::OnOpenFrameSet()
-{
-	//创建登录框
-	if (m_DlgFrameSet.m_hWnd == NULL) 
-	{
-		m_DlgFrameSet.Create(IDD_FRAMESET, this);
-	}
-	//显示登录框
-	m_DlgFrameSet.ShowWindow(SW_SHOW);
-	m_DlgFrameSet.SetActiveWindow();
-	m_DlgFrameSet.BringWindowToTop();
-	m_DlgFrameSet.SetForegroundWindow();
-}
-
 BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 {
 	//变量定义
@@ -222,11 +208,6 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 	case WM_SHOW_USERSET:
 		{
 			m_FrameSheet.ProcessCommand(WM_SHOW_USERSET);
-			return TRUE;
-		}
-	case WM_SHOW_FRAMESET:			//打开大厅设置
-		{
-//			OnOpenFrameSet();
 			return TRUE;
 		}
 	}

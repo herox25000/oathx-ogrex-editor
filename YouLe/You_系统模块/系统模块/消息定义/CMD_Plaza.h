@@ -55,6 +55,11 @@ struct CMD_GP_RegisterAccounts
 	TCHAR								szSpreader[NAME_LEN];			//推广人名
 	TCHAR								szAccounts[NAME_LEN];			//登录帐号
 	TCHAR								szPassWord[PASS_LEN];			//登录密码
+
+	TCHAR								szNickName[NAME_LEN];			//昵称
+	TCHAR								szUserName[NAME_LEN];			//玩家名字
+	TCHAR								szCeitificate[NAME_LEN];		//身份证
+	TCHAR								szAddress[NAME_LEN];			//地址
 };
 
 //登陆成功
@@ -69,6 +74,10 @@ struct CMD_GP_LogonSuccess
 	
 	//扩展信息
 	DWORD								dwCustomFaceVer;				//头像版本
+	WORD								wLevel;							//用户等级
+	LONG								lScore;							//用户积分
+	LONG								lBeans;							//用户乐豆
+	LONG								lLottery;						//用户奖券
 };
 
 //登陆失败

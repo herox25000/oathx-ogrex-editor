@@ -172,6 +172,10 @@ bool CAttemperEngineSink::OnDBLogonSuccess(DWORD dwContextID, VOID * pData, WORD
 	pCMDLogonSuccess->dwGameID=pDBRLogonSuccess->dwGameID;
 	pCMDLogonSuccess->dwExperience=pDBRLogonSuccess->dwExperience;
 	pCMDLogonSuccess->dwCustomFaceVer=pDBRLogonSuccess->dwCustomFaceVer;
+	pCMDLogonSuccess->wLevel = pDBRLogonSuccess->wLevel;
+	pCMDLogonSuccess->lScore = pDBRLogonSuccess->lScore;
+	pCMDLogonSuccess->lBeans = pDBRLogonSuccess->lBeans;
+	pCMDLogonSuccess->lLottery = pDBRLogonSuccess->lLottery;
 
 	//叠加数据
 	CSendPacketHelper SendPacket(cbBuffer+sizeof(CMD_GP_LogonSuccess),sizeof(cbBuffer)-sizeof(CMD_GP_LogonSuccess));
@@ -190,6 +194,11 @@ bool CAttemperEngineSink::OnDBLogonSuccess(DWORD dwContextID, VOID * pData, WORD
 	{
 		SendPacket.AddPacket(m_pInitParamter->m_szMainPage,CountStringBuffer(m_pInitParamter->m_szMainPage),DTP_STATION_PAGE);
 	}
+
+	SendPacket.AddPacket(pDBRLogonSuccess->szNickName,CountStringBuffer(pDBRLogonSuccess->szNickName),DTP_NICK_NAME);
+	SendPacket.AddPacket(pDBRLogonSuccess->szUserName,CountStringBuffer(pDBRLogonSuccess->szUserName),DTP_USER_NAME);
+	SendPacket.AddPacket(pDBRLogonSuccess->szCeitificate,CountStringBuffer(pDBRLogonSuccess->szCeitificate),DTP_USER_CEITIFICATE);
+	SendPacket.AddPacket(pDBRLogonSuccess->szAddress,CountStringBuffer(pDBRLogonSuccess->szAddress),DTP_USER_ADDRESS);
 
 	//发送登录结果
 	WORD wSendSize=sizeof(CMD_GP_LogonSuccess)+SendPacket.GetDataSize();
@@ -633,6 +642,11 @@ bool CAttemperEngineSink::OnSocketMainLogon(WORD wSubCmdID, VOID * pData, WORD w
 			pRegisterAccounts->szAccounts[CountArray(pRegisterAccounts->szAccounts)-1]=0;
 			pRegisterAccounts->szPassWord[CountArray(pRegisterAccounts->szPassWord)-1]=0;
 
+			pRegisterAccounts->szNickName[CountArray(pRegisterAccounts->szNickName)-1]=0;
+			pRegisterAccounts->szUserName[CountArray(pRegisterAccounts->szUserName)-1]=0;
+			pRegisterAccounts->szCeitificate[CountArray(pRegisterAccounts->szCeitificate)-1]=0;
+			pRegisterAccounts->szAddress[CountArray(pRegisterAccounts->szAddress)-1]=0;
+
 			//连接信息
 			ASSERT(LOWORD(dwSocketID)<m_pInitParamter->m_wMaxConnect);
 			DWORD dwClientAddr=(m_pBindParameter+LOWORD(dwSocketID))->dwClientIP;
@@ -668,6 +682,11 @@ bool CAttemperEngineSink::OnSocketMainLogon(WORD wSubCmdID, VOID * pData, WORD w
 			lstrcpyn(RegisterAccounts.szSpreader,pRegisterAccounts->szSpreader,sizeof(RegisterAccounts.szSpreader));
 			lstrcpyn(RegisterAccounts.szAccounts,pRegisterAccounts->szAccounts,sizeof(RegisterAccounts.szAccounts));
 			lstrcpyn(RegisterAccounts.szPassWord,pRegisterAccounts->szPassWord,sizeof(RegisterAccounts.szPassWord));
+
+			lstrcpyn(RegisterAccounts.szNickName,pRegisterAccounts->szNickName,sizeof(RegisterAccounts.szNickName));
+			lstrcpyn(RegisterAccounts.szUserName,pRegisterAccounts->szUserName,sizeof(RegisterAccounts.szUserName));
+			lstrcpyn(RegisterAccounts.szCeitificate,pRegisterAccounts->szCeitificate,sizeof(RegisterAccounts.szCeitificate));
+			lstrcpyn(RegisterAccounts.szAddress,pRegisterAccounts->szAddress,sizeof(RegisterAccounts.szAddress));
 
 			//变量定义
 			VOID * pData=NULL;

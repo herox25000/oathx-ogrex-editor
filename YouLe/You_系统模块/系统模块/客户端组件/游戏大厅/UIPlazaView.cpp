@@ -68,6 +68,7 @@ namespace YouLe
 			pButton->Create(ButtonID[i], BUTTON_X + 108 * i, BUTTON_Y, pAttach, this, hInstance, chBtnImageResouceName[i], 4, this);
 		}
 
+		//游戏列表
 		UIGamePage* pGamePage = new UIGamePage();
 		pGamePage->Create(IDP_GAME_VIEW, CRect(LFET_GAME, TOP_GAME, LFET_GAME + GAMEPAGE_WIDTH, TOP_GAME + GAMEPAGE_HEIGTH), pAttach, this, this);
 
@@ -79,7 +80,6 @@ namespace YouLe
 		// 创建返回按钮
 		UIPngButton* pBtReturn = new UIPngButton();
 		pBtReturn->Create(IDB_GPRETURN, rect.right - 300, 62, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
-
 
 		ShowPage(IDC_BT_GAME);
 		return TRUE;

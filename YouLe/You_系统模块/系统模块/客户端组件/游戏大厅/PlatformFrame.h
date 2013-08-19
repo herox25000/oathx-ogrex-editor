@@ -22,7 +22,6 @@ protected:
 	CPlatformSocket					m_PlatformSocket;
 	CGamePlazaDlg*					m_pGamePlazaDlg;
 	CDlgLogon						m_DlgLogon;				//登录对话框
-	CFrameSet						m_DlgFrameSet;
 
 	//资源
 protected:
@@ -69,7 +68,6 @@ public:
 	afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT * pCopyDataStruct);
 public:
 	void		SaveBossKey(int nCtrlKey, int nHelpKey);
-	void		OnOpenFrameSet();
 
 protected:
 	DECLARE_MESSAGE_MAP()

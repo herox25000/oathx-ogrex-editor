@@ -18,7 +18,6 @@ struct tagDataDescribe
 #define DTP_NULL					0								//无效数据
 
 //基础信息
-//基础信息
 #define DTP_USER_ID					1								//用户 I D
 #define DTP_GAME_ID					2								//用户 I D
 #define	DTP_USER_ACCOUNTS			3								//用户帐号
@@ -29,6 +28,10 @@ struct tagDataDescribe
 #define DTP_MASTER_RIGHT			8								//管理权限
 #define	DTP_UNDER_WRITE				9								//个性签名
 #define	DTP_LOVE_LINESS				10								//用户魅力
+#define DTP_NICK_NAME				11								//昵称
+#define DTP_USER_NAME				12								//玩家名字
+#define DTP_USER_CEITIFICATE		13								//玩家身份证
+#define DTP_USER_ADDRESS			14								//玩家地址
 
 //状态信息
 #define DTP_USER_STATUS				100								//用户状态
@@ -56,6 +59,8 @@ struct tagDataDescribe
 #define DTP_USER_EXPERIENCE			213								//用户经验
 #define DTP_GAME_LEVEL				214								//游戏等级
 #define DTP_COMMUNITY_LEVEL			215								//社区等级
+#define DTP_GAME_BEANS				216								//用户乐豆
+#define DTP_GAME_LOTTERY			217								//用户奖券
 
 //扩展信息
 #define DTP_USER_GROUP_ID			300								//社团 I D
