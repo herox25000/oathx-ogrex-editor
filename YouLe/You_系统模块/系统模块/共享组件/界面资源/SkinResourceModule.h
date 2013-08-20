@@ -106,6 +106,9 @@ struct tagPlatViewImageNew
 	LPCTSTR							pszTilteImage;
 	LPCTSTR							pszGLLast;
 	LPCTSTR							pszGLNext;
+	LPCTSTR							pszTableReady;
+	LPCTSTR							pszTableLocker;
+
 
 	LPCTSTR							pszUserInfo;
 	LPCTSTR							pszBtModifyUser;
