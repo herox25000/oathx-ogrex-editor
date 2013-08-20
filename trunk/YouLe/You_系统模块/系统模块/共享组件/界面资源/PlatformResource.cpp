@@ -179,6 +179,8 @@ bool __cdecl CPlatformResource::GetPlazaViewImage(tagPlatViewImageNew * PlazaVie
 	PlazaViewImage->pszGLLast	   = TEXT("GAMEITEM_LAST");	 
 	PlazaViewImage->pszGLNext	   = TEXT("GAMEITEM_NEXT");	 
 	PlazaViewImage->pszBtFastJoin  = TEXT("PNG_GL_FASTJOIN");
+	PlazaViewImage->pszTableReady  = TEXT("GAMETABLE_READY");
+	PlazaViewImage->pszTableLocker = TEXT("GAMETABLE_LOCKER");
 
 	PlazaViewImage->pszUserInfo	   = TEXT("USER_SET_BACK");
 	PlazaViewImage->pszBtModifyUser = TEXT("BT_MODIFY_USER");

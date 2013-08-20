@@ -862,6 +862,8 @@ GAMETAB_LEIS            PNG                     "res\\PLAZA_VIEW\\GAMETAB_LEIS.p
 PNG_GL_BACK             PNG                     "res\\PLAZA_VIEW\\GL_BACK.png"
 PNG_GL_TILTE            PNG                     "res\\PLAZA_VIEW\\GL_TILTE.png"
 PNG_GL_FASTJOIN		PNG			"res\\PLAZA_VIEW\\GL_FASTJOIN.png"
+GAMETABLE_READY		PNG			"res\\PLAZA_VIEW\\TABLE_READY.png"
+GAMETABLE_LOCKER	PNG			"res\\PLAZA_VIEW\\TABLE_LOCKER.png"	
 
 DLG_ENQUIRE_BACK        PNG                     "res\\PLAZA_ENQUIRE\\DLG_ENQUIRE_BACK.png"
 BT_ENQUIRE_CANCEL       PNG                     "res\\PLAZA_ENQUIRE\\BT_ENQUIRE_CANCEL.png"
