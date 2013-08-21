@@ -2,12 +2,13 @@
 #include "GamePlaza.h"
 #include "PlatformFrame.h"
 #include "Platform.h"
+#include ".\platformframe.h"
 
 IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 
 CPlatformFrame::CPlatformFrame()
 {
-
+	m_bUseBoss = false;
 }
 
 CPlatformFrame::~CPlatformFrame()
@@ -24,6 +25,9 @@ BEGIN_MESSAGE_MAP(CPlatformFrame, CFrameWnd)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
+	ON_MESSAGE(WM_HOTKEY,OnHotKeyMessage)
+//	ON_WM_SYSKEYDOWN()
+//	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 //资源句柄
@@ -51,6 +55,10 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	CRect rcClient;
 	GetClientRect(&rcClient);
 	RectifyResource(LESS_SCREEN_CX, LESS_SCREEN_CY);
+
+	//注册热键
+	if (CSystemParameter::GetInstance().m_bUseBoss)
+		g_GlobalUnits.RegisterHotKey(m_hWnd, IDI_HOT_KEY_BOSS, CSystemParameter::GetInstance().m_wBossHotKey);
 	
 	//启动登陆窗口
 	m_DlgLogon.SetPlatFormPointer(this);
@@ -69,12 +77,45 @@ void CPlatformFrame::DoDataExchange(CDataExchange * pDX)
 {
 	__super::DoDataExchange(pDX);
 }
+
+
 //消息解释
 BOOL CPlatformFrame::PreTranslateMessage(MSG * pMsg)
 {
+	if (m_bUseBoss)
+	{
+		if (pMsg->message == WM_KEYDOWN || pMsg->message == WM_SYSKEYDOWN)
+		{
+			switch(pMsg->wParam)
+			{
+			case VK_ESCAPE:
+				break;
+			case VK_RETURN:
+				break;
+			case VK_CONTROL:
+				m_wModifiers = HOTKEYF_CONTROL;
+				break;
+			case VK_SHIFT:
+				m_wModifiers = HOTKEYF_SHIFT;
+				break;
+			case VK_MENU:
+				m_wModifiers = HOTKEYF_ALT;
+				break;
+			default:
+				{
+					m_wCode = LOBYTE(LOWORD(pMsg->wParam));
+				}
+				break;
+			}
+		}
+		if (m_wModifiers != 0)
+		{
+			CSystemParameter::GetInstance().m_wBossHotKey = MAKEWORD(m_wCode, m_wModifiers);
+			m_FrameSheet.Invalidate(TRUE);
+		}
+	}
 	return __super::PreTranslateMessage(pMsg);;
 }
-
 
 //启动登陆窗口
 void CPlatformFrame::OnCommandLogon()
@@ -210,6 +251,35 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 			m_FrameSheet.ProcessCommand(WM_SHOW_USERSET);
 			return TRUE;
 		}
+	case WM_START_KEYBOSS:		//设置老板键
+		{
+			if( lParam > 0 )
+			{
+				m_bUseBoss = true;
+				m_wOldCode = m_wCode = LOBYTE(LOWORD(CSystemParameter::GetInstance().m_wBossHotKey));
+				m_wOldModifiers = m_wModifiers = HIBYTE(LOWORD(CSystemParameter::GetInstance().m_wBossHotKey));
+			}
+			else
+			{
+				m_bUseBoss = false;
+				CSystemParameter::GetInstance().m_wBossHotKey = MAKEWORD(m_wOldCode, m_wOldModifiers);
+			}
+			return TRUE;
+		}
+	case WM_SAVE_KEYBOSS:
+		{
+			CSystemParameter::GetInstance().m_bUseBoss = m_bUseBoss;
+			if (m_bUseBoss)
+			{
+				g_GlobalUnits.RegisterHotKey(m_hWnd, IDI_HOT_KEY_BOSS, CSystemParameter::GetInstance().m_wBossHotKey);
+			}
+			else
+			{
+				::UnregisterHotKey(m_hWnd,IDI_HOT_KEY_BOSS);
+			}
+
+			return TRUE;
+		}
 	}
 
 	return FALSE;
@@ -218,12 +288,10 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 
 VOID CPlatformFrame::OnClose()
 {
-	__super::OnClose();
-}
+	//保存配置
+	CSystemParameter::GetInstance().SaveOptionParameter();
 
-void CPlatformFrame::SaveBossKey( int nCtrlKey, int nHelpKey )
-{
-	
+	__super::OnClose();
 }
 
 //鼠标消息
@@ -256,3 +324,36 @@ void CPlatformFrame::OnMouseMove(UINT nFlags, CPoint point)
 
 }
 
+LRESULT CPlatformFrame::OnHotKeyMessage( WPARAM wParam, LPARAM lParam )
+{
+	switch (wParam)
+	{
+	case IDI_HOT_KEY_BOSS:		//老板热键
+		{
+			//变量定义
+			bool bBossCome=(IsWindowVisible()==FALSE)?false:true;
+
+			//隐藏窗口
+			if (bBossCome==false)
+			{
+				//还原窗口
+				ShowWindow(SW_RESTORE);
+				ShowWindow(SW_SHOW);
+
+				//置顶窗口
+				SetActiveWindow();
+				BringWindowToTop();
+				SetForegroundWindow();
+			}
+			else
+			{
+				//隐藏窗口
+				ShowWindow(SW_MINIMIZE);
+				ShowWindow(SW_HIDE);
+			}
+			return 0;
+		}
+	}
+
+	return 0;
+}

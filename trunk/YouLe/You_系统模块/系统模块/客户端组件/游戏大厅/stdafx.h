@@ -92,6 +92,7 @@ using namespace std;
 #include "GlobalUnits.h"
 #include "UIPageManager.h"
 #include "GameRoomManager.h"
+#include "SystemParameter.h"
 using namespace YouLe;
 
 

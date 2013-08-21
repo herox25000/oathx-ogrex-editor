@@ -1,19 +1,12 @@
 #include "StdAfx.h"
 #include "UIPlazaView.h"
 #include "UIGamePage.h"
+#include "UIMatchPage.h"
 #include "Platform.h"
 #include "UIUserInfoSet.h"
 
 namespace YouLe
 {
-#define IDP_GAME_VIEW						55530				//导航游戏对应界面
-#define IDP_MATCH_VIEW						55529
-#define IDP_PROPERTY_VIEW					55528
-#define IDP_PRIZE_VIEW						55527
-#define IDP_RECHARGE_VIEW					55526
-
-#define IDP_USERSET_VIEW					55525
-
 //中间显示大小
 #define LFET_GAME							23
 #define TOP_GAME							59
@@ -72,6 +65,16 @@ namespace YouLe
 		UIGamePage* pGamePage = new UIGamePage();
 		pGamePage->Create(IDP_GAME_VIEW, CRect(LFET_GAME, TOP_GAME, LFET_GAME + GAMEPAGE_WIDTH, TOP_GAME + GAMEPAGE_HEIGTH), pAttach, this, this);
 
+		//比赛页
+		UIMatchPage* pMatchPage = new UIMatchPage();
+		pMatchPage->Create(IDP_MATCH_VIEW, CRect(LFET_GAME, TOP_GAME, LFET_GAME + GAMEPAGE_WIDTH, TOP_GAME + GAMEPAGE_HEIGTH), pAttach, this, this);
+
+		//道具页
+
+		//奖品中心
+
+		//充值页
+
 		//用户信息
 		UIUserInfoSet* pUserSet = new UIUserInfoSet();
 		pUserSet->Create(IDP_USERSET_VIEW, CRect(LFET_GAME - 5, TOP_GAME + 36, LFET_GAME + GAMEPAGE_WIDTH - 5, TOP_GAME + GAMEPAGE_HEIGTH + 36), 
@@ -81,7 +84,7 @@ namespace YouLe
 		UIPngButton* pBtReturn = new UIPngButton();
 		pBtReturn->Create(IDB_GPRETURN, rect.right - 300, 62, pAttach, this, hInstance, PlazaViewImage.pszBtReturn, 4, this);
 
-		ShowPage(IDC_BT_GAME);
+		ShowPage(IDP_GAME_VIEW);
 		return TRUE;
 	}
 
@@ -91,12 +94,32 @@ namespace YouLe
 		{
 		case IDB_GPRETURN:
 			{
-				ShowPage(IDC_BT_GAME);
+				ShowPage(IDP_GAME_VIEW);
 				return TRUE;
 			}
 		case IDC_BT_GAME:
 			{
-				ShowPage(IDC_BT_GAME);
+				ShowPage(IDP_GAME_VIEW);
+				return TRUE;
+			}
+		case IDC_BT_MATCH:
+			{
+				ShowPage(IDP_MATCH_VIEW);
+				return TRUE;
+			}
+		case IDC_BT_PROPERTY:
+			{
+				ShowPage(IDP_PROPERTY_VIEW);
+				return TRUE;
+			}
+		case IDC_BT_PRIZE:
+			{
+				ShowPage(IDP_PRIZE_VIEW);
+				return TRUE;
+			}
+		case IDC_BT_RECHARGE:
+			{
+				ShowPage(IDP_RECHARGE_VIEW);
 				return TRUE;
 			}
 		}
@@ -105,25 +128,22 @@ namespace YouLe
 
 	void UIPlazaView::ShowPage( int nPageID )
 	{
-		std::map<int, int>::iterator it = m_mViewList.find(nPageID);
-		if (it != m_mViewList.end())
+		if (m_nCurDispView > 0)
 		{
-			if (m_nCurDispView > 0)
+			UIWidget* pHidePage = Search(m_nCurDispView);
+			if (pHidePage)
 			{
-				UIWidget* pHidePage = Search(m_nCurDispView);
-				if (pHidePage)
-				{
-					pHidePage->VisibleWidget(FALSE);
-				}
+				pHidePage->VisibleWidget(FALSE);
 			}
-			int nWidgetID = it->second;
-			UIWidget* pShowPage = Search(nWidgetID);
-			if (pShowPage)
-			{
-				pShowPage->VisibleWidget(TRUE);
-			}
-			m_nCurDispView = nWidgetID;
 		}
+
+		UIWidget* pShowPage = Search(nPageID);
+		if (pShowPage)
+		{
+			pShowPage->VisibleWidget(TRUE);
+		}
+		m_nCurDispView = nPageID;
+
 	}
 
 }

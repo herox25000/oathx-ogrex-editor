@@ -3,7 +3,6 @@
 #include "GamePlazaDlg.h"
 #include "PlatformFrame.h"
 #include "Platform.h"
-#include "GlobalUnits.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -61,6 +60,9 @@ BOOL CGamePlazaApp::InitInstance()
 
 	//随机种子
 	srand((DWORD)time(NULL));
+
+	//加载配置
+	CSystemParameter::GetInstance().LoadOptionParameter();
 
 	//全局信息
 	if (g_GlobalUnits.InitGlobalUnits()==false)
