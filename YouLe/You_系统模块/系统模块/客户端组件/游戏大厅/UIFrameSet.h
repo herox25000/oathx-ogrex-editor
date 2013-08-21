@@ -22,6 +22,13 @@ namespace YouLe
 		virtual	BOOL		OnClicked(UIWidget* pWidget, const CPoint& cPt);
 		// 左键按下
 		virtual BOOL		OnLeftDown(UIWidget* pWidget, const CPoint& cPt);
+		// 设置显示
+		virtual void		VisibleWidget(bool bVisible);
+
+	public:
+		void				GetHotKey(WORD &wVirtualKeyCode, WORD &wModifiers);
+		CString				GetHotKeyName();
+		CString				GetKeyName(UINT vk, BOOL fExtended);
 
 	protected:
 		CPngImage			m_ImageBack;

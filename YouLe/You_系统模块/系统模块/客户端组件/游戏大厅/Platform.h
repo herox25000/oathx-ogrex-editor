@@ -41,6 +41,14 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 #define IDC_BT_TILL							109
 #define IDC_BT_IM							110
 
+//视图对应ID
+#define IDP_GAME_VIEW						55530						//导航游戏对应界面
+#define IDP_MATCH_VIEW						55529	
+#define IDP_PROPERTY_VIEW					55528
+#define IDP_PRIZE_VIEW						55527
+#define IDP_RECHARGE_VIEW					55526
+#define IDP_USERSET_VIEW					55525
+
 //用户设置按钮
 #define IDC_BT_MODIFY_USER					300							//更改用户
 #define IDC_BT_MODIFY_INFO					301							//更改资料
@@ -75,4 +83,6 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 #define WM_SHOW_FRAMECLOSE					WM_USER + 101
 #define WM_CLOSE_FRAME						WM_USER + 102
 #define WM_SWITCH_ACCOUNT					WM_USER + 103
+#define WM_START_KEYBOSS					WM_USER + 104
+#define WM_SAVE_KEYBOSS						WM_USER + 105
 #endif

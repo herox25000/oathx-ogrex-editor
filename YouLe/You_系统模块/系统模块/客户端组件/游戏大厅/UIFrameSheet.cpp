@@ -12,10 +12,10 @@ namespace YouLe
 #define IDB_FRAME_MIN						65534
 #define IDB_FRAME_SET						65533
 
-#define IDP_FRAME_CLOSE						55533
-#define IDP_FRAME_SET						55532
-#define IDP_PLAZA_PAGE						55531
-#define IDP_USER_PAGE						55530
+#define IDP_FRAME_CLOSE						55580
+#define IDP_FRAME_SET						55579
+#define IDP_PLAZA_PAGE						55578
+#define IDP_USER_PAGE						55577
 
 #define PFS_CAPTION_HEIGHT					40
 
@@ -132,7 +132,7 @@ namespace YouLe
 				UIPlazaView* pPage = (UIPlazaView*)Search(IDP_PLAZA_PAGE);
 				if (pPage)
 				{
-					pPage->ShowPage(IDC_BT_USERSET);
+					pPage->ShowPage(IDP_USERSET_VIEW);
 				}
 			}
 			break;

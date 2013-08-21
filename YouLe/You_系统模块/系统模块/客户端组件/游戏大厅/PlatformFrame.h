@@ -7,6 +7,9 @@
 #include "UIFrameSheet.h"
 #include "FrameSet.h"
 
+//热键定义
+#define IDI_HOT_KEY_BOSS			0x0100								//老板热键
+
 class CPlatformSocket;
 class CPlatformFrame : public CFrameWnd 
 {
@@ -32,6 +35,12 @@ protected:
 	
 protected:
 	YouLe::UIFrameSheet				m_FrameSheet;
+
+	bool							m_bUseBoss;
+	WORD							m_wModifiers;
+	WORD							m_wCode;
+	WORD							m_wOldModifiers;
+	WORD							m_wOldCode;
 public:
 	//加载图片资源
 	void LoadImages();
@@ -56,6 +65,8 @@ public:
 	VOID OnLButtonDown(UINT nFlags, CPoint Point);
 	//关闭消息
 	VOID OnClose();
+
+protected:
 	afx_msg int	 OnCreate(LPCREATESTRUCT lpCreateStruct);
 	afx_msg BOOL OnEraseBkgnd(CDC* pDC);
 	//登录
@@ -66,8 +77,10 @@ public:
 	afx_msg void OnCommandCancelConnect();
 	//IPC 消息
 	afx_msg BOOL OnCopyData(CWnd* pWnd, COPYDATASTRUCT * pCopyDataStruct);
-public:
-	void		SaveBossKey(int nCtrlKey, int nHelpKey);
+
+protected:
+	//热键消息
+	LRESULT OnHotKeyMessage(WPARAM wParam, LPARAM lParam);
 
 protected:
 	DECLARE_MESSAGE_MAP()

@@ -178,6 +178,9 @@
 				</FileConfiguration>
 			</File>
 			<File
+				RelativePath=".\SystemParameter.cpp">
+			</File>
+			<File
 				RelativePath=".\UserManager.cpp">
 			</File>
 		</Filter>
@@ -232,6 +235,9 @@
 			</File>
 			<File
 				RelativePath=".\stdafx.h">
+			</File>
+			<File
+				RelativePath=".\SystemParameter.h">
 			</File>
 			<File
 				RelativePath=".\UserManager.h">
@@ -348,6 +354,12 @@
 			</File>
 			<File
 				RelativePath=".\UIGamePage.h">
+			</File>
+			<File
+				RelativePath=".\UIMatchPage.cpp">
+			</File>
+			<File
+				RelativePath=".\UIMatchPage.h">
 			</File>
 			<File
 				RelativePath=".\UIPlazaView.cpp">
