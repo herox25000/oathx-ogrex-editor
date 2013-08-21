@@ -37,6 +37,7 @@
 #include "HtmlBrowser.h"
 #include "WinFileInfo.h"
 #include "ServiceThread.h"
+#include "WHRegKey.h"
 
 //////////////////////////////////////////////////////////////////////////
 

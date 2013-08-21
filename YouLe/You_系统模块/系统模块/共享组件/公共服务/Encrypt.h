@@ -21,6 +21,11 @@ public:
 
 //////////////////////////////////////////////////////////////////////////
 
+//宏定义
+#define XOR_TIMES					8									//加密倍数
+#define MAX_SOURCE_LEN				64									//最大长度
+#define MAX_ENCRYPT_LEN				(MAX_SOURCE_LEN*XOR_TIMES)			//最大长度
+
 //异或加密类
 class COM_SERVICE_CLASS CXOREncrypt
 {
