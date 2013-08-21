@@ -173,6 +173,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 				RelativePath=".\WebBrowser.cpp">
 			</File>
 			<File
+				RelativePath=".\WHRegKey.cpp">
+			</File>
+			<File
 				RelativePath=".\WinFileInfo.cpp">
 			</File>
 		</Filter>
@@ -203,6 +206,9 @@ copy /y ..\..\运行\Release\$(TargetFileName) ..\..\发布组件\客户端组件\Release\$
 			</File>
 			<File
 				RelativePath=".\WebBrowser.h">
+			</File>
+			<File
+				RelativePath=".\WHRegKey.h">
 			</File>
 			<File
 				RelativePath=".\WinFileInfo.h">
