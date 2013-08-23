@@ -109,10 +109,34 @@ struct IPC_Buffer
 #define GENDER_GIRL						2									//女性性别
 
 //游戏类型
-#define GAME_GENRE_SCORE				0x0001								//点值类型
-#define GAME_GENRE_GOLD					0x0002								//金币类型
-#define GAME_GENRE_MATCH				0x0004								//比赛类型
-#define GAME_GENRE_EDUCATE				0x0008								//训练类型
+enum ServerType
+{
+	GAME_GENRE_SCORE	= 0x0001,	//点值类型
+	GAME_GENRE_GOLD		= 0x0002,	//金币类型
+	GAME_GENRE_MATCH	= 0x0004,	//比赛类型
+	GAME_GENRE_EDUCATE	= 0x0008,	//训练类型
+};
+
+// 游戏规则
+enum ServerRule
+{
+	ROOM_JUNIOR = 1,				//初级
+	ROOM_MIDDLE,					//中级
+	ROOM_HIGH,						//高级
+	ROOM_BAIREN,					//百人
+	ROOM_NOCHEAT,					//防作弊
+};
+
+
+//房间配置信息
+struct tagRoomConfig
+{	
+	WORD							wServerType;		//enum ServerType
+	WORD							wServerRule;		//enum ServerRule
+	__int64							LowestScore;		//最低分
+	__int64							HighestScore;		//最高分
+	__int64							BaseScore;			//底分
+};
 
 //游戏类型结构
 struct tagGameType
@@ -155,6 +179,7 @@ struct tagGameServer
 	DWORD								dwServerAddr;						//房间地址
 	DWORD								dwOnLineCount;						//在线人数
 	TCHAR								szServerName[SERVER_LEN];			//房间名称
+	tagRoomConfig						RoomConfig;							//房间配置
 };
 
 //游戏级别结构
