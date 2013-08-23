@@ -66,6 +66,8 @@
 #define IDC_LIMIT_SAME_IP               1034
 #define IDC_MAX_SCORE                   1035
 #define IDC_LIMIT_LOOK_ON               1036
+#define IDC_COMBO1                      1038
+#define IDC_ROOMRULE                    1038
 
 // Next default values for new objects
 // 
@@ -73,7 +75,7 @@
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        131
 #define _APS_NEXT_COMMAND_VALUE         32785
-#define _APS_NEXT_CONTROL_VALUE         1035
+#define _APS_NEXT_CONTROL_VALUE         1039
 #define _APS_NEXT_SYMED_VALUE           101
 #endif
 #endif

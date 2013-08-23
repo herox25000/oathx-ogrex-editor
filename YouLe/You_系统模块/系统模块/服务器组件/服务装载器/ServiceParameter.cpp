@@ -123,7 +123,7 @@ void CServiceParameter::OnOK()
 	OptionParameter.GameServiceOption.wRevenue=__min(OptionParameter.GameServiceOption.wRevenue,1000);
 
 	//隐藏信息
-	OptionParameter.GameServiceOption.cbHideUserInfo=(((CButton *)GetDlgItem(IDC_HIDE_USER_INFO))->GetCheck()==BST_CHECKED)?TRUE:FALSE;
+	//OptionParameter.GameServiceOption.cbHideUserInfo=(((CButton *)GetDlgItem(IDC_HIDE_USER_INFO))->GetCheck()==BST_CHECKED)?TRUE:FALSE;
 
 	//限制旁观
 	OptionParameter.GameServiceOption.cbUnLookOnTag=(((CButton *)GetDlgItem(IDC_LIMIT_LOOK_ON))->GetCheck()==BST_CHECKED)?TRUE:FALSE;
@@ -152,6 +152,21 @@ void CServiceParameter::OnOK()
 		return;
 	}
 	OptionParameter.GameServiceOption.wServerType=(WORD)pGameGenre->GetItemData(nCurSel);
+
+	//房间规则
+	CComboBox * pRoomRule=(CComboBox *)GetDlgItem(IDC_ROOMRULE);
+	nCurSel=pRoomRule->GetCurSel();
+	if (nCurSel==CB_ERR)
+	{
+		AfxMessageBox(TEXT("请选择正确的规则类型"),MB_ICONINFORMATION);
+		GetDlgItem(IDC_ROOMRULE)->SetFocus();
+		return;
+	}
+	OptionParameter.GameServiceOption.wServerRule=(WORD)pRoomRule->GetItemData(nCurSel);
+
+	//隐藏信息
+	OptionParameter.GameServiceOption.cbHideUserInfo = OptionParameter.GameServiceOption.wServerRule==ROOM_NOCHEAT?TRUE:FALSE;
+	
 
 	//房间名字
 	GetDlgItemText(IDC_SERVER_NAME,OptionParameter.GameServiceOption.szGameRoomName,CountArray(OptionParameter.GameServiceOption.szGameRoomName));
@@ -409,6 +424,20 @@ void CServiceParameter::FreeGameServiceModule()
 //更新配置
 void CServiceParameter::UpdateOptionParameter()
 {
+	// 房间规则
+	CComboBox * pComboBoxRoomRule=(CComboBox *)GetDlgItem(IDC_ROOMRULE);
+	WORD wRoomRule[5]={ROOM_JUNIOR,ROOM_MIDDLE,ROOM_HIGH,ROOM_BAIREN,ROOM_NOCHEAT};
+	LPCTSTR pszRoomRule[5]={TEXT("初级房"),TEXT("中级房"),TEXT("高级房"),TEXT("百人房"),TEXT("防作弊房")};
+	//游戏类型
+	pComboBoxRoomRule->Clear();
+	for (int i=0;i<CountArray(wRoomRule);i++)
+	{
+		int nIndex=pComboBoxRoomRule->AddString(pszRoomRule[i]);
+		pComboBoxRoomRule->SetItemData(nIndex,wRoomRule[i]);
+		if (m_OptionParameter.GameServiceOption.wServerRule==wRoomRule[i])
+			pComboBoxRoomRule->SetCurSel(nIndex);
+	}
+
 	//变量定义
 	CComboBox * pComboBox=(CComboBox *)GetDlgItem(IDC_GAME_GENRE);
 	WORD wGameGenre[4]={GAME_GENRE_EDUCATE,GAME_GENRE_MATCH,GAME_GENRE_GOLD,GAME_GENRE_SCORE};
@@ -420,7 +449,8 @@ void CServiceParameter::UpdateOptionParameter()
 	{
 		int nIndex=pComboBox->AddString(pszGameGenre[i]);
 		pComboBox->SetItemData(nIndex,wGameGenre[i]);
-		if (m_OptionParameter.GameServiceOption.wServerType==wGameGenre[i]) pComboBox->SetCurSel(nIndex);
+		if (m_OptionParameter.GameServiceOption.wServerType==wGameGenre[i])
+			pComboBox->SetCurSel(nIndex);
 	}
 
 	//类型标识
