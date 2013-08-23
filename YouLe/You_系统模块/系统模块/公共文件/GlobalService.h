@@ -47,7 +47,8 @@ struct tagGameServiceOption
 	WORD							wServerID;							//房间号码
 	WORD							wTableCount;						//桌子数目
 	WORD							wServerPort;						//房间端口
-	WORD							wServerType;						//房间类型
+	WORD							wServerType;						//房间类型 enum ServerType
+	WORD							wServerRule;						//房间	   enum ServerRule	
 	WORD							wMaxConnect;						//最大连接
 	DWORD							dwServerAddr;						//房间地址
 	DWORD							dwVideoServer;						//视频地址
