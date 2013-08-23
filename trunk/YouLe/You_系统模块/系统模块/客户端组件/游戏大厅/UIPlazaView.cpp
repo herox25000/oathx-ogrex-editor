@@ -63,7 +63,7 @@ namespace YouLe
 
 		//游戏列表
 		UIGamePage* pGamePage = new UIGamePage();
-		pGamePage->Create(IDP_GAME_VIEW, CRect(LFET_GAME, TOP_GAME, LFET_GAME + GAMEPAGE_WIDTH, TOP_GAME + GAMEPAGE_HEIGTH), pAttach, this, this);
+		pGamePage->Create(IDP_GAME_VIEW, CRect(LFET_GAME-13, TOP_GAME, LFET_GAME + GAMEPAGE_WIDTH+7, TOP_GAME + GAMEPAGE_HEIGTH), pAttach, this, this);
 
 		//比赛页
 		UIMatchPage* pMatchPage = new UIMatchPage();
@@ -143,7 +143,6 @@ namespace YouLe
 			pShowPage->VisibleWidget(TRUE);
 		}
 		m_nCurDispView = nPageID;
-
 	}
 
 }

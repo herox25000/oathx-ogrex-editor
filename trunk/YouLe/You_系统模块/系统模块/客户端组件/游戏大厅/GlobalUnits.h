@@ -102,6 +102,9 @@ public:
 	LPCTSTR GetWorkDirectory() { return m_szDirWork; }
 	//界面目录
 	LPCTSTR GetSkinDirectory() { return m_szDirSkin; }
+	//删除.exe
+	void	RemoveEXE(TCHAR szProcessName[],TCHAR szRetName[], WORD wBufferCount);
+
 
 	//状态函数
 public:

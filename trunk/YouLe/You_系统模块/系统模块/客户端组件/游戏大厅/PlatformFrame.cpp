@@ -9,6 +9,7 @@ IMPLEMENT_DYNCREATE(CPlatformFrame, CFrameWnd)
 CPlatformFrame::CPlatformFrame()
 {
 	m_bUseBoss = false;
+	m_bHandCur = false;
 }
 
 CPlatformFrame::~CPlatformFrame()
@@ -25,6 +26,7 @@ BEGIN_MESSAGE_MAP(CPlatformFrame, CFrameWnd)
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
 	ON_WM_MOUSEMOVE()
+	ON_WM_SETCURSOR()
 	ON_MESSAGE(WM_HOTKEY,OnHotKeyMessage)
 //	ON_WM_SYSKEYDOWN()
 //	ON_WM_KEYDOWN()
@@ -61,9 +63,7 @@ int CPlatformFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 		g_GlobalUnits.RegisterHotKey(m_hWnd, IDI_HOT_KEY_BOSS, CSystemParameter::GetInstance().m_wBossHotKey);
 	
 	//启动登陆窗口
-	m_DlgLogon.SetPlatFormPointer(this);
 	m_PlatformSocket.SetDlgLogonPointer(&m_DlgLogon);
-	m_PlatformSocket.SetPlatFormPointer(this);
 	OnCommandLogon();
 	g_GlobalUnits.m_ServerListManager.InitServerListManager(NULL);
 	
@@ -246,9 +246,21 @@ BOOL CPlatformFrame::OnCommand( WPARAM wParam, LPARAM lParam )
 			OnCommandCancelConnect();
 			return TRUE;
 		}
+	case IDM_SETHANDCUR:			//将鼠标设置为小手
+		{
+			UINT Param = LOWORD(lParam);
+			m_bHandCur = Param==0?false:true;
+			Invalidate(TRUE);
+			return TRUE;
+		}
 	case WM_SHOW_USERSET:
 		{
 			m_FrameSheet.ProcessCommand(WM_SHOW_USERSET);
+			return TRUE;
+		}
+	case WM_SHOW_GAMEPAGE:
+		{
+			m_FrameSheet.ProcessCommand(WM_SHOW_GAMEPAGE);
 			return TRUE;
 		}
 	case WM_START_KEYBOSS:		//设置老板键
@@ -322,6 +334,19 @@ void CPlatformFrame::OnMouseMove(UINT nFlags, CPoint point)
 	m_FrameSheet.InjectMouseMove(point);
 	CFrameWnd::OnMouseMove(nFlags, point);
 
+}
+
+//光标消息
+BOOL CPlatformFrame::OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage)
+{
+	//设置光标
+	if (m_bHandCur)
+	{
+		SetCursor(LoadCursor(AfxGetInstanceHandle(),MAKEINTRESOURCE(IDC_HAND_CUR)));
+		return TRUE;
+	}
+
+	return __super::OnSetCursor(pWnd,nHitTest,uMessage);
 }
 
 LRESULT CPlatformFrame::OnHotKeyMessage( WPARAM wParam, LPARAM lParam )

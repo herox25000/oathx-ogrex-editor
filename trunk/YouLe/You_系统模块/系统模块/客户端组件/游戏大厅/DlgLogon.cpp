@@ -613,7 +613,6 @@ CDlgLogon::CDlgLogon() : CDialog(IDD_LOGON)
 //Îö¹¹º¯Êý
 CDlgLogon::~CDlgLogon()
 {
-	m_pPlatformFrame = NULL;
 	m_bCreateUI = false;
 }
 
@@ -693,8 +692,8 @@ void CDlgLogon::OnOK()
 	//ASSERT(pIPlazaViewItem!=NULL);
 	//pIPlazaViewItem->SendConnectMessage();
 
-	if(m_pPlatformFrame != NULL)
-		m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_CONNECT_SERVER,0);
+	if(AfxGetMainWnd() != NULL)
+		AfxGetMainWnd()->PostMessage(WM_COMMAND,IDM_CONNECT_SERVER,0);
 	return;
 }
 
@@ -1090,8 +1089,8 @@ void CDlgLogon::OnRegisterAccounts()
 	//IPlazaViewItem * pIPlazaViewItem=((CGameFrame*)AfxGetMainWnd())->GetPlazaViewItem();
 	//ASSERT(pIPlazaViewItem!=NULL);
 	//pIPlazaViewItem->SendConnectMessage();
-	if(m_pPlatformFrame != NULL)
-		m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_CONNECT_SERVER,0);
+	if(AfxGetMainWnd() != NULL)
+		AfxGetMainWnd()->PostMessage(WM_COMMAND,IDM_CONNECT_SERVER,0);
 	return;
 }
 

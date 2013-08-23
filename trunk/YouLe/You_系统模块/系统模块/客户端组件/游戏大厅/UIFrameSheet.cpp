@@ -134,8 +134,17 @@ namespace YouLe
 				{
 					pPage->ShowPage(IDP_USERSET_VIEW);
 				}
+				break;
 			}
-			break;
+		case WM_SHOW_GAMEPAGE:
+			{
+				UIPlazaView* pPage = (UIPlazaView*)Search(IDP_PLAZA_PAGE);
+				if (pPage)
+				{
+					pPage->ShowPage(IDP_GAME_VIEW);
+				}
+				break;
+			}
 		}
 	}
 

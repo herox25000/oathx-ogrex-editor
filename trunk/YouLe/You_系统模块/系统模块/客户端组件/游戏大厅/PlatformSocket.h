@@ -38,11 +38,9 @@ public:
 	bool OnSocketMainUser(CMD_Command Command, void * pBuffer, WORD wDataSize);
 
 public:
-	void  SetPlatFormPointer(CWnd* pPointer)	{m_pPlatformFrame = pPointer;}
 	void  SetDlgLogonPointer(CDlgLogon* pPointer) {m_pDlgLogon = pPointer;}
 public:
 	CTCPSocketHelper				m_ClientSocket;						//ÍøÂçÁ¬½Ó
-	CWnd*							m_pPlatformFrame;
 	CDlgLogon*						m_pDlgLogon;
 	bool							m_bLogonPlaza;
 	

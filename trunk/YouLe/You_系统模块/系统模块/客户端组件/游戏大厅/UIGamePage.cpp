@@ -54,9 +54,20 @@ namespace YouLe
 
 	void UIGamePage::VisibleTrigger()
 	{
-		m_pGameView->VisibleWidget(TRUE);
-		m_pRoomView->VisibleWidget(FALSE);
-		m_pTableView->VisibleWidget(FALSE);
+		if(!m_pRoomView->m_bEnterRoom)
+		{
+			m_pGameView->VisibleWidget(TRUE);
+			m_pRoomView->VisibleWidget(FALSE);
+			m_pTableView->VisibleWidget(FALSE);
+		}
+		else
+		{	
+			m_pTableView->VisibleWidget(TRUE);
+			m_pGameView->VisibleWidget(FALSE);
+			m_pRoomView->VisibleWidget(FALSE);
+			m_pRoomView->SetEnterRoom(false);
+		}
+
 	}
 
 }

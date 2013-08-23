@@ -23,10 +23,10 @@ bool __cdecl CPlatformSocket::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCod
 	//错误处理
 	if (nErrorCode!=0)
 	{
-		g_GlobalAttemper.DestroyStatusWnd(m_pPlatformFrame);
+		g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 		ShowMessageBox(TEXT("登录服务器连接失败，请稍后再试或留意网站公告！"),MB_ICONINFORMATION);
-		if(m_pPlatformFrame != NULL)
-			m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
+		if(AfxGetMainWnd() != NULL)
+			AfxGetMainWnd()->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
 		return true;
 	}
 
@@ -35,7 +35,7 @@ bool __cdecl CPlatformSocket::OnEventTCPSocketLink(WORD wSocketID, INT nErrorCod
 	{
 		if(m_pDlgLogon != NULL)
 			m_pDlgLogon->SendLogonPacket(m_ClientSocket.GetInterface());
-		g_GlobalAttemper.ShowStatusMessage(TEXT("正在验证用户登录信息..."),m_pPlatformFrame);
+		g_GlobalAttemper.ShowStatusMessage(TEXT("正在验证用户登录信息..."),AfxGetMainWnd());
 	}
 	return true;
 }
@@ -46,10 +46,10 @@ bool __cdecl CPlatformSocket::OnEventTCPSocketShut(WORD wSocketID, BYTE cbShutRe
 	{
 		if (cbShutReason!=SHUT_REASON_NORMAL)
 		{
-			g_GlobalAttemper.DestroyStatusWnd(m_pPlatformFrame);
+			g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 			ShowMessageBox(TEXT("登录服务器连接失败，请稍后再试或留意网站公告！"),MB_ICONINFORMATION);
-			if(m_pPlatformFrame != NULL)
-				m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
+			if(AfxGetMainWnd() != NULL)
+				AfxGetMainWnd()->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
 		}
 	}
 
@@ -102,7 +102,7 @@ void CPlatformSocket::ConnectToServer(LPCTSTR ServerIP,WORD wPort)
 		catch (...)
 		{
 			ShowMessageBox(TEXT("网络组件创建失败，请重新下载游戏大厅！"),MB_ICONSTOP);
-			m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA);
+			AfxGetMainWnd()->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA);
 			return;
 		}
 	}
@@ -120,13 +120,13 @@ void CPlatformSocket::ConnectToServer(LPCTSTR ServerIP,WORD wPort)
 	catch (LPCTSTR pszError)
 	{
 		ShowMessageBox(pszError,MB_ICONINFORMATION);
-		m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA);
+		AfxGetMainWnd()->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA);
 		return;
 	}
 
 	//显示提示框
 	CString strMessage=TEXT("正在连接服务器，请稍候...");
-	g_GlobalAttemper.ShowStatusMessage(strMessage,m_pPlatformFrame);
+	g_GlobalAttemper.ShowStatusMessage(strMessage,AfxGetMainWnd());
 }
 
 //发送信息
@@ -271,7 +271,7 @@ bool CPlatformSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			}
 
 			//设置提示
-			g_GlobalAttemper.ShowStatusMessage(TEXT("正在读取服务器列表信息..."),m_pPlatformFrame);
+			g_GlobalAttemper.ShowStatusMessage(TEXT("正在读取服务器列表信息..."),AfxGetMainWnd());
 
 			return true;
 		}
@@ -283,7 +283,7 @@ bool CPlatformSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			if (wDataSize<(sizeof(CMD_GP_LogonError)-sizeof(pLogonError->szErrorDescribe))) return false;
 
 			//关闭连接
-			g_GlobalAttemper.DestroyStatusWnd(m_pPlatformFrame);
+			g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 			m_ClientSocket->CloseSocket();
 
 			//显示消息
@@ -294,13 +294,13 @@ bool CPlatformSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 				ShowMessageBox(pLogonError->szErrorDescribe,MB_ICONINFORMATION);
 			}
 			//发送登录
-			m_pPlatformFrame->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
+			AfxGetMainWnd()->PostMessage(WM_COMMAND,IDM_LOGON_PLAZA,0);
 			return true;
 		}
 	case SUB_GP_LOGON_FINISH:		//登录完成
 		{
 			//关闭提示
-			g_GlobalAttemper.DestroyStatusWnd(m_pPlatformFrame);
+			g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 
 			////展开类型
 			//INT_PTR nIndex=0;
@@ -323,22 +323,18 @@ bool CPlatformSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			//} while (true);
 			
 			//显示游戏界面
-			if(g_UIPageManager.m_pGamePage)
-			{
-				if(g_UIPageManager.m_pGamePage->m_pGameView)
-					g_UIPageManager.m_pGamePage->m_pGameView->ShowFirstPage();
-			}
+			AfxGetMainWnd()->PostMessage(WM_COMMAND,WM_SHOW_GAMEPAGE);
 			
 
 			m_bLogonPlaza=true;
 			//记录信息
 			g_GlobalUnits.WriteUserCookie();
-			if(m_pPlatformFrame != NULL)
+			if(AfxGetMainWnd() != NULL)
 			{
-				m_pPlatformFrame->ShowWindow(SW_SHOW);
-				m_pPlatformFrame->SetActiveWindow();
-				m_pPlatformFrame->BringWindowToTop();
-				m_pPlatformFrame->SetForegroundWindow();
+				AfxGetMainWnd()->ShowWindow(SW_SHOW);
+				AfxGetMainWnd()->SetActiveWindow();
+				AfxGetMainWnd()->BringWindowToTop();
+				AfxGetMainWnd()->SetForegroundWindow();
 			}
 			if(m_pDlgLogon != NULL)
 				m_pDlgLogon->OnLogonSuccess();
@@ -492,7 +488,7 @@ bool CPlatformSocket::OnSocketMainSystem(CMD_Command Command, void * pData, WORD
 				int iResult=ShowInformationEx(szMessage,0,MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏大厅"));
 				if (iResult==IDYES)
 				{
-					g_GlobalAttemper.DestroyStatusWnd(m_pPlatformFrame);
+					g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 					m_ClientSocket->CloseSocket();
 					tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
 					memset(&GlobalUserData,0,sizeof(GlobalUserData));
@@ -501,7 +497,7 @@ bool CPlatformSocket::OnSocketMainSystem(CMD_Command Command, void * pData, WORD
 			}
 			else
 			{
-				g_GlobalAttemper.DestroyStatusWnd(m_pPlatformFrame);
+				g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 				m_ClientSocket->CloseSocket();
 				TCHAR szMessage[]=TEXT("游戏大厅版本已经升级，现在的版本不可以继续使用，现在是否马上下载新版本？");
 				int iResult=ShowInformationEx(szMessage,0,MB_ICONSTOP|MB_YESNO|MB_DEFBUTTON1,TEXT("游戏大厅"));

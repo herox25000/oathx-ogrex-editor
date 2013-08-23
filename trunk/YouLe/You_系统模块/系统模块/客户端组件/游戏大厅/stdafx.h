@@ -90,8 +90,7 @@ using namespace std;
 #include "Platform.h"
 #include "IGamePlaza.h"
 #include "GlobalUnits.h"
-#include "UIPageManager.h"
-#include "GameRoomManager.h"
+#include "UIPngButton.h"
 #include "SystemParameter.h"
 using namespace YouLe;
 

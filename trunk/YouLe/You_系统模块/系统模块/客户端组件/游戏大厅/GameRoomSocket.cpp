@@ -175,8 +175,8 @@ bool CGameRoomSocket::OnSocketMainLogon(CMD_Command Command, void * pData, WORD 
 			//SendUserRulePacket();
 
 			//重入判断
-			ASSERT(m_pMeUserItem!=NULL);
-			tagUserData * pUserData=m_pMeUserItem->GetUserData();
+			ASSERT(m_pGameRoomMgr->m_pMeUserItem!=NULL);
+			tagUserData * pUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 			if (pUserData->wTableID!=INVALID_TABLE)
 			{
 				int iResult=StartGameClient();
@@ -274,7 +274,7 @@ bool CGameRoomSocket::OnSocketMainInfo(CMD_Command Command, void * pData, WORD w
 			catch (...)
 			{
 				//关闭网络
-				m_ClientSocket->CloseSocket();
+				m_pGameRoomMgr->QuitRoom();
 				g_GlobalAttemper.DestroyStatusWnd(AfxGetMainWnd());
 
 				//提示消息
@@ -285,10 +285,6 @@ bool CGameRoomSocket::OnSocketMainInfo(CMD_Command Command, void * pData, WORD w
 					tagGameKind * pGameKind=pListKind->GetItemInfo();
 					g_GlobalAttemper.DownLoadClient(pGameKind->szKindName,pGameKind->wKindID,true);
 				}
-
-				////关闭房间
-				//IRoomViewItem * pIRoomViewItem=QUERY_ME_INTERFACE(IRoomViewItem);
-				//((CGameFrame*)AfxGetMainWnd())->CloseRoomViewItem(pIRoomViewItem);
 
 				return false;
 			}
@@ -398,7 +394,7 @@ bool CGameRoomSocket::OnSocketMainStatus(CMD_Command Command, void * pData, WORD
 					WORD wEnumIndex=0;
 					while (true)
 					{
-						pIUserItem=m_ClientUserManager.EnumUserItem(wEnumIndex++);
+						pIUserItem=m_pGameRoomMgr->m_ClientUserManager.EnumUserItem(wEnumIndex++);
 						if (pIUserItem==NULL)
 							break;
 						pUserData=pIUserItem->GetUserData();
@@ -419,7 +415,7 @@ bool CGameRoomSocket::OnSocketMainStatus(CMD_Command Command, void * pData, WORD
 				//通知游戏
 				if (bPlayStatus!=pTableStatus->bPlayStatus)
 				{
-					tagUserData * pMeUserData=m_pMeUserItem->GetUserData();
+					tagUserData * pMeUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 					if (pMeUserData->wTableID==pTableStatus->wTableID)
 					{
 						WORD wSubCmdID=pTableStatus->bPlayStatus?IPC_SUB_GAME_START:IPC_SUB_GAME_FINISH;
@@ -474,7 +470,7 @@ bool CGameRoomSocket::OnSocketMainSystem(CMD_Command Command, void * pData, WORD
 			//关闭房间
 			if (pMessage->wMessageType&SMT_CLOSE_ROOM) 
 			{
-				IRoomViewItem * pIRoomViewItem=QUERY_ME_INTERFACE(IRoomViewItem);
+				CloseGameRoom();
 				m_pGameRoomMgr->QuitRoom();
 			}
 
@@ -541,11 +537,11 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	if (m_hWndChannel==NULL)
 	{
 		//状态判断
-		ASSERT(m_pMeUserItem!=NULL);
-		if (m_pMeUserItem==NULL) return false;
+		ASSERT(m_pGameRoomMgr->m_pMeUserItem!=NULL);
+		if (m_pGameRoomMgr->m_pMeUserItem==NULL) return false;
 
 		//获取用户
-		tagUserData * pUserData=m_pMeUserItem->GetUserData();
+		tagUserData * pUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 
 		//数据缓冲
 		if ((pUserData->wTableID!=INVALID_TABLE)&&(pUserData->wChairID!=INVALID_CHAIR))
@@ -579,7 +575,7 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	//	//变量定义
 	//	CMD_GF_ResidualProperty * ResidualProperty=(CMD_GF_ResidualProperty *)pData;
 	//	//获取玩家
-	//	tagUserData *pMeUserData = m_pMeUserItem->GetUserData();
+	//	tagUserData *pMeUserData = m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 	//	//设置道具
 	//	for ( WORD wPropID = 0; wPropID < PROPERTY_COUNT; ++wPropID )
 	//	{
@@ -684,8 +680,8 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	//	if(pGiftNotify->cbSendLocation==LOCATION_PLAZA_ROOM)
 	//	{
 	//		//获取玩家
-	//		IUserItem * pISendUserItem=m_ClientUserManager.SearchUserByUserID(pGiftNotify->dwSendUserID);
-	//		IUserItem * pIRcvUserItem=m_ClientUserManager.SearchUserByUserID(pGiftNotify->dwRcvUserID);
+	//		IUserItem * pISendUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pGiftNotify->dwSendUserID);
+	//		IUserItem * pIRcvUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pGiftNotify->dwRcvUserID);
 
 	//		ASSERT( pISendUserItem != NULL && pIRcvUserItem != NULL );
 	//		if ( pISendUserItem == NULL || pIRcvUserItem == NULL ) return true;
@@ -848,13 +844,13 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 	}
 
 	//查找用户
-	IUserItem * pIUserItem=m_ClientUserManager.SearchUserByUserID(UserData.dwUserID);
+	IUserItem * pIUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(UserData.dwUserID);
 	if (pIUserItem==NULL) 
 	{
 		const tagCompanionItem * pCompanionItem=NULL;
 		pCompanionItem=g_GlobalUnits.m_CompanionManager->SearchCompanionItem(UserData.dwUserID);
 		if (pCompanionItem!=NULL) UserData.cbCompanion=pCompanionItem->Companion;
-		pIUserItem=m_ClientUserManager.ActiveUserItem(UserData);
+		pIUserItem=m_pGameRoomMgr->m_ClientUserManager.ActiveUserItem(UserData);
 	}
 	//else
 	//	OnUserItemUpdate(pIUserItem);
@@ -864,8 +860,8 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 	if (pIUserItem!=NULL)
 	{
 		//判断自己
-		if (m_pMeUserItem==NULL)
-			m_pMeUserItem=pIUserItem;
+		if (m_pGameRoomMgr->m_pMeUserItem==NULL)
+			m_pGameRoomMgr->m_pMeUserItem=pIUserItem;
 
 		//设置界面
 		BYTE cbUserStatus=UserData.cbUserStatus;
@@ -915,7 +911,7 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 	//}
 
 	//更新人数
-	DWORD dwOnLineCount=m_ClientUserManager.GetOnLineCount();
+	DWORD dwOnLineCount=m_pGameRoomMgr->m_ClientUserManager.GetOnLineCount();
 	g_GlobalUnits.m_ServerListManager.UpdateGameServerOnLine(m_pListServer,dwOnLineCount);
 
 	return true;
@@ -932,13 +928,13 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 
 	//处理数据
 	CMD_GR_UserStatus * pUserStatus=(CMD_GR_UserStatus *)pData;
-	IUserItem * pIUserItem=m_ClientUserManager.SearchUserByUserID(pUserStatus->dwUserID);
+	IUserItem * pIUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pUserStatus->dwUserID);
 	ASSERT(pIUserItem!=NULL);
 	if (pIUserItem==NULL) return true;
 
 	//定义变量
 	tagUserData * pUserData=pIUserItem->GetUserData();
-	tagUserData * pMeUserData=m_pMeUserItem->GetUserData();
+	tagUserData * pMeUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 	WORD wNowTableID=pUserStatus->wTableID,wLastTableID=pUserData->wTableID;
 	WORD wNowChairID=pUserStatus->wChairID,wLastChairID=pUserData->wChairID;
 	BYTE cbNowStatus=pUserStatus->cbUserStatus,cbLastStatus=pUserData->cbUserStatus;
@@ -966,10 +962,10 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 		}
 
 		//删除用户
-		m_ClientUserManager.DeleteUserItem(pIUserItem);
+		m_pGameRoomMgr->m_ClientUserManager.DeleteUserItem(pIUserItem);
 
 		//更新人数
-		DWORD dwOnLineCount=m_ClientUserManager.GetOnLineCount();
+		DWORD dwOnLineCount=m_pGameRoomMgr->m_ClientUserManager.GetOnLineCount();
 		g_GlobalUnits.m_ServerListManager.UpdateGameServerOnLine(m_pListServer,dwOnLineCount);
 
 		return true;
@@ -980,7 +976,7 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 	UserStatus.wTableID=wNowTableID;
 	UserStatus.wChairID=wNowChairID;
 	UserStatus.cbUserStatus=cbNowStatus;
-	m_ClientUserManager.UpdateUserItemStatus(pIUserItem,&UserStatus);
+	m_pGameRoomMgr->m_ClientUserManager.UpdateUserItemStatus(pIUserItem,&UserStatus);
 
 	//设置新状态
 	if ((wNowTableID!=INVALID_TABLE)&&((wNowTableID!=wLastTableID)||(wNowChairID!=wLastChairID)))
@@ -993,7 +989,7 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 		}
 
 		//发送用户
-		if ((m_pMeUserItem!=pIUserItem)&&(pMeUserData->wTableID==wNowTableID))
+		if ((m_pGameRoomMgr->m_pMeUserItem!=pIUserItem)&&(pMeUserData->wTableID==wNowTableID))
 		{
 			CIPCSendCopyData SendCopyData(m_hWndChannel,AfxGetMainWnd()->m_hWnd);
 			SendTableUser(pIUserItem,&SendCopyData);
@@ -1010,7 +1006,7 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 
 	//判断发送
 	bool bNotifyGame=false;
-	if (pIUserItem==m_pMeUserItem) bNotifyGame=true;
+	if (pIUserItem==m_pGameRoomMgr->m_pMeUserItem) bNotifyGame=true;
 	else if ((pMeUserData->wTableID!=INVALID_TABLE)&&(pMeUserData->wTableID==wNowTableID)) bNotifyGame=true;
 	else if ((pMeUserData->wTableID!=INVALID_TABLE)&&(pMeUserData->wTableID==wLastTableID)) bNotifyGame=true;
 
@@ -1025,7 +1021,7 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 	}
 
 	//判断自己
-	if (pIUserItem==m_pMeUserItem)
+	if (pIUserItem==m_pGameRoomMgr->m_pMeUserItem)
 	{
 		//设置变量
 		if ((wNowTableID==m_wReqTableID)&&(wNowChairID==m_wReqChairID))
@@ -1063,22 +1059,22 @@ bool CGameRoomSocket::OnSocketSubScore(CMD_Command Command, void * pData, WORD w
 
 	//处理数据
 	CMD_GR_UserScore * pUserScore=(CMD_GR_UserScore *)pData;
-	IUserItem * pIUserItem=m_ClientUserManager.SearchUserByUserID(pUserScore->dwUserID);
+	IUserItem * pIUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pUserScore->dwUserID);
 	ASSERT(pIUserItem!=NULL);
 	if (pIUserItem==NULL) return true;
 
 	//更新判断
-	if ((m_cbHideUserInfo==FALSE)||(pIUserItem==m_pMeUserItem))
+	if ((m_cbHideUserInfo==FALSE)||(pIUserItem==m_pGameRoomMgr->m_pMeUserItem))
 	{
 		//更新分数
 		tagUserData * pUserData=pIUserItem->GetUserData();
 		pUserData->lLoveliness = pUserScore->lLoveliness;
 		pUserData->lGameGold = pUserScore->UserScore.lGameGold;
 		pUserData->lInsureScore = pUserScore->UserScore.lInsureScore;
-		m_ClientUserManager.UpdateUserItemScore(pIUserItem,&pUserScore->UserScore);
+		m_pGameRoomMgr->m_ClientUserManager.UpdateUserItemScore(pIUserItem,&pUserScore->UserScore);
 
 		//更新游戏
-		tagUserData * pMeUserData=m_pMeUserItem->GetUserData();
+		tagUserData * pMeUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 		if ((pMeUserData->wTableID!=INVALID_TABLE)&&(pMeUserData->wTableID==pUserData->wTableID))
 		{
 			IPC_UserScore UserScore;
@@ -1106,7 +1102,7 @@ bool CGameRoomSocket::OnSocketSubRight(CMD_Command Command, void * pData, WORD w
 	CMD_GR_UserRight * pUserRight=(CMD_GR_UserRight *)pData;
 
 	//用户权限
-	IUserItem * pIUserItem=m_ClientUserManager.SearchUserByUserID(pUserRight->dwUserID);
+	IUserItem * pIUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pUserRight->dwUserID);
 	pIUserItem->GetUserData()->dwUserRight = pUserRight->dwUserRight;
 
 	return true;
@@ -1125,14 +1121,14 @@ bool CGameRoomSocket::OnSocketSubMemberOrder(CMD_Command Command, void * pData, 
 	CMD_GR_MemberOrder * pMemberOrder=(CMD_GR_MemberOrder *)pData;
 
 	//会员等级
-	IUserItem * pIUserItem=m_ClientUserManager.SearchUserByUserID(pMemberOrder->dwUserID);
+	IUserItem * pIUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pMemberOrder->dwUserID);
 	tagUserData * pUserData=pIUserItem->GetUserData();
 	pUserData->cbMemberOrder = pMemberOrder->cbMemberOrder;
 	tagGlobalUserData & GlobalUserInfo=g_GlobalUnits.GetGolbalUserData();
 	GlobalUserInfo.cbMember = pMemberOrder->cbMemberOrder;
 
 	//更新游戏
-	tagUserData * pMeUserData=m_pMeUserItem->GetUserData();
+	tagUserData * pMeUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 	if ((pMeUserData->wTableID!=INVALID_TABLE)&&(pMeUserData->wTableID==pUserData->wTableID))
 	{
 		IPC_MemberOrder MemberOrder;
@@ -1155,7 +1151,7 @@ bool CGameRoomSocket::OnSocketSubSitFailed(CMD_Command Command, void * pData, WO
 	//消息处理
 	CMD_GR_SitFailed * pSitFailed=(CMD_GR_SitFailed *)pData;
 	IUserItem * pISendUserItem = m_pGameRoomMgr->GetUserInfo(m_wReqTableID,m_wReqChairID);
-	if (pISendUserItem == m_pMeUserItem) 
+	if (pISendUserItem == m_pGameRoomMgr->m_pMeUserItem) 
 		m_pGameRoomMgr->SetUserInfo(m_wReqTableID,m_wReqChairID,NULL);
 
 	//设置变量
@@ -1183,17 +1179,17 @@ bool CGameRoomSocket::OnSocketSubChat(CMD_Command Command, void * pData, WORD wD
 	if (wDataSize!=(sizeof(CMD_GR_UserChat)-sizeof(pUserChat->szChatMessage)+pUserChat->wChatLength)) return false;
 
 	//寻找用户
-	IUserItem * pISendUserItem=m_ClientUserManager.SearchUserByUserID(pUserChat->dwSendUserID);
+	IUserItem * pISendUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pUserChat->dwSendUserID);
 	if (pISendUserItem==NULL) return true;
 	tagUserData * pSendUserData=pISendUserItem->GetUserData();
 
 	//消息过滤
-	if ((pISendUserItem!=m_pMeUserItem)&&(pSendUserData->cbCompanion==enCompanion_Detest)) return true;
+	if ((pISendUserItem!=m_pGameRoomMgr->m_pMeUserItem)&&(pSendUserData->cbCompanion==enCompanion_Detest)) return true;
 
 	//显示消息
 	//if (pUserChat->dwTargetUserID!=0L)
 	//{
-	//	IUserItem * pIRecvUserItem=m_ClientUserManager.SearchUserByUserID(pUserChat->dwTargetUserID);
+	//	IUserItem * pIRecvUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pUserChat->dwTargetUserID);
 	//	if (pIRecvUserItem==NULL) return true;
 	//	tagUserData * pRecvUserData=pIRecvUserItem->GetUserData();
 	//	m_MessageProxyHelper->InsertUserChat(pSendUserData->szName,pRecvUserData->szName,pUserChat->szChatMessage,pUserChat->crFontColor,MS_NORMAL);
@@ -1218,18 +1214,18 @@ bool CGameRoomSocket::OnSocketSubWisper(CMD_Command Command, void * pData, WORD 
 	//if (wDataSize!=(sizeof(CMD_GR_Wisper)-sizeof(pWisper->szChatMessage)+pWisper->wChatLength)) return false;
 
 	////寻找用户
-	//IUserItem * pISendUserItem=m_ClientUserManager.SearchUserByUserID(pWisper->dwSendUserID);
-	//IUserItem * pIRecvUserItem=m_ClientUserManager.SearchUserByUserID(pWisper->dwTargetUserID);
+	//IUserItem * pISendUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pWisper->dwSendUserID);
+	//IUserItem * pIRecvUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pWisper->dwTargetUserID);
 	//if ((pISendUserItem==NULL)||(pIRecvUserItem==NULL)) return true;
 	//tagUserData * pUserDataSend=pISendUserItem->GetUserData();
 	//tagUserData * pUserDataRecv=pIRecvUserItem->GetUserData();
 
 	////消息过滤
-	//if ((pUserDataSend->cbMasterOrder==0) && (pISendUserItem!=m_pMeUserItem)&&(pUserDataSend->cbCompanion==enCompanion_Detest)) return true;
+	//if ((pUserDataSend->cbMasterOrder==0) && (pISendUserItem!=m_pGameRoomMgr->m_pMeUserItem)&&(pUserDataSend->cbCompanion==enCompanion_Detest)) return true;
 
 	////显示信息
 	//CShortMessage * pShortMessageWnd=NULL;
-	//if (pWisper->dwSendUserID==m_pMeUserItem->GetUserID())
+	//if (pWisper->dwSendUserID==m_pGameRoomMgr->m_pMeUserItem->GetUserID())
 	//{
 	//	//自己发送的消息
 	//	pShortMessageWnd=ActiveShortWnd(pWisper->dwTargetUserID,pIRecvUserItem,true);
@@ -1262,7 +1258,7 @@ bool CGameRoomSocket::OnSocketSubUserInvite(CMD_Command Command, void * pData, W
 	//if (m_TableFrame.QueryPlayFlag(pUserInvite->wTableID)==true) return true;
 
 	////寻找用户
-	//IUserItem * pIUserItem=m_ClientUserManager.SearchUserByUserID(pUserInvite->dwUserID);
+	//IUserItem * pIUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pUserInvite->dwUserID);
 	//if (pIUserItem==NULL) return true;
 	//tagUserData * pUserData=pIUserItem->GetUserData();
 	//if (pUserData->wTableID==INVALID_TABLE) return true;
@@ -1401,7 +1397,7 @@ bool CGameRoomSocket::OnIPCKernel(const IPC_Head * pHead, const void * pIPCBuffe
 			if (hWndSend!=m_hWndChannel) return false;
 
 			//发送消息
-			tagUserData * pUserData=m_pMeUserItem->GetUserData();
+			tagUserData * pUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 			if (pUserData->wTableID!=WORD(INVALID_TABLE))
 			{
 				if (pUserData->cbUserStatus==US_PLAY)
@@ -1493,6 +1489,27 @@ bool CGameRoomSocket::InitGameRoom(CListServer * pListServer,CGameRoomManager* p
 	return true;
 }
 
+void  CGameRoomSocket::CloseGameRoom()
+{
+	//关闭连接
+	if (m_ClientSocket.GetInterface()!=NULL) 
+		m_ClientSocket->CloseSocket();
+
+	//关闭游戏
+	CloseGameClient();
+
+	//清理内存
+	if (m_pShareMemory!=NULL)
+	{
+		UnmapViewOfFile(m_pShareMemory);
+		m_pShareMemory=NULL;
+	}
+	if (m_hShareMemory!=NULL)
+	{
+		CloseHandle(m_hShareMemory);
+		m_hShareMemory=NULL;
+	}
+}
 
 //连接服务器
 bool CGameRoomSocket::ConnectGameServer()
@@ -1607,8 +1624,8 @@ bool CGameRoomSocket::SendLookonPacket(WORD wTableID, WORD wChairID, LPCTSTR psz
 bool CGameRoomSocket::SendChatPacket(DWORD dwTargetUserID, LPCTSTR pszChatMessage, COLORREF crFontColor)
 {
 	//获取用户
-	ASSERT(m_pMeUserItem!=NULL);
-	tagUserData * pUserData=m_pMeUserItem->GetUserData();
+	ASSERT(m_pGameRoomMgr->m_pMeUserItem!=NULL);
+	tagUserData * pUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 
 	//构造数据
 	CMD_GR_UserChat UserChat;
@@ -1646,10 +1663,10 @@ bool CGameRoomSocket::IPCSendGameInfo(CIPCSendCopyData * pSendCopyData)
 {
 	//效益参数
 	ASSERT(pSendCopyData!=NULL);
-	ASSERT(m_pMeUserItem!=NULL);
+	ASSERT(m_pGameRoomMgr->m_pMeUserItem!=NULL);
 
 	//定义变量
-	tagUserData * pUserData=m_pMeUserItem->GetUserData();
+	tagUserData * pUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 	CListKind * pListKind=m_pListServer->GetListKind();
 	tagGameKind * pGameKind=pListKind->GetItemInfo();
 	tagGameServer * pGameServer=m_pListServer->GetItemInfo();
@@ -1682,11 +1699,11 @@ bool CGameRoomSocket::IPCSendTableUsers(CIPCSendCopyData * pSendCopyData)
 	ASSERT(pSendCopyData!=NULL);
 
 	//发送自己信息
-	ASSERT(m_pMeUserItem!=NULL);
-	tagUserData * pMeUserData=m_pMeUserItem->GetUserData();
+	ASSERT(m_pGameRoomMgr->m_pMeUserItem!=NULL);
+	tagUserData * pMeUserData=m_pGameRoomMgr->m_pMeUserItem->GetUserData();
 	ASSERT(pMeUserData->wTableID!=(WORD)INVALID_TABLE);
 	if (pMeUserData->wTableID==(WORD)INVALID_TABLE) return false;
-	SendTableUser(m_pMeUserItem,pSendCopyData);
+	SendTableUser(m_pGameRoomMgr->m_pMeUserItem,pSendCopyData);
 
 	//发送其他用户
 	IUserItem * pIUserItem=NULL;
@@ -1696,9 +1713,9 @@ bool CGameRoomSocket::IPCSendTableUsers(CIPCSendCopyData * pSendCopyData)
 	WORD wEnumIndex=0;
 	while (true)
 	{
-		pIUserItem=m_ClientUserManager.EnumUserItem(wEnumIndex++);
+		pIUserItem=m_pGameRoomMgr->m_ClientUserManager.EnumUserItem(wEnumIndex++);
 		if (pIUserItem==NULL) break;
-		if (pIUserItem==m_pMeUserItem) continue;
+		if (pIUserItem==m_pGameRoomMgr->m_pMeUserItem) continue;
 		pUserData=pIUserItem->GetUserData();
 		if ((pUserData->wTableID==pMeUserData->wTableID)&&(pUserData->cbUserStatus!=US_LOOKON))
 			SendTableUser(pIUserItem,pSendCopyData);
@@ -1708,9 +1725,9 @@ bool CGameRoomSocket::IPCSendTableUsers(CIPCSendCopyData * pSendCopyData)
 	wEnumIndex=0;
 	while (true)
 	{
-		pIUserItem=m_ClientUserManager.EnumUserItem(wEnumIndex++);
+		pIUserItem=m_pGameRoomMgr->m_ClientUserManager.EnumUserItem(wEnumIndex++);
 		if (pIUserItem==NULL) break;
-		if (pIUserItem==m_pMeUserItem) continue;
+		if (pIUserItem==m_pGameRoomMgr->m_pMeUserItem) continue;
 		pUserData=pIUserItem->GetUserData();
 		if ((pUserData->wTableID==pMeUserData->wTableID)&&(pUserData->cbUserStatus==US_LOOKON))
 			SendTableUser(pIUserItem,pSendCopyData);

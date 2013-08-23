@@ -138,15 +138,17 @@ void CGameRoomManager::EnterRoom(CListServer * pListServer)
 //退出房间
 void CGameRoomManager::QuitRoom()
 {
-
+	m_RoomSocket.CloseGameRoom();
+	//显示游戏界面
+	AfxGetMainWnd()->PostMessage(WM_COMMAND,WM_SHOW_GAMEPAGE);
 }
 
 //创建游戏桌子
-bool CGameRoomManager::CreateGameTable(int lTableCount, int wChairCount, CListServer* ListServer)
+bool CGameRoomManager::CreateGameTable(WORD wTableCount, WORD wChairCount, CListServer* ListServer)
 {
 	RemoveAllTable();
 	TableInfo*	pTableInfo = NULL;
-	for (int i = 0; i < lTableCount; i++)
+	for (int i = 0; i < wTableCount; i++)
 	{
 		pTableInfo = new TableInfo;
 		if(pTableInfo)
@@ -158,17 +160,48 @@ bool CGameRoomManager::CreateGameTable(int lTableCount, int wChairCount, CListSe
 			m_PtrArrayTable.Add(pTableInfo);
 		}
 	}
-// 	g_UIPageManager.m_pRoomPage->VisibleWidget(false);
-// 	g_UIPageManager.m_pTablePage->VisibleWidget(true);
-// 	g_UIPageManager.m_pTablePage->SetListServer(ListServer);
-// 	g_UIPageManager.m_pTablePage->ShowFirstPage();
+
+	m_pListServer = ListServer;
+	m_wTableCount = wTableCount;
+	m_wChairCount = wChairCount;
+	AfxGetMainWnd()->PostMessage(WM_COMMAND,WM_SHOW_GAMEPAGE);
 	return true;
 }
 
 //申请入座
-void CGameRoomManager::RequestSitdown(WORD wTableID)
+void CGameRoomManager::RequestSitdown(WORD wTableID,WORD wChairID)
 {
-	m_RoomSocket.SendSitDownPacket(wTableID,0,"");
+	m_RoomSocket.SendSitDownPacket(wTableID,wChairID,"");
+}
+
+//快速入座
+bool  CGameRoomManager::OnFastJoin()
+{
+	TableInfo* pTableInfo = NULL;
+	int nIndex = 0;
+	while(true)
+	{
+		pTableInfo = EnumTableItem(nIndex++);
+		if(pTableInfo == NULL)
+			return false;
+		if(!pTableInfo->bPlayStatus)
+		{
+			if(pTableInfo->lPlayerCount < pTableInfo->wChairCount)
+			{
+				for(int i = 0; i < pTableInfo->wChairCount; i++)
+				{
+					if(pTableInfo->pIUserItem[i] == NULL)
+					{
+						RequestSitdown(pTableInfo->wTableID,i);
+						return true;
+					}
+				}
+				ShowMessageBox("没有找到合适的位置！",MB_ICONQUESTION,5);
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 //设置用户信息
@@ -199,6 +232,7 @@ bool CGameRoomManager::SetUserInfo(WORD wTableID, WORD wChairID, IUserItem * pIU
 			pTableInfo->lPlayerCount = pTableInfo->wChairCount;
 	}
 	pTableInfo->pIUserItem[wChairID] = pIUserItem;
+	AfxGetMainWnd()->Invalidate(TRUE);
 	return true;
 }
 
@@ -222,6 +256,7 @@ void CGameRoomManager::SetPassFlag(WORD wTableID, bool bPass)
 	TableInfo* pTableInfo = EnumTableItem(wTableID);
 	if(pTableInfo != NULL)
 		pTableInfo->bTableLock = bPass;
+	AfxGetMainWnd()->Invalidate(TRUE);
 }
 
 //设置桌子是否游戏状态
@@ -230,6 +265,7 @@ void CGameRoomManager::SetPlayFlag(WORD wTableID, bool bPlay)
 	TableInfo* pTableInfo = EnumTableItem(wTableID);
 	if(pTableInfo != NULL)
 		pTableInfo->bPlayStatus = bPlay;
+	AfxGetMainWnd()->Invalidate(TRUE);
 }
 
 //查询桌子游戏状态

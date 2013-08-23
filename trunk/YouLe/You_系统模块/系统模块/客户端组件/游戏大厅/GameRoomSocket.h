@@ -129,6 +129,8 @@ protected:
 	//自定义函数
 public:
 	bool InitGameRoom(CListServer * pListServer,CGameRoomManager* pMgr);
+
+	void CloseGameRoom();
 	//类型信息
 	tagGameKind * __cdecl GetKindInfo();
 	//IPC 消息
@@ -155,8 +157,7 @@ public:
 	CTCPSocketHelper				m_ClientSocket;						//网络连接
 	CIPCRecvCopyData				m_IPCRecvCopyData;					//信道组件
 	enServiceStatus					m_ServiceStatus;					//服务状态
-	IUserItem*						m_pMeUserItem;						//自己信息
-	CClientUserManager				m_ClientUserManager;				//用户管理
+
 
 	//进程信息
 protected:
