@@ -1455,6 +1455,14 @@ bool __cdecl CAttemperEngineSink::OnEventTCPSocketLink(WORD wServiceID, INT nErr
 	RegGameServer.GameServer.dwServerAddr=m_pGameServiceOption->dwServerAddr;
 	RegGameServer.GameServer.dwOnLineCount=(m_ServerUserManager.GetOnLineCount()+m_ServerUserManager.GetOffLineCount());
 	lstrcpyn(RegGameServer.GameServer.szServerName,m_pGameServiceOption->szGameRoomName,CountArray(RegGameServer.GameServer.szServerName));
+	//房间配置
+	RegGameServer.GameServer.RoomConfig.wServerType  = m_pGameServiceOption->wServerType;
+	RegGameServer.GameServer.RoomConfig.wServerRule  = m_pGameServiceOption->wServerRule;
+	RegGameServer.GameServer.RoomConfig.LowestScore  = m_pGameServiceOption->lLessScore;
+	RegGameServer.GameServer.RoomConfig.HighestScore = m_pGameServiceOption->lMaxScore;
+	RegGameServer.GameServer.RoomConfig.BaseScore    = m_pGameServiceOption->lCellScore;
+
+
 	m_pITCPSocketCorrespond->SendData(MDM_CS_SERVER_MANAGER,SUB_CS_REG_GAME_SERVER,&RegGameServer,sizeof(RegGameServer));
 
 	//获取列表
