@@ -330,5 +330,20 @@ bool CGlobalUnits::RegisterHotKey(HWND hWnd, UINT uKeyID, WORD wHotKey)
 	return (bSuccess==TRUE)?true:false;
 }
 
+//删除.exe
+void CGlobalUnits::RemoveEXE(TCHAR szProcessName[],TCHAR szRetName[], WORD wBufferCount)
+{
+	//变量定义
+	WORD wStringIndex=0;
+	//构造目录
+	ZeroMemory(szRetName,wBufferCount*sizeof(TCHAR));
+	lstrcpyn(szRetName,szProcessName,wBufferCount);
+	while ((szRetName[wStringIndex]!=0)&&(szRetName[wStringIndex]!=TEXT('.')))
+		wStringIndex++;
+	//字符终止
+	szRetName[wStringIndex]=0;
+
+	return;
+}
 
 //////////////////////////////////////////////////////////////////////////

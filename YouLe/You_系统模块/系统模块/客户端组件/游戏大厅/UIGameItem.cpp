@@ -1,5 +1,6 @@
 #include "stdafx.h"
 #include "UIGameItem.h"
+#include "UIGamePage.h"
 
 namespace YouLe
 {
@@ -109,14 +110,6 @@ namespace YouLe
 		{
 			// drwo normal stat image
 			m_PngBill.DrawImage(pDC, cPt.x, cPt.y);
-
-#ifdef _DEBUG
-			pDC->SelectObject(g_UIPageManager.m_Font.m_StatusFont);
-			pDC->SetTextColor(RGB(255,255,255));
-			if(m_pListKind)
-				pDC->DrawText(m_pListKind->m_GameKind.szKindName,lstrlen(m_pListKind->m_GameKind.szKindName),
-				CRect(cPt.x,cPt.y+10,cPt.x+180,cPt.y+40),DT_CENTER);
-#endif
 		}
 		return UIWidget::Draw(pDC);
 	}
@@ -179,6 +172,7 @@ namespace YouLe
 	UIGameView::UIGameView()
 	{
 		m_EnumIndex = 0;
+		m_KindType = 1;
 	}
 	
 	// 析构函数
@@ -207,7 +201,7 @@ namespace YouLe
 		for (int i=0; i<4; i++)
 		{
 			UIPngButton* pPngButton = new UIPngButton();
-			pPngButton->Create(idList[i], i * 96, 0, m_pAttach, this,
+			pPngButton->Create(idList[i], GTP_OFFSETX + i * 96, 0, m_pAttach, this,
 				hInstance, chBtnImageResouceName[i], 3, this);
 		}
 
@@ -220,7 +214,7 @@ namespace YouLe
 			{
 				int index = c * MAX_GIROW + r;
 				m_pGameItem[index] = new UIGameItem();
-				m_pGameItem[index] ->Create(c * MAX_GIROW + r + GTP_OFFSETX , r * 180, c * 145 + GTP_OFFSETY, hInstance, PlazaViewImage.pszGameBack, PlazaViewImage.pszGameItemBill, 
+				m_pGameItem[index] ->Create(index + GTP_OFFSETX , r * 180 + GTP_OFFSETX, c * 145 + GTP_OFFSETY, hInstance, PlazaViewImage.pszGameBack, PlazaViewImage.pszGameItemBill, 
 					pAttach, this, this);
 				m_pGameItem[index]->EnabledWidget(false);
 			}
@@ -234,11 +228,16 @@ namespace YouLe
 		
 		// 绘制翻页按钮，下一页
 		UIPngButton* pBtNext = new UIPngButton();
-		pBtNext->Create(101, rc.right/2 ,		rc.bottom-28, pAttach, this, hInstance, PlazaViewImage.pszGLNext, 4, this);
+		pBtNext->Create(101, rc.right/2 ,	  rc.bottom-28, pAttach, this, hInstance, PlazaViewImage.pszGLNext, 4, this);
 		
 		VisibleWidget(FALSE);
 
 		return TRUE;
+	}
+
+	BOOL	UIGameView::Draw(CDC* pDC)
+	{
+		return UIWidget::Draw(pDC);
 	}
 
 	// 设置页面
@@ -268,27 +267,12 @@ namespace YouLe
 				return TRUE;
 			}
 		case 1:
-			{
-				ShowFirstPage();
-				SetPage(idList[0]);
-				return TRUE;
-			}
 		case 2:
-			{
-				ShowFirstPage(idList[1]);
-				SetPage(idList[1]);
-				return TRUE;
-			}
 		case 3:
-			{
-				ShowFirstPage(idList[2]);
-				SetPage(idList[2]);
-				return TRUE;
-			}
 		case 4:
 			{
-				ShowFirstPage(idList[3]);
-				SetPage(idList[3]);
+				ShowPage(idList[pWidget->GetID()-1]);
+				SetPage(idList[pWidget->GetID()-1]);
 				return TRUE;
 			}
 		}
@@ -317,15 +301,17 @@ namespace YouLe
 			pListKind = g_GlobalUnits.m_ServerListManager.EnumKindItem(nIndex);
 			if (pListKind == NULL) 
 				return false;
-			if(pListKind->m_GameKind.wTypeID != m_KindType && m_KindType != -1)
+			if(pListKind->m_GameKind.wTypeID != m_KindType && m_KindType != 1)
 				continue;
 			UIGameItem* pGameItem = m_pGameItem[GameIndex];
 			if(pGameItem)
 			{
-				CString strName(pListKind->GetItemInfo()->szProcessName);
-				strName.TrimRight(".exe");
+				//资源目录
+				TCHAR szRetName[128]=TEXT("");
+				g_GlobalUnits.RemoveEXE(pListKind->GetItemInfo()->szProcessName,
+					szRetName,CountArray(szRetName));
 				sprintf(szFileName,"%s\\GameLobby\\GameKind\\%s\\Bill.png", 
-					CString(g_GlobalUnits.GetWorkDirectory()),strName);
+					CString(g_GlobalUnits.GetWorkDirectory()),szRetName);
 				if( !pGameItem->SetBillPng(szFileName))
 					continue;
 				pGameItem->EnabledWidget(true);
@@ -337,7 +323,7 @@ namespace YouLe
 	}
 
 	// 显示首页
-	void	UIGameView::ShowFirstPage(int KindType /*= -1*/)
+	void	UIGameView::ShowPage(int KindType)
 	{
 		m_EnumIndex = 0;
 		m_KindType = KindType;
@@ -348,11 +334,13 @@ namespace YouLe
 	void	UIGameView::OnClickLastPage()
 	{
 		m_EnumIndex -= MAX_GICOL*MAX_GIROW;
-		if(m_EnumIndex < 0)
+		if(m_EnumIndex <= 0)
 		{
 			m_EnumIndex = 0;
+			//Search(100)->VisibleWidget(false);
 			return;
 		}
+		//Search(101)->VisibleWidget(true);
 		EnumGameItem();
 	}
 
@@ -366,8 +354,10 @@ namespace YouLe
 		if (pListKind == NULL) 
 		{
 			m_EnumIndex -= MAX_GICOL*MAX_GIROW;
+			//Search(101)->VisibleWidget(false);
 			return ;
 		}
+		//Search(100)->VisibleWidget(true);
 		EnumGameItem();
 	}
 
@@ -384,7 +374,7 @@ namespace YouLe
 	void	UIGameView::VisibleTrigger()
 	{
 		SetPage(idList[0]);
-		ShowFirstPage();
+		ShowPage(idList[0]);
 	}
 
 }

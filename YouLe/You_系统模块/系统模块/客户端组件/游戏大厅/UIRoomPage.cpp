@@ -8,7 +8,9 @@ namespace YouLe
 	//////////////////////////////////////////////////////////////////////////
 	UIRoomItem::UIRoomItem(void)
 	{
-
+		//创建字体
+		m_InfoFont.CreateFont(12,8,0,0,100,0,0,0,134,3,2,1,2,TEXT("黑体"));
+		m_RuleFont.CreateFont(11,8,0,0,100,0,0,0,134,3,2,1,2,TEXT("黑体"));
 	}
 
 	UIRoomItem::~UIRoomItem(void)
@@ -52,15 +54,40 @@ namespace YouLe
 
 		if(m_pListServer)
 		{
-			TCHAR	szTempStr[32];
-			pDC->SelectObject(g_UIPageManager.m_Font.m_StatusFont);
-			pDC->SetTextColor(RGB(255,255,255));		
-			CopyMemory(szTempStr,m_pListServer->m_GameServer.szServerName,sizeof(szTempStr));
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+10,cPt.y+10,cPt.x+120,cPt.y+30),DT_CENTER);
-			pDC->SelectObject(g_UIPageManager.m_Font.m_InfoFont);
-			pDC->SetTextColor(RGB(255,255,128));
-			sprintf(szTempStr,_T("人数：%d"),m_pListServer->m_GameServer.dwOnLineCount);		
-			pDC->DrawText(szTempStr,lstrlen(szTempStr),CRect(cPt.x+35,cPt.y+80,cPt.x+135,cPt.y+100),DT_LEFT);
+			tagRoomConfig Config = m_pListServer->m_GameServer.RoomConfig;
+
+			pDC->SelectObject(m_RuleFont);
+			pDC->SetTextColor(RGB(255,255,255));
+			
+			WORD wRoomRule[5]={ROOM_JUNIOR,ROOM_MIDDLE,ROOM_HIGH,ROOM_BAIREN,ROOM_NOCHEAT};
+			LPCTSTR pszRoomRule[5]={TEXT("初级"),TEXT("中级"),TEXT("高级"),TEXT("百人房"),TEXT("防作弊")};
+			for(int i = 0; i < CountArray(wRoomRule); i++)
+			{
+				if(Config.wServerRule == wRoomRule[i])
+				{
+					pDC->TextOut(cPt.x + 7, cPt.y + 10, pszRoomRule[i]);
+					break;
+				}
+			}
+			pDC->SelectObject(m_InfoFont);
+			pDC->TextOut(cPt.x + 70, cPt.y + 10, m_pListServer->m_GameServer.szServerName);
+
+			TCHAR szTemp[128];
+			if(Config.BaseScore > 0)
+			{
+				sprintf(szTemp,"%I64d",Config.BaseScore);
+				pDC->TextOut(cPt.x + 60, cPt.y + 39, szTemp);
+			}
+			if(Config.HighestScore > 0)
+			{
+				sprintf(szTemp,"%I64d",Config.HighestScore);
+				pDC->TextOut(cPt.x + 60, cPt.y + 61,szTemp);
+			}
+			if(Config.LowestScore > 0)
+			{
+				sprintf(szTemp,"%I64d",Config.LowestScore);
+				pDC->TextOut(cPt.x + 60, cPt.y + 85, szTemp);
+			}
 		}
 		return UIWidget::Draw(pDC);
 	}
@@ -86,6 +113,9 @@ namespace YouLe
 	bool	UIRoomItem::OnClickedEnterRoom()
 	{
 		g_GlobalUnits.m_GameRoomManager.EnterRoom(m_pListServer);
+		UIRoomPage* pPage = (UIRoomPage*)GetParent();
+		if(pPage)
+			pPage->SetEnterRoom(true);
 		return true;
 	}
 
@@ -95,6 +125,9 @@ namespace YouLe
 	//////////////////////////////////////////////////////////////////////////
 	UIRoomPage::UIRoomPage(void)
 	{
+		m_bEnterRoom = false;
+		//创建字体
+		m_DrawFont.CreateFont(18,0,0,0,300,0,0,0,134,3,2,1,2,TEXT("黑体"));
 	}
 
 	UIRoomPage::~UIRoomPage(void)
@@ -122,7 +155,7 @@ namespace YouLe
 			{
 				int index = c*MAX_GIROW + r;
 				m_pRoomItem[index] = new UIRoomItem();
-				m_pRoomItem[index] ->Create(c * MAX_GIROW + r , r * 180, 40+c * 145, pAttach, this, this);
+				m_pRoomItem[index] ->Create(c * MAX_GIROW + r , GTP_OFFSETX + r * 180, GTP_OFFSETY + c * 145, pAttach, this, this);
 				m_pRoomItem[index] ->VisibleWidget(false);
 			}
 		}
@@ -139,11 +172,11 @@ namespace YouLe
 			return FALSE;
 		
 		CPoint cPt = m_rect.TopLeft();
-		m_TilteImage.DrawImage(pDC, cPt.x, cPt.y);
+		m_TilteImage.DrawImage(pDC, cPt.x + GTP_OFFSETX, cPt.y);
 
-		pDC->SelectObject(g_UIPageManager.m_Font.m_TitleFont);
+		pDC->SelectObject(m_DrawFont);
 		pDC->SetTextColor(RGB(255,255,255));
-		pDC->DrawText(szKindName,lstrlen(szKindName),CRect(cPt.x,cPt.y+8,cPt.x+150,cPt.y+30),DT_CENTER);
+		pDC->DrawText(m_szKindName,lstrlen(m_szKindName),CRect(cPt.x + GTP_OFFSETX,cPt.y+8,cPt.x+150+GTP_OFFSETX,cPt.y+30),DT_CENTER);
 
 		return UIWidget::Draw(pDC);
 	}
@@ -151,21 +184,13 @@ namespace YouLe
 	// 响应页控件
 	BOOL	UIRoomPage::OnLeftDown(UIWidget* pWidget, const CPoint& cPt)
 	{
-		if (pWidget)
-		{
-			UIRoomItem* pItem = (UIRoomItem*)pWidget;
-			if (pItem)
-			{
-
-			}
-		}
 		return TRUE;
 	}
 
 	// 显示房间列表
 	bool	UIRoomPage::ShowRoomList(CListKind* ListKind)
 	{
-		CopyMemory(szKindName,ListKind->m_GameKind.szKindName,sizeof(szKindName));
+		CopyMemory(m_szKindName,ListKind->m_GameKind.szKindName,sizeof(m_szKindName));
 		CListServer* pListServer = NULL;
 		int	SeverIndex = 0;
 		int RoomIndex = 0;

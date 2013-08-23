@@ -18,6 +18,14 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 #define SHADOW_CX							1							//阴影宽度
 #define SHADOW_CY							1							//阴影高度
 
+//头像大小
+#define FACE_CX					48						//头像宽度
+#define FACE_CY					48						//头像高度
+
+//性别定义
+#define GENDER_FEMALE			0						//女性性别
+#define GENDER_MANKIND			1						//男性性别
+
 // 视图页面创建的个数
 #define MAX_GICOL							3
 #define MAX_GIROW							3
@@ -80,6 +88,9 @@ const TCHAR SZ_PLAZANAME[]	=	TEXT("YouLe");
 //////////////////////////////////////////////////////////////////////////
 //UI指令
 #define WM_SHOW_USERSET						WM_USER + 1					//打开用户设置
+#define	WM_SHOW_GAMEPAGE					WM_USER + 2
+#define	WM_CREATEGAMETABLE					WM_USER + 3					//创建游戏桌子	
+
 #define WM_SHOW_FRAMECLOSE					WM_USER + 101
 #define WM_CLOSE_FRAME						WM_USER + 102
 #define WM_SWITCH_ACCOUNT					WM_USER + 103

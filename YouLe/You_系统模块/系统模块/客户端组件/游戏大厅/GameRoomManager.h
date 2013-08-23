@@ -26,9 +26,11 @@ public:
 	//退出房间
 	void	QuitRoom();
 	//创建桌子
-	bool	CreateGameTable(int lTableCount, int wChairCount, CListServer* ListServer);
+	bool	CreateGameTable(WORD wTableCount, WORD wChairCount, CListServer* ListServer);
 	//申请入座
-	void	RequestSitdown(WORD wTableID);
+	void	RequestSitdown(WORD wTableID,WORD wChairID);
+	//快速入座
+	bool	OnFastJoin();
 	//设置用户信息
 	bool	SetUserInfo(WORD wTableID, WORD wChairID, IUserItem * pIUserItem);
 	//获取用户信息
@@ -46,6 +48,11 @@ public:
 
 	//变量
 public:
-	CGameRoomSocket			m_RoomSocket;
-	CTableArray				m_PtrArrayTable;	//桌子列表
+	CGameRoomSocket					m_RoomSocket;
+	CTableArray						m_PtrArrayTable;					//桌子列表
+	IUserItem*						m_pMeUserItem;						//自己信息
+	CClientUserManager				m_ClientUserManager;				//用户管理
+	WORD							m_wTableCount;						//桌子数量
+	WORD							m_wChairCount;						//椅子数量
+	CListServer*					m_pListServer;						//房间信息
 };

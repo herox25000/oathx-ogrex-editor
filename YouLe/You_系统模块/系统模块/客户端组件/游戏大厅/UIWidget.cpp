@@ -76,10 +76,19 @@ namespace YouLe
 		{
 			VisibleTrigger();
 		}
+		else
+		{
+			InvisibleTrigger();		
+		}
 		Invalidate(TRUE);
 	}
 
-	void UIWidget::VisibleTrigger()
+	void		UIWidget::VisibleTrigger()
+	{
+
+	}
+
+	void		UIWidget::InvisibleTrigger()
 	{
 
 	}
@@ -290,6 +299,20 @@ namespace YouLe
 		return TRUE;
 	}
 	
+	// 鼠标拖动
+	BOOL		UIWidget::OnMouseDrag(const CPoint& cPt)
+	{
+		if (!m_bEnabled || !m_bVisible)
+			return FALSE;
+
+		if (m_pProcess)
+			m_pProcess->OnMouseDrag(this, cPt);
+
+		Invalidate(TRUE);
+
+		return TRUE;
+	}
+
 	// 左键按下
 	BOOL		UIWidget::OnLeftDown(const CPoint& cPt)
 	{

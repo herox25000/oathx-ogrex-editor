@@ -24,6 +24,14 @@ namespace YouLe
 		{
 			return FALSE;
 		}
+
+		// 鼠标拖动
+		virtual BOOL		OnMouseDrag(UIWidget* pWidget,
+			const CPoint& cPt)
+		{
+			return FALSE;
+		}
+
 		// 鼠标离开
 		virtual BOOL		OnMouseLeave(UIWidget* pWidget, 
 			const CPoint& cPt)
@@ -89,6 +97,8 @@ namespace YouLe
 		virtual void		VisibleWidget(bool bVisible);
 		// 设置触发显示
 		virtual void		VisibleTrigger();
+		// 不显示时触发
+		virtual void		InvisibleTrigger();		
 
 	public:
 		// 获取区域
@@ -135,6 +145,8 @@ namespace YouLe
 	public:
 		// 鼠标移动
 		virtual BOOL		OnMouseMove(const CPoint& cPt);
+		// 鼠标拖动
+		virtual BOOL		OnMouseDrag(const CPoint& cPt); 
 		// 左键按下
 		virtual BOOL		OnLeftDown(const CPoint& cPt);
 		// 左键弹起

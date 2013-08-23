@@ -65,6 +65,7 @@ namespace YouLe
 		// 创建游戏视图
 		virtual	BOOL		Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
 	
+		virtual BOOL		Draw(CDC* pDC);
 	public:
 		virtual	void		VisibleTrigger();
 		// 功能函数
@@ -74,7 +75,7 @@ namespace YouLe
 		// 枚举GameItem
 		bool				EnumGameItem();
 		// 显示首页
-		void				ShowFirstPage(int KindType = -1);
+		void				ShowPage(int KindType );
 		// 响应上一页
 		void				OnClickLastPage();
 		// 响应下一页

@@ -2,6 +2,7 @@
 #define _____UIPngButton_H
 
 #include "UIWidget.h"
+#include "UIPngButton.h"
 
 namespace YouLe
 {

@@ -5,7 +5,7 @@
 #include "DlgLogon.h"
 #include "PlatformSocket.h"
 #include "UIFrameSheet.h"
-#include "FrameSet.h"
+//#include "FrameSet.h"
 
 //热键定义
 #define IDI_HOT_KEY_BOSS			0x0100								//老板热键
@@ -22,6 +22,7 @@ protected:
 	virtual ~CPlatformFrame();
 
 protected:
+	bool							m_bHandCur;
 	CPlatformSocket					m_PlatformSocket;
 	CGamePlazaDlg*					m_pGamePlazaDlg;
 	CDlgLogon						m_DlgLogon;				//登录对话框
@@ -87,6 +88,8 @@ protected:
 public:
 	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	//光标消息
+	BOOL OnSetCursor(CWnd * pWnd, UINT nHitTest, UINT uMessage);
 };
 
 

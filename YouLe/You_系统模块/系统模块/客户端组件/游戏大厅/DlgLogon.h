@@ -152,8 +152,6 @@ protected:
 //登录对话框
 class CDlgLogon : public CDialog
 {
-public:
-	CWnd*		m_pPlatformFrame;
 	//登录信息
 protected:
 	WORD								m_wFaceID;						//头像标识
@@ -234,8 +232,6 @@ public:
 	CDlgLogon();
 	//析构函数
 	virtual ~CDlgLogon();
-	//设置大厅指针
-	void SetPlatFormPointer(CWnd* pPointer)	{m_pPlatformFrame = pPointer;}
 	//重载函数
 protected:
 	//控件绑定

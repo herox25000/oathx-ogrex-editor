@@ -28,7 +28,7 @@
 #define IDM_SNED_LOGONPACKET            32773
 #define IDM_CONNECT_SERVER              32774
 #define IDM_CANCEL_CONNECT              32775
-
+#define IDM_SETHANDCUR					32776
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED

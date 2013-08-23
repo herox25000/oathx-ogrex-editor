@@ -29,7 +29,8 @@ namespace YouLe
 	protected:
 		CPngImage			m_PngBill;
 		UIPngButton*		m_pJoinBtn; 
-
+		CFont				m_InfoFont;
+		CFont				m_RuleFont;
 	public:
 		CListServer*		m_pListServer;
 	};
@@ -60,16 +61,21 @@ namespace YouLe
 	public:
 		// 显示房间列表
 		bool				ShowRoomList(CListKind* ListKind);
-
+		// 设置是否正在进入房间
+		void				SetEnterRoom(bool bEnter){m_bEnterRoom = bEnter;}
 	public:
 		// 房间列表指针
 		UIRoomItem*			m_pRoomItem[MAX_GICOL*MAX_GIROW];
+		// 字体
+		CFont				m_DrawFont;
 		// 返回按钮
 		UIPngButton*		m_pBtBack;
 		// 标题
 		CPngImage			m_TilteImage;
 		// 标题名称（游戏名字）
-		TCHAR				szKindName[KIND_LEN];
+		TCHAR				m_szKindName[KIND_LEN];
+		// 设置进入房间标志
+		bool				m_bEnterRoom;
 	};
 
 

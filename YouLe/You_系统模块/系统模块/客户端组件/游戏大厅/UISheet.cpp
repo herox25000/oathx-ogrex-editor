@@ -27,11 +27,26 @@ namespace YouLe
 		UIWidget* pDropWnd	= m_pInput;
 		m_pInput = pChildWnd;
 		
+
 		if (pDropWnd)
 			pDropWnd->OnMouseLeave(cPt);
 	
 		if (m_pInput)
 			m_pInput->OnMouseEnter(cPt);
+
+		if (pChildWnd != NULL)
+		{
+			if (m_pFocus != pChildWnd)
+				m_pFocus = pChildWnd;
+			// Êó±êÍÏ¶¯
+			if(m_bPress)
+				m_pInput->OnMouseDrag(cPt);
+			m_pFocus->OnMouseMove(cPt);
+		}
+		else
+		{
+			m_pFocus = NULL;
+		}
 
 		return TRUE;
 	}
@@ -51,7 +66,7 @@ namespace YouLe
 		{
 			m_pFocus = NULL;
 		}
-
+		m_bPress = TRUE;
 		return TRUE;
 	}
 	
@@ -70,7 +85,7 @@ namespace YouLe
 			else
 				m_pFocus = NULL;
 		}
-		
+		m_bPress = FALSE;
 		return TRUE;
 	}
 }
