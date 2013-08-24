@@ -213,11 +213,11 @@ namespace YouLe
 		void				ShowFirstTablePage();
 		// 快速加入
 		bool				OnFastJoin();
-		//设置房间信息
+		// 设置房间信息
 		void				SetRoomInfo();
-		//读取房间资源
+		// 读取房间资源
 		void				LoadTableRes();
-		//读取防作弊图片
+		// 读取防作弊图片
 		void				LoadNoCheatImage();	
 		// 根据桌子的大小创建桌子
 		bool				CreateTable();

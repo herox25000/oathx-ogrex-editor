@@ -285,6 +285,12 @@
 				Name="Widget"
 				Filter="">
 				<File
+					RelativePath=".\UIImageScrollBar.cpp">
+				</File>
+				<File
+					RelativePath=".\UIImageScrollBar.h">
+				</File>
+				<File
 					RelativePath=".\UIPngButton.cpp">
 				</File>
 				<File
@@ -342,12 +348,6 @@
 			</File>
 			<File
 				RelativePath=".\UIGamePage.h">
-			</File>
-			<File
-				RelativePath=".\UIImageScrollBar.cpp">
-			</File>
-			<File
-				RelativePath=".\UIImageScrollBar.h">
 			</File>
 			<File
 				RelativePath=".\UIMatchPage.cpp">
