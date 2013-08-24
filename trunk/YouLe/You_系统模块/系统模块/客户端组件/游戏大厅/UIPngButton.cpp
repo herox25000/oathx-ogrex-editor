@@ -189,8 +189,8 @@ namespace YouLe
 
 	BOOL UIPngRadioButton::Create( INT nID, INT x, INT y, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent )
 	{
-		tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatformFrameImageNew & FrameViewImage = CGlobalUnits::GetSingleton()->m_PlatformFrameImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		m_pImage = new CPngImage();
 		ASSERT(m_pImage != NULL);

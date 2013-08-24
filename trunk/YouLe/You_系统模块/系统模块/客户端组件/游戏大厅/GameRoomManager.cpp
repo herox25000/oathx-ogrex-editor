@@ -15,7 +15,7 @@ CGameRoomManager::~CGameRoomManager(void)
 void CGameRoomManager::EnterRoom(CListServer * pListServer)
 {
 	//判断状态
-	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+	tagGlobalUserData & GlobalUserData=CGlobalUnits::GetSingleton()->GetGolbalUserData();
 	if (GlobalUserData.dwUserID == 0L)
 	{
 		ShowMessageBox(_T("你还没有登录，请先登录游戏广场！"),MB_ICONQUESTION);

@@ -503,11 +503,11 @@ bool CGameRoomSocket::OnSocketMainServerInfo(CMD_Command Command, void * pData, 
 				wKindID=(pOnLineCountInfo+i)->wKindID;
 				dwKindOnLineCount=(pOnLineCountInfo+i)->dwOnLineCount;
 				dwAllOnLineCount+=dwKindOnLineCount;
-				g_GlobalUnits.m_ServerListManager.UpdateGameKindOnLine(wKindID,dwKindOnLineCount);
+				CGlobalUnits::GetSingleton()->m_ServerListManager.UpdateGameKindOnLine(wKindID,dwKindOnLineCount);
 			}
 
 			//更新总数
-			g_GlobalUnits.m_ServerListManager.UpdateGameOnLineCount(dwAllOnLineCount);
+			CGlobalUnits::GetSingleton()->m_ServerListManager.UpdateGameOnLineCount(dwAllOnLineCount);
 
 			return true;
 		}
@@ -638,7 +638,7 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	//	//喇叭图片
 	//	CBitmap Bitmap;
 	//	AfxSetResourceHandle(GetResInstanceHandle());
-	//	if ( Bitmap.LoadBitmap(g_GlobalUnits.m_ChatExpViewImage.uChatBugle) )
+	//	if ( Bitmap.LoadBitmap(CGlobalUnits::GetSingleton()->m_ChatExpViewImage.uChatBugle) )
 	//	{
 	//		m_MessageProxyHelper->InsertImage(&Bitmap);
 	//		Bitmap.DeleteObject();
@@ -714,7 +714,7 @@ bool CGameRoomSocket::OnSocketMainGameFrame(CMD_Command Command, void * pData, W
 	//		//插入图片
 	//		CBitmap Bitmap;
 	//		AfxSetResourceHandle(GetResInstanceHandle());
-	//		if ( Bitmap.LoadBitmap(g_GlobalUnits.m_ChatExpViewImage.uChatGift[nFlowerID]) )
+	//		if ( Bitmap.LoadBitmap(CGlobalUnits::GetSingleton()->m_ChatExpViewImage.uChatGift[nFlowerID]) )
 	//		{
 	//			m_MessageProxyHelper->InsertImage(&Bitmap);
 	//			Bitmap.DeleteObject();
@@ -758,13 +758,13 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 	//UserData.lInsureScore = pUserInfoHead->lInsureScore;
 
 	//管理判断
-	if ((pUserInfoHead->dwUserID==g_GlobalUnits.GetGolbalUserData().dwUserID)&&(pUserInfoHead->cbMasterOrder>=2))
+	if ((pUserInfoHead->dwUserID==CGlobalUnits::GetSingleton()->GetGolbalUserData().dwUserID)&&(pUserInfoHead->cbMasterOrder>=2))
 	{
 		m_cbHideUserInfo=FALSE;
 	}
 
 	//读取信息
-	if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==g_GlobalUnits.GetGolbalUserData().dwUserID))
+	if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==CGlobalUnits::GetSingleton()->GetGolbalUserData().dwUserID))
 	{
 		UserData.wFaceID=pUserInfoHead->wFaceID;
 		UserData.dwCustomFaceVer=pUserInfoHead->dwCustomFaceVer;
@@ -796,7 +796,7 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 		{
 		case DTP_USER_ACCOUNTS:		//用户帐户
 			{
-				if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==g_GlobalUnits.GetGolbalUserData().dwUserID))
+				if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==CGlobalUnits::GetSingleton()->GetGolbalUserData().dwUserID))
 				{
 					ASSERT(pDataBuffer!=NULL);
 					ASSERT(DataDescribe.wDataSize<=sizeof(UserData.szName));
@@ -814,7 +814,7 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 			}
 		case DTP_UNDER_WRITE:		//个性签名
 			{
-				if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==g_GlobalUnits.GetGolbalUserData().dwUserID))
+				if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==CGlobalUnits::GetSingleton()->GetGolbalUserData().dwUserID))
 				{
 					ASSERT(pDataBuffer!=NULL);
 					ASSERT(DataDescribe.wDataSize<=sizeof(UserData.szUnderWrite));
@@ -828,7 +828,7 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 			}
 		case DTP_USER_GROUP_NAME:	//用户社团
 			{
-				if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==g_GlobalUnits.GetGolbalUserData().dwUserID))
+				if ((m_cbHideUserInfo==FALSE)||(pUserInfoHead->dwUserID==CGlobalUnits::GetSingleton()->GetGolbalUserData().dwUserID))
 				{
 					ASSERT(pDataBuffer!=NULL);
 					ASSERT(DataDescribe.wDataSize<=sizeof(UserData.szGroupName));
@@ -848,7 +848,7 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 	if (pIUserItem==NULL) 
 	{
 		const tagCompanionItem * pCompanionItem=NULL;
-		pCompanionItem=g_GlobalUnits.m_CompanionManager->SearchCompanionItem(UserData.dwUserID);
+		pCompanionItem=CGlobalUnits::GetSingleton()->m_CompanionManager->SearchCompanionItem(UserData.dwUserID);
 		if (pCompanionItem!=NULL) UserData.cbCompanion=pCompanionItem->Companion;
 		pIUserItem=m_pGameRoomMgr->m_ClientUserManager.ActiveUserItem(UserData);
 	}
@@ -890,7 +890,7 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 	//if(UserData.dwCustomFaceVer!=0)
 	//{
 	//	//头像名称
-	//	CString strDirName = CString(g_GlobalUnits.GetWorkDirectory()) + TEXT("\\CustomFace");
+	//	CString strDirName = CString(CGlobalUnits::GetSingleton()->GetWorkDirectory()) + TEXT("\\CustomFace");
 	//	CString strFileName;
 	//	strFileName.Format(TEXT("\\%ld_%d.bmp"), pUserInfoHead->dwUserID, pUserInfoHead->dwCustomFaceVer);
 
@@ -912,7 +912,7 @@ bool CGameRoomSocket::OnSocketSubUserCome(CMD_Command Command, void * pData, WOR
 
 	//更新人数
 	DWORD dwOnLineCount=m_pGameRoomMgr->m_ClientUserManager.GetOnLineCount();
-	g_GlobalUnits.m_ServerListManager.UpdateGameServerOnLine(m_pListServer,dwOnLineCount);
+	CGlobalUnits::GetSingleton()->m_ServerListManager.UpdateGameServerOnLine(m_pListServer,dwOnLineCount);
 
 	return true;
 }
@@ -966,7 +966,7 @@ bool CGameRoomSocket::OnSocketSubStatus(CMD_Command Command, void * pData, WORD 
 
 		//更新人数
 		DWORD dwOnLineCount=m_pGameRoomMgr->m_ClientUserManager.GetOnLineCount();
-		g_GlobalUnits.m_ServerListManager.UpdateGameServerOnLine(m_pListServer,dwOnLineCount);
+		CGlobalUnits::GetSingleton()->m_ServerListManager.UpdateGameServerOnLine(m_pListServer,dwOnLineCount);
 
 		return true;
 	}
@@ -1124,7 +1124,7 @@ bool CGameRoomSocket::OnSocketSubMemberOrder(CMD_Command Command, void * pData, 
 	IUserItem * pIUserItem=m_pGameRoomMgr->m_ClientUserManager.SearchUserByUserID(pMemberOrder->dwUserID);
 	tagUserData * pUserData=pIUserItem->GetUserData();
 	pUserData->cbMemberOrder = pMemberOrder->cbMemberOrder;
-	tagGlobalUserData & GlobalUserInfo=g_GlobalUnits.GetGolbalUserData();
+	tagGlobalUserData & GlobalUserInfo=CGlobalUnits::GetSingleton()->GetGolbalUserData();
 	GlobalUserInfo.cbMember = pMemberOrder->cbMemberOrder;
 
 	//更新游戏
@@ -1564,17 +1564,17 @@ bool CGameRoomSocket::SendLogonPacket()
 {
 	//获取信息
 	BYTE cbBuffer[SOCKET_PACKET];
-	tagGlobalUserData & GlobalUserData=g_GlobalUnits.GetGolbalUserData();
+	tagGlobalUserData & GlobalUserData=CGlobalUnits::GetSingleton()->GetGolbalUserData();
 
 	//登录数据包
 	CMD_GR_LogonByUserID * pLogonByUserID=(CMD_GR_LogonByUserID *)cbBuffer;
 	pLogonByUserID->dwUserID=GlobalUserData.dwUserID;
-	pLogonByUserID->dwPlazaVersion=g_GlobalUnits.GetPlazaVersion();
+	pLogonByUserID->dwPlazaVersion=CGlobalUnits::GetSingleton()->GetPlazaVersion();
 	lstrcpyn(pLogonByUserID->szPassWord,GlobalUserData.szPassWord,sizeof(pLogonByUserID->szPassWord));
 
 	//机器序列号
 	tagClientSerial ClientSerial;
-	g_GlobalUnits.GetClientSerial(ClientSerial);
+	CGlobalUnits::GetSingleton()->GetClientSerial(ClientSerial);
 
 	//发送数据包
 	CSendPacketHelper Packet(cbBuffer+sizeof(CMD_GR_LogonByUserID),sizeof(cbBuffer)-sizeof(CMD_GR_LogonByUserID));

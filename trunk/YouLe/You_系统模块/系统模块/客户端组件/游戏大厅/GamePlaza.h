@@ -19,6 +19,7 @@ public:
 	
 protected:
 	ULONG_PTR		m_gdiplusToken;
+	CGlobalUnits*	m_pGlobalUnits;
 };
 
 extern CGamePlazaApp theApp;

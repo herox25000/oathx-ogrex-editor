@@ -17,7 +17,10 @@ namespace YouLe
 
 		// 创建窗口
 		virtual BOOL			Create(INT nID, const RECT& rect, CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent);
-
+		
+		// 框架绘制
+		virtual BOOL			Draw(CDC* pDC);
+		
 	public:
 		// 按钮按下
 		virtual	BOOL			OnClicked(UIWidget* pWidget,
@@ -26,6 +29,8 @@ namespace YouLe
 	public:
 		// 处理指令
 		void					ProcessCommand(int nCommand);
+	protected:
+		CPngImage				m_PngFrameImage[4];
 	};
 }
 

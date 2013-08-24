@@ -1,5 +1,6 @@
 #include "StdAfx.h"
 #include "UIUserinfoView.h"
+#include "UIEditBox.h"
 #include "Platform.h"
 
 namespace YouLe
@@ -17,8 +18,8 @@ namespace YouLe
 		BOOL bResult = UIWidget::Create(nID, rect, pAttach, pProcess, pParent);
 		ASSERT(bResult == TRUE);
 
-		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatViewImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlazaViewImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		m_ImageBack.LoadImage(hInstance, PlazaViewImage.pszUserInfo);
 
@@ -92,8 +93,8 @@ namespace YouLe
 		BOOL bResult = UIWidget::Create(nID, rect, pAttach, pProcess, pParent);
 		ASSERT(bResult == TRUE);
 
-		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatViewImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlazaViewImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		m_ImageBack.LoadImage(hInstance, PlazaViewImage.pszModifyUserInfoBack);
 
@@ -148,8 +149,8 @@ namespace YouLe
 		BOOL bResult = UIWidget::Create(nID, rect, pAttach, pProcess, pParent);
 		ASSERT(bResult == TRUE);
 
-		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatViewImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlazaViewImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		m_ImageBack.LoadImage(hInstance, PlazaViewImage.pszModifyPasswordBack);
 

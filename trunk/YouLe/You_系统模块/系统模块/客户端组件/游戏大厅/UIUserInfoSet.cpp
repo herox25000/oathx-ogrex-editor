@@ -27,8 +27,8 @@ namespace YouLe
 		BOOL bResult = UIWidget::Create(nID, rect, pAttach, pProcess, pParent);
 		ASSERT(bResult == TRUE);
 
-		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatViewImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlazaViewImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		UIUserinfoView* pUserInfo = new UIUserinfoView();
 		pUserInfo->Create(IDP_USERINFO_VIEW, CRect(0, 0, VIEW_SIZEX, VIEW_SIZEY), pAttach, this, this);

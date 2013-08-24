@@ -20,8 +20,8 @@ namespace YouLe
 		ASSERT(bResult == TRUE);
 
 		//¼ÓÔØ×ÊÔ´
-		tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatformFrameImageNew & FrameViewImage = CGlobalUnits::GetSingleton()->m_PlatformFrameImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 		
 		const INT idList[] = {
 			WM_BT_CLOSE, WM_BT_LOGON, WM_BT_REGISTER, WM_BT_WEBHOME,WM_BT_CHONGZHI,WM_BT_BANBEN

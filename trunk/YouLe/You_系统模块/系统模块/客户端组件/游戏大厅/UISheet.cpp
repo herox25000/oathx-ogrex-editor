@@ -21,6 +21,9 @@ namespace YouLe
 	{
 		// find current target widget
 		UIWidget* pChildWnd = GetChildWidget(cPt);
+		if (pChildWnd)
+			pChildWnd->OnMouseMove(cPt);
+
 		if (m_pInput == pChildWnd)
 			 return FALSE;
 		
@@ -86,6 +89,33 @@ namespace YouLe
 				m_pFocus = NULL;
 		}
 		m_bPress = FALSE;
+		return TRUE;
+	}
+
+	// ¼üÅÌ°´ÏÂ
+	BOOL		UISheet::InjectKeyDwon(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		if (m_pFocus)
+			m_pFocus->OnKeyDwon(nChar, nRepCnt, nFlags);
+
+		return TRUE;
+	}
+
+	// ¼üÅÌµ¯Æð
+	BOOL		UISheet::InjectKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		if (m_pFocus)
+			m_pFocus->OnKeyUp(nChar, nRepCnt, nFlags);
+
+		return TRUE;
+	}
+
+	// ×Ö·ûÊäÈë
+	BOOL		UISheet::InjectChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		if (m_pFocus)
+			m_pFocus->OnChar(nChar, nRepCnt, nFlags);
+
 		return TRUE;
 	}
 }

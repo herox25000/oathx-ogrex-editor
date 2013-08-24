@@ -29,8 +29,8 @@ namespace YouLe
 		ASSERT(bResult == TRUE);
 
 		//¼ÓÔØ×ÊÔ´
-		tagPlatformFrameImageNew & PlazaViewImage = g_GlobalUnits.m_PlatformFrameImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatformFrameImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlatformFrameImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		m_PngBack.LoadImage(hInstance, PlazaViewImage.pszEnquireBack);
 

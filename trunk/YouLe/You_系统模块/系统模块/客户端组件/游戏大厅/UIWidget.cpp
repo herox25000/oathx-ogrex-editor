@@ -342,6 +342,48 @@ namespace YouLe
 
 		return TRUE;
 	}
+
+	// 按键按下
+	BOOL		UIWidget::OnKeyDwon(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		if (IsWidgetVisible() && IsWidgetEnabled())
+		{
+			if (m_pProcess)
+				m_pProcess->OnKeyDwon(nChar, nRepCnt, nFlags);
+
+			Invalidate(TRUE);
+		}
+
+		return TRUE;
+	}
+
+	// 字符输入
+	BOOL		UIWidget::OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		if (IsWidgetVisible() && IsWidgetEnabled())
+		{
+			if (m_pProcess)
+				m_pProcess->OnChar(nChar, nRepCnt, nFlags);
+
+			Invalidate(TRUE);
+		}
+
+		return TRUE;
+	}
+
+	// 按键弹起
+	BOOL		UIWidget::OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+	{
+		if (IsWidgetVisible() && IsWidgetEnabled())
+		{
+			if (m_pProcess)
+				m_pProcess->OnKeyUp(nChar, nRepCnt, nFlags);
+
+			Invalidate(TRUE);
+		}
+
+		return TRUE;
+	}
 	
 	// 鼠标响应
 	BOOL		UIWidget::OnClicked(const CPoint& cPt)

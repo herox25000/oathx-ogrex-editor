@@ -23,8 +23,8 @@ namespace YouLe
 		BOOL bResult = UIWidget::Create(nID, rect, pAttach, pProcess, pParent);
 		ASSERT(bResult == TRUE);
 
-		tagPlatformFrameImageNew & FrameViewImage = g_GlobalUnits.m_PlatformFrameImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatformFrameImageNew & FrameViewImage = CGlobalUnits::GetSingleton()->m_PlatformFrameImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		m_ImageBack.LoadImage(hInstance, FrameViewImage.pszFrameSet);
 		
