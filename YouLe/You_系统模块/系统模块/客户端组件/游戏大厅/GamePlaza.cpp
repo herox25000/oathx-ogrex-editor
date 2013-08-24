@@ -13,7 +13,7 @@ BEGIN_MESSAGE_MAP(CGamePlazaApp, CWinApp)
 	ON_COMMAND(ID_HELP, CWinApp::OnHelp)
 END_MESSAGE_MAP()
 
-CGamePlazaApp::CGamePlazaApp()
+CGamePlazaApp::CGamePlazaApp() : m_pGlobalUnits(NULL)
 {
 
 }
@@ -27,6 +27,9 @@ BOOL CGamePlazaApp::InitInstance()
 	CMutex Mutex(FALSE,SZ_PLAZACLASS,NULL);
 	if (Mutex.Lock(0)==FALSE)
 		bPlazaExist=true;
+
+	m_pGlobalUnits = new CGlobalUnits();
+	ASSERT(m_pGlobalUnits != NULL);
 
 	//搜索窗口
 	CWnd * pWndGamePlaza=CWnd::FindWindow(SZ_PLAZACLASS,NULL);
@@ -65,7 +68,7 @@ BOOL CGamePlazaApp::InitInstance()
 	CSystemParameter::GetInstance().LoadOptionParameter();
 
 	//全局信息
-	if (g_GlobalUnits.InitGlobalUnits()==false)
+	if (!m_pGlobalUnits->InitGlobalUnits())
 	{
 		ShowInformation(TEXT("游戏广场初始化失败，程序即将退出！"),0,MB_ICONSTOP);
 		return FALSE;
@@ -87,15 +90,23 @@ BOOL CGamePlazaApp::InitInstance()
 
 	//建立窗口
 	CPlatformFrame * pPlatformFrame=new CPlatformFrame();
-	pPlatformFrame->Create(SZ_PLAZACLASS, SZ_PLAZANAME, WS_CLIPCHILDREN|WS_CLIPSIBLINGS, CRect(0,0,0,0));
-	m_pMainWnd=pPlatformFrame;
-
+	if (pPlatformFrame->Create(SZ_PLAZACLASS, SZ_PLAZANAME, WS_CLIPCHILDREN|WS_CLIPSIBLINGS, CRect(0,0,0,0)))
+	{
+		m_pMainWnd = pPlatformFrame;
+	}
+	
 	return TRUE;
 }
 
 int CGamePlazaApp::ExitInstance()
 {
 	Gdiplus::GdiplusShutdown(m_gdiplusToken);
+	
+	if (m_pGlobalUnits)
+	{
+		delete m_pGlobalUnits; 
+		m_pGlobalUnits = NULL;
+	}
 
 	return CWinApp::ExitInstance();
 }

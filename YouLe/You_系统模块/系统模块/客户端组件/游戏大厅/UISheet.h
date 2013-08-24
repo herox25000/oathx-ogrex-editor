@@ -21,7 +21,12 @@ namespace YouLe
 		virtual BOOL		InjectLeftDown(const CPoint& cPt);
 		// 鼠标弹起
 		virtual BOOL		InjectLeftUp(const CPoint& cPt);
-
+		// 键盘按下
+		virtual BOOL		InjectKeyDwon(UINT nChar, UINT nRepCnt, UINT nFlags);
+		// 键盘弹起
+		virtual BOOL		InjectKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+		// 字符输入
+		virtual BOOL		InjectChar(UINT nChar, UINT nRepCnt, UINT nFlags);
 	protected:
 		// 当前焦点
 		UIWidget*			m_pFocus;

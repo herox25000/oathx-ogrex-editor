@@ -13,32 +13,39 @@ struct tagAstatInfo
 	ADAPTER_STATUS				AdapterStatus;						//网卡状态
 	NAME_BUFFER					NameBuff[16];						//名字缓冲
 };
-
-//全局变量
-CGlobalUnits					g_GlobalUnits;						//信息组件			
+		
 CGlobalAttemper					g_GlobalAttemper;					//全局调度
 
 //////////////////////////////////////////////////////////////////////////
+CGlobalUnits*	CGlobalUnits::mpInstance = NULL;
+
+// 获取全局单件
+CGlobalUnits*	CGlobalUnits::GetSingleton()
+{
+	ASSERT(mpInstance != NULL); return mpInstance;
+}
 
 //构造函数
-CGlobalUnits::CGlobalUnits(void)
+CGlobalUnits::CGlobalUnits(void) : m_dwPlazaVersion(VER_PLAZA_FRAME)
 {
-	m_szDirSkin[0]=0;
-	m_szDirWork[0]=0;
-	m_dwPlazaVersion=VER_PLAZA_FRAME;
-	memset(&m_GloblaUserData,0,sizeof(m_GloblaUserData));
-	lstrcpyn(m_szStationPage,szStationPage,sizeof(m_szStationPage));
+	m_szDirSkin[0]		= 0;
+	m_szDirWork[0]		= 0;
+	
+	memset(&m_GloblaUserData, 0, sizeof(m_GloblaUserData));
+
+	lstrcpyn(m_szStationPage, 
+		szStationPage,sizeof(m_szStationPage));
 
 	//资源变量
-	ZeroMemory(&m_PlazaViewImage,sizeof(m_PlazaViewImage));
-	ZeroMemory(&m_ServerViewImage,sizeof(m_ServerViewImage));
-	ZeroMemory(&m_WhisperViewImage,sizeof(m_WhisperViewImage));
-	ZeroMemory(&m_ControlViewImage,sizeof(m_ControlViewImage));
+	ZeroMemory(&m_PlazaViewImage,	sizeof(m_PlazaViewImage));
+	ZeroMemory(&m_ServerViewImage,	sizeof(m_ServerViewImage));
+	ZeroMemory(&m_WhisperViewImage,	sizeof(m_WhisperViewImage));
+	ZeroMemory(&m_ControlViewImage,	sizeof(m_ControlViewImage));
 	ZeroMemory(&m_PlatformFrameImage,sizeof(m_PlatformFrameImage));
-	ZeroMemory(&m_ChatExpViewImage,sizeof(m_ChatExpViewImage));
+	ZeroMemory(&m_ChatExpViewImage,	sizeof(m_ChatExpViewImage));
 	ZeroMemory(&m_PropertyViewImage,sizeof(m_PropertyViewImage));
 
-	return;
+	mpInstance = this;
 }
 
 //析构函数
@@ -188,6 +195,11 @@ bool CGlobalUnits::DeleteUserCookie()
 	return true;
 }
 
+void CGlobalUnits::InitServerListManager()
+{
+	m_ServerListManager.InitServerListManager(NULL);
+}
+
 //网卡地址
 WORD CGlobalUnits::GetMACAddress(BYTE cbMacBuffer[], WORD wBufferSize)
 {
@@ -306,11 +318,11 @@ bool CGlobalAttemper::DownLoadClient(LPCTSTR pszKindName, WORD wKindID, bool bDi
 	DownLoadRequest.bDisplay=bDisplay;
 	lstrcpyn(DownLoadRequest.szDescribe,pszKindName,CountArray(DownLoadRequest.szDescribe));
 	_snprintf(DownLoadRequest.szFileName,sizeof(DownLoadRequest.szFileName),TEXT("%s.EXE"),pszKindName);
-	_snprintf(DownLoadRequest.szLocalPath,sizeof(DownLoadRequest.szLocalPath),TEXT("%s\\DownLoad"),g_GlobalUnits.GetWorkDirectory());
+	_snprintf(DownLoadRequest.szLocalPath,sizeof(DownLoadRequest.szLocalPath),TEXT("%s\\DownLoad"),CGlobalUnits::GetSingleton()->GetWorkDirectory());
 	_snprintf(DownLoadRequest.szDownLoadUrl,sizeof(DownLoadRequest.szDownLoadUrl),TEXT("http://www.youle8.com/Download.asp?KindID=%ld&LocalVersion=0&PlazaVersion=%ld"),wKindID,VER_PLAZA_FRAME);
 
 	//投递请求
-	DWORD dwDownLoadID=g_GlobalUnits.m_DownLoadService->AddDownLoadRequest(DTP_GAME_CLIENT,&DownLoadRequest);
+	DWORD dwDownLoadID=CGlobalUnits::GetSingleton()->m_DownLoadService->AddDownLoadRequest(DTP_GAME_CLIENT,&DownLoadRequest);
 
 	return true;
 }

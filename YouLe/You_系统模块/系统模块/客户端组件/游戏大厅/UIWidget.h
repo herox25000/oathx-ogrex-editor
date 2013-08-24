@@ -56,7 +56,21 @@ namespace YouLe
 		{
 			return FALSE;
 		}
-
+		// 键盘按下
+		virtual BOOL		OnKeyDwon(UINT nChar, UINT nRepCnt, UINT nFlags)
+		{
+			return FALSE;
+		}
+		// 键盘弹起
+		virtual BOOL		OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags)
+		{
+			return FALSE;
+		}
+		// 字符输入
+		virtual BOOL		OnChar(UINT nChar, UINT nRepCnt, UINT nFlags)
+		{
+			return FALSE;
+		}
 	};
 
 	// GDI+ 自绘UI基础类
@@ -103,16 +117,17 @@ namespace YouLe
 	public:
 		// 获取区域
 		virtual	void		GetWidgetRect(LPRECT lpRect);
+		// 位置检测
+		virtual BOOL		PtInRect(const CPoint& cPt);		
 		// 获取客户区
 		virtual void		GetClientRect(LPRECT lpRect);
 		
+	public:
 		// 设置位置
 		virtual void		SetWidgetPos(INT nTop, INT x, INT y, INT w, INT h);
-		// 位置检测
-		virtual BOOL		PtInRect(const CPoint& cPt);
-
 		// 强制置顶
 		virtual BOOL		MoveToFront();
+
 	public:
 		// 发送消息
 		virtual	LRESULT		SendMessage(UINT Msg, WPARAM wParam, LPARAM lParam);
@@ -151,10 +166,22 @@ namespace YouLe
 		virtual BOOL		OnLeftDown(const CPoint& cPt);
 		// 左键弹起
 		virtual BOOL		OnLeftUp(const CPoint& cPt);
+
+	public:
+		// 键盘按下
+		virtual BOOL		OnKeyDwon(UINT nChar, UINT nRepCnt, UINT nFlags);
+		// 键盘弹起
+		virtual BOOL		OnKeyUp(UINT nChar, UINT nRepCnt, UINT nFlags);
+		// 字符输入
+		virtual BOOL		OnChar(UINT nChar, UINT nRepCnt, UINT nFlags);
+
+	public:
 		// 鼠标离开
 		virtual BOOL		OnMouseLeave(const CPoint& cPt);
 		// 鼠标进入
 		virtual BOOL		OnMouseEnter(const CPoint& cPt);
+
+	public:
 		// 鼠标响应
 		virtual BOOL		OnClicked(const CPoint& cPt);
 	protected:

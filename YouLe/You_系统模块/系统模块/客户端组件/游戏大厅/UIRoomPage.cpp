@@ -23,8 +23,8 @@ namespace YouLe
 								CWnd* pAttach, UIProcess* pProcess, UIWidget* pParent)
 	{
 		//加载资源
-		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatViewImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlazaViewImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 
 		m_PngBill.LoadImage(hInstance == NULL ? AfxGetInstanceHandle() : hInstance, 
 			PlazaViewImage.pszGameRoomBill);
@@ -112,7 +112,7 @@ namespace YouLe
 	//
 	bool	UIRoomItem::OnClickedEnterRoom()
 	{
-		g_GlobalUnits.m_GameRoomManager.EnterRoom(m_pListServer);
+		CGlobalUnits::GetSingleton()->m_GameRoomManager.EnterRoom(m_pListServer);
 		UIRoomPage* pPage = (UIRoomPage*)GetParent();
 		if(pPage)
 			pPage->SetEnterRoom(true);
@@ -142,8 +142,8 @@ namespace YouLe
 		ASSERT(bResult == TRUE);
 
 		//加载资源
-		tagPlatViewImageNew & PlazaViewImage = g_GlobalUnits.m_PlazaViewImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatViewImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlazaViewImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 		
 		// 标题图片
 		m_TilteImage.LoadImage(hInstance,PlazaViewImage.pszTilteImage);
@@ -196,7 +196,7 @@ namespace YouLe
 		int RoomIndex = 0;
 		while(true)
 		{
-			pListServer = g_GlobalUnits.m_ServerListManager.EnumServerItem(SeverIndex++);
+			pListServer = CGlobalUnits::GetSingleton()->m_ServerListManager.EnumServerItem(SeverIndex++);
 			if(pListServer == NULL)
 				break;
 			if(pListServer->m_GameServer.wKindID == ListKind->GetItemInfo()->wKindID )

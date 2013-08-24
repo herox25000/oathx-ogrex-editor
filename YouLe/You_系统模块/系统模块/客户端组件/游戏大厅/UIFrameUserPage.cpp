@@ -20,8 +20,8 @@ namespace YouLe
 		ASSERT(bResult == TRUE);
 
 		////加载资源
-		tagPlatformFrameImageNew & PlazaViewImage = g_GlobalUnits.m_PlatformFrameImage;
-		HINSTANCE hInstance = g_GlobalUnits.m_PlatformResourceModule->GetResInstance();
+		tagPlatformFrameImageNew & PlazaViewImage = CGlobalUnits::GetSingleton()->m_PlatformFrameImage;
+		HINSTANCE hInstance = CGlobalUnits::GetSingleton()->m_PlatformResourceModule->GetResInstance();
 		
 		m_UserHead.LoadImage(hInstance, PlazaViewImage.pszBtUserSexHead);
 
@@ -55,7 +55,7 @@ namespace YouLe
 			return FALSE;
 
 		//绘制用户信息
-		tagGlobalUserData& UserData = g_GlobalUnits.GetGolbalUserData();
+		tagGlobalUserData& UserData = CGlobalUnits::GetSingleton()->GetGolbalUserData();
 		if (UserData.dwUserID!=0L)
 		{
 			int nHeadNumberWidth	= m_UserHead.GetWidth() / 2;

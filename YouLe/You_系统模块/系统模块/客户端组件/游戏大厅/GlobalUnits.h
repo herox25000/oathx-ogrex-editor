@@ -40,6 +40,12 @@ struct tagGlobalUserData
 //全局信息类
 class CGlobalUnits
 {
+public:
+	static CGlobalUnits*				mpInstance;
+
+	// 获取全局单价
+	static CGlobalUnits*				GetSingleton();
+
 	//信息变量
 protected:
 	TCHAR								m_szStationPage[32];			//站点页面
@@ -126,7 +132,8 @@ public:
 	bool WriteUserCookie();
 	//删除甜饼
 	bool DeleteUserCookie();
-
+	//初始化列表管理器
+	void InitServerListManager();
 	//内部函数
 private:
 	//网卡地址
@@ -159,10 +166,7 @@ public:
 	bool DownLoadClient(LPCTSTR pszKindName, WORD wKindID, bool bDisplay);
 };
 
-//////////////////////////////////////////////////////////////////////////
-
-//全局信息 
-extern	CGlobalUnits					g_GlobalUnits;					//信息组件			
+//////////////////////////////////////////////////////////////////////////		
 extern	CGlobalAttemper					g_GlobalAttemper;				//全局调度
 
 //////////////////////////////////////////////////////////////////////////
